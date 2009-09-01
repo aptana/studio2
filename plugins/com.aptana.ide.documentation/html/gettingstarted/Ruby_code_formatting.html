@@ -1,0 +1,65 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Ruby code formatting</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Ruby_code_formatting&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Ruby code formatting [<a href="http://www.aptana.com/docs/index.php?title=Ruby_code_formatting&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page gives an overview of Ruby code formatting.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The code formatter formats either the whole file or the current selection, if there is one. In the latter case all the lines, which are covered from the selection, are formatted. The code formatter does not insert new lines but only indents existing lines.
+</p><p>There are two options to customize the behaviour of the formatter:
+</p>
+<ul><li> The number of characters per indentation level
+</li><li> The character used for indentation can either be space or tab
+</li></ul>
+<p>E.g. if you format a if/then/else block, the lines of the if and else blocks have an indentation level of 1 while the lines with keywords have an indentation level of 0. The default is to use spaces and two characters per indentation level, which indents the if and else blocks with two spaces. If you changed the second option to use tabs, the if and else blocks would be indented with two tabs.
+</p><p>When the second options is set to use spaces, typing a tab character in the editor inserts spaces instead of a tabs, too. The number of spaces used to replace the tab is dependent on the current cursor position. Spaces will be added to move the cursor to a "tabstop", based on the number of characters per indentation level. By configuring the tab replacing settings with the code formatter settings, the difference between rawly entered code and formatted code can be minimized.
+Warning
+</p><p>In the current version the code formatter does not recognize regular expressions which are spread over multiple lines. That implies that these regular expressions might be indented.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Ruby_code_completion.html" title="Ruby code completion">Ruby code completion</a>
+</li><li> <a href="Ruby_Editor.html" title="Ruby Editor">Ruby Editor</a>
+</li><li> <a href="Ruby_Resources_View.html" title="Ruby Resources View">Ruby Resources View</a>
+</li><li> <a href="Ruby_Console_View.html" title="Ruby Console View">Ruby Console View</a>
+</li><li> <a href="Ruby_Outline_View.html" title="Ruby Outline View">Ruby Outline View</a>
+</li><li> <a href="RI_View_(Ruby_development).html" title="RI View (Ruby development)">RI View (Ruby development)</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1876-0!1!0!!en!2!edit=0 and timestamp 20090202102919 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Ruby_code_formatting">http://aptana.com/docs/index.php/Ruby_code_formatting</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span> | <span dir='ltr'><a href="Category:RDT.html" title="Category:RDT">RDT</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

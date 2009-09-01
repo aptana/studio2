@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="samples_context_view">
+		<description>The Samples View provides a group of working sample projects based on popular Ajax libraries and frameworks. You can import these samples into your Project View and automatically generate Code Assist profiles for these libraries.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_Samples_View.html"
+			label="Displaying the Samples View" />
+
+		<topic
+			href="http://www.aptana.tv/path/to/screencast"
+			label="iPhone Intro Screencast (features Samples View)" />
+	</context>
+</contexts>

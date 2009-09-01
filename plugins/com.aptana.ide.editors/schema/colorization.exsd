@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.editors">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.editors" id="colorization" name="Language Colorization"/>
+      </appInfo>
+      <documentation>
+         This extension point allow colorization definition files to be registered for syntax highlighting in the IDE.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="colorization" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="handler" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="colorization">
+      <complexType>
+         <attribute name="file" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The colorization xml file containing the colorization for the language
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of this colorization
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="handler">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Handler class that can provide runtime colorization.  This class must implement com.aptana.ide.editors.unified.colorizer.IColorizerHandler.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.editors.unified.colorizer.IColorizerHandler"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;colorizer file=&quot;/colorizations/php_colorization.xml&quot; /&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The file attribute is the path to the colorization file relative to the plugin it is contained in.  The file path must start with &quot;/&quot; signifying the root of the plugin.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         com.aptana.ide.editors.css, com.aptana.ide.editors.js,  com.aptana.ide.editors.html, and com.aptana.ide.editors.xml all contribute colorization definition file in their plugin.xml file.  The handler portion of this extension point is used by the JaxerColorizer to do custom background coloring based on runat script attributes.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

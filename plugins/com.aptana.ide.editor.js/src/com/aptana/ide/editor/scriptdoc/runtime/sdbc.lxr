@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/sdbc">
+
+	<token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace/>
+			</one-or-more>
+			<comment type="COMMENT"/>
+			<comment type="COMMENT" start="/*" end="*/"/>
+		</category-group>
+		
+		<category-group category="KEYWORD">
+			<and>
+				<or>
+					<string type="DUPLICATE">duplicate</string>
+					<string type="GET_GLOBAL">get_global</string>
+					<string type="GET">get</string>
+					<string type="INSTANTIATE">instantiate</string>
+					<string type="INVOKE">invoke</string>
+					<string type="NO_OPERATION">no_operation</string>
+					<string type="POP">pop</string>
+					<string type="PUT">put</string>
+					<string type="PUSH">push</string>
+					<string type="SWAP">swap</string>
+				</or>
+				<lookahead negate="true">
+					<or>
+						<letter/>
+						<character>_</character>
+					</or>
+				</lookahead>
+			</and>
+		</category-group>
+    </token-group>
+
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+    </token-group>
+
+</lexer>

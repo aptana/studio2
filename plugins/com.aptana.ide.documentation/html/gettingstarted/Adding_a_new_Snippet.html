@@ -1,0 +1,95 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Adding a new Snippet</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Adding_a_new_Snippet&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Adding a new Snippet [<a href="http://www.aptana.com/docs/index.php?title=Adding_a_new_Snippet&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to add a new snippet to the Snippets View.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a></li>
+<li class="toclevel-1"><a href="#Adding_a_Snippet_to_the_Toolbar"><span class="tocnumber">3</span> <span class="toctext">Adding a Snippet to the Toolbar</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">4</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>In addition to the default snippets that Aptana includes in the Snippets View, you can also create your own re-usable custom snippets for pieces of code that you frequently type. For example, if you always use the same set of styles for preformatted code, you could create a CSS Snippet that defines the &lt;pre&gt; tag, or if you use Dreamweaver's templates feature, you could even define your own HTML Snippet to use as a template for your HTML files.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p><b>Note</b>: You must have a file (any kind of file--HTML, JS, etc) open in one of the Aptana Editors to create a snippet. This file will not be affected by your snippet creation.
+</p><p>To create your own snippet:
+</p>
+<ol>
+	<li>In any top-level folder of your Project View, create a folder named <b>snippets</b> (you only need to do this the first time that you create a snippet).</li>
+	<li>In your <b>snippets</b> folder, create a blank new file for the type of snippet that you are creating (e.g. ".html" for an HTML snippet). This file should be completely blank. Delete any default content that was added when Aptana created the file.</li>
+	<li>Create your snippet content:<ol>
+  		  <li>Place your cursor at the top of the empty file that you just created.</li>
+  		  <li>In the Snippets View, expand the <b>Snippet Templates</b> folder.</li>
+   		  <li>Double-click the snippet template for the type of snippet that you are creating (e.g. "HTML Snippet Template" for an HTML snippet).<p>Aptana runs the snippet and creates a shell for your snippet code.</p><p>Alternatively, if you want to create a snippet that is similar to an existing snippet, you can simply copy-and-paste the content of that snippet into your blank file and modify it.</p></li></ol></li>
+	<li>Add your snippet code. You can reference the existing snippets to see examples of how to code a snippet.</li>
+	<li>If you would like your snippet to prompt you or another user for any sort of a variable (such as a file name or URL), add the text <code>prompt(<i>var_name</i>): <i>promptText</i></code> where <b>var_name</b> is the name of the variable and <b>promptText</b> is the text that you want the Snippet to prompt the user with.<p>Open the <b>Insert Quicktime Movie</b> Snippet for editing to see an example of this. The variable name <b>must be in lower case</b>.</p></li>
+		<li>Below the closing comment marker for your file type, type the exact text/code that you want inserted when you insert your Snippet.<ul><li>If you used <b>prompt</b> to assign a variable earlier, you can then use <code>${var_name}</code> anywhere in your Snippet code to use that variable. See the <b>Insert Quicktime Movie</b> Snippet for an example.</li><li>If you want your Snippet to act on text that you or another user selects, add your Snippet text around a <code>${selection}</code>. For an example of this see any of the HTML Wrap with &lt;tagName&gt; Snippets variable.</li></ul></li>
+	<li>Save your changes.<p>Aptana will file your new snippet in the Snippets View in the appropriate folder (e.g. in the HTML folder for an HTML snippet.</p></li>
+</ol>
+<p>To run your new snippet, navigate to your snippet in the Snippets View and double-click your snippet.
+</p>
+<a name="Adding_a_Snippet_to_the_Toolbar"></a><h2> <span class="mw-headline">Adding a Snippet to the Toolbar</span></h2>
+<p>A snippet can be added to the toolbar of an editor based on mime type. An example snippet is shown below:
+</p>
+<pre>&lt;!--
+      category: HTML
+      name: Wrap with <strong>
+      toolTip: Wrap with &lt;strong&gt;
+	
+      toolbar: true
+      icon: strong.png
+      language: text/html
+--&gt;
+&lt;strong&gt;${selection}&lt;/strong&gt;
+</pre>
+<p>The icon is a relative path. If you are distributing the snippet as part of a plugin to Aptana Studio, you'll want to put the full path, i.e. <b>com.aptana.ide.snippets/icons/strong.png</b>
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Aptana_Snippets.html" title="About Aptana Snippets">About Aptana Snippets</a>
+</li><li> <a href="Editing_with_Snippets.html" title="Editing with Snippets">Editing with Snippets</a>
+</li><li> <a href="Editing_a_Snippet.html" title="Editing a Snippet">Editing a Snippet</a></strong>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1526-0!1!0!!en!2!edit=0 and timestamp 20090202062010 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Adding_a_new_Snippet">http://aptana.com/docs/index.php/Adding_a_new_Snippet</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,78 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Ruby debugger prerequisites</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Ruby_debugger_prerequisites&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Ruby debugger prerequisites [<a href="http://www.aptana.com/docs/index.php?title=Ruby_debugger_prerequisites&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This Help topics lists the system requirements for using the Ruby debugger.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Classic_Debugger_Compatibility"><span class="tocnumber">2</span> <span class="toctext">Classic Debugger Compatibility</span></a></li>
+<li class="toclevel-1"><a href="#Using_ruby-debug"><span class="tocnumber">3</span> <span class="toctext">Using ruby-debug</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">4</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>RDT has the ability to run one of two debuggers: classic or ruby-debug.
+</p><p>The 'classic' debugger is a pure-ruby debugger based on the debug.rb script included in Ruby distributions. This version suffers from significantly slower execution times and has compatibility issues across Ruby versions and OSes.
+</p><p>We also offer the ability to run a debugger using the ruby-debug gem as the backend. ruby-debug is a faster debugging library based off of the debug.rb script with native code and minor changes in functionality for performance reasons.
+</p>
+<a name="Classic_Debugger_Compatibility"></a><h2> <span class="mw-headline">Classic Debugger Compatibility</span></h2>
+<p>Whether you can debug your ruby application using the classic debugger depends on the version of the ruby interpreter you are using, as well as your OS:
+</p>
+<ul><li> Ruby 1.6.8 works on Linux or Windows
+</li><li> 1.8.0 and 1.8.2 also work on Windows.
+</li></ul>
+<a name="Using_ruby-debug"></a><h2> <span class="mw-headline">Using ruby-debug</span></h2>
+<p>We have worked with the author of the ruby-debug gem to provide ruby-debug as a backend debugger. To use ruby-debug as your debugger you'll need to install the <b>ruby-debug-ide</b> gem and it's dependencies. You can install it using the <a href="Ruby_Gems_View.html" title="Ruby Gems View">Ruby Gems View</a>.
+</p><p>You'll also need to make sure that the preference flag to use ruby-debug is enabled. You can find that preference in <b>Window &gt; Preferences... &gt; Ruby &gt; Debugger</b>. Please note that we will attempt to automatically enable the use of ruby-debug if we detect that the <b>ruby-debug-ide</b> gem is installed.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Ruby_Debugger.html" title="Ruby Debugger">Ruby Debugger</a>
+</li><li> <a href="Starting_a_Ruby_debug_session.html" title="Starting a Ruby debug session">Starting a Ruby debug session</a>
+</li><li> <a href="Ruby_Debug_Views.html" title="Ruby Debug Views">Ruby Debug Views</a>
+</li><li> <a href="Automatic_Ruby_code_reloading.html" title="Automatic Ruby code reloading">Automatic Ruby code reloading</a>
+</li><li> <a href="Inspection_shortcuts_(Ruby).html" title="Inspection shortcuts (Ruby)">Inspection shortcuts (Ruby)</a>
+</li><li> <a href="Debugging_into_ruby_libraries.html" title="Debugging into ruby libraries">Debugging into ruby libraries</a>
+</li><li> <a href="Known_Ruby_debugging_limitations.html" title="Known Ruby debugging limitations">Known Ruby debugging limitations</a>
+</li><li> <a href="Fast_Rails_Debugging_using_Aptana_Rails_IDE.html" title="Fast Rails Debugging using Aptana Rails IDE">Fast Rails Debugging using Aptana Rails IDE</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1901-0!1!0!!en!2!edit=0 and timestamp 20090202180046 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Ruby_debugger_prerequisites">http://aptana.com/docs/index.php/Ruby_debugger_prerequisites</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span> | <span dir='ltr'><a href="Category:RDT.html" title="Category:RDT">RDT</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

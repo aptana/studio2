@@ -1,0 +1,35 @@
+<table width="650" cellpadding="0" cellspacing="0" border="0" class="top20" style="margin: 20px auto;">
+	<tr>
+		<td style="width: 195px; padding-right: 10px;" valign="top">
+		
+			<!-- Create new file / project -->
+			<div class="bottom10 size16 gray48 bold">Create New</div>
+			<div class="line20">
+				<img src="images_global/img_icon_newfile.png" align="absmiddle" class="inline"> <em><a href="javascript: Portal.Modules.RecentFiles.newFile('system');">Create new file...</a></em><br />
+				<img src="images_global/img_icon_newproject2.png" align="absmiddle" class="inline"> <em><a href="javascript: Portal.Modules.RecentFiles.newProject();">Create new project...</a></em><br />
+				<div style="background: url(images_global/bg_tree_bottom.gif) no-repeat left center; padding-left: 20px;">
+					<img src="images_global/img_icon_newfile.png" align="absmiddle" class="inline"> <em><a href="javascript: Portal.Modules.RecentFiles.newFile('project');" class="size11">Create new project file...</a></em>
+				</div>
+				<img src="images_global/img_icon_samples.png" align="absmiddle" class="inline"> <em><a href="javascript: Portal.Modules.RecentFiles.browseSamples();">Project from sample...</a></em>
+				<div class="gray87 size10 line14 top5" style="padding-left: 20px;">Click on the <img src="images_global/img_icon_import.png" align="absmiddle" style="margin-top: -6px;" /> button in the samples view to import as a project.</div>
+			</div>		
+			
+			<div class="top20" id="using_studio_with"></div>
+			
+			<div class="top10 size12 line20">
+				<img src="images_global/img_icon_add.png" align="absmiddle" /> <strong><a href="javascript: Portal.Modules.MyAptana.setCurrentProduct('plugins');" class="size11">Install Plugins</a></strong><br />
+				<img src="images_global/img_icon_pluginmanager.png" align="absmiddle" /> <strong><a href="javascript: Portal.API.utils.openView('com.aptana.ide.ui.ViewPlugins');" class="size11">View Plugin Manager</a></strong>
+			</div>
+		</td>
+	
+		<td style="width: 190px; padding-right: 20px;" valign="top">
+			<!-- Recent files -->
+			<div class="bottom10 size16 gray48 bold">Recent Files</div>
+			<div id="recentFilesCage"><div class="working">Loading...</div></div>
+		</td>
+	
+		<td style="width: 210px; padding-left: 15px; border-left: 1px solid #e4e4e4" valign="top">
+			<div id="right_content"></div>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,75 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Uninstalling Aptana Studio</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Uninstalling_Aptana_Studio&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Uninstalling Aptana Studio [<a href="http://www.aptana.com/docs/index.php?title=Uninstalling_Aptana_Studio&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#All_Operating_Systems"><span class="tocnumber">1</span> <span class="toctext">All Operating Systems</span></a></li>
+<li class="toclevel-1"><a href="#Mac_OS_X"><span class="tocnumber">2</span> <span class="toctext">Mac OS X</span></a></li>
+<li class="toclevel-1"><a href="#Windows"><span class="tocnumber">3</span> <span class="toctext">Windows</span></a></li>
+<li class="toclevel-1"><a href="#Linux"><span class="tocnumber">4</span> <span class="toctext">Linux</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="All_Operating_Systems"></a><h2> <span class="mw-headline">All Operating Systems</span></h2>
+<ul><li> Quit Studio
+</li><li> Delete the .metadata folder inside your workspace folder
+</li><li> (To totally eradicate all traces of Studio in your web application folders inside the workspace) Delete all the .project files in the top level directory of each of your Aptana projects
+</li><li> Complete the steps for your operating system
+</li></ul>
+<p>The -launcher variable in the Help-&gt;About Aptana Studio-&gt;Configuration Details window will tell you precisely where Studio is installed.
+</p><p><b>Warning:</b> If you have a separate installation of Eclipse that uses the same workspace as Aptana Studio, deleting the .project files will remove project metadata also used by Eclipse.
+</p>
+<a name="Mac_OS_X"></a><h2> <span class="mw-headline">Mac OS X</span></h2>
+<ul><li> Delete /Applications/Aptana Studio
+</li><li> Delete ~/Library/Application Support/Aptana/Aptana Studio
+</li></ul>
+<a name="Windows"></a><h2> <span class="mw-headline">Windows</span></h2>
+<ul><li> Using the Add or Remove Programs applet on Control Panel to uninstall Studio
+</li><li> Delete the C:\Documents and Settings\&lt;your Windows username&gt;\Application Data\Aptana directory
+</li></ul>
+<a name="Linux"></a><h2> <span class="mw-headline">Linux</span></h2>
+<p>(Note: To delete all .project files in your workspace, run <i>rm -r `find . -name .project`</i>)
+</p>
+<ul><li> Delete the script that sets up the Aptana Studio environment (the <a href="Installing_Aptana_on_Linux.html" title="Installing Aptana on Linux">Linux install instructions</a> suggest you name it <i>runAptana</i>)
+</li><li> Uninstall xulrunner
+</li><li> Delete the Studio installation folder (installation directions recommend that you install Studio in /usr/local/aptana).
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2484-0!1!0!!en!2!edit=0 and timestamp 20090202170734 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Uninstalling_Aptana_Studio">http://aptana.com/docs/index.php/Uninstalling_Aptana_Studio</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

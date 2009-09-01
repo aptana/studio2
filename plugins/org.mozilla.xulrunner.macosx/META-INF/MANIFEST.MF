@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mozilla XULrunner
+Bundle-SymbolicName: org.mozilla.xulrunner.macosx;singleton:=true
+Bundle-Version: 1.9.0.5
+Bundle-ClassPath: .
+Bundle-Vendor: mozilla.org
+Eclipse-PlatformFilter: (osgi.os=macosx)

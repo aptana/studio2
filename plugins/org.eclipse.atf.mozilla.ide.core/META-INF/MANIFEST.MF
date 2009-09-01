@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-Name: Mozide Core Plugin
+Bundle-ClassPath: core.jar
+Bundle-Activator: org.eclipse.atf.mozilla.ide.core.MozideCorePlugin
+Bundle-Vendor: eclipse.org
+Bundle-ManifestVersion: 2
+Bundle-Localization: plugin
+Bundle-SymbolicName: org.eclipse.atf.mozilla.ide.core;singleton:=true
+Export-Package: org.eclipse.atf.mozilla.ide.core
+Require-Bundle: org.mozilla.xpcom,org.eclipse.core.runtime
+Bundle-Version: 0.2.1.v200703161053
+Eclipse-LazyStart: true
+

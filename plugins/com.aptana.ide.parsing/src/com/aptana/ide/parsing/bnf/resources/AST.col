@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colorizer xmlns="http://www.aptana.com/2007/colorizer/1.0" background="rgb(255,255,255)" caret-color="rgb(0,0,0)" folding-background="rgb(240,240,240)" folding-foreground="rgb(139,139,139)" language="text/ast" line-highlight="rgb(232,242,254)" selection-background="rgb(181,213,255)" selection-foreground="rgb(0,0,0)">
+<category name="ERROR" style="ERROR"/>
+<style foreground="rgb(193,0,0)" id="ERROR"/>
+<category name="IDENTIFIER" style="IDENTIFIER">
+<token style="IDENTIFIER_CONSTANT" type="CONSTANT"/>
+</category>
+<style foreground="rgb(0,0,0)" id="IDENTIFIER"/>
+<style font-style="italic" font-weight="bold" foreground="rgb(8,54,123)" id="IDENTIFIER_CONSTANT"/>
+<category name="KEYWORD" style="KEYWORD"/>
+<style font-weight="bold" foreground="rgb(126,0,65)" id="KEYWORD"/>
+<category name="PUNCTUATOR" style="PUNCTUATOR"/>
+<style font-weight="bold" foreground="rgb(0,0,0)" id="PUNCTUATOR"/>
+<category name="WHITESPACE" style="WHITESPACE">
+<token style="WHITESPACE_SINGLE_LINE_COMMENT" type="SINGLE_LINE_COMMENT"/>
+<token style="WHITESPACE_COMMENT" type="COMMENT"/>
+</category>
+<style foreground="rgb(0,0,0)" id="WHITESPACE"/>
+<style foreground="rgb(129,129,129)" id="WHITESPACE_SINGLE_LINE_COMMENT"/>
+<style foreground="rgb(65,126,190)" id="WHITESPACE_COMMENT"/>
+</colorizer>

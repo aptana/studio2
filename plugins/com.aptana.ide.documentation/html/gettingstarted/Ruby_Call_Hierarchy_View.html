@@ -1,0 +1,97 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Ruby Call Hierarchy View</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Ruby_Call_Hierarchy_View&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Ruby Call Hierarchy View [<a href="http://www.aptana.com/docs/index.php?title=Ruby_Call_Hierarchy_View&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page gives an overview of how to use the Ruby Call Hierarchy View in RadRails.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Note:_This_View_will_be_implemented_as_part_of_RadRails_Milestone_6"><span class="tocnumber">1</span> <span class="toctext">Note: This View will be implemented as part of RadRails Milestone 6</span></a></li>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">2</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">3</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Opening_a_Ruby_Call_Hierarchy_View"><span class="tocnumber">3.1</span> <span class="toctext">Opening a Ruby Call Hierarchy View</span></a></li>
+<li class="toclevel-2"><a href="#Displaying_information"><span class="tocnumber">3.2</span> <span class="toctext">Displaying information</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">4</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Note:_This_View_will_be_implemented_as_part_of_RadRails_Milestone_6"></a><h3> <span class="mw-headline">Note: This View will be implemented as part of RadRails Milestone 6</span></h3>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The Ruby Call Hierarchy View (shown below) displays the loaded callers and callees for a selected Ruby method.
+</p><p><a href="Image:CallHierarchyView.png.html" class="image" title="Image:callHierarchyView.png"><img alt="Image:callHierarchyView.png" src="docs/images/7/73/CallHierarchyView.png" width="555" height="165" border="0" /></a>
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Opening_a_Ruby_Call_Hierarchy_View"></a><h3> <span class="mw-headline">Opening a Ruby Call Hierarchy View</span></h3>
+<p>To open a Ruby Call Hierarchy view, if none is open:
+</p>
+<ul><li> Right-click a method name in a source file and select <b>Open Call Hierarchy</b> to open a Call Hierarchy view and show the method's callers. 
+</li><li> You can also right-click a method in any hierarchical listing of code (like the Outline view) and select <b>Open Call Hierarchy</b> to open a Call Hierarchy view.
+</li></ul>
+<a name="Displaying_information"></a><h3> <span class="mw-headline">Displaying information</span></h3>
+<p>Use the following buttons in the Call Hiearchy View to display information about a method:
+</p>
+<ul><li> <a href="Image:IconShowCallers.png.html" class="image" title="Image:iconShowCallers.png"><img alt="Image:iconShowCallers.png" src="docs/images/4/4e/IconShowCallers.png" width="21" height="20" border="0" /></a> <b>Show Callers button</b> - Display all callers in the search scope of the selected function.
+</li><li> <a href="Image:IconShowCallees.png.html" class="image" title="Image:iconShowCallees.png"><img alt="Image:iconShowCallees.png" src="docs/images/3/38/IconShowCallees.png" width="21" height="21" border="0" /></a>  <b>Show Callees button</b> - Display all members called by the currently selected function.
+</li><li> <a href="Image:IconShowHistoryList.png.html" class="image" title="Image:iconShowHistoryList.png"><img alt="Image:iconShowHistoryList.png" src="docs/images/a/aa/IconShowHistoryList.png" width="30" height="20" border="0" /></a> <b>Show History List</b> - Display a history of previously displayed call hierarchies.
+</li><li> <a href="Image:IconMenu.png.html" class="image" title="Image:iconMenu.png"><img alt="Image:iconMenu.png" src="docs/images/4/4d/IconMenu.png" width="24" height="19" border="0" /></a> <b>Menu</b> - Provides the following commands:
+<ul><li> Modifying Search Scope
+</li><li> Showings Callers or Callees
+</li><li> Changing the view layout
+</li><li> Activate or deactivate filters
+</li></ul>
+</li></ul>
+<p>The Call Hierarchy view context menu includes the following commands:
+</p>
+<ul><li> <b>Open</b> - Opens an editor view containing the function reference.
+</li><li> <b>Focus on</b> - Resets the view to show the selected function.
+</li><li> <b>Declarations</b> - Search the workspace, project, or working set for all function declarations and shows the result in the Search view.
+</li><li> <b>References</b> - Search the workspace, project, or working set for all function references and shows the result in the Search view.
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Ruby_Gems_View.html" title="Ruby Gems View">Ruby Gems View</a>
+</li><li> <a href="Ruby_Console_View.html" title="Ruby Console View">Ruby Console View</a>
+</li><li> <a href="Ruby_Outline_View.html" title="Ruby Outline View">Ruby Outline View</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2057-0!1!0!!en!2!edit=0 and timestamp 20090202191502 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Ruby_Call_Hierarchy_View">http://aptana.com/docs/index.php/Ruby_Call_Hierarchy_View</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span> | <span dir='ltr'><a href="Category:RDT.html" title="Category:RDT">RDT</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

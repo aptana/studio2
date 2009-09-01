@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="com.aptana.ide.editors.actionSet">
+         <part
+               id="com.aptana.ide.editors.YMLEditor">
+         </part>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation targetID="com.aptana.ide.editor.yml.CodingActionSet">
+         <part id="com.aptana.ide.editors.YMLEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="com.aptana.ide.editors.YMLEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.parser">
+      <parser
+            class="com.aptana.ide.editor.yml.parsing.YMLParser"
+            language="text/yaml"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.tokenList">
+      <tokenList
+            class="com.aptana.ide.editor.yml.lexing.YMLTokenList"
+            language="text/yaml"/>
+      <textMatcher
+            language="text/yaml"
+            resource="src/com/aptana/ide/editor/yml/resources/yml_lexer_1_2.lxr"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.aptana.ide.editor.yml.YMLEditor"
+            contributorClass="com.aptana.ide.editor.yml.YMLEditorActionContributor"
+            default="true"
+            extensions="yml"
+            icon="icons/css.png"
+            id="com.aptana.ide.editors.YMLEditor"
+            name="%editor.name.0"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.colorization">
+      <colorization
+            file="colorization/DEFAULT_yml_colorization.col"
+            id="com.aptana.ide.editor.yml.colorization"/>
+   </extension>s
+   
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+			class="com.aptana.ide.editor.yml.preferences.GeneralPreferencePage"
+			id="com.aptana.ide.editor.yml.preferences.GeneralPreferencePage"
+			name="%generalPreferencePage"/>          
+		<page
+			category="com.aptana.ide.editor.yml.preferences.GeneralPreferencePage"
+			class="com.aptana.ide.editor.yml.preferences.ColorizationPreferencePage"
+			id="com.aptana.ide.editor.yml.preferences.ColorizationPreferencePage"
+			name="%colorPreferencePage"/>
+	</extension> 
+	<extension point="com.aptana.ide.editors.pairfinder">
+		<pairFinder
+			class="com.aptana.ide.editors.unified.NullPairFinder"
+            language="text/yaml"
+            name="YML Pair Finder">
+		</pairFinder>
+	</extension>
+	<extension
+         point="org.eclipse.ui.contexts">
+	  <context
+            name="%scope.ymlEditor.name"
+            description="%scope.ymlEditor.description"
+            parentId="org.eclipse.ui.textEditorScope"
+            id="com.aptana.ide.editor.yml.ymlEditorScope">
+      </context>
+    </extension>
+	<extension point="org.eclipse.ui.commands">
+      <category
+            name="%category.name.0"
+            description="%category.description.0"
+            id="com.aptana.ide.editor.yml.category.source">
+      </category>
+      <command
+            categoryId="com.aptana.ide.editor.yml.category.source"
+            description="%command.description.0"
+            id="com.aptana.ide.editor.yml.toggle.comment"
+            name="%command.name.0"> 
+      </command>
+	</extension>
+	<extension point="org.eclipse.ui.bindings">
+      <key
+            sequence="M1+/"
+            commandId="com.aptana.ide.editor.yml.toggle.comment"
+            contextId="com.aptana.ide.editor.yml.ymlEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+      <key
+            sequence="M1+M2+C"
+            commandId="com.aptana.ide.editor.yml.toggle.comment"
+            contextId="com.aptana.ide.editor.yml.ymlEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+      <!-- alternative for some gtk input modes -->
+      <key
+            platform="gtk" 
+            sequence="ESC CTRL+C"
+            contextId="com.aptana.ide.editor.yml.ymlEditorScope"
+            commandId="com.aptana.ide.editor.yml.toggle.comment"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+	</extension>
+	<extension point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%actionSet.label.0"
+            description="%CodingActionSet.description"
+            visible="false"
+            id="com.aptana.ide.editor.yml.CodingActionSet">   
+<!-- =========================================================================== -->
+<!-- Source Menu                                                                 -->
+<!-- =========================================================================== -->
+         <menu
+               label="%menu.label.0"
+               path="edit"
+               id="com.aptana.ide.editor.yml.source.menu">
+		    <separator name="commentGroup"/>
+         </menu>
+         
+<!-- edit group -->
+         <action
+            definitionId="com.aptana.ide.editor.yml.toggle.comment"
+            label="%action.label.0"
+            retarget="true"
+            menubarPath="com.aptana.ide.editor.yml.source.menu/commentGroup"
+            id="com.aptana.ide.editor.yml.actions.ToggleComment">
+         </action>
+
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="com.aptana.ide.core.ui"
+            name="%category.name.1"/>
+      <category
+            id="com.aptana.ide.core.ui.projects"
+            name="%category.name.2"/>
+      <wizard
+            category="com.aptana.ide.core.ui.projects"
+            class="com.aptana.ide.editor.yml.wizards.YMLNewFileWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            icon="icons/yml_file_new.png"
+            id="com.aptana.ide.editors.wizards.YMLNewWizard"
+            name="%wizard.name.0"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective,org.radrails.rails.ui.PerspectiveRails"/>
+      <wizard
+            canFinishEarly="true"
+            category="com.aptana.ide.core.ui"
+            class="com.aptana.ide.editor.yml.wizards.YMLUntitledFileWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="false"
+            icon="icons/yml_file_new.png"
+            id="com.aptana.ide.editors.wizards.file.YMLUntitledWizard"
+            name="%wizard.name.1"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective,org.radrails.rails.ui.PerspectiveRails"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.editor.yml.preferences.PreferenceInitializer"/>
+   </extension>
+</plugin>

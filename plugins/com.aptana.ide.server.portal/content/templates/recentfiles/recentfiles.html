@@ -1,0 +1,27 @@
+<div class="size11 line20">
+	<% fileList.each(function(project) { %>
+		
+		<!-- project name -->
+		<div class="bottom10">
+			<img src="images_global/img_icon_project2.png" align="absmiddle" class="inline" /> <a href="javascript: Portal.Modules.RecentFiles.openProject('<%= project.key %>')" class="bold"><%= project.key.truncate(25) %></a>
+			
+			<!-- files -->
+			<% var count = 1; var total=project.value.size(); %>
+			<% project.value.each(function(file) { %>
+				<div style="background: url(images_global/bg_tree_<%= (count == total) ? 'bottom' : 'middle'; %>.gif) no-repeat left center; padding-left: 20px;">
+				<img src="images_global/img_icon_file.png" align="absmiddle" class="inline" /> <a href="javascript: Portal.Modules.RecentFiles.openFile('<%= project.key %>', '<%= file %>');"><%= file.truncate(20) %></a>
+				</div>
+				<% count ++; %>
+			<% }); %>
+			
+		</div>
+		
+	<% }); %>
+	
+	<% if (fileList.size() == 0) { %>
+	
+		<div class="gray48 size12 line16">You haven't opened any files or projects recently.</div>
+	
+	<% } %>
+	
+</div>

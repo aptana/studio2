@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.core.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.core.ui" id="configuration" name="Runtime/Debug Configuration"/>
+      </appInfo>
+      <documentation>
+         This extension point is designed to provide a single workspace-level resource change listener to delegate to listeners registered globally or against a specific project nature so runtime and debug configurations can be modified when underlying resources changed that are used by those configurations.  It is also used to prompt the user to delete runtime and debug configurations when a project is deleted.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="configuration"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="configuration">
+      <complexType>
+         <attribute name="nature" type="string">
+            <annotation>
+               <documentation>
+                  This is the nature that the handler will only receive events for resource change events that are in a project that has the specific nature.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="handler" type="string" use="required">
+            <annotation>
+               <documentation>
+                  This is the handler that must implement com.aptana.ide.core.ui.IResourceChangeListener which is an interface that also implements org.eclipse.core.resources.IResourceChangeListener.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.core.ui.IResourceChangeListener"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         This extension point was added in Aptana Studio 1.0.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.core.ui.configuration&quot;&gt;
+	&lt;configuration nature=&quot;com.my.xyz.nature&quot;
+		handler=&quot;com.my.xyz.handler.MyLaunchConfigurationChangeHandler&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+This examples registers the com.my.xyz.handler.MyLaunchConfigurationChangeHandler class as a listener to resource changes that occur on projects configured with the com.my.xyz.nature nature.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         This extension point is parsed and setup against the workspace in the AptanaNavigator class.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension point is used by the Adobe AIR and iPhone plugins to keep in sync their runtime configurations as project files change that are referenced in the configuration.  The com.aptana.ide.framework.apollo.runtime.AirLaunchConfigurationChangeHandler class is a good example of what this extension point was designed to accomplish.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

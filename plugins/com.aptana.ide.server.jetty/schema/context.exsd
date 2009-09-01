@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.server.jetty" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="com.aptana.ide.server.jetty" id="context" name="Context Customizer"/>
+      </appinfo>
+      <documentation>
+         This extension point allows contribution of servlets and filters to a specific server id that will be added when JettyServerBuilder is called with that specified server id.  At that point the filter and servlet are created and if they can accept the handlers specified those handlers are added to those servlets and filters.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="servlet"/>
+            <element ref="filter"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="servlet">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Servlet class that must extend javax.servlet.Servlet.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="javax.servlet.Servlet"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="pathSpec" type="string">
+            <annotation>
+               <documentation>
+                  Servlet pathSpec that will be added to the context object
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="serverID" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="handler" type="string">
+            <annotation>
+               <documentation>
+                  Handler for determining whether a servlet or filter should be added at runtime
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.builder.IContextHandler"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="statistics" type="string">
+            <annotation>
+               <documentation>
+                  Statistics handler that must implement com.aptana.ide.server.jetty.interfaces.IStatisticsHandler.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.interfaces.IStatisticsHandler"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="configurator" type="string">
+            <annotation>
+               <documentation>
+                  Configurator class
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="filter">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Filter class that must extend javax.servlet.Filter
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="javax.servlet.Filter"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="pathSpec" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Filter pathSpec that will be added to the context object
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="dispatches" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Filter dispatches that will be added to the context object
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="serverID" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Server id
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="handler" type="string">
+            <annotation>
+               <documentation>
+                  Handler for determining whether a servlet or filter should be added at runtime
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.builder.IContextHandler"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="ignore" type="string">
+            <annotation>
+               <documentation>
+                  Ignore handler that allows runtime handling of whether files should be handled by the filter.  The class must implement com.aptana.ide.server.jetty.interfaces.IIgnoreHandler.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.interfaces.IIgnoreHandler"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="error" type="string">
+            <annotation>
+               <documentation>
+                  The error page handler that must implement com.aptana.ide.server.jetty.interfaces.IErrorPageHandler.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.interfaces.IErrorPageHandler"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="statistics" type="string">
+            <annotation>
+               <documentation>
+                  Statistics handler that must implement com.aptana.ide.server.jetty.interfaces.IStatisticsHandler.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.interfaces.IStatisticsHandler"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="restart" type="string">
+            <annotation>
+               <documentation>
+                  Restart handling for allowing the filter to accept a restart command.  This class must implement com.aptana.ide.server.jetty.interfaces.IRestartManager.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.interfaces.IRestartManager"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         This extension point was added in Aptana Studio 1.1.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.server.jetty.context&quot;&gt;
+ &lt;servlet 
+  class=&quot;com.my.xyz.MyServlet&quot;
+  serverID=&quot;com.internal.http.server&quot;
+  pathSpec=&quot;/my/request&quot; /&gt;
+ &lt;filter 
+  class=&quot;com.my.xyz.MyFilter&quot;
+  serverID=&quot;com.internal.http.server&quot;
+  pathSpec=&quot;*.htm,*.html,*.xhtml,*.HTML,*.HTM&quot;
+  dispatches=&quot;0&quot;
+  ignore=&quot;com.my.xyz.MyIgnoreHandler&quot;
+  restart=&quot;com.my.xyz.MyRestartManager&quot; /&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+The above extension point contributes a servlet and filter to the com.internal.http.server server.  A comprehensive example with multiple filters and servers can be seen in the platform Jaxer plguins.
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         This extension point is used to add Jaxer support via servlets and filters to the internal Jetty HTTP preview server.
+      </documentation>
+   </annotation>
+
+
+</schema>

@@ -1,0 +1,44 @@
+<table width="600" cellpadding="0" cellspacing="0" border="0" class="top20">
+	<tr>
+		<td colspan="3" style="padding-bottom: 20px;">
+		
+			<div id="projectlist_cage"></div>
+		</td>
+	</tr>
+	
+	<% if (data.isOnline && data.isLoggedIn && Portal.Data.siteList.sites.size() > 0) { %>
+	<tr>
+		<td colspan="3" style="padding-right: 20px; padding-bottom: 20px;" valign="top">
+			<!-- Online, logged in, and has sites... -->
+			<div id="cloud_mat_sitelist"></div>
+		</td>
+	</tr>
+	<% } %>
+	<tr>
+		<td valign="top" style="padding-right: 20px; padding-bottom: 20px;" colspan="2">
+			<div id="cloud_top">
+				<script type="text/javascript">Portal.API.templates.fetchRemoteContent('cloud_top', 'cloud_top');</script>
+			</div>
+		</td>
+	
+		<!-- Right-column -->
+		<td style="width: 210px; padding-left: 15px; border-left: 1px solid #e4e4e4" valign="top" rowspan="2">
+			
+			<div id="cloud_right_top">
+				<script type="text/javascript">Portal.API.templates.fetchRemoteContent('cloud_right_top', 'cloud_right_top');</script>
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		<!-- Bottom-left content -->
+		<td style="width: 190px; padding-right: 20px;" valign="top">
+			<div id="cloud_bottom_left"></div>
+		</td>
+		
+		<!-- Bottom-right content -->
+		<td style="width: 175px; " valign="top">
+			<div id="cloud_bottom_right"></div>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="release_notes.xsl" type="text/xsl" media="screen"?>
+<notes version="2.0" xmlns:trac="http://trac.edgewall.org">
+ <channel>
+   <title>Aptana: Ticket Query</title>
+  <link>http://www.aptana.com/trac/query?status=closed&amp;group=component&amp;verbose=1&amp;milestone=rolling_beta_7</link>
+   <description>Web IDE</description>
+  <language>en-us</language>
+  <image>
+   <title>Aptana</title>
+   <url>http://www.aptana.com</url>
+   <link>http://www.aptana.com/trac/timeline</link>
+  </image>
+  <generator>Trac v0.10</generator>
+   <item>
+    <link>http://www.aptana.com/trac/ticket/1081</link>
+    <guid isPermaLink="true">http://www.aptana.com/trac/ticket/1081</guid>
+    <title>Placeholder Release Notes</title>
+    <description>&lt;p&gt;Currently running in debugger&lt;/p&gt;</description>
+    <category>Tickets</category>
+    <comments>http://www.aptana.com/trac/ticket/1081#changelog</comments>
+    <trac:type>enhancement</trac:type>
+    <trac:id>1081</trac:id>
+    <trac:component>release_notes</trac:component>
+   </item>
+   <item>
+    <link>http://www.aptana.com/trac/ticket/786</link>
+    <guid isPermaLink="true">http://www.aptana.com/trac/ticket/786</guid>
+    <title>#786: Defect</title>
+    <description>&lt;p&gt;Description&lt;/p&gt;</description>
+    <category>Tickets</category>
+    <trac:type>defect</trac:type>
+    <trac:id>786</trac:id>
+    <trac:component>actions_view</trac:component>
+    <comments>http://www.aptana.com/trac/ticket/786#changelog</comments>
+   </item>
+   <item>
+    <link>http://www.aptana.com/trac/ticket/476</link>
+    <guid isPermaLink="true">http://www.aptana.com/trac/ticket/476</guid>
+    <title>#476: Enhancement</title>
+    <description>&lt;p&gt;Description&lt;/p&gt;</description>
+    <category>Tickets</category>
+    <trac:type>enhancement</trac:type>
+    <trac:id>476</trac:id>
+    <trac:component>all_editors</trac:component>
+    <comments>http://www.aptana.com/trac/ticket/476#changelog</comments>
+   </item>
+   
+ </channel>
+</notes>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="serverTypes" name="Server Type" schema="schema/serverTypes.exsd"/>
+   <extension-point id="moduleTypes" name="Module Type" schema="schema/moduleTypes.exsd"/>
+   <extension-point id="publishOperation" name="Publish Operation" schema="schema/publishOperation.exsd"/>
+   <extension-point id="serverLocator" name="Server Locator" schema="schema/serverLocator.exsd"/>
+   <extension-point id="serverInitializer" name="Server Initializer" schema="schema/serverInitializer.exsd"/>
+   <extension-point id="serverProvider" name="Server Provider" schema="schema/serverProvider.exsd"/>
+   <extension-point id="serverPatchers" name="serverPatchers" schema="schema/serverPatchers.exsd"/>
+   <extension-point id="previewFileTypeHandler" name="previewFileTypeHandler" schema="schema/previewFileTypeHandler.exsd"/>
+   <extension-point id="serverLaunchers" name="serverLaunchers" schema="schema/serverLaunchers.exsd"/>
+   <extension
+         point="com.aptana.ide.server.moduleTypes">
+      <moduleType
+            class="com.aptana.ide.server.core.impl.modules.SimpleModuleTypeDelegate"
+            description="%moduleType.description.staticmodule"
+            id="com.aptana.ide.server.staticModule"
+            operations="com.aptana.ide.server.copy"
+            name="%moduleType.name.staticmodule">
+      </moduleType>
+   </extension>
+	<extension point="com.aptana.ide.server.serverTypes">
+	    <serverType
+	          category="%serverType.category.group"
+	          class="com.aptana.ide.server.core.impl.servers.GroupServerTypeDelegate"
+	          description="%serverType.description.group"
+	          id="com.aptana.ide.server.groupServer"
+	          launchModes="run"
+	          name="%serverType.name.group" />
+	</extension>
+	<extension
+       point="com.aptana.ide.server.ui.serverImages">
+    <serverTypeImage
+          image="icons/group.png"
+          typeId="com.aptana.ide.server.groupServer">
+    </serverTypeImage>
+ </extension>
+</plugin>

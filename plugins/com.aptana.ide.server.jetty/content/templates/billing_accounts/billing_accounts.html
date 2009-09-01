@@ -1,0 +1,494 @@
+<div id="billingAccountWrap">
+
+	<div class="betaMessage clean-blue bottom10 size11 line14" style="padding: 5px 5px 5px 30px; margin-bottom: 5px; margin-top: 5px;" id="wizard_billing_beta">
+		<strong>Beta Users:</strong> Please do not use a real credit card for testing.  Use the test credit card number 4111111111111111 and cvv2 of 123.
+	</div>
+
+<div id="billing_activity" class="activity" style="display: none;">Loading billing data...</div>
+
+<div id="currentAccounts" style="display: none;">
+	<h2 class="size14 bold bottom5">Current Credit Cards</h2>
+	
+	
+	<div id="deleteActivity" class="activity bottom5" style="display: none;"></div>
+	
+	<div id="deleteError" class="clean-error bottom5" style="display: none;"></div>
+	
+	<div class="clean-yellow bottom5">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td valign="top" class="pad3 line16">
+					Here are all the credit cards that we have on file for you.  In the interest of security, these cannot be edited, but you can always add or remove cards.  You may also edit the billing address associated with your credit cards if you wish.
+				</td>
+				<td class="right pad3">
+					<a href="#editAddress" id="editBillingAddressLink"><img src="images_global/button_billing_editaddress_disabled.png" /></a><br />
+					<a href="javascript: Portal.Modules.BillingAccountManager.displayNewAccountForm();"><img src="images_global/button_billing_add.png" /></a>
+					
+					<div id="editAddress" style="display: none;"><div style="margin: -6px; padding: 5px 5px 5px 25px;" class="clean-blue">This feature is coming soon...</div></div>
+					
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="accountList"></div>
+</div>
+
+
+<div id="newAccount" style="display: none;">
+	<h2 class="size14 bold bottom5">Create New Credit Card</h2>
+	
+	<div id="createAccountActivity" class="activity bottom5" style="display: none;"></div>
+	
+	<div id="createAccountError" class="clean-error bottom5" style="display: none;"></div>
+	
+	<div id="firstTimeMessage" class="clean-yellow line16 bottom5" style="display: none;">
+		You do not currently have any credit cards created.  Credit cards can be used to pay for cloud hosting or other Aptana products.
+	</div>
+	
+	<p class="bottom5">To create a new credit card, please fill out the form below</p>
+</div>
+
+<div id="billingAccount" style="display: none;">
+	<h2 class="size14 bold bottom5">Edit Your Billing Address</h2>
+	
+	<p class="bottom5">To change your billing address, simply make the appropriate changes on the form below.</p>
+</div>
+
+<div id="accountForm" style="display: none;">	
+	<form id="billingInfo" name="billingInfo" action="#" method="post" class="top5 clean-gray">
+	<div id="newBillingAccountCage">
+	<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<td class="pad1" valign="baseline">
+				<p><label for="cardholder_name">Cardholder Name:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="cardholder_name" id="cardholder_name" class="required text" size="20" tabindex="0" value="" />
+			</td>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="pad1" valign="baseline">
+				<p><label for="card_type">Card Type:</label></p>
+			</td>
+			<td class="pad1">	
+				<select name="card_type" id="card_type" class="required validate-selection text" tabindex="1">
+					<option value="---">Please choose...</option>
+					<option value="visa">Visa</option>
+					<option value="mc">MasterCard</option>
+					<option value="discover">Discover</option>
+					<option value="amex">American Express</option>
+				</select>
+			</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="card_number">Card Number:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="card_number" id="card_number" class="required validate-ccnumber text" size="25" tabindex="2" value="" onkeyup="this.value=this.value.gsub(/[^0-9]/, '')" />
+			</td>
+		</tr>
+		<tr>
+			<td class="pad1" valign="baseline">
+				<p><label for="card_expiry_month">Card Expiration:</label></p>
+			</td>
+			<td class="pad1">
+				<select name="card_expiry_month" id="card_expiry_month" class="text" tabindex="3">
+					<option value="01">01</option>
+					<option value="02">02</option>
+					<option value="03">03</option>
+					<option value="04">04</option>
+					<option value="05">05</option>
+					<option value="06">06</option>
+					<option value="07">07</option>
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+				</select>/
+				<select name="card_expiry_year" id="card_expiry_year" class="text" tabindex="4">
+					<option value="08">2008</option>
+					<option value="09">2009</option>
+					<option value="10">2010</option>
+					<option value="11">2011</option>
+					<option value="12">2012</option>
+				</select>
+			</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="card_cvv2">CVV2:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="card_cvv2" id="card_cvv2" class="required validate-cvv2 text" size="10" maxlength="4" tabindex="5" value="" /> <a href="javascript: Effect.toggle('cvv2_help', 'appear', { duration: 0.25 });">What's This?</a>
+			</td>
+		</tr>
+		<tr>
+			<td class="pad1" colspan="4">
+				<div id="cvv2_help" class="clean-white size11 margin5 top15" style="display: none;">
+					<p>The CVV2 is a 3 value found on the back of your credit card, near the signature strip (American Express cardholders, your cvv2 is the 4 digit number on the front of your card).</p>
+					<p class="center top10 size10"><a href="javascript: Effect.toggle('cvv2_help', 'appear', { duration: 0.25 });">Hide This</a></p>
+				</div>
+			</td>
+		</tr>
+	</table>
+	</div>
+	
+	<div class="separator" id="newSeparator" style="display: none;"></div>
+	
+	<div id="billingAddressCage" style="display: none;">
+	<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<td class="pad1" valign="baseline">
+				<p><label for="first_name">Your First Name:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="first_name" id="first_name" class="required text" size="20" tabindex="6" value="" />
+			</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="billing_address1">Billing Address 1:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="billing_address1" id="billing_address1" class="required text" size="20" tabindex="11" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td class="pad1" valign="baseline">
+				<p><label for="last_name">Your Last Name:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="last_name" id="last_name" class="required text" size="20" tabindex="7" value="" />
+			</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="billing_address2">Billing Address 2:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="billing_address2" id="billing_address2" class="text" size="20" tabindex="12" />
+			</td>
+		</tr>
+		<tr>
+			<td class="pad1" valign="baseline">
+				<p><label for="cardholder_company">Company:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="cardholder_company" id="cardholder_company" class="text" size="20" tabindex="8" value="" />
+			</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="billing_city">City:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="billing_city" id="billing_city" class="required text" size="20" tabindex="13" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td class="pad1" valign="baseline">
+				<p><label for="cardholder_phone">Phone:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="cardholder_phone" id="cardholder_phone" class="required text" size="20" tabindex="9" value="" />
+			</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="billing_state">State / Region:</label></p>
+			</td>
+			<td class="pad1">
+				 <input name="billing_state" id="billing_state" class="required text" size="20" tabindex="14" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td class="pad1" colspan="2">&nbsp;</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="billing_country">Country:</label></p>
+			</td>
+			<td class="pad1">
+				<select name="billing_country" id="billing_country" class="required validate-selection text" tabindex="15" style="width: 200px;">
+					<option value="---">Please Choose...</option>
+					<option value="US">United States</option>
+					<option value="AF">Afghanistan 
+					<option value="AL">Albania 
+					<option value="DZ">Algeria 
+					<option value="AS">American Samoa
+					<option value="AD">Andorra 
+					<option value="AO">Angola
+					<option value="AI">Anguilla
+					
+					<option value="AQ">Antarctica
+					<option value="AG">Antigua and Barbuda 
+					<option value="AR">Argentina 
+					<option value="AM">Armenia 
+					<option value="AW">Aruba 
+					<option value="AU">Australia 
+					<option value="AT">Austria 
+					<option value="AZ">Azerbaijan
+					<option value="BS">Bahamas 
+					<option value="BH">Bahrain 
+					<option value="BD">Bangladesh
+					<option value="BB">Barbados
+					<option value="BY">Belarus 
+					<option value="BE">Belgium 
+					<option value="BZ">Belize
+					<option value="BJ">Benin 
+					<option value="BM">Bermuda 
+					
+					<option value="BT">Bhutan
+					<option value="BO">Bolivia 
+					<option value="BA">Bosnia and Herzegowina
+					<option value="BW">Botswana
+					<option value="BV">Bouvet Island 
+					<option value="BR">Brazil
+					<option value="IO">British Indian Ocean Territory
+					<option value="BN">Brunei Darussalam 
+					<option value="BG">Bulgaria
+					<option value="BF">Burkina Faso
+					<option value="BI">Burundi 
+					<option value="KH">Cambodia
+					<option value="CM">Cameroon
+					<option value="CA">Canada
+					<option value="CV">Cape Verde
+					<option value="KY">Cayman Islands
+					<option value="CF">Central African Republic
+					
+					<option value="TD">Chad
+					<option value="CL">Chile 
+					<option value="CN">China 
+					<option value="CX">Christmas Island
+					<option value="CC">Cocos (Keeling) Islands 
+					<option value="CO">Colombia
+					<option value="KM">Comoros 
+					<option value="CG">Congo 
+					<option value="CD">Congo, the Democratic Republic of the 
+					<option value="CK">Cook Islands
+					<option value="CR">Costa Rica
+					<option value="CI">Cote d'Ivoire 
+					<option value="HR">Croatia (Hrvatska)
+					<option value="CU">Cuba
+					<option value="CY">Cyprus
+					<option value="CZ">Czech Republic
+					<option value="DK">Denmark 
+					
+					<option value="DJ">Djibouti
+					<option value="DM">Dominica
+					<option value="DO">Dominican Republic
+					<option value="TP">East Timor
+					<option value="EC">Ecuador 
+					<option value="EG">Egypt 
+					<option value="SV">El Salvador 
+					<option value="GQ">Equatorial Guinea 
+					<option value="ER">Eritrea 
+					<option value="EE">Estonia 
+					<option value="ET">Ethiopia
+					<option value="FK">Falkland Islands (Malvinas) 
+					<option value="FO">Faroe Islands 
+					<option value="FJ">Fiji
+					<option value="FI">Finland 
+					<option value="FR">France
+					<option value="FX">France, Metropolitan
+					
+					<option value="GF">French Guiana 
+					<option value="PF">French Polynesia
+					<option value="TF">French Southern Territories 
+					<option value="GA">Gabon 
+					<option value="GM">Gambia
+					<option value="GE">Georgia 
+					<option value="DE">Germany 
+					<option value="GH">Ghana 
+					<option value="GI">Gibraltar 
+					<option value="GR">Greece
+					<option value="GL">Greenland 
+					<option value="GD">Grenada 
+					<option value="GP">Guadeloupe
+					<option value="GU">Guam
+					<option value="GT">Guatemala 
+					<option value="GN">Guinea
+					<option value="GW">Guinea-Bissau 
+					
+					<option value="GY">Guyana
+					<option value="HT">Haiti 
+					<option value="HM">Heard and Mc Donald Islands 
+					<option value="VA">Holy See (Vatican City State) 
+					<option value="HN">Honduras
+					<option value="HK">Hong Kong 
+					<option value="HU">Hungary 
+					<option value="IS">Iceland 
+					<option value="IN">India 
+					<option value="ID">Indonesia 
+					<option value="IR">Iran (Islamic Republic of)
+					<option value="IQ">Iraq
+					<option value="IE">Ireland 
+					<option value="IL">Israel
+					<option value="IT">Italy 
+					<option value="JM">Jamaica 
+					<option value="JP">Japan 
+					
+					<option value="JO">Jordan
+					<option value="KZ">Kazakhstan
+					<option value="KE">Kenya 
+					<option value="KI">Kiribati
+					<option value="KP">Korea, Democratic People's Republic of
+					<option value="KR">Korea, Republic of
+					<option value="KW">Kuwait
+					<option value="KG">Kyrgyzstan
+					<option value="LA">Lao People's Democratic Republic
+					<option value="LV">Latvia
+					<option value="LB">Lebanon 
+					<option value="LS">Lesotho 
+					<option value="LR">Liberia 
+					<option value="LY">Libyan Arab Jamahiriya
+					<option value="LI">Liechtenstein 
+					<option value="LT">Lithuania 
+					<option value="LU">Luxembourg
+					
+					<option value="MO">Macau 
+					<option value="MK">Macedonia, The Former Yugoslav Republic of
+					<option value="MG">Madagascar
+					<option value="MW">Malawi
+					<option value="MY">Malaysia
+					<option value="MV">Maldives
+					<option value="ML">Mali
+					<option value="MT">Malta 
+					<option value="MH">Marshall Islands
+					<option value="MQ">Martinique
+					<option value="MR">Mauritania
+					<option value="MU">Mauritius 
+					<option value="YT">Mayotte 
+					<option value="MX">Mexico
+					<option value="FM">Micronesia, Federated States of 
+					<option value="MD">Moldova, Republic of
+					<option value="MC">Monaco
+					
+					<option value="MN">Mongolia
+					<option value="MS">Montserrat
+					<option value="MA">Morocco 
+					<option value="MZ">Mozambique
+					<option value="MM">Myanmar 
+					<option value="NA">Namibia 
+					<option value="NR">Nauru 
+					<option value="NP">Nepal 
+					<option value="NL">Netherlands 
+					<option value="AN">Netherlands Antilles
+					<option value="NC">New Caledonia 
+					<option value="NZ">New Zealand 
+					<option value="NI">Nicaragua 
+					<option value="NE">Niger 
+					<option value="NG">Nigeria 
+					<option value="NU">Niue
+					<option value="NF">Norfolk Island
+					
+					<option value="MP">Northern Mariana Islands
+					<option value="NO">Norway
+					<option value="OM">Oman
+					<option value="PK">Pakistan
+					<option value="PW">Palau 
+					<option value="PA">Panama
+					<option value="PG">Papua New Guinea
+					<option value="PY">Paraguay
+					<option value="PE">Peru
+					<option value="PH">Philippines 
+					<option value="PN">Pitcairn
+					<option value="PL">Poland
+					<option value="PT">Portugal
+					<option value="PR">Puerto Rico 
+					<option value="QA">Qatar 
+					<option value="RE">Reunion 
+					<option value="RO">Romania 
+					
+					<option value="RU">Russian Federation
+					<option value="RW">Rwanda
+					<option value="KN">Saint Kitts and Nevis 
+					<option value="LC">Saint LUCIA 
+					<option value="VC">Saint Vincent and the Grenadines
+					<option value="WS">Samoa 
+					<option value="SM">San Marino
+					<option value="ST">Sao Tome and Principe 
+					<option value="SA">Saudi Arabia
+					<option value="SN">Senegal 
+					<option value="SC">Seychelles
+					<option value="SL">Sierra Leone
+					<option value="SG">Singapore 
+					<option value="SK">Slovakia (Slovak Republic)
+					<option value="SI">Slovenia
+					<option value="SB">Solomon Islands 
+					<option value="SO">Somalia 
+					
+					<option value="ZA">South Africa
+					<option value="GS">South Georgia and the South Sandwich Islands
+					<option value="ES">Spain 
+					<option value="LK">Sri Lanka 
+					<option value="SH">St. Helena
+					<option value="PM">St. Pierre and Miquelon 
+					<option value="SD">Sudan 
+					<option value="SR">Suriname
+					<option value="SJ">Svalbard and Jan Mayen Islands
+					<option value="SZ">Swaziland 
+					<option value="SE">Sweden
+					<option value="CH">Switzerland 
+					<option value="SY">Syrian Arab Republic
+					<option value="TW">Taiwan, Province of China 
+					<option value="TJ">Tajikistan
+					<option value="TZ">Tanzania, United Republic of
+					<option value="TH">Thailand
+					
+					<option value="TG">Togo
+					<option value="TK">Tokelau 
+					<option value="TO">Tonga 
+					<option value="TT">Trinidad and Tobago 
+					<option value="TN">Tunisia 
+					<option value="TR">Turkey
+					<option value="TM">Turkmenistan
+					<option value="TC">Turks and Caicos Islands
+					<option value="TV">Tuvalu
+					<option value="UG">Uganda
+					<option value="UA">Ukraine 
+					<option value="AE">United Arab Emirates
+					<option value="GB">United Kingdom
+					<option value="UM">United States Minor Outlying Islands
+					<option value="UY">Uruguay 
+					<option value="UZ">Uzbekistan
+					
+					<option value="VU">Vanuatu 
+					<option value="VE">Venezuela 
+					<option value="VN">Viet Nam
+					<option value="VG">Virgin Islands (British)
+					<option value="VI">Virgin Islands (U.S.) 
+					<option value="WF">Wallis and Futuna Islands 
+					<option value="EH">Western Sahara
+					<option value="YE">Yemen 
+					<option value="YU">Yugoslavia
+					<option value="ZM">Zambia
+					<option value="ZW">Zimbabwe
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="pad1" colspan="2">&nbsp;</td>
+			<td class="pad1" valign="baseline">
+				<p><label for="billing_zip">Zip / Postal Code:</label></p>
+			</td>
+			<td class="pad1">
+				<input name="billing_zip" id="billing_zip" class="required text" size="20" tabindex="16" value="" />
+			</td>
+		</tr>
+	</table>
+	</div>
+	</form>
+</div>
+
+<div id="controlsCreate" class="top5" style="display: none;">
+	<div class="floatLeft" id="createCancelCage" style="display: none;">
+		<a href="javascript: Portal.Modules.BillingAccountManager.displayCurrentAccounts();"><img src="images_global/button_cancel.png" /></a>
+	</div>
+	<div class="floatRight">
+		<a href="javascript: Portal.Modules.BillingAccountManager.createBillingAccount();"><img src="images_global/button_billing_create.png" /></a>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<div id="controlsEdit" class="top5" style="display: none;">
+	<div class="floatLeft">
+		<a href="javascript: Portal.Modules.BillingAccountManager.displayCurrentAccounts();"><img src="images_global/button_cancel.png" /></a>
+	</div>
+	<div class="floatRight" style="display: none;">
+		<a href="javascript: Portal.Modules.BillingAccountManager.createBillingAccount();"><img src="images_global/button_billing_create.png" /></a>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+</div>

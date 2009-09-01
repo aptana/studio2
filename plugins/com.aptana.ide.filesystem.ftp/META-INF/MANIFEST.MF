@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: com.aptana.ide.filesystem.ftp;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: com.aptana.ide.filesystem.ftp.FTPPlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ com.aptana.ide.core.io;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Export-Package: com.aptana.ide.filesystem.ftp
+Bundle-ClassPath: lib/edtftpj.jar,
+ .

@@ -1,0 +1,34 @@
+<colorizer
+    xmlns="http://www.aptana.com/2007/colorizer/1.0"
+    language="text/javascript"
+    background="rgb(255,255,255)" 
+    line-highlight="rgb(232,242,254)" 
+    selection-foreground="COLOR_LIST_SELECTION_TEXT" 
+    selection-background="COLOR_LIST_SELECTION"
+    folding-background="COLOR_WIDGET_BACKGROUND"
+    folding-foreground="rgb(139,139,139)"
+    caret-color="rgb(0,0,0)">
+	<category name="KEYWORD" style="keyword"/>
+	<category name="WHITESPACE" style="whitespace" />
+	<category name="PUNCTUATOR" style="punctuator"/>
+	<category name="LITERAL" style="literal" >
+		<token type="NUMBER" style="number" />
+		<token type="STRING" style="string" />
+	</category>
+	<category name="ERROR" style="error" />
+	<style id="keyword"
+		foreground="rgb(0,0,192)"
+		font-weight="bold" />
+	<style id="whitespace"
+		foreground="rgb(0,128,0)" />
+	<style id="punctuator"
+		foreground="rgb(92,92,92)" />
+	<style id="literal"
+		foreground="rgb(128,0,64)" />
+	<style id="number"
+		foreground="rgb(0,64,128)" />
+	<style id="string"
+		foreground="rgb(0,92,0)" />
+	<style id="error"
+		foreground="rgb(255,0,0)" />
+</colorizer>    

@@ -1,0 +1,157 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Installing Aptana on Linux</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Installing_Aptana_on_Linux&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Installing Aptana on Linux [<a href="http://www.aptana.com/docs/index.php?title=Installing_Aptana_on_Linux&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>When running under Linux, Aptana Studio relies on the Firefox browser and there are a few additional steps to get it running.  
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Standard_Installation_Instructions"><span class="tocnumber">1</span> <span class="toctext">Standard Installation Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Setup_Aptana_Studio"><span class="tocnumber">1.1</span> <span class="toctext">Setup Aptana Studio</span></a></li>
+<li class="toclevel-2"><a href="#Setup_JRE_1.6.x"><span class="tocnumber">1.2</span> <span class="toctext">Setup JRE 1.6.x</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Other_Common_Problems"><span class="tocnumber">2</span> <span class="toctext">Other Common Problems</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Running_Aptana_Studio_on_64-bit_Linux"><span class="tocnumber">2.1</span> <span class="toctext">Running Aptana Studio on 64-bit Linux</span></a></li>
+<li class="toclevel-2"><a href="#Firefox_already_has_Firebug_installed"><span class="tocnumber">2.2</span> <span class="toctext">Firefox already has Firebug installed</span></a></li>
+<li class="toclevel-2"><a href="#Fedora"><span class="tocnumber">2.3</span> <span class="toctext">Fedora</span></a></li>
+<li class="toclevel-2"><a href="#Ubuntu_Intrepid_Ibex"><span class="tocnumber">2.4</span> <span class="toctext">Ubuntu Intrepid Ibex</span></a></li>
+<li class="toclevel-2"><a href="#Error:_.22The_bundle_could_not_be_resolved._Reason:_Missing_Constraint.22_.28Fedora_Core_8.2C_IcedTea_JVM.29"><span class="tocnumber">2.5</span> <span class="toctext">Error: "The bundle could not be resolved. Reason: Missing Constraint" (Fedora Core 8, IcedTea JVM)</span></a></li>
+<li class="toclevel-2"><a href="#Getting_help"><span class="tocnumber">2.6</span> <span class="toctext">Getting help</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Standard_Installation_Instructions"></a><h1> <span class="mw-headline">Standard Installation Instructions</span></h1>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Setup_Aptana_Studio"></a><h3> <span class="mw-headline">Setup Aptana Studio </span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<ul><li> Unzip Aptana Studio to /usr/local/aptana.  Note: If you install Aptana Studio in a directory accessible only to the root user, you will need to run it as root to install updates.
+</li><li> Install xulrunner 1.8.* (You can use Synaptic Package Manager to install this.)
+<ul><li> You can download Xulrunner 1.8 from <a href="https://developer.mozilla.org/En/XULRunner" class="external free" title="https://developer.mozilla.org/En/XULRunner" rel="nofollow">https://developer.mozilla.org/En/XULRunner</a>
+</li><li> Once installed, make sure you $MOZILLA_FIVE_HOME is pointing to your xulrunner 1.8 dir
+</li><li> You may also need to install compat-libstdc++ if you are running into a libstdc++.so.5: cannot open shared object file: No such file or directory when running xulrunner-bin from command line.
+</li></ul>
+</li><li> Check your <i>/usr/lib/xulrunner.</i>... and note the full name of <i>xulrunner</i>.  Is some case it is simply "xulrunner" while in other cases the name includes the version.
+</li><li> Create a script that sets up the Aptana Studio environment, call it runAptana:
+</li></ul>
+<pre>export MOZILLA_FIVE_HOME=/usr/lib/xulrunner
+/usr/local/aptana/AptanaStudio
+</pre>
+<ul><li> Make your script executable:
+</li></ul>
+<pre>$ chmod +x runAptana
+</pre>
+<ul><li> Run the script
+</li></ul>
+<p>Alternatively, you may add the export statement to .bashrc or .bash_profile in your home directory and create an icon on your desktop pointing to the Aptana Studio executable. To set MOZILLA_FIVE_HOME for all users systemwide, add it to /etc/profile (on most systems).
+<span style="display:none;">x</span>
+</p>
+<a name="Setup_JRE_1.6.x"></a><h3> <span class="mw-headline"> Setup JRE 1.6.x  </span></h3>
+<p><span style="display:none;">x</span>
+The JRE distributed in the varios Linux distros can vary and may require you download an alternative jre.  We recommend jre1.6.  
+</p>
+<pre>ls -l /usr/local/aptana/jre
+/usr/local/aptana/jre -&gt; /usr/java/jre1.6.0_03
+</pre>
+<p>alternative you can export your JAVA_HOME system variable in your runAptana.
+</p>
+<a name="Other_Common_Problems"></a><h1> <span class="mw-headline"> Other Common Problems </span></h1>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Running_Aptana_Studio_on_64-bit_Linux"></a><h3> <span class="mw-headline">Running Aptana Studio on 64-bit Linux</span></h3>
+<p><span style="display:none;">x</span>
+The standalone version of Aptana Studio does not currently support 64-bit Linux so to use Studio on this type of distro, please install it as a plugin into a 64-bit version of Eclipse. 
+</p><p>If your Eclipse installation is shared (installed via package manager into <b>/usr/lib</b>), give your login account root permissions on the <b>/usr/lib/ecplise</b> folder because running an update copies files to the <b>/usr/lib/eclipse</b> features and <b>plugins</b> directories. If you have Eclipse installed as a tarball into your home dir (or any writable area), you won't need to run as root.
+</p><p>Some users have found the following workaround helpful:
+</p>
+<ol><li> Install 32-bit Sun Java (in Ubuntu: <i>sudo aptitude install ia32-libs ia32-sun-java6-bin</i>)
+</li><li> Select as the Java version to be used (again in Ubuntu: <i>sudo update-alternatives --config java</i> and choose the 32-bit version)
+</li></ol>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Firefox_already_has_Firebug_installed"></a><h3> <span class="mw-headline">Firefox already has Firebug installed</span></h3>
+<p><span style="display:none;">x</span>
+The first time you launch a debug session in Aptana Studio, Firefox is scanned to see if the plugin required is installed. The Aptana plugin is based on Firebug, and an existing installed version of Firebug will create a conflict, so uninstall Firebug if you previously installed it. 
+</p><p>Firefox must be shutdown after the uninstall since the uninstall isn't completed until Firefox restarts.
+<span style="display:none;">x</span>
+</p>
+<a name="Fedora"></a><h3> <span class="mw-headline">Fedora</span></h3>
+<p><span style="display:none;">x</span>
+You must use Sun's JRE rather than the GNU JRE in order for several Aptana features to work correctly.
+<span style="display:none;">x</span>
+</p>
+<a name="Ubuntu_Intrepid_Ibex"></a><h3> <span class="mw-headline">Ubuntu Intrepid Ibex</span></h3>
+<p><span style="display:none;">x</span>
+As of this release, Ubuntu no longer includes Firefox 2 in the distribution or in it package manager. Instead you need to install XULRunner and create a startup script called, say, <i>runAptana.sh</i> in <i>/usr/local/aptana</i> as described in the Setup section of this page.
+</p><p>To install XULRunner:
+</p>
+<pre>sudo apt-get install xulrunner
+</pre>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Error:_.22The_bundle_could_not_be_resolved._Reason:_Missing_Constraint.22_.28Fedora_Core_8.2C_IcedTea_JVM.29"></a><h3> <span class="mw-headline">Error: "The bundle could not be resolved. Reason: Missing Constraint" (Fedora Core 8, IcedTea JVM)</span></h3>
+<p><span style="display:none;">x</span>
+Change your JRE; Fedora Core 8 ships with a beta version 1.7 of Java. To fix, create a logical link to an earlier version of Java (preferably JRE 1.6 from Sun).
+</p>
+<pre>ls -l /usr/local/aptana/jre
+/usr/local/aptana/jre -&gt; /usr/java/jre1.6.0_03
+</pre>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Getting_help"></a><h3> <span class="mw-headline">Getting help</span></h3>
+<p><span style="display:none;">x</span>
+If you need further help installing Aptana Studio on your Linux machine, please file a request in our <a href="http://support.aptana.com/asap/secure/Dashboard.jspa" class="external text" title="http://support.aptana.com/asap/secure/Dashboard.jspa" rel="nofollow">ASAP issue tracker</a>
+<span style="display:none;">x</span>
+</p>
+<a name="Related_Topics"></a><h1> <span class="mw-headline">Related Topics</span></h1>
+<p><span style="display:none;">x</span>
+</p>
+<ul><li> <a href="Changing_the_VM_used_with_Aptana.html" title="Changing the VM used with Aptana">Changing the VM used with Aptana</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1487-0!1!0!!en!2!edit=0 and timestamp 20090202093531 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Installing_Aptana_Studio_on_Linux">http://aptana.com/docs/index.php/Installing_Aptana_Studio_on_Linux</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

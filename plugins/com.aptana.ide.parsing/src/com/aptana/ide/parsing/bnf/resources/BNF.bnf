@@ -1,0 +1,32 @@
+Grammar
+	:	Productions
+	;
+	
+Productions
+	:	Productions Production {AddProduction}
+	|	Production {FirstProduction}
+	;
+	
+Production
+	:	NONTERMINAL COLON Statements SEMICOLON {Production}
+	;
+	
+Statements
+	:	Statements PIPE Symbols {AddSequence}
+	|	Statements PIPE Symbols NAME {AddNamedSequence}
+	|	Symbols {FirstSequence}
+	|	Symbols NAME {NamedSequence}
+	;
+	
+Symbols
+	:	Symbols Symbol {AddSymbol}
+	|	Symbol {FirstSymbol}
+	;
+
+Symbol
+	:	TERMINAL {Terminal}
+	|	TERMINAL EQUAL ALIAS {AliasedTerminal}
+	|	NONTERMINAL {NonTerminal}
+	|	NONTERMINAL EQUAL ALIAS {AliasedNonTerminal}
+#	|	EMPTY {Empty}
+	;

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%category.name.0"
+            id="monkey">
+      </category>
+      <view
+            name="%view.name.0"
+            icon="icons/scripts_info.gif"
+            category="monkey"
+            class="org.eclipse.eclipsemonkey.views.ScriptsInfoView"
+            id="org.eclipse.eclipsemonkey.views.ScriptsInfoView">
+      </view>
+      <view
+            category="monkey"
+            class="org.eclipse.eclipsemonkey.views.scriptsView.ScriptsView"
+            icon="icons/monkey.gif"
+            id="org.eclipse.eclipsemonkey.views.ScriptsView"
+            name="%view.name.1"/>
+      <view
+            allowMultiple="true"
+            category="monkey"
+            class="org.eclipse.eclipsemonkey.ui.scriptableView.GenericScriptableView"
+            icon="icons/web_view.gif"
+            id="org.eclipse.eclipsemonkey.ui.scriptableView.GenericScriptableView"
+            name="%view.name.2"/>
+   </extension>
+   <!-- The following is commented out until we are ready to release the Scripts Editor -->
+   <!--
+	<extension
+         point="org.eclipse.ui.actionSets">
+         <actionSet
+			id="org.eclipse.eclipsemonkey.scripts.editor"
+			label="Scripts Editor"
+			visible="true">
+			  <menu
+               id="eclipsemonkeyMenu"
+               label="Scripts">
+            <separator
+                  name="eclipsemonkeyGroup">
+            </separator>
+         </menu>
+		     <action
+		         class="org.eclipse.eclipsemonkey.views.scriptsView.ScriptsEditorAction"
+		         id="Scripts.ShowEditor"
+		         label="Open Scripts Editor..."
+		         menubarPath="eclipsemonkeyMenu/eclipsemonkeyGroup"
+		         style="push"/>
+	    </actionSet>
+    </extension>
+    -->
+</plugin>

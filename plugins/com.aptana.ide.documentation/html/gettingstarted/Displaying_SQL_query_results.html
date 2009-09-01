@@ -1,0 +1,104 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Displaying SQL query results</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Displaying_SQL_query_results&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Displaying SQL query results [<a href="http://www.aptana.com/docs/index.php?title=Displaying_SQL_query_results&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#What"><span class="tocnumber">1</span> <span class="toctext">What</span></a></li>
+<li class="toclevel-1"><a href="#How"><span class="tocnumber">2</span> <span class="toctext">How</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Using_the_SQL_Result_View"><span class="tocnumber">2.1</span> <span class="toctext">Using the SQL Result View</span></a></li>
+<li class="toclevel-2"><a href="#Features_of_the_SQL_Result_View"><span class="tocnumber">2.2</span> <span class="toctext">Features of the SQL Result View</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Where_Clause"><span class="tocnumber">2.2.1</span> <span class="toctext">Where Clause</span></a></li>
+<li class="toclevel-3"><a href="#Filtering"><span class="tocnumber">2.2.2</span> <span class="toctext">Filtering</span></a></li>
+<li class="toclevel-3"><a href="#Pin_Column_Widths"><span class="tocnumber">2.2.3</span> <span class="toctext">Pin Column Widths</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Editing_Rows"><span class="tocnumber">2.3</span> <span class="toctext">Editing Rows</span></a></li>
+<li class="toclevel-2"><a href="#Displaying_the_SQL_Result_View"><span class="tocnumber">2.4</span> <span class="toctext">Displaying the SQL Result View</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="What"></a><h2> <span class="mw-headline">What</span></h2>
+<p><span style="display:none;">x</span>
+The SQL result view displays the results of any SELECT query you execute using the SQL execute view in the database perspective (see <a href="Writing_and_executing_SQL_queries.html" title="Writing and executing SQL queries">Writing and executing SQL queries</a>).
+</p>
+<a name="How"></a><h2> <span class="mw-headline">How</span></h2>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Using_the_SQL_Result_View"></a><h3> <span class="mw-headline">Using the SQL Result View</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<ul><li> The results of your query will be displayed in a grid, with columns for each of the columns returned in your query, and rows for each of the rows in your result set. Alternating rows are highlighted a soft light blue. An additional column on the left represents the row number of a given row in this result set.
+</li></ul>
+<ul><li> You can sort the results of your query using the column headers. Click a column header to select that column for sorting. Clicking again on the column header will toggle the sort direction. An arrow indicates the sort direction, ascending or descending.
+</li></ul>
+<ul><li> You can edit the individual rows in your result set. Clicking on a given column in a given row will highlight the row, and activate the column for editing. See editing rows below for details.
+</li></ul>
+<a name="Features_of_the_SQL_Result_View"></a><h3> <span class="mw-headline">Features of the SQL Result View</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Where_Clause"></a><h4> <span class="mw-headline">Where Clause</span></h4>
+<p>If you have activated the SQL result view using the first method described above, you can search within your result using the Where input box. Type a valid SQL WHERE clause into this field and click the Search button to the right <a href="Image:IconExecuteAllSQL.png.html" class="image" title="Image:iconExecuteAllSQL.png"><img alt="Image:iconExecuteAllSQL.png" src="docs/images/e/e0/IconExecuteAllSQL.png" width="23" height="22" border="0" /></a>.
+</p>
+<a name="Filtering"></a><h4> <span class="mw-headline">Filtering</span></h4>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:FilterSettingsDialog.png.html" class="image" title="Filter Settings Dialog"><img alt="Filter Settings Dialog" src="docs/images/thumb/e/e6/FilterSettingsDialog.png/200px-FilterSettingsDialog.png" width="200" height="101" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:FilterSettingsDialog.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Filter Settings Dialog</div></div></div><div style="float: left; width: 500px;">The filter settings dialog is for changing the display of the SQL query results output. Launch the filter settings dialog by clicking the icon with arrows in the upper right of the SQL query results screen.
+Check boxes for which columns you wish to display. A yellow arrow controls the ordering of the columns. Click the arrow again to change the order direction, or deactivate ordering by a given clause.</div><br style="clear: both;" />
+<a name="Pin_Column_Widths"></a><h4> <span class="mw-headline">Pin Column Widths</span></h4>
+<p><a href="Image:IconPinWidths.png.html" class="image" title="Image:IconPinWidths.png"><img alt="Image:IconPinWidths.png" src="docs/images/4/4a/IconPinWidths.png" width="28" height="29" border="0" /></a> Clicking the Pin Column Widths icon will fix the widths of columns in the SQL query results display.
+</p>
+<a name="Editing_Rows"></a><h3> <span class="mw-headline">Editing Rows</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:EditRow.png.html" class="image" title="Editing a row"><img alt="Editing a row" src="docs/images/thumb/6/6d/EditRow.png/200px-EditRow.png" width="200" height="76" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:EditRow.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Editing a row</div></div></div><div style="float: left; width: 500px;">To edit rows, click the F2 key, or click on a column. The column will then allow text entry. Use your arrow keys to move to different columns and rows.</div><br style="clear: both;" />
+<a name="Displaying_the_SQL_Result_View"></a><h3> <span class="mw-headline">Displaying the SQL Result View</span></h3>
+<p>If you have not already switched to the database perspective, click the database button <a href="Image:IconDatabasePerspective.png.html" class="image" title="Image:iconDatabasePerspective.png"><img alt="Image:iconDatabasePerspective.png" src="docs/images/a/a7/IconDatabasePerspective.png" width="23" height="22" border="0" /></a> in the upper right corner of your workbench.
+</p><p>You will also need to have set up a connection to a database to execute an SQL query against it (see <a href="Exploring_your_databases.html" title="Exploring your databases">Exploring your databases</a>).
+</p><p>The SQL result view <b>is not</b> displayed as one of the default views of the database perspective. There are two ways to activate this view.
+</p>
+<ol><li> Use the DB tree view to drill down to a database, then a table, then either the TABLE or VIEW folders. Double clicking on a table or view will activate the SQL result view and display the contents (see <a href="Exploring_your_databases.html" title="Exploring your databases">Exploring your databases</a> for details).
+</li></ol>
+<ol><li> Write and execute a SELECT query in the SQL execute view. Once you have written and executed a SELECT query, the SQL result view will appear above the SQL execute view, in the top area of the Aptana Studio workspace (see <a href="Writing_and_executing_SQL_queries.html" title="Writing and executing SQL queries">Writing and executing SQL queries</a> for details).
+</li></ol>
+<p>Each result set will be displayed in the SQL result view with it's own tab.
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2252-0!1!0!!en!2!edit=0 and timestamp 20090201213957 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Displaying_SQL_query_results">http://aptana.com/docs/index.php/Displaying_SQL_query_results</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

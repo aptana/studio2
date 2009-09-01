@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: com.aptana.ide.debug.core; singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-Activator: com.aptana.ide.debug.core.JSDebugPlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.debug.core,
+ com.aptana.ide.core,
+ com.aptana.ide.server.core,
+ com.aptana.ide.server
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Export-Package: com.aptana.ide.debug.core,
+ com.aptana.ide.debug.core.model,
+ com.aptana.ide.debug.core.preferences,
+ com.aptana.ide.debug.core.util,
+ com.aptana.ide.debug.core.xhr,
+ com.aptana.ide.debug.internal.core;x-friends:="com.aptana.ide.framework.apollo",
+ com.aptana.ide.debug.internal.core.model;x-friends:="com.aptana.ide.framework.apollo",
+ com.aptana.ide.debug.internal.core.sourcelookup;x-friends:="com.aptana.ide.framework.apollo"

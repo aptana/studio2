@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="application/json"
+	category-enumeration="com.aptana.ide.lexer.TokenCategories"
+	type-enumeration="com.aptana.ide.editor.json.lexing.JSONTokenTypes">
+
+	<bundle>com.aptana.ide.professional</bundle>
+	<package>com.aptana.ide.editor.json.lexing</package>
+
+	<token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace/>
+			</one-or-more>
+			<comment type="COMMENT"/>
+			<comment type="COMMENT" start="/*" end="*/"/>
+		</category-group>
+		<category-group category="KEYWORD">
+			<string type="FALSE">false</string>
+			<string type="NULL">null</string>
+			<string type="TRUE">true</string>
+		</category-group>
+		<category-group category="LITERAL">
+			<!--
+			<number match-sci-notation="true" type="NUMBER"/>
+			-->
+			<and type="NUMBER">
+				<optional>
+					<character>-</character>
+				</optional>
+				<or>
+					<character>0</character>
+					<and>
+						<character-class>123456789</character-class>
+						<zero-or-more>
+							<digit/>
+						</zero-or-more>
+					</and>
+				</or>
+				<optional>
+					<and>
+						<character>.</character>
+						<!-- should return error if following optional doesn't match -->
+						<optional>
+							<one-or-more>
+								<digit/>
+							</one-or-more>
+						</optional>
+					</and>
+				</optional>
+				<optional>
+					<and>
+						<character-class>eE</character-class>
+						<!-- should return error if either of the following optionals don't match -->
+						<optional>
+							<character-class>-+</character-class>
+						</optional>
+						<optional>
+							<one-or-more>
+								<digit/>
+							</one-or-more>
+						</optional>
+					</and>
+				</optional>
+			</and>
+			<and type="REFERENCE">
+				<string>"~</string>
+				<one-or-more>
+					<digit/>
+				</one-or-more>
+				<string>~"</string>
+			</and>
+			<and>
+				<quoted-string type="STRING">'"</quoted-string>
+				<optional>
+					<lookahead type="PROPERTY">
+						<and>
+							<zero-or-more>
+								<whitespace/>
+							</zero-or-more>
+							<character>:</character>
+						</and>
+					</lookahead>
+				</optional>
+			</and>
+		</category-group>
+		<category-group category="PUNCTUATOR">
+			<character type="LBRACKET">[</character>
+			<character type="RBRACKET">]</character>
+			<character type="LCURLY">{</character>
+			<character type="RCURLY">}</character>
+			<character type="COLON">:</character>
+			<character type="COMMA">,</character>
+		</category-group>
+    </token-group>
+
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+    </token-group>
+
+</lexer>

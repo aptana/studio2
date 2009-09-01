@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+    <extension
+          point="org.eclipse.eclipsemonkey.scriptpath">
+       <scriptpath
+             directory="scripts"
+             id="com.aptana.ide.reporting.scripts"/>
+    </extension>
+    <extension
+          point="org.eclipse.eclipsemonkey.dom">
+       <dom
+             class="com.aptana.ide.reporting.doms.ReportDOMFactory"
+             id="ReportDOMFactory"
+             variableName="report"/>
+    </extension>
+   <extension
+         point="com.aptana.ide.samples.samplespath">
+      <samplesinfo
+            directory="samples"
+            iconFile="icons/view_detailed.png"
+            id="com.aptana.ide.reporting.samplespath"
+            name="%samplesinfo.name.reporting">
+      </samplesinfo>
+   </extension>
+</plugin>

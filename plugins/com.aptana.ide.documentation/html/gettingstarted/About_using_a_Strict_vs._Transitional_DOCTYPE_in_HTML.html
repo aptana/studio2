@@ -1,0 +1,149 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>About using a Strict vs. Transitional DOCTYPE in HTML</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=About_using_a_Strict_vs._Transitional_DOCTYPE_in_HTML&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>About using a Strict vs. Transitional DOCTYPE in HTML [<a href="http://www.aptana.com/docs/index.php?title=About_using_a_Strict_vs._Transitional_DOCTYPE_in_HTML&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page discusses the difference in coding an XHTML file with a Strict DOCTYPE vs. a Transitional DOCTYPE.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#How_to_Switch_from_HTML_to_XHTML"><span class="tocnumber">2</span> <span class="toctext">How to Switch from HTML to XHTML</span></a>
+<ul>
+<li class="toclevel-2"><a href="#XHTML_1.0_Strict"><span class="tocnumber">2.1</span> <span class="toctext">XHTML 1.0 Strict</span></a></li>
+<li class="toclevel-2"><a href="#XHTML_1.0_Transitional"><span class="tocnumber">2.2</span> <span class="toctext">XHTML 1.0 Transitional</span></a></li>
+<li class="toclevel-2"><a href="#XHTML_1.1"><span class="tocnumber">2.3</span> <span class="toctext">XHTML 1.1</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Reference"><span class="tocnumber">3</span> <span class="toctext">Reference</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Elements_allowed_with_a_Transitional_but_not_Strict_DOCTYPE"><span class="tocnumber">3.1</span> <span class="toctext">Elements allowed with a Transitional but not Strict DOCTYPE</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_allowed_with_a_Transitional_but_not_Strict_DOCTYPE"><span class="tocnumber">3.2</span> <span class="toctext">Attributes allowed with a Transitional but not Strict DOCTYPE</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">4</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>If you are using XHTML to code a web page, you have a choice between using a Strict or a Transitional DOCTYPE. The Strict DOCTYPE means that your XHTML has to be completely standards-compliant. The Transitional DOCTYPE allows you to use some elements and attributes that were common in older HTML markup but that do not adhere to current standards. 
+</p><p>The Reference section of this Help topic lists the elements and attributes that are allowed by the Transitional DOCTYPE but not by the Strict DOCTYPE for XHTML.
+</p>
+<a name="How_to_Switch_from_HTML_to_XHTML"></a><h2> <span class="mw-headline">How to Switch from HTML to XHTML</span></h2>
+<p>Go to Window -&gt; Preferences -&gt; Aptana -&gt; Editors -&gt; HTML.
+Change the default extension to ".xhtml".
+Apply the following "Initial HTML file Contents":
+</p>
+<a name="XHTML_1.0_Strict"></a><h3> <span class="mw-headline">XHTML 1.0 Strict</span></h3>
+<pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+	&lt;title&gt;Untitled Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<a name="XHTML_1.0_Transitional"></a><h3> <span class="mw-headline">XHTML 1.0 Transitional</span></h3>
+<pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+	&lt;title&gt;Untitled Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<a name="XHTML_1.1"></a><h3> <span class="mw-headline">XHTML 1.1</span></h3>
+<pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+	&lt;title&gt;Untitled Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<a name="Reference"></a><h2> <span class="mw-headline">Reference</span></h2>
+<p>In general, most of the differences between using a Transitional and a Strict DOCTYPE have to do with the guideline that with a Strict DOCTYPE, all presentation information should be in CSS, not in the XHTML markup.
+</p>
+<a name="Elements_allowed_with_a_Transitional_but_not_Strict_DOCTYPE"></a><h3> <span class="mw-headline">Elements allowed with a Transitional but not Strict DOCTYPE</span></h3>
+<ul><li><code>center</code>
+</li><li><code>font</code>
+</li><li><code>iframe</code>
+</li><li><code>strike</code>
+</li><li><code>u</code>
+</li></ul>
+<a name="Attributes_allowed_with_a_Transitional_but_not_Strict_DOCTYPE"></a><h3> <span class="mw-headline">Attributes allowed with a Transitional but not Strict DOCTYPE</span></h3>
+<ul><li><code>align</code> - With Strict, <code>align</code> is still allowed on the following table elements: 
+<ul><li><code>col</code>
+</li><li><code>colgroup</code>
+</li><li><code>tbody</code>
+</li><li><code>td</code>
+</li><li><code>tfoot</code>
+</li><li><code>th</code>
+</li><li><code>thead</code>
+</li><li><code>tr</code>
+</li></ul>
+</li><li><code>alink</code>
+</li><li><code>background</code>
+</li><li><code>bgcolor</code>
+</li><li><code>border</code> - With Strict, <code>border</code> is still allowed on <code>table</code> element.
+</li><li><code>height</code> - With Strict, <code>height</code> is still allowed on <code>img</code> and <code>object</code>.
+</li><li><code>hspace</code>
+</li><li><code>language</code>
+</li><li><code>link</code>
+</li><li><code>name</code> - <code>name</code> is allowed in HTML 4.01 Strict, but not allowed on <code>form</code> and <code>img</code> in XHTML 1.0 Strict.
+</li><li><code>noshade</code>
+</li><li><code>nowrap</code>
+</li><li><code>target</code>
+</li><li><code>text</code>
+</li><li><code>vlink</code>
+</li><li><code>vspace</code>
+</li><li><code>width</code> - With Strict, <code>width</code> is allowed on <code>img</code>, <code>object</code>, <code>table</code>, <code>col</code>, and <code>colgroup</code>.
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Creating_a_new_HTML_or_CSS_file.html" title="Creating a new HTML or CSS file">Creating a new HTML or CSS file</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1534-0!1!0!!en!2!edit=0 and timestamp 20090201232325 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/About_using_a_Strict_vs._Transitional_DOCTYPE_in_HTML">http://aptana.com/docs/index.php/About_using_a_Strict_vs._Transitional_DOCTYPE_in_HTML</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="Category:Reference.html" title="Category:Reference">Reference</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

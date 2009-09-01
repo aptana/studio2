@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension point="com.aptana.ide.server.jetty.cometClient">
+   		<client id="/portal/help/show" class="com.aptana.ide.documentation.help.ShowHelpClient"/>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true"/>
+      <toc file="tocgettingstarted.xml"/>
+      <toc file="html/gettingstarted/toc.xml"/> 
+      <toc file="tocreference.xml"/>
+      <toc file="html/reference/api/CSS.toc.xml"/>
+      <toc file="html/reference/api/HTML.toc.xml"/>
+      <toc file="html/reference/api/JSKeywords.toc.xml"/>
+      <toc file="html/reference/api/JSCore.toc.xml"/>
+      <toc file="html/reference/api/HTMLDOM0.toc.xml"/>
+      <toc file="html/reference/api/HTMLDOM2.toc.xml"/>    
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="com.aptana.ide.documentation"
+            name="%View.category.name"/>
+      <category
+            id="com.aptana.ide.tutorial"
+            name="%Tutorial.category.name">
+      </category>
+      <view
+            category="com.aptana.ide.tutorial"
+            class="com.aptana.ide.documentation.views.TutorialView"
+            icon="icons/tutorials.png"
+            id="com.aptana.ide.documentation.TutorialView"
+            name="%TutorialView.name"
+            restorable="true">
+      </view>
+   </extension> 
+  <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+     <perspectiveExtension
+           targetID="com.aptana.ide.js.ui.WebPerspective">
+        <actionSet
+              id="com.aptana.ide.core.ui.actionSet.documentation">
+        </actionSet>
+     </perspectiveExtension>
+     <perspectiveExtension
+                targetID="com.aptana.ide.db.PerspectiveFactory">
+        <actionSet
+              id="com.aptana.ide.core.ui.actionSet.documentation">
+        </actionSet>
+          </perspectiveExtension>
+          <perspectiveExtension
+                targetID="org.radrails.rails.ui.PerspectiveRails">
+             <actionSet
+                   id="com.aptana.ide.core.ui.actionSet.documentation">
+             </actionSet>
+          </perspectiveExtension>
+          <perspectiveExtension
+                targetID="org.rubypeople.rdt.ui.PerspectiveRuby">
+             <actionSet
+                   id="com.aptana.ide.core.ui.actionSet.documentation">
+             </actionSet>
+          </perspectiveExtension>
+          <perspectiveExtension
+                targetID="org.eclipse.jst.j2ee.J2EEPerspective">
+             <actionSet
+                   id="com.aptana.ide.core.ui.actionSet.documentation">
+             </actionSet>
+          </perspectiveExtension>
+           <perspectiveExtension
+                targetID="org.eclipse.jdt.ui.JavaPerspective">
+              <actionSet
+                    id="com.aptana.ide.core.ui.actionSet.documentation">
+              </actionSet>
+          </perspectiveExtension>
+          <perspectiveExtension
+                targetID="org.eclipse.wst.web.ui.webDevPerspective">
+             <actionSet
+                   id="com.aptana.ide.core.ui.actionSet.documentation">
+             </actionSet>
+          </perspectiveExtension>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSets">
+     <actionSet
+           id="com.aptana.ide.core.ui.actionSet.documentation"
+           label="%ActionSet.aptanamenu.label"
+           visible="false">
+        <menu
+              id="aptanahelp"
+              label="%ActionSet.Menu.Aptana.label"
+              path="help/aptanaGroup">
+           <groupMarker
+                 name="top">
+           </groupMarker>
+           <separator
+                 name="separator1">
+           </separator>
+           <groupMarker
+                 name="jaxer">
+           </groupMarker>
+           <groupMarker
+                 name="messagecenter">
+           </groupMarker>
+           <separator
+                 name="separator2">
+           </separator>
+           <groupMarker
+                 name="update">
+           </groupMarker>
+           <separator
+                 name="separator3">
+           </separator>
+           <groupMarker
+                 name="troubleshooting">
+           </groupMarker>
+           <groupMarker
+                 name="help">
+           </groupMarker>
+        </menu>
+        <menu
+              id="troubleshootingmenu"
+              label="%ActionSet.Menu.AptanaTroubleshooting.label"
+              path="help/aptanahelp/troubleshooting">
+           <separator
+                 name="slot1">
+           </separator>
+        </menu>
+        <action
+              class="com.aptana.ide.documentation.actions.ReleaseNotesAction"
+              icon="icons/note.png"
+              id="com.aptana.ide.documentation.actions.ReleaseNotesAction"
+              label="%ViewReleaseNotes.Label"
+              menubarPath="help/aptanahelp/help">
+        </action>
+     </actionSet>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="com.aptana.ide.documentation.PreferenceInitializer">
+     </initializer>
+  </extension>
+</plugin>

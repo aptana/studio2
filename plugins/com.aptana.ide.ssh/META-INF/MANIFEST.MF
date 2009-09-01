@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: com.aptana.ide.ssh;singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-Activator: com.aptana.ide.ssh.Activator
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.core.resources
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Export-Package: com.aptana.ide.ssh,
+ com.aptana.ide.ssh.spi

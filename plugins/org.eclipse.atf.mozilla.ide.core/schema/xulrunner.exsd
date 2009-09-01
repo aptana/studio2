@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.atf.mozilla.ide.core">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.atf.mozilla.ide.core" id="xulrunner" name="Xul Runner contribution"/>
+      </appInfo>
+      <documentation>
+         This extension point allows clients to contribute a Mozilla Xulrunner runtime environment, packaged as an Eclipse plug-in/bundle.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="xulrunner"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="xulrunner">
+      <annotation>
+         <documentation>
+            A Mozilla Xulrunner can be contributed with a path attribute.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="path" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The forward slash separated path -relative to the root of the bundle- that point to the root of the contributed Mozilla Xulrunner runtime environment. &lt;p&gt;
+If the Mozilla Xulrunner runtime is installed at the root of the bundle, then use &quot;/&quot; as a path.  &lt;p&gt;
+The path must start with a leading slash &quot;/&quot; 
+
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="version" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The version of the contributed Xulrunner.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         1.0.2
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         To contribute a Xulrunner installation, you must package a Xulrunner as a bundle, 
+       and extend the org.eclipse.atf.mozilla.ide.core.xulrunner extension point.
+       &lt;br &gt;
+       This extension example contributes a Xulrunner installed under /xulrunner, 
+       with version 1.8.0.4
+       &lt;pre&gt; 
+      &lt;extension
+            id=&quot;org.mozilla.xulrunner.gtk.linux.x86&quot;
+            name=&quot;Mozilla Xulrunner for Linux GTK&quot;
+            point=&quot;org.eclipse.atf.mozilla.ide.core.xulrunner&quot;&gt;
+         &lt;xulrunner path=&quot;/xulrunner&quot; version=&quot;1.8.0.4&quot;/&gt;
+      &lt;/extension&gt;
+      &lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         This is an experimental API.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension is declarative only. It does not require to implement code.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2006 Eclipse.org
+      </documentation>
+   </annotation>
+
+</schema>

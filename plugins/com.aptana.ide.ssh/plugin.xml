@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.aptana.ide.ssh.impl.preferences.SSHPreferences">
+      </initializer>
+   </extension>
+	<extension point="org.eclipse.ui.preferencePages">
+	<page
+       category="com.aptana.ide.core.ui.preferences.GeneralPreferencePage"
+       class="com.aptana.ide.ssh.impl.preferences.SSHPreferencePage"
+       id="SSH.page"
+       name="%page.name.ssh">
+	      </page>
+	</extension>
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          id="com.aptana.ide.ssh.actionSet"
+          label="%actionSet.label">
+       <action
+             class="com.aptana.ide.ssh.actions.SSHToHostAction"
+             icon="icons/ssh.png"
+             id="com.aptana.ide.ssh.action"
+             label="%action.label"
+             menubarPath="file/new.ext"
+             style="push">
+       </action>
+    </actionSet>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="com.aptana.ide.js.ui.WebPerspective">
+       <actionSet
+             id="com.aptana.ide.ssh.actionSet">
+       </actionSet>
+    </perspectiveExtension>
+ </extension>
+</plugin>

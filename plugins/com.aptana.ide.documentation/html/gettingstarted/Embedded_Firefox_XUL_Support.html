@@ -1,0 +1,67 @@
+<html>   <head>      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">      <title>Embedded Firefox XUL Support</title>      <link rel="stylesheet" href="../../content/shared.css" type="text/css">	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Embedded_Firefox_XUL_Support&action=raw&gen=js">-->	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	   </head>   <body>      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Embedded Firefox XUL Support [<a href="http://www.aptana.com/docs/index.php?title=Embedded_Firefox_XUL_Support&action=edit">edit</a>]</h1>         <div class="content">            
+					<ul><li> Trac Ticket: <a href="http://www.aptana.com/trac/ticket/499" class="external free" title="http://www.aptana.com/trac/ticket/499" rel="nofollow">http://www.aptana.com/trac/ticket/499</a>
+</li></ul>
+<a name="Embedded_Firefox_XUL_Support"></a><h2> <span class="mw-headline"> Embedded Firefox XUL Support </span></h2>
+<ul><li> An embedded XUL-based Firefox browser will be available to preview content from the HTML Editor.
+</li><li> A preference page will also be added to allow configuration of what preview browsers are displayed in the HTML editor.  
+</li><li> The Firefox browser will also come with a DOM outline in the Outline view which will show the rendered DOM being displayed in the browser.  
+</li><li> Selections made to the Firefox outline will highlight the node in the browser.
+</li><li> An extension point will be created that will allow browsers and outlines to be contributed to the HTML editor.
+</li></ul>
+<a name="Install_requirements"></a><h2> <span class="mw-headline"> Install requirements </span></h2>
+<ul><li> Build 0.2.8.13195 or later is required for the XUL feature. You can update to this build by updating to the latest "nightly" release.
+</li></ul>
+<a name="Installing_the_Firefox_XUL_feature"></a><h2> <span class="mw-headline"> Installing the Firefox XUL feature </span></h2>
+<p><i><b>Important Note: This feature is currently available for Windows. Linux users have Firefox installed by default.</b></i>
+</p>
+<ul><li> From inside Eclipse/Aptana select Help-&gt;Software Updates-&gt;Find and Install...
+</li><li> Select Search for new features to install and select Next
+</li><li> Add the following as a remote site by using the "New Remote Site..." button: <a href="http://update.aptana.com/update/xul" class="external free" title="http://update.aptana.com/update/xul" rel="nofollow">http://update.aptana.com/update/xul</a> 
+</li><li> Make sure only the new site created is checked and select Finish
+</li><li> Install the feature listed
+</li><li> <b>Important:</b> Select No when prompted to restart after installation has completed and follow post install steps.
+</li><li> Post install steps (only needed to be performed once): 
+<ul><li> <b>Aptana standalone users:</b>
+<ul><li> Close Aptana
+</li><li> Open a Command Prompt and navigate the to directory containing Aptana
+</li><li> Run the following command: "aptana -clean". This is required to pick up new changes to the Eclipse browser plug-in.
+</li></ul>
+</li><li> <b>Aptana plug-in users:</b>
+<ul><li> Close Eclipse
+</li><li> Open a Command Prompt and navigate to the directory containing Eclipse
+</li><li> Run the following command: "eclipse -clean". This is required to pick up new changes to the Eclipse browser plug-in.
+</li></ul>
+</li></ul>
+</li></ul>
+<ul><li> <b>To enable browser:</b>
+<ul><li> Go to Window-&gt;Preferences
+</li><li> Open the Aptana-&gt;Editors-&gt;HTML Editor-&gt;Preview preference page
+</li><li> Check the box for Firefox and select OK.
+</li><li> Open a file in the HTML editor and the Firefox preview will be there
+</li></ul>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1646-0!1!0!!en!2!edit=0 and timestamp 20081117182852 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Embedded_Firefox_XUL_Support">http://aptana.com/docs/index.php/Embedded_Firefox_XUL_Support</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					          </div>      </div>   </body></html> 

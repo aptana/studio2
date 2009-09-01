@@ -1,0 +1,93 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Creating an AIR project</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Creating_an_AIR_project&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Creating an AIR project [<a href="http://www.aptana.com/docs/index.php?title=Creating_an_AIR_project&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to create an Adobe AIR project using the Studio New Project wizard to walk you through the creation of your project.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Launch_the_wizard"><span class="tocnumber">1</span> <span class="toctext">Launch the wizard</span></a></li>
+<li class="toclevel-1"><a href="#Set_the_basic_Application_properties"><span class="tocnumber">2</span> <span class="toctext">Set the basic Application properties</span></a></li>
+<li class="toclevel-1"><a href="#Application_XML_Properties_.281_of_2.29"><span class="tocnumber">3</span> <span class="toctext">Application XML Properties (1 of 2)</span></a></li>
+<li class="toclevel-1"><a href="#Application_XML_Properties_.282_of_2.29"><span class="tocnumber">4</span> <span class="toctext">Application XML Properties (2 of 2)</span></a></li>
+<li class="toclevel-1"><a href="#Import_AIR_Frameworks"><span class="tocnumber">5</span> <span class="toctext">Import AIR Frameworks</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Launch_the_wizard"></a><h2> <span class="mw-headline">Launch the wizard</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:NewAirProject-Step0.png.html" class="image" title="Select Project Type"><img alt="Select Project Type" src="docs/images/thumb/f/f7/NewAirProject-Step0.png/200px-NewAirProject-Step0.png" width="200" height="190" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:NewAirProject-Step0.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Select Project Type</div></div></div><div style="float: left; width: 500px;">
+<ul><li> From the <b>File</b> menu in Aptana, select <b>New &gt; Project...</b>
+</li><li> Select <b>AIR Project</b></div><br style="clear: both;" />
+</li></ul>
+<a name="Set_the_basic_Application_properties"></a><h2> <span class="mw-headline">Set the basic Application properties</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:NewProjectWizard1.png.html" class="image" title="Basic App Properties"><img alt="Basic App Properties" src="docs/images/thumb/3/3a/NewProjectWizard1.png/200px-NewProjectWizard1.png" width="200" height="220" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:NewProjectWizard1.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Basic App Properties</div></div></div> <div style="float: left; width: 500px;">
+<ul><li> Enter your Project Name
+</li><li> Choose the project's location on disk
+</li><li> Application Options:
+<ol><li> Specify the HTML start page. This page will be prepopulated with a sample sandbox application.
+</li><li> The Adobe AIR application sandbox offers greater access rights, indicate whether your applications needs them.
+</li><li> Indicate if the project requires Jaxer support. Selecting this will create a Jaxer version of your app simultaneously.
+</li><li> Enter the URL at which this application will be deployed.</div><br style="clear: both;" />
+</li></ol>
+</li></ul>
+<a name="Application_XML_Properties_.281_of_2.29"></a><h2> <span class="mw-headline">Application XML Properties (1 of 2)</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:NewProjectWizard2.png.html" class="image" title="Application XML Properties (1 of 2)"><img alt="Application XML Properties (1 of 2)" src="docs/images/thumb/6/6a/NewProjectWizard2.png/200px-NewProjectWizard2.png" width="200" height="263" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:NewProjectWizard2.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Application XML Properties (1 of 2)</div></div></div> <div style="float: left; width: 500px;">
+<ul><li> ID: An identifier string unique to the application, known as the application ID.
+</li><li> Name: The application's display name.
+</li><li> Filename: The filename used (without the extension, i.e. .app) when the application is finally installed as well as the name of the installation folder.
+</li><li> Description: (Optional) The description of the application, displayed in the AIR application installer. 
+</li><li> Copyright: (Optional) The copyright information for the AIR application. On Mac OS X copyright text appears in the application's About dialog and the NSHumanReadableCopyright field in the Info.plist file. 
+</li><li> Icon: Specify one or more icon files to be used to represent the application. If you don't specify an icon, the operating system will use a default icon. If an element for a given size is present, the image in the file must be exactly the size specified. If all sizes are not provided, the closest size is scaled to fit by the operating system.</div><br style="clear: both;" />
+</li></ul>
+<a name="Application_XML_Properties_.282_of_2.29"></a><h2> <span class="mw-headline">Application XML Properties (2 of 2)</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:NewProjectWizard3.png.html" class="image" title="Application XML Properties (2 of 2)"><img alt="Application XML Properties (2 of 2)" src="docs/images/thumb/8/87/NewProjectWizard3.png/200px-NewProjectWizard3.png" width="200" height="178" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:NewProjectWizard3.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Application XML Properties (2 of 2)</div></div></div> <div style="float: left; width: 500px;">
+<ul><li> Window Style: 
+<ol><li> System chrome: Operating system-specific chrome is used 
+</li><li> Transparent: This option enables the application window to support alpha blending. A window with transparency may draw more slowly and require more memory. The transparent setting cannot be changed at run time.
+</li><li> Custom Chrome Opaque: Turns off the system chrome and sets it to none
+</li></ol>
+</li><li> Minimizable, Maximizable, Resizable: (Optional) Specifies whether the application window can be minimized, maximized, and resized; all default to true. On operating systems for which maximizing windows is a resizing operation, such as Mac OS X, both maximizable and resizable must be set to false to prevent the window from being zoomed or resized.
+</li><li>  X, Y, Width, Height: (Optional) The initial bounds of the application window. If not set, the window size is determined by the settings in the root SWF file or, in the case of HTML, by the operating system.
+</li><li>  MinSize, MaxSize: (Optional) Minimum and maximum sizes of the window. If not set, these values are determined by the operating system.</div><br style="clear: both;" />
+</li></ul>
+<a name="Import_AIR_Frameworks"></a><h2> <span class="mw-headline">Import AIR Frameworks</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:NewProjectWizard4.png.html" class="image" title="AIR Framework selection"><img alt="AIR Framework selection" src="docs/images/thumb/b/bd/NewProjectWizard4.png/200px-NewProjectWizard4.png" width="200" height="151" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:NewProjectWizard4.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>AIR Framework selection</div></div></div> <div style="float: left; width: 500px;">
+Select the frameworks desired. AIR Frameworks provide additional, optional application functionality.</div><br style="clear: both;" />
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1963-0!1!0!!en!2!edit=0 and timestamp 20090202061641 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Creating_an_AIR_project">http://aptana.com/docs/index.php/Creating_an_AIR_project</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

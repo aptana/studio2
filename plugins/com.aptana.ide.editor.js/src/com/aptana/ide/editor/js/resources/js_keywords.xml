@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keywords>
+	<keyword name="//" full-name="Single-line comment">
+		<syntax>&lt;pre&gt;&lt;code&gt;// Comment text.&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Use to add a single line comment, or comment out a single line of code.</description>
+		<remarks />
+		<example>&lt;pre&gt;&lt;code&gt;//This is my comment about a function.&lt;/code&gt;&lt;/pre&gt;</example>
+	</keyword>
+	<keyword name="/* */" full-name="Multi-line comment">
+		<syntax>&lt;pre&gt;&lt;code&gt;/* Comment text.&lt;br /&gt;* More comment text.&lt;br&gt;*/&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Use to add a multi-line comment, or comment out multiple lines of code.</description>
+		<remarks />
+		<example>&lt;pre&gt;&lt;code&gt;/* This is some comment text.&lt;br /&gt;* More comment text.&lt;br&gt;*/&lt;/code&gt;&lt;/pre&gt;</example>
+	</keyword>
+	<keyword name="+" full-name="Addition operator, Concatenation operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;numberA + numberB or stringA + stringB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Adds two values together or concatenates two strings into a single string.</description>
+		<remarks />
+		<example>&lt;pre&gt;&lt;code&gt;//Addition:&lt;br /&gt;
+myVar = 2 + 2; //myVar = 4; &lt;br /&gt; 
+//Concatenation:&lt;br /&gt;
+var firstName = "Joe";
+var lastName = "Smith"; 
+var fullName = firstName + " " + lastName; // fullName = "Joe Smith";&lt;/code&gt;&lt;/pre&gt;</example>
+	</keyword>
+	<keyword name="-" full-name="Subtraction operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;numberA - numberB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Subtracts the value of a number from another number.</description>
+		<example>&lt;pre&gt;&lt;code&gt;myVar = 4 - 1;
+//myVar = 3; &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="*" full-name="Multiplication operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;numberA * numberB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Multiples the values of two numbers.</description>
+		<example>&lt;pre&gt;&lt;code&gt;myVar = 3 * 2;
+//myVar = 6; &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="/" full-name="Division operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;numberA / numberB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Divides a number by another number.</description>
+		<example>&lt;pre&gt;&lt;code&gt;myVar = 6 / 2;
+//myVar = 3; &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="%" full-name="Modulus operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;numberA % numberB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Divides a number by another number and returns the remainder.</description>
+		<example>&lt;pre&gt;&lt;code&gt;myModulus = 11 % 2;
+//myModulus = 1; &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use % to determine if the value of a variable is even or odd.</remarks>
+	</keyword>
+	<keyword name="++" full-name="Increment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;number++ or ++number&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Increments the value of a number by 1.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var myNumber = 3;
+myNumber++;
+// myNumber = 4;&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use the increment operator as a counter and to loop through values in an array or similar object.</remarks>
+	</keyword>
+	<keyword name="--" full-name="Decrement operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;number-- or --number&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Decrements the value of a number by 1.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var myNumber = 3;
+myNumber--;
+// myNumber = 2;&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use the decrement operator as a counter.</remarks>
+	</keyword>
+	<keyword name="- (unary)" full-name="Unary minus">
+		<syntax>&lt;pre&gt;&lt;code&gt;-number&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Changes the sign of a signed integer.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var myNumber = 3;
+-myNumber; // myNumber = -3;&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use this operator to convert a positive number to a negative number, or a negative number to a positive number.</remarks>
+	</keyword>
+	<keyword name="=" full-name="Assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA = valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<example>&lt;pre&gt;&lt;code&gt;var myNumber = 3; // myNumber = 3;&lt;/code&gt;&lt;/pre&gt;</example>
+		<description>Assigns a value to a variable or other object.</description>
+		<remarks />
+	</keyword>
+	<keyword name="+=" full-name="Addition and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA += valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Adds the value of the first item to the second item and assigns the total to the first item as a new value.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 7;
+var bar = 3;
+foo += bar; //now foo = 10;&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>"valueA += valueB" is shorthand for "valueA = valueA + valueB".</remarks>
+	</keyword>
+	<keyword name="-=" full-name="Subtraction and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA -= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Subtracts the value of the second item from the first item and assigns the total to the first item as a new value.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 7;
+var bar = 3;
+foo -= bar; //now foo = 4;&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>"valueA -= valueB" is shorthand for "valueA = valueA - valueB".</remarks>
+	</keyword>
+	<keyword name="*=" full-name="Multiplication and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA *= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Multiples the value of the first item by the second item and assigns the total to the first item as a new value.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 7;
+var bar = 3;
+foo *= bar; //now foo = 21;&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>"valueA *= valueB" is shorthand for "valueA = valueA * valueB".</remarks>
+	</keyword>
+	<keyword name="/=" full-name="Division and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA /= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Divides the value of the first item by the second item and assigns the total to the first item as a new value.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 21;
+var bar = 3;
+foo /= bar; //now foo = 7;&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>"valueA /= valueB" is shorthand for "valueA = valueA * valueB".</remarks>
+	</keyword>
+	<keyword name=">>=" full-name="Sign-propagating right shift and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA >>= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Shifts the first item in binary representation the value of the second item of bits to the right, discarding bits shifted off, and assigns the new value to the first item.</description>
+		<example />
+		<remarks>"valueA >>= valueB" is shorthand for "valueA = valueA >> valueB".</remarks>
+	</keyword>
+	<keyword name="&lt;&lt;=" full-name="Left shift and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA &lt;&lt;= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Shifts the first item in binary representation the second item of bits to the left, shifting in zeros from the right, and assigns this total to the first item.</description>
+		<example />
+		<remarks>"valueA &lt;&lt;= valueB" is shorthand for "valueA = valueA &lt;&lt; valueB".</remarks>
+	</keyword>
+	<keyword name=">>>=" full-name="Zero-fill right shift and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA >>>= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Shifts the first item in binary representation the value of the second item bits to the right, discarding bits shifted off, shifting in zeros from the left, and assigns this total to the first item.</description>
+		<example />
+		<remarks>"valueA >>>= valueB" is shorthand for "valueA = valueA >>> valueB".</remarks>
+	</keyword>
+	<keyword name="&amp;=" full-name="Bitwise AND and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA &amp;= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns the value of the first item one in each bit position for which the corresponding bits of both operands are ones, and assigns the new value to the first item.</description>
+		<remarks>"valueA &amp;= valueB" is shorthand for "valueA = valueA &amp; valueB".</remarks>
+		<example />
+	</keyword>
+	<keyword name="|=" full-name="Bitwise OR and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA |= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns the value of the first item one in each bit position for which the corresponding bits of either or both operands are ones, and assigns the new value to the first item.</description>
+		<example />
+		<remarks>"valueA |= valueB" is shorthand for "valueA = valueA | valueB".</remarks>
+	</keyword>
+	<keyword name="^=" full-name="Bitwise XOR and assignment operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA ^= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns the value of the first item one in each bit position for which the corresponding bits of either but not both operands are ones, and assigns the new value to the first item.</description>
+		<example />
+		<remarks>"valueA ^= valueB" is shorthand for "valueA = valueA ^ valueB".</remarks>
+	</keyword>
+	<keyword name="&amp;" full-name="Bitwise AND operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA &amp; valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns the value of the first item one in each bit position for which the corresponding bits of both operands are ones.</description>
+		<example />
+		<remarks />
+	</keyword>
+	<keyword name="|" full-name="Bitwise OR operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA | valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns the value of the first item one in each bit position for which the corresponding bits of either or both operands are ones.</description>
+		<example />
+		<remarks />
+	</keyword>
+	<keyword name="^" full-name="Bitwise XOR operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA ^ valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns the value of the first item one in each bit position for which the corresponding bits of either but not both operands are ones.</description>
+		<example />
+		<remarks />
+	</keyword>
+	<keyword name="~" full-name="Bitwise NOT operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;~ valueA&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Reverses the bits of the value.</description>
+		<example />
+		<remarks />
+	</keyword>
+	<keyword name="&lt;&lt;" full-name="Bitwise left shift operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA &lt;&lt; valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Shifts the first item in binary representation the second item of bits to the left, shifting in zeros from the right.</description>
+		<example />
+		<remarks />
+	</keyword>
+	<keyword name=">>" full-name="Sign-propagating right shift operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA >> valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description></description>
+		<example />
+		<remarks />
+	</keyword>
+	<keyword name=">>>" full-name="Zero-fill right shift operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA >>> valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Shifts the first item in binary representation the value of the second item bits to the right, discarding bits shifted off, shifting in zeros from the left</description>
+		<example />
+		<remarks />
+	</keyword>
+	<keyword name="==" full-name="Equality operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA == valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if both values are equal.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 5;
+if (foo == 5)
+    return true; //Returns true because foo == 5.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>If the two values are of different types, JavaScript will attempt to convert one of them to the same type as the other to perform the comparison.</remarks>
+	</keyword>
+	<keyword name="!=" full-name="Inequality operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA != valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the two values are not equal.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 7;
+if (foo != 5)
+    return true; //Returns true because foo == 7.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>If the two values are of different types, JavaScript will attempt to convert one of them to the same type as the other to perform the comparison.</remarks>
+	</keyword>
+	<keyword name="===" full-name="Identity operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA === valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if both values are of the same type and are equal.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 5;
+if (foo === 5)
+    return true; //Returns true because foo == 5 and is of the same type (Number).&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Both values must be of the same type for this expression to return true.</remarks>
+	</keyword>
+	<keyword name="!==" full-name="Non-identity operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA !== valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the two values are either of different types or are different values.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = "5";
+if (foo !== 5)
+    return true; //Returns true because foo == "5" (the string "5").&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>One value may be either a different type or a different value for this statement to return true.</remarks>
+	</keyword>
+	<keyword name=">" full-name="Greater than operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA > valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the value of the first item is greater than the value of the second item.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 5;
+if (foo > 3)
+    return true; //Returns true because foo == 5, which is greater than 3.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name=">=" full-name="Greater than or equal to operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA >= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the value of the first item is greater or equal to than the value of the second item.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 5;
+if (foo >= 5)
+    return true; //Returns true because foo == 5.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="&lt;" full-name="Less than operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA &lt; valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the value of the first item is less than the value of the second item.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 5;
+if (foo &lt; 7)
+    return true; //Returns true because foo == 5, which is less than 7.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="&lt;=" full-name="Less than or equal to operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;valueA &lt;= valueB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the value of the first item is less than or equal to the value of the second item.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var foo = 3;
+if (foo &lt;= 5)
+    return true; //Returns true because foo == 3.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="&amp;&amp;" full-name="Logical AND operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;expressionA &amp;&amp; expressionB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if both the first and second expression evaluate to true.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var myCat = "Jasmine";
+var myDog = "Jordo";
+if ((myCat == "Jasmine") &amp;&amp; (myDog=="Jordo"))
+    return true; //Returns true because both conditions are true.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Returns false if either expression is false.</remarks>
+	</keyword>
+	<keyword name="||" full-name="Logical OR operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;expressionA || expressionB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if either the first or second expression evaluate to true.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var myCat = "Jasmine";
+var myDog = "Jordo";
+if ((myCat == "Jasmine") &amp;&amp; (myDog=="Gus"))
+    return true; //Returns true because 'myCat =="Jasmine"' is true.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="!" full-name="Logical NOT operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;!expressionA&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Inverts the boolean value of the expression.</description>
+		<example>&lt;pre&gt;&lt;code&gt;var myCat = "Jasmine";
+if !(myCat == "Pokey")
+    return true; //Returns true because the value of myCat does not equal "Pokey".&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="," full-name="comma operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;expressionA, expressionB&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Evaluates the value of the first expression, then the second expression, and returns the value of the second expression.</description>
+		<example>&lt;pre&gt;&lt;code&gt;for (var i=0, j=9; i &lt;= 9; i++, j--)
+    document.write("a["+i+","+j+"]= " + a[i,j]) // Increments the i and j variables at the same time.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use a comma to evaluate two expressions at the same time.</remarks>
+	</keyword>
+	<keyword name="break" full-name="break">
+		<syntax>&lt;pre&gt;&lt;code&gt;break [label];&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Breaks out of the current loop, switch, or labeled statement.</description>
+		<example>&lt;pre&gt;&lt;code&gt;function testBreak(x) {
+   var i = 0;
+   while (i &lt; 6) {
+      if (i == 3)
+         break; //Breaks out of the while loop when i == 3.
+      i++;
+   }
+   return i * x;
+}&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="const" full-name="constant">
+		<syntax>&lt;pre&gt;&lt;code&gt;const constantName;&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Declares a read-only constant.</description>
+		<example>const pi = 3.14;</example>
+		<remarks>Constants follow the same rules as variables.</remarks>
+	</keyword>
+	<keyword name="condition ? ifTrue : ifFalse" full-name="Conditional operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;expression ? doThisIfTrue : doThisIfFalse&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Evaluates an expression, and does the first statement if the expression is true, or the second statement if the expression is false.</description>
+		<example>&lt;pre&gt;&lt;code&gt;document.write ("Your shipping charge is " + (isExpress ? "$12.00" : "$5.00")) //Prints "$12.00" if isExpress is true, "$5.00" if it is false.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Shortcut for the "if" statement.</remarks>
+	</keyword>
+	<keyword name="continue" full-name="continue">
+		<syntax>&lt;pre&gt;&lt;code&gt;continue [label];&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>In a while loop, jumps back to the condition statement. In a for loop, jumps to the update statement.</description>
+		<example>&lt;pre&gt;&lt;code&gt;i = 0;
+j = 0;
+while (i &lt; 7) {
+   i++;
+   if (i == 5)
+      continue;
+   j += i;
+}&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Can also be used with a labeled loop statement.</remarks>
+	</keyword>
+	<keyword name="delete" full-name="delete operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;delete objectName || 
+delete objectName.property || 
+delete objectName[index] || 
+delete property&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Deletes an object, a property of an object, or an element in an array at the specified index.</description>
+		<remarks>You can only delete a property directly (e.g. delete property) within a "with" statement</remarks>
+	</keyword>
+	<keyword name="do...while" full-name="do...while">
+		<syntax>&lt;pre&gt;&lt;code&gt;do doThis &lt;br /&gt;while (expression)&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Acts as a loop that continues to execute the doThis statement until the while expression is false.</description>
+		<example>&lt;pre&gt;&lt;code&gt; do {
+	   i += 1;
+	   alert(i);
+	} while (i &lt; 10); //Alerts "i" until "i" reaches 10.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>The doThis statement will always be executed at least once.</remarks>
+	</keyword>
+	<keyword name="export" full-name="export">
+		<syntax>&lt;pre&gt;&lt;code&gt;export valueA;&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Allows properties, functions, and objects from one script to be accessed by other scripts.</description>
+		<example />
+		<remarks>Not supported in ECMAScript v3.</remarks>
+	</keyword>
+	<keyword name="for" full-name="for loop statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;for ([expressionA]; [statementA]; [expressionB]) {statementB}&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Executes a loop so that while expressionA is true, executes statementA and then evaluates expression B, then executes statementB if expressionB is true.</description>
+		<example>&lt;pre&gt;&lt;code&gt;for (var i = 0; i &lt; 10; i++) {
+	document.write(i); //writes the value of "i" until it reaches 10.
+	} &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use as a counter or as an easy way to loop through an array-like structure.</remarks>
+	</keyword>
+	<keyword name="for...in" full-name="for...in">
+		<syntax>&lt;pre&gt;&lt;code&gt;for (objectVariable in object){
+	statement
+	}&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Loops through the properties of an object.</description>
+		<example>&lt;pre&gt;&lt;code&gt;for (var catProperty in cat) {
+	document.write(catProperty + " : " + cat[catProperty] + "&lt;br \&gt;"); //writes the name and value of the properties in cat.
+	} &lt;/code&gt;&lt;/pre&gt;
+		</example>
+		<remarks />
+	</keyword>
+	<keyword name="function" full-name="function">
+		<syntax>&lt;pre&gt;&lt;code&gt;function functionName([param] [...]) { 
+	statement
+	}&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Declares a function.</description>
+		<example>&lt;pre&gt;&lt;code&gt; function myAlert(alertText) {
+	alert(alertText) //Alerts the text passed in by alertText.
+	} &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Declaring a function allows you to reuse code over and over as many times as you like.</remarks>
+	</keyword>
+	<keyword name="if...else" full-name="if...else statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;if (expressionA)
+   statementA
+[else if (expressionB)
+   statementB]
+ [else
+   statementC] &lt;/pre&gt;&lt;/code&gt;</syntax>
+		<description>If the expressionA is true, executes statementA. If the expression is false, evaluates expressionB. If expressionB is true, executes statementB. Otherwise, executes statementC.</description>
+		<example>&lt;pre&gt;&lt;code&gt;if (myCat=="Jasmine")
+   alert (myCat);
+else if (myCat==" ")
+   alert("No cat!");
+else
+   alert("Wrong cat!");  &lt;/pre&gt;&lt;/code&gt;</example>
+		<remarks>You can nest as many "else if" statements within the block as you need; however, if you use multiple "else if" statements, you might want to consider using a "switch" statement for cleaner code.</remarks>
+	</keyword>
+	<keyword name="import" full-name="import">
+		<syntax>import objectName.name;</syntax>
+		<description>Imports properties, functions, and objects from a script that has exported them.</description>
+		<example />
+		<remarks>Not supported in ECMAScript v3.</remarks>
+	</keyword>
+	<keyword name="in" full-name="in operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;propertyNameOrValue in objectName&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the specified property name can be found in the specified object.</description>
+		<example>
+			&lt;pre&gt;&lt;code&gt;// Arrays
+trees=new Array("redwood","bay","cedar","oak","maple")
+0 in trees        // returns true
+3 in trees        // returns true
+6 in trees        // returns false
+"bay" in trees    // returns false (you must specify the index number,
+                  // not the value at that index)
+"length" in trees // returns true (length is an Array property)
+
+// Predefined objects
+"PI" in Math          // returns true
+myString=new String("coral")
+"length" in myString  // returns true
+
+// Custom objects
+mycar = {make:"Honda",model:"Accord",year:1998}
+"make" in mycar  // returns true
+"model" in mycar // returns true &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="instanceOf" full-name="instanceOf operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;object instanceof objectType&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns true if the specified object is of the specified object type.</description>
+		<example>
+			&lt;pre&gt;&lt;code&gt;theDay=new Date(1995, 12, 17)
+if (theDay instanceof Date) {
+   doThis; 
+} &lt;/code&gt;&lt;/pre&gt;		
+		</example>
+		<remarks />
+	</keyword>
+	<keyword name="label" full-name="label statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;label : statement&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Labels a statement with an identifier.</description>
+		<example>&lt;pre&gt;&lt;code&gt;myCatAlert: alert("Jasmine");&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use labeled statements to break out of or continue loops.</remarks>
+	</keyword>
+	<keyword name="let" full-name="let statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;let (expressionA, expressionB, ...) {
+  statementA;
+  statementB;
+}&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Labels a statement with an identifier.</description>
+		<example>&lt;pre&gt;&lt;code&gt;let (x = x+10, y = 12) {
+  document.write(x+y + "&lt;BR&gt;\n");
+}&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Available in JavaScript 1.7+. Implemented in Firefox 2.0.</remarks>
+	</keyword>
+	<keyword name="new" full-name="new operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;objectInstanceName = new objectName([param] [...])&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Creates an instance of an object type that has a constructor function.</description>
+		<example>&lt;pre&gt;&lt;code&gt;Padres = new Team("Giles", "Hoffman", "Peavy")&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Can be either an object that you defined, or a built-in object, as long as it has a constructor.</remarks>
+	</keyword>
+	<keyword name="return" full-name="return statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;return [statement];&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Specifies the value to be returned by a function.</description>
+		<example>&lt;pre&gt;&lt;code&gt;function square(x) {
+   return x * x;
+}&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="switch" full-name="switch statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;switch (expression) {
+   case labelA:
+      statementA
+      break;
+   case labelB:
+      statementB
+      [break;]
+   ...
+   default:
+      defaultStatement
+      [break;]
+}&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Evaluates an expression, and executes the statement(s) associated with the appropriate case for the value of the expression.</description>
+		<example>&lt;pre&gt;&lt;code&gt; 
+switch (whichDog)
+{
+	case 'lab':if (getDogType(lab))
+		alert("You have a labrador!");
+		break;
+	
+	case 'golden': if (getDogType(golden))
+		alert("You have a golden retriever!");
+		break;
+		
+	case 'pug': if (getDogType(pug))
+		alert("You have a pug!");
+		break;
+	
+	default:
+		alert("You have no dog!");
+		
+}		
+		&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use a "switch" statement in place of multiple "else if" statements for cleaner code.</remarks>
+	</keyword>
+	<keyword name="this" full-name="this operator">
+		<syntax>&lt;pre&gt;&lt;code&gt; this[.propertyName] &lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Refers to the calling object of a property.</description>
+		<example>&lt;pre&gt;&lt;code&gt;
+function Dog(breed) {
+   this.breed = breed;
+}
+Dog.prototype.getBreed = function() {
+   return this.breed;
+}
+var foo = new Dog('Lab');
+alert(foo.getBreed()); //Alerts "Lab". &lt;/code&gt;&lt;/pre&gt;
+		</example>
+		<remarks />
+	</keyword>
+	<keyword name="throw" full-name="throw statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;throw expression; &lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Specifies an exception to throw when an error occurs.</description>
+		<example>&lt;pre&gt;&lt;code&gt;
+function getQuantity(orderQuantity) {
+   if (orderQuantity &lt; 0) throw new Error("orderQuantity cannot be negative!");
+   
+   ... //more statements
+}
+		</example>
+		<remarks />
+	</keyword>
+	<keyword name="try...catch" full-name="try...catch statement">
+		<syntax>&lt;pre&gt;&lt;code&gt; try {
+   tryStatement
+}
+[catch (exceptionA if conditionA) {
+   catchStatementA
+}]
+...
+[catch (exceptionB) {
+   catchStatementB
+}]
+[finally {
+   finallyStatement
+}] &lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Tries to execute the tryStatment, and executes the appropriate catch statement if there is an exception.</description>
+		<example>&lt;pre&gt;&lt;code&gt; 
+openMyFile()
+	try {
+	   // tie up a resource
+	   writeMyFile(theData);
+	}
+	finally {
+	   closeMyFile(); // always close the resource
+	}	&lt;/code&gt;&lt;/pre&gt; 		
+		</example>
+		<remarks>Use try...catch as a way to catch exceptions.</remarks>
+	</keyword>
+	<keyword name="typeof" full-name="typeof operator">
+		<syntax>&lt;pre&gt;&lt;code&gt; typeof variableName || typeof(variableName)&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Returns the type of the specified variable.</description>
+		<example>&lt;pre&gt;&lt;code&gt; 
+var myNumber = 5;
+typeof(myNumber); //Returns "number".
+&lt;/code&gt;&lt;/pre&gt;
+		</example>
+		<remarks />
+	</keyword>
+	<keyword name="var" full-name="var statement">
+		<syntax>&lt;pre&gt;&lt;code&gt; var variableNameA [= valueA], variableNameB [= valueB] ... ; &lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Declares a variable and sets its initial value (if specified).</description>
+		<remarks>You can declare and initialize multiple variables at once.</remarks>
+	</keyword>
+	<keyword name="void" full-name="void Operator">
+		<syntax>&lt;pre&gt;&lt;code&gt;void expression || void(expression)&lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Evaluates the specified expression without returning a value.</description>
+		<example>&lt;pre&gt;&lt;code&gt; &lt;A HREF="javascript:void(0)">Click here to do nothing&lt;/A>  // Creates a link that does nothing.&lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use void as a placeholder in your HTML code.</remarks>
+	</keyword>
+	<keyword name="while" full-name="while loop statement">
+		<syntax>&lt;pre&gt;&lt;code&gt; while (expression)
+statement &lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Executes a statement while the specified expression is true.</description>
+		<example>&lt;pre&gt;&lt;code&gt; n = 0;
+  while (n &lt; 3) {
+  n ++;
+  doSomething(); //Will "doSomething" three times--until n is no longer less than three.
+} &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks>Use a while loop as a shorthand version of a "counter" for loop.</remarks>
+	</keyword>
+	<keyword name="with" full-name="with statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;with (object)
+	statement &lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Temporarily modifies the scope chain of a statement.</description>
+		<example>&lt;pre&gt;&lt;code&gt; with (document.forms.myForm) {
+	firstName.value = "";
+	lastName.value = "";
+	email.value = "";
+	} //Sets the values for these three form fields within a single block.  &lt;/code&gt;&lt;/pre&gt;</example>
+		<remarks />
+	</keyword>
+	<keyword name="yield" full-name="yield statement">
+		<syntax>&lt;pre&gt;&lt;code&gt;yield (object)
+    variable &lt;/code&gt;&lt;/pre&gt;</syntax>
+		<description>Generator that returns the value for each step in a loop.</description>
+		<example>&lt;pre&gt;
+function fib() {
+  var i = 0, j = 1;
+  while (true) {
+    yield i;
+    var t = i;
+    i = j;
+    j += t;
+  }
+}
+
+var g = fib();
+for (var i = 0; i &lt; 10; i++) {
+  document.write(g.next() + "&lt;BR&gt;\n");&lt;pre&gt;
+}
+		</example>
+		<remarks>
+			Available in JavaScript 1.7+. Implemented in Firefox 2.0.
+		</remarks>
+	</keyword>
+</keywords>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

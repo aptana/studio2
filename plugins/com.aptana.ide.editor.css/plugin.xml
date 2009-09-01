@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.aptana.ide.editor.css.MultiPageCSSEditor"
+            contributorClass="com.aptana.ide.editors.unified.actions.UnifiedActionContributor"
+            default="true"
+            icon="icons/css.png"
+            id="com.aptana.ide.editors.CSSEditor"
+            name="%Editor.css.name">
+            <contentTypeBinding contentTypeId="com.aptana.ide.editor.css.cssSource"/>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="css"
+            id="cssSource"
+            name="%CSSSourceFile.content-type.name"
+            priority="low"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="com.aptana.ide.editors.actionSet">
+         <part
+               id="com.aptana.ide.editors.CSSEditor">
+         </part>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="com.aptana.ide.editors.CSSEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+   <extension point="com.aptana.ide.editors.folding">
+   		<folding language="text/css" label="CSS" foldAllParents="false">
+   			<type name="ruleset"/>
+   			<type name="COMMENT"/>
+   		</folding>
+   </extension>
+    <extension
+          point="org.eclipse.ui.propertyPages">
+       <page
+             class="com.aptana.ide.editor.css.preview.CSSPreviewPropertyPage"
+             id="com.aptana.ide.editor.css.preview.cssPreviewPropertyPage"
+             name="%PropertyPage.preview.name"
+             objectClass="org.eclipse.core.resources.IProject"/>
+        <page
+             class="com.aptana.ide.editor.css.preview.CSSPreviewPropertyPage"
+             id="com.aptana.ide.editor.css.preview.cssPreviewPropertyPage"
+             name="%PropertyPage.preview.name"
+			 nameFilter="*.css"
+             objectClass="org.eclipse.core.resources.IFile"/>
+        <page
+              class="com.aptana.ide.editor.css.preferences.FormattingPreferencePage"
+              id="com.aptana.ide.editor.css.propertyPages.CodeFormatterPreferencePage"
+              name="%codeFormatterPageName">
+           <enabledWhen>
+              <adapt
+                    type="org.eclipse.core.resources.IProject">
+              </adapt>
+           </enabledWhen>
+           <keywordReference
+                 id="org.eclipse.jdt.ui.formatter">
+           </keywordReference>
+        </page>
+   </extension>
+   
+   <extension
+   		point="com.aptana.ide.editors.colorization" >
+   		<colorization file="/colorization/DEFAULT_css_colorization.col" id="com.aptana.ide.editor.css.colorization" />
+   </extension>
+   
+            
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="com.aptana.ide.core.ui.projects"
+            class="com.aptana.ide.editor.css.wizards.CssNewWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            icon="icons/css_file_new.png"
+            id="com.aptana.ide.editors.wizards.CssNewWizard"
+            name="%Wizard.css.name"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+         <description>
+            %CSSFile.wizard.description
+         </description>
+      </wizard>
+      <wizard
+            canFinishEarly="true"
+            category="com.aptana.ide.core.ui"
+            class="com.aptana.ide.editor.css.wizards.CSSUntitledTextFileWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="false"
+            icon="icons/css_file_new.png"
+            id="com.aptana.ide.editors.wizards.file.CssUntitledWizard"
+            name="%Wizard.untitledcss.name"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+         <description>
+            %UntitledCSSFile.wizard.description
+         </description>
+      </wizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.editor.css.preferences.PreferenceInitializer"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+   
+    <page
+          category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          id="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          name="%generalPreferencePage">
+            <keywordReference id="com.aptana.ide.editors.general"/>
+    </page>
+    <page
+          category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.css.preferences.ColorizationPreferencePage"
+          id="com.aptana.ide.editor.css.preferences.ColorizationPreferencePage"
+          name="%colorPreferencePage">
+         	<keywordReference id="com.aptana.ide.editors.colors"/>
+    </page>
+    <page
+          category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.css.preferences.FoldingPreferencePage"
+          id="com.aptana.ide.editor.css.preferences.FoldingPreferencePage"
+          name="%foldingPreferencePage">     
+          <keywordReference id="com.aptana.ide.editors.folding"/>
+   </page> 
+   <page
+          category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.css.preferences.ProblemsPreferencePage"
+          id="com.aptana.ide.editor.css.preferences.ProblemsPreferencePage"
+          name="%problemsPreferencePage">
+          <keywordReference id="com.aptana.ide.editors.validation"/>
+   </page> 
+   <page
+		  category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+		  class="com.aptana.ide.editor.css.preferences.PreviewPreferencePage"
+		  id="com.aptana.ide.editor.css.preferences.PreviewPreferencePage"
+		  name="%previewPreferencePage"/>
+   <page
+          category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.css.preferences.FormattingPreferencePage"
+          id="com.aptana.ide.editor.css.preferences.FormattingPreferencePage"
+          name="%formattingPreferencePage">       
+          <keywordReference id="com.aptana.ide.editors.formatting"/>
+   </page> 
+   <page
+          category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.css.preferences.CodeAssistPreferencePage"
+          id="com.aptana.ide.editor.css.preferences.CodeAssistPreferencePage"
+          name="%codeAssistPreferencePage">
+		  <keywordReference id="com.aptana.ide.editors.codeassist"/>
+   </page> 
+   <page
+          category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.css.preferences.TypingPreferencePage"
+          id="com.aptana.ide.editor.css.preferences.TypingPreferencePage"
+          name="%typingPreferencePage">
+          <keywordReference id="com.aptana.ide.editors.typing"/>
+   </page>
+   <page
+         category="com.aptana.ide.editor.css.preferences.GeneralPreferencePage"
+         class="com.aptana.ide.editor.css.preferences.TemplatePreferencePage"
+         id="com.aptana.ide.editor.css.preferences.TemplatePreferencePage"
+         name="%CSSTemplate.preferencespage.name">
+   </page>           
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.validator">
+      <validator
+            class="com.aptana.ide.editor.css.validator.StylesheetValidator"
+            mimeType="text/css"
+			name="%Validator.css.name" />
+   </extension>
+   <extension
+         point="com.aptana.ide.core.ui.file_wizards">
+      <new-file-wizard
+            name="%Wizard.newcss.name"
+            wizard-id="com.aptana.ide.editors.wizards.CssNewWizard"/>
+      <untitled-file-wizard
+            name="%Wizard.newuntitledcss.name"
+            wizard-id="com.aptana.ide.editors.wizards.file.CssUntitledWizard"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.outline">
+      <contributor
+            content-provider="com.aptana.ide.editor.css.outline.CSSContentProvider"
+            is-sortable="true"
+            label-provider="com.aptana.ide.editor.css.outline.CSSLabelProvider"
+            language="text/css"
+            name="%Outline.css.name"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.tokenList">
+      <textMatcher
+            language="text/css"
+            resource="src/com/aptana/ide/editor/css/resources/css_lexer_1_2.lxr"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.parser">
+      <parser
+            class="com.aptana.ide.editor.css.parsing.CSSParser"
+            language="text/css"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.pairfinder">
+      <pairFinder
+            class="com.aptana.ide.editor.css.CSSPairFinder"
+            language="text/css"
+            name="%PairFinder.css.name">
+      </pairFinder>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.formatter">
+      <formatter
+            class="com.aptana.ide.editor.css.formatting.CSSCodeFormatter"
+            language="text/css"
+            name="%Formatter.css.name">
+      </formatter>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.propertyPages">  
+   	<page
+            name="%codeFormatterPageName"
+            class="com.aptana.ide.editor.css.preferences.FormattingPreferencePage"
+            id="com.aptana.html.ui.propertyPages.CodeFormatterPreferencePage">
+         <enabledWhen>
+		     <adapt type="org.eclipse.core.resources.IProject">		          
+		     </adapt>         
+         </enabledWhen>
+         <keywordReference id="com.aptana.html.ui.formatter"/>
+      </page>   
+    </extension>
+    <extension
+         point="com.aptana.ide.editors.toolbarContribution">
+      <element
+            class="com.aptana.ide.editor.css.toolbar.InsertColorItem"
+            icon="icons/color.png"
+            language="text/css"
+            name="%Toolbar.colorpicker.name"
+            tooltip="%InsertColorItem.tooltip">
+      </element>
+      <element
+            class="com.aptana.ide.editor.css.toolbar.EyeDropper"
+            icon="icons/eyedropper.gif"
+            language="text/css"
+            name="%EyeDropper.name"
+            tooltip="%EyeDropper.tooltip">
+      </element>
+   </extension>
+    <extension
+          point="com.aptana.ide.editors.scanner">
+       <scanner
+             class="com.aptana.ide.editor.css.parsing.CSSScanner"
+             language="text/css">
+       </scanner>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors.templates">
+       <contextType
+             class="com.aptana.ide.editors.unified.contentassist.UnifiedContextType"
+             id="com.aptana.ide.editors.contextType.text/css"
+             name="%CSS.contextType.name">
+       </contextType>
+    </extension>
+</plugin>

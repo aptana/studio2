@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.editors">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.editors" id="folding" name="Folding"/>
+      </appInfo>
+      <documentation>
+         This extension point drives the folding context menu available from the ruler bar of the editor as well as a preference page to configure folding options for a language.  It allows the declaration of foldable types that the ReconcilingStrategies will emit.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="folding"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="folding">
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="type"/>
+         </sequence>
+         <attribute name="language" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The language content-type of the folding support being added
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The string label for this contributions folding options
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="foldAllParents" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  True if folding should be added to an arbitrary depth.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="contextHandler" type="string">
+            <annotation>
+               <documentation>
+                  This handler class allows runtime computation of whethera a parse node is foldable.  The class specified must implement com.aptana.ide.editors.unified.folding.IFoldingContextHandler.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.editors.unified.folding.IFoldingContextHandler"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="type">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;extension point=&quot;com.aptana.ide.editors.folding&quot;&gt;
+ &lt;folding language=&quot;text/html&quot; label=&quot;HTML&quot;&gt;
+     &lt;type name=&quot;Nodes&quot; /&gt;
+ &lt;/folding&gt;
+&lt;/extension&gt;
+
+The previous examples would allow HTML nodes to be folded as an option in the HTML editor and preference page for HTML folding
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension point will be used by the CSS, JS, HTML, XML, and PHP editors for folding.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

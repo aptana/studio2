@@ -1,0 +1,12 @@
+<% var interestString = ''; %>
+<% if(ajax != false) interestString += 'Ajax, '; %>
+<% if(javascript != false) interestString += 'JavaScript, '; %>
+<% if(php != false) interestString += 'PHP, '; %>
+<% if(ruby != false) interestString += 'Ruby, '; %>
+<% if(python != false) interestString += 'Python, '; %>
+<% if(java != false) interestString += 'Java, '; %>
+<% if(net != false) interestString += '.NET, '; %>
+<% if(site_development != false) interestString += 'Web site development, '; %>
+<% if(application_development != false) interestString += 'Web application development, '; %>
+
+<%= (interestString.length > 0) ? '<div class="line20"><strong>I am interested in:</strong><br /><img src="images_global/img_icon_item_checked.png" align="absmiddle" class="inline" /> ' + interestString.substr(0, interestString.length - 2).split(', ').join('<br /><img src="images_global/img_icon_item_checked.png" align="absmiddle" class="inline" /> ') + '</div>' : 'You have not selected any interests.'; %>

@@ -1,0 +1,442 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Compound Elements</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Compound_Elements&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Compound Elements [<a href="http://www.aptana.com/docs/index.php?title=Compound_Elements&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Comment_Matcher"><span class="tocnumber">1</span> <span class="toctext">Comment Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax"><span class="tocnumber">1.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class"><span class="tocnumber">1.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children"><span class="tocnumber">1.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes"><span class="tocnumber">1.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Identifier_Matcher"><span class="tocnumber">2</span> <span class="toctext">Identifier Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_2"><span class="tocnumber">2.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_2"><span class="tocnumber">2.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_2"><span class="tocnumber">2.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_2"><span class="tocnumber">2.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Line_Terminator_Matcher"><span class="tocnumber">3</span> <span class="toctext">Line Terminator Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_3"><span class="tocnumber">3.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_3"><span class="tocnumber">3.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_3"><span class="tocnumber">3.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_3"><span class="tocnumber">3.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Number_Matcher"><span class="tocnumber">4</span> <span class="toctext">Number Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_4"><span class="tocnumber">4.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_4"><span class="tocnumber">4.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_4"><span class="tocnumber">4.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_4"><span class="tocnumber">4.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Quoted_String_Matcher"><span class="tocnumber">5</span> <span class="toctext">Quoted String Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_5"><span class="tocnumber">5.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_5"><span class="tocnumber">5.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_5"><span class="tocnumber">5.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_5"><span class="tocnumber">5.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Regex_Matcher"><span class="tocnumber">6</span> <span class="toctext">Regex Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_6"><span class="tocnumber">6.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_6"><span class="tocnumber">6.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_6"><span class="tocnumber">6.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_6"><span class="tocnumber">6.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#String_Matcher"><span class="tocnumber">7</span> <span class="toctext">String Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_7"><span class="tocnumber">7.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_7"><span class="tocnumber">7.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_7"><span class="tocnumber">7.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_7"><span class="tocnumber">7.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#To_Delimiter_Matcher"><span class="tocnumber">8</span> <span class="toctext">To Delimiter Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_8"><span class="tocnumber">8.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_8"><span class="tocnumber">8.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_8"><span class="tocnumber">8.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_8"><span class="tocnumber">8.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Comment_Matcher"></a><h1> <span class="mw-headline">Comment Matcher</span></h1>
+<hr />
+<p>The comment matcher matches all text from a starting pattern to an ending pattern. The starting and ending patterns are included in the matched text. The default configuration matches comments that begin with '//' and end at, but not including a line terminator.
+</p>
+<a name="Syntax"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;comment/&gt;
+</pre>
+<a name="Class"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.CommentMatcher
+</pre>
+<a name="Children"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>This is a pattern matcher that indicates the beginning of a comment.</td>
+    <td>IMatcher</td>
+    <td>Matches the string "//"</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td>end</td>
+    <td>This is a pattern matcher that indicates the end of a comment.</td>
+    <td>IMatcher</td>
+    <td>Matches zero or more characters until, but not including a return or newline character</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Identifier_Matcher"></a><h1> <span class="mw-headline">Identifier Matcher</span></h1>
+<hr />
+<p>The identifier matcher is used to match identifiers. An identifier starts with a character from a start-characters set and is followed by zero-or-more part-characters.
+</p>
+<a name="Syntax_2"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;identifier start-characters="$-"/&gt;
+</pre>
+<a name="Class_2"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.IdentifierMatcher
+</pre>
+<a name="Children_2"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_2"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">start-characters</td>
+    <td>Defines a set of character that may start an identifier. These characters are checked in addition to the default set which includes letters and "_"</td>
+    <td>String</td>
+    <td>""</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">part-characters</td>
+    <td>Defines a set of character that may follow the first character of an identifier. These characters are checked in addition to the default set which includes letters, numbers, and "_"</td>
+    <td>String</td>
+    <td>""</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Line_Terminator_Matcher"></a><h1> <span class="mw-headline">Line Terminator Matcher</span></h1>
+<hr />
+<p>A line terminator matcher matches a single return, a single newline, or a single return plus a newline. This can be thought of as a platform independent line ending matcher.
+</p>
+<a name="Syntax_3"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;line-terminator/&gt;
+</pre>
+<a name="Class_3"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.LineTerminatorMatcher
+</pre>
+<a name="Children_3"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_3"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<pre>This matcher does not have attributes
+</pre>
+<a name="Number_Matcher"></a><h1> <span class="mw-headline">Number Matcher</span></h1>
+<hr />
+<p>A number matcher is used to match integers and floating point numbers with optional leading plus or minus characters and optional trailing scientific notation. The components that are allowed to match are configurable to cover a wide set of number syntaxes.
+</p>
+<a name="Syntax_4"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;number match-negative="false" /&gt;
+</pre>
+<a name="Class_4"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.NumberMatcher
+</pre>
+<a name="Children_4"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_4"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">match-negative</td>
+    <td>Determines if the matched number may be preceded by an optional "-" character.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">match-positive</td>
+    <td>Determines if the matched number may be preceded by an optional "+" character.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">match-integer-part</td>
+    <td>Determines if the number is comprised of digits. This would match up to but not include a "."</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">match-fraction-part</td>
+    <td>Determines if the number includes a decimal point followed by one or more digits.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">match-sci-notation</td>
+    <td>Determines if the number includes a trailing exponent which is the letter 'e' followed by an optional "+" or "-", followed by one or more digits.</td>
+    <td>boolean</td>
+    <td>false</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Quoted_String_Matcher"></a><h1> <span class="mw-headline">Quoted String Matcher</span></h1>
+<hr />
+<p>The quoted string matcher matchers text surrounded by the same delimiting character at the start and end of a string literal. One or more delimiting characters are defined using the characters from the matchers text node.
+</p>
+<a name="Syntax_5"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;quoted-string&gt;"'`&lt;/quoted-string&gt;
+</pre>
+<a name="Class_5"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.QuotedStringMatcher
+</pre>
+<a name="Children_5"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_5"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">escape-characters</td>
+    <td>Determines if the matcher should allow its delimiting character to be included in the result when it is preceded by a "\".</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">multi-line</td>
+    <td>Determines if the matcher should allow returns and newlines within the matched string.</td>
+    <td>boolean</td>
+    <td>false</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Regex_Matcher"></a><h1> <span class="mw-headline">Regex Matcher</span></h1>
+<hr />
+<p>A regex matcher allows the developer to define a text matcher expression using regular expression syntax. Note that all whitespace is ignored by default so spaces will need to be escaped with a leading backslash, '\'.
+</p>
+<a name="Syntax_6"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;regex&gt;^abc&lt;/regex&gt;            match "abc" at start of line
+&lt;regex&gt;abc$&lt;/regex&gt;            match "abc" at end of line
+&lt;regex&gt;abc|def&lt;/regex&gt;         match "abc" or "def"
+&lt;regex&gt;(a|b)(c|d)&lt;/regex&gt;      match "a" or "b" followed by "c" or "d"
+&lt;regex&gt;(?:a|b)(?:c|d)&lt;/regex&gt;  match "a" or "b" followed by "c" or "d"
+&lt;regex&gt;abc(?=def)&lt;/regex&gt;      match "abc" if it is followed by "def"
+&lt;regex&gt;abc(?!def)&lt;/regex&gt;      match "abc" if it is not followed by "def"
+&lt;regex&gt;a*&lt;/regex&gt;              match zero or more a's
+&lt;regex&gt;a+&lt;/regex&gt;              match one or more a's
+&lt;regex&gt;a?&lt;/regex&gt;              optionally match "a"
+&lt;regex&gt;a{4}&lt;/regex&gt;            match exactly 4 a's
+&lt;regex&gt;a{,4}&lt;/regex&gt;           match between 0 and 4 a's
+&lt;regex&gt;a{4,}&lt;/regex&gt;           match 4 or more a's
+&lt;regex&gt;a{2,4}&lt;/regex&gt;          match 2 to 4 a's
+&lt;regex&gt;[a-c]&lt;/regex&gt;           match "a", "b", or "c"
+&lt;regex&gt;[-a-c]&lt;/regex&gt;          match "-", "a", "b", or "c"
+&lt;regex&gt;[^a-c]&lt;/regex&gt;          match anything but "a", "b", or "c"
+&lt;regex&gt;[^-a-c]&lt;/regex&gt;         match anything but "-", "a", "b", or "c"
+&lt;regex&gt;.&lt;/regex&gt;               match any character except return or newline
+&lt;regex&gt;\Aabc&lt;/regex&gt;           match "abc" only at the beginning of the string
+&lt;regex&gt;abc\b&lt;/regex&gt;           match "abc" only if a word character follows it
+&lt;regex&gt;abc\B&lt;/regex&gt;           match "abc" only if a non-word character follows it
+&lt;regex&gt;\d&lt;/regex&gt;              match a digit
+&lt;regex&gt;\D&lt;/regex&gt;              match anything but a digit
+&lt;regex&gt;\s&lt;/regex&gt;              match whitespace
+&lt;regex&gt;\S&lt;/regex&gt;              match anything but whitespace
+&lt;regex&gt;\r&lt;/regex&gt;              match return
+&lt;regex&gt;\n&lt;/regex&gt;              match newline
+&lt;regex&gt;\t&lt;/regex&gt;              match tab
+&lt;regex&gt;\f&lt;/regex&gt;              match formfeed
+&lt;regex&gt;\v&lt;/regex&gt;              match vertical tab
+&lt;regex&gt;\w&lt;/regex&gt;              match a word character (alphanumeric or _)
+&lt;regex&gt;\W&lt;/regex&gt;              match a non-word character
+&lt;regex&gt;abc\Z&lt;/regex&gt;           match "abc" only at the end of the string
+</pre>
+<a name="Class_6"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.RegexMatcher
+</pre>
+<a name="Children_6"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>text only
+</pre>
+<a name="Attributes_6"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">ignore-whitespace</td>
+    <td>Determine if whitespace should be included in the pattern or ignored. When this attribute is true, then all spaces and tabs must be escaped with a backslash, '\'. When this attribute is false, then all spaces and tabs will be included in the regular expression</td>
+    <td>Boolean</td>
+    <td>false</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="String_Matcher"></a><h1> <span class="mw-headline">String Matcher</span></h1>
+<hr />
+<p>A string matcher is used to match a sequence of characters. The character sequence is defined by the matchers text content.
+</p>
+<a name="Syntax_7"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;string&gt;This is a test&lt;/string&gt;
+</pre>
+<a name="Class_7"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.StringMatcher
+</pre>
+<a name="Children_7"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre><a href="Structural_Elements.html#Use_Element" title="Structural Elements">&lt;use/&gt;</a>
+</pre>
+<a name="Attributes_7"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">case-insensitive</td>
+    <td>Determines if the sequence of characters must match with case sensitivity or not.</td>
+    <td>boolean</td>
+    <td>false</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="To_Delimiter_Matcher"></a><h1> <span class="mw-headline">To Delimiter Matcher</span></h1>
+<hr />
+<p>The to-delimiter matcher will advance along the source input until a delimiter pattern matches successfully. The delimiting pattern is defined by the child content of the to-delimiter element. If no matcher elements are defined as children of this element, the string content will be wrapped in a StringMatcher which will then be used as this element's delimiter.
+</p><p>The delimiting pattern may be optionally excluded from the match.
+</p><p>If this element contains more than one child, all children will be wrapped in an AndMatcher which then becomes the child of this element.
+</p>
+<a name="Syntax_8"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;to-delimiter&gt;
+  &lt;character-set&gt;.;:&lt;/character-set&gt;
+&lt;/to-delimiter&gt;
+</pre>
+<a name="Class_8"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.ToDelimiterMatcher
+</pre>
+<a name="Children_8"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes_8"></a><h2> <span class="mw-headline">Attributes</span></h2>
+ <table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">include-delimiter</td>
+    <td>Determines if the delimiter will be included will be included in the matched region or not. A value of true includes the delimiter. A value of false does not.</td>
+    <td>Boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">match-end-of-file</td>
+    <td>Determines if this matcher will report success if the end-of-file is encountered before a match is found for the delimiter. A value of true will report success in that case. A value of false will report failure.</td>
+    <td>Boolean</td>
+    <td>false</td>
+    <td>no</td>
+  </tr>
+</table>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1835-0!1!0!!en!2!edit=0 and timestamp 20090202012512 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Compound_Elements">http://aptana.com/docs/index.php/Compound_Elements</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

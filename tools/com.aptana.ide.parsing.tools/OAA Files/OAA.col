@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colorizer
+	xmlns="http://www.aptana.com/2007/colorizer/1.0"
+	language="text/oaa"
+	background="rgb(255,255,255)" 
+    line-highlight="rgb(232,242,254)" 
+    selection-foreground="COLOR_LIST_SELECTION_TEXT" 
+    selection-background="COLOR_LIST_SELECTION"
+    folding-background="COLOR_WIDGET_BACKGROUND"
+    folding-foreground="rgb(139,139,139)"
+    caret-color="rgb(0,0,0)">
+    	
+	<category name="ERROR" style="ERROR"/>
+	<category name="IDENTIFIER" style="IDENTIFIER"/>
+	<category name="KEYWORD" style="KEYWORD"/>
+	<category name="PUNCTUATOR" style="PUNCTUATOR">
+		<token style="PUNCTUATOR_QUESTION" type="QUESTION"/>
+		<token style="PUNCTUATOR_STAR" type="STAR"/>
+		<token style="PUNCTUATOR_AMPERSAND" type="AMPERSAND"/>
+	</category>
+	<category name="WHITESPACE" style="WHITESPACE">
+		<token style="WHITESPACE_SINGLE_LINE_COMMENT" type="SINGLE_LINE_COMMENT"/>
+		<token style="WHITESPACE_MULTI_LINE_COMMENT" type="MULTI_LINE_COMMENT"/>
+	</category>
+	
+	<style foreground="rgb(255,126,255)" id="ERROR"/>
+	<style foreground="rgb(0,62,0)" id="IDENTIFIER"/>
+	<style font-weight="bold" foreground="rgb(0,0,195)" id="KEYWORD"/>
+	<style font-weight="bold" foreground="rgb(0,0,0)" id="PUNCTUATOR"/>
+	<style foreground="rgb(129,0,0)" id="PUNCTUATOR_QUESTION"/>
+	<style foreground="rgb(129,0,0)" id="PUNCTUATOR_STAR"/>
+	<style foreground="rgb(0,0,193)" id="PUNCTUATOR_AMPERSAND"/>
+	<style foreground="rgb(0,0,0)" id="WHITESPACE"/>
+	<style foreground="rgb(128,128,128)" id="WHITESPACE_SINGLE_LINE_COMMENT"/>
+	<style foreground="rgb(129,129,129)" id="WHITESPACE_MULTI_LINE_COMMENT"/>
+	
+</colorizer>

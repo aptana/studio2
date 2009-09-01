@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	 <extension-point id="snippetspath" name="Snippets Path" schema="schema/snippetspath.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.aptana.ide.js.ui"
+            class="com.aptana.ide.snippets.SnippetsView"
+            icon="icons/snippets.png"
+            id="com.aptana.ide.scripting.SnippetsView"
+            name="%View.snippets.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="SnippetsViewActions"
+            targetID="com.aptana.ide.scripting.SnippetsView">
+         <action
+               class="com.aptana.ide.core.ui.actions.HelpAction"
+               icon="icons/help.png"
+               id="com.aptana.ide.snippets.snippets_context_view"
+               label="%Action.showhelp.label"
+               style="push"
+               toolbarPath="additions"
+               tooltip="%Action.showhelp.tooltip"/>     
+   		</viewContribution>
+   </extension>  
+   <extension point="org.eclipse.help.contexts"> 
+		<contexts file="contexts.xml" /> 
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.toolbarContribution">
+      <contributor class="com.aptana.ide.snippets.ToolbarRegistryContributor">
+      </contributor>
+   </extension>
+   <extension
+             point="org.eclipse.ui.themes">          
+          <colorDefinition
+                categoryId="com.aptana.ide.core.ui.apearance"
+                colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
+                id="com.aptana.ide.core.ui.background.color.snippetsView"
+                isEditable="true"
+                label="%snippetsView.bcolor.name"/>
+		<colorDefinition
+                categoryId="com.aptana.ide.core.ui.apearance"
+                colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
+                id="com.aptana.ide.core.ui.foreground.color.snippetsView"
+                isEditable="true"
+                label="%snippetsView.fcolor.name"/>                               
+   </extension>
+</plugin>

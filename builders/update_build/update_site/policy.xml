@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<update-policy>
+	<url-map pattern="com.aptana.ide.feature" url="http://build.aptana.com/update/{scs.branch.name}"/>
+	<url-map pattern="com.aptana.ide.feature.rcp" url="http://build.aptana.com/update/{scs.branch.name}"/>
+	<url-map pattern="com.aptana.ide.feature.editors" url="http://build.aptana.com/update/{scs.branch.name}"/>
+	<url-map pattern="com.aptana.ide.feature.editor.js" url="http://build.aptana.com/update/{scs.branch.name}"/>
+	<url-map pattern="com.aptana.ide.feature.editor.css" url="http://build.aptana.com/update/{scs.branch.name}"/>
+	<url-map pattern="com.aptana.ide.feature.editor.html" url="http://build.aptana.com/update/{scs.branch.name}"/>
+	<url-map pattern="com.aptana.ide.feature.editor.php" url="http://build.aptana.com/update/{scs.branch.name}/php"/>
+	<url-map pattern="com.aptana.ide.feature.framework.air" url="http://build.aptana.com/update/{scs.branch.name}/air"/>
+	<url-map pattern="com.aptana.air.feature.professional" url="http://build.aptana.com/update/{scs.branch.name}/air-pro"/>
+	<url-map pattern="com.aptana.ide.framework.iphone" url="http://build.aptana.com/update/{scs.branch.name}/iphone"/>
+	<url-map pattern="com.nokia.wrt.feature" url="http://build.aptana.com/update/{scs.branch.name}/nokia"/>
+	<url-map pattern="com.aptana.ide.feature.professional" url="http://build.aptana.com/update/{scs.branch.name}/pro"/>
+	<url-map pattern="com.aptana.ide.feature.framework.jaxer" url="http://build.aptana.com/update/{scs.branch.name}/jaxer"/>
+	<url-map pattern="org.radrails.rails_feature" url="http://build.aptana.com/update/{scs.branch.name}/rails"/>
+	<url-map pattern="org.rubypeople.rdt" url="http://build.aptana.com/update/{scs.branch.name}/rdt"/>
+	<url-map pattern="org.rubypeople.rdt.source" url="http://build.aptana.com/update/{scs.branch.name}/rails"/>
+	<url-map pattern="com.aptana.radrails.feature.professional" url="http://build.aptana.com/update/{scs.branch.name}/rails_pro"/>
+	<url-map pattern="org.python.pydev.feature" url="http://build.aptana.com/update/{scs.branch.name}/pydev"/>
+	<url-map pattern="com.python.pydev.feature" url="http://build.aptana.com/update/{scs.branch.name}/pydev-pro"/>
+</update-policy>

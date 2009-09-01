@@ -1,0 +1,55 @@
+<table width="100%" cellspacing="0" cellpadding="0 border="0">
+	<tr>
+		<td class="pad1">
+			<label for="username" class="small2">Username:</label>
+		</td>
+		<td class="pad1">
+			<input name="username" id="username" class="text3 required" size="30" value="<%= username %>" disabled="disabled" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="pad1">
+			<label for="password" class="small2">Password:</label>
+		</td>
+		<td class="pad1">
+			<a href="javascript: Portal.API.utils.openUrl('<%= Portal.Vars.passwordLink; %>');">change...</a>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="pad1">
+			<label for="first_name" class="small2">First name:</label>
+		</td>
+		<td class="pad1">
+			<input name="first_name" id="first_name" class="text3" size="30" value="<%= firstName %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="pad1">
+			<label for="last_name" class="small2">Last name:</label>
+		</td>
+		<td class="pad1">
+			<input name="last_name" id="last_name" class="text3" size="30" value="<%= lastName %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="pad1">
+			<label for="email" class="small2">Primary email:</label>
+		</td>
+		<td class="pad1">
+			<input name="email" id="email" class="text3 required" size="30" value="<%= email %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="pad1">
+			<label for="phone" class="small2">Phone number:</label>
+		</td>
+		<td class="pad1">
+			<input name="phone" id="email" class="text3" size="30" value="<%= phone %>" />
+		</td>
+	</tr>
+</table>

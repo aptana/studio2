@@ -1,0 +1,65 @@
+<div class="modalWrap" id="loginWindow" style="overflow: auto;">
+	
+	<h1>
+		<div class="floatLeft size18">Sign In</div>
+		<div class="floatRight">
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/aptana_id');"><img src="images_global/img_icon_help.png" class="inline link" align="absmiddle" /></a>
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/aptana_id');">Help</a>
+		</div>
+		<div class="clearfix"></div>
+	</h1>
+	
+	<div id="loginError" style="margin: 5px 5px 0 5px;">#{message}</div>
+	<div class="content" style="width: 350px;">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td class="pad1">
+					<label for="username" class="gray48 small3 bold">Username:</label>
+				</td>
+				<td class="pad1">
+					<input name="username" id="username" class="text3" size="25" maxlength="16" onblur="Portal.Modules.AptanaIdManager.maskUsername()" />
+				</td>
+			</tr>
+			<tr>
+				<td class="pad1">
+					<label for="password" class="gray48 small3 bold">Password:</label>
+				</td>
+				<td class="pad1">
+					<input name="password" id="password" type="password" class="text3" size="25" /><br />
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td class="size11"><a href="javascript: Portal.API.utils.openUrl('http://id.aptana.com/reset_password');">Forgot password?</a></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+	                <p class="top10 gray48 size12">
+	                    Don't have an Aptana ID? <a href="javascript: Portal.Modules.AptanaIdManager.showCreateWindow();">Create one Now!</a>
+	                </p>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+	<div class="footer2">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td style="text-align: left;" width="50%">
+					<a href="javascript: Portal.Modules.AptanaIdManager.cancelLogin();" class="close">&nbsp;</a>
+				</td>
+				<td style="text-align: right;" width="50%">
+					<a href="#" onclick="Portal.Modules.AptanaIdManager.logInUser();" class="login">&nbsp;</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="top-left-edge"></div>
+<div class="top-edge"></div>
+<div class="top-right-edge"></div>
+<div class="right-edge"></div>
+<div class="bottom-right-edge"></div>
+<div class="bottom-edge"></div>
+<div class="bottom-left-edge"></div>
+<div class="left-edge"></div>

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="nested_languages" name="Nested Languages" schema="schema/nested_languages.exsd"/>
+   <extension-point id="scriptdoc" name="ScriptDoc" schema="schema/scriptdoc.exsd"/>
+   <extension-point id="languageCleanup" name="Language Cleanup" schema="schema/languageCleanup.exsd"/>
+   <extension-point id="foreign_scriptdoc" name="Foreign ScriptDoc" schema="schema/foreign_scriptdoc.exsd"/>
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="com.aptana.ide.editors.actionSet">
+         <part
+               id="com.aptana.ide.editors.JSEditor">
+         </part>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="com.aptana.ide.editors.JSEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="js,sdoc"
+            id="jsSource"
+            name="%content-type.name.0"
+            priority="high"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.aptana.ide.js.ui"
+            class="com.aptana.ide.editors.views.profiles.ProfilesView"
+            icon="icons/page_white_stack.png"
+            id="com.aptana.ide.js.ui.views.profilesView"
+            name="%View.references.name"/>
+   </extension>    
+   <extension
+         point="org.eclipse.ui.propertyPages">  
+   <page
+            name="%codeFormatterPageName"
+            class="com.aptana.ide.editor.js.preferences.JSFormatterPreferencePage"
+            id="com.aptana.js.ui.propertyPages.CodeFormatterPreferencePage">
+         <enabledWhen>
+		     <adapt type="org.eclipse.core.resources.IProject">		          
+		     </adapt>         
+         </enabledWhen>
+         <keywordReference id="org.eclipse.jdt.ui.formatter"/>
+      </page>   
+    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+       <wizard
+             category="com.aptana.ide.core.ui.projects"
+             class="com.aptana.ide.editor.js.wizards.JsNewWizard"
+             finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+             icon="icons/js_file_new.gif"
+             id="com.aptana.ide.editors.wizards.JsNewWizard"
+             name="%Wizard.js.file.name"
+             preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+          <description>
+             %wizard.description.0
+          </description>
+       </wizard>
+       <wizard
+             canFinishEarly="true"
+             category="com.aptana.ide.core.ui"
+             class="com.aptana.ide.editor.js.wizards.JSUntitledTextFileWizard"
+             finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+             hasPages="false"
+             icon="icons/js_file_new.gif"
+             id="com.aptana.ide.editors.wizards.file.JsUntitledWizard"
+             name="%Wizard.js.untitledfile.name"
+             preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+          <description>
+             %wizard.description.1
+          </description>
+       </wizard>
+       <wizard
+             category="com.aptana.ide.core.ui.projects"
+             class="com.aptana.ide.editor.scriptdoc.wizards.ScriptDocNewWizard"
+             finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+             icon="icons/js_file_new.gif"
+             id="com.aptana.ide.editors.wizards.ScriptDocNewWizard"
+             name="%Wizard.scriptdoc.file.name"
+             preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+          <description>
+             %wizard.description.2
+          </description>
+       </wizard>
+       <wizard
+             canFinishEarly="true"
+             category="com.aptana.ide.core.ui"
+             class="com.aptana.ide.editor.scriptdoc.wizards.ScriptDocUntitledTextFileWizard"
+             finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+             hasPages="false"
+             icon="icons/js_file_new.gif"
+             id="com.aptana.ide.editors.wizards.file.ScriptDocUntitledWizard"
+             name="%Wizard.scriptdoc.untitledfile.name"
+             preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+          <description>
+             %wizard.description.3
+          </description>
+       </wizard>
+   </extension>
+    
+   <extension
+         point="org.eclipse.ui.editors">
+            <editor
+             class="com.aptana.ide.editor.js.JSEditor"
+             contributorClass="com.aptana.ide.editor.js.actions.JSActionContributor"
+             default="true"
+             icon="icons/js_file.gif"
+             id="com.aptana.ide.editors.JSEditor"
+             name="%Editor.js.name">
+             <contentTypeBinding contentTypeId="com.aptana.ide.editor.js.jsSource"/>
+           </editor>            
+   </extension>
+   
+   <extension
+   		point="com.aptana.ide.editors.colorization" >
+   		<colorization file="/colorization/DEFAULT_js_colorization.col" id="com.aptana.ide.editor.js.colorization"/>
+   		<colorization file="/colorization/DEFAULT_scriptdoc_colorization.col" id="com.aptana.ide.editor.scriptdoc.colorization" />
+   </extension>
+   
+   <extension point="com.aptana.ide.editors.folding" >
+   		<folding language="text/javascript" label="JavaScript" foldAllParents="false">
+   			<type name="function"/>
+   			<type name="JSCOMMENT"/>
+   			<type name="SDCOMMENT"/>
+   		</folding>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.editor.js.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         
+          <page
+          category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+          id="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+          name="%generalJSPreferencePage">
+            <keywordReference id="com.aptana.ide.editors.general"/>
+   			 </page>
+          <page
+          category="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.js.preferences.ColorizationPreferencePage"
+          id="com.aptana.ide.editor.js.preferences.ColorizationPreferencePage"
+          name="%colorPreferencePage">
+         	<keywordReference id="com.aptana.ide.editors.colors"/>
+    </page>
+          
+          <page
+          category="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.js.preferences.FoldingPreferencePage"
+          id="com.aptana.ide.editor.js.preferences.FoldingPreferencePage"
+          name="%foldingPreferencePage">     
+          <keywordReference id="com.aptana.ide.editors.folding"/>
+   </page> 
+          
+          <page
+          category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.scriptdoc.preferences.GeneralPreferencePage"
+          id="com.aptana.ide.editor.scriptdoc.preferences.GeneralPreferencePage"
+          name="%generalScriptDocPreferencePage"/>
+          
+           <page
+          category="com.aptana.ide.editor.scriptdoc.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.scriptdoc.preferences.ColorizationPreferencePage"
+          id="com.aptana.ide.editor.scriptdoc.preferences.ColorizationPreferencePage"
+          name="%colorPreferencePage">
+         	<keywordReference id="com.aptana.ide.editors.colors"/>
+    </page>
+          
+          <page
+          category="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.js.preferences.ProblemsPreferencePage"
+          id="com.aptana.ide.editor.js.preferences.ProblemsPreferencePage"
+          name="%problemsPreferencePage">
+          <keywordReference id="com.aptana.ide.editors.validation"/>
+   </page>  
+          
+          <page
+          category="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.js.preferences.CodeAssistPreferencePage"
+          id="com.aptana.ide.editor.js.preferences.CodeAssistPreferencePage"
+          name="%codeAssistPreferencePage">
+		  <keywordReference id="com.aptana.ide.editors.codeassist"/>
+   </page> 
+                  
+         <page
+           category="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+           class="com.aptana.ide.editor.js.preferences.JSFormatterPreferencePage"
+           id="com.aptana.ide.editor.js.preferences.FormatterPreferencePage"
+           name="%codeFormatterPreferencePage">       
+          <keywordReference id="com.aptana.ide.editors.formatting"/>
+   </page> 
+     	
+     	          <page
+          category="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.js.preferences.TypingPreferencePage"
+          id="com.aptana.ide.editor.js.preferences.TypingPreferencePage"
+          name="%typingPreferencePage">
+          <keywordReference id="com.aptana.ide.editors.typing"/>
+   </page>
+                <page
+                      category="com.aptana.ide.editor.js.preferences.GeneralPreferencePage"
+                      class="com.aptana.ide.editor.js.preferences.TemplatePreferencePage"
+                      id="com.aptana.ide.editor.js.preferences.JSTemplatePreferencePage"
+                      name="%page.name.0">
+                </page>           
+   </extension>
+   <extension
+         point="com.aptana.ide.editor.js.nested_languages">
+      <parser
+            language="text/jscomment"
+            name="%Parser.js.name"
+            parser="com.aptana.ide.editor.jscomment.parsing.JSCommentParser">
+         <single-line-comment-language/>
+         <multi-line-comment-language/>
+      </parser>
+      <parser
+            language="text/scriptdoc"
+            name="%Parser.scriptdoc.name"
+            parser="com.aptana.ide.editor.scriptdoc.parsing.ScriptDocParser">
+         <documentation-comment-language/>
+      </parser>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.validator">
+      <validator
+            class="com.aptana.ide.editor.js.validator.MozillaJsValidator"
+            mimeType="text/javascript"
+			name="Mozilla JavaScript Validator" />
+      <validator
+            class="com.aptana.ide.editor.js.validator.JSLintValidator"
+            mimeType="text/javascript"
+			name="JSLint JavaScript Validator" />
+   </extension>   
+    <extension
+          point="com.aptana.ide.core.ui.file_wizards">
+       <new-file-wizard
+             name="New JS File"
+             wizard-id="com.aptana.ide.editors.wizards.JsNewWizard"/>
+       <new-file-wizard
+             name="New ScriptDoc File"
+             wizard-id="com.aptana.ide.editors.wizards.ScriptDocNewWizard"/>
+       <untitled-file-wizard
+             name="New Untitled JS File"
+             wizard-id="com.aptana.ide.editors.wizards.file.JsUntitledWizard"/>
+       <untitled-file-wizard
+             name="New Untitled ScriptDoc File"
+             wizard-id="com.aptana.ide.editors.wizards.file.ScriptDocUntitledWizard"/>
+    </extension>
+    <extension
+          point="com.aptana.ide.editors.outline">
+       <contributor
+             content-provider="com.aptana.ide.editor.js.outline.JSContentProvider"
+             label-provider="com.aptana.ide.editor.js.outline.JSLabelProvider"
+             language="text/javascript"
+             name="JavaScript Outline Provider"/>
+    </extension>   	
+    <extension
+         point="com.aptana.ide.editors.tokenList">
+      <textMatcher
+            language="text/javascript"
+            resource="src/com/aptana/ide/editor/js/resources/js_lexer_1_2.lxr"/>
+      <textMatcher
+            language="text/jscomment"
+            resource="src/com/aptana/ide/editor/jscomment/resources/jscomment_lexer_1_2.lxr"/>
+      <textMatcher
+            language="text/scriptdoc"
+            resource="src/com/aptana/ide/editor/scriptdoc/resources/scriptdoc_lexer_1_2.lxr"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.parser">
+      <parser
+            class="com.aptana.ide.editor.js.parsing.JSParser"
+            language="text/javascript"/>
+      <parser
+            class="com.aptana.ide.editor.jscomment.parsing.JSCommentParser"
+            language="text/jscomment"/>
+      <parser
+            class="com.aptana.ide.editor.scriptdoc.parsing.ScriptDocParser"
+            language="text/scriptdoc"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.pairfinder">
+      <pairFinder
+            class="com.aptana.ide.editor.js.JSPairFinder"
+            language="text/javascript"
+            name="JS Pair Finder">
+      </pairFinder>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.pairfinder">
+      <pairFinder
+            class="com.aptana.ide.editors.unified.NullPairFinder"
+            language="text/jscomment"
+            name="JS Comment Pair Finder">
+      </pairFinder>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.pairfinder">
+      <pairFinder
+            class="com.aptana.ide.editors.unified.NullPairFinder"
+            language="text/scriptdoc"
+            name="ScriptDoc Pair Finder">
+      </pairFinder>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.formatter">
+      <formatter
+            class="com.aptana.ide.editor.js.formatting.JSCodeFormatter"
+            language="text/javascript"
+            name="JS Code Formatter">
+      </formatter>
+      <formatter
+            class="com.aptana.ide.editor.js.formatting.JSCodeFormatter"
+            language="text/scriptdoc"
+            name="ScriptDoc Code Formatter">
+      </formatter>
+      <formatter
+            class="com.aptana.ide.editor.js.formatting.JSCodeFormatter"
+            language="text/jscomment"
+            name="JavaScript Comment Code Formatter">
+      </formatter>
+   </extension>
+   <extension
+           point="com.aptana.ide.editor.js.scriptdoc">
+        <js-file path="" user-agent="DOM 5" icon="icons/html.png" />
+        <js-file path="" user-agent="DOM 3" icon="icons/html.png" />
+        <js-file path="" user-agent="DOM 1 &amp; 2" icon="icons/html.png" />
+        <js-file path="" user-agent="DOM 0" icon="icons/html.png" />
+     </extension>
+   <extension
+         point="com.aptana.ide.editors.scanner">
+      <scanner
+            class="com.aptana.ide.editor.js.parsing.JSScanner"
+            language="text/javascript">
+      </scanner>
+      <scanner
+            class="com.aptana.ide.editor.jscomment.parsing.JSCommentScanner"
+            language="text/jscomment">
+      </scanner>
+      <scanner
+            class="com.aptana.ide.editor.scriptdoc.parsing.ScriptDocScanner"
+            language="text/scriptdoc">
+      </scanner>
+   </extension>
+   <extension
+         point="com.aptana.ide.editor.js.foreign_scriptdoc">
+      <stylesheet
+            name="Open Ajax Alliance"
+            namespace="http://openajax.org/metadata"
+            resource="src/com/aptana/ide/editor/scriptdoc/resources/oaa_to_aptana.xsl"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            class="com.aptana.ide.editors.unified.contentassist.UnifiedContextType"
+            id="com.aptana.ide.editors.contextType.text/javascript"
+            name="%contextType.name.0">
+      </contextType>
+      <include
+            file="templates/js.xml">
+      </include>
+      <contextType
+            class="com.aptana.ide.editors.unified.contentassist.UnifiedContextType"
+            id="com.aptana.ide.editors.contextType.text/scriptdoc"
+            name="%contextType.name.1">
+      </contextType>
+      <contextType
+            class="com.aptana.ide.editors.unified.contentassist.UnifiedContextType"
+            id="com.aptana.ide.editors.contextType.text/jscomment"
+            name="%contextType.name.2">
+      </contextType>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="com.aptana.ide.editors.JSEditorScope"
+            name="Javascript Editor Scope"
+            parentId="com.aptana.ide.editors.UnifiedEditorsScope">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+        categoryId="com.aptana.ide.editors"
+        defaultHandler="com.aptana.ide.editors.views.actions.ActionKeyCommandHandler"
+        id="com.aptana.ide.editors.views.actions.js.actionKeyCommand"
+        name="%ToggleJSComments.command.name"/>
+   </extension>
+    <extension
+         point="org.eclipse.ui.bindings">      
+      <key
+            commandId="com.aptana.ide.editors.views.actions.js.actionKeyCommand"
+            contextId="com.aptana.ide.editors.JSEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+/">
+      </key>
+    </extension>
+</plugin>

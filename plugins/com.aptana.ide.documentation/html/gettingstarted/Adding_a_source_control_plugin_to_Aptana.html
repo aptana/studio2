@@ -1,0 +1,123 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Adding a source control plugin to Aptana</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Adding_a_source_control_plugin_to_Aptana&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Adding a source control plugin to Aptana [<a href="http://www.aptana.com/docs/index.php?title=Adding_a_source_control_plugin_to_Aptana&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to add a source control plugin, such as Subversion or Perforce, to Aptana.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Installing_source_control_via_the_Plugins_Manager"><span class="tocnumber">2.1</span> <span class="toctext">Installing source control via the Plugins Manager</span></a></li>
+<li class="toclevel-2"><a href="#Manually_installing_a_source_control_plug-in"><span class="tocnumber">2.2</span> <span class="toctext">Manually installing a source control plug-in</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Subversion_Installation_Help"><span class="tocnumber">3</span> <span class="toctext">Subversion Installation Help</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Windows"><span class="tocnumber">3.1</span> <span class="toctext">Windows</span></a></li>
+<li class="toclevel-2"><a href="#Macintosh_OS_X"><span class="tocnumber">3.2</span> <span class="toctext">Macintosh OS X</span></a></li>
+<li class="toclevel-2"><a href="#Linux"><span class="tocnumber">3.3</span> <span class="toctext">Linux</span></a></li>
+<li class="toclevel-2"><a href="#Configuring_JavaHL"><span class="tocnumber">3.4</span> <span class="toctext">Configuring JavaHL</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">4</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>You can easily add source control plugins into your Aptana installation. We currently include access to Subversion and Perforce, by default, but you can either configure a connection to an update site for a different plugin, or if enough users request a different source control plugin, we may support it in the future.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>You can either use the Plugins Manager View to install a source control plug-in or manually install the plug-in.
+</p>
+<a name="Installing_source_control_via_the_Plugins_Manager"></a><h3> <span class="mw-headline">Installing source control via the Plugins Manager</span></h3>
+<p>The Plugins Manager View offers an easy way to install the Subclipse and/or Subversive plug-ins for Subversion. To quickly install either of these, select which plug-in you would like to use and follow the instructions in <a href="Managing_Plugins_with_the_Plugins_Manager_View.html" title="Managing Plugins with the Plugins Manager View">Managing Plugins with the Plugins Manager View</a>.
+</p>
+<a name="Manually_installing_a_source_control_plug-in"></a><h3> <span class="mw-headline">Manually installing a source control plug-in</span></h3>
+<p>If you would like to use a different source control plug-in than Subclipse or Subversive or just prefer to install manually, you can install your source control plug-in by following the instructions in <a href="Installing_a_plug-in.html" title="Installing a plug-in">Installing a plug-in</a>.
+</p><p>The chart on the <a href="Quick_reference_for_popular_plug-ins.html" title="Quick reference for popular plug-ins">Quick reference for popular plug-ins</a> page gives update URL's for several popular plug-ins.
+</p>
+<a name="Subversion_Installation_Help"></a><h2> <span class="mw-headline"> Subversion Installation Help </span></h2>
+<p>Two popular plugins for Subversion integration are Subclipse and Subversive. In order to communicate with Subversion, they require a third-party library. We ship a pure java version of this library called SVNKit, but it may have issues connecting to some Subversion repositories, particularly those that use Digest authentication. In order to get around these compatibility issues, you can install the native library called "JavaHL". Instructions are below:
+</p>
+<a name="Windows"></a><h3> <span class="mw-headline"> Windows </span></h3>
+<p>JavaHL should already be included with your download of Subclipse or Subversive. If not:
+</p>
+<ol><li> Visit this page: <a href="http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91" class="external free" title="http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91" rel="nofollow">http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91</a>
+</li><li> You need to download the standard package as well as the JavaHL version. The standard package is named svn-X.Y.Z-setup.exe and the JavaHL installer file is named svn-win32-X.Y.Z_javahl.zip where 'X.Y.Z' refers to the version number.
+</li></ol>
+<p>Now skip to the "Configuring JavaHL" step below.
+</p>
+<a name="Macintosh_OS_X"></a><h3> <span class="mw-headline">Macintosh OS X</span></h3>
+<p>Installing JavaHL is straightforward.
+</p>
+<ol><li> Download the package from the following website: <a href="http://www.aptana.com/downloads/Subversion%201.4.6%20Universal-2.dmg" class="external free" title="http://www.aptana.com/downloads/Subversion%201.4.6%20Universal-2.dmg" rel="nofollow">http://www.aptana.com/downloads/Subversion%201.4.6%20Universal-2.dmg</a>
+</li><li> Run through the installation process.
+</li><li> Now skip to the "Configuring JavaHL" step below.
+</li></ol>
+<a name="Linux"></a><h3> <span class="mw-headline">Linux</span></h3>
+<p>JavaHL is generally not distributed as part of the default Subversion installation. Below are a few examples of how to install it:
+</p><p>Ubuntu and Debian Linux:
+</p>
+<pre>sudo apt-get install libsvn-javahl
+</pre>
+<p>Red Hat:
+</p>
+<pre>yum install subversion-javahl 
+</pre>
+<p>If you have an operating system not listed here, see the downloads on this page: <a href="http://subversion.tigris.org/getting.html" class="external free" title="http://subversion.tigris.org/getting.html" rel="nofollow">http://subversion.tigris.org/getting.html</a>. Make sure you choose an installation <i>with</i> javahl if that is noted separately.
+</p><p>Once this is complete, skip to the "Configuring JavaHL" step below.
+</p>
+<a name="Configuring_JavaHL"></a><h3> <span class="mw-headline">Configuring JavaHL</span></h3>
+<p>Configuring JavaHL is slightly different on Subclipse and Subversive.
+</p><p>For Subclipse, edit <b>Preferences &gt; Team &gt; SVN</b>, and select JavaHL
+</p><p><a href="Image:Subclipse.png.html" class="image" title="Image:Subclipse.png"><img alt="Image:Subclipse.png" src="docs/images/0/0a/Subclipse.png" width="639" height="667" border="0" /></a>
+</p><p>For Subversive, edit <b>Preferences &gt; Team &gt; SVN</b>, and select JavaHL
+</p><p><a href="Image:Subversive.png.html" class="image" title="Image:Subversive.png"><img alt="Image:Subversive.png" src="docs/images/6/6d/Subversive.png" width="753" height="642" border="0" /></a>
+</p><p>Click OK to exit out of the preferences screen.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Installing_Aptana.html" title="Installing Aptana">Installing Aptana</a>
+</li><li> <a href="Updating_your_version_of_Aptana.html" title="Updating your version of Aptana">Updating your version of Aptana</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1514-0!1!0!!en!2!edit=0 and timestamp 20090201220831 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Adding_a_source_control_plugin_to_Aptana">http://aptana.com/docs/index.php/Adding_a_source_control_plugin_to_Aptana</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:Aptana&amp;action=edit" class="new" title="Category:Aptana">Aptana</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

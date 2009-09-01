@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/rhnd">
+
+	<token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace/>
+			</one-or-more>
+			<comment type="COMMENT" start="//"/>
+			<comment type="COMMENT" start="/*" end="*/"/>
+		</category-group>
+
+		<category-group category="LITERAL">
+			<quoted-string type="STRING">'"</quoted-string>
+			<one-or-more type="NUMBER">
+				<digit/>
+			</one-or-more>
+		</category-group>
+
+		<category-group category="IDENTIFIER">
+			<and type="TERMINAL">
+				<uppercase-letter/>
+				<zero-or-more>
+					<or>
+						<uppercase-letter/>
+						<character>_</character>
+					</or>
+				</zero-or-more>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+			<and type="NONTERMINAL">
+				<uppercase-letter/>
+				<zero-or-more>
+					<or>
+						<letter/>
+						<character>_</character>
+					</or>
+				</zero-or-more>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+			<and type="ALIAS">
+				<lowercase-letter/>
+				<zero-or-more>
+					<or>
+						<letter/>
+						<character>_</character>
+					</or>
+				</zero-or-more>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+		</category-group>
+
+		<category-group category="OPERATOR">
+			<character type="PLUS">+</character>
+		</category-group>
+
+		<category-group category="PUNCTUATOR">
+			<character type="LBRACKET">[</character>
+			<character type="LCURLY">{</character>
+			<character type="LPAREN">(</character>
+			<character type="RBRACKET">]</character>
+			<character type="RCURLY">}</character>
+			<character type="RPAREN">)</character>
+			<character type="COMMA">,</character>
+		</category-group>
+    </token-group>
+
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+    </token-group>
+
+</lexer>

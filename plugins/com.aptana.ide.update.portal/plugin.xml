@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.server.jetty.cometClient">
+      <client
+            class="com.aptana.ide.update.portal.clients.ListPluginsClient"
+            id="/portal/plugins/list">
+      </client>
+      <client
+            class="com.aptana.ide.update.portal.clients.InstallPluginsClient"
+            id="/portal/plugins/install">
+      </client>
+      <client
+            class="com.aptana.ide.update.portal.clients.FeatureQueryClient"
+            id="/portal/plugins/query">
+      </client>
+   </extension>
+
+</plugin>

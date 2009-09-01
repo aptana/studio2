@@ -1,0 +1,292 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Assertion Elements</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Assertion_Elements&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Assertion Elements [<a href="http://www.aptana.com/docs/index.php?title=Assertion_Elements&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#End_Of_File_Matcher"><span class="tocnumber">1</span> <span class="toctext">End Of File Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax"><span class="tocnumber">1.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class"><span class="tocnumber">1.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children"><span class="tocnumber">1.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes"><span class="tocnumber">1.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#End_Of_Line_Matcher"><span class="tocnumber">2</span> <span class="toctext">End Of Line Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_2"><span class="tocnumber">2.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_2"><span class="tocnumber">2.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_2"><span class="tocnumber">2.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_2"><span class="tocnumber">2.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Lookahead_Matcher"><span class="tocnumber">3</span> <span class="toctext">Lookahead Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_3"><span class="tocnumber">3.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_3"><span class="tocnumber">3.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_3"><span class="tocnumber">3.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_3"><span class="tocnumber">3.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Start_Of_File_Matcher"><span class="tocnumber">4</span> <span class="toctext">Start Of File Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_4"><span class="tocnumber">4.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_4"><span class="tocnumber">4.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_4"><span class="tocnumber">4.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_4"><span class="tocnumber">4.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Start_Of_Line_Matcher"><span class="tocnumber">5</span> <span class="toctext">Start Of Line Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_5"><span class="tocnumber">5.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_5"><span class="tocnumber">5.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_5"><span class="tocnumber">5.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_5"><span class="tocnumber">5.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Word_Boundary_Matcher"><span class="tocnumber">6</span> <span class="toctext">Word Boundary Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_6"><span class="tocnumber">6.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_6"><span class="tocnumber">6.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_6"><span class="tocnumber">6.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_6"><span class="tocnumber">6.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="End_Of_File_Matcher"></a><h1> <span class="mw-headline">End Of File Matcher</span></h1>
+<hr />
+<p>The end of file matcher is a zero-width assertion that tests if the matcher engine is currently at the end of the file being matched. If the engine is at the end of file, this matcher will return true. It is possible to negate the logic of this matcher via the "negate" attribute.
+</p>
+<a name="Syntax"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;end-of-file/&gt;
+</pre>
+<a name="Class"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.EndOfFileMatcher
+</pre>
+<a name="Children"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters. True will match letters and false will match anything except letters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="End_Of_Line_Matcher"></a><h1> <span class="mw-headline">End Of Line Matcher</span></h1>
+<hr />
+<p>The end of line matcher is a zero-width assertion that tests if the matcher engine is currently at a '\r' character, a '\n' character, or the end of the file. If any of those conditions are true, the matcher will return true. It is possible to negate the logic of this matcher via the "negate" attribute.
+</p>
+<a name="Syntax_2"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;end-of-line/&gt;
+</pre>
+<a name="Class_2"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.EndOfLineMatcher
+</pre>
+<a name="Children_2"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_2"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters. True will match letters and false will match anything except letters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Lookahead_Matcher"></a><h1> <span class="mw-headline">Lookahead Matcher</span></h1>
+<hr />
+<p>The lookahead matcher allows for the test of a pattern without consuming the matched text. The match can be negated to return true only if the pattern does not match. This is useful when matching keywords where you can test that no other letter follows the matched keyword without consuming the character being tested.
+</p><p>If this element contains more than one child, all children will be wrapped in an AndMatcher which then becomes the child of this element.
+</p>
+<a name="Syntax_3"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;lookahead negate="true"&gt;
+  &lt;or&gt;
+    &lt;letter/&gt;
+    &lt;digit/&gt;
+    &lt;character&gt;_&lt;/character&gt;
+  &lt;/or&gt;
+&lt;/lookahead&gt;
+</pre>
+<a name="Class_3"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.LookaheadMatcher
+</pre>
+<a name="Children_3"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes_3"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Indicates whether this matcher should report success if the match is successful or if the match fails.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Start_Of_File_Matcher"></a><h1> <span class="mw-headline">Start Of File Matcher</span></h1>
+<hr />
+<p>The start of file matcher is a zero-width assertion that tests if the matcher engine is currently at the start of the file being matched. If the engine is at the start of the file, this matcher will return true. It is possible to negate the logic of this matcher via the "negate" attribute.
+</p>
+<a name="Syntax_4"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;start-of-file/&gt;
+</pre>
+<a name="Class_4"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.StartOfFileMatcher
+</pre>
+<a name="Children_4"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_4"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters. True will match letters and false will match anything except letters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Start_Of_Line_Matcher"></a><h1> <span class="mw-headline">Start Of Line Matcher</span></h1>
+<hr />
+<p>The start of line matcher is a zero-width assertion that tests if the matcher engine is currently after a '\r' character, a '\n' character, or is at the start of the file. If any of those conditions are true, the matcher will return true. It is possible to negate the logic of this matcher via the "negate" attribute.
+</p>
+<a name="Syntax_5"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;start-of-line/&gt;
+</pre>
+<a name="Class_5"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.StartOfLineMatcher
+</pre>
+<a name="Children_5"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_5"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters. True will match letters and false will match anything except letters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Word_Boundary_Matcher"></a><h1> <span class="mw-headline">Word Boundary Matcher</span></h1>
+<hr />
+<p>The word boundary matcher determines if the current offset within a string is at a word boundary. A word boundary is defined as the position between two characters where one is a word character as defined but the WordMatcher and the other is not a word character. Special cases occur at the before the first character and after the last character. In those cases, this matcher will return true. It is possible to negate the logic of this matcher via the "negate" attribute.
+</p>
+<a name="Syntax_6"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;word-boundary/&gt;
+</pre>
+<a name="Class_6"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.WordBoundaryMatcher
+</pre>
+<a name="Children_6"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_6"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match between a word character and a non-word character. True will match between a word character and a non-word character. False will match between two word characters or between two non-word characters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1848-0!1!0!!en!2!edit=0 and timestamp 20090202174227 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Assertion_Elements">http://aptana.com/docs/index.php/Assertion_Elements</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

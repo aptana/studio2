@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.server.jetty">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.server.jetty" id="cometClient" name="Comet Client"/>
+      </appInfo>
+      <documentation>
+         This extension point allows contribution of comet clients for use in the Aptana Home server using the Comet protocol.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="client" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="client">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identified of this client.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The coment client class being contributed.  This class must implement com.aptana.ide.server.jetty.comet.ICometClient or it will be ignored.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.server.jetty.comet.ICometClient"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         This extension point was added in Aptana Studio 1.2.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.server.jetty.cometClient&quot;&gt;
+	&lt;client id=&quot;com.my.xyz.comet&quot; class=&quot;com.my.xyz.MyCometClient&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;p&gt;
+
+The above example contributes the MyCometClient class to the Aptana Home Comet/HTTP server.  The MyCometClient class must implement com.aptana.ide.server.jetty.comet.ICometClient.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The com.aptana.ide.server.jetty.comet.ICometClient class should be consulted for more specifics about how to respond to comet requests and how to subscribe to different comet channels.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to contribute functionality to the Aptana Home page in the Jaxer, extras, intro, cloud, and jetty plugins.  Many types of functionality are contributed to the Aptana Home container through this extension point.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

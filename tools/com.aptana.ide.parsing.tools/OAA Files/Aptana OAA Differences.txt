@@ -1,0 +1,12 @@
+<alias>
+
+Aptana:
+    The alias element is used to add a property to a class. The name attribute
+    specifies the name of the property to add to the class. The type attribute
+    is the fully-qualified path to the type of the property
+OAA:
+    The alias element is used to create a property that is of the type in which
+    the alias tag is defined. The name attribute speicifies the fully-qualified
+    path to the property that should be created and be of this type.
+
+

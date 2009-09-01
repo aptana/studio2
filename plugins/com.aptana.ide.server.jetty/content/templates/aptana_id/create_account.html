@@ -1,0 +1,50 @@
+<div class="modalWrap" id="createWindow">
+	<h1>
+		Create an Aptana ID
+		<div style="float: right;"><a href="javascript: AptanaPortal.openUrl('http://www.aptana.com/aptana_id');" style="text-decoration: none;"><img src="images_global/img_icon_help.png" style="border: none; margin-top: -2px; margin-right: 3px;" align="absmiddle" /></a><a href="javascript: AptanaPortal.openUrl('http://www.aptana.com/aptana_id');">Help</a></div>
+		<div class="clearfix"></div>
+	</h1>
+	<div class="content" style="width: 350px;">
+		<div id="createMessage" style="margin: 5px;">Fill out the form below to create your Aptana ID.</div>
+		
+		<p style="margin-bottom: 5px;">
+			<label for="username">Username:</label><br />
+			<input name="username" id="username" class="text" size="35" maxlength="16" onkeyup="this.value = this.value.toLowerCase().gsub(' ', '');" /><br />
+			<span style="font-size: 11px; color: #777;">Your username must be between 3 and 16 lowercase characters</span>
+		</p>
+		
+		<p>
+			<label for="password">Password:</label><br />
+			<input name="password" id="password" type="password" class="text" size="35" /><br />
+			<span class="size11 gray7">Your password must be at least 5 characters</span>
+		</p>
+		
+		<p>
+			<label for="confirm_password">Confirm Password:</label><br />
+			<input name="confirm_password" id="confirm_password" type="password" class="text" size="35" />
+		</p>
+		
+		<p>
+			<label for="email">Email:</label><br />
+			<input name="email" id="email" class="text" size="35" />
+		</p>
+		
+		<p>
+			<label for="confirm_email">Confirm Email:</label><br />
+			<input name="confirm_email" id="confirm_email" class="text" size="35" />
+		</p>
+	</div>
+	
+	<div class="footer2">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td style="text-align: left;" width="50%">
+					<a href="javascript: Control.Modal.close();" class="close">&nbsp;</a>
+				</td>
+				<td style="text-align: right;" width="50%">
+					<a href="#" onclick="AptanaPortal.AptanaIdManager.createNewUser();" class="create">&nbsp;</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

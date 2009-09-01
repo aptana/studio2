@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.eclipsemonkey.dom">
+      <dom
+            class="org.eclipse.eclipsemonkey.doms.resources.ResourcesDOMFactory"
+            variableName="resources">
+      </dom>
+      <dom
+            class="org.eclipse.eclipsemonkey.doms.workspace.WorkspaceDOMFactory"
+            variableName="workspace">
+      </dom>
+   </extension>
+ </plugin>

@@ -1,0 +1,144 @@
+<div class="container_tl" style="min-width: 620px;">
+	<div class="container_tr">&nbsp;</div>
+</div>
+<div class="container_bl bottom10" id="billing_accounts_wrap" style="min-width: 620px;">
+	<div class="container_br">
+		
+		
+		<% if (billingErrors) { %>
+		
+			<div class="size12 bold gray87 center">The billing system is temporarily unavailable.  Please try again later.</div>
+		
+		<% } else { %>
+		
+		<!-- header -->
+		<div class="container_head_tl">
+			<div class="container_head_tr">&nbsp;</div>
+		</div>
+		<div class="container_head_bl">
+			<div class="container_head_br">
+				<div class="floatLeft" style="margin-bottom: -13px; top: -1px; position: relative;">
+					<div class="size16 bold gray48" style="margin-top: -2px;">
+						Current Credit Cards
+					</div>
+				</div>
+				<div class="floatRight" style="margin-bottom: -13px; top: -6px; right: -5px; position: relative;">
+					<% if (billingAccounts.size() != 0) { %>
+						<a href="#" title="Add Credit Card" id="show_add_credit_card"><img src="images_global/button_add_credit_card.png" alt="Add Credit Card" /></a>
+					<% } else { %>
+						<div style="height: 23px;">&nbsp;</div>
+					<% } %>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		
+		<div class="container_content_tl">
+			<div class="container_content_tr">&nbsp;</div>
+		</div>
+		<div class="container_content_bl">
+			<div class="container_content_br">
+				<div class="floatLeft size11">
+					<a href="javascript: Portal.API.utils.openUrl('https://billing.aptana.com');">Visit the Aptana payment site to view/print invoices, manage payments, etc.</a>
+				</div>
+				<div class="floatRight size11">	
+					<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/cloud/wizard/other/paymentmeans');">Need a different way to pay?</a>
+				</div>
+				
+				<div class="clearfix"></div>
+
+			</div>
+		</div>
+		
+		<!-- add credit card container -->
+		<div id="add_card_cage" style="display: <%= (billingAccounts.size() > 0) ? 'none' : 'block'; %>;">
+			<div class="container_content_tl">
+				<div class="container_content_tr">&nbsp;</div>
+			</div>
+			<div class="container_content_bl">
+				<div class="container_content_br">
+					<div class="sectionHeading">Add Credit Card</div>
+					
+					<%= addCreditCardForm.render(); %>
+					
+					<div class="top10 right" id="add_card_controls">
+						<% if (billingAccounts.size() != 0) { %>
+						<a href="#" id="cancel_add_credit_card" class="bold">Cancel</a> or
+						<% } %> 
+						<a href="#" id="do_add_credit_card"><img src="images_global/button_billing_create.png" align="absmiddle" class="inline link" /></a>
+					</div>
+				</div>
+			</div>	
+		</div>
+		
+		<!-- main container -->
+		<% billingAccounts.each(function(account) { %>
+		<div class="container_content_tl" style="min-width: 600px;">
+			<div class="container_content_tr">&nbsp;</div>
+		</div>
+		<div class="container_content_bl" style="min-width: 600px;">
+			<div class="container_content_br">
+				
+				
+				<table width="100%" cellspacing="0" cellpadding="0" border="0" class="">
+					<tr>
+						<td colspan="2">
+							<div class="sectionHeading" style="margin-bottom: 0px; min-width: 600px;"><%= account.value.name.escapeHTML(); %></div>
+							
+							<% if (account.value.hasExpired) { %>
+								<div class="clean-error top5">This card is about to or has expired!</div>
+							<% } %>
+						</td>
+					</tr>
+					<tr>
+						<td width="50%" valign="top" class="pad5">
+							<div class="pad5 borderLightGray" style="min-height: 75px;">
+								<div class="size13 gray48 bold line16"><img src="images_global/img_credit_cards.png" align="absmiddle" class="inline" /> Card Details</div>
+								<div class="size11 line14 top5">
+									<strong>Card Number: </strong><%= account.value.number.escapeHTML(); %><br />
+									<strong>Card Expiration: </strong><%= account.value.expiry.escapeHTML(); %><br />
+									<strong>Billing Address: </strong><br />
+									<%= account.value.address1.escapeHTML(); %>
+									<%= (account.value.address2 != '' || account.value.address2 != null) ? '<br />' + account.value.address2.escapeHTML() : ''; %><br />
+									<%= account.value.city.escapeHTML() + ', ' + account.value.state.escapeHTML() + ' ' + account.value.zipcode.escapeHTML() + ' ' + account.value.country.escapeHTML(); %>
+									
+								</div>
+							</div>
+						</td>
+						
+						<td width="50%" valign="top" class="pad5">
+							<div class="pad5 borderLightGray" style="min-height: 75px;">
+							<% if(account.value.sites.length > 0) { %>
+								<div class="size13 gray48 bold line16"><img src="images_global/img_sites.png" align="absmiddle" class="inline" /> Associated Site<% if(account.value.sites.length != 1) { %>s<% } %></div>
+								<div class="size11 line14 top5">
+									<% account.value.sites.each(function(site) { %>
+									<% if (!Portal.Data.siteList.sites.get(site.site_id)) { return; } %>
+									
+										<img src="images_global/img_bullet_black.png" align="absmiddle" />
+										<a href="javascript: Portal.Modules.BillingAccounts.showSiteInCloud(<%= site.site_id %>);"><%= Portal.Data.siteList.sites.get(site.site_id).domain.truncate(40); %></a><br />
+									<% }); %>
+									&nbsp;
+								</div>
+							<% } else { %>
+								<div class="size11 line14">
+									You do not have any sites associated with this credit card.  It may be safely removed.
+								</div>
+								
+								<div class="right top15">
+									<a href="#" class="delete_card" id="delete_<%= account.value.id %>"><img src="images_global/button_billing_remove.png" /></a>
+								</div>
+								
+							<% } %>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>	
+		<% }); %>
+		
+		<% } %>
+	</div>
+</div>
+
+<div class="clearfix"></div>

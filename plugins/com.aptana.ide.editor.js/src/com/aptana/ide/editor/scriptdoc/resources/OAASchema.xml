@@ -1,0 +1,411 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.aptana.com/2005/schema/1.0">
+	
+	<element name="aboutMe" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="alias">
+		<attribute name="alias"/>
+	</element>
+	
+	<element name="aliases">
+		<child-element name="alias"/>
+	</element>
+	
+	<element name="ancestor">
+		<attribute name="datatype"/>
+	</element>
+	
+	<element name="ancestors">
+		<child-element name="ancestor"/>
+	</element>
+	
+	<element name="api" type="root">
+		<attribute name="name" />
+		<attribute name="type" />
+		<child-element name="author" />
+		<child-element name="authors" />
+		<child-element name="class" />
+		<child-element name="classes" />
+		<child-element name="globals" />
+		<child-element name="interfaces" />
+		<child-element name="interface" />
+		<child-element name="license" />
+		<child-element name="mixin" />
+		<child-element name="mixins" />
+		<child-element name="namespace" />
+		<child-element name="namespaces" />
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+	</element>
+	
+	<element name="author">
+		<attribute name="email" usage="optional"/>
+		<attribute name="location" usage="optional"/>
+		<attribute name="name" usage="optional"/>
+		<attribute name="organization" usage="optional"/>
+		<attribute name="photo" usage="optional"/>
+		<attribute name="website" usage="optional"/>
+		<child-element name="aboutMe"/>
+	</element>
+	
+	<element name="authors">
+		<child-element name="author"/>
+	</element>
+	
+	<element name="available" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+		<attribute name="version" usage="optional"/>
+	</element>
+	
+	<element name="class">
+		<attribute name="name"/>
+		<attribute name="superclass" usage="optional"/>
+		<attribute name="visibility" usage="optional"/>
+		<attribute name="getterPattern" usage="optional"/>
+		<attribute name="setterPattern" usage="optional"/>
+		<child-element name="alias"/>
+		<child-element name="aliases"/>
+		<child-element name="ancestor"/>
+		<child-element name="ancestors"/>
+		<child-element name="constructor"/>
+		<child-element name="constructors"/>
+		<child-element name="event"/>
+		<child-element name="events"/>
+		<child-element name="field"/>
+		<child-element name="fields"/>
+		<child-element name="mix"/>
+		<child-element name="mixes"/>
+		<child-element name="method"/>
+		<child-element name="methods"/>
+		<child-element name="property"/>
+		<child-element name="properties"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+		<!-- compatibility elements -->
+		<child-element name="available" />
+		<child-element name="deprecated" />
+		<child-element name="useragents" />
+	</element>
+	
+	<element name="classes">
+		<child-element name="class"/>
+	</element>
+	
+	<element name="constructor">
+		<attribute name="visibility" usage="optional"/>
+		<child-element name="exception"/>
+		<child-element name="exceptions"/>
+		<child-element name="parameter"/>
+		<child-element name="parameters"/>
+		<child-element name="returns"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+		<!-- compatibility elements -->
+		<child-element name="available" />
+		<child-element name="deprecated" />
+		<child-element name="useragents" />
+	</element>
+	
+	<element name="constructors">
+		<child-element name="constructor"/>
+	</element>
+		
+	<element name="deprecated" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+		<attribute name="version" usage="optional"/>
+	</element>
+		
+	<element name="description" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="event">
+		<attribute name="name"/>
+		<child-element name="parameter"/>
+		<child-element name="parameters"/>
+		<child-element name="returns"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+		<!-- compatibility elements -->
+		<child-element name="available" />
+		<child-element name="deprecated" />
+		<child-element name="useragents" />
+	</element>
+	
+	<element name="events">
+		<child-element name="event"/>
+	</element>
+	
+	<element name="example" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="examples">
+		<child-element name="example"/>
+	</element>
+	
+	<element name="exception">
+		<attribute name="datatype" usage="optional"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+		<!-- compatibility elements -->
+		<child-element name="available" />
+		<child-element name="deprecated" />
+		<child-element name="useragents" />
+	</element>
+	
+	<element name="exceptions">
+		<child-element name="exception"/>
+	</element>
+	
+	<element name="field">
+		<attribute name="name"/>
+		<attribute name="datatype" usage="optional"/>
+		<attribute name="visibility" usage="optional"/>
+		<attribute name="scope" usage="optional"/>
+		<child-element name="option"/>
+		<child-element name="options"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+		<!-- compatibility elements -->
+		<child-element name="available" />
+		<child-element name="deprecated" />
+		<child-element name="useragents" />
+	</element>
+	
+	<element name="fields">
+		<child-element name="field"/>
+	</element>
+	
+	<element name="globals">
+		<attribute name="getterPattern" usage="optional"/>
+		<attribute name="setterPattern" usage="optional"/>
+		<child-element name="method"/>
+		<child-element name="methods"/>
+	</element>
+	
+	<element name="label" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+	</element>
+	
+	<element name="license" hasText="yes"/>
+	
+	<element name="method">
+		<attribute name="name"/>
+		<attribute name="scope" usage="optional"/>
+		<attribute name="visibility" usage="optional"/>
+		<child-element name="exception"/>
+		<child-element name="exceptions"/>
+		<child-element name="parameter"/>
+		<child-element name="parameters"/>
+		<child-element name="returns"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+		<!-- compatibility elements -->
+		<child-element name="available" />
+		<child-element name="deprecated" />
+		<child-element name="useragents" />
+	</element>
+	
+	<element name="methods">
+		<child-element name="method"/>
+	</element>
+	
+	<element name="mix">
+		<attribute name="datatype"/>
+		<attribute name="fromScope" usage="optional"/>
+		<attribute name="toScope" usage="optional"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+	</element>
+	
+	<element name="mixes">
+		<child-element name="mix"/>
+	</element>
+	
+	<element name="mixin">
+		<attribute name="name"/>
+		<attribute name="scope" usage="optional"/>
+		<attribute name="visibility" usage="optional"/>
+		<child-element name="ancestor"/>
+		<child-element name="ancestors"/>
+	</element>
+	
+	<element name="mixins">
+		<child-element name="mixin"/>
+	</element>
+	
+	<element name="namespace">
+		<attribute name="name"/>
+		<attribute name="visibility" usage="optional"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+	</element>
+	
+	<element name="namespaces">
+		<child-element name="namespace"/>
+	</element>
+	
+	<element name="option">
+		<attribute name="value"/>
+		<child-element name="label"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+	</element>
+	
+	<element name="options">
+		<child-element name="option"/>
+	</element>
+	
+	<element name="parameter">
+		<attribute name="datatype" usage="optional"/>
+		<attribute name="name"/>
+		<attribute name="usage" usage="optional"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+	</element>
+	
+	<element name="parameters">
+		<child-element name="parameter"/>
+	</element>
+	
+	<element name="property">
+		<attribute name="datatype" usage="optional"/>
+		<attribute name="default_attribute"/>
+		<attribute name="hidden"/>
+		<attribute name="name"/>
+		<attribute name="readonly"/>
+		<attribute name="required"/>
+		<attribute name="scope"/>
+		<attribute name="transient"/>
+		<attribute name="urlparam"/>
+		<attribute name="visibility"/>
+		<child-element name="option"/>
+		<child-element name="options"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+		<!-- compatibility elements -->
+		<child-element name="available" />
+		<child-element name="deprecated" />
+		<child-element name="useragents" />
+	</element>
+	
+	<element name="properties">
+		<child-element name="property"/>
+	</element>
+	
+	<element name="quote" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="remarks" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="reference" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="references">
+		<child-element name="reference"/>
+	</element>
+	
+	<element name="returns">
+		<attribute name="datatype" usage="optional"/>
+		<!-- descriptive elements -->
+		<child-element name="description" />
+		<child-element name="examples" />
+		<child-element name="remarks" />
+		<child-element name="reference" />
+		<child-element name="references" />
+		<child-element name="title" />
+	</element>
+	
+	<element name="title" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="useragent" hasText="yes">
+		<attribute name="locid" usage="optional"/>
+		<attribute name="os" usage="optional"/>
+		<attribute name="osVersion" usage="optional"/>
+		<attribute name="platform"/> <!-- usage="optional"/> -->
+		<attribute name="version" usage="optional"/>
+		<attribute name="type" usage="optional"/>
+	</element>
+	
+	<element name="useragents">
+		<child-element name="useragent"/>
+	</element>
+</schema>

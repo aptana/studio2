@@ -1,0 +1,105 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Basic PHP Debugging</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Basic_PHP_Debugging&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Basic PHP Debugging [<a href="http://www.aptana.com/docs/index.php?title=Basic_PHP_Debugging&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>These are the basic instructions for starting a debug session.
+</p><p>There two types of debugging
+</p>
+<ul><li> internal debugging (e.g. Script debug)
+</li><li> Web Page debug, which uses a debugger extension (either Zend or XDebug) installed on a server
+</li></ul>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Script_debug_sessions"><span class="tocnumber">1</span> <span class="toctext">Script debug sessions</span></a></li>
+<li class="toclevel-1"><a href="#Web_page_debug_configuration"><span class="tocnumber">2</span> <span class="toctext">Web page debug configuration</span></a></li>
+<li class="toclevel-1"><a href="#The_Debugger"><span class="tocnumber">3</span> <span class="toctext">The Debugger</span></a></li>
+<li class="toclevel-1"><a href="#Debug_Ports"><span class="tocnumber">4</span> <span class="toctext">Debug Ports</span></a></li>
+<li class="toclevel-1"><a href="#XDebug_Configurations"><span class="tocnumber">5</span> <span class="toctext">XDebug Configurations</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Script_debug_sessions"></a><h2> <span class="mw-headline">Script debug sessions</span></h2>
+<p>These can be initiated in a several different ways.
+</p><p>First:
+</p>
+<ol><li> Right click the editor area and select 'Debug As'-&gt;'PHP Script'.
+</li><li> You will be prompted to move to the debug perspective - Click yes.
+</li><li> In that perspective you will see the debug stack, variables and breakpoints views. You can also add more views, like the <i>Watches</i> view.
+</li><li> From here you can do a step into, step over and step return by clicking the buttons on the stack view or by using F5/F6/F7 keys.
+</li><li> You can set more breakpoints as you debug, or even run to a line that you mark (right-click + 'Run to line' action -&gt; Will be available soon).
+</li></ol>
+<p>The second way you can run a script (the one currently active in your editor):
+</p>
+<ul><li> Click the bug-shaped button on the application toolbar.
+</li><li> Hit the 'arrow' to select PHP CGI or PHP CLI execution.
+</li></ul>
+<p>The third way is to hit the same debug arrow as above and select <i>Open debug dialog</i>. A dialog will be opened, in which you can create new PHP Script debug configurations and then launch them.
+</p>
+<a name="Web_page_debug_configuration"></a><h2> <span class="mw-headline">Web page debug configuration</span></h2>
+<p>This can be setup only through the debug dialog.
+</p><p>Open the dialog and add a new configuration for a "PHP Web Page". 
+</p><p>To complete such a configuration you have to set up a server (through the <i>Servers</i> view) such as Apache or XAMPP.
+</p>
+<a name="The_Debugger"></a><h2> <span class="mw-headline">The Debugger</span></h2>
+<p>The Studio debugger works with the Zend and XDebug extensions, and they can be controlled through a Preference:
+</p>
+<ul><li> Windows -&gt; Preferences -&gt; Aptana -&gt; Editors -&gt; PHP -&gt; PHP Interpreters, and then edit the default interpreter.
+</li></ul>
+<p>The default interpreters that we bundle contains a pre-configured XDebug extension; to use Zend you have to manually add it to that dialog and then select Zend as <i>Debugger Type</i>.
+</p>
+<a name="Debug_Ports"></a><h2> <span class="mw-headline">Debug Ports</span></h2>
+<p>There are two debug port that the studio opens when loading.<br />
+Port 9000 for the XDebug debugger and port 10000 for the Zend debugger.<br />
+These ports can be controlled through a Preference:
+</p>
+<ul><li>Windows -&gt; Preferences -&gt; Aptana -&gt; Editors -&gt; PHP -&gt; Debug
+</li></ul>
+<a name="XDebug_Configurations"></a><h2> <span class="mw-headline">XDebug Configurations</span></h2>
+<p>The Studio debugger bundles a XDebug debugger with a pre-configured php.ini. However, if you wish to define your own XDebug setting you'll have to make sure that the minimal required settings for a session initialization are set in your ini.
+</p>
+<pre>
+zend_extension_ts=&lt;debugger path&gt;/php_xdebug.so
+xdebug.remote_enable=1
+xdebug.remote_host=127.0.0.1
+xdebug.remote_port=9000
+</pre>
+<p>Note: Port 9000 is the default port for XDebug. In case the Aptana PHP debugger client is set to listed on port 9000, there is no real need to set it in the ini, however it's a good practice to do so.<br />
+In case that an XDebug session is triggered from the studio and the client port does not match the debug port defined in the ini, the Studio will prompt you about it and advise you what to do.<br />
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2407-0!1!0!!en!2!edit=0 and timestamp 20090202191334 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Basic_PHP_Debugging">http://aptana.com/docs/index.php/Basic_PHP_Debugging</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

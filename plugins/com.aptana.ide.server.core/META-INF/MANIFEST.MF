@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: com.aptana.ide.server.core; singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-Activator: com.aptana.ide.server.core.ServerCorePlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="[3.2.0,4.0.0)",
+ org.eclipse.debug.core,
+ com.aptana.ide.core,
+ com.aptana.ide.libraries.jetty,
+ com.aptana.ide.server,
+ org.eclipse.core.filesystem;bundle-version="1.2.0"
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Export-Package: com.aptana.ide.server,
+ com.aptana.ide.server.core,
+ com.aptana.ide.server.generic,
+ com.aptana.ide.server.http,
+ com.aptana.ide.server.jetty,
+ com.aptana.ide.server.logging,
+ com.aptana.ide.server.resolvers,
+ com.aptana.ide.server.resources

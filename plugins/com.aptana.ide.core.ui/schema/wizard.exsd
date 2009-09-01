@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.core.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.core.ui" id="wizard" name="Wizard"/>
+      </appInfo>
+      <documentation>
+         This extension point allows pages to be contributed to wizards.  It requires the id of the wizard being added to and an and wizard page factory that instantiates the wizard.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="page" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="page">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of the wizard being contributed to.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The factory class that creates the wizard page.  It must extend com.aptana.ide.wizards.WizardPageFactory, if it doesn&apos;t it will be ignored.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.wizards.WizardPageFactory"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         This extension point was added in Aptana Studio 1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.core.ui.wizard&quot;&gt;
+	&lt;page id=&quot;com.aptana.ide.wizards.WebProjectWizard&quot; 
+		class=&quot;com.aptana.ide.wizards.LibraryWizardPageFactory&quot; /&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         This API uses a factory class to instantiate the wizard page because org.eclipse.jface.wizard.WizardPage does include a default constructor so the factory class will have the flexibility to call any desired constructor that the wizard page has available.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension point is used for the Jaxer wizard page created in com.aptana.ide.framework.jaxer.project.JaxerWizardPageFactory, the Ajax Libraries wizard page created in com.aptana.ide.wizards.LibraryWizardPageFactory, and the HTML preview wizard page created in com.aptana.ide.editor.html.preview.PreviewWizardPageFactory
+      </documentation>
+   </annotation>
+
+
+</schema>

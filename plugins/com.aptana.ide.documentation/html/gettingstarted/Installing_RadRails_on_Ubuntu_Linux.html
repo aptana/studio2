@@ -1,0 +1,154 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Installing RadRails on Ubuntu Linux</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Installing_RadRails_on_Ubuntu_Linux&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Installing RadRails on Ubuntu Linux [<a href="http://www.aptana.com/docs/index.php?title=Installing_RadRails_on_Ubuntu_Linux&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Aptana RadRails will prompt you to install any needed Ruby gems for users with Windows or Mac OS X operating systems. If you're on Ubuntu or Debian Linux, though, a few more manual steps are needed to get RadRails running smoothly. The instructions below give the commands that you'll need to use to install Ruby, Ruby Gems, Rails, and Mongrel as both a root and non-root user.
+</p><p><b>Note:</b> Much of the information on this page originally appeared on the Ubuntu Community Documentation site:
+<a href="https://help.ubuntu.com/community/RubyOnRails" class="external free" title="https://help.ubuntu.com/community/RubyOnRails" rel="nofollow">https://help.ubuntu.com/community/RubyOnRails</a>
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Installing_as_root"><span class="tocnumber">1</span> <span class="toctext">Installing as root</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Installing_Ruby"><span class="tocnumber">1.1</span> <span class="toctext">Installing Ruby</span></a></li>
+<li class="toclevel-2"><a href="#Installing_Ruby_Gems_via_source"><span class="tocnumber">1.2</span> <span class="toctext">Installing Ruby Gems via source</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Installing_as_a_non-root_user"><span class="tocnumber">2</span> <span class="toctext">Installing as a non-root user</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Installing_Ruby_2"><span class="tocnumber">2.1</span> <span class="toctext">Installing Ruby</span></a></li>
+<li class="toclevel-2"><a href="#Installing_Ruby_Gems"><span class="tocnumber">2.2</span> <span class="toctext">Installing Ruby Gems</span></a></li>
+<li class="toclevel-2"><a href="#Installing_Rails_and_its_dependencies"><span class="tocnumber">2.3</span> <span class="toctext">Installing Rails and its dependencies</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Creating_your_first_Rails_application"><span class="tocnumber">3</span> <span class="toctext">Creating your first Rails application</span></a></li>
+<li class="toclevel-1"><a href="#Installing_Mongrel"><span class="tocnumber">4</span> <span class="toctext">Installing Mongrel</span></a></li>
+<li class="toclevel-1"><a href="#Installing_the_MySQL_gem"><span class="tocnumber">5</span> <span class="toctext">Installing the MySQL gem</span></a></li>
+<li class="toclevel-1"><a href="#Installing_SQLite3"><span class="tocnumber">6</span> <span class="toctext">Installing SQLite3</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Installing_as_root"></a><h2> <span class="mw-headline">Installing as root</span></h2>
+<p>Make sure that you have the Universe repository enabled in your /etc/sources.list. See <a href="https://wiki.ubuntu.com/AddingRepositoriesHowto" class="external free" title="https://wiki.ubuntu.com/AddingRepositoriesHowto" rel="nofollow">https://wiki.ubuntu.com/AddingRepositoriesHowto</a> for instructions.
+</p><p>In Ubuntu 6.06LTS or newer, you can install the "rails" package then skip to creating your first Rails app but this can cause some annoying issues with Ubuntu's package management (apt-get) and the Rails gem manager.
+</p>
+<a name="Installing_Ruby"></a><h3> <span class="mw-headline">Installing Ruby</span></h3>
+<p>At the command line:
+</p>
+<pre>sudo apt-get install ruby rdoc irb libyaml-ruby libzlib-ruby ri libopenssl-ruby ruby1.8-dev 
+</pre>
+<a name="Installing_Ruby_Gems_via_source"></a><h3> <span class="mw-headline">Installing Ruby Gems via source</span></h3>
+<p>Install the gem executable to <b>/usr/bin/gem1.8</b>:
+</p>
+<pre>wget <a href="http://rubyforge.org/frs/download.php/29548/rubygems-1.0.1.tgz" class="external free" title="http://rubyforge.org/frs/download.php/29548/rubygems-1.0.1.tgz" rel="nofollow">http://rubyforge.org/frs/download.php/29548/rubygems-1.0.1.tgz</a> 
+tar xzvf rubygems-1.0.1.tgz
+cd rubygems-1.0.1
+sudo ruby setup.rb
+sudo gem update --system
+sudo ln -s /usr/bin/gem1.8 /usr/bin/gem
+</pre>
+<a name="Installing_as_a_non-root_user"></a><h2> <span class="mw-headline">Installing as a non-root user</span></h2>
+<p>You can install Rubygems in your home directory, which is possibly safer as it doesn't install or modify files outside of your home directory.
+</p>
+<a name="Installing_Ruby_2"></a><h3> <span class="mw-headline">Installing Ruby</span></h3>
+<p>At the command line:
+</p>
+<pre>sudo apt-get install ruby rdoc irb libyaml-ruby libzlib-ruby ri libopenssl-ruby 
+</pre>
+<a name="Installing_Ruby_Gems"></a><h3> <span class="mw-headline">Installing Ruby Gems</span></h3>
+<pre>wget <a href="http://rubyforge.org/frs/download.php/17190/rubygems-0.9.2.tgz" class="external free" title="http://rubyforge.org/frs/download.php/17190/rubygems-0.9.2.tgz" rel="nofollow">http://rubyforge.org/frs/download.php/17190/rubygems-0.9.2.tgz</a> 
+tar xzvf rubygems-0.9.2.tgz
+cd rubygems-0.9.2
+PREFIX=$HOME
+export GEM_HOME=$PREFIX/lib/ruby/gems/1.8 
+export RUBYLIB=$PREFIX/local/lib/ruby:$PREFIX/local/lib/site_ruby/1.8
+ruby setup.rb all --prefix=$PREFIX
+</pre>
+<p>Next, add <code>GEM_HOME</code> and <code>RUBYLIB</code> into your <code>~/.profile</code> file to automatically load on login (otherwise some scripts will not be able to find rubygems).
+</p>
+<a name="Installing_Rails_and_its_dependencies"></a><h3> <span class="mw-headline">Installing Rails and its dependencies</span></h3>
+<p>At your command line:
+</p>
+<pre>~/bin/gem install rails -y 
+</pre>
+<a name="Creating_your_first_Rails_application"></a><h2> <span class="mw-headline">Creating your first Rails application</span></h2>
+<p>You can create your first Rails application as the current user without using "sudo":
+</p>
+<pre>$ ~/lib/ruby/gems/1.8/bin/rails/path/to/new/railsapp 
+</pre>
+<p>Replace <code>/path/to/new/railsapp</code> with your own path to where you want your app source code to live (e.g. <code>/home/myhome/rails/myapp</code>.)
+</p>
+<a name="Installing_Mongrel"></a><h2> <span class="mw-headline">Installing Mongrel</span></h2>
+<p>At the command line:
+</p>
+<pre>sudo apt-get install build-essential 
+sudo apt-get install ruby1.8-dev
+sudo gem install mongrel
+</pre>
+<a name="Installing_the_MySQL_gem"></a><h2> <span class="mw-headline">Installing the MySQL gem</span></h2>
+<pre>sudo apt-get install libmysqlclient15-dev
+sudo gem install mysql
+</pre>
+<a name="Installing_SQLite3"></a><h2> <span class="mw-headline">Installing SQLite3</span></h2>
+<p>The instructions in this section originally appeared on the <a href="http://theplana.wordpress.com/2007/05/11/install-sqlite3-on-ubuntu/" class="external text" title="http://theplana.wordpress.com/2007/05/11/install-sqlite3-on-ubuntu/" rel="nofollow">Plan A blog</a>:
+</p>
+<ol>
+<li>Type the following on the command line to install SQLite:<p>
+<pre>
+sudo apt-get install sqlite3 libsqlite3-dev
+sudo gem install sqlite3-ruby
+</pre></p></li>
+<li>Create a database by creating an empty file, using the following code:<p>
+<pre>
+touch database_name_dev.db
+touch database_name_test.db
+touch database_name_prod.db</pre></p></li>
+<li>Configure the following files as described:<ul>
+<li>development:<ul>
+<li>adapter: sqlite3</li>
+<li>database: db/database_name_dev.db</li></ul></li>
+<li>test:<ul>
+<li>adapter: sqlite3</li>
+<li>database: db/database_name_test.db</li></ul></li>
+<li>production:<ul>
+<li>adapter: sqlite3</li>
+<li>database: db/database_name_prod.db</li></ul></li></ul></li>
+</ol>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2243-0!1!0!!en!2!edit=0 and timestamp 20090202085208 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Installing_RadRails_on_Ubuntu_Linux">http://aptana.com/docs/index.php/Installing_RadRails_on_Ubuntu_Linux</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

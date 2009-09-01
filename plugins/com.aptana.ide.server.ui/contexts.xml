@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="servers_context_view">
+		<description>Use the Servers View to configure and manage your servers.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_Servers_View.html"
+			label="Displaying the Servers View" />
+	</context>
+	<context id="servers_add_server">
+		<description>Choose the server type that you want to add and configure</description>
+	</context>
+	<context id="servers_add_apache">
+		<description>Type the name, host and port information, and the start, restart, and stop commands for your Apache server.</description>
+	</context>
+	<context id="servers_add_generic">
+		<description>Type the name, host, port and command information for your web server.</description>
+	</context>
+	<context id="servers_add_jetty">
+		<description>Type the name, port, and document root information for your Jetty server.</description>
+	</context>
+	<context id="servers_add_jaxer">
+		<description>Type the name, host, and port information for your Jaxer server.</description>
+	</context>
+	<context id="servers_add_jam">
+		<description>Type the name, path, and port information for your Jaxer+Apache server installation.</description>
+	</context>
+	<context id="servers_add_mysql">
+		<description>Type the name, path, and command information for your MySQL server.</description>
+	</context>
+	<context id="servers_add_xampp">
+		<description>Type the name and command information for your XAMPP server.</description>
+	</context>
+</contexts>

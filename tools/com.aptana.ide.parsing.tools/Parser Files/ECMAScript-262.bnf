@@ -1,0 +1,556 @@
+#####
+#
+#   ECMAScript Grammar
+#
+#####
+
+#####
+#
+#	level 0
+#
+#####
+Program
+    :   SourceElements
+    ;
+    
+#####
+#
+#	level 1
+#
+#####
+SourceElements
+    :   SourceElement
+    |   SourceElements SourceElement
+    ;
+
+
+#####
+#
+#	level 2
+#
+#####
+SourceElement
+    :   FunctionDeclaration
+    |   Statement
+    ;
+    
+    
+#####
+#
+#	level 3
+#
+#####
+FunctionDeclaration
+    :   FUNCTION IDENTIFIER LPAREN FormalParameterList? RPAREN LCURLY FunctionBody RCURLY
+    ;
+    
+Statement
+    :   Block
+    |   VariableStatement
+    |   EmptyStatement
+    |   ExpressionStatement
+    |   IfStatement
+    |   IterationStatement
+    |   ContinueStatement
+    |   BreakStatement
+    |   ReturnStatement
+    |   WithStatement
+    |   LabelledStatement
+    |   SwitchStatement
+    |   ThrowStatement
+    |   TryStatement
+    ;
+
+
+#####
+#
+#	level 4
+#
+#####
+Block
+    :   LCURLY RCURLY
+    |   LCURLY StatementList RCURLY
+    ;
+    
+VariableStatement
+    :   VAR VariableDeclarationList SEMICOLON
+    ;
+
+EmptyStatement
+    :	SEMICOLON
+    ;
+
+ExpressionStatement
+    :   [lookahead not {COMMA FUNCTION}] Expression SEMICOLON
+    ;
+
+FormalParameterList
+    :   IDENTIFIER
+    |   FormalParameterList COMMA IDENTIFIER
+    ;
+    
+FunctionBody
+    :   SourceElements
+    ;
+    
+IfStatement
+    :   IF LPAREN Expression RPAREN Statement ELSE Statement
+    |   IF LPAREN Expression RPAREN Statement
+    ;
+    
+IterationStatement
+    :   DO Statement WHILE LPAREN Expression RPAREN
+    |   WHILE LPAREN Expression RPAREN Statement
+    |   FOR LPAREN ExpressionNoIn* SEMICOLON Expression* SEMICOLON Expression* RPAREN Statement
+    |   FOR LPAREN VAR VariableDeclarationListNoIn SEMICOLON Expression* SEMICOLON Expression* RPAREN Statement
+    |   FOR LPAREN LeftHandSideExpression IN Expression RPAREN Statement
+    |   FOR LPAREN VAR VariableDeclarationNoIn IN Expression RPAREN Statement
+    ;
+
+ContinueStatement
+    :   CONTINUE [no LINE_TERMINATOR] IDENTIFIER? SEMICOLON
+    ;
+
+BreakStatement
+    :   BREAK [no LINE_TERMINATOR] IDENTIFIER? SEMICOLON
+    ;
+
+ReturnStatement
+    :   RETURN [no LINE_TERMINATOR] Expression? SEMICOLON
+    ;
+
+WithStatement
+    :   WITH LPAREN Expression RPAREN Statement
+    ;
+
+LabelledStatement
+    :   IDENTIFIER COLON Statement
+    ;
+
+SwitchStatement
+    :   SWITCH LPAREN Expression RPAREN CaseBlock
+    ;
+
+ThrowStatement
+    :   THROW [no LINE_TERMINATOR] Expression SEMICOLON
+    ;
+
+TryStatement
+    :   TRY Block Catch
+    |   TRY Block Finally
+    |   TRY Block Catch Finally
+    ;
+    
+    
+#####
+#
+#	level 5
+#
+#####
+CaseBlock
+    :   LCURLY RCURLY
+    |   LCURLY CaseClauses RCURLY
+    |   LCURLY DefaultClause RCURLY
+    |   LCURLY DefaultClause CaseClauses RCURLY
+    |   LCURLY CaseClauses DefaultClause RCURLY
+    |   LCURLY CaseClauses DefaultClause CaseClauses RCURLY
+    ;
+
+Catch
+    :   CATCH LPAREN IDENTIFIER RPAREN Block
+    ;
+    
+Expression
+    :   AssignmentExpression
+    |   Expression COMMA AssignmentExpression
+    ;
+
+ExpressionNoIn
+    :   AssignmentExpressionNoIn
+    |   ExpressionNoIn COMMA AssignmentExpressionNoIn
+    ;
+
+Finally
+    :   FINALLY Block
+    ;
+    
+LeftHandSideExpression
+    :   NewExpression
+    |   CallExpression
+    ;
+    
+StatementList
+    :   Statement
+    |   StatementList Statement
+    ;
+
+VariableDeclarationList
+    :   VariableDeclaration
+    |   VariableDeclarationList COMMA VariableDeclaration
+    ;
+
+VariableDeclarationListNoIn
+    :   VariableDeclarationNoIn
+    |   VariableDeclarationListNoIn COMMA VariableDeclarationNoIn
+    ;
+
+VariableDeclarationNoIn
+    :   IDENTIFIER
+    |   IDENTIFIER InitialiserNoIn
+    ;
+
+    
+#####
+#
+#	level 6
+#
+#####
+AssignmentExpression
+    :   ConditionalExpression
+    |   LeftHandSideExpression AssignmentOperator AssignmentExpression
+    ;
+
+AssignmentExpressionNoIn
+    :   ConditionalExpressionNoIn
+    |   LeftHandSideExpression AssignmentOperator AssignmentExpressionNoIn
+    ;
+
+CallExpression
+    :   MemberExpression Arguments
+    |   CallExpression Arguments
+    |   CallExpression LBRACKET Expression RBRACE
+    |   CallExpression DOT IDENTIFIER
+    ;
+    
+CaseClauses
+    :   CaseClause
+    |   CaseClauses CaseClause
+    ;
+
+DefaultClause
+    :   DEFAULT COLON
+    |   DEFAULT COLON StatementList
+    ;
+
+InitialiserNoIn
+    :   EQUAL AssignmentExpressionNoIn
+    ;
+    
+NewExpression
+    :   MemberExpression
+    |   NEW NewExpression
+    ;
+
+VariableDeclaration
+    :   IDENTIFIER
+    |   IDENTIFIER Initialiser
+    ;
+
+
+#####
+#
+#	level 7
+#
+#####
+Arguments
+    :   LPAREN RPAREN
+    |   LPAREN ArgumentList RPAREN
+    ;
+    
+AssignmentOperator
+    :   EQUAL
+    |   STAR_EQUAL
+    |   FORWARD_SLASH_EQUAL
+    |   PERCENT_EQUAL
+    |   PLUS_EQUAL
+    |   MINUS_EQUAL
+    |   LESS_LESS_EQUAL
+    |   GREATER_GREATER_EQUAL
+    |   GREATER_GREATER_GREATER_EQUAL
+    |   AMPERSAND_EQUAL
+    |   CARET_EQUAL
+    |   PIPE_EQUAL
+    ;
+
+CaseClause
+    :   CASE Expression COLON StatementList?
+    ;
+    
+ConditionalExpression
+    :   LogicalORExpression
+    |   LogicalORExpression QUESTION AssignmentExpression COLON AssignmentExpression
+    ;
+
+ConditionalExpressionNoIn
+    :   LogicalORExpressionNoIn
+    |   LogicalORExpressionNoIn QUESTION AssignmentExpressionNoIn COLON AssignmentExpressionNoIn
+    ;
+
+Initialiser
+    :   EQUAL AssignmentExpression
+    ;
+    
+MemberExpression
+    :   PrimaryExpression
+    |   FunctionExpression
+    |   MemberExpression LBRACKET Expression RBRACE
+    |   MemberExpression DOT IDENTIFIER
+    |   NEW MemberExpression Arguments
+    ;
+
+
+#####
+#
+#	level 8
+#
+#####
+ArgumentList
+    :   AssignmentExpression
+    |   ArgumentList COMMA AssignmentExpression
+    ;
+
+FunctionExpression
+    :   FUNCTION IDENTIFIER? LPAREN FormalParameterList? RPAREN LCURLY FunctionBody RCURLY
+    ;
+    
+LogicalORExpression
+    :   LogicalANDExpression
+    |   LogicalORExpression BOOLEAN_OR LogicalANDExpression
+    ;
+    
+LogicalORExpressionNoIn
+    :   LogicalANDExpressionNoIn
+    |   LogicalORExpressionNoIn BOOLEAN_OR LogicalANDExpressionNoIn
+    ;
+
+PrimaryExpression
+    :   THIS
+    |   IDENTIFIER
+    |   Literal
+    |   ArrayLiteral
+    |   ObjectLiteral
+    |   LPAREN Expression RPAREN
+    ;
+
+#####
+#
+#	level 9
+#
+#####
+ArrayLiteral
+    :   LBRACKET RBRACE
+    |   LBRACKET Elision RBRACE
+    |   LBRACKET ElementList RBRACE
+    |   LBRACKET ElementList COMMA RBRACE
+    |   LBRACKET ElementList COMMA Elision RBRACE
+    ;
+    
+Literal
+    :	// empty
+    |   NULL
+    |   TRUE | FALSE
+    |   NUMBER
+    |   STRING
+    ;
+    
+LogicalANDExpression
+    :   BitwiseORExpression
+    |   LogicalANDExpression BOOLEAN_AND BitwiseORExpression
+    ;
+
+LogicalANDExpressionNoIn
+    :   BitwiseORExpressionNoIn
+    |   LogicalANDExpressionNoIn BOOLEAN_AND BitwiseORExpressionNoIn
+    ;
+
+ObjectLiteral
+    :   LCURLY RCURLY
+    |   LCURLY PropertyNameAndValueList RCURLY
+    ;
+    
+
+#####
+#
+#	level 10
+#
+#####
+BitwiseORExpression
+    :   BitwiseXORExpression
+    |   BitwiseORExpression BIT_OR BitwiseXORExpression
+    ;
+
+BitwiseORExpressionNoIn
+    :   BitwiseXORExpressionNoIn
+    |   BitwiseORExpressionNoIn BIT_OR BitwiseXORExpressionNoIn
+    ;
+    
+ElementList
+    :   AssignmentExpression
+    |   Elision AssignmentExpression
+    |   ElementList COMMA AssignmentExpression
+    |   ElementList COMMA Elision AssignmentExpression
+    ;
+    
+Elision
+    :   COMMA
+    |   Elision COMMA
+    ;
+
+PropertyNameAndValueList
+    :   PropertyName COLON AssignmentExpression
+    |   PropertyNameAndValueList COMMA PropertyName COLON AssignmentExpression
+    ;
+    
+
+#####
+#
+#	level 11
+#
+#####
+BitwiseXORExpression
+    :   BitwiseANDExpression
+    |   BitwiseXORExpression BIT_XOR BitwiseANDExpression
+    ;
+
+BitwiseXORExpressionNoIn
+    :   BitwiseANDExpressionNoIn
+    |   BitwiseXORExpressionNoIn BIT_XOR BitwiseANDExpressionNoIn
+    ;
+
+PropertyName
+    :   IDENTIFIER
+    |   STRING
+    |   NUMBER
+    ;
+
+
+#####
+#
+#	level 12
+#
+#####
+BitwiseANDExpression
+    :   EqualityExpression
+    |   BitwiseANDExpression BIT_AND EqualityExpression
+    ;
+
+BitwiseANDExpressionNoIn
+    :   EqualityExpressionNoIn
+    |   BitwiseANDExpressionNoIn BIT_AND EqualityExpressionNoIn
+    ;
+
+
+#####
+#
+#	level 13
+#
+#####
+EqualityExpression
+    :   RelationalExpression
+    |   EqualityExpression EQUAL_EQUAL RelationalExpression
+    |   EqualityExpression NOT_EQUAL RelationalExpression
+    |   EqualityExpression IDENTITY RelationalExpression
+    |   EqualityExpression NOT_IDENTIRTY RelationalExpression
+    ;
+
+EqualityExpressionNoIn
+    :   RelationalExpressionNoIn
+    |   EqualityExpressionNoIn EQUAL_EQUAL RelationalExpressionNoIn
+    |   EqualityExpressionNoIn NOT_EQUAL RelationalExpressionNoIn
+    |   EqualityExpressionNoIn IDENTITY RelationalExpressionNoIn
+    |   EqualityExpressionNoIn NOT_IDENTITY RelationalExpressionNoIn
+    ;
+
+
+#####
+#
+#	level 14
+#
+#####
+RelationalExpression
+    :   ShiftExpression
+    |   RelationalExpression LESS_THAN ShiftExpression
+    |   RelationalExpression GREATER_THAN ShiftExpression
+    |   RelationalExpression LESS_THAN_EQUAL ShiftExpression
+    |   RelationalExpression GREATER_THAN_EQUAL ShiftExpression
+    |   RelationalExpression INSTANCEOF ShiftExpression
+    |   RelationalExpression IN ShiftExpression
+    ;
+
+RelationalExpressionNoIn
+    :   ShiftExpression
+    |   RelationalExpressionNoIn LESS_THAN ShiftExpression
+    |   RelationalExpressionNoIn GREATER_THAN ShiftExpression
+    |   RelationalExpressionNoIn LESS_THAN_EQUAS ShiftExpression
+    |   RelationalExpressionNoIn GREATER_THAN_EQUAL ShiftExpression
+    |   RelationalExpressionNoIn INSTANCEOF ShiftExpression
+    ;
+    
+
+#####
+#
+#	level 15
+#
+#####
+ShiftExpression
+    :   AdditiveExpression
+    |   ShiftExpression SHIFT_LEFT AdditiveExpression
+    |   ShiftExpression SHIFT_RIGHT AdditiveExpression
+    |   ShiftExpression ARITHMETIC_SHIFT_LEFT AdditiveExpression
+    ;
+
+
+#####
+#
+#	level 16
+#
+#####
+AdditiveExpression
+    :   MultiplicativeExpression
+    |   AdditiveExpression PLUS MultiplicativeExpression
+    |   AdditiveExpression MINUS MultiplicativeExpression
+    ;
+
+
+#####
+#
+#	level 17
+#
+#####
+MultiplicativeExpression
+    :   UnaryExpression
+    |   MultiplicativeExpression STAR UnaryExpression
+    |   MultiplicativeExpression FORWARD_SLASH UnaryExpression
+    |   MultiplicativeExpression PERCENT UnaryExpression
+    ;
+
+
+#####
+#
+#	level 18
+#
+#####
+UnaryExpression
+    :   PostfixExpression
+    |   DELETE UnaryExpression
+    |   VOID UnaryExpression
+    |   TYPEOF UnaryExpression
+    |   PLUS_PLUS UnaryExpression
+    |   MINUS_MINUS UnaryExpression
+    |   PLUS UnaryExpression
+    |   MINUS UnaryExpression
+    |   TILDE UnaryExpression
+    |   EXCLAMATION UnaryExpression
+    ;
+
+
+#####
+#
+#	level 19
+#
+#####
+PostfixExpression
+    :   LeftHandSideExpression
+    |   LeftHandSideExpression [no LINE_TERMINATOR] PLUS_PLUS
+    |   LeftHandSideExpression [no LINE_TERMINATOR] MINUS_MINUS
+    ;

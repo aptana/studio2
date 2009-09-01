@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+  <extension-point id="protocols" name="Protocols" schema="schema/protocols.exsd"/>
+  <extension-point id="licensing" name="Licensing" schema="schema/licensing.exsd"/>
+  <extension-point id="buildParticipants" name="Build Participants" schema="schema/buildParticipants.exsd"/>
+  <!-- Check Version-->
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.core.preferences.PreferencesInitializer"/>
+   </extension>
+   <extension
+         id="unifiedBuilder"
+         name="Aptana Unified Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            callOnEmptyDelta="true"
+            hasNature="false"
+            isConfigurable="false">
+         <run
+               class="com.aptana.ide.core.builder.UnifiedProjectBuilder">
+         </run>
+      </builder>
+   </extension>
+</plugin>

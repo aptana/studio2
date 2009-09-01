@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.core.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.core.ui" id="browser" name="Browser"/>
+      </appInfo>
+      <documentation>
+         This extension point is designed to allow browser contribution via extension point that can be used in views or editors or other UI-elements.  The BrowserRegistry class parses and caches the extension points and allows requests for a browser to be made with an id.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="browser" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="browser">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Browser class being contributed.  This class must implement com.aptana.ide.core.ui.widgets.IBrowser or else it will be ignored.  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.core.ui.widgets.IBrowser"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of this browser contribution.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         This extension point was added in Aptana Studio 1.2.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.core.ui.browser&quot;&gt;
+	&lt;browser id=&quot;com.my.xyz.opera&quot; class=&quot;com.my.xyz.OperaBrowser&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+This extension point contributes the OperaBrowser class that must implement IBrowser and it will be accessible via the com.my.xyz.opera id from the BrowserRegistry class.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The supplied browser class must implement com.aptana.ide.core.ui.widgets.IBrowser or it will be ignored.  If the registry does not contain a browser with the desired id there is a BaseBrowserAdapter class that provides the simplest wrapper around the SWT default browser that can be instantiated.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to contribute the default SWT browser and the XUL-based Firefox browser contributed in the com.aptana.ide.xul plugin.  The Aptana Home PortalEditor class uses this extension point via the BrowserRegistry to use the embedded Firefox browser as its browser when the user selects it via a pref.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

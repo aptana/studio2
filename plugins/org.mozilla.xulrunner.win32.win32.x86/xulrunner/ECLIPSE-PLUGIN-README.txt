@@ -1,0 +1,1 @@
+Unzip xulrunner here, and update the manifest and plugin.xml with proper version as needed

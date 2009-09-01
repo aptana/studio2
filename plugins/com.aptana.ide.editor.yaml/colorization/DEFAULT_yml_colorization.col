@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colorizer
+	xmlns="http://www.aptana.com/2007/colorizer/1.0"
+	language="text/yaml"
+	background="rgb(255,255,255)" 
+    line-highlight="rgb(232,242,254)" 
+    selection-foreground="COLOR_LIST_SELECTION_TEXT" 
+    selection-background="COLOR_LIST_SELECTION"
+    folding-background="COLOR_WIDGET_BACKGROUND"
+    folding-foreground="rgb(139,139,139)"
+    caret-color="rgb(0,0,0)">
+		
+    <category name="ERROR" style="ERROR"/>
+    <category name="IDENTIFIER" style="IDENTIFIER"/>
+    <category name="KEYWORD" style="KEYWORD">
+		<token type="SELF" style="KEYWORD_SELF"/>
+	</category>
+    <category name="LITERAL" style="LITERAL">
+        <token type="STRING" style="LITERAL_STRING"/>
+        <token type="START_DOCUMENT" style="LITERAL_START_DOCUMENT"/>
+         <token type="ROOT" style="LITERAL_ROOT"/>
+         <token type="INDENT" style="LITERAL_INDENT"/>
+    </category>
+    <category name="PUNCTUATOR" style="PUNCTUATOR"/>
+    <category name="WHITESPACE" style="WHITESPACE">
+        <token type="COMMENT" style="WHITESPACE_COMMENT"/>
+    </category>
+	
+    <style foreground="rgb(255,128,192)" font-style="italic" id="ERROR"/>
+    <style foreground="rgb(51,135,204)" font-weight="bold" id="IDENTIFIER"/>
+    <style foreground="rgb(163,53,122)" font-weight="bold" id="KEYWORD"/>
+    <style foreground="rgb(0,0,0)" id="LITERAL"/>
+    <style foreground="rgb(163,21,21)" id="LITERAL_START_DOCUMENT"/>
+    <style foreground="rgb(204,128,41)" font-weight="bold" id="LITERAL_ROOT"/>
+    <style foreground="rgb(0,128,255)" id="LITERAL_INDENT"/>
+    <style id="PUNCTUATOR"
+          foreground="rgb(0,0,0)"
+          font-weight="bold" />
+    <style foreground="rgb(0,0,255)" id="LITERAL_STRING"/>
+    <style foreground="rgb(0,0,0)" id="WHITESPACE"/>
+    <style foreground="rgb(153,51,204)" id="WHITESPACE_COMMENT"/>
+	
+</colorizer>

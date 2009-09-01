@@ -1,0 +1,59 @@
+Program
+	:	Statements
+	;
+
+# Statements
+
+Statements
+	:	Statement {FirstStatement}
+	|	Statements Statement {AddStatement}
+	;
+	
+Statement
+	:	ElementDefinition	# pass through
+	|	ContentList
+	|	AttributeList
+	;
+
+# Top-level statements
+ElementDefinition
+	:	IDENTIFIER EQUAL ELEMENT IDENTIFIER LCURLY SimpleAndExpression RCURLY {ElementDefinition}
+	;
+	
+ContentList
+	:	IDENTIFIER EQUAL LPAREN AndExpression RPAREN
+	;
+	
+AttributeList
+	:	IDENTIFIER EQUAL AT_LPAREN AttributeAndExpression RPAREN
+	;
+	
+# Statement body expressions
+
+SimpleAndExpression
+	:	IDENTIFIER {FirstSimpleAndExpression}
+	|	SimpleAndExpression AMPERSAND IDENTIFIER {AddSimpleAndExpression}
+	;
+	
+AndExpression
+	:	Term
+	|	AndExpression AMPERSAND Term
+	;
+
+AttributeAndExpression
+	:	AttributeTerm
+	|	AttributeAndExpression AMPERSAND AttributeTerm
+	;
+	
+Term
+	:	IDENTIFIER
+	|	IDENTIFIER QUESTION
+	|	IDENTIFIER STAR
+	|	EMPTY
+	;
+
+AttributeTerm
+	:	IDENTIFIER
+	|	IDENTIFIER QUESTION
+	|	EMPTY
+	;

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/scriptdoc"
+	category-enumeration="com.aptana.ide.lexer.TokenCategories"
+	type-enumeration="com.aptana.ide.editor.scriptdoc.lexing.ScriptDocTokenTypes">
+	
+	<bundle>com.aptana.ide.editor.js</bundle>
+	<package>com.aptana.ide.editor.scriptdoc.lexing</package>
+	
+	<token-group group="default">
+		<string category="DELIMITER" type="START_DOCUMENTATION">/**</string>
+	</token-group>
+	
+	<token-group group="documentation">
+		<category-group category="WHITESPACE">
+			<one-or-more>
+				<character-class type="WHITESPACE"> \t\v\f</character-class>
+			</one-or-more>
+			<line-terminator type="LINE_TERMINATOR"/>
+		</category-group>
+		
+		<category-group category="KEYWORD">
+			<and>
+				<or>
+					<string type="ADVANCED">@advanced</string>
+					<string type="ALIAS">@alias</string>
+					<string type="AUTHOR">@author</string>
+					<string type="CLASS_DESCRIPTION">@classDescription</string>
+					<string type="CONSTRUCTOR">@constructor</string>
+					<string type="COPYRIGHT">@copyright</string>
+					<string type="DEPRECATED">@deprecated</string>
+					<string type="EXAMPLE">@example</string>
+					<string type="EXTENDS">@extends</string>
+					<string type="EXCEPTION">@exception</string>
+					<string type="ID">@id</string>		
+					<string type="IGNORE">@ignore</string>
+					<string type="INTERNAL">@internal</string>
+					<string type="LICENSE">@license</string>
+					<string type="LINK">@link</string>
+					<string type="METHOD">@method</string>
+					<string type="MEMBER_OF">@memberOf</string>
+					<string type="NAMESPACE">@namespace</string>	
+					<string type="NATIVE">@native</string>
+					<string type="OVERVIEW">@overview</string>
+					<string type="PRIVATE">@private</string>
+					<string type="PROJECT_DESCRIPTION">@projectDescription</string>
+					<string type="PROTECTED">@protected</string>
+					<string type="PROPERTY">@property</string>
+					<string type="SDOC">@sdoc</string>
+					<string type="SEE">@see</string>
+					<string type="SINCE">@since</string>
+					<string type="PARAM">@param</string>
+					<string type="RETURN">@return</string>
+					<string type="TYPE">@type</string>
+					<string type="VERSION">@version</string>
+				</or>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+		</category-group>
+		
+		<string category="DELIMITER" type="END_DOCUMENTATION" switch-to="default">*/</string>
+		<and category="IDENTIFIER" type="IDENTIFIER" switch-to="identifier">
+			<identifier start-characters="$_" part-characters="$_."/>
+			<zero-or-more>
+				<character-class> \t\v\f</character-class>
+			</zero-or-more>
+			<string>:</string>
+			<zero-or-more>
+				<character-class> \t\v\f</character-class>
+			</zero-or-more>
+			<one-or-more>
+				<number/>
+			</one-or-more>
+		</and>
+		<category-group category="PUNCTUATOR">
+			<or>
+				<string type="LCURLY" switch-to="identifier">{</string>
+				<string type="DOLLAR_LCURLY" switch-to="identifier">${</string>
+				<string type="POUND">#</string>
+				<string type="LBRACKET">[</string>
+				<string type="RBRACKET">]</string>
+			</or>
+		</category-group>
+		
+		<one-or-more category="LITERAL" type="TEXT">
+			<character-class negate="true"> \t\r\n\f\v{[]#</character-class>
+		</one-or-more>
+	</token-group>
+	
+	<token-group group="indent">
+		<character category="DELIMITER" type="STAR" switch-to="documentation">*</character>
+	</token-group>
+	
+	<token-group group="identifier">
+		<category-group category="WHITESPACE">
+			<one-or-more>
+				<character-class type="WHITESPACE"> \t\v\f</character-class>
+			</one-or-more>
+			<line-terminator type="LINE_TERMINATOR" switch-to="documentation" />
+		</category-group>
+		<and category="IDENTIFIER" type="IDENTIFIER">
+			<identifier start-characters="$_" part-characters="$_."/>
+			<zero-or-more>
+				<character-class> \t\v\f</character-class>
+			</zero-or-more>
+			<string>:</string>
+			<zero-or-more>
+				<character-class> \t\v\f</character-class>
+			</zero-or-more>
+			<one-or-more>
+				<number/>
+			</one-or-more>
+		</and>
+		<identifier category="IDENTIFIER" type="IDENTIFIER" start-characters="$_" part-characters="$_."/>
+		
+		<and category="KEYWORD" type="LINK">
+			<string>@link</string>
+			<lookahead negate="true">
+				<letter/>
+			</lookahead>
+		</and>
+		
+		<category-group category="PUNCTUATOR">
+			<or>
+				<string type="RCURLY" switch-to="documentation">}</string>
+				<string type="ELLIPSIS">...</string>
+				<string type="LBRACKET">[</string>
+				<string type="RBRACKET">]</string>
+				<string type="COMMA">,</string>
+				<string type="PIPE">|</string>
+				<string type="FORWARD_SLASH">/</string>
+			</or>
+		</category-group>
+	</token-group>
+	
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="documentation">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+	</token-group>
+	
+</lexer>

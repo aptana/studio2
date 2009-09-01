@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/jscomment"
+	category-enumeration="com.aptana.ide.lexer.TokenCategories"
+	type-enumeration="com.aptana.ide.editor.jscomment.lexing.JSCommentTokenTypes">
+	
+	<bundle>com.aptana.ide.editor.js</bundle>
+	<package>com.aptana.ide.editor.jscomment.lexing</package>
+	
+	<token-group group="default">
+		<category-group category="DELIMITER">
+			<or>
+				<string type="START_MULTILINE_COMMENT" switch-to="multiline">/*</string>
+				<string type="START_SINGLELINE_COMMENT" switch-to="singleline">//</string>
+			</or>
+		</category-group>
+	</token-group>
+	
+	<token-group group="multiline">
+		<multi-line-text category="LITERAL" type="TEXT"/>
+		<multi-line-terminator category="WHITESPACE" type="LINE_TERMINATOR"/>
+		<string category="DELIMITER" type="END_MULTILINE_COMMENT">*/</string>
+	</token-group>
+	
+	<token-group group="singleline">
+		<single-line-text category="LITERAL" type="TEXT"/>
+		<line-terminator category="WHITESPACE" type="LINE_TERMINATOR"/>
+	</token-group>
+	
+</lexer>

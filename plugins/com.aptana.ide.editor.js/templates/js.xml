@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="setTimeout" 
+	id="com.aptana.ide.editors.js.templates.set.timeout" 
+	name="setTimeout">setTimeout("${word_selection}", 1000);</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="if...else" 
+	id="com.aptana.ide.editors.js.templates.if" 
+	name="if">if (${true}) { ${line_selection} };</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="if...else" 
+	id="com.aptana.ide.editors.js.templates.if.else" 
+	name="ife">if (${condition}) {
+	${line_selection}
+} else {
+	
+}</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="wrap in function" 
+	id="com.aptana.ide.editors.js.templates.wrap.in.function" 
+	name="wrap in function">function ${name}() {
+	${line_selection}
+}</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="wrap in for loop" 
+	id="com.aptana.ide.editors.js.templates.wrap.in.for.loop" 
+	name="wrap in for loop">for (var ${i}=0; ${i} &lt; ${x}; ${i}++) {
+	${line_selection}
+};</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="wrap in comment" 
+	id="com.aptana.ide.editors.js.templates.wrap.in.comment" 
+	name="wrap in comment">/*
+${line_selection}
+*/</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="wrap in anonymous function" 
+	id="com.aptana.ide.editors.js.templates.wrap.in.anonymous.function" 
+	name="wrap in anonymous function">(function(){
+	${line_selection}
+})();</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="insert switch statement" 
+	id="com.aptana.ide.editors.js.templates.switch" 
+	name="switch">switch(${expression}) {
+	case ${value1}:
+	    ${statement_1}
+		break;
+	default: 
+		${default_statement};
+}
+${cursor}
+</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="wrap in try catch" 
+	id="com.aptana.ide.editors.js.templates.wrap.in.try.catch" 
+	name="try...catch wrap">try {
+	${line_selection}
+} catch (e) {
+	
+}</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="get Element by Id" 
+	id="com.aptana.ide.editors.js.templates.document.getElementById" 
+	name="doc.getElementById">document.getElementById("${id}")</template>
+
+<!-- Textmate snippets ported over -->
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="for (…) {…} (Improved Native For-Loop)" 
+	id="com.aptana.ide.editors.js.templates.native.for.loop" 
+	name="for">for (var ${i} = ${Things}.length - 1; ${i} &gt;= 0; ${i}--){
+	${Things}[${i}]${cursor}
+};</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="Function" 
+	id="com.aptana.ide.editors.js.templates.function.tm" 
+	name="fun">function ${name} (${args}) {
+	${cursor}
+}</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="Object Method String" 
+	id="com.aptana.ide.editors.js.templates.object.method.string.tm" 
+	name="'':f">'#${thing}:${click}': function(element){
+	${cursor}
+}</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="Object Method" 
+	id="com.aptana.ide.editors.js.templates.object.method.tm" 
+	name=":f">${method_name}: function(${attribute}){
+	${cursor}
+}</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="Object Value" 
+	id="com.aptana.ide.editors.js.templates.object.value.tm" 
+	name=":,">{value_name}:${value},</template>
+	
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="Object key - key: &quot;value&quot;" 
+	id="com.aptana.ide.editors.js.templates.object.key.tm" 
+	name=":">${key}: "${value}"</template>
+	
+	
+<template 
+	context="com.aptana.ide.editors.contextType.text/javascript" 
+	description="Prototype" 
+	id="com.aptana.ide.editors.js.templates.prototype.tm" 
+	name="proto">${class_name}.prototype.${method_name} = function(${arguments}) {
+	${cursor}
+};</template>	
+	
+
+
+
+</templates>

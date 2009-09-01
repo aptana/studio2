@@ -1,0 +1,247 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Flow Control Elements</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Flow_Control_Elements&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Flow Control Elements [<a href="http://www.aptana.com/docs/index.php?title=Flow_Control_Elements&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#And_Matcher"><span class="tocnumber">1</span> <span class="toctext">And Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax"><span class="tocnumber">1.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class"><span class="tocnumber">1.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children"><span class="tocnumber">1.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes"><span class="tocnumber">1.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#OneOrMore_Matcher"><span class="tocnumber">2</span> <span class="toctext">OneOrMore Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_2"><span class="tocnumber">2.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_2"><span class="tocnumber">2.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_2"><span class="tocnumber">2.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_2"><span class="tocnumber">2.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Optional_Matcher"><span class="tocnumber">3</span> <span class="toctext">Optional Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_3"><span class="tocnumber">3.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_3"><span class="tocnumber">3.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_3"><span class="tocnumber">3.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_3"><span class="tocnumber">3.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Or_Matcher"><span class="tocnumber">4</span> <span class="toctext">Or Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_4"><span class="tocnumber">4.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_4"><span class="tocnumber">4.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_4"><span class="tocnumber">4.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_4"><span class="tocnumber">4.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Repetition_Matcher"><span class="tocnumber">5</span> <span class="toctext">Repetition Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_5"><span class="tocnumber">5.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_5"><span class="tocnumber">5.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_5"><span class="tocnumber">5.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_5"><span class="tocnumber">5.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#ZeroOrMore_Matcher"><span class="tocnumber">6</span> <span class="toctext">ZeroOrMore Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_6"><span class="tocnumber">6.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_6"><span class="tocnumber">6.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_6"><span class="tocnumber">6.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_6"><span class="tocnumber">6.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="And_Matcher"></a><h1> <span class="mw-headline">And Matcher</span></h1>
+<hr />
+<p>The and matcher requires all of its child matchers to match before it will return success.
+</p>
+<a name="Syntax"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;and&gt;
+  &lt;string&gt;Hello&lt;/string&gt;
+  &lt;optional&gt;
+    &lt;character&gt;,&lt;/character&gt;
+  &lt;/optional&gt;
+  &lt;one-or-more&gt;
+    &lt;whitespace/&gt;
+  &lt;/one-or-more&gt;
+  &lt;string&gt;World&lt;/string&gt;
+&lt;/and&gt;
+</pre>
+<a name="Class"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.AndMatcher
+</pre>
+<a name="Children"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<pre>There are no attributes for this matcher.
+</pre>
+<p><br />
+</p>
+<a name="OneOrMore_Matcher"></a><h1> <span class="mw-headline">OneOrMore Matcher</span></h1>
+<hr />
+<p>The one-or-more matcher requires that its child pattern to match one or more times. This matcher will continue to process the child pattern until it fails.
+</p><p>If this element contains more than one child, all children will be wrapped in an AndMatcher which then becomes the child of this element.
+</p>
+<a name="Syntax_2"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;one-or-more&gt;
+  &lt;whitespace/&gt;
+&lt;/one-or-more&gt;
+</pre>
+<a name="Class_2"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.OneOrMoreMatcher
+</pre>
+<a name="Children_2"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes_2"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<pre>There are not attributes for this matcher.
+</pre>
+<p><br />
+</p>
+<a name="Optional_Matcher"></a><h1> <span class="mw-headline">Optional Matcher</span></h1>
+<hr />
+<p>The optional matcher will match its child pattern once. If the child reports failure, this matcher will still report success.
+</p><p>If this element contains more than one child, all children will be wrapped in an AndMatcher which then becomes the child of this element.
+</p>
+<a name="Syntax_3"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;optional&gt;
+  &lt;character&gt;:&lt;/character&gt;
+  &lt;one-or-more&gt;
+    &lt;letter/&gt;
+  &lt;/one-or-more&gt;
+&lt;/optional&gt;
+</pre>
+<a name="Class_3"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.OptionalMatcher
+</pre>
+<a name="Children_3"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes_3"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<pre>There are no attributes for this matcher.
+</pre>
+<p><br />
+</p>
+<a name="Or_Matcher"></a><h1> <span class="mw-headline">Or Matcher</span></h1>
+<hr />
+<p>The or matcher returns success if any of its child patterns return success. Each child is tested in order until a success is found. If no child returns success, then this matcher fails. Note that order is significant so if one child matches a subset of another child, then you should place the longer match before the shorter match.
+</p>
+<a name="Syntax_4"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;or&gt;
+  &lt;string&gt;abcdef&lt;/string&gt;
+  &lt;string&gt;abc&lt;/string&gt;
+  &lt;string&gt;def&lt;/string&gt;
+&lt;/or&gt;
+</pre>
+<a name="Class_4"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.OrMatcher
+</pre>
+<a name="Children_4"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes_4"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<pre>There are no attributes for this matcher.
+</pre>
+<a name="Repetition_Matcher"></a><h1> <span class="mw-headline">Repetition Matcher</span></h1>
+<hr />
+<p>The repetition matcher defines an interval number of times that its child pattern must match before this matcher returns success.
+</p><p>If this element contains more than one child, all children will be wrapped in an AndMatcher which then becomes the child of this element.
+</p>
+<a name="Syntax_5"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;repetition min="3" max="5"&gt;
+  &lt;digit/&gt;
+&lt;/repetition&gt;
+</pre>
+<a name="Class_5"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.RepetitionMatcher
+</pre>
+<a name="Children_5"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes_5"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>min</td>
+    <td>This is the minimum number of matches required by the child pattern before this matcher reports success.</td>
+    <td>int</td>
+    <td>1</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td>max</td>
+    <td>This is the maximum number of matches required by the child pattern before this matcher reports success.</td>
+    <td>int</td>
+    <td>1</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="ZeroOrMore_Matcher"></a><h1> <span class="mw-headline">ZeroOrMore Matcher</span></h1>
+<hr />
+<p>The zero-or-more matcher does not require that its child pattern match, but this matcher will continue processing the child pattern until it fails.
+</p><p>If this element contains more than one child, all children will be wrapped in an AndMatcher which then becomes the child of this element.
+</p>
+<a name="Syntax_6"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;zero-or-more&gt;
+  &lt;whitespace/&gt;
+&lt;/zero-or-more&gt;
+</pre>
+<a name="Class_6"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.ZeroOrMoreMatcher
+</pre>
+<a name="Children_6"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes_6"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<pre>There are not attributes for this matcher.
+</pre>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1837-0!1!0!!en!2!edit=0 and timestamp 20090202074524 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Flow_Control_Elements">http://aptana.com/docs/index.php/Flow_Control_Elements</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

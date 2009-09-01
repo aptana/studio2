@@ -1,0 +1,207 @@
+Program
+	:	SourceElement
+	;
+
+# level 1
+SourceElement
+	:    FunctionDeclaration
+	|    Statement
+	;
+
+# level 2
+FunctionDeclaration
+	:   FUNCTION IDENTIFIER LPAREN RPAREN LCURLY FunctionBody RCURLY
+	|   FUNCTION IDENTIFIER LPAREN FormalParameterList RPAREN LCURLY FunctionBody RCURLY
+	;
+
+Statement
+	:   Block
+	|   BreakStatement
+	|   ContinueStatement
+	|   SEMICOLON
+	|   Expression
+	|   IfStatement
+	|   DoStatement
+	|   ForStatement
+	|   WhileStatement
+	|   LabelledStatement
+	|   ReturnStatement
+	|   SwitchStatement
+	|   ThrowStatement
+	|   TryStatement
+	|   VariableStatement
+	|   WithStatement
+	;
+
+# level 3
+FunctionBody
+	:    SourceElements
+	;
+
+FormalParameterList
+	:    IDENTIFIER
+	|    FormalParameterList COMMA IDENTIFIER
+	;
+
+Block
+	:    LCURLY RCURLY
+	|    LCURLY StatementList RCURLY
+	;
+
+BreakStatement # no line terminator after BREAK
+	:   BREAK SEMICOLON
+	|   BREAK IDENTIFIER SEMICOLON
+	;
+
+ContinueStatement # no line terminator after CONTINUE
+	:   CONTINUE SEMICOLON
+	|   CONTINUE IDENTIFIER SEMICOLON
+	;
+
+Expression
+	:    AssignmentExpression
+	|    Expression COMMA AssignmentExpression
+	;
+
+IfStatement
+	:    IF LPAREN Expression RPAREN Statement ELSE Statement
+	|    IF LPAREN Expression RPAREN Statement
+	;
+
+DoStatement
+	:    DO Statement WHILE LPAREN Expression RPAREN
+	;
+
+ForStatement
+	:    FOR LPAREN ExpressionNoInList SEMICOLON ExpressionList SEMICOLON ExpressionList RPAREN Statement
+	|    FOR LPAREN VAR VariableDeclarationListNoIn SEMICOLON ExpressionList SEMICOLON ExpressionList RPAREN Statement
+	|    FOR LPAREN LeftHandSideExpression IN Expression RPAREN Statement
+	|    FOR LPAREN VAR VariableDeclarationNoIn IN Expression RPAREN Statement
+	;
+
+WhileStatement
+	:    WHILE LPAREN Expression RPAREN Statement
+	;
+
+LabelledStatement
+	:   IDENTIFIER COLON Statement
+	;
+
+ReturnStatement # no line terminator after RETURN
+	:   RETURN SEMICOLON
+	|   RETURN Expression SEMICOLON
+	;
+
+SwitchStatement
+	:    SWITCH LPAREN Expression RPAREN CaseBlock
+	;
+
+ThrowStatement
+	:    THROW Expression SEMICOLON
+	;
+
+TryStatement
+	:    TRY Block Catch
+	|    TRY Block Finally
+	|    TRY Block Catch Finally
+	;
+
+VariableStatement
+	:    VAR VariableDeclarationList SEMICOLON
+	;
+
+WithStatement
+	:    WITH LPAREN Expression RPAREN Statement
+	;
+
+# level 4
+SourceElements
+	:	SourceElement
+	|	SourceElements SourceElement
+	;
+
+StatementList
+	:	Statement
+	|	StatementList Statement
+	;
+
+#
+# TODO: Support LeftHandSideExpression
+#
+AssignmentExpression
+	:    ConditionalExpression
+	|    LeftHandSideExpression AssignmentOperator AssignmentExpression
+	;
+
+ExpressionNoInList
+	:	ExpressionNoIn
+	|	ExpressionNoInList ExpressionNoIn
+	|	<empty>
+	;
+
+ExpressionList
+	:	Expression
+	|	ExpressionList Expression
+	|	<empty>
+	;
+
+CaseBlock
+	:    LCURLY RCURLY
+	|    LCURLY CaseClauses RCURLY
+	|    LCURLY CaseClauses DefaultClause RCURLY
+	|    LCURLY CaseClauses DefaultClause CaseClauses RCURLY
+	|    LCURLY DefaultClause RCURLY
+	|    LCURLY DefaultClause CaseClauses RCURLY
+	;
+
+Catch
+	:    CATCH LPAREN IDENTIFIER RPAREN Block
+	;
+
+Finally
+	:    FINALLY Block
+	;
+
+VariableDeclarationList
+	:    VariableDeclaration
+	|    VariableDeclarationList COMMA VariableDeclaration
+	;
+
+# level 5
+ConditionalExpression
+	:    LogicalORExpression
+	|    LogicalORExpression QUESTION AssignmentExpression COLON AssignmentExpression
+	;
+
+AssignmentOperator
+	:    EQUAL
+	|    STAR_EQUAL
+	|    FORWARD_SLASH_EQUAL
+	|    PERCENT_EQUAL
+	|    PLUS_EQUAL
+	|    MINUS_EQUAL
+	|    LESS_LESS_EQUAL
+	|    GREATER_GREATER_EQUAL
+	|    GREATER_GREATER_GREATER_EQUAL
+	|    AMPERSAND_EQUAL
+	|    CARET_EQUAL
+	|    PIPE_EQUAL
+	;
+
+FunctionExpression
+	:    FUNCTION LPAREN RPAREN LCURLY FunctionBody RCURLY
+	:    FUNCTION LPAREN FormalParameterList RPAREN LCURLY FunctionBody RCURLY
+	:    FUNCTION IDENTIFIER LPAREN RPAREN LCURLY FunctionBody RCURLY
+	:    FUNCTION IDENTIFIER LPAREN FormalParameterList RPAREN LCURLY FunctionBody RCURLY
+	;
+
+IterationStatement
+	:    DoStatement
+	|    WhileStatement
+	|    ForStatement
+	;
+
+CaseClauses
+	:    CaseClause
+	|    CaseClauses CaseClause
+	;

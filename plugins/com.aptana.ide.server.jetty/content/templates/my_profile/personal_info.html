@@ -1,0 +1,55 @@
+<table width="100%" cellspacing="0" cellpadding="0 border="0">
+	<tr>
+		<td>
+			<strong>Username:</strong>
+		</td>
+		<td>
+			<%= username %>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<strong>Password:</strong>
+		</td>
+		<td>
+			<a href="javascript: Portal.API.utils.openUrl('<%= Portal.Vars.passwordLink; %>');">change...</a>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<strong>First name:</strong>
+		</td>
+		<td>
+			<%= (firstName == '') ? '' : firstName; %>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<strong>Last name:</strong>
+		</td>
+		<td>
+			<%= (lastName == '') ? '' : lastName; %>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<strong>Primary email:</strong>
+		</td>
+		<td>
+			<%= (email == '') ? '' : email; %>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<strong>Phone number:</strong>
+		</td>
+		<td>
+			<%= (phone == '') ? '' : phone; %>
+		</td>
+	</tr>
+</table>

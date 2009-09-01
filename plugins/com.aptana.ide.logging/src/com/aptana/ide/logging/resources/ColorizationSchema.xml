@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.aptana.com/2005/schema/1.0">
+	<element name="colorizer" type="root" onEnter="enterColorizer" onExit="exitColorizer">
+		<attribute name="language" />
+		<attribute name="background" usage="optional" />
+		<attribute name="line-highlight" usage="optional" />
+		<attribute name="selection-foreground" usage="optional" />
+		<attribute name="selection-background" usage="optional" />
+		<attribute name="caret-color" usage="optional" />
+		<attribute name="folding-background" usage="optional" />
+		<attribute name="folding-foreground" usage="optional" />
+		<child-element name="category" />
+		<child-element name="style" />
+		<child-element name="metadata" />
+	</element>
+	
+	<element name="category" onEnter="enterCategory" onExit="exitCategory">
+		<attribute name="name" usage="required" />
+		<attribute name="style" usage="required" />
+		<child-element name="token" />
+	</element>
+	
+	<element name="token" onEnter="enterToken" onExit="exitToken">
+		<attribute name="type" usage="required" />
+		<attribute name="category" usage="optional" />
+		<attribute name="style" usage="required" />
+		<child-element name="region" />
+	</element>
+	
+	<element name="style" onEnter="enterStyle">
+		<attribute name="id" usage="required" />
+		<attribute name="foreground" usage="required" />
+		<attribute name="background" usage="optional" />
+		<attribute name="font-weight" usage="optional" />
+		<attribute name="font-style" usage="optional" />
+		<attribute name="text-decoration" usage="optional" />
+	</element>
+	
+	<element name="region" onEnter="enterRegion" onExit="exitRegion">
+		<attribute name="offset" usage="required" />
+		<attribute name="length" usage="required" />
+		<attribute name="style" usage="required" />
+		<attribute name="name" usage="required" />
+	</element>
+	
+	<element name="metadata">
+		<child-element name="regex" />
+		<child-element name="string" />
+	</element>
+	
+	<element name="regex">
+		<attribute name="name" usage="required" />
+		<attribute name="value" usage="required" />
+		<attribute name="caseInsensitive" usage="required" />
+	</element>
+	
+	<element name="string">
+		<attribute name="name" usage="required" />
+		<attribute name="value" usage="required" />
+		<attribute name="caseInsensitive" usage="required" />
+	</element>
+</schema>

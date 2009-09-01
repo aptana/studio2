@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="nested_languages" name="Nested Languages" schema="schema/nested_languages.exsd"/>
+   <extension-point id="browserTabs" name="Browser Add-on Tabs" schema="schema/browserTabs.exsd"/>
+   <extension-point id="previewConfiguration" name="previewConfiguration" schema="schema/previewConfiguration.exsd"/>
+	 <extension
+          point="com.aptana.ide.editors.browser">
+          <browser
+          		class="com.aptana.ide.editor.html.preview.DefaultBrowser">
+          		<label os="win32" value="IE"/>
+          		<label os="linux" value="Default"/>
+          		<label os="macosx" value="Safari" />
+          </browser>
+    </extension>
+    <extension point="com.aptana.ide.editors.colorization" >
+   		<handler class="com.aptana.ide.editor.html.CSSColorizer" />
+    </extension>
+	<extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="html,htm,xhtml,shtml"
+            id="htmlSource"
+            name="%contentType.name.HTML"
+            priority="high"/>
+   </extension>
+    <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="com.aptana.ide.editors.actionSet">
+         <part
+               id="com.aptana.ide.editors.HTMLEditor">
+         </part>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="com.aptana.ide.editors.HTMLEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+    <extension point="com.aptana.ide.editors.folding">
+    	<folding contextHandler="com.aptana.ide.editor.html.folding.HTMLFoldingContextHandler" language="text/html" label="HTML" foldAllParents="true"/>
+    </extension>
+    <extension
+   		point="com.aptana.ide.editors.colorization" >
+   		<colorization file="/colorization/DEFAULT_html_colorization.col" id="com.aptana.ide.editor.html.colorization" />
+    </extension>
+      <extension
+          point="org.eclipse.ui.propertyPages">
+       <page
+             class="com.aptana.ide.editor.html.preview.HTMLPreviewPropertyPage"
+             id="com.aptana.ide.editor.html.preview.htmlPreviewPropertyPage"
+             name="%PropertyPage.html.name"
+             objectClass="org.eclipse.core.resources.IProject"/>
+       <page
+             class="com.aptana.ide.editor.html.preferences.FormattingPreferencePage"
+             id="com.aptana.html.ui.propertyPages.CodeFormatterPreferencePage"
+             name="%codeFormatterPageName">
+          <enabledWhen>
+             <adapt
+                   type="org.eclipse.core.resources.IProject">
+             </adapt>
+          </enabledWhen>
+          <keywordReference
+                id="com.aptana.html.ui.formatter">
+          </keywordReference>
+       </page>
+   </extension>
+    <extension
+         point="org.eclipse.ui.newWizards">
+       <wizard
+             category="com.aptana.ide.core.ui.projects"
+             class="com.aptana.ide.editor.html.wizards.HtmlNewWizard"
+             finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+             icon="icons/html_file_new.png"
+             id="com.aptana.ide.editors.wizards.HtmlNewWizard"
+             name="%Wizard.html.file.name"
+             preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+          <description>
+             %wizard.description.HTML
+          </description>
+       </wizard>
+       <wizard
+             canFinishEarly="true"
+             category="com.aptana.ide.core.ui"
+             class="com.aptana.ide.editor.html.wizards.HTMLUntitledTextFileWizard"
+             finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+             hasPages="false"
+             icon="icons/html_file_new.png"
+             id="com.aptana.ide.editors.wizards.file.HtmlUntitledWizard"
+             name="%Wizard.html.untitledfile.name"
+             preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+          <description>
+             %wizard.description.HTML_Untitled
+          </description>
+       </wizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+         <editor
+            class="com.aptana.ide.editor.html.HTMLEditor"
+            contributorClass="com.aptana.ide.editor.html.actions.HTMLActionContributor"
+            default="true"
+            icon="icons/html.png"
+            id="com.aptana.ide.editors.HTMLEditor"
+            name="%Editor.html.name">
+            <contentTypeBinding contentTypeId="com.aptana.ide.editor.html.htmlSource"/>
+         </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.editor.html.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         
+             <page
+          category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          name="%generalPreferencePage">
+            <keywordReference id="com.aptana.ide.editors.general"/>
+   			 </page>
+          <page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.ColorizationPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.ColorPizationreferencePage"
+          name="%colorPreferencePage">
+         	<keywordReference id="com.aptana.ide.editors.colors"/>
+    </page>
+          <page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.FoldingPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.FoldingPreferencePage"
+          name="%foldingPreferencePage">     
+          <keywordReference id="com.aptana.ide.editors.folding"/>
+   </page> 
+
+          <page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.FormattingPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.FormattingPreferencePage"
+          name="%formattingPreferencePage">       
+          <keywordReference id="com.aptana.ide.editors.formatting"/>
+   </page> 
+          
+          <page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.PreviewPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.PreviewPreferencePage"
+          name="%previewPreferencePage"/>
+
+          <page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.ProblemsPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.ProblemsPreferencePage"
+          name="%problemsPreferencePage">
+          <keywordReference id="com.aptana.ide.editors.validation"/>
+   </page> 
+
+          <page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.CodeAssistPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.CodeAssistPreferencePage"
+          name="%codeAssistPreferencePage">
+		  <keywordReference id="com.aptana.ide.editors.codeassist"/>
+   </page> 
+
+          <page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.TypingPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.TypingPreferencePage"
+          name="%typingPreferencePage">
+          <keywordReference id="com.aptana.ide.editors.typing"/>
+                    
+   </page>           
+
+	<page
+          category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.html.preferences.TidyPreferencePage"
+          id="com.aptana.ide.editor.html.preferences.TidyPreferencePage"
+          name="%tidyPreferencePage">
+	</page>
+ <page
+       category="com.aptana.ide.editor.html.preferences.GeneralPreferencePage"
+       class="com.aptana.ide.editor.html.preferences.TemplatePreferencePage"
+       id="com.aptana.ide.editor.html.preferences.HTMLTemplatePreferencePage"
+       name="%templatePreferencePage">
+ </page>
+	
+   </extension>
+   <extension
+         point="com.aptana.ide.editor.html.nested_languages">
+      <parser
+            id="com.aptana.ide.editor.css"
+            language="text/css"
+            name="CSS Parser">
+            <!--
+            parser="com.aptana.ide.editor.css.parsing.CSSParser">
+            -->
+         <element-language
+               attribute-name="type"
+               element-name="style"
+               id="com.aptana.ide.editor.css.script"
+               name="CSS parser for style elements">
+            <value/>
+            <value value="text/css"/>
+         </element-language>
+         <attribute-language name="CSS Parser for attributes">
+            <value value="style"/>
+         </attribute-language>
+      </parser>
+      <parser
+            id="com.aptana.ide.editor.JS"
+            language="text/javascript"
+            name="JS Parser">
+            <!--
+            parser="com.aptana.ide.editor.js.parsing.JSParser">
+            -->
+         <element-language
+               attribute-name="type"
+               element-name="script"
+               id="com.aptana.ide.editor.js.script"
+               name="JS parser for script elements">
+			<value />              
+            <value value="application/javascript"/>
+            <value value="application/ecmascript"/>
+            <value value="application/x-javascript"/>
+            <value value="application/x-ecmascript"/>
+            <value value="text/javascript"/>
+            <value value="text/ecmascript"/>
+            <value value="text/jscript"/>
+         </element-language>
+         <element-language
+               attribute-name="type"
+               element-name="style"
+               id="com.aptana.ide.editor.js.style"
+               name="JS parser for style elements">
+            <value value="text/javascript"/>
+         </element-language>
+         <attribute-language name="JS Parser for attributes">
+            <value value="onabort"/>
+			<value value="onactivate"/>
+			<value value="onafterprint"/>
+			<value value="onafterupdate"/>
+			<value value="onbeforeactivate"/>
+			<value value="onbeforecopy"/>
+			<value value="onbeforecut"/>
+			<value value="onbeforedeactivate"/>
+			<value value="onbeforeeditfocus"/>
+			<value value="onbeforepaste"/>
+			<value value="onbeforeprint"/>
+			<value value="onbeforeunload"/>
+			<value value="onbeforeupdate"/>
+			<value value="onblur"/>
+			<value value="onbounce"/>
+			<value value="oncellchange"/>
+			<value value="onchange"/>
+			<value value="onclick"/>
+			<value value="oncontextmenu"/>
+			<value value="oncontrolselect"/>
+			<value value="oncopy"/>
+			<value value="oncut"/>
+			<value value="ondataavailable"/>
+			<value value="ondatasetchanged"/>
+			<value value="ondatasetcomplete"/>
+			<value value="ondblclick"/>
+			<value value="ondeactivate"/>
+			<value value="ondrag"/>
+			<value value="ondragend"/>
+			<value value="ondragenter"/>
+			<value value="ondragleave"/>
+			<value value="ondragover"/>
+			<value value="ondragstart"/>
+			<value value="ondrop"/>
+			<value value="onerror"/>
+			<value value="onerrorupdate"/>
+			<value value="onfilterchange"/>
+			<value value="onfinish"/>
+			<value value="onfocus"/>
+			<value value="onfocusin"/>
+			<value value="onfocusout"/>
+			<value value="onhelp"/>
+			<value value="onkeydown"/>
+			<value value="onkeypress"/>
+			<value value="onkeyup"/>
+			<value value="onlayoutcomplete"/>
+			<value value="onload"/>
+			<value value="onlosecapture"/>
+			<value value="onmousedown"/>
+			<value value="onmouseenter"/>
+			<value value="onmouseleave"/>
+			<value value="onmousemove"/>
+			<value value="onmouseout"/>
+			<value value="onmouseover"/>
+			<value value="onmouseup"/>
+			<value value="onmousewheel"/>
+			<value value="onmove"/>
+			<value value="onmoveend"/>
+			<value value="onmovestart"/>
+			<value value="onpaste"/>
+			<value value="onpropertychange"/>
+			<value value="onreadystatechange"/>
+			<value value="onreset"/>
+			<value value="onresize"/>
+			<value value="onresizeend"/>
+			<value value="onresizestart"/>
+			<value value="onrowenter"/>
+			<value value="onrowexit"/>
+			<value value="onrowsdelete"/>
+			<value value="onrowsinserted"/>
+			<value value="onscroll"/>
+			<value value="onselect"/>
+			<value value="onselectstart"/>
+			<value value="onstart"/>
+			<value value="onsubmit"/>
+			<value value="ontimeerror"/>
+			<value value="onunload"/>
+         </attribute-language>
+      </parser>
+      <!--
+      <parser
+            id="com.aptana.ide.editor.php"
+            name="PHP Parser"
+            parser="com.aptana.ide.editor.php.parsing.PHPParser">
+         <element-language
+               attribute-name="type"
+               element-name="script"
+               id="com.aptana.ide.editor.php.script"
+               name="PHP parser for script elements">
+            <value value="text/php"/>
+         </element-language>
+         <pi-language
+               id="com.aptana.ide.editor.php.pi"
+               name="PHP parser for processing instructions"
+               pi-name="php"/>
+      </parser>
+      -->
+   	</extension>
+    <extension
+         point="com.aptana.ide.editors.validator">
+      <validator
+            class="com.aptana.ide.editor.html.validator.TidyHtmlValidator"
+            mimeType="text/html"
+			name="Tidy Html Validator" />
+   	</extension>  
+	   <extension
+	     point="org.eclipse.ui.commands">
+	     
+	  	<command
+          categoryId="com.aptana.ide.editors"
+          id="com.aptana.ide.editors.unified.format"
+          name="%Command.format.name"/>
+    <command
+          categoryId="com.aptana.ide.editors"
+          defaultHandler="com.aptana.ide.editors.views.actions.ActionKeyCommandHandler"
+          id="com.aptana.ide.editors.views.actions.html.actionKeyCommand"
+          name="%ToggleJSComments.command.name">
+    </command>         
+	   </extension>
+	
+	  <extension
+	     point="org.eclipse.ui.bindings">
+	     <key
+	        sequence="M1+M2+F"
+	        contextId="com.aptana.ide.editors.UnifiedEditorsScope"
+	        commandId="com.aptana.ide.editors.unified.format"
+	        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+	     <key
+	        platform="gtk"
+	        sequence="ESC CTRL+F"
+	        contextId="com.aptana.ide.editors.UnifiedEditorsScope"
+	        commandId="com.aptana.ide.editors.unified.format"
+	        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            commandId="com.aptana.ide.editors.views.actions.html.actionKeyCommand"
+            contextId="com.aptana.ide.editors.HTMLEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+/">
+      </key>
+	   	  </extension>
+   <extension
+         point="com.aptana.ide.core.ui.file_wizards">
+      <new-file-wizard
+            name="New HTML File"
+            wizard-id="com.aptana.ide.editors.wizards.HtmlNewWizard"/>
+      <untitled-file-wizard
+            name="New Untitled HTML File"
+            wizard-id="com.aptana.ide.editors.wizards.file.HtmlUntitledWizard"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.outline">
+      <contributor
+            content-provider="com.aptana.ide.editor.html.outline.HTMLContentProvider"
+            label-provider="com.aptana.ide.editor.html.outline.HTMLLabelProvider"
+            language="text/html"
+            name="HTML Content Provider"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.tokenList">
+      <textMatcher
+            language="text/html"
+            resource="src/com/aptana/ide/editor/html/resources/html_lexer_1_2.lxr"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.parser">
+      <parser
+            class="com.aptana.ide.editor.html.parsing.HTMLParser"
+            language="text/html"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.pairfinder">
+      <pairFinder
+            class="com.aptana.ide.editor.html.HTMLPairFinder"
+            language="text/html"
+            name="HTML Pair Finder">
+      </pairFinder>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.formatter">
+      <formatter
+            class="com.aptana.ide.editor.html.formatting.HTMLCodeFormatter"
+            language="text/html"
+            name="HTML Formatter"></formatter>
+   </extension>
+   
+   <extension
+         point="com.aptana.ide.editors.toolbarContribution">
+      <element
+            class="com.aptana.ide.editor.html.toolbar.InsertTableItem"
+            icon="icons/table.png"
+            language="text/html"
+            name="%element.name.HTML"
+            tooltip="%element.tooltip.HTML">
+      </element>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.scanner">
+      <scanner
+            class="com.aptana.ide.editor.html.parsing.HTMLScanner"
+            language="text/html">
+      </scanner>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="com.aptana.ide.editors.HTMLEditorScope"
+            name="HTML Editor Scope"
+            parentId="com.aptana.ide.editors.UnifiedEditorsScope">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            class="com.aptana.ide.editors.unified.contentassist.UnifiedContextType"
+            id="com.aptana.ide.editors.contextType.text/html"
+            name="%template.contextType">
+      </contextType>
+      <include
+            file="templates/html.xml">
+      </include>
+   </extension>
+       <extension
+          point="com.aptana.ide.core.buildParticipants">
+       <buildParticipant
+             class="com.aptana.ide.editor.html.CSSClassesAndIdsIndexer">
+       </buildParticipant>
+       <buildParticipant
+             class="com.aptana.ide.editor.html.InvalidXHTMLCommentChecker">
+       </buildParticipant>
+    </extension>
+</plugin>

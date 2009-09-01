@@ -1,0 +1,77 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Creating a new driver in Eclipse</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Creating_a_new_driver_in_Eclipse&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Creating a new driver in Eclipse [<a href="http://www.aptana.com/docs/index.php?title=Creating_a_new_driver_in_Eclipse&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains how to create a new driver in Eclipse.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>This Help topic will teach you how to create a new driver in Eclipse for SQL Explorer and RadRails. This is the second step in configuring SQL Explorer to work with RadRails. You will need to <a href="Deploying_ConnectorJ.html" title="Deploying ConnectorJ"> deploy ConnectorJ</a> before following the instructions below.
+</p><p>Note: This Help topic is based on the Rolling with Ruby on Rails tutorial from ONLamp:
+</p><p><a href="http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1" class="external free" title="http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1" rel="nofollow">http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1</a>
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>To create a new driver in Eclipse using the ConnectorJ drivers:
+</p>
+<ol>
+<li>In Eclipse, switch to the SQL Explorer perspective.</li>
+<li>In the Connections View, click the <b>Create New Connection Profile</b> button to open a <b>Create New Connection Profile</b> window.</li>
+<li>On the <b>Create New Connection Profile</b> window, click the <b>New Driver...</b> button to open a <b>Create New Driver</b> window.</li>
+<li>On the <b>Create New Driver</b> window, specify the information for your new driver:<ol>
+    <li>In the <b>Name</b> field, type <b>MySQL Connector/J Driver</b> for the name of your driver.</li>
+    <li>In the <b>Example URL</b> field, type an example URL for your driver if you have one. (e.g. "jdbc:mysql://localhost:3306/").</li>
+    <li>Click the <b>Extra Class Path</b> tab, and click the <b>Add</b> button to add the class path for ConnectorJ.</li>
+    <li>Browse to the location for your <b>mysql-connector-java-5.0.5-bin.jar</b> file that you unzipped as part of the <a href="Deploying_ConnectorJ.html" title="Deploying ConnectorJ">Deploying ConnectorJ</a> Help topic.</li>
+    <li>In the <b>Driver Class Name</b> field, type <b>com.mysql.jdbc.Driver</b> for your driver.<p>The <b>Create New Driver</b> window should look similar to the image below.</p><p><a href="Image:CreateNewDriver.png.html" class="image" title="Image:createNewDriver.png"><img alt="Image:createNewDriver.png" src="docs/images/3/35/CreateNewDriver.png" width="600" height="500" border="0" /></a></p></li>
+    <li>Click the <b>OK</b> button to create the driver.</li></ol></li>
+</li>
+</ol>
+<p>SQL Explorer creates the new driver for you in Eclipse.
+</p><p>This will open a <b>Create New Connection Profile</b> wizard. For the next step in <a href="Configuring_the_Eclipse_SQL_Explorer_plug-in_for_RadRails.html" title="Configuring the Eclipse SQL Explorer plug-in for RadRails">Configuring the Eclipse SQL Explorer plug-in for RadRails</a>, see <a href="Creating_a_new_connection_in_SQL_Explorer.html" title="Creating a new connection in SQL Explorer">Creating a new connection in SQL Explorer</a>.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Configuring_the_Eclipse_SQL_Explorer_plug-in_for_RadRails.html" title="Configuring the Eclipse SQL Explorer plug-in for RadRails">Configuring the Eclipse SQL Explorer plug-in for RadRails</a>
+</li><li> <a href="Installing_the_SQL_Explorer_plug-in.html" title="Installing the SQL Explorer plug-in">Installing the SQL Explorer plug-in</a>
+</li><li> <a href="Deploying_ConnectorJ.html" title="Deploying ConnectorJ">Deploying ConnectorJ</a>
+</li><li> <a href="Creating_a_new_connection_in_SQL_Explorer.html" title="Creating a new connection in SQL Explorer">Creating a new connection in SQL Explorer</a>
+</li><li> <a href="Connecting_to_the_database_application.html" title="Connecting to the database application">Connecting to the database application</a>
+</li><li> <a href="Using_SQL_Explorer.html" title="Using SQL Explorer">Using SQL Explorer</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1801-0!1!0!!en!2!edit=0 and timestamp 20090202191424 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Creating_a_new_driver_in_Eclipse">http://aptana.com/docs/index.php/Creating_a_new_driver_in_Eclipse</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

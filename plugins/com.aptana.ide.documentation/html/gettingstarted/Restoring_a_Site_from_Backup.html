@@ -1,0 +1,108 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Restoring a Site from Backup</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Restoring_a_Site_from_Backup&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Restoring a Site from Backup [<a href="http://www.aptana.com/docs/index.php?title=Restoring_a_Site_from_Backup&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p><em>Prerequisite:</em> You must have previously used the My Cloud site backup feature and copied that file to your computer.</p>
+<p>Restoring a site can be divided into three parts, files, database and source code repository, and you only need to do the parts relevant to your site. Further, you can restore only the parts necessary in a given situation, for instance if your database somehow became corrupted you can restore it and not the files or SVN repository.</p>
+<p>Before starting the instructions for each restore type, unzip the backup so the files and directories are easily accessible.</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Restoring_a_MySQL_Database"><span class="tocnumber">1</span> <span class="toctext">Restoring a MySQL Database</span></a></li>
+<li class="toclevel-1"><a href="#Restoring_a_SQLite_Database"><span class="tocnumber">2</span> <span class="toctext">Restoring a SQLite Database</span></a></li>
+<li class="toclevel-1"><a href="#Restoring_Files"><span class="tocnumber">3</span> <span class="toctext">Restoring Files</span></a></li>
+<li class="toclevel-1"><a href="#Restoring_an_SVN_repository"><span class="tocnumber">4</span> <span class="toctext">Restoring an SVN repository</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Restoring_a_MySQL_Database"></a><h2> <span class="mw-headline">Restoring a MySQL Database</span></h2>
+<ol>
+<li>Open your cloud's PHPMyAdmin by clicking the PHPMyAdmin link on the My Cloud Overview Control Panel and login as required</li>
+<li>Select the Import tab</li>
+<li>Click the Browse button and specify the .sql file from the backup</li>
+<li>Click the Go button (at the bottom right) to launch the import</li>
+<li>Close phpMyAdmin and return to Aptana Studio</li>
+</ol>
+<div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Phpma-import-prep.png.html" class="image" title="Import Preparation"><img alt="Import Preparation" src="docs/images/thumb/b/bf/Phpma-import-prep.png/300px-Phpma-import-prep.png" width="300" height="112" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Phpma-import-prep.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Import Preparation</div></div></div> <div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Phpma-after-import.png.html" class="image" title="Import Preparation"><img alt="Import Preparation" src="docs/images/thumb/1/1b/Phpma-after-import.png/300px-Phpma-after-import.png" width="300" height="153" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Phpma-after-import.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Import Preparation</div></div></div><br style="clear: both;" />
+<a name="Restoring_a_SQLite_Database"></a><h2 style="margin-bottom: 20px;"> <span class="mw-headline">Restoring a SQLite Database</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Sqlbuddy-before-import.png.html" class="image" title="SQL Buddy before an import"><img alt="SQL Buddy before an import" src="docs/images/thumb/a/ab/Sqlbuddy-before-import.png/200px-Sqlbuddy-before-import.png" width="200" height="89" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Sqlbuddy-before-import.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>SQL Buddy before an import</div></div></div>
+<div style="float: left; width: 500px;">
+<ol style="margin-top: 0px;">
+<li> On My Cloud -&gt; Overview, click the Database Web Admin link to open your Cloud's SQL Buddy in your web browser. </li>
+<li> If the database you plan to restore already exists you may either drop it or edit the first command in the backup .sql file, changing the action CREATE DATABASE to USE. </li>
+<li> In SQL Buddy click the Import link, use the Browse button to select the backup .sql file and click Import.</li>
+</ol>
+</div>
+<p><br style="clear: both;" />
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Sqlbuddy-after-import.png.html" class="image" title="SQL Buddy after import"><img alt="SQL Buddy after import" src="docs/images/thumb/7/7c/Sqlbuddy-after-import.png/200px-Sqlbuddy-after-import.png" width="200" height="86" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Sqlbuddy-after-import.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>SQL Buddy after import</div></div></div>
+<div style="float: left; width: 500px; padding-left: 20px;"> SQL Buddy does not count the commands in an SQL dump file as transactions so after the import completes you may see a message that zero transactions weere processed. Refresh your web page and click the link in the left side nav for the database you just imported and you should see the correct results.</div>
+<p><br style="clear: both;" />
+</p>
+<a name="Restoring_Files"></a><h2 style="margin-top: 20px;margin-bottom: 20px;"> <span class="mw-headline">Restoring Files</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Cloud-backup-file-browser-view.png.html" class="image" title="Copying backup files to a Cloud"><img alt="Copying backup files to a Cloud" src="docs/images/thumb/f/f4/Cloud-backup-file-browser-view.png/200px-Cloud-backup-file-browser-view.png" width="200" height="212" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Cloud-backup-file-browser-view.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Copying backup files to a Cloud</div></div></div>
+<div style="float: left; width: 500px;">
+<ol style="margin-top: 0px;">
+<li>Open Studio's File browser</li>
+<li>Scroll down the File browser tree and expand the Cloud folder and then the folder for the site you want to restore</li>
+<li>Move up in File browser to the directory where you unzipped the backup and select the directory called Home inside it</li>
+<li>Expand the Aptana and Domains directories inside Home; inside Domains should be three directories: private, public and staging</li>
+<li>Expand the three directories by opening the web and htdocs directories in each</li>
+<li>Private site: If you use Aptana Jaxer then the backup has your local_jaxer folder, and you can drag the backup copy and drop it onto the private section of your Cloud</li>
+<li>Staging site: If you use the staging section then drag the contents of the htdocs folder and drop it onto the staging section of your Cloud</li>
+<li>Public site: Drag the contents of the htdocs folder and drop it onto the public section of your Cloud</li>
+</ol>
+</div>
+<p><br style="clear: both;" />
+</p>
+<a name="Restoring_an_SVN_repository"></a><h2 style="margin-top: 20px;"> <span class="mw-headline">Restoring an SVN repository</span></h2>
+<p>This part is only necessary if you're using the site's Subversion repository</p>
+<ol style="margin-top: 0px;">
+<li>Upload the .svn file to your site’s public root </li>
+<li>SSH into your site </li>
+<li>cd /home/aptana/domains/public/svn </li>
+<li>rm -rf repo </li>
+<li>mkdir repo </li>
+<li>ls -l </li>
+<li>umask 002 </li>
+<li>chmod g+w repo </li>
+<li>/opt/local/bin/svnadmin create --fs-type fsfs repo </li>
+<li>/opt/local/bin/svnadmin load repo &lt; /home/aptana/domains/public/web/htdocs/[name of your .svn file]</li>
+</ol>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2618-0!1!0!!en!2!edit=0 and timestamp 20090201224452 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Restoring_a_Site_from_Backup">http://aptana.com/docs/index.php/Restoring_a_Site_from_Backup</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

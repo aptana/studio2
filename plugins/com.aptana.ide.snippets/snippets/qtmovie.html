@@ -1,0 +1,17 @@
+<!--
+	category: HTML
+	name: Insert Quicktime Movie
+	tooltip: Insert a quicktime movie block
+	prompt(src): Please enter the QuickTime file name
+-->
+<object width="320" height="240" classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+	<param name="${src}" value="" />
+	<param name="controller" value="true" />
+	<param name="autoplay" value="true" />
+	<embed src="${src}"
+		width="320" height="240"
+		controller="true" autoplay="true"
+		scale="tofit" cache="true"
+		pluginspage="http://www.apple.com/quicktime/download/"
+	/>
+</object>

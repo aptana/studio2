@@ -1,0 +1,164 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Troubleshooting Aptana Studio Issues</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Troubleshooting_Aptana_Studio_Issues&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Troubleshooting Aptana Studio Issues [<a href="http://www.aptana.com/docs/index.php?title=Troubleshooting_Aptana_Studio_Issues&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>If the answers here don't fix the problem for you, please <a href="http://support.aptana.com/asap" class="external text" title="http://support.aptana.com/asap" rel="nofollow">file a support request in ASAP</a>--your bug reports help us improve Aptana Studio and our other offerings.
+</p><p>You can get directly to ASAP from the Help menu in Aptana Studio by choosing Submit Aptana Bug or Feedback from the Aptana Troubleshooting submenu.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Accessing_the_Error_Log"><span class="tocnumber">1</span> <span class="toctext">Accessing the Error Log</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Accessing_the_log_from_Studio.2FEclipse"><span class="tocnumber">1.1</span> <span class="toctext">Accessing the log from Studio/Eclipse</span></a></li>
+<li class="toclevel-2"><a href="#Accessing_the_log_manually"><span class="tocnumber">1.2</span> <span class="toctext">Accessing the log manually</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#After_a_crash.2C_the_splash_screen_appears_briefly_and_disappears"><span class="tocnumber">2</span> <span class="toctext">After a crash, the splash screen appears briefly and disappears</span></a></li>
+<li class="toclevel-1"><a href="#How_do_I_install_Studio_updates.2C_with_error:_Network_connection_problems_encountered_during_search.3F"><span class="tocnumber">3</span> <span class="toctext">How do I install Studio updates, with error: Network connection problems encountered during search?</span></a></li>
+<li class="toclevel-1"><a href="#Can_I_request_a_new_or_changed_feature.3F"><span class="tocnumber">4</span> <span class="toctext">Can I request a new or changed feature?</span></a></li>
+<li class="toclevel-1"><a href="#JVM_Terminated"><span class="tocnumber">5</span> <span class="toctext">JVM Terminated</span></a></li>
+<li class="toclevel-1"><a href="#Using_the_Aptana_Studio_Console"><span class="tocnumber">6</span> <span class="toctext">Using the Aptana Studio Console</span></a></li>
+<li class="toclevel-1"><a href="#How_do_I_repair_my_Aptana_Studio_installation.3F"><span class="tocnumber">7</span> <span class="toctext">How do I repair my Aptana Studio installation?</span></a></li>
+<li class="toclevel-1"><a href="#How_do_I_stop_Studio_from_loading_a_problem_file.3F"><span class="tocnumber">8</span> <span class="toctext">How do I stop Studio from loading a problem file?</span></a></li>
+<li class="toclevel-1"><a href="#Tips_for_Getting_Better_Results_from_Bug_and_Feature_Request_Tickets"><span class="tocnumber">9</span> <span class="toctext">Tips for Getting Better Results from Bug and Feature Request Tickets</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Accessing_the_Error_Log"></a><h2> <span class="mw-headline">Accessing the Error Log </span></h2>
+<p>The Aptana .log file records most application exceptions that occur while you are using the Aptana application. The .log file can be helpful to the Aptana development team in troubleshooting bugs that you may encounter during normal usage. You can access your log either through the Help menu in Aptana or manually through the file system on your computer.
+</p>
+<a name="Accessing_the_log_from_Studio.2FEclipse"></a><h3> <span class="mw-headline">Accessing the log from Studio/Eclipse</span></h3>
+<p>The Aptana Troubleshooting menu on the Studio/Eclipse Help menu has an option to view the log file. Choosing it opens the log in an editor window, which you can save to a separate file in order to attach it to an ASAP ticket.
+</p>
+<a name="Accessing_the_log_manually"></a><h3> <span class="mw-headline">Accessing the log manually</span></h3>
+<p>Your current .log file is located in a <b>.metadata</b> folder in your current <b>workspace</b> directory.
+</p>
+<ul><li> Windows XP: C:\Documents and Settings\username\aptana\workspace\.metadata\.log
+</li><li> Windows Vista: C:\Users\username\Documents\Aptana Studio\.metadata\.log
+</li><li> Mac OS X: ~/aptana/workspace/.metadata/.log  (this is often in the folder for your username)
+</li><li> Linux: ~/aptana/workspace/.metadata/.log
+</li></ul>
+<p>If you changed your workspace from the default location (see <a href="Switching_your_workspace.html" title="Switching your workspace">Switching your workspace</a>), the .log file will be in a <b>.metadata</b> directory in your <b>workspace</b> directory.
+</p>
+<a name="After_a_crash.2C_the_splash_screen_appears_briefly_and_disappears"></a><h2> <span class="mw-headline">After a crash, the splash screen appears briefly and disappears</span></h2>
+<p>We've seen this issue periodically with Windows users. If you experience this issue, try the following workaround:
+</p>
+<ol><li> Navigate to the folder where you have Aptana Studio installed (usually under C:\ Program Files), and find the jre folder
+</li><li> Rename the jre folder to jre.old
+</li><li> If you have another instance of the latest JRE installed on your machine, skip to the last step
+</li><li> Download and install a new instance of the JRE from <a href="http://www.java.com/en/download/index.jsp" class="external text" title="http://www.java.com/en/download/index.jsp" rel="nofollow">Sun</a>
+</li><li> Start Aptana Studio.
+</li></ol>
+<a name="How_do_I_install_Studio_updates.2C_with_error:_Network_connection_problems_encountered_during_search.3F"></a><h2> <span class="mw-headline">How do I install Studio updates, with error: Network connection problems encountered during search?</span></h2>
+<p>Follow the instructions at the <a href="https://pro.aptana.com/install/pro/3.2/" class="external text" title="https://pro.aptana.com/install/pro/3.2/" rel="nofollow">Aptana Studio Update Site</a>.
+</p>
+<a name="Can_I_request_a_new_or_changed_feature.3F"></a><h2> <span class="mw-headline">Can I request a new or changed feature?</span></h2>
+<p>Absolutely! This helps us plan and prioritize features to include in upcoming product releases. To let us know what you want <a href="http://support.aptana.com/asap" class="external text" title="http://support.aptana.com/asap" rel="nofollow">open an enhancement request ticket for the appropriate product in ASAP</a>
+</p>
+<a name="JVM_Terminated"></a><h2> <span class="mw-headline"> JVM Terminated </span></h2>
+<p>When this happens, you'll see a rectangular dialog with a title of <i>JVM Terminated</i> on your screen and Aptana Studio will disappear. This indicates Java itself has crashed but it creates a log file in the process.
+</p><p>By default, the crash file should be in either the Aptana Studio program directory, or in the system temp directory, most likely with an extension of *.hs. If you still cannot locate it, follow the directions here:
+</p>
+<ul><li> <a href="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/felog.html#felog" class="external text" title="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/felog.html#felog" rel="nofollow">Finding your Error Log</a>
+</li><li> On the Macintosh, the location is ~/Library/Logs/Java/*.crash.log or ~/Library/Logs/CrashReporter and the file will have the word <i>java</i> in its name.
+</li></ul>
+<p>You can also find some more troubleshooting ideas here:
+</p>
+<ul><li> <a href="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/crashes.html" class="external text" title="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/crashes.html" rel="nofollow">Troubleshooting System Crashes</a>
+</li></ul>
+<p>Please attach this log if you submit a ticket in <a href="http://support.aptana.com/asap/secure/Dashboard.jspa" class="external text" title="http://support.aptana.com/asap/secure/Dashboard.jspa" rel="nofollow">ASAP</a>.
+</p>
+<a name="Using_the_Aptana_Studio_Console"></a><h2> <span class="mw-headline">Using the Aptana Studio Console </span></h2>
+<p>If Aptana does not appear to work properly, you can try and use the console to figure out what is happening.
+</p>
+<ol><li> Add -console to the launch arguments for Aptana or Eclipse
+<ol><li> On Windows, you can create a shortcut and add that to the shortcut properties.
+</li><li> On OS X, follow these instructions:
+<ol><li> Navigate to the /Applications/Aptana Studio folder in Finder.
+</li><li> Right-click (or control-click) on AptanaStudio.app and choose <i>Show package contents</i>.
+</li><li> In the new Finder window navigate to Contents/MacOS.
+</li><li> Edit AptanaStudio.ini: insert a new first line with only <i>-console</i> on it and save the file.
+</li><li> You can follow the same procedures on Eclipse. The folder structure will be identical but the file to edit is eclipse.ini. 
+</li></ol>
+</li><li> On Linux, we recommend that you start Studio/Eclipse from the command line and add <i>-console</i> as an argument.
+</li></ol>
+</li><li> After the application launches you'll see a separate console window start. Type <i>ss</i> at the command prompt in this window and you'll get a list of bundles.
+</li><li> Pick the one which is not starting. If you don't see any Studio features at all, you might pick com.aptana.ide.core.ui; note the bundle number. See if the bundle says "Started".
+</li><li> If not, type <i>start #</i>, replacing # with the number you just saw above. Note any error message displayed and log that with a ticket in ASAP.
+</li></ol>
+<a name="How_do_I_repair_my_Aptana_Studio_installation.3F"></a><h2> <span class="mw-headline">How do I repair my Aptana Studio installation?</span></h2>
+<p>If you've just reinstalled Aptana Studio after uninstalling an older version and you get an error in your log file that looks like the following excerpt, you need to repair your installation.
+</p>
+<pre>!SESSION 2007-06-05 18:03:17.484 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_01
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Framework arguments: C:\Program Files\Aptana\Aptana IDE Beta\Aptana.exe
+Command-line arguments: -os win32 -ws win32 -arch x86 C:\Program Files\Aptana\Aptana IDE Beta\Aptana.exe 
+
+!ENTRY org.eclipse.core.runtime 2007-06-05 18:03:19.640
+!MESSAGE Product com.aptana.ide.rcp.product could not be found.
+
+!ENTRY org.eclipse.osgi 4 0 2007-06-05 18:03:19.671
+!MESSAGE Application error
+!STACK 1
+java.lang.RuntimeException: No application id has been found. 
+</pre>
+<p>Repair your Aptana installation:
+</p>
+<ul><li> <b>Windows:</b> Navigate to C:\Documents and Settings\Username\Application Data\Aptana\Aptana Studio and rename the configuration folder under Aptana Studio to configuration.bak or another temp name. 
+</li><li> <b>OS X:</b> Navigate to ~/Library/Application Support/Aptana/Aptana Studio and rename the configuration folder under Aptana Studio to configuration.bak or another temp name.
+</li></ul>
+<p>If that still doesn't work, you'll need to delete and reinstall Aptana Studio.
+</p>
+<a name="How_do_I_stop_Studio_from_loading_a_problem_file.3F"></a><h2> <span class="mw-headline">How do I stop Studio from loading a problem file?</span></h2>
+<p>A file might be causing trouble when Aptana Studio is restarted because it's very large or in some way corrupted.
+</p>
+<ul><li> Rename the problem file, which will mean Studio cannot find it and so ignore the file on restart
+</li><li> Delete the &lt;Aptana_workspace&gt;\.metadata\.plugins\org.eclipse.ui.workbench\workbench.xml file, where the state of workbench when exiting is saved. This means Studio will not preload <i>any</i> files that were open on the last exit.
+</li></ul>
+<a name="Tips_for_Getting_Better_Results_from_Bug_and_Feature_Request_Tickets"></a><h2> <span class="mw-headline">Tips for Getting Better Results from Bug and Feature Request Tickets</span></h2>
+<ul><li> Search the bug database to see if someone has already filed a similar ticket--having one ticket for a particular issue allows us to keep everyone up to date as to status and increases our engineering efficiency.
+</li><li> Fill out the new ticket form with as much detail as possible: product version/build number, the operating system you're using, standalone or Eclipse plugin version (if the ticket is for Studio), did this work previously and if so when did it stop working?
+</li><li> Steps to reproduce the problem. Please be as exact as possible. Code samples, screenshots and screencasts are great! We love them.
+</li><li> Attach the log file if at all possible
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2531-0!1!0!!en!2!edit=0 and timestamp 20090201225951 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Troubleshooting_Aptana_Studio_Issues">http://aptana.com/docs/index.php/Troubleshooting_Aptana_Studio_Issues</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

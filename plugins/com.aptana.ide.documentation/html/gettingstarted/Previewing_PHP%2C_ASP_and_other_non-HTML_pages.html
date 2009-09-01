@@ -1,0 +1,88 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Previewing PHP%2C ASP and other non-HTML pages</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Previewing_PHP%2C_ASP_and_other_non-HTML_pages&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Previewing PHP%2C ASP and other non-HTML pages [<a href="http://www.aptana.com/docs/index.php?title=Previewing_PHP%2C_ASP_and_other_non-HTML_pages&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to adjust the preview tab on HTML pages to properly show content for non-HTML pages.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Requirements"><span class="tocnumber">1</span> <span class="toctext">Requirements</span></a></li>
+<li class="toclevel-1"><a href="#Preview_Inside_Aptana"><span class="tocnumber">2</span> <span class="toctext">Preview Inside Aptana</span></a></li>
+<li class="toclevel-1"><a href="#Preview_Outside_Aptana"><span class="tocnumber">3</span> <span class="toctext">Preview Outside Aptana</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">4</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Requirements"></a><h2> <span class="mw-headline">Requirements</span></h2>
+<p>You'll need a web server set up pointing to the same location where you save your files. As an example, if your project is at:
+</p><p>c:\Documents and Settings\username\aptana\workspace\website
+</p><p>and you have a local web server, make a folder from the website such that <a href="http://localhost/website" class="external free" title="http://localhost/website" rel="nofollow">http://localhost/website</a> and your project point to the same spot.
+</p><p>1. Right-click on your project in the project view. Unless you are using the very latest nightly build, there may be a bug where you need to have a '.' in your project name in order to see the "Preview Preferences" pane. Enter the URL of the local web server root where your project is based.
+</p><p><a href="Image:Preview_preferences_2.png.html" class="image" title="Image:preview_preferences_2.png"><img alt="Image:preview_preferences_2.png" src="docs/images/0/03/Preview_preferences_2.png" width="615" height="290" border="0" /></a>
+</p><p>2. Save and Exit. Now when you click on the preview tab at the bottom of the page, you will see the page as rendered by your local web server. Note, you will need to <b>save</b> the page in the editor before any changes take effect.
+</p><p><a href="Image:Preview_preferences_1.png.html" class="image" title="Image:preview_preferences_1.png"><img alt="Image:preview_preferences_1.png" src="docs/images/5/50/Preview_preferences_1.png" width="824" height="534" border="0" /></a>
+</p><p><a href="Image:Preview_preferences_3.png.html" class="image" title="Image:preview_preferences_3.png"><img alt="Image:preview_preferences_3.png" src="docs/images/6/61/Preview_preferences_3.png" width="824" height="534" border="0" /></a>
+</p>
+<a name="Preview_Inside_Aptana"></a><h2> <span class="mw-headline">Preview Inside Aptana</span></h2>
+<ol><li> Go to "Window -&gt; Preferences -&gt; Aptana -&gt; Editors -&gt; PHP". Change "PHP Editor Mode" to "Tabbed View".
+</li><li> Right click your project name in the "Projects" view and go to "Properties". Select "HTML Preview". And do one of the following:
+<ul><li> Apply preview settings to all projects:
+<ol><li> Click "Edit Workspace Settings". Setup the "Preview Type" to be used with your PHP server.
+</li></ol>
+</li><li> Apply preview settings to current project.
+<ol><li> Check "Override workspace settings". Setup the "Preview Type" to be used with your PHP server.
+</li></ol>
+</li></ul>
+</li></ol>
+<a name="Preview_Outside_Aptana"></a><h2> <span class="mw-headline">Preview Outside Aptana</span></h2>
+<ol><li> Go to the "Run" settings, to do this, click the arrow next to the "Run" button,  click "Run..." from the dropdown menu.
+</li><li> Duplicate the "Firefox - Internal Server" entry by right clicking it, and selecting "Duplicate".
+</li><li> Rename the new entry to "Firefox - External Server".
+</li><li> Change the settings for "Server" to use that of your PHP server.
+</li><li> Click run.
+</li><li> Now to preview outside aptana, just go to the "Run" dropdown and select "Firefox - External Server".
+</li></ol>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Setting_up_your_web_browser_configuration.html" title="Setting up your web browser configuration">Setting up your web browser configuration</a>
+</li><li> <a href="Adding_a_web_browser_configuration_to_your_Favorites.html" title="Adding a web browser configuration to your Favorites">Adding a web browser configuration to your Favorites</a>
+</li><li> <a href="Previewing_a_project_in_a_web_browser.html" title="Previewing a project in a web browser">Previewing a project in a web browser</a>
+</li><li> <a href="Configuring_Aptana_Studio_to_use_an_external_web_server.html" title="Configuring Aptana Studio to use an external web server">Configuring Aptana Studio to use an external web server</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1715-0!1!0!!en!2!edit=0 and timestamp 20090202051857 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Previewing_PHP%2C_ASP_and_other_non-HTML_pages">http://aptana.com/docs/index.php/Previewing_PHP%2C_ASP_and_other_non-HTML_pages</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

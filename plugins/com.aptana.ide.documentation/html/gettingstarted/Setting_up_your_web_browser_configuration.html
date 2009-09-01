@@ -1,0 +1,106 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Setting up your web browser configuration</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Setting_up_your_web_browser_configuration&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Setting up your web browser configuration [<a href="http://www.aptana.com/docs/index.php?title=Setting_up_your_web_browser_configuration&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains how to set up the different web browser configuration options to preview a project in a web browser.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Setting_which_page_to_preview"><span class="tocnumber">2.1</span> <span class="toctext">Setting which page to preview</span></a></li>
+<li class="toclevel-2"><a href="#Specifying_the_default_or_an_external_web_server"><span class="tocnumber">2.2</span> <span class="toctext">Specifying the default or an external web server</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>To view a web page in a browser using anything other than the default configuration, you can set up additional web browser configurations. Other web browser configurations are helpful if you want to view a page in Firefox or any browser other than Internet Explorer, or if you want the browser to open a specific page while you are working on a different page in the Aptana HTML editor.
+</p><p>After you set up your configurations, you can click the <b>Run</b> button <a href="Image:IconRun.png.html" class="image" title="Image:iconRun.png"><img alt="Image:iconRun.png" src="docs/images/b/b8/IconRun.png" width="36" height="28" border="0" /></a> to automatically preview your project with the last configuration that used, or use the arrow to the right of the <b>Run</b> button <a href="Image:IconRun.png.html" class="image" title="Image:iconRun.png"><img alt="Image:iconRun.png" src="docs/images/b/b8/IconRun.png" width="36" height="28" border="0" /></a> to select a different configuration.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>This section describes how to set the various options to create a new browser configuration. Create new browser configurations from the <b>Run Configuration</b> window.
+</p><p>To create a new browser configuration:
+</p>
+<ol>
+<li>Create the new configuration:<ol>
+    <li>To access the <b>Run Configuration</b> window, click the arrow to the right of the <b>Run</b> button <a href="Image:IconRun.png.html" class="image" title="Image:iconRun.png"><img alt="Image:iconRun.png" src="docs/images/b/b8/IconRun.png" width="36" height="28" border="0" /></a>.<p>Aptana opens the <b>Run Configuration</b> window (shown below).</p><p><a href="Image:RunConfigurations.png.html" class="image" title="Image:runConfigurations.png"><img alt="Image:runConfigurations.png" src="docs/images/0/0b/RunConfigurations.png" width="670" height="560" border="0" /></a></p></li>
+    <li>In the upper right of the <b>Run Configuration</b> window, click the <b>New launch configuration</b> button <a href="Image:IconNewLaunchConfiguration.png.html" class="image" title="Image:iconNewLaunchConfiguration.png"><img alt="Image:iconNewLaunchConfiguration.png" src="docs/images/4/4d/IconNewLaunchConfiguration.png" width="23" height="22" border="0" /></a>.<p>The new configuration appears with a placeholder name of "New_configuration" on the <b>Configurations</b> tree.</p></li>
+    <li>On the <b>Configurations</b> list, select the new configuration.</li>
+    <li>In the <b>Name</b> text box, type a name for the new configuration (e.g. "Firefox").</li></ol></li>
+<li>Specify which web browser window should launch for the new configuration:<ol>
+    <li>In the Browser executable field, specify or browse to the location where the web browser that you want to add is installed (e.g. "C:\Program Files\Mozilla Firefox\firefox.exe").<p>The default value for this field is the default location where Firefox is installed on most users' systems. If your Firefox installation is in a different location, you will need to browse to that location.</p></li>
+    <li>Click the <b>Apply</b> button to save your changes.</li></ol></li>
+</ol>
+<p>The instructions above set up a basic new configuration to launch a page preview in a new web browser window. To learn about additional options for your configuration, read through the optional instructions below.
+</p><p><br />
+</p>
+<a name="Setting_which_page_to_preview"></a><h3> <span class="mw-headline">Setting which page to preview</span></h3>
+<p>By default, Aptana will launch the current open page in your Editor as the "preview" page in a new browser. You can change this to specify a specific page or even a URL on a remote web site.
+</p><p>To specify which page to preview by default for this configuration:
+</p>
+<ol>
+<li>In the Start Action box, choose one of the following options:<ul>
+    <li><b>Use current page</b> - Opens the page currently open in the HMTL editor in the browser window.</li>
+    <li><b>Specific page</b> - Opens the specified page in the browser window. (You can also set a specific page by right-clicking on an HTML file in the Project View and selecting <b>Set as Start Page</b> from the context menu.)</li>
+    <li><b>Start URL</b> - Opens the specified URL in the browser window.</li></ul></li>
+<li>Click the <b>Apply</b> button to save your changes.</li>
+</ol>
+<a name="Specifying_the_default_or_an_external_web_server"></a><h3> <span class="mw-headline">Specifying the default or an external web server</span></h3>
+<p>Aptana has a built-in web server to make it easy for you to preview a web site that is saved locally. However, if you want to view a site on an external web server, you can change the server configuration.
+</p><p>To change the server configuration:
+</p>
+<ol>
+<li>In the <b>Server</b> box, choose one of the following options:<ul>
+    <li><b>Use built-in Web server</b> - Use the web server built into Aptana.</li>
+    <li><b>Use external server</b> - Use the specified external web server.</li></ul></li>
+<li>Click the <b>Apply</b> button to save your changes.</li></ol>
+<p>To preview a project after you have set up your configuration, just click the <b>Run</b> button <a href="Image:IconRun.png.html" class="image" title="Image:iconRun.png"><img alt="Image:iconRun.png" src="docs/images/b/b8/IconRun.png" width="36" height="28" border="0" /></a> to open the preview in a new browser window.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Previewing_a_project_in_a_web_browser.html" title="Previewing a project in a web browser">Previewing a project in a web browser</a>
+</li><li> <a href="Adding_a_web_browser_configuration_to_your_Favorites.html" title="Adding a web browser configuration to your Favorites">Adding a web browser configuration to your Favorites</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1338-0!1!0!!en!2!edit=0 and timestamp 20090202113234 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Setting_up_your_web_browser_configuration">http://aptana.com/docs/index.php/Setting_up_your_web_browser_configuration</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

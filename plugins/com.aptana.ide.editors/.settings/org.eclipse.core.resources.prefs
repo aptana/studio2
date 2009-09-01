@@ -1,0 +1,16 @@
+#Fri Nov 09 18:23:02 NOVT 2007
+eclipse.preferences.version=1
+encoding//src/com/aptana/ide/editors/actions/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/managers/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/preferences/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/profiles/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/properties/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/unified/actions/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/unified/colorizer/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/unified/errors/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/unified/help/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/unified/hover/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/unified/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/untitled/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/views/actions/messages.properties=8859_1
+encoding//src/com/aptana/ide/editors/wizards/messages.properties=8859_1

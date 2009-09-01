@@ -1,0 +1,124 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>JaxerManager Command Line Interface (CLI) Reference</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=JaxerManager_Command_Line_Interface_(CLI)_Reference&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>JaxerManager Command Line Interface (CLI) Reference [<a href="http://www.aptana.com/docs/index.php?title=JaxerManager_Command_Line_Interface_(CLI)_Reference&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>JaxerManager listens on a different port than the one used for web requests and interprets commands sent that way. These commands can also usually be specified on the command line when it's started, or in a config file loaded when JaxerManager starts (or restarts/reloads).
+</p>
+<dl><dt> Defaults</dt><dd>
+</dd><dt> webport&nbsp;</dt><dd> 5370 
+</dd><dt> commandport&nbsp;</dt><dd> 5371 
+</dd><dt> Default (optional) config file&nbsp;</dt><dd> JaxerManager.cfg (Windows) or jaxermanager.cfg (Linux/Mac) in the same folder as the executable.
+</dd></dl>
+<dl><dt> Commands</dt><dd>
+</dd><dt> set timeout &lt;n&gt;&nbsp;</dt><dd> Set the timeout of Jaxer Manager that will die if a ping is not received within &lt;n&gt; seconds.
+</dd><dt> set minprocesses &lt;n&gt;&nbsp;</dt><dd> From this point on, there will be no less than &lt;n&gt; Jaxer processes.  If set to higher than maxprocesses, then maxprocesses is set to the same value.
+</dd><dt> set maxprocesses &lt;n&gt;&nbsp;</dt><dd> JaxerManager will not start more Jaxer processes if there are already &lt;n&gt; or more of them around.  If set to lower than the current minprocesses, then minprocesses is set to the same value.
+</dd><dt> set requesttimeout &lt;n&gt;&nbsp;</dt><dd> A Jaxer that takes more than &lt;n&gt; seconds to process a request is terminated (default 10).
+</dd><dt> set maxmemory &lt;n&gt;&nbsp;</dt><dd> A hard limit of &lt;n&gt; megabytes is imposed on all Jaxer processes.  A value of zero means no limit (default 100).
+</dd><dt> set maxrequests &lt;n&gt;&nbsp;</dt><dd> A Jaxer is terminated after it performs &lt;n&gt; requests.  A value of zero is equivalent to infinity (default 0).
+</dd><dt> exit&nbsp;</dt><dd> immediate, non-graceful termination of all Jaxers and then of JaxerManager
+</dd><dt> stop&nbsp;</dt><dd> graceful termination of all Jaxers once they've finished processing, then when they're all dead stop JaxerManager too.
+</dd><dt> pause&nbsp;</dt><dd> suspend processing of requests
+</dd><dt> resume&nbsp;</dt><dd> resume processing of requests
+</dd><dt> ping&nbsp;</dt><dd> test aliveness. Returns pong paused|running|stopping|reloading
+</dd><dt> reload &lt;file&gt;&nbsp;</dt><dd> graceful termination of all Jaxers, followed by loading a named config file (optional, otherwise configuration is unchanged) and restart all Jaxer processes
+</dd><dt> restart &lt;file&gt;&nbsp;</dt><dd> immediate, non-graceful termination of all Jaxers, followed by loading a named config file (optional, eotherwise configuration is unchanged) and restart all Jaxer processes
+</dd><dt> get version&nbsp;</dt><dd> returns version number
+</dd><dt> setconfig &lt;configname&gt;.&lt;property&gt; &lt;value&gt;</dt><dd> Sets configname.property from config.js to the value specified
+</dd></dl>
+<ul><li> Example is DB_CONNECTION_PARAMS.PATH "resource:///../data/appdata.sqlite"
+</li><li> The manager will reply with a header block when a telnet connection is established
+</li><li> The header block will end with an empty line
+</li><li> The manager will print a single line of text when a command is ran
+</li><li> The manager process will print "JaxerManager" to standard out to signify it is ready to accept admin connections
+</li></ul>
+<p>In addition, there are a few commands that are effective only in the configuration file
+that is read when JaxerManager starts up:
+</p>
+<dl><dt> set webport &lt;n&gt;&nbsp;</dt><dd> set the port used by web servers (default 5370).
+</dd><dt> set commandport &lt;n&gt;&nbsp;</dt><dd> set the port for the command line interface (default 5371).
+</dd></dl>
+<p>There is no command to close the connection; just close the connection. It would be best if this understood some sort of convention, like Ctrl+C.
+</p><p>The following arguments may be specified when starting JaxerManager:
+</p>
+<dl><dt> --commandport=&lt;port&gt;&nbsp;</dt><dd> see "set commandport" above.
+</dd><dt> --webport=&lt;port&gt;&nbsp;</dt><dd> see "set webport" above.
+</dd><dt> --minprocesses=&lt;num processes&gt;&nbsp;</dt><dd> see "set minprocesses" above.
+</dd><dt> --maxprocesses=&lt;num processes&gt;&nbsp;</dt><dd> see "set maxprocesses" above.
+</dd><dt> --configfile=&lt;config file&gt;&nbsp;</dt><dd> set the configuration file to initially load (default JaxerManager.cfg).
+</dd><dt> --timeout=&lt;num seconds&gt;&nbsp;</dt><dd> see "set timeout" above.
+</dd><dt> --requesttimeout=&lt;num seconds&gt;&nbsp;</dt><dd> see "set requesttimeout" above.
+</dd><dt> --maxmemory=&lt;num MB&gt;&nbsp;</dt><dd> see "set maxmemory" above.
+</dd><dt> --maxrequests=&lt;num requests&gt;&nbsp;</dt><dd> see "set maxrequests" above.
+</dd><dt> --pid-file=&lt;file&gt;&nbsp;</dt><dd> write the process id of the manager to the specified file.
+</dd><dt> --cfg&#58;&lt;name&gt;=&lt;value&gt;&nbsp;</dt><dd> set configuration parameter name to value.
+</dd></dl>
+<p>The following arguments may be specified only when starting JaxerManager:
+</p>
+<dl><dt> --jaxerlogfileuri=&lt;fileuri&gt;&nbsp;</dt><dd> set the logfile for Jaxer.  eg file:///c:/temp/jaxer.log.
+</dd><dt> --jaxerlogfilesize=&lt;num bytes&gt;&nbsp;</dt><dd> specify the maximum size of the logfile.  When the logfile size exceeds this limit, the logfile will be moved to a backup when JaxerManager starts.
+</dd><dt> --jaxerlogfilebackups=&lt;num&gt;&nbsp;</dt><dd> set the number of logfile backups to keep.
+</dd><dt> --tempdir=&lt;fileuri&gt;&nbsp;</dt><dd> set the temp folder for Jaxer.
+</dd></dl>
+<ul><li> Jaxer manager will print the status of each command specified after it is executed
+</li><li> Format:
+</li></ul>
+<pre>
+Option: --commandport=5375
+*** ok
+
+</pre>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_the_Jaxer_server.html" title="About the Jaxer server">About the Jaxer server</a>
+</li><li> <a href="Getting_Started_with_Jaxer_in_Aptana_Studio.html" title="Getting Started with Jaxer in Aptana Studio">Getting Started with Jaxer in Aptana Studio</a>
+</li><li> <a href="Creating_a_new_Jaxer_project.html" title="Creating a new Jaxer project">Creating a new Jaxer project</a>
+</li><li> <a href="Previewing_a_Jaxer_project.html" title="Previewing a Jaxer project">Previewing a Jaxer project</a>
+</li><li> <a href="About_Jaxer_Views.html" title="About Jaxer Views">About Jaxer Views</a>
+<ul><li> <a href="Displaying_the_Servers_View.html" title="Displaying the Servers View">Displaying the Servers View</a>
+</li><li> <a href="Displaying_the_TailView_View.html" title="Displaying the TailView View">Displaying the TailView View</a>
+</li><li> <a href="Displaying_the_Jaxer_Activity_Monitor_View.html" title="Displaying the Jaxer Activity Monitor View">Displaying the Jaxer Activity Monitor View</a>
+</li><li> <a href="Displaying_the_Jaxer_Shell_View.html" title="Displaying the Jaxer Shell View">Displaying the Jaxer Shell View</a>
+</li></ul>
+</li><li> <a href="Configuring_your_Jaxer_servers.html" title="Configuring your Jaxer servers">Configuring your Jaxer servers</a>
+</li><li> <a href="Setting_your_TailView_preferences.html" title="Setting your TailView preferences">Setting your TailView preferences</a>
+</li><li> <a href="Running_the_Jaxer_server_diagnostic_tools.html" title="Running the Jaxer server diagnostic tools">Running the Jaxer server diagnostic tools</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2201-0!1!0!!en!2!edit=0 and timestamp 20090202120008 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/JaxerManager_Command_Line_Interface_(CLI)_Reference">http://aptana.com/docs/index.php/JaxerManager_Command_Line_Interface_(CLI)_Reference</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,125 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Displaying the Snippets and Scripts Views</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Displaying_the_Snippets_and_Scripts_Views&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Displaying the Snippets and Scripts Views [<a href="http://www.aptana.com/docs/index.php?title=Displaying_the_Snippets_and_Scripts_Views&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains what the Actions View is, how to display it, and how to use its scripts.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a>
+<ul>
+<li class="toclevel-2"><a href="#About_the_Snippets_View"><span class="tocnumber">1.1</span> <span class="toctext">About the Snippets View</span></a></li>
+<li class="toclevel-2"><a href="#About_the_Scripts_View"><span class="tocnumber">1.2</span> <span class="toctext">About the Scripts View</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Displaying_the_Views"><span class="tocnumber">2.1</span> <span class="toctext">Displaying the Views</span></a></li>
+<li class="toclevel-2"><a href="#Running_a_script_from_the_Snippets_or_Scripts_Views"><span class="tocnumber">2.2</span> <span class="toctext">Running a script from the Snippets or Scripts Views</span></a></li>
+<li class="toclevel-2"><a href="#Adding_a_script_to_the_Snippets_or_Scripts_View"><span class="tocnumber">2.3</span> <span class="toctext">Adding a script to the Snippets or Scripts View</span></a></li>
+<li class="toclevel-2"><a href="#Resetting_the_scripting_environment"><span class="tocnumber">2.4</span> <span class="toctext">Resetting the scripting environment</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Use the Snippets View and Scripts View to run and manage JavaScript scripts that automate common coding tasks. 
+</p>
+<a name="About_the_Snippets_View"></a><h3> <span class="mw-headline">About the Snippets View</span></h3>
+<p>Snippets are short scripts that you can use to help format your code. An example of this is selecting text in the HTML editor and wrapping it with a &lt;b&gt;&lt;/b&gt; tag set. The Snippet View contains many useful snippets that you can use as examples or to help you format your code.
+</p>
+<a name="About_the_Scripts_View"></a><h3> <span class="mw-headline">About the Scripts View</span></h3>
+<p>Scripts are generally more complicated than Snippets and usually perform automation tasks within your IDE. An example of this would be to create a new scriptable view or a Code Assist profile. The Scripts View contains more examples for you to learn from and use.
+</p><p>The engine for the Scripts Views is the Eclipse Monkey scripting tool. To learn more about Eclipse Monkey, see <a href="Scripting_with_Eclipse_Monkey.html" title="Scripting with Eclipse Monkey">Scripting with Eclipse Monkey</a>.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Displaying_the_Views"></a><h3> <span class="mw-headline">Displaying the Views</span></h3>
+<p>The Scripts and Snippets View should be displayed as part of the default Aptana Web Perspective by default. If it is not, or if you closed them and need to re-open them, you can access the Views from the Window menu:
+</p><p>To display the Snippets View:
+</p>
+<ol><li> From the <b>Window</b> menu, select <b>Show View &gt; Other...</b> to open a <b>Show Views</b> pop-up window.
+</li><li> On the <b>Show Views</b> pop-up window, expand the <b>Aptana Views</b> folder.
+</li><li> Select the <b>Snippets View</b> and click <b>OK</b>.
+</li></ol>
+<p>Aptana displays the Snippets View, as shown in the image below.
+</p><p><a href="Image:SnippetsView.png.html" class="image" title="Image:SnippetsView.png"><img alt="Image:SnippetsView.png" src="docs/images/c/c8/SnippetsView.png" width="291" height="228" border="0" /></a>
+</p><p>To display the Scripts View:
+</p>
+<ol><li> From the <b>Window</b> menu, select <b>Show View &gt; Other...</b> to open a <b>Show Views</b> pop-up window.
+</li><li> On the <b>Show Views</b> pop-up window, expand the <b>Scripting</b> folder.
+</li><li> Select <b>Scripts</b> and click <b>OK</b>.
+</li></ol>
+<p>Aptana displays the Scripts View, as shown in the image below.
+</p><p><a href="Image:ScriptsView.png.html" class="image" title="Image:ScriptsView.png"><img alt="Image:ScriptsView.png" src="docs/images/f/f8/ScriptsView.png" width="291" height="228" border="0" /></a>
+</p>
+<a name="Running_a_script_from_the_Snippets_or_Scripts_Views"></a><h3> <span class="mw-headline">Running a script from the Snippets or Scripts Views</span></h3>
+<p>To run a script from the Snippets or Scripts View:
+</p>
+<ol><li> Select any applicable text (e.g. text to comment or wrap in a tag).
+</li><li> Double-click the script in the Scripts or Snippets View.
+</li></ol>
+<p>You can also run scripts from the Scripts View or via a hotkey. To learn more about menu and hotkey options for your scripts, see <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a>.
+</p>
+<a name="Adding_a_script_to_the_Snippets_or_Scripts_View"></a><h3> <span class="mw-headline">Adding a script to the Snippets or Scripts View</span></h3>
+<p>You can easily add new snippets and scripts to the Snippets and Scripts Views.
+</p><p>To add a new snippet to the Snippets View:
+</p>
+<ol><li> Create a folder named <b>snippets</b> in any top-level folder in your Project View.
+</li><li> Add your snippet to that folder. Make sure to include the appropriate metadata (see <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a>).
+</li></ol>
+<p>To add a new script to the Scripts View, follow the instructions in <a href="Creating_a_new_Eclipse_Monkey_script.html" title="Creating a new Eclipse Monkey script">Creating a new Eclipse Monkey script</a>.
+</p><p>You can share your <b>scripts</b> and <b>snippets</b> folders across your workspaces, which easily makes your scripts and snippets portable.
+</p>
+<a name="Resetting_the_scripting_environment"></a><h3> <span class="mw-headline">Resetting the scripting environment</span></h3>
+<p>Occasionally, after working with scripts, you may need to reset your scripting environment by refreshing the Scripts View.
+</p><p>To reset the scripting environment, click the <b>Refresh</b> button <a href="Image:IconRefresh.png.html" class="image" title="Image:iconRefresh.png"><img alt="Image:iconRefresh.png" src="docs/images/f/f7/IconRefresh.png" width="23" height="22" border="0" /></a> on the Scripts View. This will reset and reload all of your scripts.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Eclipse_Views.html" title="About Eclipse Views">About Eclipse Views</a>
+</li><li> <a href="Displaying_Aptana_Views.html" title="Displaying Aptana Views">Displaying Aptana Views</a>
+</li><li> <a href="Displaying_the_File_View.html" title="Displaying the File View">Displaying the File View</a>
+</li><li> <a href="Displaying_the_Outline_View.html" title="Displaying the Outline View">Displaying the Outline View</a>
+</li><li> <a href="About_Aptana_Snippets.html" title="About Aptana Snippets">About Aptana Snippets</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1478-0!1!0!!en!2!edit=0 and timestamp 20090202130338 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Displaying_the_Snippets_and_Scripts_Views">http://aptana.com/docs/index.php/Displaying_the_Snippets_and_Scripts_Views</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,273 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.editor.html">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.editor.html" id="nested-languages" name="HTML Nested Languages"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to plug in additional languages into the HTML script tag.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="parser" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="element-language">
+      <annotation>
+         <documentation>
+            Defines an embedded language associated with a given HTML element, attribute, and one or more attribute values
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="value" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  A unique name used to reference this language
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  A translatable name used during presentation in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="element-name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the HTML element where this language may possibly exist.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="attribute-name" type="string">
+            <annotation>
+               <documentation>
+                  The name of the attribute that determines when this language is active for the given element.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="language-owns-element" type="boolean">
+            <annotation>
+               <documentation>
+                  This optional attribute determines which language is responsible for parsing and thus owning this element. Setting this value to false means that the open and closing tags for this element will be seen as HTML constructs. Setting this value to true means that the open and closing tags for this element will be seen as constructs in the nested language. It will then be the responsibility of the nested language to properly lex and parse these items and the nested language will have to determine where its source ends in the current editor.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="pi-language">
+      <annotation>
+         <documentation>
+            Defines an embedded language associated with a given HTML processing instruction name
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  A unique name used to reference this language
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  A translatable name used during presentation in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="pi-name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the processing instruction that activates this language. Note that this value does not include the leading &apos;&lt;?&apos;. For example, a PHP processing instruction like &lt;?php would require the value &quot;php&quot; in this attribute.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="handles-eof" type="boolean">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parser">
+      <annotation>
+         <documentation>
+            Defines a parser reference to be used in an element-language element and/or a pi-language element.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <choice minOccurs="1" maxOccurs="unbounded">
+               <element ref="element-language"/>
+               <element ref="pi-language"/>
+               <element ref="attribute-language"/>
+            </choice>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  A unique name used to reference this language
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  A translatable name used during presentation in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="language" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="value">
+      <annotation>
+         <documentation>
+            Defines an attribute value for a given element and attribute that triggers a language transition.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string">
+            <annotation>
+               <documentation>
+                  The attribute value for the given element and attribute that triggers this language transition.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="attribute-language">
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="value"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  A unique name used to reference this element
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  A translatable name used during presentation in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Rolling beta 6
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;com.aptana.ide.editors.html.scriptLanguage&quot;&gt;
+  &lt;language
+   id=&quot;com.aptana.ide.editors.php&quot;
+   name=&quot;PHP&quot;
+   class=&quot;com.aptana.ide.editors.php.parsing.PHPParser&quot;
+  &lt;/language&gt;
+ &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         Plug-ins that want to use this extension point must implement the &lt;samp&gt;com.example.xyz.IParser&lt;/samp&gt; interface.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The com.aptana.ide.editors plug-in provides the base implementation.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+Copyright (c) 2005-2006 Aptana, Inc.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html. If redistributing this code,
+this entire header must remain intact.
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+</schema>

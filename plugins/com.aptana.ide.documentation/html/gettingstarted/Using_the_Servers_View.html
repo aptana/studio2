@@ -1,0 +1,104 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Using the Servers View</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Using_the_Servers_View&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Using the Servers View [<a href="http://www.aptana.com/docs/index.php?title=Using_the_Servers_View&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to use the Servers View in RadRails.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Starting_or_stopping_a_server"><span class="tocnumber">2.1</span> <span class="toctext">Starting or stopping a server</span></a></li>
+<li class="toclevel-2"><a href="#Editing_a_server"><span class="tocnumber">2.2</span> <span class="toctext">Editing a server</span></a></li>
+<li class="toclevel-2"><a href="#Managing_your_servers"><span class="tocnumber">2.3</span> <span class="toctext">Managing your servers</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The Servers View (shown below) lists all of the servers that you have created for your Rails projects. Use the Servers View to start, stop, and manage the servers for your Rails projects.
+</p><p><a href="Image:ServersView.png.html" class="image" title="Image:serversView.png"><img alt="Image:serversView.png" src="docs/images/6/69/ServersView.png" width="716" height="146" border="0" /></a>
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Starting_or_stopping_a_server"></a><h3> <span class="mw-headline">Starting or stopping a server</span></h3>
+<p>To start or stop one of your servers:
+</p>
+<ol><li> In the lower portion of your workbench, click the <b>Servers</b> tab to access the Servers View.
+</li><li> In the Servers View, select your server.
+</li><li> Click the <b>Start</b> button <a href="Image:IconStart.png.html" class="image" title="Image:iconStart.png"><img alt="Image:iconStart.png" src="docs/images/3/31/IconStart.png" width="23" height="22" border="0" /></a> to start your server.
+</li><li> Click the <b>Stop</b> button <a href="Image:IconStop.png.html" class="image" title="Image:iconStop.png"><img alt="Image:iconStop.png" src="docs/images/6/66/IconStop.png" width="23" height="22" border="0" /></a> to stop your server.
+</li></ol>
+<a name="Editing_a_server"></a><h3> <span class="mw-headline">Editing a server</span></h3>
+<p>To edit an existing server:
+</p>
+<ol>
+<li>In the Servers View, select the server that you want to edit</li>
+<li>Click the <b>Edit</b> button <a href="Image:IconEdit.png.html" class="image" title="Image:iconEdit.png"><img alt="Image:iconEdit.png" src="docs/images/3/32/IconEdit.png" width="23" height="22" border="0" /></a> to open a server properties window (shown below).<p><a href="Image:RubyServerProperties.png.html" class="image" title="Image:rubyServerProperties.png"><img alt="Image:rubyServerProperties.png" src="docs/images/b/bc/RubyServerProperties.png" width="247" height="208" border="0" /></a></p></li>
+<li>Update your server properties. You have the option of making the following changes:<ul>
+    <li>Server name</li>
+    <li>Server type (Mongrel, WEBrick, or lighttpd)</li>
+    <li>Port</li>
+    <li>Environment (e.g. development)</li>
+    <li>Run Mode (run or debug mode)</li></ul></li>
+<li>Click <b>OK</b>.</li>
+</ol>
+<a name="Managing_your_servers"></a><h3> <span class="mw-headline">Managing your servers</span></h3>
+<p>The Servers View also gives you the following options:
+</p>
+<ul><li> Click the <b>Launch Browser</b> button <a href="Image:IconLaunchBrowser.png.html" class="image" title="Image:iconLaunchBrowser.png"><img alt="Image:iconLaunchBrowser.png" src="docs/images/1/1b/IconLaunchBrowser.png" width="23" height="22" border="0" /></a> to launch your project in a web browser.
+</li><li> Click the <b>Refresh</b> button <a href="Image:IconRefresh.png.html" class="image" title="Image:iconRefresh.png"><img alt="Image:iconRefresh.png" src="docs/images/f/f7/IconRefresh.png" width="23" height="22" border="0" /></a> to refresh your server.
+</li><li> Click the <b>Add</b> button <a href="Image:IconAddServer.png.html" class="image" title="Image:iconAddServer.png"><img alt="Image:iconAddServer.png" src="docs/images/7/76/IconAddServer.png" width="36" height="22" border="0" /></a> to add a new server.
+</li><li> Click the <b>Remove</b> button <a href="Image:IconRemove.png.html" class="image" title="Image:iconRemove.png"><img alt="Image:iconRemove.png" src="docs/images/8/8b/IconRemove.png" width="23" height="22" border="0" /></a> to delete the selected server.
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Using_RadRails_Views.html" title="Using RadRails Views">Using RadRails Views</a>
+</li><li> <a href="Using_the_RadRails_Console_View.html" title="Using the RadRails Console View">Using the RadRails Console View</a>
+</li><li> <a href="Using_the_Generators_View.html" title="Using the Generators View">Using the Generators View</a>
+</li><li> <a href="Using_the_Rails_Plugins_View.html" title="Using the Rails Plugins View">Using the Rails Plugins View</a>
+</li><li> <a href="Using_the_RegExp_View.html" title="Using the RegExp View">Using the RegExp View</a>
+</li><li> <a href="Using_the_Rake_Tasks_View.html" title="Using the Rake Tasks View">Using the Rake Tasks View</a>
+</li><li> <a href="Using_the_Rails_Shell_View.html" title="Using the Rails Shell View">Using the Rails Shell View</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1745-0!1!0!!en!2!edit=0 and timestamp 20090202134549 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Using_the_Servers_View">http://aptana.com/docs/index.php/Using_the_Servers_View</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

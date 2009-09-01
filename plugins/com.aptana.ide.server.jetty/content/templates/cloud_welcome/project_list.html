@@ -1,0 +1,35 @@
+<div class="borderGray pad5">
+	<label for="undeployed_project" class="gray48 bold">Choose project:</label>&nbsp;
+	<select name="undeployed_project" id="undeployed_project" style="width: 200px;">
+		<% if (data.undeployedProjects.size() == 0) { %>
+		<option value="---">Sample projects...</option>
+		<% } else { %>
+		<option value="---">Please choose...</option>
+		<% } %>
+		
+		<% if (data.undeployedProjects.size() > 0) { %>
+		<optgroup label="Your Undeployed Projects">
+			<% data.undeployedProjects.each(function(item) { %>
+			<option value="0<%= item.value.name %>"><%= item.value.name %></option>					
+			<% }); %>
+		</optgroup>
+		<% } %>
+		<optgroup label="Sample Projects">
+			<% data.samples.each(function(item) { %>
+			<option value="1<%= item.key %>"><%= item.key %></option>
+			<% }); %>
+		</optgroup>
+	</select>&nbsp;
+	<span id="deploy_project_button">
+		<a href="javascript: EventManager.publish('/portal/cloud/eventtracker', { request: 'submitEvent', id: 'c.dw.cwm.btn' }); Portal.Modules.CloudWelcomeMat.showWizard($F('undeployed_project'));"><img src="images_global/button_deploytocloud.png" align="absmiddle" class="inline" /></a>
+	</span>
+	<span id="loading_wizard_cage" style="display: none;">
+		<img src="images_global/img_activity.gif" align="absmiddle" class="inline" /> Loading wizard...
+	</span>
+	
+	<% if (data.undeployedProjects.size() == 0) { %>
+	<div class="size11 top5">
+		You don't have any <%= (Portal.Data.siteList.sites.size() == 0) ? '' : 'undeployed'; %> projects, why not <a href="javascript: Portal.Modules.CloudWelcomeMat.newProject();">create a new project</a>?
+	</div>
+	<% } %>
+</div>

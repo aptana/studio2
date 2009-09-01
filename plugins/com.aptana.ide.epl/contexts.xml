@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="find_replace">
+		<description>Here you can specify text to search for and optionally text with which to replace it.
+
+<b>You can specify:</b>
+The direction (forward or back from the current cursor
+location)The scope (All for the whole file or Selected Lines
+to search only within the highlighted area).Multiline option
+allows you to switch to multi line mode in which find and replace
+input fields allows entering multiple lines as the input.The Whether the
+search is Case Sensitive or Whole Word. You can also specify
+whether the search wraps at the end of the file. Regular
+expressions options allows you to search and replace using
+regular expressions. In this case regexp content assist may
+help you with content of the strings. Allow escape sequences
+option controls how escape sequences whould be transcripted by
+the search(when escape sequences are allowed they are interpreted 
+as a corresponding symbols in other case they are left as is in the patterns).
+
+If you close the Find/Replace dialog with text in the Find
+field, you can use Ctrl+K (or Edit > Find Next) or
+Ctrl+Shift+K (or Edit > Find Previous) to go to the next
+occurrence of that text. The directions for "Next" and
+"Previous" are not affected by the Direction setting in the
+Find/Replace dialog.
+
+<b>Incremental Find:</b>
+You can also choose Incremental Find from the Find/Replace
+dialog. With this option selected, each letter you type in
+the Find field causes the editor focus to move to the first
+complete occurrence of the text you are typing. You can also
+use incremental find by pressing Ctrl+J (Edit > Incremental
+Find). In this case, the text you type appears in the Status
+Line at the bottom of the Eclipse window. Note: The settings
+in the Find/Replace dialog do not affect the operation of
+incremental find in the Status Line.
+</description>
+	</context>
+</contexts>

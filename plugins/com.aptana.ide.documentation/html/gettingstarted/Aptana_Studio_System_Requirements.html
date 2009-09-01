@@ -1,0 +1,90 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Aptana Studio System Requirements</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Aptana_Studio_System_Requirements&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Aptana Studio System Requirements [<a href="http://www.aptana.com/docs/index.php?title=Aptana_Studio_System_Requirements&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Aptana Studio supports the Windows, Linux, and Mac OS X operating systems.
+</p>
+<a name="Supported_Operating_Systems.2C_Supported_Architectures.2C_JVM_Notes"></a><h2> <span class="mw-headline">Supported Operating Systems, Supported Architectures, JVM Notes</span></h2>
+<ul><li> <b>JVM for All 64-bit Machines</b>
+<ul><li> Use the 32-bit version of the Sun JVM.
+</li></ul>
+</li><li> <b>Windows</b> - x86 architecture
+<ul><li> 64-bit machines should use the plugin version of Studio.
+</li></ul>
+</li><li> <b>Mac OS</b> - OS X \ PowerPC architecture, OS X \ Intel architecture. OS X 10.4 or later
+</li><li> <b>Linux</b> - x86 architecture, GTK windowing system
+<ul><li> 64-bit machines should use the plugin version of Studio.
+</li></ul>
+</li></ul>
+<a name="Hardware_Recommendations"></a><h2> <span class="mw-headline">Hardware Recommendations</span></h2>
+<p>Aptana Studio will run on most modern hardware, but for best performance, we recommend the following resources for each platform:
+</p>
+<ul><li> <b>Windows</b> - 512 MB RAM, Pentium 4-level processor
+</li><li> <b>Mac OS</b> - 512 MB RAM, G5 or Intel-based machine
+</li><li> <b>Linux</b> - 512 MB RAM, Pentium 4-level processor
+</li></ul>
+<a name="JRE"></a><h2> <span class="mw-headline">JRE</span></h2>
+<p>Using Aptana Studio requires you to have v1.5.0 or later of the Java JRE installed on your computer.
+</p>
+<ul><li> Windows: Java v1.6 is included with the download.
+</li><li> Windows 98: You need to download the JRE separately from Sun if one is not already present on your system.
+</li><li> Mac OS X: Not supplied because the Mac OS already includes the appropriate JRE.***
+</li><li> Linux (32 bit): Not included; depending on your distro, you may be able to easily update that from Add/Remove programs.
+</li><li> Linux (64 bit): Only JRE 1.5 is supported at this time.
+</li></ul>
+<p>To determine which JVM you are using, check your log file (see <a href="Accessing_your_Aptana_log.html" title="Accessing your Aptana log">Accessing your Aptana log</a>), and look for the following entries:
+</p>
+<pre>java.version=[Version will be here]
+java.vendor=[Vendor name will be here]
+</pre>
+<p><b>OS X Note</b>
+</p><p>With Studio 1.1x and 1.2 on OS X You must use Java 5 even though Apple has released Java 6. The Eclipse Platform (on which Studio is built) uses the SWT Toolkit, and the toolkit requires a 32-bit version of Java. Apple has documented this conflict at <a href="http://support.apple.com/kb/HT1856" class="external free" title="http://support.apple.com/kb/HT1856" rel="nofollow">http://support.apple.com/kb/HT1856</a>.
+</p><p>You can tell Studio to use Java 5/JDK 1.5 by changing AptanaStudio.ini:
+</p>
+<ul><li> Open Finder to the Applications folder (or where you installed Aptana Studio).
+</li><li> Right (control) click on the Aptana Studio icon and select <i>Show package contents</i>
+</li><li> Drill down to Contents/MacOS folder
+</li><li> Edit the AptanaStudio.ini file: add the parameter <i>-vm /System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/java</i> and save the file.
+</li></ul>
+<p><b>Very Important:</b> You must add the -vm argument as described above before the -vmargs argument which will already be present!
+</p><p>Launch Aptana Studio from the dock or Finder and you should be working properly.
+</p><p>If not, or if you need assistance, please open a ticket in <a href="http://support.aptana.com/asap/secure/CreateIssue!default.jspa" class="external text" title="http://support.aptana.com/asap/secure/CreateIssue!default.jspa" rel="nofollow">ASAP</a>.
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1351-0!1!0!!en!2!edit=0 and timestamp 20090202102048 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Aptana_Studio_System_Requirements">http://aptana.com/docs/index.php/Aptana_Studio_System_Requirements</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="defaultlog" name="defaultlog" schema="schema/defaultlog.exsd"/>
+   <extension-point id="defaultRules" name="Default Rules" schema="schema/defaultRules.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="com.aptana.ide.js.ui"
+            class="com.aptana.ide.logging.view.LogView"
+            icon="icons/windowlist.png"
+            id="com.aptana.ide.logging.LogView"
+            name="%view.name.TailView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.aptana.ide.logging.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.aptana.ide.core.ui.preferences.GeneralPreferencePage"
+            class="com.aptana.ide.logging.preferences.TailViewPreferencePage"
+            id="com.aptana.ide.logging.preferences.LoggingColorizationPreferencePage"
+            name="%colorPreferencePage">
+      </page>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="TailViewActions"
+            targetID="com.aptana.ide.logging.LogView">
+         <action
+               class="com.aptana.ide.core.ui.actions.HelpAction"
+               icon="icons/help.png"
+               id="com.aptana.ide.logging.logging_context_view"
+               label="%action.label.showhelp"
+               style="push"
+               toolbarPath="additions"
+               tooltip="%action.tooltip.showhelp"/>     
+   		</viewContribution>
+   </extension>  
+   <extension point="org.eclipse.help.contexts"> 
+		<contexts file="contexts.xml" /> 
+   </extension>
+   <extension
+         point="org.eclipse.ui.themes">
+      <fontDefinition
+            categoryId="com.aptana.ide.core.ui.apearance"
+            defaultsTo="org.eclipse.jface.textfont"
+            id="com.aptana.ide.logging.preferences.LoggingPreferences.maintextfont"
+            isEditable="true"
+            label="%textFont.label">
+      </fontDefinition>
+   </extension>
+   <extension
+         point="com.aptana.ide.logging.defaultlog">
+      <log
+            provider="com.aptana.ide.logging.impl.WorkspaceLogProvider">
+      </log>
+   </extension>
+   
+   <extension
+         point="com.aptana.ide.logging.defaultRules">
+      <rule
+            caseInsensitive="true"
+            color="128,0,255"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[INFO\]\s*\[JaxerManager\]\s*JaxerManager\s*\d"
+            name="%rule.name.JaxerManager"
+            underline="true">
+      </rule>
+      <rule
+            color="0,0,160"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[INFO\]\s*\[Jaxer\/"
+            name="%rule.name.JaxerStart"
+            underline="true">
+      </rule>
+      <rule
+            color="60,132,96"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[TRACE\]"
+            name="%rule.name.JaxerTrace">
+      </rule>
+      <rule
+            color="0,0,255"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[DEBUG\]"
+            name="%rule.name.Jaxer-Debug">
+      </rule>
+      <rule
+            color="128,64,0"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[INFO\]"
+            name="%rule.name.Jaxer-Info">
+      </rule>
+      <rule
+            color="255, 128, 0"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[WARN\]"
+            name="%rule.name.Jaxer-Warning">
+      </rule>
+      <rule
+            bold="true"
+            color="255,0,0"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[FATAL\]"
+            name="%rule.name.Jaxer-Fatal">
+      </rule>
+      <rule
+            color="255, 0, 0"
+            content="^\d\d\:\d\d\:\d\d\ .{10}\s*\[\s*\d+\]\s*\[ERROR\]"
+            name="%rule.name.Jaxer-Error">
+      </rule>
+      <rule
+            bold="true"
+            color="255,0,0"
+            content="^\[(\w|\ |\:)+\]\ \[emerg\]"
+            italic="true"
+            name="%rule.name.ApacheEmerg"
+            underline="true">
+      </rule>
+      <rule
+            bold="true"
+            color="255, 0, 0"
+            content="^\[(\w|\ |\:)+\]\ \[alert\]"
+            italic="true"
+            name="%rule.name.ApacheAlert">
+      </rule>
+      <rule
+            bold="true"
+            color="255, 0, 0"
+            content="^\[(\w|\ |\:)+\]\ \[crit\]"
+            italic="false"
+            name="%rule.name.ApacheCritical"
+            underline="false">
+      </rule>
+      <rule
+            color="255, 0, 0"
+            content="^\[(\w|\ |\:)+\]\ \[error\]"
+            name="%rule.name.ApacheError">
+      </rule>
+      <rule
+            color="255, 128, 0"
+            content="^\[(\w|\ |\:)+\]\ \[warn\]"
+            name="%rule.name.ApacheWarning">
+      </rule>
+      <rule
+            color="128, 0, 255"
+            content="^\[(\w|\ |\:)+\]\ \[notice\]"
+            name="%rule.name.ApacheNotice">
+      </rule>
+      <rule
+            color="128, 64, 64"
+            content="^\[(\w|\ |\:)+\]\ \[info\]"
+            name="%rule.name.ApacheInfo">
+      </rule>
+      <rule
+            color="0, 0, 255"
+            content="^\[(\w|\ |\:)+\]\ \[debug\]"
+            name="%rule.name.ApacheDebug">
+      </rule>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.aptana.ide.logging.LogReadonlyEditor"
+            default="true"
+            extensions="log"
+            filenames="access_log,error_log"
+            icon="icons/windowlist.png"
+            id="com.aptana.ide.logging.LogEditor"
+            name="%editor.name.LogViewer">
+      </editor>
+   </extension>
+
+</plugin>

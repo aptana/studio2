@@ -1,0 +1,76 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>JavaScript Formatting</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=JavaScript_Formatting&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>JavaScript Formatting [<a href="http://www.aptana.com/docs/index.php?title=JavaScript_Formatting&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains how to turn off code formatting for specified blocks of JavaScript code.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The code formatting tool in Aptana allows you to turn formatting on or off for a pre-defined block of JavaScript code. The instructions below tell you how to designate whether formatting should be on or off for a block of code.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>To turn formatting off or on for a block of JavaScript code:
+</p>
+<ul><li> Use //noformat to signify the start of a block of code that the formatter should leave as is
+</li><li> Use //format to signify that the formatter should resume formatting after the end of this comment directive
+</li><li> If //noformat is never followed by a //format comment then the entire document after the //noformat comment will be left as is by the formatter
+</li><li> //noformat and //format with any other content in those content blocks will be ignored as directives to the formatter
+</li><li> //noformat and //format will be matched case insensitively (i.e //NOFORMAT and //Format will be interpreted as valid directives to the formatter)
+</li></ul>
+<p>Example:
+</p>
+<pre>
+function test() {
+	
+	
+	//noformat
+		var i; var j; var k;
+	//format
+	
+	i = 3;
+	while( i &lt; 4 ) {
+		i++;
+	}
+}
+</pre>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Customizing_your_formatting_preferences.html" title="Customizing your formatting preferences">Customizing your formatting preferences</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2078-0!1!0!!en!2!edit=0 and timestamp 20090202070314 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/JavaScript_Formatting">http://aptana.com/docs/index.php/JavaScript_Formatting</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

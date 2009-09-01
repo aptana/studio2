@@ -1,0 +1,94 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Executing SQL statements in RadRails</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Executing_SQL_statements_in_RadRails&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Executing SQL statements in RadRails [<a href="http://www.aptana.com/docs/index.php?title=Executing_SQL_statements_in_RadRails&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to execute SQL statements in RadRails.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Executing_SQL_statements_from_the_Data_Perspective"><span class="tocnumber">2.1</span> <span class="toctext">Executing SQL statements from the Data Perspective</span></a></li>
+<li class="toclevel-2"><a href="#Executing_SQL_statements_from_the_Rails_Navigator_View"><span class="tocnumber">2.2</span> <span class="toctext">Executing SQL statements from the Rails Navigator View</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>RadRails provides you with two ways to execute SQL statements. You can use the Data Perspective and write statements in the Query View, or you can execute SQL statements in files with a .sql file extension from the Rails Navigator View in the RadRails perspective. The instructions below explain how to execute SQL statements using either method.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Executing_SQL_statements_from_the_Data_Perspective"></a><h3> <span class="mw-headline">Executing SQL statements from the Data Perspective</span></h3>
+<p>After you have set up your database (see <a href="Browsing_a_database_in_RadRails.html" title="Browsing a database in RadRails">Browsing a database in RadRails</a>), you can execute SQL statements against your database in the Data Perspective.
+</p><p>To execute SQL statements from the Data Perspective:
+</p>
+<ol>
+<li>In the upper right corner of your workbench, click the <a href="Image:IconDataPerspective.png.html" class="image" title="Image:iconDataPerspective.png"><img alt="Image:iconDataPerspective.png" src="docs/images/b/b4/IconDataPerspective.png" width="54" height="22" border="0" /></a> button to switch to the Data Perspective.</li>
+<li>In the text box in the Query View, type your SQL statement (e.g. a SELECT statement).</li>
+<li>Click the <b>Execute</b> button.</li>
+</ol>
+<p>RadRails executes your SQL statement and displays the results in the Result View.
+</p>
+<a name="Executing_SQL_statements_from_the_Rails_Navigator_View"></a><h3> <span class="mw-headline">Executing SQL statements from the Rails Navigator View</span></h3>
+<p>To execute SQL statements form the Rails Navigator View:
+</p>
+<ol>
+<li>If you are not in the Rails Perspective, click the <a href="Image:IconRailsPerspective.png.html" class="image" title="Image:iconRailsPerspective.png"><img alt="Image:iconRailsPerspective.png" src="docs/images/e/e1/IconRailsPerspective.png" width="53" height="22" border="0" /></a> button in the upper right corner of your workbench to switch.</li>
+<li>In the Rails Navigator View, expand the folder containing your Rails project.</li>
+<li>Navigate to and right-click the .sql file that you want to execute, then select <b>Execute SQL</b> and a database from the context menu.</li>
+</ol>
+<p>RadRails executes the entire contents of the .sql file and displays the success or failure of the action, including corresponding error messages, if any.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Getting_started_with_RadRails.html" title="Getting started with RadRails">Getting started with RadRails</a>
+</li><li> <a href="Starting_a_new_RadRails_project.html" title="Starting a new RadRails project">Starting a new RadRails project</a>
+</li><li> <a href="Importing_an_existing_project_into_RadRails.html" title="Importing an existing project into RadRails">Importing an existing project into RadRails</a>
+</li><li> <a href="Building_an_application_in_RadRails.html" title="Building an application in RadRails">Building an application in RadRails</a>
+</li><li> <a href="Running_a_unit_test_on_RadRails.html" title="Running a unit test on RadRails">Running a unit test on RadRails</a>
+</li><li> <a href="Creating_and_running_a_WEBrick_server.html" title="Creating and running a WEBrick server">Creating and running a WEBrick server</a>
+</li><li> <a href="Browsing_a_database_in_RadRails.html" title="Browsing a database in RadRails">Browsing a database in RadRails</a>
+</li><li> <a href="Using_a_Mongrel_server.html" title="Using a Mongrel server">Using a Mongrel server</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1753-0!1!0!!en!2!edit=0 and timestamp 20090202130030 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Executing_SQL_statements_in_RadRails">http://aptana.com/docs/index.php/Executing_SQL_statements_in_RadRails</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

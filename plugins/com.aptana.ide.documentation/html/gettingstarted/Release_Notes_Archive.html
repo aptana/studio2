@@ -1,0 +1,1097 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Release Notes Archive</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Release_Notes_Archive&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Release Notes Archive [<a href="http://www.aptana.com/docs/index.php?title=Release_Notes_Archive&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page contains the Release Notes from previous releases of Aptana. For information about the most current release, see the <a href="Aptana_Release_Notes.html" title="Aptana Release Notes">Aptana Release Notes</a> page.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Aptana_Milestone_9_patch_.2817-September-2007.29"><span class="tocnumber">1</span> <span class="toctext">Aptana Milestone 9 patch (17-September-2007)</span></a></li>
+<li class="toclevel-1"><a href="#Aptana_Milestone_9_update_.2827-August-2007.29"><span class="tocnumber">2</span> <span class="toctext">Aptana Milestone 9 update (27-August-2007)</span></a></li>
+<li class="toclevel-1"><a href="#What.27s_New"><span class="tocnumber">3</span> <span class="toctext">What's New</span></a>
+<ul>
+<li class="toclevel-2"><a href="#PHP_Support"><span class="tocnumber">3.1</span> <span class="toctext">PHP Support</span></a></li>
+<li class="toclevel-2"><a href="#Updated_Ajax_library_support"><span class="tocnumber">3.2</span> <span class="toctext">Updated Ajax library support</span></a></li>
+<li class="toclevel-2"><a href="#Improved_JavaScript_Outliner"><span class="tocnumber">3.3</span> <span class="toctext">Improved JavaScript Outliner</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Known_Issues"><span class="tocnumber">4</span> <span class="toctext">Known Issues</span></a></li>
+<li class="toclevel-1"><a href="#Aptana_Milestone_8b_update_.2811-June-2007.29"><span class="tocnumber">5</span> <span class="toctext">Aptana Milestone 8b update (11-June-2007)</span></a></li>
+<li class="toclevel-1"><a href="#What.27s_New_2"><span class="tocnumber">6</span> <span class="toctext">What's New</span></a>
+<ul>
+<li class="toclevel-2"><a href="#New_Aptana_Start_Page"><span class="tocnumber">6.1</span> <span class="toctext">New Aptana Start Page</span></a></li>
+<li class="toclevel-2"><a href="#Apple_iPhone_support"><span class="tocnumber">6.2</span> <span class="toctext">Apple iPhone support</span></a></li>
+<li class="toclevel-2"><a href="#Adobe.C2.AE_AIR.E2.84.A2_support"><span class="tocnumber">6.3</span> <span class="toctext">Adobe® AIR™ support</span></a></li>
+<li class="toclevel-2"><a href="#Plugins_Manager_View"><span class="tocnumber">6.4</span> <span class="toctext">Plugins Manager View</span></a></li>
+<li class="toclevel-2"><a href="#Eclipse_Monkey_integration"><span class="tocnumber">6.5</span> <span class="toctext">Eclipse Monkey integration</span></a></li>
+<li class="toclevel-2"><a href="#Colorization_customization"><span class="tocnumber">6.6</span> <span class="toctext">Colorization customization</span></a></li>
+<li class="toclevel-2"><a href="#New_Samples_View"><span class="tocnumber">6.7</span> <span class="toctext">New Samples View</span></a></li>
+<li class="toclevel-2"><a href="#Miscellaneous_updates"><span class="tocnumber">6.8</span> <span class="toctext">Miscellaneous updates</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Known_Issues_2"><span class="tocnumber">7</span> <span class="toctext">Known Issues</span></a></li>
+<li class="toclevel-1"><a href="#Aptana_Milestone_8a_update_.2807-May-2007.29"><span class="tocnumber">8</span> <span class="toctext">Aptana Milestone 8a update (07-May-2007)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_3"><span class="tocnumber">8.1</span> <span class="toctext">What's New</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Features"><span class="tocnumber">9</span> <span class="toctext">Features</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Known_Issues_3"><span class="tocnumber">9.1</span> <span class="toctext">Known Issues</span></a></li>
+<li class="toclevel-2"><a href="#Complete_list_of_features.2C_enhancements_and_fixed_issues_for_Milestone_8a"><span class="tocnumber">9.2</span> <span class="toctext">Complete list of features, enhancements and fixed issues for Milestone 8a</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Milestone_7_update_.2802-Feb-2007.29"><span class="tocnumber">10</span> <span class="toctext">Aptana Milestone 7 update (02-Feb-2007)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_4"><span class="tocnumber">10.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_4"><span class="tocnumber">10.2</span> <span class="toctext">Known Issues</span></a></li>
+<li class="toclevel-2"><a href="#Complete_list_of_features.2C_enhancements_and_fixed_issues_for_Milestone_7"><span class="tocnumber">10.3</span> <span class="toctext">Complete list of features, enhancements and fixed issues for Milestone 7</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Milestone_6_update_.2805-Oct-2006.29"><span class="tocnumber">11</span> <span class="toctext">Aptana Milestone 6 update (05-Oct-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_5"><span class="tocnumber">11.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Bug_Fixes"><span class="tocnumber">11.2</span> <span class="toctext">Bug Fixes</span></a></li>
+<li class="toclevel-2"><a href="#Complete_list_of_enhancements_and_fixed_issues_for_Milestone_6"><span class="tocnumber">11.3</span> <span class="toctext">Complete list of enhancements and fixed issues for Milestone 6</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Milestone_5_update_.2807-Sept-2006.29"><span class="tocnumber">12</span> <span class="toctext">Aptana Milestone 5 update (07-Sept-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_6"><span class="tocnumber">12.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Complete_list_of_fixed_issues.2C_added_features.2C_and_enhancements_for_Milestone_5"><span class="tocnumber">12.2</span> <span class="toctext">Complete list of fixed issues, added features, and enhancements for Milestone 5</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Milestone_4_update_.2808-Aug-2006.29"><span class="tocnumber">13</span> <span class="toctext">Aptana Milestone 4 update (08-Aug-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_7"><span class="tocnumber">13.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_5"><span class="tocnumber">13.2</span> <span class="toctext">Known Issues</span></a></li>
+<li class="toclevel-2"><a href="#Complete_list_of_fixed_issues.2C_added_features.2C_and_enhancements_for_Milestone_4"><span class="tocnumber">13.3</span> <span class="toctext">Complete list of fixed issues, added features, and enhancements for Milestone 4</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Beta_.31_update_.2822-July-2006.29"><span class="tocnumber">14</span> <span class="toctext">Aptana Beta .31 update (22-July-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_8"><span class="tocnumber">14.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_6"><span class="tocnumber">14.2</span> <span class="toctext">Known Issues</span></a></li>
+<li class="toclevel-2"><a href="#Complete_Issue_List"><span class="tocnumber">14.3</span> <span class="toctext">Complete Issue List</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Features_2"><span class="tocnumber">14.3.1</span> <span class="toctext">Features</span></a></li>
+<li class="toclevel-3"><a href="#Defects"><span class="tocnumber">14.3.2</span> <span class="toctext">Defects</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Beta-.30_update_.2811-July-2006.29"><span class="tocnumber">15</span> <span class="toctext">Aptana Beta-.30 update (11-July-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_9"><span class="tocnumber">15.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_7"><span class="tocnumber">15.2</span> <span class="toctext">Known Issues</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Beta_.25_update_.2814-June-2006.29"><span class="tocnumber">16</span> <span class="toctext">Aptana Beta .25 update (14-June-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_10"><span class="tocnumber">16.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_8"><span class="tocnumber">16.2</span> <span class="toctext">Known Issues</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Beta_.20_update_.2830-May-2006.29"><span class="tocnumber">17</span> <span class="toctext">Aptana Beta .20 update (30-May-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_11"><span class="tocnumber">17.1</span> <span class="toctext">What's New</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Beta_.15_update_.2810-May-2006.29"><span class="tocnumber">18</span> <span class="toctext">Aptana Beta .15 update (10-May-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_12"><span class="tocnumber">18.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_9"><span class="tocnumber">18.2</span> <span class="toctext">Known Issues</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Beta_.1_update_.2819-Apr-2006.29"><span class="tocnumber">19</span> <span class="toctext">Aptana Beta .1 update (19-Apr-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_13"><span class="tocnumber">19.1</span> <span class="toctext">What's New</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Beta_.1_release_.2811-Apr-2006.29"><span class="tocnumber">20</span> <span class="toctext">Aptana Beta .1 release (11-Apr-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_14"><span class="tocnumber">20.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_10"><span class="tocnumber">20.2</span> <span class="toctext">Known Issues</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Alpha_release_.2820-Mar-2006.29"><span class="tocnumber">21</span> <span class="toctext">Aptana Alpha release (20-Mar-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#What.27s_New_15"><span class="tocnumber">21.1</span> <span class="toctext">What's New</span></a></li>
+<li class="toclevel-2"><a href="#Known_Issues_11"><span class="tocnumber">21.2</span> <span class="toctext">Known Issues</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Aptana_Alpha_release_.2810-Mar-2006.29"><span class="tocnumber">22</span> <span class="toctext">Aptana Alpha release (10-Mar-2006)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Known_Issues_12"><span class="tocnumber">22.1</span> <span class="toctext">Known Issues</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Aptana_Milestone_9_patch_.2817-September-2007.29"></a><h2> <span class="mw-headline">Aptana Milestone 9 patch (17-September-2007)</span></h2>
+<p>Build 17048 is a patch release for Milestone 9, which includes the following two major bug fixes:
+</p>
+<ul><li> In the Milestone 9 release, several translated versions of Aptana (Spanish, French, German, etc) contained Korean characters in the translated user interface. This patch release contains a fix for this issue.
+</li><li> Build 17048 also contains a fix for the issue with broken JavaScript code folding.
+</li><li> Build 17048 contains a fix for the issue where pressing <b>F1</b> failed to display context-sensitive help.
+</li></ul>
+<a name="Aptana_Milestone_9_update_.2827-August-2007.29"></a><h2> <span class="mw-headline">Aptana Milestone 9 update (27-August-2007)</span></h2>
+<p>For information about previous releases, see the <strong class="selflink">Release Notes Archive</strong>.
+</p><p>The Aptana Milestone 9 release (27-August-2007) improves on the Milestone 8b Release by introducing many new features including PHP support, Ajax library wizard updates, JavaScript outliner improvements and much more.
+</p>
+<a name="What.27s_New"></a><h2> <span class="mw-headline">What's New</span></h2>
+<a name="PHP_Support"></a><h3> <span class="mw-headline">PHP Support</span></h3>
+<p>The Aptana IDE now contains much more robust PHP support. This increased PHP support includes Code Assist on PHP functions and parameters, improved PHP syntax colorization, and a PHP outliner.
+</p><p><a href="Image:PhpSupport.png.html" class="image" title="Image:phpSupport.png"><img alt="Image:phpSupport.png" src="docs/images/2/2f/PhpSupport.png" width="686" height="301" border="0" /></a>
+</p>
+<a name="Updated_Ajax_library_support"></a><h3> <span class="mw-headline">Updated Ajax library support</span></h3>
+<p>Milestone 9 updates the Ajax library wizards to include the latest known publicly available "current" versions of many of the Ajax frameworks in our library wizard. This includes updates to popular frameworks such as Prototype and jQuery. (Note: Updates to Dojo and EXT will be included in Milestone 10.)
+</p><p><a href="Image:AjaxLibraryWizard.png.html" class="image" title="Image:AjaxLibraryWizard.png"><img alt="Image:AjaxLibraryWizard.png" src="docs/images/0/02/AjaxLibraryWizard.png" width="500" height="500" border="0" /></a>
+</p>
+<a name="Improved_JavaScript_Outliner"></a><h3> <span class="mw-headline">Improved JavaScript Outliner</span></h3>
+<p>The JavaScript outliner in Milestone 9 features additional JavaScript language syntax recognition. Additionally, code navigation has been improved by implementing <b>ctrl+click</b> to navigate your functions.
+</p>
+<a name="Known_Issues"></a><h2> <span class="mw-headline">Known Issues</span></h2>
+<ul><li> Some configurations have been having issues with FTP freezing and/or hanging. We are working to fix this in Milestone 10.
+</li><li> Code folding for PHP will be implemented in Milestone 10.
+</li></ul>
+<p><br />
+</p>
+<a name="Aptana_Milestone_8b_update_.2811-June-2007.29"></a><h2> <span class="mw-headline">Aptana Milestone 8b update (11-June-2007)</span></h2>
+<p>The Aptana Milestone 8b release (11-June-2007) improves on the Milestone 8a Release by introducing many new features, including support for Adobe® AIR™, complete integration with the Eclipse Monkey scripting tool, a new Plug-ins Manager, and much more.
+</p>
+<a name="What.27s_New_2"></a><h2> <span class="mw-headline">What's New</span></h2>
+<a name="New_Aptana_Start_Page"></a><h3> <span class="mw-headline">New Aptana Start Page</span></h3>
+<p>The new Aptana Start page (shown below) replaces the old Welcome page. The Start page still contains links to Aptana news and documentation, but now also includes a Plugins section to help you easily install popular new plug-ins for Aptana. This page shows automatically every time that you launch Aptana, but you can easily disable it via the link at the bottom of the Start page.
+</p><p><a href="Image:AptanaStartPage.png.html" class="image" title="Image:aptanaStartPage.png"><img alt="Image:aptanaStartPage.png" src="docs/images/e/e6/AptanaStartPage.png" width="974" height="708" border="0" /></a>
+</p>
+<a name="Apple_iPhone_support"></a><h3> <span class="mw-headline">Apple iPhone support</span></h3>
+<p>With the release of Build 15637 or greater, Aptana now includes support for the iPhone development plug-in. The iPhone development plug-in provides features for developing applications for the Apple iPhone:
+</p>
+<ul><li> Preview of your iPhone projects in hortizontal and vertical mode
+</li><li> iPhone Project contains starter files to get you going easily on your iPhones apps
+</li><li> Easy import of Ajax libraries into iPhone projects
+</li><li> Export wizard for bundling and deploying iPhone applications (coming soon)
+</li><li> Integrated content assist for iPhone-specific APIs (coming soon)
+</li><li> Help and online documentation (coming soon)
+</li></ul>
+<p><a href="Image:Aptana-iphone-sm.gif.html" class="image" title="Image:aptana-iphone-sm.gif"><img alt="Image:aptana-iphone-sm.gif" src="docs/images/8/8d/Aptana-iphone-sm.gif" width="212" height="400" border="0" /></a>
+</p>
+<a name="Adobe.C2.AE_AIR.E2.84.A2_support"></a><h3> <span class="mw-headline">Adobe® AIR™ support</span></h3>
+<p>The Adobe® AIR™ SDK allows you to leverage web development technologies that you are already familiar with, such as JavaScript and Flash, and use them to create Rich Internet Applications for the desktop. With the addition of the new AIR plug-in, Aptana now supports AIR development. Within Aptana, you can create a new AIR project, build and run the project, and export it for deployment. To learn more about AIR, see the <a href="Developing_Adobe%C2%AE_AIR%E2%84%A2_projects.html" title="Developing Adobe® AIR™ projects">Developing Adobe® AIR™ projects</a> documentation.
+</p>
+<a name="Plugins_Manager_View"></a><h3> <span class="mw-headline">Plugins Manager View</span></h3>
+<p>The new Plugins Manager View (shown below) gives you an easy way to install and manage the plug-ins in your Aptana IDE configuration. To learn more about how to use the Plugins Manager View, see the <a href="Managing_Plugins_with_the_Plugins_Manager_View.html" title="Managing Plugins with the Plugins Manager View">Managing Plugins with the Plugins Manager View</a> Help topic.
+</p><p><a href="Image:PluginsManagerView.png.html" class="image" title="Image:pluginsManagerView.png"><img alt="Image:pluginsManagerView.png" src="docs/images/4/45/PluginsManagerView.png" width="762" height="442" border="0" /></a>
+</p>
+<a name="Eclipse_Monkey_integration"></a><h3> <span class="mw-headline">Eclipse Monkey integration</span></h3>
+<p>The Aptana IDE now has full integration with the Eclipse Monkey scripting tool. With the Eclipse Monkey scripting tool, you can easily automate tedious programming tasks across your development environment. You can also now assign hotkey shortcuts to your scripts and snippets. To learn more about Eclipse Monkey, see the special section of the Aptana web site and the Eclipse Monkey documentation:
+</p>
+<ul><li> <a href="http://aptana.com/monkey/" class="external free" title="http://aptana.com/monkey/" rel="nofollow">http://aptana.com/monkey/</a>
+</li><li> <a href="Scripting_with_Eclipse_Monkey.html" title="Scripting with Eclipse Monkey">Scripting with Eclipse Monkey</a>
+</li></ul>
+<p>With the release of our Eclipse Monkey integration, two new views, the Snippets View and Scripts View (shown below) replace the old Actions View. The Aptana documentation will be updated very, very soon to reflect this.
+</p><p><a href="Image:ScriptsView.png.html" class="image" title="Image:scriptsView.png"><img alt="Image:scriptsView.png" src="docs/images/f/f8/ScriptsView.png" width="291" height="228" border="0" /></a>
+</p>
+<a name="Colorization_customization"></a><h3> <span class="mw-headline">Colorization customization</span></h3>
+<p>You can now easily customize your colorization preferences with our new colorization support.
+</p><p>To access your colorization preferences, select <b>Preferences...</b> from the <b>Window</b> menu, and navigate to <b>Aptana &gt; Editors</b>, and then expand the <b>Editor</b> that you want to customize, and select <b>Colors</b>. The new Colorization preferences window is shown below:
+</p><p><a href="Image:ColorizationPreferences.png.html" class="image" title="Image:colorizationPreferences.png"><img alt="Image:colorizationPreferences.png" src="docs/images/2/26/ColorizationPreferences.png" width="596" height="590" border="0" /></a>
+</p><p>You can also now export and share your colorization preferences across workspaces and with other Aptana users. 
+</p>
+<a name="New_Samples_View"></a><h3> <span class="mw-headline">New Samples View</span></h3>
+<p>The new Samples View provides a set of examples based on popular JavaScript libraries, such as EXT and MochiKit. 
+</p><p><a href="Image:SamplesView.png.html" class="image" title="Image:samplesView.png"><img alt="Image:samplesView.png" src="docs/images/0/0c/SamplesView.png" width="249" height="239" border="0" /></a>
+</p><p>Learn more about the Samples View in <a href="Displaying_the_Samples_View.html" title="Displaying the Samples View">Displaying the Samples View</a>.
+</p>
+<a name="Miscellaneous_updates"></a><h3> <span class="mw-headline">Miscellaneous updates</span></h3>
+<p>Milestone 8b includes the following miscellaneous improvements to Aptana:
+</p>
+<ul><li> Code Assist profiles, scripts and outliner now work across all perspectives.
+</li><li> Content assist for JavaScript now displays inside of HTML attribute values like onClick, etc.
+</li><li> The JavaScript outliner now supports additional JavaScript syntaxes, including Ext.extend and qooxdoo's qx.Class.define
+</li><li> JavaScript comments can now be folded, and comments may be folded initially.
+</li><li> PHP outliner now shows icons and content of PHP.
+</li><li> The hotkey combination <b>Ctrl + Shift + F</b> now formats HTML files.
+</li><li> Updates to the included libraries: Ext, Mootools, Adobe Spry, Scriptaculous, etc.
+</li></ul>
+<a name="Known_Issues_2"></a><h2> <span class="mw-headline">Known Issues</span></h2>
+<ul><li> The Plugins Manager View may experience some issues with refreshing the icons and plug-ins. You may need to close and re-open the view to get an updated list for your configuration.
+</li><li> If you install the Firefox preview pane, you will still need to run the "clean" command as a post-install step. See <a href="Adding_Firefox_support_to_the_Preview_pane.html" title="Adding Firefox support to the Preview pane">Adding Firefox support to the Preview pane</a> for more details.
+</li></ul>
+<a name="Aptana_Milestone_8a_update_.2807-May-2007.29"></a><h2> <span class="mw-headline">Aptana Milestone 8a update (07-May-2007)</span></h2>
+<p>The Aptana Milestone 8a release (07-May-2007) improves on the Milestone 7 Release by introducing the Aptana firebug integration, Unicode support and numerous bug fixes.. 
+</p>
+<a name="What.27s_New_3"></a><h3> <span class="mw-headline">What's New</span></h3>
+<ul><li> Unicode support
+</li><li> Firebug integration. Use Firebug or Aptana to debug your JavaScript application--and switch between them interactively!
+</li><li> Bug fixes to allow query strings in debugged page URLs
+</li><li> Instance highlighting
+</li><li> Unlimited undos. Yes, you can now actually undo 500 times
+</li><li> Internationalization! Aptana is now available in a variety of languages.
+</li><li> Aptana is now built on top of the Eclipse 3.2 architecture. This means more plugin compatibility and speed updates
+</li></ul>
+<a name="Features"></a><h2> <span class="mw-headline"> Features </span></h2>
+<ul><li> Performance updates. The old HTML-based problems view has been converted to a new design. This should fix many of the "freezing" issues people experienced while using Aptana.
+</li><li> Internationalized versions of the IDE. Numerous forum members have helped us translate Aptana into a variety of languages. The translation is not complete, but we are working towards finishing that by 1.0.
+<ul><li> <a href="http://www.aptana.com/docs/index.php/Changing_the_Aptana_IDE_interface_to_a_different_language" class="external free" title="http://www.aptana.com/docs/index.php/Changing_the_Aptana_IDE_interface_to_a_different_language" rel="nofollow">http://www.aptana.com/docs/index.php/Changing_the_Aptana_IDE_interface_to_a_different_language</a> 
+</li></ul>
+</li></ul>
+<a name="Known_Issues_3"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<ul><li> Aptana M7 cannot be upgraded to M8. A new download is required. Additionally, M8 requires Java 1.5+. M7 will continue to be available for those unable to upgrade.
+</li><li> Aptana now installs the default workspace into a different location. Please see the help documentation for information on importing your projects and settings:
+<ul><li> <a href="Exporting_and_importing_preferences.html" title="Exporting and importing preferences">Exporting and importing preferences</a>
+</li><li> <a href="Importing_existing_projects.html" title="Importing existing projects">Importing existing projects</a>
+</li></ul>
+</li><li> To install the Firefox browser support, please read the following Help topic:
+<ul><li><a href="Adding_Firefox_support_to_the_Preview_pane.html" title="Adding Firefox support to the Preview pane">Adding Firefox support to the Preview pane</a>
+</li></ul>
+</li></ul>
+<a name="Complete_list_of_features.2C_enhancements_and_fixed_issues_for_Milestone_8a"></a><h3> <span class="mw-headline">Complete list of features, enhancements and fixed issues for Milestone 8a</span></h3>
+<p>For a complete list of everything added or fixed, see here: <a href="http://update.aptana.com/update/3.2/release_notes.html?lm=1170133200000" class="external free" title="http://update.aptana.com/update/3.2/release_notes.html?lm=1170133200000" rel="nofollow">http://update.aptana.com/update/3.2/release_notes.html?lm=1170133200000</a>
+</p>
+<a name="Aptana_Milestone_7_update_.2802-Feb-2007.29"></a><h2> <span class="mw-headline">Aptana Milestone 7 update (02-Feb-2007)</span></h2>
+<p>The Aptana Milestone 7 release (02-Feb-2007) improves on the Milestone 6 Release by introducing the Aptana debugger feature and several bug fixes. 
+</p>
+<a name="What.27s_New_4"></a><h3> <span class="mw-headline">What's New</span></h3>
+<ul><li> Updated OS X installer to solve installation issues on OS X 10.3.8
+</li><li> jQuery 1.1.1 Support
+</li><li> Updated HTML/CSS/JS documentation
+</li></ul>
+<p><b>Aptana Debugger</b>
+</p><p>The Aptana IDE now contains an integrated JavaScript debugger.  The debugger is currently compatible with Firefox, and offers features like the ability to step into and over functions, add breakpoints, examine variables, and evaluate expressions. The complete set of features is listed below:
+</p><p><b>Aptana Debugger Features:</b>
+</p>
+<ul><li> Local, workspace and remote web page debugging
+</li><li> Basic stepping (step into, step over, step return)
+</li><li> Stack frame dependent stepping
+</li><li> Run-to-line and suspend-at-start actions
+</li><li> Breakpoints (conditional, hit count)
+</li><li> Expressions evaluation
+</li><li> Variables listing with modification support
+</li><li> Configurable variables detail formatters
+</li><li> Suspend at start/on error/on exception/on debugger keyword configuration options
+</li><li> Exception breakpoints by exception type
+</li><li> console.log() and window.dump() logging
+</li><li> Console stack tracing using aptana.trace()
+</li><li> Logging facilities in 'run' mode
+</li><li> Assertion API with prompt dialog (Continue, Stop, Debug)
+</li><li> Variable text hovers in debug
+</li><li> Hyperlinks to source code in console exception trace
+</li><li> Ability to change/catch generated exception in Variables
+</li><li> Scripts view with navigation to source code
+</li><li> Variables view constants filtering
+</li><li> Disable breakpoints on non-executable lines
+</li><li> Disconnect from browser with logging facilities available
+</li></ul>
+<p>For a quick introduction to installing and running the debugger see the new <a href="Getting_started_with_the_Aptana_debugger.html" title="Getting started with the Aptana debugger">Getting started with the Aptana debugger</a> walkthrough.
+</p><p>Links to complete documentation for the debugger can be found at <a href="Debugging_your_JavaScript_code.html" title="Debugging your JavaScript code">Debugging your JavaScript code</a>.
+</p>
+<a name="Known_Issues_4"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<p><b>Internal error occurs during "Step Over"</b>
+</p><p>While stepping quickly through and over functions via the debugger, you may occasionally get an error message that says that an internal error occurred during "Step Over". This is a known issue and should be fixed in a future release.
+</p><p><b>Firefox hangs during fast stepping</b>
+</p><p>If you step quickly through the functions in your code (e.g. holding down the F6 key), Firefox may appear to "hang" while it catches up to the debugger. If this happens, you can wait a few seconds, and you should be able to start stepping again. This is a known issue and should be fixed in a future release.
+</p><p><br />
+</p>
+<a name="Complete_list_of_features.2C_enhancements_and_fixed_issues_for_Milestone_7"></a><h3> <span class="mw-headline">Complete list of features, enhancements and fixed issues for Milestone 7</span></h3>
+<p><b>Features</b>
+</p>
+<ul><li>545: JavaScript debugger
+</li><li>856: Use relative font sizes in help documents
+</li></ul>
+<p><b>Enhancements</b>
+</p>
+<ul><li>502: Tab auto-selects and inserts current code assist proposal
+</li><li>786: ActionsView too fragile when errors occur during loading
+</li><li>890: IE 7 CSS Support page (starting point for CSS documentation)
+</li><li>1112: Changing "Tag attributes" in XML/HTML preferences does not update outline view
+</li><li>1199: Add regex, lexer, and parser components to Trac
+</li><li>1282: Add more specific CSS styles for Mozilla, opera and safari
+</li><li>1308: Need to update Actions to use both scripts.dir and user.scripts.dir
+</li><li>1330: FTP connection configuration requires two logins when passwords aren't saved
+</li><li>1360: Set up Launchpad for localization
+</li><li>1394: Create Help topic for shortcut key reference.
+</li><li>1399: Create Debugger Screencasts
+</li><li>1400: Create Debugger Documentation/Tutorials
+</li><li>1402: CSS metadata: Add opacity attribute
+</li><li>1415: TRAC Ticket Search does not work
+</li><li>1426: Add Top 10 domains to download report
+</li><li>1428: Use ip class when no reverse DNS
+</li><li>1432: Web site: Add transcripts for FTP screencasts to aptana.tv
+</li><li>1436: Add top-10 referrers to report
+</li><li>1489: CSS Editor: Code Assist error (Build 11990)
+</li><li>1490: Help: Update "Accessing your log" document w/new menu item.
+</li><li>1494: Help: Create new Help topic for adding filters to your error messages in the Problems View
+</li><li>1496: Parse error "-" Unrecognized in CSS editor
+</li><li>1504: Debugger: Icons missing in Debug window
+</li><li>1625: If no launch configuration is found, one should be auto-created	assigned
+</li><li>1684: IE7 Breaks preview window in HTML Editor
+</li><li>1765: Add "development" tab to top of website bar
+</li><li>1770: Should be able to define a detail formatter via a right-click in the Variables View
+</li></ul>
+<p><b>Defects</b>
+</p>
+<ul><li>632: Add IE 7 JavaScript changes to code assist
+</li><li>633: Add Firefox 2.0 items to code assist
+</li><li>648: Eclipse plugin doesn't have any reference documentation installed
+</li><li>1081: Should close FTP/SFTP connection at keys points
+</li><li>1492: XML new file wizard does not auto-enter file name
+</li><li>1505: Debugger: Icons missing in Debug window
+</li><li>1506: Debugger: Creating new browser configuration throws an error.
+</li><li>1508: Debugger: "debugger" keyword should not throw an error in HTML Editor.
+</li><li>1511: Debugger: Socket connection error
+</li><li>1512: Debugger: Can't run debugger if Firefox window is already open
+</li><li>1513: Debugger: "Debug" missing from context menu
+</li><li>1623: Spelling error in "Installation Completed" debugger message
+</li><li>1624: Hitting a debug breakpoint causes the debugger to break with "Source File Not Found"
+</li><li>1700: Possible JVM/Firefox crash if another Firefox window opened during debug
+</li><li>1737: Breakpoint markers disappear
+</li><li>1738: Debugger will not stop on breakpoint for project file
+</li><li>1740: Problems view filter no longer filtering out problems
+</li><li>1741: Debugger: First installation attempt on Mac was unsuccessful
+</li><li>1742: Debugger: Typo: "Aptana Firefox extension is not installed"
+</li></ul>
+<a name="Aptana_Milestone_6_update_.2805-Oct-2006.29"></a><h2> <span class="mw-headline">Aptana Milestone 6 update (05-Oct-2006)</span></h2>
+<p>The Aptana Milestone 6 release (05-Oct-2006) improves on the Milestone 5 Release with several refinements to the FTP tool and many bug fixes. 
+</p>
+<a name="What.27s_New_5"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>FTP File Cloaking</b>
+</p><p>The Aptana FTP tool now includes a cloaking feature. Cloaking enables you to "hide" specified files and/or folders from FTP synchronization, uploading, and downloading. For more information about this feature, see <a href="Cloaking_files_or_folders.html" title="Cloaking files or folders">Cloaking files or folders</a>.
+</p><p><b>Eclipse v3.2 Support</b>
+</p><p>Aptana should now function identically as a plugin to Eclipse v3.2 as it does in Eclipse v3.1.
+</p>
+<a name="Bug_Fixes"></a><h3> <span class="mw-headline">Bug Fixes</span></h3>
+<p>Milestone 6 is primarily a "patch" release, which focused on fixing many bugs that our users posted about in the Aptana Forums. Many of these bugs were related to FTP refinements, isses with hotkeys and shortcuts, and overly aggressive error reporting in the Problems View.
+</p>
+<a name="Complete_list_of_enhancements_and_fixed_issues_for_Milestone_6"></a><h3> <span class="mw-headline">Complete list of enhancements and fixed issues for Milestone 6</span></h3>
+<p><b>Enhancements</b>
+</p>
+<ul><li>379: Outline view should show "simulated" static class methods
+</li><li>381: [Outliner] Add toggle button to show/hide properties prefixed with a "_"
+</li><li>411: Add collapse/expand to XHTML/HTML/CSS editors
+</li><li>689: FTP Sync Cloaking for File Extensions (exclude files from being shown or synchronized)
+</li><li>805: Create user location for scripts/snippets (i.e. in workspace or perhaps in Program Files/Aptana (or equivalent)
+</li><li>832: Add document on how to share keybinding settings in Aptana
+</li><li>839: Fix GUI when renaming a file in File Explorer
+</li><li>852: Autocomplete colons and semicolons in CSS editor
+</li><li>914: [Linux | 0.2.4.10583 | plugin] Error creating view
+</li><li>977: Need a means to exclude files/directories from the sync process
+</li><li>1034: canceling a sync and closing dialog causes continous "widget disposed" errors.
+</li><li>1058: Update script for staging.aptana.com.
+</li><li>1088: Sync Manager items should be sorted
+</li><li>1111: Create transcripts of screencasts
+</li><li>1114: Create Help topic for changing the Editor font size
+</li><li>1129: FTP / Project View: Need sync icon on Project folder in Project View
+</li><li>1145: FTP: Testing a connection creates an open session on remote site
+</li><li>1146: Create wiki page for Aptana user groups.
+</li><li>1175: Complete partition unit tests
+</li><li>1176: Add additional JS Environment and Parser unit tests
+</li><li>1177: Create Wiki Page with any remaining thoughts or ideas for future work
+</li><li>1178: No prompt to confirm when deleting a virtual file manager in File Explorer
+</li><li>1182: Finish documentation on "hard cases" in JS
+</li><li>1183: Add Code Assist overview
+</li><li>1264: Add buttons to File/Project toolbar to upload/download selected items
+</li><li>1266: Customize default HTML template
+</li><li>1283: Add Ctrl + O as default shortcut for opening a file in "Windows and Dialogs"
+</li><li>1284: Add Ctrl-O to Windows key bindings
+</li><li>1305: Add key command to indent/outdent the current line
+</li><li>1337: FTP: Add Help topic for cloaking files during sync
+</li></ul>
+<p><b>Defects</b>
+</p>
+<ul><li>372: Editing XML file while horizontally scrolled causes scroll position to jump back to 0
+</li><li>412: Hotkeys for expand/collapse code don't work
+</li><li>423: [Windows XP | 0.2.0.10299 | plugin] JS lint provides questionable warnings]
+</li><li>448: [Mac OS X | 0.2.0.10299] Aptana doesn't respect CMD -&gt;, Opt &lt;- and Opt -&gt; keyboard shortcuts
+</li><li>478: Address already in use: JVM_Bind:9000 while running Jonas
+</li><li>487: Filter out JSLint error for "debugger" keyword
+</li><li>525: Using the @import statement in a &lt;style&gt; tag causes an error in the Problems pane with "C" as a description.
+</li><li>532: Javascript const keyword is reported as a "reserved word" error
+</li><li>915: [Linux | 0.2.4.10583 | plugin]
+</li><li>919: Aptana.com footer text looks horrible in IE 6 when ClearType is turned on
+</li><li>920: Save-as function does not work for "unknown" file types
+</li><li>1030: install package for mac is broken
+</li><li>1042: Add additional clarifying documentation about Safari and Flash
+</li><li>1071: [Mac OS X | 0.2.0.10299] Cannot enter password for HTTP proxy authentication
+</li><li>1074: Windows XP: Unavailable directories in network neighborhood result in JVM
+</li><li>1091: FTP / File View: Sync connection not displayed in File View for Project Shortcut
+</li><li>1122: FTP / File View: Cannot drag-and-drop file into empty folder on SFTP site (Build 11415)
+</li><li>1130: FTP: Confirm Delete dialogue displays placeholder text
+</li><li>1134: FTP&nbsp;: Cancelling a download hangs/takes too long (Build 11451)
+</li><li>1170: [Windows XP | 0.2.5.11465] FTP doesn't report server errors
+</li><li>1174: When password is not saved, it does not prompt for password on connection
+</li><li>1213: CSS Editor: Do not add a tab on the second line when a user presses Enter twice
+</li><li>1236: Project shortcuts missing labels
+</li><li>1262: Updates failing
+</li><li>1277: NPE on startup from File View
+</li><li>1278: Toggling sorting in OutlineView causes TreeItems to disappear
+</li><li>1290: Aptana Unified Editor keyboard shortcuts don't work at all in 0.2.5.11578
+</li><li>1317: JS CA shows functions from file not in CA profiles
+</li><li>1318: JS CA attributes functions to wrong file
+</li><li>1338: FTP: Cloaking does not work for folders (Build 11761)
+</li><li>1339: FTP / File View: Cloaking files with wildcards only works on extensions
+</li></ul>
+<p><br />
+</p>
+<a name="Aptana_Milestone_5_update_.2807-Sept-2006.29"></a><h2> <span class="mw-headline">Aptana Milestone 5 update (07-Sept-2006)</span></h2>
+<p>The Aptana Milestone 5 release (07-Sept-2006) improves on the Milestone 4 Release with several new features and many miscellaneous bug fixes. 
+</p>
+<a name="What.27s_New_6"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>FTP Support</b>
+</p><p>The Milestone 5 release for Aptana features FTP (and SFTP) support. Use FTP to easily transfer files between a directory on your local hard drive and a directory on a remote web site. The Aptana FTP feature includes the following highlights:
+</p>
+<ul><li> Synchronize the contents of a local directory with a directory on a remote web site.
+</li><li> Upload or download the contents of folders or files.
+</li><li> Drag and drop files between a local and remote location or within the folders of a remote location.
+</li><li> Editing a file on a remote web site.
+</li></ul>
+<p>To learn more about the Aptana FTP feature, view the <a href="http://aptana.tv/" class="external text" title="http://aptana.tv/" rel="nofollow">screencasts</a> and read through the <a href="About_the_Aptana_FTP_tool.html" title="About the Aptana FTP tool"> FTP documentation</a>.
+</p>
+<a name="Complete_list_of_fixed_issues.2C_added_features.2C_and_enhancements_for_Milestone_5"></a><h3> <span class="mw-headline">Complete list of fixed issues, added features, and enhancements for Milestone 5</span></h3>
+<p><b>Features</b>
+</p>
+<ul><li>483: FTP Support
+</li></ul>
+<p><b>Enhancements</b>
+</p>
+<ul><li>388: FTP Sync View
+</li><li>668: Add option to disable autoclosing tags after "&gt;"
+</li><li>684: FTP File View
+</li><li>685: FTP Project View
+</li><li>695: Base "Synchronization Provider" API
+</li><li>696: Re-Root File Explorer Tree to include FTP/WebDAV/etc as root nodes
+</li><li>697: Add drag-and-drop support to File View
+</li><li>698: Add button to launch multiple simultaneous File Views
+</li><li>711: Ungrey "make current profile" menu item and auto switch link button off when selected
+</li><li>740: Implement File Manager
+</li><li>742: Add FTP Dialogs
+</li><li>759: Add doctype for 4.01 transitional
+</li><li>767: Add preference to change default extension for HTML files
+</li><li>777: Upgrade Scriptaculous library
+</li><li>793: Wikiw: How to find your log file
+</li><li>817: FTP documentation
+</li><li>819: Fix serialization of images in CoreUtils
+</li><li>820: FTP Screencasts
+</li><li>828: VirtualFileManager refresh context menu should retrieve a new file listing
+</li><li>829: Renaming SFTP folder is broken
+</li><li>847: Need to parse Date/Time for FTP files
+</li><li>864: FTP: Can't multi-select files on the Sync Preview screen
+</li><li>866: FTP/SFTP: Add ability to create a new folder off of a VirtualSiteManager
+</li><li>867: FTP/SFTP: if path is not /, then show path in virtualsitemgr name in file explorer
+</li><li>868: FTP/SFTP: cannot create remote folders
+</li><li>870: Sync Manager: connections don't show up
+</li><li>871: Sync Manager: add a duplicate button
+</li><li>872: File Explorer: add refresh button
+</li><li>874: FTP/SFTP: add a rename action
+</li><li>881: File View: Fails to load after updating to Build 11123
+</li><li>884: FTP: Need more descriptive error messages for failed connection
+</li><li>886: File View / Project Shortcuts: Can't drag project-level folders in File View
+</li><li>924: Build 0.2.5.11168 not starting
+</li><li>930: Sync Manager: Computer and Desktop show up in list, should not
+</li><li>931: Sync Manager: double-clicking on a non-sync item (i.e. connection) causes error
+</li><li>935: Project shortcuts not working in File view
+</li><li>941: Tab order in FTP Site Configuration dialog should be changed
+</li><li>944: Synchronization Preview should not show parent directory in File Path
+</li><li>945: Mysterious button in the lower-left corner in the Synchronization Preview
+</li><li>946: Fix Trac so it doesn't auto-assign new tickets to pcolton	closed
+</li><li>947: Toggling "Show all files" in Synchronization Preview causes visual noise
+</li><li>948: Updating FTP nickname does not update tree items in FileExplorer or SyncManager
+</li><li>949: "Getting file lists..." progress bar in Sync Options Dialog could show more detail
+</li><li>951: Preview dialog appeared briefly and disappeared
+</li><li>954: Error occurred when cancelling an active sync
+</li><li>957: Old data appears in Synch Options dialog progress bar
+</li><li>959: Unsuccessfully connecting to a site creates an "artifact" in the Sync Manager
+</li><li>970: Sync Preview always requires horizontal scrolling on Windows
+</li><li>971: Sync Preview should show full year
+</li><li>973: Long delay when double-clicking a sync pair in the Sync Manager
+</li><li>975: FTP: "Could not connect" error closes Site Configuration window
+</li><li>976: Double-clicking items in FileView doesn't expand them
+</li><li>979: Need to update directory modification dates after all descendants have been synced
+</li><li>980: Create New Folder does not appear to work in FTP
+</li><li>981: FTP: Connecting to a folder in a remote path on an FTP site does not work (Build 11196)
+</li><li>982: Final syncing dialog should show different message after cancelling a sync
+</li><li>985: Sync preview dialog is not sortable by tab
+</li><li>987: Use shorter File Explorer labels and longer tooltips
+</li><li>988: can not cancel sync preview when it is building the sync list
+</li><li>989: Occasional freezes when hitting syncronize
+</li><li>992: FTP: Connecting to incorrect/folder path in remote path should give warning/error
+</li><li>997: FTP / File View: Dragging a file onto an FTP site generates an error (Build 11222)
+</li><li>998: FTP / File View: Sync using right-click in File View is incorrect
+</li><li>999: FTP / File View: Download via right-click &gt; sync does not work in File View (Build 11230)
+</li><li>1004: Sync Manager: if you delete a connection that has sync targets on it, we should warn the user
+</li><li>1008: FTP Modification dates wrong (at least connecting to xamlon.com)
+</li><li>1020: It would be better if FTP would display some status somewhere
+</li><li>1045: Creating sync pair temporarily breaks virtual file manager
+</li><li>1046: Make "remote" popup list larger in Create Site Connection
+</li><li>1048: FTP Directory tree collapses on folder refresh	closed	pcolton	major
+</li><li>1050: SFTP virtual file manager does not set file modification times on server
+</li><li>1051: FTP site configuration should remain open when an error occurs
+</li><li>1053: Sync manager icons are crytic, need tooltip
+</li><li>1063: FTP protocol error. 421 I can't accept more then 4 connections as the same user.
+</li><li>1064: Right click on project, properties, and then pick a sync endpoint.
+</li><li>1065: Should not be able to modify ignore status in the middle of a sync.
+</li></ul>
+<p><b>Defects</b>
+</p>
+<ul><li>653: Add documentation topic on "Why transitional vs strict" doctypes
+</li><li>728: Add shtml files as associated with HTML editor and as a "web file" by default
+</li><li>739: HTMLElement&nbsp;: Element -&gt; appendChild should have param of type Node, not String
+</li><li>745: Move introContent xml feeds to www.aptana.com
+</li><li>768: Add preference to re-open files at startup
+</li><li>778: Dowload manager attempted to download "problems view"
+</li><li>785: ActionsView breaks when a snippet file has no content
+</li><li>818: FileExplorer needs to serialize/deserialize open/close node state
+</li><li>830: Paths in remote files are incorrect
+</li><li>842: [FTP] Tries to connect right away, as soon as I create the connection.
+</li><li>843: Dialogs should center on Aptana window, not desktop (sometimes it centers of neither)
+</li><li>844: Add right-click menu to Site Manager to create new connection
+</li><li>846: After a copy, the tree collapses
+</li><li>848: If you drag a file from a folder back onto that same folder (as if to copy), it still prompts you to copy
+</li><li>859: FTP: Sites in File Explorer disappear after restarting Aptana (Build 11098
+</li><li>860: FTP: Multi-selected file "Delete" does not work (Build 11098)
+</li><li>861: FTP: In the Synchronization Preview, checking Show All Files causes list to go blank
+</li><li>862: FTP: Checking the Show all Files box (Sync Preview) toggles off ignore
+</li><li>863: FTP: Create new folder doesn't work for remote site
+</li><li>880: Add XMLHttpRequest as a property to Window
+</li><li>883: File View / Project Shortcuts: After update, Project Shortcuts has a blank shortcut
+</li><li>887: FTP / File View: Cannot synchronize by right-clicking a file in File View (Build 11128)
+</li><li>888: Sync Manager: NPE in Build 11133
+</li><li>889: FTP: Uploading a file that was previously downloaded does not work
+</li><li>891: Sync Manager: Closing and opening Sync Manager creates a NPE (Build 11138)
+</li><li>892: File View: Cannot delete folder on remote site (FTP)
+</li><li>893: File View: New File dialogue missing from context menu (Build 11138)
+</li><li>895: Sync mgr: sort names by type or name or both
+</li><li>896: File view: sync icon doesn't show up until you expand the folder
+</li><li>922: FTP: Ignore doesn't work (Build 11168)
+</li><li>926: Crash: Error on startup (Build 11168)
+</li><li>929: FTP: Double-clicking an item in the Sync Manager generates an error (Build 11176)
+</li><li>934: Right click -&gt; Synchronize should not alwas contain Create Synchronize Connection...	
+</li><li>937: Under the File tabs FTP files are missing
+</li><li>942: Sync Manager does not show correct FTP nickname
+</li><li>955: [email] Sync Manager: removing a sync target doesn't remove it from list, probably not being removed from SyncManager class
+</li><li>956: [email] File View / Sync Mgr: creating a new protocol connection doesn't update the name in the views
+</li><li>958: Sync: Was creating a sync target, but hit cancel, but overlay icon still shows up
+</li><li>960: Time offset is incorrect for ftp connection
+</li><li>961: Show total files per label type
+</li><li>963: Sync preview: Times of remote files are older, but says local files are newer
+</li><li>964: sync: exception during a 20mb file sync
+</li><li>966: Creating new FTP site creates generic unnamed entry in Sync Manager (Build 11184)
+</li><li>967: Deleted an item, when restarting, I get this exception
+</li><li>968: Get exception when sync preview comes up
+</li><li>969: SFTP: SFTP no longer "names" its new connections. (Build 11184)
+</li><li>974: FTP / File View: Dragging a file onto a subfolder automatically closes the folder (Build 11188)
+</li><li>978: FTP: Editing an HTML file directly from FTP site deletes all content
+</li><li>984: Sync Manager: Cannot delete connection
+</li><li>993: File View: Need a confirm for replace
+</li><li>994: FTP: "Local item is newer" status incorrect on full sync
+</li><li>995: FTP: Downloading a file from a remote site throws error (Build 11215)
+</li><li>996: File View: Cannot delete a folder that contains a file (Build 11222)
+</li><li>1001: File Explorer: opening up an sftp connection for first time throws an exception
+</li><li>1002: File Explorer/FTP: After VERY long delay after trying to expand an ftp site, I get exceptions
+</li><li>1003: FTP: I deleted an FTP connection from file explorer and quit, when I restarted, I had a rogue item in sync view
+</li><li>1006: FTP/SFTP sites should be serialized before connections during shutdown
+</li><li>1012: FTP / File View: Deleting a connection is not reflected in File View (Build 11257)
+</li><li>1013: FTP / File View: Unhandled Event Loop exception on creating a new connection
+</li><li>1014: FTP / Project View: Sync connection created in Project View not reflected in Sync Manager
+</li><li>1015: FTP / Project shorcuts: Cannot create sync connection from Project Shortcuts.
+</li><li>1019: [build 11261] . and .. folders should not appear in file list
+</li><li>1022: Only hide file sizes in sync preview if it's a folder
+</li><li>1023: Add new site from sync manager
+</li><li>1026: . and .. incorrectly show in FTP tree view
+</li><li>1047: Cancelled sync and got permission denied
+</li><li>1056: Permission denied exception
+</li><li>1060: FTP / File View: Trying to sync from File View throws error
+</li><li>1061: FTP / File View: Sync Preview to a folder directly under C:\ drive throws error	closed
+</li><li>1062: Site (synchronization) connections not working for Projects
+</li><li>1069: FTP / File View: Must have remote directory selected for refresh to work
+</li></ul>
+<p><br />
+</p>
+<a name="Aptana_Milestone_4_update_.2808-Aug-2006.29"></a><h2> <span class="mw-headline">Aptana Milestone 4 update (08-Aug-2006)</span></h2>
+<p>The Aptana Milestone 4 release (08-Aug-2006) improves on the Aptana Beta .31 Release with several new features and many miscellaneous bug fixes. 
+</p>
+<a name="What.27s_New_7"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>Aptana Snippets</b>
+</p><p>With the Aptana Snippets feature, you can now quickly add reusable code templates to your HTML, CSS, JavaScript, and XML files. These Snippets function similarly to macros and help automate common code editing tasks. Default Snippets supplied by Aptana include scripts to specify an HTML DOCTYPE, wrap selected text with a set of HTML tags (e.g. &lt;b&gt;, &lt;i&gt;, etc.), and inserting a link to a style sheet. See <a href="About_Aptana_Snippets.html" title="About Aptana Snippets">About Aptana Snippets</a> to learn more about Snippets.
+</p><p><b>DOCTYPE recognition and XHTML support</b>
+</p><p>The Aptana HTML Editor now recognizes different DOCTYPE definitions and displays the appropriate warning/error messages for XHTML. To change the DOCTYPE in your HTML file, delete the default DOCTYPE included in the HTML template and insert one of the DOCTYPE definitions included in the Aptana Snippets in the Actions View. See <a href="About_Aptana_Snippets.html" title="About Aptana Snippets">About Aptana Snippets</a> to learn more about Snippets.
+</p><p><b>Error display toggling</b>
+</p><p>Aptana now has a Toggle Show Errors button <a href="Image:IconToggleShowErrors.png.html" class="image" title="Image:iconToggleShowErrors.png"><img alt="Image:iconToggleShowErrors.png" src="docs/images/a/a0/IconToggleShowErrors.png" width="23" height="22" border="0" /></a> that allows you to display or hide error messages while you are coding.
+</p><p><b>Miscellaneous Bug Fixes</b>
+</p><p>This release contains fixes for the following bugs submitted by developers via <a href="http://www.aptana.com/trac" class="external text" title="http://www.aptana.com/trac" rel="nofollow">Trac</a>:
+</p>
+<ul><li> Over-agressive auto-insertion/matching of elements in the HTML Editor
+</li><li> Added preference to auto-add ":" in CSS Code Assist.
+</li><li> Fixed the Preview button on the Mac.
+</li><li> Fixed issues with Code Assist not showing on various DOM elements.
+</li><li> Fixed various documentation typos and formatting errors.
+</li></ul>
+<a name="Known_Issues_5"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<ul><li> Aptana does not yet support unicode files.
+</li><li> Performance can be slow on large (&gt; 3000 line) files.
+</li><li> The Word Wrap feature was causing performance issues in CSS files and in large JavaScript files. This preference has been temporarily disabled until these issues can be resolved.
+</li><li> Nested div tags in the HTML Editor do not correctly auto-close.
+</li><li> If after updating and re-starting Aptana, you discover that you have lost your preference settings, your workspace may have been switched as part of the update. You can resolve this by switching your workspace back to your previous workspace. See <a href="Switching_your_workspace.html" title="Switching your workspace">Switching your workspace</a> for details.
+</li></ul>
+<p>These issues will all be fixed in an upcoming release.
+</p>
+<a name="Complete_list_of_fixed_issues.2C_added_features.2C_and_enhancements_for_Milestone_4"></a><h3> <span class="mw-headline">Complete list of fixed issues, added features, and enhancements for Milestone 4</span></h3>
+<p><b>Features</b>
+</p>
+<ul><li>535: Add HTML template to quickly add a CSS style sheet.
+</li></ul>
+<p><b>Enhancements</b>
+</p>
+<ul><li>399: JS Compact Script inserts incorrect semicolons.
+</li><li>481: Add documentation for insertFlash, and other propretory aflax functions.
+</li><li>503: Add button to toggle off error reporting.
+</li><li>508: Add preference to auto-add "=" for attributes in HTML editor.
+</li><li>509: When adding link the "" goes around the wrong element in HTML Editor.
+</li><li>557: Update version number to 0.3.2.xxxxx to match beta .32.
+</li><li>558: Allow HTML editor to toggle between HTML/XHTML support based on doctype.
+</li><li>563: Place .zip file for Mac OS X installer online.
+</li><li>565: Remove word wrap preference.
+</li><li>567: Change "configure servers..." menu item to "run configuration..."
+</li><li>634: Multiple strings in a row in JS breaks auto-quoting.
+</li><li>635: Arg-assist does not appear in JS.
+</li></ul>
+<p><b>Defects</b>
+</p>
+<ul><li>401: Linux installer fails.
+</li><li>407: Aptana "Untitled" wizards crash in Eclipse 3.2.
+</li><li>450: typeof misspelled in JS keywords.
+</li><li>451: Launching Eclipse from customised workspace.
+</li><li>456: Variable assignments from document.body don't show proper code assist proposals.
+</li><li>462: Support HTML/XHTML doctypes for correct closing tag support.
+</li><li>463: HTML Code assist puts character in wrong position when "double-quote" setting is on.
+</li><li>467: java.lang.IllegalStateException.
+</li><li>468: Outline view thinks meta and link tags are not closed when using HTML doctype.
+</li><li>472: NPE in com.aptana.ide.lexer.LexemeList.getLexemeIndex.
+</li><li>501: Formatting for String in JSCore reference is broken.
+</li><li>514: java.lang.StackOverflowError.
+</li><li>523: NPE in getFileEditorPaths in HTMLContentAssistProcessor.
+</li><li>524: Script src tags with query strings throw an error in the profiles view.
+</li><li>531: Version number inconsistency.
+</li><li>539: Auto-insert/close of matching of items in HTML attribute values is too aggressive.
+</li><li>540: Code complete doesn't seem to recognize xhtml, so empty elements don't get the "/&gt;" closing tag.
+</li><li>541: Add preference to auto-add ":" when using code assist in CSS
+</li><li>544: Create a panel of buttons for common html tags like dreamweaver.
+</li><li>551: Should not have to re-choose workspace in Eclipse plugin version.
+</li><li>552: Create additional documentation on how to use Local History.
+</li><li>559: Fix error toggle button to be in visually similar to warning button.
+</li><li>582: [OS X] Fix Preview button on Mac
+</li><li>599: Configuring Firefox as external browser on Linux uses incorrect path.
+</li><li>605: [Windows XP | 0.2.0.10299] java.lang.InstantiationException.
+</li><li>608: Aptana overwrites the File &gt; New menu for other perspectives.
+</li><li>628: Double-click on Actions View is intercepted by tooltip.
+</li><li>649: Code assist different inside function scope.
+</li></ul>
+<p><br />
+</p>
+<a name="Aptana_Beta_.31_update_.2822-July-2006.29"></a><h2> <span class="mw-headline">Aptana Beta .31 update (22-July-2006)</span></h2>
+<p>The Aptana Beta .31 release (22-July-2006) improves on the Aptana Beta .30 Release with features such as an AJAX library wizard, Outline View enhancements, and numerous bug fixes. 
+</p>
+<a name="What.27s_New_8"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>AJAX Library Wizard</b>
+</p><p>You can now quickly access Code Assist on your favorite AJAX JavaScript libraries by creating an AJAX library project. Currently, Aptana supports creating projects based on the AFLAX, Dojo, JQuery, MochiKit, Prototype, Rico, script.aculo.us, and Yahoo UI libraries. See <a href="Creating_a_new_AJAX_library_project.html" title="Creating a new AJAX library project">Creating a new AJAX library project</a> for more details.
+</p><p><b>Outline View Enhancements</b>
+</p><p>This release includes enhancements to the Outline View, such as support for the following items:
+</p>
+<ul><li> MochiKit’s MochiKit.Base.update 
+</li><li> Dojo's dojo.lang.extend 
+</li><li> Prototype’s Object.extend 
+</li><li> "this" properties 
+</li><li> Customization of outline item labels 
+</li></ul>
+<p><b>Complete Browser Support</b>
+</p><p>All objects, functions, and properties in HTML DOM Level 1 &amp; 2 now contain browser support information. (Release .30 included browser support for HTML, CSS, JavaScript Core, and HTML DOM Level 0.)
+</p>
+<a name="Known_Issues_6"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<ul><li> Aptana does not yet support unicode files.
+</li><li> Performance slows when editing files longer than 3000 lines.
+</li><li> Clicking the <b>Sort</b> button <a href="Image:IconSort.png.html" class="image" title="Image:iconSort.png"><img alt="Image:iconSort.png" src="docs/images/1/13/IconSort.png" width="23" height="22" border="0" /></a> on the Outline View may cause the JavaScript tree items to disappear. Click inside the Editor to reactivate the Editor and refresh the Outline View to make these items reappear.
+</li><li> To access Code Assist, JS files must be linked to a document. They cannot be "free floating," or you will not get Code Assist on those profiles.
+</li><li> The outline view may show an incorrect tree on malformed HTML files.
+</li><li> Code folding may remove syntax coloring below the folded section.
+</li></ul>
+<p>These issues will all be fixed in an upcoming release.
+</p>
+<a name="Complete_Issue_List"></a><h3> <span class="mw-headline">Complete Issue List</span></h3>
+<a name="Features_2"></a><h4> <span class="mw-headline">Features</span></h4>
+<ul><li>367: Submit Aptana Feedback command should auto populate form with Aptana info
+</li><li><b>1702: Add proxy support for people using Aptana behind a proxy server.</b>
+</li><li>1718: Add complete browser support to DOM 2.
+</li><li>1720: Add project wizard for Yahoo UI toolkit.
+</li><li>1721: Add project wizard for prototype/scriptaculous toolkit.
+</li><li>1722: Add project wizard for rico toolkit.
+</li><li>1724: Add project wizard for aflax toolkit.
+</li><li>1725: Expose preferences to script.
+</li><li>1714: Add button to turn off "auto-selection" of active profile and allow people to manually choose a profile.
+</li><li>1746: Add outliner support for dojo.lang.extend.
+</li><li>1747: Add outliner support for MochiKit.Base.update.
+</li><li>1749: Add outliner label preference for HTML and XML.
+</li><li>1780: Add key binding for toggle comments in JavaScript.
+</li></ul>
+<a name="Defects"></a><h4> <span class="mw-headline">Defects</span></h4>
+<ul><li>374: Aptana eats CPU for a long time loading large JS file (300,000 characters on one line).
+</li><li>385: Error running Aptana on Linux: org.eclipse.swt.SWTError: No more handles [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)].
+</li><li>391: Remove invalid CSS warning 'You have no color with your background-color (level 1)' given for 'background-color' style.
+</li><li>750: Prevent auto update detection dialog from popping up (and running) while you are auto installing.
+</li><li>865: Outline view does not preserve open/close state when switching between windows.
+</li><li>866: HTML Outline view missing function parameters on function nodes.
+</li><li>867: HTML Outline view should prefix all nodes with complete "namespace" path.
+</li><li>886: Cursor flickers to arrow-hour-glass when moving over elements in outliner.
+</li><li>887: Last collapsed outliner element with "+" moves when you hover and move off.
+</li><li>932: Global properties on 'window' are not showing.
+</li><li>949: XML Editor: Colorizing incorrect for identical tags on the same line (8819).
+</li><li>956: Running IDE from Eclipse hangs on Mac.
+</li><li>1020: Folding a JavaScript function at the end of a file causes folding not to work.
+</li><li>1345: [Linux] XML/HTML Outliner (Beta) doesn't always show all nodes.
+</li><li>1406: When dragging a .js file into the profile, double click is not immediately available.
+</li><li>1510: Undo breaks when editing the same file in two editors.
+</li><li>1511: Colorizing breaks when editing the same file in two editors.
+</li><li>1524: "run" exception clogging up .log file.
+</li><li>1592: Style properties not showing up during content assist.
+</li><li>1602: paths show up with&nbsp;%20's in code assist.
+</li><li>1613: HTML Editor: Self-closing a tag breaks colorization.
+</li><li>1626: No document.onclick event in code assist.
+</li><li>1631: Null pointer exception in Outline View.
+</li><li>1633: Code Assist Profiles: Dragging a .js file in a profile throws an exception.
+</li><li>1639: Code assist missing a CSS Style Property: accelerator.
+</li><li>1640: Code assist missing a CSS Style Property: background-position-x.
+</li><li>1641: Code assist missing a CSS Style Property: background-position-y.
+</li><li>1643: Code assist missing a CSS Style Property: filter.
+</li><li>1644: Code assist missing a CSS Style Property: ime-mode.
+</li><li>1645: Code assist missing a CSS Style Property: layout-flow.
+</li><li>1646: Code assist missing a CSS Style Property: layout-grid.
+</li><li>1647: Code assist missing a CSS Style Property: layout-grid-char.
+</li><li>1648: Code assist missing a CSS Style Property: layout-grid-char-spacing.
+</li><li>1649: Code assist missing a CSS Style Property: layout-grid-line.
+</li><li>1650: Code assist missing a CSS Style Property: layout-grid-mode.
+</li><li>1651: Code assist missing a CSS Style Property: layout-grid-type.
+</li><li>1652: Code assist missing a CSS Style Property: line-break.
+</li><li>1653: Code assist missing a CSS Style Property: overflow-x.
+</li><li>1654: Code assist missing a CSS Style Property: overflow-y.
+</li><li>1655: Code assist missing a CSS Style Property: several proprietary Opera CSS Properties.
+</li><li>1656: Code assist missing a CSS Style Property: zoom.
+</li><li>1657: Code assist missing a CSS Style Property: word-wrap.
+</li><li>1658: Code assist missing a CSS Style Property: writing-mode.
+</li><li>1659: Code assist missing a CSS Style Property: word-break.
+</li><li>1660: Code assist missing a CSS Style Property: ruby-align.
+</li><li>1661: Code assist missing a CSS Style Property: ruby-overhang.
+</li><li>1662: Code assist missing a CSS Style Property: ruby-position.
+</li><li>1663: Code assist missing a CSS Style Property: text-align-last.
+</li><li>1664: Code assist missing a CSS Style Property: text-justify.
+</li><li>1665: Code assist missing a CSS Property: text-overflow.
+</li><li>1666: Code assist missing a CSS Style Property: several IE scrollbar-xxx CSS Properties.
+</li><li>1667: Code assist missing a CSS Property: text-underline-position.
+</li><li>1691: Change all references from Content Assist to Code Assist.
+</li><li>1692: Fix browser icons to not sporadically show in cases like 'document' and then disappearing.
+</li><li>1693: Exception when using new project wizard as Eclipse plugin.
+</li><li>1697: Hidden files shouldn't show up in code assist file proposals
+</li><li>1698: Permanent profiles do no persist.
+</li><li>1699: Error notifying preference changed listener when changing tab size.
+</li><li>1700: When code assist items go from large list to short one, sometimes it stays scrolled to bottom and looks like an empty list.
+</li><li>1704: Crash when quitting app on Mac.
+</li><li>1705: Pasted some funky unicode characters in and got exception in parser.
+</li><li>1706: Add new wiki page on adding support for alternate editor types.
+</li><li>1708: Fix NullPointerException in getOpenEditorPaths.
+</li><li>1709: Add wiki tutorial on how to use profiles view in "manual" mode.
+</li><li>1719: Ensure tooltip doesn't sit over main proposal window.
+</li><li>1726: Document object has no code assist docs.
+</li><li>1733: [OS X] Browser icons do not show in Mac code assist.
+</li><li>1737: Stack overflow when typing.
+</li><li>1738: Check that update dialog can come up twice (without closing the first one).
+</li><li>1741: Add @aliases to YAHOO.
+</li><li>1744: Ensure code assist proposal info won't pop up over proposal list on small screens.
+</li><li>1745: Exception in editor when disconnected from net.
+</li><li>1750: Profiles are applied every second when a file is referenced twice in script tags.
+</li><li>1759: F3 key can not be remapped, doesn't work in html
+</li><li>1760: Create subsection on screencasts page for "scripting with AJAX".
+</li><li>1761: Add Help topic for changing the default internal web browser.
+</li><li>1762: Update walkthroughs to reflect new project wizard.
+</li></ul>
+<a name="Aptana_Beta-.30_update_.2811-July-2006.29"></a><h2> <span class="mw-headline">Aptana Beta-.30 update (11-July-2006)</span></h2>
+<p>The Aptana Beta .30 release (11-July-2006) improves on the Aptana Beta .25 Release with features such as browser support information and increased flexibility in integrating your code documentation into Code Assist. 
+</p>
+<a name="What.27s_New_9"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>Browser support added to Code Assist</b>
+</p><p>Aptana's Code Assist now includes browser support information. Browser support currently includes CSS, HTML, JavaScript Core language, HTML DOM Level 0, and HTML DOM Level 1 &amp; 2 (partial). Browsers included in this feature are Mozilla Firefox, Internet Explorer, Opera, Safari, and Netscape. Full support for the HTML DOM will be added in an upcoming release.
+</p><p>By default, Code Assist displays browser icons for IE and Mozilla. To add icons for Opera, Safari, or Netscape, go to <b>Window &gt; Preferences...</b> On the left side of the window, expand <b>Aptana</b> and select <b>User Agents</b>. Check or uncheck the boxes next to the browsers that you want to display support for in Code Assist.
+</p><p><b>Increased ScriptDoc flexibility</b>
+</p><p>When you document a library for ScriptDoc to include in Code Assist, you now have the option of documenting your code either inline or in a corresponding ScriptDoc file (.sdoc). See <a href="Documenting_your_code_in_an_.sdoc_file.html" title="Documenting your code in an .sdoc file">Documenting your code in an .sdoc file</a> for details how to set up your library and .sdoc files.
+</p><p><b>Aptana Perspectives merged</b>
+</p><p>The Aptana Projects Perspective and Aptana Perspective have been merged. You can now switch effortlessly between the File View (any folders and files on your hard drive) and Project View (your Aptana "projects") in your workbench without having to change perspective.
+</p><p><b>New Actions View</b>
+</p><p>New in this release, the Actions View contains actions to help you automate common JavaScript development tasks. You can also create your own Actions View scripts to further customize the Aptana UI. See <a href="Displaying_the_Actions_View.html" title="Displaying the Actions View">Displaying the Actions View</a> for details.
+</p><p><b>Improved Code Assist</b>
+</p><p>Code Assist has been enhanced to intelligently guess which JavaScript keyword, object, or function you are typing. For example, if you type the letter "f", Code Assist now automatically pre-selects the word "function" from the Code Assist terms list. The list of Code Assist terms also no longer blocks your cursor when it pops up in the Editor.
+</p><p><b>Additional Outline View support for all web file types</b>
+</p><p>The Outline View now supports all HTML, CSS, XML files. Outline View support for JavaScript has been improved in this release.
+</p><p><b>Aptana now "remembers" open files</b>
+</p><p>If you opened a file using the File View and close the Aptana IDE without closing the file, Aptana will automatically open that file for you in the Editor the next time that you start the IDE.
+</p>
+<a name="Known_Issues_7"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<p><b>Code Assist parse delay</b>
+</p><p>If you are coding in the Aptana JavaScript Editor and switch from the Editor View to another view and then switch back to the Editor View, you will need to wait a few seconds for the Code Assist Profile View to re-parse the current profile and refresh Code Assist before you will be able to access Code Assist again. This will be fixed in an upcoming release.
+</p><p><b>MochiKit demos on mochikit.com use MochiKit v1.4</b>
+</p><p>The MochiKit demos found at <a href="http://www.mochikit.com/demos.html" class="external free" title="http://www.mochikit.com/demos.html" rel="nofollow">http://www.mochikit.com/demos.html</a> use some functions from the upcoming MochiKit v1.4 release. At this time, Aptana only supports the current MochiKit v1.3.1 release. If you try to type in these demos from the MochiKit web site, some functions may be undocumented. However, all samples included in the official v1.3.1 download should work as expected.
+</p><p><b>Parentheses matching not functional</b>
+</p><p>The parentheses matching feature, which highlighted the parenthesis or brace that matched the parenethesis or brace that your cursor was on, is not functional in this release. This will be fixed in a coming release.
+</p><p><b>Eclipse (v3.2) Plugin support does not include File View</b>
+</p><p>If you decide to install Aptana as a plugin for Eclipse v3.2, the File View will not be functional.
+</p><p><br />
+</p>
+<a name="Aptana_Beta_.25_update_.2814-June-2006.29"></a><h2> <span class="mw-headline">Aptana Beta .25 update (14-June-2006)</span></h2>
+<p>The Aptana Beta .25 release (14-June-2006) improves on the Aptana Beta .20 Release with features such as MochiKit library support and enhanced colorization. 
+</p><p>Starting with this release, the Aptana development team is focusing on implementing support for some of the most popular AJAX libraries used by the open source community. Because these libraries tend to use unique syntax and features, such as dynamic loading, each of the next few Aptana releases will focus on providing comprehensive support for approximately one new library or toolkit with each release. For this release, the Aptana team focused on the MochiKit library.
+</p>
+<a name="What.27s_New_10"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>Integrated Code Assist on MochiKit libraries</b>
+</p><p>Aptana has made it easier for you to code projects that use the MochiKit libraries:
+</p>
+<ul><li> Aptana now includes a fully documented version of MochiKit (v1.3.1) that has been integrated into the Code Assist system. You can now access all of the parameters and return types for MochiKit functions and objects by simply pressing <b>ctrl+space</b> in an HTML file that uses a Code Assist profile containing the documented MochiKit libraries.
+</li></ul>
+<ul><li> The <b>New MochiKit Library Project</b> wizard enables you to quickly create web projects that utilize the MochiKit libraries. The wizard not only creates your project for you, it also creates a Code Assist Profile view for you to easily use Code Assist to help you with MochiKit functions and objects.
+</li></ul>
+<p><b>Faster Colorization</b>
+</p><p>The colorization feature in Aptana now runs much faster than in previous releases. Faster colorization leads to improved overall performance for your coding experience in our Editors.
+</p><p><b>Code Assist Refinements</b>
+</p><p>This release adds several refinements to the Code Assist feature. These refinements include displaying the source file for an object or function in the Code Assist menu and Code Assist now activating on a pause in typing in the JavaScript Editor.
+</p><p><b>Additional platforms supported</b>
+</p><p>The Beta .25 release contains support for several additional platforms:
+</p>
+<ul><li> On the Mac, both Power-PC and Intel-based Macs are supported. This release includes a universal binary version of Aptana that enables us to support both Mac platforms.
+</li></ul>
+<ul><li> On Windows-based machines, Aptana now supports Windows 2000. 
+</li></ul>
+<p><b>Memory Leak Issue Improved</b>
+</p><p>All known memory leak issues that were causing Aptana to sometimes crash when saving a file have been resolved. We will continue testing to ensure that all of these issues have been fixed.
+</p>
+<a name="Known_Issues_8"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<ul><li> Aptana has not yet implemented full Dojo Toolkit support yet. Although this release adds support for MochiKit, support for Dojo will be added in an upcoming release. As part of our upcoming Dojo support, we will focus on enabling our JavaScript Editor to recognize some of the coding constructs unique to Dojo and will offer full Code Assist on this toolkit.
+</li></ul>
+<ul><li> In the Project View, if you rename a .js file that uses a Code Assist profile (e.g. a .js file created by the MochiKit project wizard) and add/update the link to the .js file in the current .htm file, you will need to open and close the .htm file to refresh the profile and to re-enable Code Assist.
+</li></ul>
+<ul><li> Autocompletion in the JavaScript feature will be further refined in an upcoming release.
+</li></ul>
+<a name="Aptana_Beta_.20_update_.2830-May-2006.29"></a><h2> <span class="mw-headline">Aptana Beta .20 update (30-May-2006)</span></h2>
+<a name="What.27s_New_11"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>Enhanced Code Assist Profiles View functionality</b>
+</p><p>The Code Assist Profiles View makes it easier for you to manage the files that you use as sources for Code Assist:
+</p>
+<ul><li> You can now create profiles for your different projects/folders in the Code Assist Profiles View so that Code Assist displays appropriately for the file(s) that you are currently working on. For example, if you have two different JavaScript libraries with a function named "foo", you can create separate profiles for each library so that the appropriate Code Assist is invoked depending on what you are working on.
+</li><li> You can drag-and-drop files within the Code Assist Profiles View to organize your files.
+</li><li> The former "Libraries View" was renamed "Code Assist Profiles View" to better reflect its functionality. 
+</li></ul>
+<p><b>Improved context-sensitive (F1) help</b>
+</p><p>This release contains significant additions to the Aptana context-sensitive (<b>F1</b>) help system. 
+</p>
+<ul><li> JavaScript keywords and operators now have documentation, including short code samples.
+</li><li> HTML and CSS now have more robust documentation, including short code samples.
+</li></ul>
+<p>To access the new online help topics, either press <b>F1</b> while your cursor is on the word or element that you are searching for help on, or go through the online help system available from <b>Help &gt; Help Contents</b>.
+</p><p><b>New Aptana Preferences Settings</b>
+</p><p>Now you can easily customize your work environment in Aptana with the addition of several new Preferences settings:
+</p>
+<ul><li> Option to insert spaces instead of tabs
+</li><li> Setting whitespace substitution characters
+</li><li> Setting the HTML Editor/Preview pane to tabbed, horizontal, or vertical split view
+</li><li> For HTML/XML, specifiying automatic single quotes, double quotes, or nothing when quoting attributes
+</li><li> Enabling/disabling a leading star (*) character for multiline JavaScript comments
+</li><li> Enabling/disabling automatic Code Assist pop-up on pause
+</li><li> Enabling/disabling word wrap
+</li></ul>
+<p><b>Improved File View Functionality</b>
+</p><p>The File View contains new features to bring its functionality closer to that of Windows Explorer:
+</p>
+<ul><li> You can now create a new folder in the File View.
+</li><li> You can now delete files and folders in the File View.
+</li><li> File now automatically refreshes when you save a file to an expanded folder.
+</li></ul>
+<p><b>New fixes</b>
+</p><p>The Aptana Beta .20 release contains a number of fixes and minor enhancements&nbsp;:
+</p>
+<ul><li> Code Assist now contains suggested values that were previously missing for some attributes. (e.g. Mac-specific fonts for font-family,&nbsp;!DOCTYPE values, etc.)
+</li><li> Code auto-completion and Code Assist behavior are now more refined.
+</li></ul>
+<p><br />
+</p>
+<a name="Aptana_Beta_.15_update_.2810-May-2006.29"></a><h2> <span class="mw-headline">Aptana Beta .15 update (10-May-2006)</span></h2>
+<a name="What.27s_New_12"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>Improved Code Assist system</b>
+</p><p>This release contains significant improvements to the Code Assist system:
+</p>
+<ul><li> You can now enable Code Assist to appear after any pause in your typing. (This feature is currently turned off by default.) To enable Code Assist on pause, go to <b>Window &gt; Preferences...</b>, click the <b>Aptana Editor Preferences</b> tab, and check the <b>Automatically pop up Code Assist on pause</b> check box.  
+</li><li> Several JavaScript functions with a static list of possible parameters (e.g. createElement, getElementsByTagName) now display possible parameter values for you to choose when your cursor is inside the parentheses of one of these functions.
+</li><li> HTML attribute values now display short text descriptions.
+</li><li> The whole "look and feel" has been upgraded significantly.
+</li></ul>
+<p><b>Faster Editor loading</b>
+</p><p>The Aptana JavaScript, HTML, and CSS Editors now load up to three times faster when you are opening a file than in the previous release.
+</p><p><b>Overtype on parentheses, braces, and HTML tags now enabled</b>
+</p><p>Now when you are inside an HTML tag set, or set of parentheses or braces, and you type a "&gt;", ")", or "}" to complete your statement, Aptana now types over the exisiting character, rather than inserting a second one.
+</p><p><b>HTML Outline View now functional</b>
+</p><p>The Outline View (Beta) for HTML documents is now functional. By default, this view is hidden behind the original Outline View. To display the Outline View (Beta), select Outline View (Beta) from the menu of available views in the lower-left corner of your workbench (shown below).
+</p><p><a href="Image:OutlineBetaMenu.png.html" class="image" title="Image:outlineBetaMenu.png"><img alt="Image:outlineBetaMenu.png" src="docs/images/0/07/OutlineBetaMenu.png" width="301" height="155" border="0" /></a>
+</p><p><b>Note:</b> If you close the Outline View (Beta), you will only be able to access it again by resetting the scripting engine. To reset the scripting engine, click the <b>Reset</b> button <a href="Image:IconReset.png.html" class="image" title="Image:iconReset.png"><img alt="Image:iconReset.png" src="docs/images/7/75/IconReset.png" width="23" height="22" border="0" /></a> in the toolbar at the top of the workbench.
+</p><p><b>New fixes for various exceptions</b>
+</p><p>The Aptana Beta .15 release contains a number of fixes for issues reported to us by our test users, including the following:
+</p>
+<ul><li> Code Assist now automatically displays for new entries in the CSS Editor.
+</li><li> You can now automatically close self-closing HTML tags in the HTML Editor (e.g. &lt;input /&gt; without Aptana creating an artifact closing tag.
+</li><li> Code folding is now functional for JavaScript.
+</li><li> Updated "window" properties in Code Assist.
+</li><li> Problems View now dynamically updates correctly.
+</li><li> You can now configure your commenting style in your preferences.
+</li></ul>
+<a name="Known_Issues_9"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<p><b>Perspective Reset</b>
+</p><p>Currently, if you manually reset your Aptana perspective, you will also need to manually reset the Aptana scripting engine. To reset the scripting engine, click the <b>Reset</b> button <a href="Image:IconReset.png.html" class="image" title="Image:iconReset.png"><img alt="Image:iconReset.png" src="docs/images/7/75/IconReset.png" width="23" height="22" border="0" /></a> in the toolbar at the top of the workbench.
+</p>
+<a name="Aptana_Beta_.1_update_.2819-Apr-2006.29"></a><h2> <span class="mw-headline">Aptana Beta .1 update (19-Apr-2006)</span></h2>
+<a name="What.27s_New_13"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>Overall Performance Improvement</b>
+</p><p>Start-up time and overall editing performance has been significantly improved from the last release.
+</p><p><b>Improved Code Assist and code completion</b>
+</p><p>This release contains several improvements to Code Assist and code completion functionality:
+</p>
+<ul><li> Code Assist now offers help when you pause your typing for a few seconds.
+</li><li> In the CSS Editor, Code Assist now displays a "hint" to show syntax and/or examples of valid attribute values in cases where a value either cannot simply be selected from the Code Assist menu, or if the menu has a wildcard ("*") indicating that the attribute has a wide range of possible values. 
+</li><li> The JavaScript Editor now displays Code Assist for function arguments when your cursor inside the function (based on the @param tag in your function documentation).
+</li><li> In the JavaScript Editor, Code Assist now displays for "new" objects with namespaces.
+</li><li> In the HTML Editor, appropriate tags (e.g. &lt;br /&gt;, &lt;img /&gt;) can now be self-closed without creating an extra closing tag.
+</li><li> In the XML Editor, tag completion is now functional and will close your tags for you.
+</li></ul>
+<p><b>Enhanced tabbing, whitespace, and brace behavior</b>
+</p><p>The Aptana Editors have the following new tabbing and whitespace behaviors:
+</p>
+<ul><li> You can now display or hide space and tab characters by clicking the Show Whitespace button <a href="Image:IconShowWhitespace.png.html" class="image" title="Image:iconShowWhitespace.png"><img alt="Image:iconShowWhitespace.png" src="docs/images/d/da/IconShowWhitespace.png" width="23" height="22" border="0" /></a>. 
+</li><li> Shift+tab is now functional so that you can tab to the left or outdent code or text.
+</li><li> The HTML Editor now has improved indenting and nesting behavior. 
+</li><li> Brace auto-completion and formatting is now more context-sensitive.
+</li></ul>
+<p><b>File View updated</b>
+</p><p>The appearance of the File View has been updated to closely resemble Windows Explorer and give you quick access to your Desktop, My Documents folder, etc.
+</p><p><b>New problem reporting option</b>
+</p><p>Now you can toggle Warnings on and off by clicking the <b>Toggle Show Warnings</b> button <a href="Image:IconToggleShowWarning.png.html" class="image" title="Image:iconToggleShowWarning.png"><img alt="Image:iconToggleShowWarning.png" src="docs/images/6/6c/IconToggleShowWarning.png" width="23" height="22" border="0" /></a>. Errors will still display in both the Problems View and left margin of the Editor.
+</p><p><b>New Web Preview Features</b>
+</p><p>The Aptana Web Preview feature has been updated with a few new enhancements:
+</p>
+<ul><li> The default web server now listens to any IP on your machine (not just 127.0.0.1).
+</li><li> When you run your web site via the Launch Start Page button <a href="Image:IconLaunchStartPage.png.html" class="image" title="Image:iconLaunchStartPage.png"><img alt="Image:iconLaunchStartPage.png" src="docs/images/d/d0/IconLaunchStartPage.png" width="36" height="22" border="0" /></a>, your web browser will connect to the first non-localhost IP.
+</li></ul>
+<a name="Aptana_Beta_.1_release_.2811-Apr-2006.29"></a><h2> <span class="mw-headline">Aptana Beta .1 release (11-Apr-2006)</span></h2>
+<a name="What.27s_New_14"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>UI Scripting Support</b>
+</p><p>Aptana has added the capability for developers to extend the UI of the IDE using HTML, JavaScript, and CSS. This feature includes a new Aptana JavaScript library that you can leverage for your development work. See Extending the Aptana UI to learn more about this feature.
+</p><p><b>New JavaScript, HTML, and CSS Editors</b>
+</p><p>The Aptana JavaScript, HTML, and CSS Editors in have been completely re-written. The new Editors feature working Code Assist, error reporting, and improved colorization. These Editors are all now multi-language, and colorize each language differently.
+</p><p><b>New Aptana Projects Perspective</b>
+</p><p>Aptana now has a new Aptana Projects Perspective. Use the Aptana Projects Perspective if you want to do your development work within the context of a project. To switch to the Aptana Projects Perspective, click the <b>Open Perspective</b> button <a href="Image:IconPerspective.png.html" class="image" title="Image:iconPerspective.png"><img alt="Image:iconPerspective.png" src="docs/images/a/ad/IconPerspective.png" width="18" height="17" border="0" /></a> (in the upper right corner of the IDE) and select <b>Other... &gt; Aptana Projects</b>.
+</p><p><b>Updated Aptana Perspective</b>
+</p><p>The default location of some of the Views on the Aptana Perspective has changed, freeing up more Editor space on your screen without having to rearrange the Views yourself.
+</p>
+<a name="Known_Issues_10"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<p><b>Error on update</b>
+</p><p>You may get an error when you initially update your build of Aptana because of ongoing changes to the Aptana Perspective and various views. This will be fixed in an upcoming release. 
+</p><p><b>Open Declaration not functional</b>
+</p><p>The <a href="Using_Open_Declaration_to_jump_to_a_function_in_your_code.html" title="Using Open Declaration to jump to a function in your code"> Open Declaration feature</a> currently is not functional. This will be fixed in an upcoming release.
+</p><p><b>File View has limited functionality</b>
+</p><p>The <a href="Displaying_the_File_View.html" title="Displaying the File View"> File View</a> currently lacks some of the functionality (e.g. copy, paste, New &gt; Folder) found in Windows Explorer. This will be fixed in an upcoming release.
+</p><p><b>No Outline View for HTML Editor</b> <b>(Update: Fixed in Beta-1.5)</b>
+</p><p>The Outline View for the HTML Editor is currently not functional. This will be fixed in an upcoming release.
+</p><p><b>JavaScript Editor runs slowly on large files</b>
+</p><p>You may notice a decrease in performance in the JavaScript Editor for files longer than 2500 lines.
+</p><p><b>Code Assist on instances created in the HTML Editor</b>
+</p><p>The current version of Code Assist only recognizes instances of types created in the JavaScript Editor. Currently, you will not receive Code Assist on any instances created in the HTML Editor. This will be fixed in a future release.
+</p><p><b>Script menu items not working</b>
+</p><p>In some cases, scripts are not able to associate their event handlers with their perspective menus. However, clicking on the "refresh scripting engine" button will cause the scripts to be reloaded at which time they will be able to connect to their menus.
+</p>
+<a name="Aptana_Alpha_release_.2820-Mar-2006.29"></a><h2> <span class="mw-headline">Aptana Alpha release (20-Mar-2006)</span></h2>
+<a name="What.27s_New_15"></a><h3> <span class="mw-headline">What's New</span></h3>
+<p><b>New Aptana Web Perspective</b>
+</p><p>This alpha release features a new Web Perspective that eliminates the need to create "projects" in order to work with your files. Highlights of the new perspective include the following features:
+</p>
+<ul><li> The new perspective has one new View and one upgraded View:
+<ul><li> <b>File View</b> - Use the File View to access any files on your computer. If the file system seems out of date, click the <b>Refresh</b> button <a href="Image:IconRefresh.png.html" class="image" title="Image:iconRefresh.png"><img alt="Image:iconRefresh.png" src="docs/images/f/f7/IconRefresh.png" width="23" height="22" border="0" /></a> to refresh the view. To learn more, see <a href="Displaying_the_File_View.html" title="Displaying the File View">Displaying the File View</a>.
+</li><li> <b>Code Assist Profiles View</b> - Use the Code Assist Profiles View to manage the libaries that you can use for Code Assist. To learn more, see <a href="Displaying_the_Code_Assist_Profiles_View.html" title="Displaying the Code Assist Profiles View">Displaying the Code Assist Profiles View</a>.
+</li></ul>
+</li><li> The Project View is no longer the most prominent default view on the left side of the screen. The left side of the screen now contains the File View and Code Assist Profiles View. (The old Project View is now directly behind the File View.) 
+</li><li> By default, Aptana now provides Code Assist only for the JavaScript Core language and DOM. To access Code Assist for other libraries, add them to the Code Assist Profiles View by either dragging the library file into the View or by clicking the <b>Add File</b> button <a href="Image:IconAddFile.png.html" class="image" title="Image:iconAddFile.png"><img alt="Image:iconAddFile.png" src="docs/images/2/25/IconAddFile.png" width="23" height="22" border="0" /></a>.
+</li></ul>
+<p><b>New Problems View</b>
+</p><p>The Problems View has been revamped and now displays HTML and JavaScript syntax errors. The new Problems View now only shows errors in the currently active Editors. (You can still access the old Eclipse Problems View by selecting <b>Show View &gt; Problems</b> from the <b>Window</b> menu.)
+</p>
+<a name="Known_Issues_11"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<p>The following list contains known issues associated with the 20-Mar-2006 Aptana Alpha release.
+</p><p><b>Run web site preview feature</b>
+</p>
+<ul><li> The Web Site Preview feature, accessed by clicking the <b>Launch Start Page</b> button <a href="Image:IconLaunchStartPage.png.html" class="image" title="Image:iconLaunchStartPage.png"><img alt="Image:iconLaunchStartPage.png" src="docs/images/d/d0/IconLaunchStartPage.png" width="36" height="22" border="0" /></a>, currently only has limited functionality. This issue is temporary and will soon be fixed in an upcoming release.
+</li><li> To preview a web site, you can still use either the Preview tab in the HTML Editor, or configure an external web server.
+</li></ul>
+<p><b>Online Help</b>
+</p><p>Some Online Help topics currently have out-of-date information in them from when Aptana required projects to work with files. These Help topics are in the process of being updated and will be gradually rolled out over the next couple of weeks.
+</p>
+<a name="Aptana_Alpha_release_.2810-Mar-2006.29"></a><h2> <span class="mw-headline">Aptana Alpha release (10-Mar-2006)</span></h2>
+<a name="Known_Issues_12"></a><h3> <span class="mw-headline">Known Issues</span></h3>
+<p>The following list contains known issues associated with the 10-Mar-2006 Aptana Alpha release. 
+</p><p><b>HTML and CSS Editors (Update: Fixed in Beta .1)</b>
+</p>
+<ul><li> Both the HTML Editor and CSS Editor contain only basic functionality and will be significantly upgraded in the next release. Although we welcome feature requests to help us prioritize what should be included the the new versions of these Editors, bug reporting should be focused on the JavaScript Editor.
+<ul><li> The <a href="Using_Open_Declaration_to_jump_to_a_function_in_your_code.html" title="Using Open Declaration to jump to a function in your code"> Open Declaration</a> feature currently does not work in the HTML Editor.
+</li><li> Code Assist is not functional in the CSS Editor.
+</li></ul>
+</li></ul>
+<p><b>Code Assist (Update: Fixed in Beta .1)</b>
+</p>
+<ul><li> <a href="About_Code_Assist.html" title="About Code Assist"> Code Assist</a> currently will not appear, other than for arguments, inside of the ()'s of a function call.
+</li><li> In the alpha release, Code Assist works for static built-in objects (e.g. Math, Date, etc.), JavaScript primitives, new objects and primitives, and documented functions and property types.
+</li></ul>
+<p><b>Parsing Errors</b>
+</p>
+<ul><li> Some parser errors trigger automatic bug report submissions. 
+<ul><li> How can you tell if an error automatically submitted a bug report? If the Aptana IDE automatically opened an Edit history.txt file, a bug report was also automatically submitted. This type of submission will only happen once per file.
+</li><li> You will need to have the <b>-Dhistory=100</b> command line option turned on to enable automatic bug report submission.
+</li></ul>
+</li><li> Typing the string "0x" (zero-x) followed by a hexadecimal value may report a false error.
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1457-0!1!0!!en!2!edit=0 and timestamp 20090201195345 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Release_Notes_Archive">http://aptana.com/docs/index.php/Release_Notes_Archive</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

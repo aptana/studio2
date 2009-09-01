@@ -1,0 +1,141 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Documenting dynamic properties and functions with ScriptDoc</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Documenting_dynamic_properties_and_functions_with_ScriptDoc&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Documenting dynamic properties and functions with ScriptDoc [<a href="http://www.aptana.com/docs/index.php?title=Documenting_dynamic_properties_and_functions_with_ScriptDoc&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to document a dynamically generated function in your code using ScriptDoc.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Properties"><span class="tocnumber">2.1</span> <span class="toctext">Properties</span></a></li>
+<li class="toclevel-2"><a href="#Functions"><span class="tocnumber">2.2</span> <span class="toctext">Functions</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>You can use ScriptDoc to make dynamically created functions and objects appear in Code Assist. ScriptDoc has an @alias tag that you can add to your documentation so that you can access these objects in Code Assist.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>Aptana includes a good example of documentation for dynamically generated properties and functions in the .sdoc file for the AFLAX library. To view this documentation, follow the instructions in <a href="Getting_started_with_Aptana_and_AFLAX.html" title="Getting started with Aptana and AFLAX">Getting started with Aptana and AFLAX</a> and create a sample AFLAX project. After creating your sample project, go into the <b>lib &gt; AFLAX</b> folder, and open the <b>aflax.js</b> and <b>aflax.sdoc</b> files.
+</p>
+<a name="Properties"></a><h3> <span class="mw-headline">Properties</span></h3>
+<p>To see how dynamic properties are documented, in the <b>aflax.js</b> file, scroll down to the following excerpt (starting around line 871):
+</p>
+<pre>
+/**
+ * The properties to expose from Flash on the MovieClip object.
+ */
+AFLAX.MovieClip.movieClipProperties = [ 
+	&quot;_x&quot;, 
+	&quot;_y&quot;, 
+	&quot;_height&quot;, 
+	&quot;_width&quot;, 
+	&quot;_rotation&quot;, 
+	&quot;_xmouse&quot;,
+	&quot;_ymouse&quot;, 
+	&quot;_xscale&quot;, 
+	&quot;_yscale&quot;, 
+	&quot;_alpha&quot;, 
+	&quot;blendMode&quot;,
+	&quot;_visible&quot;, 
+	&quot;cacheAsBitmap&quot; 
+	];
+</pre>
+<p>Each property in this list has a dynamically created "get" and a "set" function to retrieve or change the value of the property. The "get" and "set" functions are documented separately in the <b>aflax.sdoc</b> file.
+</p><p>Documentation for the dynamic MovieClip properties starts around line 39 in <b>aflax.sdoc</b>. An example of the documentation blocks, which use the @alias tag to give the get and set functions a name, is shown below:
+</p>
+<pre>
+/**
+ * Sets the X coordinate of this MovieClip
+ * @alias AFLAX.MovieClip.prototype.set_x
+ * @param {Number} x The X coordinate
+ */
+
+/**
+ * Returns the X coordinate of this MovieClip
+ * @alias AFLAX.MovieClip.prototype.get_x
+ * @return {Number} The X coordinate
+ */
+</pre>
+<p>As you can see, the @alias tag uses the full namespace for the functions. These functions will be available in Code Assist for AFLAX.
+</p>
+<a name="Functions"></a><h3> <span class="mw-headline">Functions</span></h3>
+<p>Dynamically generated functions are documented in a similar way to dynamically generated properties. The excerpt below (starting near line 890) shows the list of dynamically generated functions for the MovieClip object in AFLAX:
+</p>
+<pre>
+/**
+ * The functions to expose from Flash on the MovieClip object.
+ */
+AFLAX.MovieClip.movieClipFunctions = [ 
+	&quot;beginFill&quot;, 
+	&quot;clear&quot;, 
+	&quot;curveTo&quot;, 
+	&quot;endFill&quot;, 
+	&quot;getURL&quot;, 
+	&quot;lineStyle&quot;, 
+	&quot;lineTo&quot;,
+	&quot;moveTo&quot;, 
+	&quot;removeMovieClip&quot; 
+	];
+</pre>
+<p>Each of these functions has a separate documentation block in the <b>aflax.sdoc</b> file. The @alias tag gives the name of the function. This is shown in the example below for the beginFill function:
+</p>
+<pre>
+/**
+ * Begins drawing a fill on the Stage.
+ * @alias AFLAX.MovieClip.prototype.beginFill
+ * @param {Number} rgb Color to fill with(0x000000 - 0xFFFFFF). A fill is not created if rgb is not specified or is undefined.
+ * @param {Number} [alpha] Alpha level to fill with (0-100)
+ */
+</pre>
+<p>These functions will also be available in Code Assist.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="ScriptDoc_comprehensive_tag_reference.html" title="ScriptDoc comprehensive tag reference">ScriptDoc comprehensive tag reference</a>
+</li><li> <a href="ScriptDoc_tag_quick_reference.html" title="ScriptDoc tag quick reference">ScriptDoc tag quick reference</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1571-0!1!0!!en!2!edit=0 and timestamp 20090202175234 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Documenting_dynamic_properties_and_functions_with_ScriptDoc">http://aptana.com/docs/index.php/Documenting_dynamic_properties_and_functions_with_ScriptDoc</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

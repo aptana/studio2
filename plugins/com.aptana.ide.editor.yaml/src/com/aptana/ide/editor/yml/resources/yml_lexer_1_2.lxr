@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/yaml"
+	category-enumeration="com.aptana.ide.lexer.TokenCategories"
+	type-enumeration="com.aptana.ide.editor.yml.lexing.YMLTokenTypes">
+	
+	<bundle>com.aptana.ide.editor.yml</bundle>
+	<package>com.aptana.ide.editor.yml.lexing</package>
+	
+    <token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<line-terminator/>
+			</one-or-more>
+			<comment type="COMMENT">
+				<comment.start>
+					<and>
+						<start-of-line/>
+						<zero-or-more>
+							<character-class> \t</character-class>
+						</zero-or-more>
+						<string>#</string>
+					</and>
+				</comment.start>
+			</comment>
+			<one-or-more type="WHITESPACE">
+				<character-class> \t</character-class>
+			</one-or-more>
+		</category-group>
+		<category-group category="LITERAL">
+			<and type="MAPPING">
+				<string>: </string>
+				<zero-or-more>
+					<character negate="true">\n</character>
+				</zero-or-more>
+			</and>
+			<quoted-string type="STRING">'"</quoted-string>
+			<and type="START_DOCUMENT">
+				<start-of-line/>
+				<string type="START_DOCUMENT">---</string>
+				<zero-or-more>
+					<character negate="true">\n</character>
+				</zero-or-more>
+			</and>
+			<and type="ROOT">
+				<start-of-line/>
+				<one-or-more>
+					<character negate="true">:</character>
+				</one-or-more>
+			</and>
+			<and type="INDENT">
+				<one-or-more>
+					<character negate="true">:</character>
+				</one-or-more>
+			</and>
+			
+		</category-group>
+		<category-group category="PUNCTUATOR">
+			<character type="COLON">:</character>
+		</category-group>
+	</token-group>
+	
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<whitespace negate="true"/>
+		</one-or-more>
+	</token-group>
+</lexer>

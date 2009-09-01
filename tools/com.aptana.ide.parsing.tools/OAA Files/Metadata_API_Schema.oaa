@@ -1,0 +1,1000 @@
+/**
+ * api element
+ */
+api_element = element api {
+		api_content
+	&	api_attributes
+	&	foreign_nodes
+}
+
+api_content = (
+		author_element*
+	&	authors_element?
+	&	class_element*
+	&	classes_element?
+	&	globals_element?
+	&	interface_element*
+	&	interfaces_element?
+	&	license_element?
+	&	mixin_element*
+	&	mixins_element?
+	&	namespace_element*
+	&	namespaces_element?
+	&	descriptive_elements 
+)
+
+api_attributes = @(
+		getterPattern?
+	&	language?
+	&	setterPattern?
+	&	spec?
+	&	version?
+)
+
+/**
+ *	author element
+ */
+author_element = element author {
+		author_content
+	&	author_attributes
+	&	foreign_attributes
+}
+
+author_content = (
+		aboutMe_element?
+	&	quote_element?
+)
+
+author_attributes = @(
+		email?
+	&	location?
+	&	name?
+	&	organization?
+	&	photo?
+	&	website?
+)
+
+/**
+ *	authors element
+ */
+authors_element = element authors {
+		authors_content
+	&	authors_attributes
+	&	foreign_nodes
+}
+
+authors_content = (
+	author_element*
+)
+
+authors_attributes = @( empty )
+
+/**
+ *	aboutMe element
+ */
+aboutMe_element = element aboutMe {
+		aboutMe_content
+	&	aboutMe_attributes
+	&	foreign_attributes
+}
+
+aboutMe_content = (
+	plain_text_or_html
+)
+
+aboutMe_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	quote element
+ */
+quote_element = element quote {
+		quote_content
+	&	quote_attributes
+	&	foreign_attributes
+}
+
+quote_content = (
+	plain_text_or_html
+)
+
+quote_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	class element
+ */
+class_element = element class {
+		class_content
+	&	class_attributes
+	&	foreign_nodes
+}
+
+class_content = (
+		alias_element*
+	&	aliases_element?
+	&	ancestor_element*
+	&	ancestors_element?
+	&	constructor_element*
+	&	constructors_element?
+	&	event_element*
+	&	events_element?
+	&	field_element*
+	&	fields_element?
+	&	mix_element*
+	& 	mixes_element?
+	&	method_element*
+	&	methods_element?
+	&	property_element*
+	&	properties_element?
+	&	descriptive_elements
+	&	compatibility_elements
+)
+
+class_attributes = @(
+		name
+	&	superclass?
+	&	visibility?
+	&	getterPattern?
+	&	setterPattern?  
+)
+
+/**
+ *	classes element
+ */
+classes_element = element classes {
+		classes_content
+	&	classes_attributes
+	&	foreign_nodes
+}
+
+classes_content = (
+	class_element*
+)
+
+classes_attributes = @(
+		getterPattern?
+	&	setterPattern?  
+)
+
+/**
+ *	alias element
+ */
+alias_element = element alias {
+		alias_content
+	&	alias_attributes
+	&	foreign_attributes
+}
+
+alias_content = ( empty )
+
+alias_attributes = @(
+	name
+)
+
+/**
+ *	aliases element
+ */
+aliases_element = element aliases {
+		aliases_content
+	&	aliases_attributes
+	&	foreign_nodes
+}
+
+aliases_content = (
+	alias_element*
+)
+
+aliases_attributes = @( empty )
+
+/**
+ *	ancestor element
+ */
+ancestor_element = element ancestor {
+		ancestor_content
+	&	ancestor_attributes
+	&	foreign_attributes
+}
+
+ancestor_content = ( empty )
+
+ancestor_attributes = @( 
+  datatype
+)
+
+/**
+ *	ancestors element
+ */
+ancestors_element = element ancestors {
+		ancestors_content
+	&	ancestors_attributes
+	&	foreign_nodes
+}
+
+ancestors_content = (
+	ancestor_element*
+)
+
+ancestors_attributes = @( empty )
+
+/**
+ *	constructor element
+ */
+constructor_element = element constructor {
+		constructor_content
+	&	constructor_attributes
+	&	foreign_nodes
+}
+
+constructor_content = (
+		exception_element*
+	&	exceptions_element?
+	&	parameter_element*
+	&	parameters_element?
+	&	returns_element?
+	&	descriptive_elements
+	&	compatibility_elements
+  # Research the above, make consistent with the spec  
+)
+
+constructor_attributes = @(
+	visibility?
+)
+
+/**
+ *	constructors element
+ */
+constructors_element = element constructors {
+		constructors_content
+	&	constructors_attributes
+	&	foreign_nodes
+}
+
+constructors_content = (
+	constructor_element*
+)
+
+constructors_attributes = @( empty )
+
+/**
+ *	exception element
+ */
+exception_element = element exception {
+		exception_content
+	&	exception_attributes
+	&	foreign_nodes
+}
+
+exception_content = (
+		descriptive_elements
+	&	compatibility_elements
+)
+
+exception_attributes = @(
+	datatype?
+)
+
+/**
+ *	exceptions element
+ */
+exceptions_element = element exceptions {
+		exceptions_content
+	&	exceptions_attributes
+	&	foreign_nodes
+}
+
+exceptions_content = (
+	exception_element*
+)
+
+exceptions_attributes = @( empty )
+
+/**
+ *	parameter element
+ */
+parameter_element = element parameter {
+		parameter_content
+	&	parameter_attributes
+	&	foreign_nodes
+}
+
+parameter_content = (
+		option_element*
+	&	options_element?
+	& 	descriptive_elements
+	&	compatibility_elements
+	# Research the above, make consistent with the spec  
+)
+
+parameter_attributes = @(
+		datatype?
+	&	name
+	&	usage?
+	&	datatype_supplemental_attributes  # FIXME: Is this correct?
+)
+
+/**
+ *	parameters element
+ */
+parameters_element = element parameters {
+		parameters_content
+	&	parameters_attributes
+	&	foreign_nodes
+}
+
+parameters_content = (
+	parameter_element*
+)
+
+parameters_attributes = @( empty )
+
+/**
+ *	option element
+ */
+option_element = element option {
+		option_content
+	&	option_attributes
+	&	foreign_nodes
+}
+
+option_content = (
+		descriptive_elements
+	&	label_element?
+)
+
+option_attributes = @(
+	value  
+)
+
+/**
+ *	options element
+ */
+options_element = element options {
+		options_content
+	&	options_attributes
+	&	foreign_nodes
+}
+
+options_content = (
+	option_element*
+)
+
+options_attributes = @(
+		multiple?
+	&	unconstrained?  
+)
+
+/**
+ *	label element
+ */
+label_element = element label {
+		label_content
+	&	label_attributes
+	&	foreign_attributes
+}
+
+label_content = (
+	plain_text_or_html
+)
+
+label_attributes = @(
+	locid?  
+)
+
+/**
+ *	returns element
+ */
+returns_element = element returns {
+		returns_content
+	&	returns_attributes
+	&	foreign_nodes
+}
+
+returns_content = (
+	descriptive_elements
+	# Research the above, make consistent with the spec  
+)
+
+returns_attributes = @(
+		datatype?
+	&	datatype_supplemental_attributes  # FIXME: Is this correct?
+)
+
+/**
+ *	event element
+ */
+event_element = element event {
+		event_content
+	&	event_attributes
+	&	foreign_nodes
+}
+
+event_content = (
+		parameter_element*
+	&	parameters_element?
+	&	returns_element?
+	&	descriptive_elements
+	&	compatibility_elements
+  # Research the above, make consistent with the spec  
+  # <parameters>? <returns>?
+)
+
+event_attributes = @(
+	name
+)
+
+/**
+ *	events element
+ */
+events_element = element events {
+		events_content
+	&	events_attributes
+	&	foreign_nodes
+}
+
+events_content = (
+	event_element*
+)
+
+events_attributes = @( empty )
+
+/**
+ *	field element
+ */
+field_element = element field {
+		field_content
+	&	field_attributes
+	&	foreign_nodes
+}
+
+field_content = (
+		option_element*
+	&	options_element?
+	&	descriptive_elements
+	&	compatibility_elements
+	# Research the above, make consistent with the spec  
+)
+
+field_attributes = @(
+		name
+	&	datatype?
+	&	visibility?
+	&	scope?
+	&	datatype_supplemental_attributes  # FIXME: Is this correct?
+	# <scope>?
+)
+
+/**
+ *	fields element
+ */
+fields_element = element fields {
+		fields_content
+	&	fields_attributes
+	&	foreign_nodes
+}
+
+fields_content = (
+	field_element*
+)
+
+fields_attributes = @( empty )
+
+/**
+ *	mix element
+ */
+mix_element = element mix {
+		mix_content
+	&	mix_attributes
+	&	foreign_nodes
+}
+
+mix_content = (
+	descriptive_elements
+)
+
+mix_attributes = @(
+		datatype
+	&	fromScope?
+	&	toScope?
+)
+
+/**
+ *	mixes element
+ */
+mixes_element = element mixes {
+		mixes_content
+	&	mixes_attributes
+	&	foreign_nodes
+}
+
+mixes_content = (
+	mix_element*
+)
+
+mixes_attributes = @( empty )
+
+/**
+ *	method element
+ */
+method_element = element method {
+		method_content
+	&	method_attributes
+	&	foreign_nodes
+}
+
+method_content = (
+		exception_element*
+	&	exceptions_element?
+	&	parameter_element*
+	&	parameters_element?
+	&	returns_element?
+	&	descriptive_elements
+	&	compatibility_elements
+	# Research the above, make consistent with the spec  
+)
+
+method_attributes = @(
+		name
+	&	scope?
+	&	visibility?
+)
+
+/**
+ *	methods element
+ */
+methods_element = element methods {
+		methods_content
+	&	methods_attributes
+	&	foreign_nodes
+}
+
+methods_content = (
+	method_element*
+)
+
+methods_attributes = @( empty )
+
+/**
+ *	property element
+ */
+property_element = element property {
+		property_content
+	&	property_attributes
+	&	foreign_nodes
+}
+
+property_content = (
+		option_element*
+	&	options_element?
+	&	descriptive_elements
+	&	compatibility_elements
+)
+
+property_attributes = @(
+		datatype?
+	&	default_attribute
+	&	hidden?
+	&	name
+	&	readonly?
+	&	required?
+	&	scope?
+	&	transient?
+	&	urlparam?
+	&	visibility?
+	&	datatype_supplemental_attributes
+	&	pattern_attributes
+	&	pubsub_attributes
+)
+
+/**
+ *	properties element
+ */
+properties_element = element properties {
+		properties_content
+	&	properties_attributes
+	&	foreign_nodes
+}
+
+properties_content = (
+	property_element*
+)
+
+properties_attributes = @(
+	pattern_attributes
+)
+
+/**
+ *	compatibility elements
+ */
+compatibility_elements = (
+		available_element?
+	&	deprecated_element?
+	&	useragents_element?
+)
+
+/**
+ *	available element
+ */
+available_element = element available {
+		available_content
+	&	available_attributes
+	&	foreign_attributes
+}
+
+available_content = (
+	plain_text_or_html
+)
+
+available_attributes = @(
+		locid?
+	&	type?
+	&	version?
+)
+
+/**
+ *	deprecated element
+ */
+deprecated_element = element deprecated {
+		deprecated_content
+	&	deprecated_attributes
+	&	foreign_attributes
+}
+
+deprecated_content = (
+	plain_text_or_html
+)
+
+deprecated_attributes = @(
+		locid?
+	&	type?
+	&	version?
+)
+
+/**
+ *	useragent element
+ */
+useragent_element = element useragent {
+		useragent_content
+	&	useragent_attributes
+	&	foreign_attributes
+}
+
+useragent_content = (
+	plain_text_or_html
+)
+
+useragent_attributes = @(
+		locid?
+	&	os?
+	&	osVersion?
+	&	platform?
+	&	version?
+	&	type?
+)
+
+/**
+ *	useragents element
+ */
+useragents_element = element useragents {
+		useragents_content
+	&	useragents_attributes
+	&	foreign_nodes
+}
+
+useragents_content = (
+	useragent_element*
+)
+
+useragents_attributes = @( empty )
+
+/**
+ *	globals element
+ */
+globals_element = element globals {
+		globals_content
+	&	globals_attributes
+	&	foreign_nodes
+}
+
+globals_content = (
+		property_element*
+	&	properties_element?
+	&	method_element*
+	&	methods_element?
+)
+
+globals_attributes = @(
+		getterPattern?
+	&	setterPattern?  
+)
+
+/**
+ *	interface element
+ */
+interface_element = element interface {
+		interface_content
+	&	interface_attributes
+	&	foreign_nodes
+}
+
+interface_content = (
+		ancestor_element*
+	&	ancestors_element?
+	&	constructor_element*
+	&	constructors_element?
+	&	exception_element*
+	&	exceptions_element?
+	&	mix_element*
+	&	mixes_element?
+	&	method_element*
+	&	methods_element?
+	&	property_element*
+	&	properties_element?
+	&	descriptive_elements
+	&	compatibility_elements
+)
+
+interface_attributes = @(
+		name
+	&	superclass?
+	&	visibility?
+	&	getterPattern?
+	&	setterPattern?  
+)
+
+/**
+ *	interfaces element
+ */
+interfaces_element = element interfaces {
+		interfaces_content
+	&	interfaces_attributes
+	&	foreign_nodes
+}
+
+interfaces_content = (
+	interface_element*
+)
+
+interfaces_attributes = @(
+		getterPattern?
+	&	setterPattern?  
+)
+
+/**
+ *	license element
+ */
+license_element = element license {
+		license_content
+	&	license_attributes
+	&	foreign_attributes
+}
+
+license_content = (
+	plain_text_or_html
+)
+
+license_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	mixin element
+ */
+mixin_element = element mixin {
+		mixin_content
+	&	mixin_attributes
+	&	foreign_nodes
+}
+
+mixin_content = (
+		ancestor_element*
+	&	ancestors_element?
+	&	descriptive_elements
+)
+
+mixin_attributes = @(
+		name
+	&	scope?
+	&	visibility?
+)
+
+/**
+ *	mixins element
+ */
+mixins_element = element mixins {
+		mixins_content
+	&	mixins_attributes
+	&	foreign_nodes
+}
+
+mixins_content = (
+	mixin_element*
+)
+
+mixins_attributes = @( empty )
+
+/**
+ *	namespace element
+ */
+namespace_element = element namespace {
+		namespace_content
+	&	namespace_attributes
+	&	foreign_nodes
+}
+
+namespace_content = (
+	descriptive_elements
+)
+
+namespace_attributes = @(
+		name
+	&	visibility?
+)
+
+/**
+ *	namespaces element
+ */
+namespaces_element = element namespaces {
+		namespaces_content
+	&	namespaces_attributes
+	&	foreign_nodes
+}
+
+namespaces_content = (
+	namespace_element*
+)
+
+namespaces_attributes = @( empty )
+
+/**
+ *	descriptive elements
+ */
+descriptive_elements = (
+		description_element?
+	&	examples_element?
+	&	remarks_element?
+	&	references_element?
+	&	reference_element*
+	&	title_element?
+)
+
+/**
+ *	description element
+ */
+description_element = element description {
+		description_content
+	&	description_attributes
+	&	foreign_attributes
+}
+
+description_content = (
+	plain_text_or_html
+)
+
+description_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	example element
+ */
+example_element = element example {
+		example_content
+	&	example_attributes
+	&	foreign_attributes
+}
+
+example_content = (
+	plain_text_or_html
+)
+
+example_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	examples element
+ */
+examples_element = element examples {
+		examples_content
+	&	examples_attributes
+	&	foreign_nodes
+}
+
+examples_content = (
+	example_element*
+)
+
+examples_attributes = @( empty )
+
+/**
+ *	remarks element
+ */
+remarks_element = element remarks {
+		remarks_content
+	&	remarks_attributes
+	&	foreign_attributes
+}
+
+remarks_content = (
+	plain_text_or_html
+)
+
+remarks_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	reference element
+ */
+reference_element = element reference {
+		reference_content
+	&	reference_attributes
+	&	foreign_attributes
+}
+
+reference_content = (
+	plain_text_or_html
+)
+
+reference_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	references element
+ */
+references_element = element references {
+		references_content
+	&	references_attributes
+	&	foreign_nodes
+}
+
+references_content = (
+		include_element		# NOTE: was inclusion_elements
+	&	reference_element*
+)
+
+references_attributes = @( empty )
+
+/**
+ *	title element
+ */
+title_element = element title {
+		title_content
+	&	title_attributes
+	&	foreign_attributes
+}
+
+title_content = (
+	plain_text_or_html
+)
+
+title_attributes = @( 
+		locid?
+	&	type? 
+)
+
+/**
+ *	include element
+ */
+include_element = element include {
+		include_content
+	&	include_attributes
+	&	foreign_attributes
+}
+
+include_content = ( empty )
+
+include_attributes = @(
+  src
+)

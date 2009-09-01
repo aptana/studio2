@@ -1,0 +1,114 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Wrapping selected text</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Wrapping_selected_text&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Wrapping selected text [<a href="http://www.aptana.com/docs/index.php?title=Wrapping_selected_text&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This Help topic describes how to use a short Eclipse Monkey script to wrap an area of selected text.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Although the Editors in Aptana do not currently have a "Word Wrap" feature, you can use an Eclipse Monkey script to wrap a long line of text by adding new lines. The example script below will add a menu item named "Wrap Selection" to your scripts menu; however, you can change the metadata to remove this option and/or add a hotkey shortcut to the script. (See <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a> for more information.)
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<ol>
+<li>Create a new, empty Eclipse Monkey script. See <a href="Creating_a_new_Eclipse_Monkey_script.html" title="Creating a new Eclipse Monkey script">Creating a new Eclipse Monkey script</a> for instructions.<p>Name the file something related to the actual snippet that you want to execute (e.g. <b>execute_bold.js</b>).</p></li>
+<li>Copy and paste the JavaScript below into your new file:<p><pre>
+/* 
+ * Menu: 00_MyScripts &gt; Wrap Selection
+ * Kudos: Paul Colton (Aptana, Inc.)
+ * License: EPL 1.0
+ * DOM: http://download.eclipse.org/technology/dash/update/org.eclipse.eclipsemonkey.lang.javascript
+ */
+function main(){
+    var sourceEditor = editors.activeEditor;
+    var defaultWidth = &quot;60&quot;; // default value to place in prompt       
+    // make sure we have an editor    
+    if (sourceEditor === undefined) {
+        valid = false;
+        showError(&quot;No active editor&quot;);
+    }
+    else {
+        var range = sourceEditor.selectionRange;
+        var offset = range.startingOffset;
+        var deleteLength = range.endingOffset - range.startingOffset;
+        var source = sourceEditor.source;
+        var selection = source.substring(range.startingOffset, range.endingOffset);
+        var wrapWidth = prompt(&quot;Column to wrap text at: &quot;, defaultWidth);
+        
+        if (wrapWidth&nbsp;!= undefined) {
+            var currentLen = 0;
+            var newSelection = &quot;&quot;;
+            var newWidth = parseInt(wrapWidth);
+            var parts = selection.split(' ');
+            for (var i = 0; i &lt; parts.length; i++) {
+                if (currentLen + parts[i].length &gt; newWidth) {
+                    newSelection += &quot;\n&quot;;
+                    currentLen = 0;
+                }
+                
+                else {
+                    currentLen += parts[i].length;
+                }
+                
+                newSelection += parts[i] + &quot; &quot;;
+            }
+            
+            // apply edit and reveal in editor
+            sourceEditor.applyEdit(offset, deleteLength, newSelection);
+            sourceEditor.selectAndReveal(offset, newSelection.length);
+        }
+    }
+}
+
+</pre></p></li>
+<li>In the Scripts View, click the Refresh button <a href="Image:IconRefresh.png.html" class="image" title="Image:iconRefresh.png"><img alt="Image:iconRefresh.png" src="docs/images/f/f7/IconRefresh.png" width="23" height="22" border="0" /></a> to refresh your scripting environment.</li>
+</ol>
+<p>You should now be able to execute this script using the menu item in the sample, or any other metadata that you added on your own.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Aptana_Snippets.html" title="About Aptana Snippets">About Aptana Snippets</a>
+</li><li> <a href="Editing_with_Snippets.html" title="Editing with Snippets">Editing with Snippets</a>
+</li><li> <a href="Adding_a_new_Snippet.html" title="Adding a new Snippet">Adding a new Snippet</a>
+</li><li> <a href="Editing_a_Snippet.html" title="Editing a Snippet">Editing a Snippet</a>
+</li><li> <a href="Scripting_with_Eclipse_Monkey.html" title="Scripting with Eclipse Monkey">Scripting with Eclipse Monkey</a>
+</li><li> <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a>
+</li><li> <a href="Assigning_a_keyboard_shortcut_to_a_snippet.html" title="Assigning a keyboard shortcut to a snippet">Assigning a keyboard shortcut to a snippet</a>
+</li></ul>
+<p>[[Category:AptanaHelp==
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2122-0!1!0!!en!2!edit=0 and timestamp 20090202045858 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Wrapping_selected_text">http://aptana.com/docs/index.php/Wrapping_selected_text</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

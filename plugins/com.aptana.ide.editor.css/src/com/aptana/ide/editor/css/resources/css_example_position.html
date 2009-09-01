@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+<title>CSS Examples - Position Declaration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../../content/example.css" type="text/css">
+<script type="text/javascript">
+<!--
+
+function init() {
+	document.getElementById('testSelect').onchange = changePosition;
+}
+
+function changePosition() {
+	var testEl = document.getElementById('testElement');
+	testEl.style.position = this.value;
+}
+
+// -->
+</script>
+<style type="text/css">
+<!--
+
+#testElement {
+	top: 100px;
+	left: 100px;
+	padding: 1em;
+	border: 1px solid #cc0000;
+	z-index: 5;
+}
+
+#testElement div {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 10em;
+	border: 1px solid #00cc00;
+	z-index: 10;
+	background-color: #ffffff;
+	padding: 0.5em;
+}
+
+-->
+</style>
+</head>
+
+<body onload="init()">
+
+<h2>Position Declaration Example</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p><code>position: fixed</code> is not supported by Explorer 6 and lower on Windows; nor by Explorer 7
+in Quirks Mode. In Strict Mode Explorer 7 supports it fine, though.</p>
+</div>
+
+<p class="intro">The position declaration lets you declare what the position of an element should be.</p>
+
+
+<h3>Test</h3>
+
+<p>Test <code>position</code> by changing its value for the test element.</p>
+
+<form name="testForm" action="#">
+	<select id="testSelect">
+		<option value="static">static</option>
+		<option value="relative">relative</option>
+		<option value="absolute">absolute</option>
+		<option value="fixed">fixed</option>
+	</select>
+</form>
+
+
+<div id="testElement">
+This is the test element. It has the following styles:
+<pre>
+top: 100px;
+left: 100px;
+padding: 1em;
+border: 1px solid #cc0000;
+</pre>
+<div>This element is an absolutely positioned child of the test element.</div>
+</div>
+
+<h3>The four values</h3>
+
+<p><code>position</code> takes four values: <code>static</code>, <code>relative</code>, <code>absolute</code>,
+and <code>fixed</code>. <code>static</code> is the default value; for any other value you have to apply a
+CSS declaration.</p>
+
+<h4>The containing block</h4>
+
+<p>In order to specify the exact position of the element, you have to add <code>top</code>, <code>bottom</code>,
+<code>left</code>, and/or <code>right</code> declarations. These all give coordinates relative to the top/left
+or bottom/right reference point. What is this reference point?</p>
+
+<ul>
+	<li><code>position: static</code>: No reference point, since a static block cannot be moved.</li>
+	<li><code>position: relative</code>: The position the block would take if it were not moved (i.e. if it
+	had <code>position: static</code>).</li>
+	<li><code>position: absolute</code>: The containing block, which is the first ancestor element
+	that does <strong>not</strong> have <code>position: static</code>. If there is no such ancestor,
+	the <code>&lt;html&gt;</code> element serves as the containing block. <span class="smaller">(Note: in older
+	browsers the <code>&lt;body&gt;</code> element serves as the default containing block.)</span></li>
+	<li><code>position: fixed</code>: The viewport (browser window).</li>
+</ul>
+
+<h4>static</h4>
+
+<p>An element with <code>position: static</code> always has the position the normal flow of the page gives it. It
+cannot be moved from this position; a static element ignores any <code>top</code>, <code>bottom</code>,
+<code>left</code>, or <code>right</code> declarations.</p>
+
+<h4>relative</h4>
+
+<p>An element with <code>position: relative</code> initially has the position the normal flow of the page gives
+it, but it is subsequently offset by the amount the <code>top</code>, <code>bottom</code>,
+<code>left</code>, and/or <code>right</code> declarations give. Therefore, in combination with such a declaration
+it appears slightly skewed. The space the element originally took remains empty.</p>
+
+<p>By themselves, relatively positioned elements are uninteresting, since you almost never want to skew an
+element by a few pixels. However, a relatively positioned element serves as a containing block; and this is the
+usual reason to use <code>position: relative</code>.</p>
+
+<h4>absolute</h4>
+
+<p>An element with <code>position: absolute</code> is taken out of the normal flow of the page and positioned
+at the desired coordinates relative to its containing block.</p>
+
+<p>Since the absolutely positioned element is taken out of the normal flow, the normal document flow behaves as
+if the element is not there: it closes up the space it would take.</p>
+
+<h4>fixed</h4>
+
+<p>An element with <code>position: fixed</code> is taken out of the normal flow of the page and positioned at
+the desired coordinates relative to the browser window. It remains at that position regardless of scrolling.</p>
+
+</div>
+
+
+</body>
+</html>

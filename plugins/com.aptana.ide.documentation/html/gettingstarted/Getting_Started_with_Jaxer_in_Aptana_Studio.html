@@ -1,0 +1,141 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Getting Started with Jaxer in Aptana Studio</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Getting_Started_with_Jaxer_in_Aptana_Studio&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Getting Started with Jaxer in Aptana Studio [<a href="http://www.aptana.com/docs/index.php?title=Getting_Started_with_Jaxer_in_Aptana_Studio&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>To use Aptana Jaxer in Studio you must first install the Jaxer plugin (choose <i>Install Additional Features</i> from the Aptana menu, then select Aptana Jaxer from the list and click Install).
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#About_the_Jaxer_Chat_application"><span class="tocnumber">1</span> <span class="toctext">About the Jaxer Chat application</span></a></li>
+<li class="toclevel-1"><a href="#About_the_Jaxer_Diagnostics_application"><span class="tocnumber">2</span> <span class="toctext">About the Jaxer Diagnostics application</span></a></li>
+<li class="toclevel-1"><a href="#About_the_Jaxer_Shell_application"><span class="tocnumber">3</span> <span class="toctext">About the Jaxer Shell application</span></a></li>
+<li class="toclevel-1"><a href="#About_the_Jaxer_Tasks_application"><span class="tocnumber">4</span> <span class="toctext">About the Jaxer Tasks application</span></a></li>
+<li class="toclevel-1"><a href="#About_the_Jaxer_WikiLite_application"><span class="tocnumber">5</span> <span class="toctext">About the Jaxer WikiLite application</span></a></li>
+<li class="toclevel-1"><a href="#Previewing_a_sample"><span class="tocnumber">6</span> <span class="toctext">Previewing a sample</span></a></li>
+<li class="toclevel-1"><a href="#Importing_a_sample_as_a_project"><span class="tocnumber">7</span> <span class="toctext">Importing a sample as a project</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">8</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<p><br />
+The Jaxer plugin includes several sample projects that demonstrate the functionality of Jaxer. The instructions below describe the sample projects and links with resources to more in-depth information about how to develop these applications on your own.
+</p><p>Installing the plugin also adds a Jaxer button menu to the Studio toolbar and several useful views as well as putting five sample projects in the Jaxer folder in the Samples view. 
+</p>
+<a name="About_the_Jaxer_Chat_application"></a><h3> <span class="mw-headline">About the Jaxer Chat application</span></h3>
+<p>The Jaxer chat application (shown below) is a basic chat room web application that allows users to create accounts, login to chat, enter chat rooms, create new chat rooms, and, of course, chat. Use this application to learn about the following concepts:
+</p>
+<ul><li> Preparing a database on page load
+</li><li> Determining which code runs on the client and which on the server
+</li><li> Authenticating users
+</li><li> Using client-server callbacks
+</li><li> How to use the different values for the Jaxer <tt>runat</tt> attribute
+</li><li> Server-side <tt>include</tt> statements with Jaxer
+</li></ul>
+<p>More: <a href="Inside_the_Jaxer_chat_application.html" title="Inside the Jaxer chat application">Jaxer Chat Guide</a>
+</p><p><a href="Image:JaxerChatSample.jpg.html" class="image" title="Image:jaxerChatSample.jpg"><img alt="Image:jaxerChatSample.jpg" src="docs/images/7/78/JaxerChatSample.jpg" width="639" height="635" border="0" /></a>
+</p>
+<a name="About_the_Jaxer_Diagnostics_application"></a><h3> <span class="mw-headline">About the Jaxer Diagnostics application</span></h3>
+<p>The Jaxer Diagnostics application (shown below) provides a simple way to interact with the Jaxer server and to get feedback about your Jaxer server environment. Use this example to familiarize yourself with the following concepts:
+</p>
+<ul><li> Doing server-side development based off of a popular Ajax library (jQuery)
+</li><li> Getting basic information about your Jaxer server
+</li><li> Testing callbacks
+</li><li> Testing a parser
+</li><li> Determining jQuery compatibility
+</li></ul>
+<p><a href="Image:JaxerDiagnosticsSample.jpg.html" class="image" title="Image:jaxerDiagnosticsSample.jpg"><img alt="Image:jaxerDiagnosticsSample.jpg" src="docs/images/3/31/JaxerDiagnosticsSample.jpg" width="639" height="635" border="0" /></a>
+</p>
+<a name="About_the_Jaxer_Shell_application"></a><h3> <span class="mw-headline">About the Jaxer Shell application</span></h3>
+<p>The Jaxer Shell sample application (shown below) is simply a web version of the Jaxer Shell View in Aptana Studio. Use the Jaxer Shell to interact with the Jaxer server and display the result of your interactions in a console. You can use the Jaxer Shell to type single line commands or even function definitions.
+</p><p><a href="Image:JaxerShellSample.png.html" class="image" title="Image:jaxerShellSample.png"><img alt="Image:jaxerShellSample.png" src="docs/images/5/5d/JaxerShellSample.png" width="746" height="673" border="0" /></a>
+</p>
+<a name="About_the_Jaxer_Tasks_application"></a><h3> <span class="mw-headline">About the Jaxer Tasks application</span></h3>
+<p>The Jaxer Tasks application is a simple task list. Users can type tasks to add them to a list and check them off. When a user checks off a task, it is dynamically deleted from the list. Use this sample to learn about the following concepts:
+</p>
+<ul><li> Jaxer <tt>runat</tt> attributes
+</li><li> Adding server-side Ajax functionality to a client-side script
+</li><li> Using JavaScript to execute SQL to interact with a database
+</li><li> Reading/writing data between a client and server
+</li></ul>
+<p>More: <a href="Getting_started_with_Jaxer_development_using_the_Tasks_sample_application.html" title="Getting started with Jaxer development using the Tasks sample application">Jaxer Tasks Guide</a>
+</p><p><a href="Image:JaxerTasksSample.png.html" class="image" title="Image:jaxerTasksSample.png"><img alt="Image:jaxerTasksSample.png" src="docs/images/4/4d/JaxerTasksSample.png" width="602" height="410" border="0" /></a>
+</p>
+<a name="About_the_Jaxer_WikiLite_application"></a><h3> <span class="mw-headline">About the Jaxer WikiLite application</span></h3>
+<p>The WikiLite sample demonstrates a basic Wiki application where a user can edit content, save content to a remote file, and the contents of the Wiki persist from one session to the next. The WikiLite sample introduces the following concepts:
+</p>
+<ul><li> Setting the contents of a page when the page loads
+</li><li> Toggling read-only mode on and off through various mechanisms
+</li><li> Determining which functions to run on the client and which on the server (or both!)
+</li><li> Validating user input on both the client and on the server
+</li><li> Writing user input to a remote file
+</li></ul>
+<p>More: <a href="Jaxer_WikiLite_Guide.html" title="Jaxer WikiLite Guide">Jaxer WikiLite Guide</a>
+</p><p><a href="Image:WikiLiteSample.png.html" class="image" title="Image:wikiLiteSample.png"><img alt="Image:wikiLiteSample.png" src="docs/images/6/6b/WikiLiteSample.png" width="746" height="762" border="0" /></a>
+</p>
+<a name="Previewing_a_sample"></a><h3> <span class="mw-headline">Previewing a sample</span></h3>
+<ol><li>In the Samples View, expand the <b>Aptana Jaxer</b> folder
+</li><li>Click the folder for the sample that you want to preview
+</li><li>Click the Preview Sample button <a href="Image:IconPreviewSample.png.html" class="image" title="Image:iconPreviewSample.png"><img alt="Image:iconPreviewSample.png" src="docs/images/3/30/IconPreviewSample.png" width="23" height="22" border="0" /></a>
+</li></ol>
+<p>Aptana Studio displays a preview of the application in the HTML Editor tab.
+</p>
+<a name="Importing_a_sample_as_a_project"></a><h3> <span class="mw-headline">Importing a sample as a project</span></h3>
+<p>Importing a sample as a project can be very useful when you want to develop a similar project. Once a sample is imported, all of your directories and references for Code Assist will automatically be set up for you.
+</p>
+<ol><li>In the Samples View, expand the <b>Aptana Jaxer</b> folder
+</li><li>Click the folder for the sample that you want to preview
+</li><li>Click the Import Sample button <a href="Image:IconImportSample.png.html" class="image" title="Image:iconImportSample.png"><img alt="Image:iconImportSample.png" src="docs/images/f/f0/IconImportSample.png" width="23" height="22" border="0" /></a>
+</li></ol>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_the_Jaxer_server.html" title="About the Jaxer server">About the Jaxer server</a>
+</li><li> <a href="Creating_a_new_Jaxer_project.html" title="Creating a new Jaxer project">Creating a new Jaxer project</a>
+</li><li> <a href="Previewing_a_Jaxer_project.html" title="Previewing a Jaxer project">Previewing a Jaxer project</a>
+</li><li> <a href="About_Jaxer_Views.html" title="About Jaxer Views">About Jaxer Views</a>
+<ul><li> <a href="Displaying_the_Servers_View.html" title="Displaying the Servers View">Displaying the Servers View</a>
+</li><li> <a href="Displaying_the_TailView_View.html" title="Displaying the TailView View">Displaying the TailView View</a>
+</li><li> <a href="Displaying_the_Jaxer_Activity_Monitor_View.html" title="Displaying the Jaxer Activity Monitor View">Displaying the Jaxer Activity Monitor View</a>
+</li><li> <a href="Displaying_the_Jaxer_Shell_View.html" title="Displaying the Jaxer Shell View">Displaying the Jaxer Shell View</a>
+</li></ul>
+</li><li> <a href="Configuring_your_Jaxer_servers.html" title="Configuring your Jaxer servers">Configuring your Jaxer servers</a>
+</li><li> <a href="Setting_your_TailView_preferences.html" title="Setting your TailView preferences">Setting your TailView preferences</a>
+</li><li> <a href="JaxerManager_Command_Line_Interface_(CLI)_Reference.html" title="JaxerManager Command Line Interface (CLI) Reference">JaxerManager_Command_Line_Interface_(CLI) Reference</a>
+</li><li><a href="Running_the_Jaxer_server_diagnostic_tools.html" title="Running the Jaxer server diagnostic tools">Running the Jaxer server diagnostic tools</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2197-0!1!0!!en!2!edit=0 and timestamp 20090202191342 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Getting_Started_with_Jaxer_in_Aptana_Studio">http://aptana.com/docs/index.php/Getting_Started_with_Jaxer_in_Aptana_Studio</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

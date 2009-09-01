@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            class="com.aptana.ide.debug.internal.core.model.JSDebugLineBreakpoint"
+            id="com.aptana.ide.debug.core.lineBreakpoint"
+            markerType="com.aptana.ide.debug.core.lineBreakpointMarker"/>
+      <breakpoint
+            class="com.aptana.ide.debug.internal.core.model.JSDebugExceptionBreakpoint"
+            id="com.aptana.ide.debug.core.exceptionBreakpoint"
+            markerType="com.aptana.ide.debug.core.exceptionBreakpointMarker"/>
+      <breakpoint
+            class="com.aptana.ide.debug.internal.core.model.JSDebugWatchpoint"
+            id="com.aptana.ide.debug.core.variableWatchpoint"
+            markerType="com.aptana.ide.debug.core.watchpointMarker"/>
+   </extension>
+   <extension
+         id="lineBreakpointMarker"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.lineBreakpointMarker"/>
+      <persistent value="true"/>
+      <attribute name="com.aptana.ide.debug.core.breakpointHitCount"/>
+      <attribute name="com.aptana.ide.debug.core.breakpointCondition"/>
+      <attribute name="com.aptana.ide.debug.core.breakpointConditionSuspendOnTrue"/>
+   </extension>
+   <extension
+         id="exceptionBreakpointMarker"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.breakpointMarker"/>
+      <persistent value="true"/>
+   </extension>
+   <extension
+         id="watchpointMarker"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.breakpointMarker"/>
+      <persistent value="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            class="com.aptana.ide.debug.internal.core.sourcelookup.JSSourceLookupDirector"
+            id="com.aptana.ide.debug.core.sourceLookupDirector"
+            name="%sourceLocator.name.js"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourcePathComputers">
+      <sourcePathComputer
+            class="com.aptana.ide.debug.internal.core.sourcelookup.JSSourcePathComputerDelegate"
+            id="com.aptana.ide.debug.core.sourcePathComputer"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="com.aptana.ide.debug.core.JSLaunchConfigurationDelegate"
+            id="com.aptana.ide.debug.core.jsLaunchConfigurationType"
+            modes="run,debug"
+            name="%launchConfigurationType.name.js"
+            public="true"
+            sourceLocatorId="com.aptana.ide.debug.core.sourceLookupDirector"
+            sourcePathComputerId="com.aptana.ide.debug.core.sourcePathComputer">
+         <fileExtension
+               default="true"
+               extension="html"/>
+      </launchConfigurationType>
+      <launchConfigurationType
+            delegate="com.aptana.ide.debug.core.JSRemoteLaunchConfigurationDelegate"
+            id="com.aptana.ide.debug.core.jsRemoteLaunchConfigurationType"
+            modes="run,debug"
+            name="%launchConfigurationType.name.remotejs"
+            public="true"
+            sourceLocatorId="com.aptana.ide.debug.core.sourceLookupDirector"
+            sourcePathComputerId="com.aptana.ide.debug.core.sourcePathComputer">
+         <fileExtension
+               default="true"
+               extension="html"/>
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.watchExpressionDelegates">
+      <watchExpressionDelegate
+            debugModel="com.aptana.ide.debug.core"
+            delegateClass="com.aptana.ide.debug.internal.core.model.WatchExpressionDelegate"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.debug.internal.core.preferences.JSDebugPreferenceInitializer"/>
+   </extension>
+
+</plugin>

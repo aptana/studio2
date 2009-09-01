@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.aptana.com/2005/schema/1.0">
+
+	<element name="site" type="root" onEnter="enterSite">
+		<child-element name="appserverinfo" />
+		<child-element name="cloaking" />
+		<child-element name="contributorintegration" />
+		<child-element name="designnotes" />
+		<child-element name="fileviewcolumns" />
+		<child-element name="localinfo" />
+		<child-element name="remoteinfo" />
+		<child-element name="sitemap" />
+	</element>
+
+	<element name="localinfo" onEnter="enterLocalInfo">
+		<attribute name="autouploadfiles" usage="optional" />
+		<attribute name="cache" usage="optional" />
+		<attribute name="caseSensitiveLinks" usage="optional" />
+		<attribute name="curserver" usage="optional" />
+		<attribute name="ftporrdsserver" usage="optional" />
+		<attribute name="httpaddress" usage="optional" />
+		<attribute name="imagefolder" usage="optional" />
+		<attribute name="localroot" usage="optional" />
+		<attribute name="maintainsyncinfo" usage="optional" />
+		<attribute name="refreshlocal" usage="optional" />
+		<attribute name="relativeTo" usage="optional" />
+		<attribute name="sitename" usage="optional" />
+		<attribute name="spacerfilepath" usage="optional" />
+	</element>
+	<element name="remoteinfo" onEnter="enterRemoteInfo">
+		<attribute name="accesstype" usage="optional" />
+		<attribute name="checkoutname" usage="optional" />
+		<attribute name="checkoutwhenopen" usage="optional" />
+		<attribute name="emailaddress" usage="optional" />
+		<attribute name="enablecheckin" usage="optional" />
+		<attribute name="host" usage="optional"/>
+		<attribute name="pathNameCharacterSet" usage="optional" />
+		<attribute name="pw" usage="optional" />
+		<attribute name="remoteroot" usage="optional" />
+		<attribute name="useSFTP" usage="optional" />
+		<attribute name="usealternaterename" usage="optional" />
+		<attribute name="usefirewall" usage="optional" />
+		<attribute name="useftpoptimization" usage="optional" />
+		<attribute name="usepasv" usage="optional" />
+		<attribute name="user" usage="optional" />
+	</element>
+
+	<element name="designnotes">
+		<attribute name="usedesignnotes" usage="optional" />
+		<attribute name="sharedesignnotes" usage="optional" />
+	</element>
+	
+	<element name="sitemap">
+		<attribute name="columnwidth" usage="optional" />
+		<attribute name="homepage" usage="optional" />
+		<attribute name="pagesperrow" usage="optional" />
+		<attribute name="showdependentfiles" usage="optional" />
+		<attribute name="showhiddenfiles" usage="optional" />
+		<attribute name="showpagetitles" usage="optional" />
+	</element>
+	
+	<element name="fileviewcolumns">
+		<attribute name="sharecolumns" usage="optional" />
+		<child-element name="column" />
+	</element>
+	
+	<element name="appserverinfo">
+		<attribute name="accesstype" usage="optional" />
+		<attribute name="connectionsmigrated" usage="optional" />
+		<attribute name="defaultdoctype" usage="optional" />
+		<attribute name="host" usage="optional" />
+		<attribute name="pathNameCharacterSet" usage="optional" />
+		<attribute name="pw" usage="optional" />
+		<attribute name="remoteroot" usage="optional" />
+		<attribute name="servermodel" usage="optional" />
+		<attribute name="serverobjectsversion" usage="optional" />
+		<attribute name="testsvrbinaccesstype" usage="optional" />
+		<attribute name="testsvrbinhost" usage="optional" />
+		<attribute name="testsvrbinremoteroot" usage="optional" />
+		<attribute name="urlprefix" usage="optional" />
+		<attribute name="useSFTP" usage="optional" />
+		<attribute name="usealternaterename" usage="optional" />
+		<attribute name="usefirewall" usage="optional" />
+		<attribute name="useftpoptimization" usage="optional" />
+		<attribute name="usepasv" usage="optional" />
+		<attribute name="user" usage="optional" />
+	</element>
+	<element name="cloaking">
+		<attribute name="enabled" usage="optional" />
+		<attribute name="patterns" usage="optional" />
+		<child-element name="cloakedpattern" />
+	</element>
+	<element name="contributorintegration">
+		<attribute name="enabled" usage="optional" />
+	</element>
+	
+		
+	<element name="column">
+		<attribute name="align" usage="optional" />
+		<attribute name="builtin" usage="optional" />
+		<attribute name="localwidth" usage="optional" />
+		<attribute name="name" usage="optional" />
+		<attribute name="remotewidth" usage="optional" />	
+		<attribute name="share" usage="optional" />
+		<attribute name="show" usage="optional" />
+	</element>
+	
+	<element name="cloakedpattern">
+		<attribute name="pattern" usage="optional" />
+	</element>
+</schema>

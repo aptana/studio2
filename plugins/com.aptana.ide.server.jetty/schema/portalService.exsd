@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.server.jetty">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.server.jetty" id="portlets" name="Portlets"/>
+      </appInfo>
+      <documentation>
+         This extension point allow contribution of portal services in HTML, JS, and CSS to the Aptana Home container.  This extension point defines different web roots for each portal service where requests to &quot;/&apos;portal service id&apos;&quot; default to the resource specified and all other resources requested are relative to the folder of the default resource.  Therefore other resources can be requested from the portal service by requesting them using the portal service namespace / the portal service id / the path to the resource where the path to the resource is relative to the folder of the main portal service resource.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="service" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="service">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of this portal service.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="resource" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The main resource of this portal service.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         This extension point was added in Aptana Studio 1.2.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.server.jetty.portalService&quot;&gt;
+ &lt;service id=&quot;myService&quot; resource=&quot;my_service/index.html&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+The above example contributres a myService portal service with a main resource of my_service/index.html.  If another resource is needed from the my_service folder it can be included in the index.html file with a path of &quot;/portlets/myService/myJs.js&quot;.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         This API is designed to provide services and content via JS, HTML, and CSS to the Aptana Home container.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The cloud, extras, and jaxer plugins contribute content via this extension point.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

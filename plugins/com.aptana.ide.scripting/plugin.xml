@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="com.aptana.ide.scripting.actionSet"
+            label="%ActionSet.scripts.label"
+            visible="false">
+         <menu
+               id="scriptMenu"
+               label="%Action.scripts.label">
+            <separator name="scriptGroup"/>
+         </menu>
+         <!-- [IM] No longer supporting refreshing scripts
+         <action
+               class="com.aptana.ide.scripting.actions.ScriptAction"
+               icon="icons/scripting_refresh.gif"
+               id="com.aptana.ide.scripting.actions.ScriptAction"
+               label="&amp;Script Action"
+               toolbarPath="scriptGroup"
+               tooltip="Recreate the scripting environment and reload all scripts"/> -->
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup class="com.aptana.ide.scripting.ScriptingEngine"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="com.aptana.ide.js.ui.WebPerspective">
+         <actionSet id="com.aptana.ide.scripting.actionSet"/>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="com.aptana.ide.scripting.ConsolePageParticipant"
+            id="com.aptana.ide.scripting.consolePageParticipant">
+         <enablement>
+            <instanceof value="com.aptana.ide.scripting.ScriptingConsole"/>
+         </enablement>
+      </consolePageParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.scripting.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.eclipsemonkey.dom">
+      <dom
+            class="com.aptana.ide.scripting.doms.ProfilesDOMFactory"
+            id="ProfilesDOMFactory"
+            variableName="profiles"/>
+      <dom
+            class="com.aptana.ide.scripting.doms.BundlesDOMFactory"
+            id="BundlesDOMFactory"
+            variableName="bundles"/>
+      <dom
+            class="com.aptana.ide.scripting.doms.OutlineDOMFactory"
+            id="OutlineDOMFactory"
+            variableName="outline"/>
+      <dom
+            class="com.aptana.ide.scripting.doms.XMLDOMFactory"
+            id="XMLDOMFactory"
+            variableName="xml"/>            
+      <dom
+            class="com.aptana.ide.scripting.parsing.JSTokenTypesDOMFactory"
+            id="JSTokenTypesDOMFactory"
+            variableName="JSTokenTypes"/>
+      <dom
+            class="com.aptana.ide.scripting.parsing.TokenCategoriesDOMFactory"
+            id="TokenCategoriesDOMFactory"
+            variableName="TokenCategories"/>
+      <dom
+            class="com.aptana.ide.scripting.doms.FileUtilsDOMFactory"
+            id="FileUtilsDOMFactory"
+            variableName="fileUtils"/>
+      <dom
+            class="com.aptana.ide.scripting.doms.EditorUtilsDOMFactory"
+            id="EditorUtilsDOMFactory"
+            variableName="editorUtils"/>
+
+   </extension>
+   <extension
+         point="org.eclipse.eclipsemonkey.scriptpath">
+      <scriptpath directory="monkey"/>
+      <scriptpath directory="monkey/tabsAndSpaces"/>
+      <scriptpath directory="monkey/compact"/>
+      <scriptpath directory="monkey/experimental"/>
+      <scriptpath directory="monkey/samples"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="com.aptana.ide.js.ui"
+            class="com.aptana.ide.scripting.views.GenericScriptableView"
+            icon="icons/window1616.png"
+            id="com.aptana.ide.js.ui.views.GenericScriptableView"
+            name="%View.Script.name">
+      </view>
+   </extension>
+</plugin>

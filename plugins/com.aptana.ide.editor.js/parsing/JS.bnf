@@ -1,0 +1,627 @@
+Program
+	:	SourceElements
+	;
+
+## 1
+
+SourceElements
+	:	SourceElement {FirstSourceElement}
+	|	SourceElements SourceElement {AddSourceElement}
+	;
+
+## 2
+
+SourceElement
+	:	FunctionDeclaration # pass through
+	|	Statement # pass through
+	;
+
+# functions and programs
+
+FunctionDeclaration
+	:	FUNCTION IDENTIFIER FunctionParameters FunctionBody {FunctionDeclaration}
+	;
+
+FunctionExpression
+	:	FUNCTION FunctionParameters FunctionBody {FunctionExpression}
+	|	FunctionDeclaration # pass through
+	;
+
+FunctionParameters
+	:	LPAREN RPAREN {EmptyParameterList}
+	|	LPAREN FormalParameterList RPAREN {ParameterList}
+	;
+	
+FormalParameterList
+	:	IDENTIFIER {FirstParameter}
+	|	FormalParameterList COMMA IDENTIFIER {AddParameter}
+	;
+	
+FunctionBody
+	:	LCURLY RCURLY {EmptyFunctionBody}
+	|	LCURLY SourceElements RCURLY {FunctionBody}
+	;
+
+# statements
+
+Statement
+	:	Block # pass through
+	|	VAR VariableDeclarationList SEMICOLON {VarStatement}
+	|	SEMICOLON {EmptyStatement}
+	|	Expression_NoLBF SEMICOLON {ExpressionStatement}
+	|	IfStatement # pass through
+	|	IterationStatement # pass through
+	|	ContinueStatement # pass through
+	|	BreakStatement # pass through
+	|	ReturnStatement # pass through
+	|	WithStatement # pass through
+	|	LabelledStatement # pass through
+	|	SwitchStatement # pass through
+	|	ThrowStatement # pass through
+	|	TryStatement # pass throuch
+	;
+
+Statement_NoIf
+	:	Block # pass through
+	|	VAR VariableDeclarationList SEMICOLON {VarStatement}
+	|	SEMICOLON {EmptyStatement}
+	|	Expression_NoLBF SEMICOLON {ExpressionStatement}
+	|	IfStatement_NoIf # pass through
+	|	IterationStatement_NoIf # pass through
+	|	ContinueStatement # pass through
+	|	BreakStatement # pass through
+	|	ReturnStatement # pass through
+	|	WithStatement_NoIf # pass through
+	|	LabelledStatement_NoIf # pass through
+	|	SwitchStatement # pass through
+	|	ThrowStatement # pass through
+	|	TryStatement # pass throuch
+	;
+
+Block
+	:	LCURLY RCURLY {EmptyBlock}
+	|	LCURLY StatementList RCURLY {Block}
+	;
+
+StatementList
+	:	Statement {FirstStatement}
+	|	StatementList Statement {AddStatement}
+	;
+
+VariableDeclarationList
+	:	VariableDeclaration {FirstVarDeclaration}
+	|	VariableDeclarationList COMMA VariableDeclaration {AddVarDeclaration}
+	;
+
+VariableDeclarationList_NoIn
+	:	VariableDeclaration_NoIn {FirstVarDeclaration}
+	|	VariableDeclarationList_NoIn COMMA VariableDeclaration_NoIn {AddVarDeclaration}
+	;
+  
+VariableDeclaration
+	:	IDENTIFIER {VarDeclaration}
+	|	IDENTIFIER EQUAL AssignmentExpression {VarDeclarationAssignment}
+	;
+
+VariableDeclaration_NoIn
+	:	IDENTIFIER {VarDeclaration}
+	|	IDENTIFIER EQUAL AssignmentExpression_NoIn {VarDeclarationAssignment}
+	;
+
+#SPEC      /* [lookahead not_in {LCURLY, FUNCTION}] */ Expression SEMICOLON;
+   
+IfStatement
+	:	IF LPAREN Expression RPAREN Statement_NoIf ELSE Statement {IfElseStatement}
+	|	IF LPAREN Expression RPAREN Statement {IfStatement}
+	;
+
+IfStatement_NoIf
+	:	IF LPAREN Expression RPAREN Statement_NoIf ELSE Statement_NoIf {IfElseStatement}
+	;
+
+IterationStatement
+	:	DO Statement WHILE LPAREN Expression RPAREN SEMICOLON {DoStatement}
+	|	WHILE LPAREN Expression RPAREN Statement {WhileStatement}
+	|	FOR LPAREN SEMICOLON SEMICOLON RPAREN Statement {ForBodyOnlyStatement}
+	|	FOR LPAREN SEMICOLON SEMICOLON Expression RPAREN Statement {ForAdvanceOnlyStatement}
+	|	FOR LPAREN SEMICOLON Expression SEMICOLON RPAREN Statement {ForConditionOnlyStatement}
+	|	FOR LPAREN SEMICOLON Expression SEMICOLON Expression RPAREN Statement {ForNoInitializeStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON SEMICOLON RPAREN Statement {ForInitializeOnlyStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON SEMICOLON Expression RPAREN Statement {ForNoConditionStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON Expression SEMICOLON RPAREN Statement {ForNoAdvanceStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON Expression SEMICOLON Expression RPAREN Statement {ForStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON SEMICOLON RPAREN Statement {ForVarInitializeOnlyStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON SEMICOLON Expression RPAREN Statement {ForVarNoConditionStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON Expression SEMICOLON RPAREN Statement {ForVarNoAdvanceStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON Expression SEMICOLON Expression RPAREN Statement {ForVarStatement}
+	|	FOR LPAREN LeftHandSideExpression IN Expression RPAREN Statement {ForInStatement}
+	|	FOR LPAREN VAR VariableDeclaration_NoIn IN Expression RPAREN Statement {ForVarInStatement}
+	;
+
+IterationStatement_NoIf
+	:	DO Statement WHILE LPAREN Expression RPAREN SEMICOLON {DoStatement}
+	|	WHILE LPAREN Expression RPAREN Statement_NoIf {WhileStatement}
+	|	FOR LPAREN SEMICOLON SEMICOLON RPAREN Statement_NoIf {ForBodyOnlyStatement}
+	|	FOR LPAREN SEMICOLON SEMICOLON Expression RPAREN Statement_NoIf {ForAdvanceOnlyStatement}
+	|	FOR LPAREN SEMICOLON Expression SEMICOLON RPAREN Statement_NoIf {ForConditionOnlyStatement}
+	|	FOR LPAREN SEMICOLON Expression SEMICOLON Expression RPAREN Statement_NoIf {ForNoInitializeStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON SEMICOLON RPAREN Statement_NoIf {ForInitializeOnlyStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON SEMICOLON Expression RPAREN Statement_NoIf {ForNoConditionStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON Expression SEMICOLON RPAREN Statement_NoIf {ForNoAdvanceStatement}
+	|	FOR LPAREN Expression_NoIn SEMICOLON Expression SEMICOLON Expression RPAREN Statement_NoIf {ForStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON SEMICOLON RPAREN Statement_NoIf {ForVarInitializeOnlyStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON SEMICOLON Expression RPAREN Statement_NoIf {ForVarNoConditionStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON Expression SEMICOLON RPAREN Statement_NoIf {ForVarNoAdvanceStatement}
+	|	FOR LPAREN VAR VariableDeclarationList_NoIn SEMICOLON Expression SEMICOLON Expression RPAREN Statement_NoIf {ForVarStatement}
+	|	FOR LPAREN LeftHandSideExpression IN Expression RPAREN Statement_NoIf {ForInStatement}
+	|	FOR LPAREN VAR VariableDeclaration_NoIn IN Expression RPAREN Statement_NoIf {ForVarInStatement}
+	;
+
+ContinueStatement
+	:	CONTINUE [no LINE_TERMINATOR] SEMICOLON {Continue}
+	|	CONTINUE [no LINE_TERMINATOR] IDENTIFIER SEMICOLON {ContinueLabel}
+	;
+
+BreakStatement
+	:	BREAK [no LINE_TERMINATOR] SEMICOLON {Break}
+	|	BREAK [no LINE_TERMINATOR] IDENTIFIER SEMICOLON {BreakLabel}
+	;
+
+ReturnStatement
+	:	RETURN [no LINE_TERMINATOR] SEMICOLON {Return}
+	|	RETURN [no LINE_TERMINATOR] Expression SEMICOLON {ReturnValue}
+	;
+
+WithStatement
+	:	WITH LPAREN Expression RPAREN Statement {WithStatement}
+	;
+
+WithStatement_NoIf
+	:	WITH LPAREN Expression RPAREN Statement_NoIf {WithStatement}
+	;
+
+SwitchStatement
+	:	SWITCH LPAREN Expression RPAREN CaseBlock {SwitchStatement}
+	;
+
+CaseBlock
+	:	LCURLY RCURLY {EmptyCaseBlock}
+	|	LCURLY CaseClauses RCURLY {CasesBlock}
+	|	LCURLY DefaultClause RCURLY {DefaultBlock}
+	|	LCURLY DefaultClause CaseClauses RCURLY {DefaultAndCasesBlock}
+	|	LCURLY CaseClauses DefaultClause RCURLY {CasesAndDefaultBlock}
+	|	LCURLY CaseClauses DefaultClause CaseClauses RCURLY {CasesDefaultCasesBlock}
+	;
+
+CaseClauses
+	:	CaseClause {FirstCaseClause}
+	|	CaseClauses CaseClause {AddCaseClause}
+	;
+
+CaseClause
+	:	CASE Expression COLON {EmptyCaseClause}
+	|	CASE Expression COLON StatementList {CaseClause}
+	;
+
+DefaultClause
+	:	DEFAULT COLON {EmptyDefaultClause}
+	|	DEFAULT COLON StatementList {DefaultClause}
+	;
+
+LabelledStatement
+	:	IDENTIFIER COLON Statement {LabelledStatement}
+	;
+
+LabelledStatement_NoIf
+	:	IDENTIFIER COLON Statement_NoIf {LabelledStatement}
+	;
+
+ThrowStatement
+	:	THROW [no LINE_TERMINATOR] Expression SEMICOLON {ThrowStatement}
+	;
+
+TryStatement
+	:	TRY Block Catch {TryCatchStatement}
+	|	TRY Block Finally {TryFinallyStatement}
+	|	TRY Block Catch Finally {TryCatchFinallyStatement}
+	;
+
+Catch
+	:	CATCH LPAREN IDENTIFIER RPAREN Block {Catch}
+	;
+
+Finally
+	:	FINALLY Block {Finally}
+	;
+
+# expressions
+
+PrimaryExpression
+	:	THIS {This}
+	|	IDENTIFIER {Identifier}
+	|	Literal # pass through
+	|	ArrayLiteral # pass through
+	|	ObjectLiteral # pass through
+	|	LPAREN Expression RPAREN {GroupExpression}
+	;
+
+PrimaryExpression_NoLBF
+	:	THIS {This}
+	|	IDENTIFIER {Identifier}
+	|	Literal # pass through
+	|	ArrayLiteral # pass through
+	|	LPAREN Expression RPAREN {GroupExpression}
+	;
+
+ArrayLiteral
+	:	LBRACKET RBRACKET {EmptyArray}
+	|	LBRACKET Elision RBRACKET {ElidedArray}
+	|	LBRACKET ElementList RBRACKET {ArrayLiteral}
+	|	LBRACKET ElementList COMMA RBRACKET {ArrayLiteralTrailingComma}
+	|	LBRACKET ElementList COMMA Elision RBRACKET {ArrayLiteralTrailingElision}
+	;
+
+ElementList
+	:	AssignmentExpression {FirstElement}
+	|	Elision AssignmentExpression {FirstElidedElement}
+	|	ElementList COMMA AssignmentExpression {AddElement}
+	|	ElementList COMMA Elision AssignmentExpression {AddElidedElement}
+	;
+
+Elision
+	:	COMMA {FirstElision}
+	|	Elision COMMA {AddElision}
+	;
+
+ObjectLiteral
+	:	LCURLY RCURLY {EmptyObject}
+	|	LCURLY PropertyNameAndValueList RCURLY {ObjectLiteral}
+	;
+
+PropertyNameAndValueList
+	:	PropertyName COLON AssignmentExpression {FirstProperty}
+	|	PropertyNameAndValueList COMMA PropertyName COLON AssignmentExpression {AddProperty}
+	;
+
+PropertyName
+	:	IDENTIFIER # pass through
+	|	STRING # pass through
+	|	NUMBER # pass through
+	;
+
+MemberExpression
+	:	PrimaryExpression # pass through
+	|	FunctionExpression # pass through
+	|	MemberExpression LBRACKET Expression RBRACKET {GetElement}
+	|	MemberExpression DOT IDENTIFIER {GetProperty}
+	|	NEW MemberExpression Arguments {NewExpression}
+	;
+
+MemberExpression_NoLBF
+	:	PrimaryExpression_NoLBF # pass through
+	|	MemberExpression_NoLBF LBRACKET Expression RBRACKET {GetElement}
+	|	MemberExpression_NoLBF DOT IDENTIFIER {GetProperty}
+	|	NEW MemberExpression Arguments {NewExpression}
+	;
+
+NewExpression
+	:	MemberExpression # pass through
+	|	NEW NewExpression {NewExpressionWithoutArguments}
+	;
+
+NewExpression_NoLBF
+	:	MemberExpression_NoLBF # pass through
+	|	NEW NewExpression {NewExpressionWithoutArguments}
+	;
+
+CallExpression
+	:	MemberExpression Arguments {CallExpression}
+	|	CallExpression Arguments {CallExpression}
+	|	CallExpression LBRACKET Expression RBRACKET {GetElement}
+	|	CallExpression DOT IDENTIFIER {GetProperty}
+	;
+
+CallExpression_NoLBF
+	:	MemberExpression_NoLBF Arguments {CallExpression}
+	|	CallExpression_NoLBF Arguments {CallExpression}
+	|	CallExpression_NoLBF LBRACKET Expression RBRACKET {GetElement}
+	|	CallExpression_NoLBF DOT IDENTIFIER {GetProperty}
+	;
+
+Arguments
+	:	LPAREN RPAREN {EmptyArguments}
+	|	LPAREN ArgumentList RPAREN {Arguments}
+	;
+
+ArgumentList
+	:	AssignmentExpression {FirstArgument}
+	|	ArgumentList COMMA AssignmentExpression {AddArgument}
+	;
+
+LeftHandSideExpression
+	:	NewExpression # pass through
+	|	CallExpression # pass through
+	;
+
+LeftHandSideExpression_NoLBF
+	:	NewExpression_NoLBF # pass through
+	|	CallExpression_NoLBF # pass through
+	;
+
+#SPEC      LeftHandSideExpression /* no line terminator here */ incr |
+#SPEC      LeftHandSideExpression /* no line terminator here */ decr;
+
+PostfixExpression
+	:	LeftHandSideExpression # pass through
+	|	LeftHandSideExpression [no LINE_TERMINATOR] PLUS_PLUS {PostfixExpression}
+	|	LeftHandSideExpression [no LINE_TERMINATOR] MINUS_MINUS {PostfixExpression}
+	;
+
+PostfixExpression_NoLBF
+	:	LeftHandSideExpression_NoLBF # pass through
+	|	LeftHandSideExpression_NoLBF [no LINE_TERMINATOR] PLUS_PLUS {PostfixExpression}
+	|	LeftHandSideExpression_NoLBF [no LINE_TERMINATOR] MINUS_MINUS {PostfixExpression}
+	;
+
+UnaryExpression
+	:	PostfixExpression # pass through
+	|	DELETE UnaryExpression {UnaryExpression}
+	|	EXCLAMATION UnaryExpression {UnaryExpression}
+	|	MINUS UnaryExpression {UnaryExpression}
+	|	MINUS_MINUS UnaryExpression {UnaryExpression}
+	|	PLUS UnaryExpression {UnaryExpression}
+	|	PLUS_PLUS UnaryExpression {UnaryExpression}
+	|	TILDE UnaryExpression {UnaryExpression}
+	|	TYPEOF UnaryExpression {UnaryExpression}
+	|	VOID UnaryExpression {UnaryExpression}
+	;
+
+UnaryExpression_NoLBF
+	:	PostfixExpression_NoLBF # pass through
+	|	DELETE UnaryExpression {UnaryExpression}
+	|	EXCLAMATION UnaryExpression {UnaryExpression}
+	|	MINUS UnaryExpression {UnaryExpression}
+	|	MINUS_MINUS UnaryExpression {UnaryExpression}
+	|	PLUS UnaryExpression {UnaryExpression}
+	|	PLUS_PLUS UnaryExpression {UnaryExpression}
+	|	TILDE UnaryExpression {UnaryExpression}
+	|	TYPEOF UnaryExpression {UnaryExpression}
+	|	VOID UnaryExpression {UnaryExpression}
+	;
+
+MultiplicativeExpression
+	:	UnaryExpression # pass through
+	|	MultiplicativeExpression STAR UnaryExpression {BinaryExpression}
+	|	MultiplicativeExpression FORWARD_SLASH UnaryExpression {BinaryExpression}
+	|	MultiplicativeExpression PERCENT UnaryExpression {BinaryExpression}
+	;
+
+MultiplicativeExpression_NoLBF
+	:	UnaryExpression_NoLBF # pass through
+	|	MultiplicativeExpression_NoLBF STAR UnaryExpression {BinaryExpression}
+	|	MultiplicativeExpression_NoLBF FORWARD_SLASH UnaryExpression {BinaryExpression}
+	|	MultiplicativeExpression_NoLBF PERCENT UnaryExpression {BinaryExpression}
+	;
+
+AdditiveExpression
+	:	MultiplicativeExpression # pass through
+	|	AdditiveExpression PLUS MultiplicativeExpression {BinaryExpression}
+	|	AdditiveExpression MINUS MultiplicativeExpression {BinaryExpression}
+	;
+
+AdditiveExpression_NoLBF
+	:	MultiplicativeExpression_NoLBF # pass through
+	|	AdditiveExpression_NoLBF PLUS MultiplicativeExpression {BinaryExpression}
+	|	AdditiveExpression_NoLBF MINUS MultiplicativeExpression {BinaryExpression}
+	;
+
+ShiftExpression
+	:	AdditiveExpression # pass through
+	|	ShiftExpression LESS_LESS AdditiveExpression {BinaryExpression}
+	|	ShiftExpression GREATER_GREATER AdditiveExpression {BinaryExpression}
+	|	ShiftExpression GREATER_GREATER_GREATER AdditiveExpression {BinaryExpression}
+	;
+
+ShiftExpression_NoLBF
+	:	AdditiveExpression_NoLBF # pass through
+	|	ShiftExpression_NoLBF LESS_LESS AdditiveExpression {BinaryExpression}
+	|	ShiftExpression_NoLBF GREATER_GREATER AdditiveExpression {BinaryExpression}
+	|	ShiftExpression_NoLBF GREATER_GREATER_GREATER AdditiveExpression {BinaryExpression}
+	;
+
+RelationalExpression
+	:	ShiftExpression # pass through
+	|	RelationalExpression LESS ShiftExpression {BinaryExpression}
+	|	RelationalExpression GREATER ShiftExpression {BinaryExpression}
+	|	RelationalExpression LESS_EQUAL ShiftExpression {BinaryExpression}
+	|	RelationalExpression GREATER_EQUAL ShiftExpression {BinaryExpression}
+	|	RelationalExpression INSTANCEOF ShiftExpression {BinaryExpression}
+	|	RelationalExpression IN ShiftExpression {BinaryExpression}
+	;
+
+RelationalExpression_NoLBF
+	:	ShiftExpression_NoLBF # pass through
+	|	RelationalExpression_NoLBF LESS ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoLBF GREATER ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoLBF LESS_EQUAL ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoLBF GREATER_EQUAL ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoLBF INSTANCEOF ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoLBF IN ShiftExpression {BinaryExpression}
+	;
+
+RelationalExpression_NoIn
+	:	ShiftExpression # pass through
+	|	RelationalExpression_NoIn LESS ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoIn GREATER ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoIn LESS_EQUAL ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoIn GREATER_EQUAL ShiftExpression {BinaryExpression}
+	|	RelationalExpression_NoIn INSTANCEOF ShiftExpression {BinaryExpression}
+	;
+
+EqualityExpression
+	:	RelationalExpression # pass through
+	|	EqualityExpression EQUAL_EQUAL RelationalExpression {BinaryExpression}
+	|	EqualityExpression EXCLAMATION_EQUAL RelationalExpression {BinaryExpression}
+	|	EqualityExpression EQUAL_EQUAL_EQUAL RelationalExpression {BinaryExpression}
+	|	EqualityExpression EXCLAMATION_EQUAL_EQUAL RelationalExpression {BinaryExpression}
+	;
+
+EqualityExpression_NoLBF
+	:	RelationalExpression_NoLBF # pass through
+	|	EqualityExpression_NoLBF EQUAL_EQUAL RelationalExpression {BinaryExpression}
+	|	EqualityExpression_NoLBF EXCLAMATION_EQUAL RelationalExpression {BinaryExpression}
+	|	EqualityExpression_NoLBF EQUAL_EQUAL_EQUAL RelationalExpression {BinaryExpression}
+	|	EqualityExpression_NoLBF EXCLAMATION_EQUAL_EQUAL RelationalExpression {BinaryExpression}
+	;
+
+EqualityExpression_NoIn
+	:	RelationalExpression_NoIn # pass through
+	|	EqualityExpression_NoIn EQUAL_EQUAL RelationalExpression_NoIn {BinaryExpression}
+	|	EqualityExpression_NoIn EXCLAMATION_EQUAL RelationalExpression_NoIn {BinaryExpression}
+	|	EqualityExpression_NoIn EQUAL_EQUAL_EQUAL RelationalExpression_NoIn {BinaryExpression}
+	|	EqualityExpression_NoIn EXCLAMATION_EQUAL_EQUAL RelationalExpression_NoIn {BinaryExpression}
+	;
+
+BitwiseAndExpression
+	:	EqualityExpression # pass through
+	|	BitwiseAndExpression AMPERSAND EqualityExpression {BinaryExpression}
+	;
+
+BitwiseAndExpression_NoLBF
+	:	EqualityExpression_NoLBF # pass through
+	|	BitwiseAndExpression_NoLBF AMPERSAND EqualityExpression {BinaryExpression}
+	;
+
+BitwiseAndExpression_NoIn
+	:	EqualityExpression_NoIn # pass through
+	|	BitwiseAndExpression_NoIn AMPERSAND EqualityExpression_NoIn {BinaryExpression}
+	;
+
+BitwiseXorExpression
+	:	BitwiseAndExpression # pass through
+	|	BitwiseXorExpression CARET BitwiseAndExpression {BinaryExpression}
+	;
+
+BitwiseXorExpression_NoLBF
+	:	BitwiseAndExpression_NoLBF # pass through
+	|	BitwiseXorExpression_NoLBF CARET BitwiseAndExpression {BinaryExpression}
+	;
+
+BitwiseXorExpression_NoIn
+	:	BitwiseAndExpression_NoIn # pass through
+	|	BitwiseXorExpression_NoIn CARET BitwiseAndExpression_NoIn {BinaryExpression}
+	;
+
+BitwiseOrExpression
+	:	BitwiseXorExpression # pass through
+	|	BitwiseOrExpression PIPE BitwiseXorExpression {BinaryExpression}
+	;
+
+BitwiseOrExpression_NoLBF
+	:	BitwiseXorExpression_NoLBF # pass through
+	|	BitwiseOrExpression_NoLBF PIPE BitwiseXorExpression {BinaryExpression}
+	;
+
+BitwiseOrExpression_NoIn
+	:	BitwiseXorExpression_NoIn # pass through
+	|	BitwiseOrExpression_NoIn PIPE BitwiseXorExpression_NoIn {BinaryExpression}
+	;
+
+LogicalAndExpression
+	:	BitwiseOrExpression # pass through
+	|	LogicalAndExpression AMPERSAND_AMPERSAND BitwiseOrExpression {BinaryExpression}
+	;
+
+LogicalAndExpression_NoLBF
+	:	BitwiseOrExpression_NoLBF # pass through
+	|	LogicalAndExpression_NoLBF AMPERSAND_AMPERSAND BitwiseOrExpression {BinaryExpression}
+	;
+
+LogicalAndExpression_NoIn
+	:	BitwiseOrExpression_NoIn # pass through
+	|	LogicalAndExpression_NoIn AMPERSAND_AMPERSAND BitwiseOrExpression_NoIn {BinaryExpression}
+	;
+
+LogicalOrExpression
+	:	LogicalAndExpression # pass through
+	|	LogicalOrExpression PIPE_PIPE LogicalAndExpression {BinaryExpression}
+	;
+
+LogicalOrExpression_NoLBF
+	:	LogicalAndExpression_NoLBF # pass through
+	|	LogicalOrExpression_NoLBF PIPE_PIPE LogicalAndExpression {BinaryExpression}
+	;
+
+LogicalOrExpression_NoIn
+	:	LogicalAndExpression_NoIn # pass through
+	|	LogicalOrExpression_NoIn PIPE_PIPE LogicalAndExpression_NoIn {BinaryExpression}
+	;
+
+ConditionalExpression
+	:	LogicalOrExpression # pass through
+	|	LogicalOrExpression QUESTION AssignmentExpression COLON AssignmentExpression {ConditionalExpression}
+	;
+
+ConditionalExpression_NoLBF
+	:	LogicalOrExpression_NoLBF # pass through
+	|	LogicalOrExpression_NoLBF QUESTION AssignmentExpression COLON AssignmentExpression {ConditionalExpression}
+	;
+
+ConditionalExpression_NoIn
+	:	LogicalOrExpression_NoIn # pass through
+	|	LogicalOrExpression_NoIn QUESTION AssignmentExpression_NoIn COLON AssignmentExpression_NoIn {ConditionalExpression}
+	;
+
+AssignmentExpression
+	:	ConditionalExpression # pass through
+	|	LeftHandSideExpression AssignmentOperator AssignmentExpression {AssignmentExpression}
+	;
+
+AssignmentExpression_NoLBF
+	:	ConditionalExpression_NoLBF # pass through
+	|	LeftHandSideExpression_NoLBF AssignmentOperator AssignmentExpression {AssignmentExpression}
+	;
+
+AssignmentExpression_NoIn
+	:	ConditionalExpression_NoIn # pass through
+	|	LeftHandSideExpression AssignmentOperator AssignmentExpression_NoIn {AssignmentExpression}
+	;
+
+AssignmentOperator
+	:	EQUAL # pass through
+	|	STAR_EQUAL # pass through
+	|	FORWARD_SLASH_EQUAL # pass through
+	|	PERCENT_EQUAL # pass through
+	|	PLUS_EQUAL # pass through
+	|	MINUS_EQUAL # pass through
+	|	LESS_LESS_EQUAL # pass through
+	|	GREATER_GREATER_EQUAL # pass through
+	|	GREATER_GREATER_GREATER_EQUAL # pass through
+	|	AMPERSAND_EQUAL # pass through
+	|	CARET_EQUAL # pass through
+	|	PIPE_EQUAL # pass through
+	;
+
+Expression
+	:	AssignmentExpression # pass through
+	|	Expression COMMA AssignmentExpression {CommaExpression}
+	;
+
+Expression_NoLBF
+	:	AssignmentExpression_NoLBF # pass through
+	|	Expression_NoLBF COMMA AssignmentExpression {CommaExpression}
+	;
+
+Expression_NoIn
+	:	AssignmentExpression_NoIn # pass through
+	|	Expression_NoIn COMMA AssignmentExpression_NoIn {CommaExpression}
+	;
+
+Literal
+	:	NULL {Null}
+	|	TRUE {True}
+	|	FALSE {False}
+	|	NUMBER {Number}
+	|	STRING {String}
+	|	REGEX {Regex}
+	;

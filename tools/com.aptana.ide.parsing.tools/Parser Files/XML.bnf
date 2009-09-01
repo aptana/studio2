@@ -1,0 +1,397 @@
+###
+#	level 1
+###
+document
+    :   prolog element Misc* 
+    ;
+
+###
+#	level 2
+###
+prolog
+    :   XMLDecl? Misc* (doctypedecl Misc*)?
+    ;
+
+element
+    :   EmptyElemTag
+    |   STag content ETag
+    ;
+
+Misc
+    :   Comment | PI | S
+    ;
+
+###
+#	level 3
+###
+XMLDecl
+    :   '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
+    ;
+
+doctypedecl
+    :   '<!DOCTYPE' S Name (S ExternalID)? S? ('[' intSubset ']' S?)? '>'
+    ;
+
+EmptyElemTag
+    :   '<' Name (S Attribute)* S? '/>'
+    ;
+
+STag
+    :   '<' Name (S Attribute)* S? '>'
+    ;
+
+content
+    :   CharData? ((element | Reference | CDSect | PI | Comment) CharData?)*
+    ;
+
+ETag
+    :   '</' Name S? '>'
+    ;
+
+Comment
+    :   '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
+    ;
+
+PI
+    :   '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
+    ;
+
+S
+    :   (#x20 | #x9 | #xD | #xA)+ 
+    ;
+
+###
+#	level 4
+###
+VersionInfo
+    :   S 'version' Eq ("'" VersionNum "'" | '"' VersionNum '"')
+    ;
+
+EncodingDecl
+    :   S 'encoding' Eq ('"' EncName '"' | "'" EncName "'" )
+    ;
+
+SDDecl
+    :   S 'standalone' Eq (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no') '"'))
+    ;
+
+Name
+    :   (Letter | '_' | ':') (NameChar)*
+    ;
+
+ExternalID
+    :   'SYSTEM' S SystemLiteral
+    |   'PUBLIC' S PubidLiteral S SystemLiteral
+    ;
+
+intSubset
+    :   (markupdecl | DeclSep)*
+    ;
+
+Attribute
+    :   Name Eq AttValue
+    ;
+
+CharData
+    :   [^<&]* - ([^<&]* ']]>' [^<&]*)
+    ;
+
+Reference
+    :   EntityRef
+    |   CharRef
+    ;
+
+CDSect
+    :   CDStart CData CDEnd
+    ;
+
+Char
+    :   #x9
+    |   #xA
+    |   #xD
+    |   [#x20-#xD7FF]
+    |   [#xE000-#xFFFD]
+    |   [#x10000-#x10FFFF]
+    ;
+
+PITarget
+    :   Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
+    ;
+
+###
+#	level 5
+###
+Eq
+    :   S? '=' S?
+    ;
+
+VersionNum
+    :   '1.0'
+    ;
+
+EncName
+    :   [A-Za-z] ([A-Za-z0-9._] | '-')*
+    ;
+
+Letter
+	:	.
+	;
+
+NameChar
+    :   Letter
+    |   Digit
+    |   '.'
+    |   '-'
+    |   '_'
+    |   ':'
+    |   CombiningChar
+    |   Extender
+    ;
+
+SystemLiteral
+    :   ('"' [^"]* '"')
+    |   ("'" [^']* "'")
+    ;
+
+PubidLiteral
+    :   '"' PubidChar* '"'
+    |   "'" (PubidChar - "'")* "'"
+    ;
+
+markupdecl
+    :   elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment
+    ;
+
+DeclSep
+    :   PEReference | S
+    ;
+
+AttValue
+    :   '"' ([^<&"] | Reference)* '"'
+    |   "'" ([^<&'] | Reference)* "'"
+    ;
+
+EntityRef
+    :   '&' Name ';'
+    ;
+
+CharRef
+    :   '&#' [0-9]+ ';'
+    |   '&#x' [0-9a-fA-F]+ ';'
+    ;
+
+CDStart
+    :   '<![CDATA['
+    ;
+
+CData
+    :   (Char* - (Char* ']]>' Char*))
+    ;
+
+CDEnd
+    :   ']]>'
+    ;
+
+###
+#	level 6
+###
+Digit
+	:	\d
+	;
+
+CombiningChar
+	:
+	;
+
+Extender
+	:
+	;
+
+PubidChar
+    :   #x20
+    |   #xD
+    |   #xA
+    |   [a-zA-Z0-9]
+    |   [-'()+,./:=?;!*#@$_%]
+    ;
+
+elementdecl
+    :   '<!ELEMENT' S Name S contentspec S? '>'
+    ;
+
+AttlistDecl
+    :   '<!ATTLIST' S Name AttDef* S? '>'
+    ;
+
+EntityDecl
+    :   GEDecl
+    |   PEDecl
+    ;
+
+NotationDecl
+    :   '<!NOTATION' S Name S (ExternalID | PublicID) S? '>'
+    ;
+
+PEReference
+    :   '%' Name ';'
+    ;
+
+###
+#	level 7
+###
+contentspec
+    :   'EMPTY' | 'ANY' | Mixed | children
+    ;
+
+AttDef
+    :   S Name S AttType S DefaultDecl
+    ;
+
+GEDecl
+    '<!ENTITY' S Name S EntityDef S? '>'
+    ;
+
+PEDecl
+    :   '<!ENTITY' S '%' S Name S PEDef S? '>'
+    ;
+
+PublicID
+    :   'PUBLIC' S PubidLiteral
+    ;
+
+###
+#	level 8
+###
+Mixed
+    :   '(' S? '#PCDATA' (S? '|' S? Name)* S? ')*'
+    |   '(' S? '#PCDATA' S? ')'
+    ;
+
+children
+    :   (choice | seq) ('?' | '*' | '+')?
+    ;
+
+AttType
+    :   StringType | TokenizedType | EnumeratedType
+    ;
+
+DefaultDecl
+    :   '#REQUIRED'
+    |   '#IMPLIED'
+    |   (('#FIXED' S)? AttValue)
+    ;
+
+EntityDef
+    :   EntityValue
+    |   (ExternalID NDataDecl?)
+    ;
+
+PEDef
+    :   EntityValue
+    |   ExternalID
+    ;
+
+###
+#	level 9
+###
+choice
+    :   '(' S? cp ( S? '|' S? cp )+ S? ')'
+    ;
+
+seq
+    :   '(' S? cp ( S? ',' S? cp )* S? ')'
+    ;
+
+StringType
+    :   'CDATA'
+    ;
+
+TokenizedType
+    :   'ID'
+    |   'IDREF'
+    |   'IDREFS'
+    |   'ENTITY'
+    |   'ENTITIES'
+    |   'NMTOKEN'
+    |   'NMTOKENS'
+    ;
+
+EnumeratedType
+    :   NotationType
+    |   Enumeration
+    ;
+
+EntityValue
+    :   '"' ([^%&"] | PEReference | Reference)* '"'
+    |   "'" ([^%&'] | PEReference | Reference)* "'"
+    ;
+
+NDataDecl
+    :   S 'NDATA' S Name
+    ;
+
+###
+#	level 10
+###
+cp
+    :   (Name | choice | seq) ('?' | '*' | '+')?
+    ;
+
+NotationType
+    :   'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
+    ;
+
+Enumeration
+    :   '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
+    ;
+
+###
+#	level 11
+###
+Nmtoken
+    :   (NameChar)+
+    ;
+
+###
+#	level 12
+###
+Names
+    :   Name (#x20 Name)*
+    ;
+
+Nmtokens
+    :   Nmtoken (#x20 Nmtoken)* 
+    ;
+
+extSubset
+    :   TextDecl? extSubsetDecl
+    ;
+
+extSubsetDecl
+    :   ( markupdecl | conditionalSect | DeclSep)*
+    ;
+
+conditionalSect
+    :   includeSect
+    |   ignoreSect
+    ;
+
+includeSect
+    :   '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>'
+    ;
+
+ignoreSectContents
+    :   Ignore ('<![' ignoreSectContents ']]>' Ignore)*
+    ;
+
+Ignore
+    :   Char* - (Char* ('<![' | ']]>') Char*)
+    ;
+
+TextDecl
+    :   '<?xml' VersionInfo? EncodingDecl S? '?>'
+    ;
+
+extParsedEnt
+    :   TextDecl? content
+    ;

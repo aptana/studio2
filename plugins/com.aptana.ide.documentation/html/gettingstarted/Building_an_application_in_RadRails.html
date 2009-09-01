@@ -1,0 +1,132 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Building an application in RadRails</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Building_an_application_in_RadRails&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Building an application in RadRails [<a href="http://www.aptana.com/docs/index.php?title=Building_an_application_in_RadRails&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page gives an overview of how to build an application in RadRails.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Controllers"><span class="tocnumber">2.1</span> <span class="toctext">Controllers</span></a></li>
+<li class="toclevel-2"><a href="#Views"><span class="tocnumber">2.2</span> <span class="toctext">Views</span></a></li>
+<li class="toclevel-2"><a href="#Migrations"><span class="tocnumber">2.3</span> <span class="toctext">Migrations</span></a></li>
+<li class="toclevel-2"><a href="#Scaffolds"><span class="tocnumber">2.4</span> <span class="toctext">Scaffolds</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Once you have created your project, you can begin adding models, scaffolds, controllers, views, and other items. The most convenient way to do that is to use the Generators view. RadRails provides a graphical interface to the various generator scripts typically called on the command line. For more information, please see <a href="Using_the_Generators_View.html" title="Using the Generators View">Using the Generators View</a>.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>Before you begin, select your project in the Rails Navigator View.
+</p>
+<a name="Controllers"></a><h3> <span class="mw-headline">Controllers</span></h3>
+<p>Replaces <b>script/generate controller</b>
+</p>
+<ol>
+    <li>Click the Generators tab to go to the Generators View.</li>
+    <li>From the drop-down list, select <b>Controller</b>.</li>
+    <li>Enter the name of the controller you wish to generate, say 'post'</li>
+    <li>Click the <b>Go</b> button to generate the <b>Controller</b> script.
+    <p>This runs the generator script and displays any output in the Console View.</p></li>
+   <li>You will find the generated controller in the location /<i>projectname</i>/app/controllers/<i>controllername</i>_controller.rb</li>
+</ol>
+<a name="Views"></a><h3> <span class="mw-headline">Views</span></h3>
+<ol>
+    <li>If you have a controller already created, you can select the "Go to view" button in the top of the toolbar (it's a page with a little 'V'). If your view is not created already, it will ask you if you wish to create one.</li>
+    <li>Otherwise, locate the views folder in your project under /<i>projectname</i>/app/views/.</li>
+    <li>Right-click or choose <b>File</b> &gt; <b>New</b> &gt; <b>Folder</b> to create a new folder underneath the views folder. Name it the same as the name of your controller, i.e. if the the controller was named "post_controller.rb", the view folder would be named "post"</li>
+    <li>Again, right-click or choose <b>File</b> &gt; <b>New</b> &gt; <b>RHTML/ERB</b> to create a new file underneath the folder you just created. You will want to create a file named the same as the action in your controller. Thus, if you have
+
+<pre>
+ def index
+    render&nbsp;:text =&gt; &quot;Hello World!&quot;
+ end
+</pre>
+<p>Your view should be named 'index.rhtml'
+</p>
+</li>
+</ol>
+<a name="Migrations"></a><h3> <span class="mw-headline">Migrations</span></h3>
+<p>Replaces <b>script/generate migration</b>. To generate a migration script:
+</p>
+<ol>
+    <li>Click the Generators tab to go to the Generators View.</li>
+    <li>From the drop-down list, select <b>Migration</b>.</li>
+    <li>Click the <b>Go</b> button to generate the <b>Migration</b> script.
+    <p>This runs the generator script and displays any output in the Console View.</p></li>
+</ol>
+<p>Edit the migration script that the generator created:
+</p>
+<ol>
+    <li>In the Rails Navigator View, expand the <b>db &gt; migrate</b> folders for your project.</li>
+    <li>Double-click the migration script to open it in an Editor and make the appropriate changes.</li>
+    <li>Once you have set up the migration script, you can run it from the Rake Tasks View while you work on your application.</li>
+</ol>
+<a name="Scaffolds"></a><h3> <span class="mw-headline">Scaffolds</span></h3>
+<p>Replaces <b>script/generate scaffold</b>. Generate a scaffold:
+</p>
+<ol>
+    <li>Click the Generators tab to go to the Generators View.</li>
+    <li>From the drop-down list, select <b>Scaffold</b>.</li>
+    <li>Click the <b>Go</b> button to generate the <b>Scaffold</b> script.
+    <p>This runs the generator script and displays any output in the Console View.</p></li>
+</ol>
+<p>Once done, run your unit tests to see where your application needs troubleshooting. See <a href="Running_a_unit_test_on_RadRails.html" title="Running a unit test on RadRails">Running a unit test on RadRails</a> for instructions.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Getting_started_with_RadRails.html" title="Getting started with RadRails">Getting started with RadRails</a>
+</li><li> <a href="Starting_a_new_RadRails_project.html" title="Starting a new RadRails project">Starting a new RadRails project</a>
+</li><li> <a href="Importing_an_existing_project_into_RadRails.html" title="Importing an existing project into RadRails">Importing an existing project into RadRails</a>
+</li><li> <a href="Using_the_Generators_View.html" title="Using the Generators View">Using the Generators View</a>
+</li><li> <a href="Running_a_unit_test_on_RadRails.html" title="Running a unit test on RadRails">Running a unit test on RadRails</a>
+</li><li> <a href="Creating_and_running_a_WEBrick_server.html" title="Creating and running a WEBrick server">Creating and running a WEBrick server</a>
+</li><li> <a href="Executing_SQL_statements_in_RadRails.html" title="Executing SQL statements in RadRails">Executing SQL statements in RadRails</a>
+</li><li> <a href="Browsing_a_database_in_RadRails.html" title="Browsing a database in RadRails">Browsing a database in RadRails</a>
+</li><li> <a href="Using_a_Mongrel_server.html" title="Using a Mongrel server">Using a Mongrel server</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1757-0!1!0!!en!2!edit=0 and timestamp 20090202000800 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Building_an_application_in_RadRails">http://aptana.com/docs/index.php/Building_an_application_in_RadRails</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

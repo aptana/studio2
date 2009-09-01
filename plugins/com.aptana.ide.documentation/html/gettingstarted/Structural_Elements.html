@@ -1,0 +1,241 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Structural Elements</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Structural_Elements&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Structural Elements [<a href="http://www.aptana.com/docs/index.php?title=Structural_Elements&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Category_Group_Element"><span class="tocnumber">1</span> <span class="toctext">Category Group Element</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax"><span class="tocnumber">1.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class"><span class="tocnumber">1.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children"><span class="tocnumber">1.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes"><span class="tocnumber">1.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Lexer_Element"><span class="tocnumber">2</span> <span class="toctext">Lexer Element</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_2"><span class="tocnumber">2.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_2"><span class="tocnumber">2.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_2"><span class="tocnumber">2.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_2"><span class="tocnumber">2.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Token_Group_Element"><span class="tocnumber">3</span> <span class="toctext">Token Group Element</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_3"><span class="tocnumber">3.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_3"><span class="tocnumber">3.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_3"><span class="tocnumber">3.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_3"><span class="tocnumber">3.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Use_Element"><span class="tocnumber">4</span> <span class="toctext">Use Element</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_4"><span class="tocnumber">4.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_4"><span class="tocnumber">4.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_4"><span class="tocnumber">4.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_4"><span class="tocnumber">4.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Category_Group_Element"></a><h1> <span class="mw-headline">Category Group Element</span></h1>
+<hr />
+<p>The Category Group Element groups matchers into named categories. All descendents of a category group will inherit this element's category unless they explicitly define their own category attribute.
+</p>
+<a name="Syntax"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;category-group category="WHITESPACE"&gt;
+...
+&lt;/category-group&gt;
+</pre>
+<a name="Class"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.model.CategoryGroupElement
+</pre>
+<a name="Children"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>Any IMatcher class
+</pre>
+<a name="Attributes"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>category</td>
+    <td>Sets the category to which all descendants will be associated. Descendents may override this value by defining their own category attributes. The active category name is used when adding tokens to the MatcherTokenList for IMatcher elements that define a type attribute.</td>
+    <td>String</td>
+    <td>null</td>
+    <td>yes</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Lexer_Element"></a><h1> <span class="mw-headline">Lexer Element</span></h1>
+<hr />
+<p>The Lexer Element is the XML root element used when defining a language's lexer. This element includes attributes for defining the language's MIME type and the associated enumeration used to cross-reference type attribute values to integers.
+</p><p>The Lexer Element (and all descendants) must be in the <a href="http://www.aptana.com/2007/lexer/1.2" class="external free" title="http://www.aptana.com/2007/lexer/1.2" rel="nofollow">http://www.aptana.com/2007/lexer/1.2</a> namespace.
+</p>
+<a name="Syntax_2"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;lexer
+    xmlns="<a href="http://www.aptana.com/2007/lexer/1.2" class="external free" title="http://www.aptana.com/2007/lexer/1.2" rel="nofollow">http://www.aptana.com/2007/lexer/1.2</a>"
+    language="text/css"
+    type-enumeration="com.aptana.ide.editor.css.lexing.CSSTokenTypes"&gt;
+...
+&lt;/lexer&gt;
+</pre>
+<a name="Class_2"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.model.LexerElement
+</pre>
+<a name="Children_2"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre><a href="Structural_Elements.html#Token_Group_Element" title="Structural Elements">&lt;token-group/&gt;</a>
+&lt;bundle/&gt;
+&lt;package/&gt;
+</pre>
+<a name="Attributes_2"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>language</td>
+    <td>Sets the MIME type for this lexer's language</td>
+    <td>String</td>
+    <td>null</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">category-enumeration</td>
+    <td>The fully-qualified Java class to be used to
+        lookup integer values for type category values</td>
+    <td>String</td>
+    <td>null</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">type-enumeration</td>
+    <td>The fully-qualified Java class to be used to
+        lookup integer values for type attribute values</td>
+    <td>String</td>
+    <td>null</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Token_Group_Element"></a><h1> <span class="mw-headline">Token Group Element</span></h1>
+<hr />
+<p>The Token Group Element groups matchers into named groups. All children of a token group are added to the resulting MatcherTokenList created by the Lexer Element.
+</p>
+<a name="Syntax_3"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;token-group group="default"&gt;
+...
+&lt;/token-group&gt;
+</pre>
+<a name="Class_3"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.model.TokenGroupElement
+</pre>
+<a name="Children_3"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre><a href="Structural_Elements.html#Category_Group_Element" title="Structural Elements">&lt;category-group/&gt;</a>
+Any IMatcher class
+</pre>
+<a name="Attributes_3"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>group</td>
+    <td>Sets the group to which this element's children will be associated in the MatcherTokenList</td>
+    <td>String</td>
+    <td>null</td>
+    <td>yes</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Use_Element"></a><h1> <span class="mw-headline">Use Element</span></h1>
+<hr />
+<p>The Use Element allows for the injection of matched text from a previously successful match. This allows for dynamic defintion of a matcher's content at runtime. Currently, only StringMatchers and CharacterMatchers allow use elements as children.
+</p>
+<a name="Syntax_4"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;and category="LITERAL" type="STRING"&gt;
+  &lt;character-class name="quote"&gt;'"&lt;/character-class&gt;
+  &lt;to-delimiter&gt;
+    &lt;string&gt;
+      &lt;use name="quote"/&gt;
+    &lt;/string&gt;
+  &lt;/to-delimiter&gt;
+&lt;/and&gt;
+</pre>
+<a name="Class_4"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.model.UseElement
+</pre>
+<a name="Children_4"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_4"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>name</td>
+    <td>Specifies a name defined in another matcher's name attribute. The text from that matcher's last successful match will be used in place of the use element.</td>
+    <td>String</td>
+    <td>null</td>
+    <td>yes</td>
+  </tr>
+</table>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1830-0!1!0!!en!2!edit=0 and timestamp 20090202192157 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Structural_Elements">http://aptana.com/docs/index.php/Structural_Elements</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,80 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Documenting your code in an .sdoc file</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Documenting_your_code_in_an_.sdoc_file&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Documenting your code in an .sdoc file [<a href="http://www.aptana.com/docs/index.php?title=Documenting_your_code_in_an_.sdoc_file&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to document your JavaScript code using an external .sdoc file instead of inline comments.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Documenting your JavaScript code with Aptana's ScriptDoc system allows you to instantly access your documented functions through Code Assist. You can add ScriptDoc documentation blocks either inline (see <a href="Documenting_your_code_using_ScriptDoc.html" title="Documenting your code using ScriptDoc">Documenting your code using ScriptDoc</a>) or in an external file so that your comments are not in the .js file that contains your code. This Help topic describes how to set up a .sdoc file so that you can document your functions externally and still take advantage of Code Assist.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>To set up an .sdoc file for documenting your code externally:
+</p>
+<ol>
+<li>In the same directory as the JavaScript (.js) file that you want to document, create an empty text file with the same name as the .js file.</li>
+<li>Change the file extension from ".txt" to ".sdoc". The .sdoc file extension is recognized by Aptana as part of ScriptDoc.</li>
+<li>At the top of both the .js and .sdoc file, add @namespace tags (shown below) to link the two files. You can use the same comment block at the top of both files:
+<pre>
+/**
+ * @namespace myLibrary.myNamespace
+ */
+</pre><p>If the .sdoc file will reside somewhere other than the same directory as the .js file, in the comment block for the .js file, also add an @sdoc tag with the path to the place where the .sdoc file will be.</p>
+</li>
+<li>In your JavaScript file, add @id tags above each function, class, and object that you want available to Code Assist. The example below shows an @id tag for a simple function called "foo".
+
+<pre>
+/** @id foo */
+function foo() {
+    alert(&quot;Foo!&quot;);
+}
+</pre></li>
+<li>In the corresponding .sdoc file, add the documentation blocks that will correspond to the @id tags in the .js file. Include the matching @id tags (these will link the documentation blocks back to the appropriate id's in the .js file) and @alias tags, which is how the function will appear in Code Assist.</li>
+<p>Once the files are linked, any Code Assist Profile that you create for the .js files will automatically pull in the corresponding .sdoc files if you have linked them using the @namespace tags.</p>
+</ol>
+<p>For an example of .js files that were documented with .sdoc files, see the documented version of MochiKit. Work through the <a href="Getting_started_with_Aptana_and_MochiKit.html" title="Getting started with Aptana and MochiKit">Getting started with Aptana and MochiKit</a> walkthrough to see how all of the files work together.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Code_Assist.html" title="About Code Assist">About Code Assist</a>
+</li><li> <a href="Documenting_your_code_using_ScriptDoc.html" title="Documenting your code using ScriptDoc">Documenting your code using ScriptDoc</a>
+</li><li> <a href="ScriptDoc_comprehensive_tag_reference.html" title="ScriptDoc comprehensive tag reference">ScriptDoc comprehensive tag reference</a>
+</li><li> <a href="ScriptDoc_tag_quick_reference.html" title="ScriptDoc tag quick reference">ScriptDoc tag quick reference</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1464-0!1!0!!en!2!edit=0 and timestamp 20090201221543 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Documenting_your_code_in_an_.sdoc_file">http://aptana.com/docs/index.php/Documenting_your_code_in_an_.sdoc_file</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+<template 
+	context="com.aptana.ide.editors.contextType.text/xml" 
+	description="CDATA" 
+	id="com.aptana.ide.editors.xml.templates.cdata" 
+	name="cdata">&lt;![CDATA[${cursor}]]&gt;</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/xml" 
+	description="XML Processing Instruction" 
+	id="com.aptana.ide.editors.xml.templates.xml.processing.instruction" 
+	name="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/xml" 
+	description="Long Attribute Tag" 
+	id="com.aptana.ide.editors.xml.templates.xml.long.attribute.tag" 
+	name="&lt;a">&lt;${name} ${attr}="${value}"&gt;${cursor}
+&lt;/${name}&gt;</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/xml" 
+	description="Long Tag" 
+	id="com.aptana.ide.editors.xml.templates.xml.long.tag" 
+	name="&lt;">&lt;${name}&gt;${cursor}&lt;/${name}&gt;</template>
+
+<template 
+	context="com.aptana.ide.editors.contextType.text/xml" 
+	description="Short Tag" 
+	id="com.aptana.ide.editors.xml.templates.xml.short.tag" 
+	name="&gt;">&lt;${name} /&gt;</template>
+</templates>

@@ -1,0 +1,63 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Known Ruby debugging limitations</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Known_Ruby_debugging_limitations&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Known Ruby debugging limitations [<a href="http://www.aptana.com/docs/index.php?title=Known_Ruby_debugging_limitations&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page discusses known Ruby debugging limitations.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The ruby debugger is still under development and there are some limitations, which must be considered when debugging your application:
+</p>
+<ul><li> Threads are not refreshed regularly, i.e. you do not see the threads your application creates before a breakpoint (or exception or end of step) is reached
+</li><li> Breakpoints are not saved when eclipse is closed
+</li></ul>
+<a name="Writing_Bug_Reports"></a><h3> <span class="mw-headline">Writing Bug Reports</span></h3>
+<p>In order to provide useful information in case of errors, you should turn on verbose mode for the ruby debugger. To do so, go to <b>Window &gt; Preferences... &gt; Ruby &gt; Debugger</b> and ensure the <b>Debugger verbose mode</b> checkbox is checked.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Ruby_Debugger.html" title="Ruby Debugger">Ruby Debugger</a>
+</li><li> <a href="Ruby_debugger_prerequisites.html" title="Ruby debugger prerequisites">Ruby debugger prerequisites</a>
+</li><li> <a href="Starting_a_Ruby_debug_session.html" title="Starting a Ruby debug session">Starting a Ruby debug session</a>
+</li><li> <a href="Ruby_Debug_Views.html" title="Ruby Debug Views">Ruby Debug Views</a>
+</li><li> <a href="Automatic_Ruby_code_reloading.html" title="Automatic Ruby code reloading">Automatic Ruby code reloading</a>
+</li><li> <a href="Inspection_shortcuts_(Ruby).html" title="Inspection shortcuts (Ruby)">Inspection shortcuts (Ruby)</a>
+</li><li> <a href="Debugging_into_ruby_libraries.html" title="Debugging into ruby libraries">Debugging into ruby libraries</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1915-0!1!0!!en!2!edit=0 and timestamp 20090202044025 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Known_Ruby_debugging_limitations">http://aptana.com/docs/index.php/Known_Ruby_debugging_limitations</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span> | <span dir='ltr'><a href="Category:RDT.html" title="Category:RDT">RDT</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

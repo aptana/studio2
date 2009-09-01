@@ -1,0 +1,524 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Setting up the Cookbook database in RadRails</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Setting_up_the_Cookbook_database_in_RadRails&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Setting up the Cookbook database in RadRails [<a href="http://www.aptana.com/docs/index.php?title=Setting_up_the_Cookbook_database_in_RadRails&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Creating_the_Database_Connection"><span class="tocnumber">2</span> <span class="toctext">Creating the Database Connection</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Configure_Your_Rails_App_to_Use_the_Database"><span class="tocnumber">2.1</span> <span class="toctext">Configure Your Rails App to Use the Database</span></a></li>
+<li class="toclevel-2"><a href="#Sample_Cookbook_database.yml_.28using_MAMP.29"><span class="tocnumber">2.2</span> <span class="toctext">Sample Cookbook database.yml (using MAMP)</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Generating_an_Application_Scaffold"><span class="tocnumber">3</span> <span class="toctext">Generating an Application Scaffold</span></a></li>
+<li class="toclevel-1"><a href="#Creating_the_Recipes_Table_with_the_Migration"><span class="tocnumber">4</span> <span class="toctext">Creating the Recipes Table with the Migration</span></a></li>
+<li class="toclevel-1"><a href="#The_Recipe_Model"><span class="tocnumber">5</span> <span class="toctext">The Recipe Model</span></a></li>
+<li class="toclevel-1"><a href="#The_Recipes_Controller"><span class="tocnumber">6</span> <span class="toctext">The Recipes Controller</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Creating_Actions_and_Views"><span class="tocnumber">6.1</span> <span class="toctext">Creating Actions and Views</span></a></li>
+<li class="toclevel-2"><a href="#Adding_Categories_to_the_Cookbook"><span class="tocnumber">6.2</span> <span class="toctext">Adding Categories to the Cookbook</span></a></li>
+<li class="toclevel-2"><a href="#Assigning_a_Category_to_each_Recipe"><span class="tocnumber">6.3</span> <span class="toctext">Assigning a Category to each Recipe</span></a></li>
+<li class="toclevel-2"><a href="#Displaying_Categories_in_a_list_of_all_Recipes"><span class="tocnumber">6.4</span> <span class="toctext">Displaying Categories in a list of all Recipes</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>This explains how to set up a sample Cookbook database and use it in building a Rails application with RadRails, and is adapted from the <a href="http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1" class="external text" title="http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1" rel="nofollow">Rolling with Ruby on Rails tutorial from ONLamp</a>.
+</p><p>For more detailed information about using RadRails for specific tasks, see the individual Help topics on the <a href="RadRails.html" title="RadRails">RadRails main page.</a>
+</p><p><b>Prerequisite:</b> <a href="Configuring_the_Eclipse_SQL_Explorer_plug-in_for_RadRails.html" title="Configuring the Eclipse SQL Explorer plug-in for RadRails">Configuring the Eclipse SQL Explorer plug-in for RadRails</a>
+</p>
+<a name="Creating_the_Database_Connection"></a><h2> <span class="mw-headline">Creating the Database Connection</span></h2>
+<p>In this tutorial we'll use a MySQL database and assume you have it installed and running locally.
+</p>
+<ol><li> Open the Databases perspective
+</li><li> In the Databases View, click the <i>Add Connection</i> toolbar icon to open the Database Connections wizard
+</li><li> Type in <i>localhost</i> as the connection name
+</li><li> Update the connection string from the default (jdbc:mysql://&lt;host&gt;:3306/&lt;database&gt;) to jdbc:mysql://localhost:3306/&lt;database&gt;
+</li><li> Enter your username and password
+</li><li> Click <i>Test connection</i> to make sure you entered everything properly
+</li><li> Click <i>Finish</i>
+</li></ol>
+<a name="Configure_Your_Rails_App_to_Use_the_Database"></a><h3> <span class="mw-headline">Configure Your Rails App to Use the Database</span></h3>
+<ol><li> Switch to the RadRails perspective
+</li><li> In the Ruby Explorer View, navigate to this project, expand the /config folder and open <b>database.yml</b>
+</li><li> For each application environment update the values as appropriate
+<ul><li> Make sure the adapter is specified as mysql and host is localhost (or localhost:port_number if MySQL is not running on 3306)
+</li><li> On some operating systems and depending on how you installed MySQL, you may need to specify socket instead of host&mdash;for example if you use MAMP on Mac OS X, you will generally specify <i>socket: /Applications/MAMP/tmp/mysql/mysql.sock</i> and not host
+</li></ul>
+</li><li> In the Rake Tasks view, select the <i>db:create</i> task and click Go to create the three databases
+</li></ol>
+<a name="Sample_Cookbook_database.yml_.28using_MAMP.29"></a><h3> <span class="mw-headline">Sample Cookbook database.yml (using MAMP)</span></h3>
+<pre>development:
+ adapter: mysql
+ database: cookbook_development
+ username: root
+ password: xxx
+ timeout: 5000
+ socket: /Applications/MAMP/tmp/mysql/mysql.sock
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+ adapter: mysql
+ database: cookbook_test
+ username: root
+ password: xxx
+ timeout: 5000
+ socket: /Applications/MAMP/tmp/mysql/mysql.sock
+
+production:
+ adapter: mysql
+ database: cookbook
+ username: root
+ password: xxx
+ timeout: 5000
+ socket: /Applications/MAMP/tmp/mysql/mysql.sock
+</pre>
+<a name="Generating_an_Application_Scaffold"></a><h2> <span class="mw-headline">Generating an Application Scaffold</span></h2>
+<p>For this exercise we'll use the Scaffold generator supplied with Rails in order to focus on more important first lessons; however once you are comfortable developing in Rails you will probably find yourself developing personal practices that do not include this generator.
+</p><p>The Scaffold generator creates many of the core resources related to a single entity in your application. For Recipe you get:
+</p>
+<ul><li> a model: cookbook/app/models/recipe.rb
+</li><li> a controller: cookbook/app/controllers/recipes_controller.rb
+</li><li> a migration: cookbook/db/migrate/xxx_create_recipes.rb (where xxx is a timestamp based on when you generate the files, e.g., <i>20080910175017_create_recipes.rb</i>)
+</li><li> a set of views: cookbook/app/views/recipes/*.html.erb (edit, index, new and show)
+</li><li> a set of test scripts: /cookbook/test/fixtures/recipes.yml, /cookbook/test/functional/recipes_controller_test.rb and /cookbook/test/unit/recipe_test.rb
+</li><li> a helper: /cookbook/app/helpers/recipes_helper.rb
+</li></ul>
+<p>To generate these resources:
+</p>
+<ol><li> Go to the Generators view
+</li><li> Select the Scaffold generator
+</li><li> In the parameters field enter: Recipe title:string instructions:text
+</li><li> Click Go--Studio will switch to the Console view and show you the files and folders created as well as any error messages
+</li></ol>
+<a name="Creating_the_Recipes_Table_with_the_Migration"></a><h2> <span class="mw-headline">Creating the Recipes Table with the Migration</span></h2>
+<p>Open /cookbook/db/migrate/xxx_create_recipes.rb in the Ruby Explorer and you should see:
+</p>
+<pre>class CreateRecipes &lt; ActiveRecord::Migration
+ def self.up
+    create_table&nbsp;:recipes do |t|
+     t.string&nbsp;:title
+     t.text&nbsp;:instructions
+
+     t.timestamps
+   end
+ end
+
+ def self.down
+   drop_table "recipes"
+ end
+end
+</pre>
+<p>To run the migration and create the Recipes table in the cookbook_development database:
+</p>
+<ul><li> Switch to the Rake Tasks view
+</li><li> Select <i>db:migrate</i> from the dropdown list of tasks and click <i>Go</i>
+</li></ul>
+<p>If you switch back to the Databases perspective you should see Recipes in <i>localhost -&gt; cookbook_development -&gt; TABLES</i>.
+</p><p><a href="Image:Database_explorer.png.html" class="image" title="Image:Database_explorer.png"><img alt="Image:Database_explorer.png" src="docs/images/4/45/Database_explorer.png" width="488" height="526" border="0" /></a>
+</p><p>Switch back to the RadRails perspective.
+</p>
+<a name="The_Recipe_Model"></a><h2> <span class="mw-headline">The Recipe Model</span></h2>
+<p>The model can be found in the Ruby Explorer in <i>/cookbook/app/models/recipe.rb</i>, which should contain:
+</p>
+<pre>class Recipe &lt; ActiveRecord::Base
+end
+</pre>
+<p>For now leave it as is.
+</p>
+<a name="The_Recipes_Controller"></a><h2> <span class="mw-headline">The Recipes Controller</span></h2>
+<ol>
+    <li>In the Ruby Explorer, navigate to <b>cookbook/app/controllers</b> and open <b>recipe_controller.rb</b>.</li>
+    <li>After the first line in the file, press <b>Enter</b> to create a new line and add the following code:
+<p><pre>
+scaffold&nbsp;:recipe
+</pre></p><p>The contents of your recipe_controller.rb file should be:</p>
+<p><pre>
+class RecipeController &lt; ApplicationController
+  scaffold&nbsp;:recipe
+end
+</pre></p></li>
+    <li>Save your changes.</li></ol>&lt;/li&gt;
+<li>Check the "new recipe" page in your browser.<ol>
+    <li>If your browser is not running, go to the Servers View and right-click the <b>CookbookServer</b> then select <b>Start</b> from the context menu. Once the server is running, right-click <b>CookbookServer</b> again, and select <b>Launch Browser</b> from the context menu.</li>
+    <li>In the browser preview, navigate to <b><a href="http://localhost" class="external free" title="http://localhost" rel="nofollow">http://localhost</a>:[port]/recipe/new</b> and press <b>Return</b>.
+<p>Your page should look similar to the example below:</p>
+<p><a href="Image:NewRecipe.png.html" class="image" title="Image:newRecipe.png"><img alt="Image:newRecipe.png" src="docs/images/7/76/NewRecipe.png" width="509" height="587" border="0" /></a></p></li></ol>&lt;/li&gt;
+<li>Add <b>description</b> and <b>date</b> columns to the <b>recipes</b> table:<ol>
+    <li>Copy and paste the following code into your SQL Editor:
+<p>
+<pre>
+
+alter table `recipes` 
+
+ add column `description` varchar(255) DEFAULT NULL,
+
+ add column `date` date DEFAULT NULL;
+</pre>
+</p></li>
+    <li>Click the <b>Execute</b> button <a href="Image:IconExecute.png.html" class="image" title="Image:iconExecute.png"><img alt="Image:iconExecute.png" src="docs/images/8/8e/IconExecute.png" width="23" height="22" border="0" /></a> to add the columns to the recipes table.</li></ol>&lt;/li&gt;
+<li>Refresh your browser preview. It should now look like the image below:
+<p><a href="Image:NewRecipeNewColumns.png.html" class="image" title="Image:newRecipeNewColumns.png"><img alt="Image:newRecipeNewColumns.png" src="docs/images/8/89/NewRecipeNewColumns.png" width="452" height="747" border="0" /></a></p>&lt;/li&gt;
+<li>Test your database by entering data for a sample recipe and click the Create button to create a recipe. You should see something similar to the "example" recipe below.
+<p><a href="Image:ExampleRecipe.png.html" class="image" title="Image:exampleRecipe.png"><img alt="Image:exampleRecipe.png" src="docs/images/5/54/ExampleRecipe.png" width="698" height="747" border="0" /></a></p>&lt;/li&gt;
+<p>&lt;/ol&gt;
+</p>
+<a name="Creating_Actions_and_Views"></a><h3> <span class="mw-headline">Creating Actions and Views</span></h3>
+<p>To create actions and Views for your Cookbook database:
+</p>
+<ol>
+<li>If you are not already in the RadRails perspective, switch to the RadRails perspective in Eclipse.</li>
+<li>In the Rails Navigator View, navigate to <b>cookbook &gt; app &gt; controllers</b> and open the <b>recipe_controller.rb</b> file for editing.</li>
+<li>Add a list definition to the <b>recipe_controller.rb</b> file. The contents of your file should be the same as the code excerpt below:
+<p><pre>
+class RecipeController &lt; ApplicationController
+  scaffold&nbsp;:recipe
+  
+  def list
+  end
+end
+</pre></p></li>
+<li>Create a new file to manage listing for the database:<ol>
+    <li>In the Rails Navigator View, navigate to <b>cookbook&gt; app &gt; views</b> and right-click the <b>recipe</b> folder then select <b>New &gt; File</b> from the context menu.</li>
+    <li>Name the new file <b>list.rhtml</b> and click the <b>Finish</b> button to create the new file.</li>
+    <li>Paste the following code into your list.rhtml file and save your changes:
+<p><pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;All Recipes&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Online Cookbook - All Recipes&lt;/h1&gt;
+&lt;table border=&quot;1&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;80%&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;i&gt;&lt;b&gt;Recipe&lt;/b&gt;&lt;/i&gt;&lt;/td&gt;
+&lt;td width=&quot;20%&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;i&gt;&lt;b&gt;Date&lt;/b&gt;&lt;/i&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;% @recipes.each do |recipe|&nbsp;%&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;%= link_to recipe.title,&nbsp;:action =&gt; &quot;show&quot;,&nbsp;:id =&gt; recipe.id&nbsp;%&gt;&lt;/td&gt;
+&lt;td&gt;&lt;%= recipe.date&nbsp;%&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;% end&nbsp;%&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;%= link_to &quot;Create new recipe&quot;,&nbsp;:action =&gt; &quot;new&quot;&nbsp;%&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></p></li></ol></li>
+<li>Open your recipe_controller.rb file again, and add the line <code>@recipes=Recipe.find_all</code> to the list definition, as shown below:
+<p><pre>
+class RecipeController &lt; ApplicationController
+  scaffold&nbsp;:recipe
+  
+  def list
+    @recipes = Recipe.find(:all)
+  end
+end
+</pre></p><p>When called, this lists all of the recipes in the database.</p></li>
+<li>Save your changes.</li>
+<li>Refresh your browser. Your page should look like the page below:
+<p><a href="Image:ListRecipe.png.html" class="image" title="Image:listRecipe.png"><img alt="Image:listRecipe.png" src="docs/images/b/b0/ListRecipe.png" width="507" height="314" border="0" /></a></p></li>
+</ol>
+<a name="Adding_Categories_to_the_Cookbook"></a><h3> <span class="mw-headline">Adding Categories to the Cookbook</span></h3>
+<p>To add recipe categories to your Cookbook:
+</p>
+<ol>
+<li>In Eclipse, switch to the SQL Explorer perspective.</li>
+<li>Create the categories table.<ol>
+    <li>In your SQL editor, select the <b>cookbook</b> database from the drop-down list at the top of the editor.</li>
+    <li>Copy and paste the following code into the SQL editor:
+<p><pre>
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+</pre></p>
+    <li>Click the <b>Execute</b> button <a href="Image:IconExecute.png.html" class="image" title="Image:iconExecute.png"><img alt="Image:iconExecute.png" src="docs/images/8/8e/IconExecute.png" width="23" height="22" border="0" /></a> to create the table.</li></ol></li>
+<li>Refresh the database by right-clicking your database in the Database Structures View and selecting Refresh from the context menu.<p>If you expand the Tables node, you will now see the <b>Categories</b> table.</p></li>
+<li>Create a Category controller:<ol>
+    <li>In Eclipse, switch to the RadRails perspective.</li>
+    <li>Click the Generators tab to go to the Generators View.</li>
+    <li>In the Generators View, select <b>controller</b> from the drop-down list on the left.</li>
+    <li>Below that drop-down box, choose the <b>Create</b> option.</li>
+    <li>In the drop-down box on the right, type <b>Category</b>.</li>
+    <li>Click the <b>Go</b> button to create the Category controller.</li></ol></li>
+<li>Create a Category model:<ol>
+    <li>In Eclipse, switch to the RadRails perspective.</li>
+    <li>Click the Generators tab to go to the Generators View.</li>
+    <li>In the Generators View, select <b>model</b> from the drop-down list on the left.</li>
+    <li>Below that drop-down box, choose the <b>Create</b> option.</li>
+    <li>In the drop-down box on the right, type <b>Category</b>.</li>
+    <li>Click the <b>Go</b> button to create the Category model.</li></ol></li>
+<li>In the Rails Navigator View, navigate to <b>cookbook &gt; app &gt; controllers</b> and open the <b>category_controller.rb</b> file for editing.</li>
+<li>In the line below the class declaration, add the code <code>scaffold&nbsp;:category</code> so that your code looks like the example below:
+<p><pre>
+class CategoryController &lt; ApplicationController
+  scaffold&nbsp;:category
+end
+</pre></p></li>
+<li>Save your changes.</li>
+<li>In your RadRails browser, go to the URL <b><a href="http://localhost" class="external free" title="http://localhost" rel="nofollow">http://localhost</a>:[port]/category/new</b>. Your page should look similar to the one below:
+<p><a href="Image:NewCategory.png.html" class="image" title="Image:newCategory.png"><img alt="Image:newCategory.png" src="docs/images/9/96/NewCategory.png" width="507" height="314" border="0" /></a></p></li>
+<li>Use the New Category page in your browser to create a "Snacks" and a "Beverages" category. Once you use the form to create each of these categories, your page should look like the image below:
+<p><a href="Image:SnacksBeverages.png.html" class="image" title="Image:snacksBeverages.png"><img alt="Image:snacksBeverages.png" src="docs/images/c/c0/SnacksBeverages.png" width="507" height="314" border="0" /></a></p></li>
+</ol>
+<a name="Assigning_a_Category_to_each_Recipe"></a><h3> <span class="mw-headline">Assigning a Category to each Recipe</span></h3>
+<p>To assign a category to each recipe in the cookbook database:
+</p>
+<ol>
+<li>In Eclipse, switch to the SQL Explorer perspective.</li>
+<li>Add the <b>category_id</b> field to the <b>recipes</b> table:<ol>
+    <li>In the SQL Editor, select the <b>Cookbook</b> database from the drop-down list and copy and paste in the following code:
+<p><pre>
+
+alter table `recipes` 
+
+ add column `category_id` int(11) DEFAULT NULL;
+
+</pre></p>
+    <li>Click the <b>Execute</b> button <a href="Image:IconExecute.png.html" class="image" title="Image:iconExecute.png"><img alt="Image:iconExecute.png" src="docs/images/8/8e/IconExecute.png" width="23" height="22" border="0" /></a> to update the table.</li>
+    <li>In the Database Structures View, right-click the <b>Cookbook</b> database and select <b>Refresh</b> from the context menu to refresh the database.</li></ol></li>
+<li>In Eclipse, switch to the RadRails perspective.</li>
+<li>Update the recipe model:<ol>
+    <li>In the Rails Navigator View, navigate to <b>cookbook &gt; app &gt; models</b> and open the <b>recipe.rb</b> file for editing.</li>
+    <li>Add the code <code>belongs_to&nbsp;:category</code> to the <b>recipe.rb</b> file so that your code looks like the example below:
+<p><pre>
+class Recipe &lt; ActiveRecord::Base
+  belongs_to&nbsp;:category
+end
+
+</pre></p></li>
+    <li>Save your changes.</li>
+    <li>In the models folder, open the <b>category.rb</b> file for editing.</li>
+    <li>Add the code <code>has_many&nbsp;:recipes</code> to your file so that it looks like the example below:
+<p><pre>
+class Category &lt; ActiveRecord::Base
+  has_many&nbsp;:recipes
+end
+</pre></p></li>
+    <li>Save your changes.</li></ol></li>
+<li>Edit the "edit recipe" action:<ol>
+    <li>In the Rails Navigator View, navigate to <b>cookbook &gt; app &gt; controllers</b>, and open the <b>recipe_controller.rb</b> file for editing.</li>
+    <li>Copy and paste the edit definition from the code sample below into your recipe_controller.rb file:
+<p><pre>
+class RecipeController &lt; ApplicationController
+  scaffold&nbsp;:recipe
+  
+  def list
+    @recipes = Recipe.find(:all)
+  end
+  
+  def edit
+    @recipe = Recipe.find(@params[&quot;id&quot;])
+    @categories = Category.find(:all)
+  end
+end
+</pre></p></li>
+    <li>Save your changes.</li></ol></li>
+<li>Create a new file for editing recipes:<ol>
+    <li>In the Rails Navigator View, navigate to the <b>cookbook &gt; app &gt; views &gt; recipe</b> folder, right-click the folder and create a new file called <b>edit.rhtml</b>.</li>
+    <li>Copy and paste the following HTML code into the edit.rhtml file:
+<p><pre>
+&lt;html&gt;
+
+ &lt;head&gt;
+
+  &lt;title&gt;Edit Recipe&lt;/title&gt;
+
+ &lt;/head&gt;
+
+ &lt;body&gt;
+
+ &lt;h1&gt;Edit Recipe&lt;/h1&gt;
+
+ &lt;form action=&quot;../update/&lt;%= @recipe.id&nbsp;%&gt;&quot; method=&quot;POST&quot;&quot;&gt;
+
+  &lt;input id=&quot;recipe_id&quot; name=&quot;recipe[id]&quot; size=&quot;30&quot; 
+
+         type=&quot;hidden&quot; value=&quot;&lt;%= @recipe.id&nbsp;%&gt;&quot; /&gt;
+
+  &lt;p&gt;&lt;b&gt;Title&lt;/b&gt;&lt;br&gt;
+
+  &lt;input id=&quot;recipe_title&quot; name=&quot;recipe[title]&quot; size=&quot;30&quot; 
+
+         type=&quot;text&quot; value=&quot;&lt;%= @recipe.title&nbsp;%&gt;&quot; /&gt;
+
+  &lt;/p&gt;
+
+  &lt;p&gt;&lt;b&gt;Description&lt;/b&gt;&lt;br&gt;
+
+  &lt;input id=&quot;recipe_description&quot; name=&quot;recipe[description]&quot; 
+
+         size=&quot;30&quot; type=&quot;text&quot; 
+
+         value=&quot;&lt;%= @recipe.description&nbsp;%&gt;&quot; /&gt;
+
+  &lt;/p&gt;
+
+  &lt;p&gt;&lt;b&gt;Category:&lt;/b&gt;&lt;br&gt;
+
+  &lt;select name=&quot;recipe[category_id]&quot;&gt;
+
+   &lt;% @categories.each do |category|&nbsp;%&gt;
+
+       &lt;option value=&quot;&lt;%= category.id&nbsp;%&gt;&quot; 
+
+         &lt;%= ' selected' if category.id == @recipe.category_id&nbsp;%&gt;&gt;
+
+         &lt;%= category.name&nbsp;%&gt;
+
+       &lt;/option&gt;
+
+   &lt;% end&nbsp;%&gt;
+
+  &lt;/select&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;b&gt;Instructions&lt;/b&gt;&lt;br&gt;
+
+  &lt;textarea cols=&quot;40&quot; id=&quot;recipe_instructions&quot; 
+
+            name=&quot;recipe[instructions]&quot; 
+
+            rows=&quot;20&quot; wrap=&quot;virtual&quot;&gt;
+
+    &lt;%= @recipe.instructions&nbsp;%&gt;
+
+  &lt;/textarea&gt; &lt;/p&gt;
+
+  &lt;input type=&quot;submit&quot; value=&quot;Update&quot; /&gt;
+
+ &lt;/form&gt;
+
+ &lt;a href=&quot;/recipe/show/&lt;%= @recipe.id&nbsp;%&gt;&quot;&gt;
+
+   Show
+
+ &lt;/a&gt; | 
+
+  &lt;a href=&quot;/recipe/list&quot;&gt;
+
+  Back 
+
+ &lt;/a&gt;
+
+ &lt;/body&gt;
+
+&lt;/html&gt;
+</pre></p></li>
+    <li>Save your changes.</li></ol></li>
+<li>Edit a recipe:<ol>
+    <li>Go to your browser preview and go to the URL <b><a href="http://localhost" class="external free" title="http://localhost" rel="nofollow">http://localhost</a>:[port]/recipe/list</b>.</li>
+    <li>Click the link to one of your recipes, click the Edit link on the recipe page, and change the recipe category for that recipe.</li>
+    <li>Repeat assigning a category to each recipe that you have in your database.</li></ol></li>
+<li>Make category_id a required field for all recipes:<ol>
+    <li>Switch to the SQL Explorer perspective.</li>
+    <li>Copy and paste the following code into the SQL Editor:
+<p><pre>
+
+alter table `recipes` 
+
+ modify `category_id` int(11) NOT NULL AFTER `id`;
+</pre></p>
+    <li>Select the Cookbook database in the SQL Editor, and click the Execute button <a href="Image:IconExecute.png.html" class="image" title="Image:iconExecute.png"><img alt="Image:iconExecute.png" src="docs/images/8/8e/IconExecute.png" width="23" height="22" border="0" /></a> to update the table.</li></ol></li>
+</ol>
+<a name="Displaying_Categories_in_a_list_of_all_Recipes"></a><h3> <span class="mw-headline">Displaying Categories in a list of all Recipes</span></h3>
+<p>To display categories in a list of all recipes:
+</p>
+<ol>
+<li>In Eclipse, switch to the RadRails perspective.</li>
+<li>In the Rails Navigator View, navigate to the cookbook &gt; app &gt; views &gt; recipe folder, and open the list.rhtml file for editing.</li>
+<li>Copy and paste the code sample below, and use it to replace the current code in the list.rhtml file.
+<p><pre>
+&lt;html&gt;
+
+&lt;head&gt;
+
+&lt;title&gt;All Recipes&lt;/title&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;h1&gt;Online Cookbook - All Recipes&lt;/h1&gt;
+
+&lt;table border=&quot;1&quot;&gt;
+
+ &lt;tr&gt;
+
+ &lt;td width=&quot;40%&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;i&gt;&lt;b&gt;Recipe&lt;/b&gt;&lt;/i&gt;&lt;/td&gt;
+
+ &lt;td width=&quot;20%&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;i&gt;&lt;b&gt;Category&lt;/b&gt;&lt;/i&gt;&lt;/td&gt;
+
+ &lt;td width=&quot;20%&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;i&gt;&lt;b&gt;Date&lt;/b&gt;&lt;/i&gt;&lt;/td&gt;
+
+ &lt;/tr&gt;
+
+ &lt;% @recipes.each do |recipe|&nbsp;%&gt;
+
+ &lt;tr&gt;
+
+ &lt;td&gt;&lt;%= link_to recipe.title,&nbsp;:action =&gt; &quot;show&quot;,&nbsp;:id =&gt; recipe.id&nbsp;%&gt;&lt;/td&gt;
+
+ &lt;td&gt;&lt;%= recipe.category.name&nbsp;%&gt;&lt;/td&gt;
+
+ &lt;td&gt;&lt;%= recipe.date&nbsp;%&gt;&lt;/td&gt;
+
+ &lt;/tr&gt;
+
+ &lt;% end&nbsp;%&gt;
+
+&lt;/table&gt;
+
+&lt;p&gt;&lt;%= link_to &quot;Create new recipe&quot;,&nbsp;:action =&gt; &quot;new&quot;&nbsp;%&gt;&lt;/p&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+</pre></p></li>
+<li>Go to the URL <b><a href="http://localhost" class="external free" title="http://localhost" rel="nofollow">http://localhost</a>:[port]/recipe/list</b> in your browser, and you should see that the Category field has been added to each recipe.</li>
+</ol>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1815-0!1!0!!en!2!edit=0 and timestamp 20090202192203 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Get_Rolling_with_Ruby_on_Rails_in_RadRails%2C_Part_2">http://aptana.com/docs/index.php/Get_Rolling_with_Ruby_on_Rails_in_RadRails%2C_Part_2</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

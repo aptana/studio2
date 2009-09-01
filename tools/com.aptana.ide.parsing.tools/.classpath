@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.editor.css"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.editor.html"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.editor.js"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.editor.xml"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.editors"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.parsing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.aptana.ide.libraries"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

@@ -1,0 +1,308 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Configuring PHP Preferences</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Configuring_PHP_Preferences&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Configuring PHP Preferences [<a href="http://www.aptana.com/docs/index.php?title=Configuring_PHP_Preferences&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#PHP_Editor_tab"><span class="tocnumber">1</span> <span class="toctext">PHP Editor tab</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Pair_Matching"><span class="tocnumber">1.1</span> <span class="toctext">Pair Matching</span></a></li>
+<li class="toclevel-2"><a href="#Default_Content"><span class="tocnumber">1.2</span> <span class="toctext">Default Content</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Code_Assist"><span class="tocnumber">2</span> <span class="toctext">Code Assist</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Auto-activation"><span class="tocnumber">2.1</span> <span class="toctext">Auto-activation</span></a></li>
+<li class="toclevel-2"><a href="#Filtering"><span class="tocnumber">2.2</span> <span class="toctext">Filtering</span></a></li>
+<li class="toclevel-2"><a href="#Performance"><span class="tocnumber">2.3</span> <span class="toctext">Performance</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Code_Templates"><span class="tocnumber">3</span> <span class="toctext">Code Templates</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Available_Actions"><span class="tocnumber">3.1</span> <span class="toctext">Available Actions</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Colors:_PHP"><span class="tocnumber">4</span> <span class="toctext">Colors: PHP</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Manage_Colorization"><span class="tocnumber">4.1</span> <span class="toctext">Manage Colorization</span></a></li>
+<li class="toclevel-2"><a href="#Editor_Options"><span class="tocnumber">4.2</span> <span class="toctext">Editor Options</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Colors:_PHPdoc"><span class="tocnumber">5</span> <span class="toctext">Colors: PHPdoc</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Manage_Colorization_2"><span class="tocnumber">5.1</span> <span class="toctext">Manage Colorization</span></a></li>
+<li class="toclevel-2"><a href="#Editor_Options_2"><span class="tocnumber">5.2</span> <span class="toctext">Editor Options</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Debug"><span class="tocnumber">6</span> <span class="toctext">Debug</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Allow_multiple_debug_sessions"><span class="tocnumber">6.1</span> <span class="toctext">Allow multiple debug sessions</span></a></li>
+<li class="toclevel-2"><a href="#Switch_back_to_Aptana_perspective_when_the_debug_is_terminated"><span class="tocnumber">6.2</span> <span class="toctext">Switch back to Aptana perspective when the debug is terminated</span></a></li>
+<li class="toclevel-2"><a href="#Installed_Debuggers"><span class="tocnumber">6.3</span> <span class="toctext">Installed Debuggers</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Folding"><span class="tocnumber">7</span> <span class="toctext">Folding</span></a></li>
+<li class="toclevel-1"><a href="#Formatting"><span class="tocnumber">8</span> <span class="toctext">Formatting</span></a></li>
+<li class="toclevel-1"><a href="#PHP_Interpreters"><span class="tocnumber">9</span> <span class="toctext">PHP Interpreters</span></a></li>
+<li class="toclevel-1"><a href="#PHP_Libraries"><span class="tocnumber">10</span> <span class="toctext">PHP Libraries</span></a></li>
+<li class="toclevel-1"><a href="#PHP_Manual"><span class="tocnumber">11</span> <span class="toctext">PHP Manual</span></a></li>
+<li class="toclevel-1"><a href="#Preview"><span class="tocnumber">12</span> <span class="toctext">Preview</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Preview_Browsers"><span class="tocnumber">12.1</span> <span class="toctext">Preview Browsers</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Task_Tags"><span class="tocnumber">13</span> <span class="toctext">Task Tags</span></a></li>
+<li class="toclevel-1"><a href="#Typing"><span class="tocnumber">14</span> <span class="toctext">Typing</span></a></li>
+<li class="toclevel-1"><a href="#Validation"><span class="tocnumber">15</span> <span class="toctext">Validation</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="PHP_Editor_tab"></a><h2> <span class="mw-headline">PHP Editor tab</span></h2>
+<div style="float: left; width: 600px; margin-right: 20px;">
+<ul><li> File Associations: Lists the file types that are opened using this editor
+<ul><li> Edit: Make changes to the list of file types opened using this editor
+</li></ul>
+</li></ul>
+<a name="Pair_Matching"></a><h3> <span class="mw-headline">Pair Matching</span></h3>
+<ul><li> Highlight Color: select a color for highlighted text
+</li><li> Display options: (choose one of)
+<ul><li> Do not highlight matching pairs
+</li><li> Highlight only matching element
+</li><li> Highlight entire pair
+</li></ul>
+</li></ul>
+<ul><li> PHP Editor Mode: (choose one of)
+<ul><li> Tabbed: Source and configured previews are shown singly (DEFAULT)
+</li><li> Horizontal Split: Divides the editor window into <i>horizontal</i> slices, one for the source and each configured browser preview
+</li><li> Vertical Split: Divides the editor window into <i>vertical</i> slices, one for the source and each configured browser preview
+</li><li> Source only: No browser previews enabled
+</li></ul>
+</li><li> Display HTML Toolbar: on/off
+</li></ul>
+<a name="Default_Content"></a><h3> <span class="mw-headline">Default Content</span></h3>
+<ul><li> Default PHP filename: Suggested string used when you create a single new PHP file
+</li><li> Create project file in new PHP project: Whether new PHP projects get an index.php file created in them
+</li><li> PHP project file name: Name (default is index.php) used if the Create project file option is enabled
+</li><li> Show content of simple PHP nodes in outline: on/off
+</li><li> Initial PHP file contents: Defaults to the following but you may change it to a more complex code fragment
+</li></ul>
+<pre>&lt;?php
+    phpinfo();
+?&gt;
+</pre>
+</div><div style="float: left; width: 300px;">
+<div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Php-main-prefs.png.html" class="image" title="Main PHP Preference Panel"><img alt="Main PHP Preference Panel" src="docs/images/thumb/7/7f/Php-main-prefs.png/300px-Php-main-prefs.png" width="300" height="344" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Php-main-prefs.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Main PHP Preference Panel</div></div></div>
+</div><br style="clear: both;" />
+<a name="Code_Assist"></a><h2> <span class="mw-headline">Code Assist</span></h2>
+<a name="Auto-activation"></a><h3> <span class="mw-headline">Auto-activation</span></h3>
+<ul><li> Automatically display code assist when typing: on/off
+</li><li> Auto activate on identifiers: on/off
+</li></ul>
+<a name="Filtering"></a><h3> <span class="mw-headline">Filtering</span></h3>
+<p>One of:
+</p>
+<ul><li> Assist only on explicitly referenced files: Uses only the current file and any specifically included files to offer suggestions (and will follow through to files included in <i>those</i> files as well)
+</li><li> Assist on all files: Uses all files in the active project to offer suggestions
+</li></ul>
+<a name="Performance"></a><h3> <span class="mw-headline">Performance</span></h3>
+<ul><li> Parse unsaved module on identifiers completion: on/off
+</li></ul>
+<a name="Code_Templates"></a><h2> <span class="mw-headline">Code Templates</span></h2>
+<p>Create, edit or remove templates that you use as keyboard shortcuts to insert more complex strings of PHP code. Templates can include placeholders for you to input context-specific elements.
+</p><p>The table lists the available shortcuts. Examples templates that come baked in are:
+</p>
+<ul><li> you type -&gt; gets inserted
+</li><li> cln -&gt; clone()
+</li><li> itdir -&gt; code to iterate over the files in a directory
+</li></ul>
+<a name="Available_Actions"></a><h3> <span class="mw-headline">Available Actions</span></h3>
+<ul><li> New: Add a template
+</li><li> Edit: Change a template
+</li><li> Remove: Delete a template
+</li><li> Restore Removed
+</li><li> Revert to Default: Change the entire list back to the version shipped with Studio
+</li><li> Import: Add templates from a file
+</li><li> Export: Save templates to a file
+</li></ul>
+<p>Import and Export are handy for getting your customized set of templates from one machine to another!
+</p>
+<div style="float: left; width: 600px; margin-right: 20px;">
+<a name="Colors:_PHP"></a><h2> <span class="mw-headline">Colors: PHP</span></h2>
+<a name="Manage_Colorization"></a><h3> <span class="mw-headline">Manage Colorization</span></h3>
+<ul><li> Import: Add color rules from a .col file
+</li><li> Export: Saves the current set as a .col file
+</li><li> Override Eclipse editor settings: If enabled, the PHP Editor will use the color settings on this panel, otherwise it uses the Eclipse defaults colors.
+</li></ul>
+<p><a href="Colorizer_File_Format_details.html" title="Colorizer File Format details">Colorizer File Format details</a> - very technical!
+</p>
+<a name="Editor_Options"></a><h3> <span class="mw-headline">Editor Options</span></h3>
+<ul><li> Override Eclipse Options: Activates the rest of this panel's controls so you can customize the color set
+</li><li> The remaining controls enable you to change the colors used for specific sections of code and language elements.
+</li><li> Click any color button to open a color picker--the specific picker depends on your operating system.
+</li></ul>
+<a name="Colors:_PHPdoc"></a><h2> <span class="mw-headline">Colors: PHPdoc</span></h2>
+<a name="Manage_Colorization_2"></a><h3> <span class="mw-headline">Manage Colorization</span></h3>
+<ul><li> Import: Add color rules from a .col file
+</li><li> Export: Saves the current set as a .col file
+</li><li> Override Eclipse editor settings: If enabled, the PHP Editor will use the color settings on this panel, otherwise it uses the Eclipse defaults colors.
+</li></ul>
+<p><a href="Colorizer_File_Format_details.html" title="Colorizer File Format details">Colorizer File Format details</a> - very technical!
+</p>
+<a name="Editor_Options_2"></a><h3> <span class="mw-headline">Editor Options</span></h3>
+<ul><li> Override Eclipse Options: Activates the rest of this panel's controls so you can customize the color set
+</li><li> The remaining controls enable you to change the colors used for specific sections of code and language elements.
+</li><li> Click any color button to open a color picker--the specific picker depends on your operating system.
+</li></ul>
+</div><div style="float: left; width: 300px;">
+<div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Php-color-prefs.png.html" class="image" title="Colors:PHP Preference Panel"><img alt="Colors:PHP Preference Panel" src="docs/images/thumb/4/49/Php-color-prefs.png/300px-Php-color-prefs.png" width="300" height="344" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Php-color-prefs.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Colors:PHP Preference Panel</div></div></div>
+</div><br style="clear: both;" />
+<a name="Debug"></a><h2> <span class="mw-headline">Debug</span></h2>
+<a name="Allow_multiple_debug_sessions"></a><h3> <span class="mw-headline">Allow multiple debug sessions</span></h3>
+<p>The debugger has the ability to run multiple, independent debugging sessions if you desire.
+</p>
+<ul><li> Always: Starts a new debug session each time you start a debug session
+</li><li> Never: Blocks new debug sessions if one is already running
+</li><li> Prompt: If debug session is already running, asks you if you want to start a new one
+</li></ul>
+<a name="Switch_back_to_Aptana_perspective_when_the_debug_is_terminated"></a><h3> <span class="mw-headline">Switch back to Aptana perspective when the debug is terminated</span></h3>
+<ul><li> Always: Automatically returns to the Aptana perspective
+</li><li> Never: Remains in debug perspective
+</li><li> Prompt: Asks to switch or stay
+</li></ul>
+<a name="Installed_Debuggers"></a><h3> <span class="mw-headline">Installed Debuggers</span></h3>
+<p>We support debugging with both Zend and <a href="http://www.xdebug.org/" class="external text" title="http://www.xdebug.org/" rel="nofollow">XDebug</a> but only XDebug is supplied with Aptana Studio; to use the Zend Debugger you must install it separately and configure it on the Preferences panel.
+</p><p>Using either debugger requires an internal port to be open when Aptana Studio is open.
+</p>
+<ul><li> Zend: Allows you to configure the port number to use
+</li></ul>
+<ul><li> XDebug Options:
+<ul><li> port number
+</li><li> Show super globals in variable view: on/off
+</li><li> Max array depth: an integer
+</li><li> Use multi-session: on/off
+</li></ul>
+</li></ul>
+<p><b>Note:</b> For XDebug, Aptana Studio verifies that the debug client port specified in php.ini and Aptana Studio preferences are the same.
+</p>
+<a name="Folding"></a><h2> <span class="mw-headline">Folding</span></h2>
+<ul><li> Enable folding: turn the feature on or off
+</li></ul>
+<p>The remaining options, if folding is enabled, determine the fold state of the specific block type:
+</p>
+<ul><li> Initially fold functions
+</li><li> Initially fold classes and interfaces
+</li><li> Initially fold PHP code
+</li><li> Initially fold PHPdoc comments
+</li><li> Initially fold block comments
+</li></ul>
+<div style="float: left; width: 600px; margin-right: 20px;">
+<a name="Formatting"></a><h2> <span class="mw-headline">Formatting</span></h2>
+<ul><li> Format Preference Page: Choose from the default conventions, a set you added or imported, or none
+</li><li> Show project specific settings link: Select project from list to set the text file encoding and new text file line delimiter.
+</li><li> Clicking Edit allows you to specify formatting for various language elements such as spaces or tabs, new lines for control statements, brace locations and new line use.
+</li><li> New lets you create a set of conventions, optionally starting from the default set
+</li><li> Import adds a set of conventions from a file
+</li><li> Remove is only available when a non-default set is active
+</li><li> Restore defaults resets the conventions as shipped with Studio
+</li></ul>
+The big text area that occupies most of the panel shows a preview based on the active settings.</div><div style="float: left; width: 300px;">
+<div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Php-formatting-prefs.png.html" class="image" title="PHP Formatting Set Panel"><img alt="PHP Formatting Set Panel" src="docs/images/thumb/3/3f/Php-formatting-prefs.png/300px-Php-formatting-prefs.png" width="300" height="199" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Php-formatting-prefs.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>PHP Formatting Set Panel</div></div></div>
+</div><br style="clear: both;" />
+<a name="PHP_Interpreters"></a><h2> <span class="mw-headline">PHP Interpreters</span></h2>
+<p>Lists the configured PHP interpreters; two instances (command line and CGI) using XDebug are configured by default by Aptana Studio.
+</p>
+<a name="PHP_Libraries"></a><h2> <span class="mw-headline">PHP Libraries</span></h2>
+<p>Add a library path to your framework to get Code Assist for it in all PHP projects in your workspace. For example, to add the Zend Framework, you need to add the <i>library</i> folder of the framework (e.g., <i>C:/ZendFramework-1.6.2-minimal/library/</i>).
+</p><p>To turn off Code Assist for the library on specific projects right click a project and remove Code Assist (using the project's PHP Buildpath preference page).
+</p>
+<a name="PHP_Manual"></a><h2> <span class="mw-headline">PHP Manual</span></h2>
+<p>These settings determine what opens when you use the Open PHP Manual command in the PHP editor.
+</p>
+<ul><li> URL of documentation site (default: <a href="http://www.php.net/manual/en" class="external free" title="http://www.php.net/manual/en" rel="nofollow">http://www.php.net/manual/en</a>)
+</li><li> Add additional sites (or a local copy of the docs) using the New button, but only the default choice is used in Studio
+</li><li> Change the default site by selecting your preferred site and clicking Default
+</li><li> Open PHP manual in new browser window
+</li></ul>
+<div style="float: left; width: 600px; margin-right: 20px;">
+<a name="Preview"></a><h2> <span class="mw-headline">Preview</span></h2>
+<ul><li> Automatically save editor when preview tab is selected: on/off
+</li><li> Prevent caching of preview pages: on/off
+</li><li> Preview Type: (select one of)
+<ul><li> Sample URL
+</li><li> Use Server: Choose from Studio's built-in Apache server, any server you previously configured or add a new server
+<ul><li> Append project name: on/off; always enabled for the built-in server, your choice otherwise
+</li></ul>
+</li><li> Use Run Configuration: Choose from an existing Run configuration or add a new one
+</li><li> Use absolute URL
+<ul><li> Append project relative path: on/off
+</li></ul>
+</li><li> Use file URL: Opens the browser to a file::/path/to/file/filename.extension URL
+</li></ul>
+</li></ul>
+<a name="Preview_Browsers"></a><h3> <span class="mw-headline">Preview Browsers</span></h3>
+<ul><li> Set the browser previews that will be used with files opened in the PHP editor
+</li><li> This is OS-dependent
+</li><li> Default choices are from Internet Explorer, Firefox, Safari (OS X only) and iPhone</div><div style="float: left; width: 300px;">
+</li></ul>
+<div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Php-preview-prefs.png.html" class="image" title="PHP Preview Preference Panel"><img alt="PHP Preview Preference Panel" src="docs/images/thumb/a/a0/Php-preview-prefs.png/300px-Php-preview-prefs.png" width="300" height="265" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Php-preview-prefs.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>PHP Preview Preference Panel</div></div></div>
+</div><br style="clear: both;" />
+<a name="Task_Tags"></a><h2> <span class="mw-headline">Task Tags</span></h2>
+<p>Tasks are shown in the Tasks view.
+</p>
+<ul><li> List of strings (name, priority, is default for each) indicating a PHP comment should be interpreted as a Task
+</li><li> Configure project specific settings link: Select a project from your list to have certain tags treated differently (or be recognized at all) in that project. A use case is that you're part of a team for a given project and the team uses task tags that you do not want to be part of for other projects. Examples:
+<ul><li> the priority for TODO is high but todo is normal
+</li><li> the project lead uses team member names in all caps to show who owns the todo (meaning each team member's name is a task tag)
+</li></ul>
+</li><li> Case-sensitive task tag names: Treat TODO and todo as the same or different
+</li></ul>
+<a name="Typing"></a><h2> <span class="mw-headline">Typing</span></h2>
+<p>Auto-insert matching characters:
+</p>
+<ul><li> Don’t auto-insert
+</li><li> Auto-insert
+</li></ul>
+<p>Choose what happens when you type an opening block delimiter (such as a brace, quote, bracket, etc.)
+</p>
+<a name="Validation"></a><h2> <span class="mw-headline">Validation</span></h2>
+<ul><li> Validators: Use the embedded PHP Syntax validator or not
+</li><li> Filter for Validation View Errors: A list of regular expressions to filter from the validation view. By default this list is empty.
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2410-0!1!0!!en!2!edit=0 and timestamp 20090202183437 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Configuring_PHP_Preferences">http://aptana.com/docs/index.php/Configuring_PHP_Preferences</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

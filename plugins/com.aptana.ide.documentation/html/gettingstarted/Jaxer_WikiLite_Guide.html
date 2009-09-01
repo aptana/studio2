@@ -1,0 +1,494 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Jaxer WikiLite Guide</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Jaxer_WikiLite_Guide&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Jaxer WikiLite Guide [<a href="http://www.aptana.com/docs/index.php?title=Jaxer_WikiLite_Guide&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains the WikiLite sample application included with Jaxer.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction_to_the_WikiLite_application"><span class="tocnumber">1</span> <span class="toctext">Introduction to the WikiLite application</span></a></li>
+<li class="toclevel-1"><a href="#Viewing_the_sample_application"><span class="tocnumber">2</span> <span class="toctext">Viewing the sample application</span></a></li>
+<li class="toclevel-1"><a href="#About_the_client-side_WikiLite_code"><span class="tocnumber">3</span> <span class="toctext">About the client-side WikiLite code</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Style_information"><span class="tocnumber">3.1</span> <span class="toctext">Style information</span></a></li>
+<li class="toclevel-2"><a href="#The_body_area"><span class="tocnumber">3.2</span> <span class="toctext">The body area</span></a></li>
+<li class="toclevel-2"><a href="#Client-side_scripting"><span class="tocnumber">3.3</span> <span class="toctext">Client-side scripting</span></a>
+<ul>
+<li class="toclevel-3"><a href="#init.28.29"><span class="tocnumber">3.3.1</span> <span class="toctext">init()</span></a></li>
+<li class="toclevel-3"><a href="#setEditing.28.29"><span class="tocnumber">3.3.2</span> <span class="toctext">setEditing()</span></a></li>
+<li class="toclevel-3"><a href="#.24.28.29"><span class="tocnumber">3.3.3</span> <span class="toctext">$()</span></a></li>
+<li class="toclevel-3"><a href="#editOrSave.28.29"><span class="tocnumber">3.3.4</span> <span class="toctext">editOrSave()</span></a></li>
+<li class="toclevel-3"><a href="#checkValid.28.29"><span class="tocnumber">3.3.5</span> <span class="toctext">checkValid()</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Server-side_scripting"><span class="tocnumber">3.4</span> <span class="toctext">Server-side scripting</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Determining_which_functions_run_where"><span class="tocnumber">3.4.1</span> <span class="toctext">Determining which functions run where</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Server-side_functions"><span class="tocnumber">3.5</span> <span class="toctext">Server-side functions</span></a>
+<ul>
+<li class="toclevel-3"><a href="#readAndFill.28.29"><span class="tocnumber">3.5.1</span> <span class="toctext">readAndFill()</span></a></li>
+<li class="toclevel-3"><a href="#getFilePath.28.29"><span class="tocnumber">3.5.2</span> <span class="toctext">getFilePath()</span></a></li>
+<li class="toclevel-3"><a href="#save.28contents.29"><span class="tocnumber">3.5.3</span> <span class="toctext">save(contents)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Testing_the_WikiLite_application"><span class="tocnumber">4</span> <span class="toctext">Testing the WikiLite application</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Editing_and_saving_text"><span class="tocnumber">4.1</span> <span class="toctext">Editing and saving text</span></a></li>
+<li class="toclevel-2"><a href="#Validating_the_text_area_contents"><span class="tocnumber">4.2</span> <span class="toctext">Validating the text area contents</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Complete_WikiLite_application_code"><span class="tocnumber">5</span> <span class="toctext">Complete WikiLite application code</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">6</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction_to_the_WikiLite_application"></a><h2> <span class="mw-headline">Introduction to the WikiLite application</span></h2>
+<p>Your Jaxer installation includes an example of a very basic Wiki web application. This simple application allows you to enable text editing, write a few text characters, save your text to a file, and reload your data into the web page when you re-enter or refresh the page.
+</p><p>The diagram below shows the basic flow of this application.
+</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=WikiLiteOverview.png" class="new" title="Image:WikiLiteOverview.png">Image:WikiLiteOverview.png</a>
+</p><p>This application consists of a single HTML file (<b>WikiLite/index.html</b>) that contains style information and a bit of JavaScript. Open this page in Aptana Studio to follow along as the following sections walk you through the application code.
+</p>
+<a name="Viewing_the_sample_application"></a><h2> <span class="mw-headline">Viewing the sample application</span></h2>
+<p>Your Jaxer installation (whether as a standalone Jaxer plus Apache Server or in Aptana Studio) includes the WikiLite application.
+</p><p>To access the WikiLite application from within Aptana Studio:
+</p>
+<ol>
+<li>In the Samples View, expand the <b>Aptana Jaxer</b> folder.</li>
+<li>Select the <b>WikiLite</b> example.</li>
+<li>Click either the <b>Preview Sample</b> button <a href="Image:IconPreviewSample.png.html" class="image" title="Image:iconPreviewSample.png"><img alt="Image:iconPreviewSample.png" src="docs/images/3/30/IconPreviewSample.png" width="23" height="22" border="0" /></a> to do a quick preview of the sample, or click the <b>Import Sample</b> button <a href="Image:IconImportSample.png.html" class="image" title="Image:iconImportSample.png"><img alt="Image:iconImportSample.png" src="docs/images/f/f0/IconImportSample.png" width="23" height="22" border="0" /></a> to import the sample as a project into your workspace.
+</ol>
+<p>To access the WikiLite application from a standalone Jaxer plus Apache Server installation:
+</p>
+<ol>
+<li>Navigate to your Jaxer installation folder, and double-click the <b>StartServers.bat</b> file.</li>
+<li>In your web browser, navigate to the following URL: <a href="http://localhost:8081/aptana/" class="external free" title="http://localhost:8081/aptana/" rel="nofollow">http://localhost:8081/aptana/</a></li>
+<li>From the column on the left, click the <b>Apps and Tools</b> link.</li>
+<li>Click the <b>WikiLite</b> link.</li>
+</ol>
+<a name="About_the_client-side_WikiLite_code"></a><h2> <span class="mw-headline">About the client-side WikiLite code</span></h2>
+<p>Before we what happens on the server with the WikiLite application, let's take a look at the client-side code, including how the web page is laid out.
+</p>
+<a name="Style_information"></a><h3> <span class="mw-headline">Style information</span></h3>
+<p>The <tt>head</tt> tag of this web page contains some basic CSS styling, contained in a set of <tt>style</tt> tags:
+</p><p><code>[html,N]&lt;style&gt;
+	html {
+		height: 95%;
+		width: 99%;
+		padding: 0;
+		margin: 0;
+	}
+	body {
+		font: 10pt verdana;
+		font-family: verdana;
+		height: 100%;
+		padding: 10px;
+		margin: 0;
+	}
+	#contents {
+		width: 100%;
+		height: 95%;
+	}
+	#editOrSave {
+		width: 100%;
+	}
+	.readonly {
+		font: 8pt verdana;
+		background-color: #f0f0ff;
+		border: none;
+		padding: 8px;
+	}
+&lt;/style&gt;
+</code>
+</p><p>This styling formats the text area slightly differently than the rest of the page. The <tt>.readonly</tt> class displays the <tt>textarea</tt> with a different font and background color when the page is in read-only mode.
+</p>
+<a name="The_body_area"></a><h3> <span class="mw-headline">The <tt>body</tt> area</span></h3>
+<p>The body of the HTML page consists of a single text area and an input button:
+</p><p><code>[html,N]&lt;body onserverload="init()"&gt;
+</p><p>	&lt;textarea id="contents"&gt;&lt;/textarea&gt;
+</p><p>	&lt;input type="button" id="editOrSave" onclick="editOrSave()"&gt;
+</p><p>&lt;/body&gt;
+</p><p></code>
+</p><p>The <tt>textarea</tt> holds the contents of the wiki, and the <tt>input</tt> button has an <tt>onclick</tt> event handler that toggles the "edit" functionality on when the page is read-only. The button also saves the textarea contents when the page is in "edit" mode.
+</p><p><b>Note:</b> The <tt>body</tt> tag also has an <tt>onserverload</tt> event handler. We'll discuss the functionality of this event handler later on in this article.
+</p>
+<a name="Client-side_scripting"></a><h3> <span class="mw-headline">Client-side scripting</span></h3>
+<p>The <tt>head</tt> tag contains a <tt>script</tt> tag with the JavaScript for the WikiLite application. Five of the functions in this <tt>script</tt> tag perform client-side functionality:
+</p>
+<ul><li> <tt>init()</tt>
+</li><li> <tt>setEditing()</tt>
+</li><li> <tt>$()</tt>
+</li><li> <tt>editOrSave()</tt>
+</li><li> <tt>checkValid()</tt>
+</li></ul>
+<a name="init.28.29"></a><h4> <span class="mw-headline"><tt>init()</span></h4>
+<p>The &lt;tt&gt;init()</tt> function is called when the page loads. It sets the page to read-only mode on the page load. It also calls the <tt>readAndFill()</tt> function, which reads the contents of a file and displays them in the <tt>textarea</tt> on this page. We'll discuss this in more depth later on in this article.
+</p><p><code>[javascript,1]function init()
+	{
+		setEditing(false);
+		readAndFill();
+	}
+</code>
+</p>
+<a name="setEditing.28.29"></a><h4> <span class="mw-headline"><tt>setEditing()</tt></span></h4>
+<p>The <tt>setEditing() function sets the mode (read-only or read-write) of the contents area by using the &lt;tt&gt;readOnly</tt> and <tt>className</tt> attributes of "contents". If the "contents" are not "editable", the "contents" are then "readonly". 
+</p><p>This function also sets the  value of the <tt>editOrSave</tt> button. If the "contents" are read-only, the button reads "edit". If the "contents" are "editable", the button reads "save", and the function sets the focus to the "contents" area, so that a user can easily type something in the <tt>textarea</tt>.
+</p><p><code>[javascript,1]function setEditing(editable)
+	{
+		$("contents").readOnly =&nbsp;!editable;
+		$("contents").className = editable&nbsp;? ""&nbsp;: "readonly";
+		$("editOrSave").value = editable&nbsp;? "save"&nbsp;: "edit"; // set the button label
+		if (editable)
+		{
+			$("contents").focus();
+		}
+	}
+</code>
+</p>
+<a name=".24.28.29"></a><h4> <span class="mw-headline"><tt>$()</tt></span></h4>
+<p>The <tt>$()</tt> function is a simple helper function to get elements by ID. If you were coding this on your own, you could choose to use the <tt>$()</tt> function of your favorite Ajax library.
+</p><p><code>[javascript,1]function $(id)
+	{
+		return document.getElementById(id);
+	}
+</p><p></code>
+</p>
+<a name="editOrSave.28.29"></a><h4> <span class="mw-headline"><tt>editOrSave()</tt></span></h4>
+<p>The <tt>editOrSave()</tt> function first determines if you are already in edit mode or not. If you are in edit mode, it does a quick validation check on the contents of the text area, and if these validate, saves the contents and re-sets the page to read-only mode. 
+</p><p>If the contents are not valid, <tt>editOrSave()</tt> throws an alert containing a message describing the error.
+</p><p>If you are not in edit mode, <tt>editOrSave()</tt> simply toggles off the read-only mode for the contents <tt>textarea</tt>. 
+</p><p><code>[javascript,1]function editOrSave()
+	{
+		var isEditing =&nbsp;!$("contents").readOnly;
+		if (isEditing) // try to save and get out of edit mode
+		{
+			try
+			{
+				var contents = $("contents").value;
+				checkValid(contents);
+				save(contents);
+				setEditing(false);
+			}
+			catch (e)
+			{
+				alert(e);
+			}
+		}
+		else // go into edit mode
+		{
+			setEditing(true);
+		}
+	}
+</p><p></code>
+</p>
+<a name="checkValid.28.29"></a><h4> <span class="mw-headline"><tt>checkValid()</tt></span></h4>
+<p>The <tt>checkValid()</tt> function does a quick validation check on the number of characters input into "contents". If a user types more than 10000, it throws an error message saying "Too long!".
+</p><p><code>[javascript,1]function checkValid(contents)
+	{
+		if (contents.length &gt; 10000)
+		{
+			throw "Too long!";
+		}
+	}
+</code>
+</p>
+<a name="Server-side_scripting"></a><h3> <span class="mw-headline">Server-side scripting</span></h3>
+<p>Now that you have a basic idea of how the page is set up and how it functions, we'll examine how this page interacts with the Jaxer server. By adding server-side functionality, we're able to save the text that you type into "contents" and have it persist from one session to another.
+</p><p>Since we'll be running our JavaScript on the server, we need to specify this in our <tt>script</tt> tag. If you look at the <tt>script</tt> tag in our sample code, you'll see that we've added a <tt>runat="server"</tt> attribute:
+</p><p><code>[html, N]&lt;script type="text/javascript" runat="server"&gt;</code>
+</p>
+<a name="Determining_which_functions_run_where"></a><h4> <span class="mw-headline">Determining which functions run where</span></h4>
+<p>Out of the functions described in the above section, we'll need several of them to be available both on the client and on the server. On line 54, we set the <tt>setEditing</tt> function to be available to be run on both:
+</p><p><code>[javascript,N]setEditing.runat = "both";</code>
+</p><p>We need this function available both on the server when we prepare the page and on the client when the user toggles editing mode on and off.
+</p><p>On line 60, we set the <tt>$()</tt> function to run at both:
+</p><p><code>[javascript,N]$.runat = "both";</code>
+</p><p>This is so that we can perform various Ajax functionality and DOM manipulation on both the front and back end of the application.
+</p><p>On line 93, we also set the <tt>checkValid</tt> function to run at both:
+</p><p><code>[javascript,N]checkValid.runat = "both";</code>
+</p><p>We need to be able to validate the contents on both the client and the server. The client performs an initial check, but the server validation catches anything not caught by the client.
+</p><p>Because the <tt>editOrSave</tt> function is only applicable to the client, we set its <tt>runat</tt> value to "client"only.
+</p><p><code>[javascript,N]editOrSave.runat = "client";</code>
+</p><p>Finally, remember the <tt>init()</tt> function that was attached to an event handler in the <tt>body</tt> tag? We want the page to be initialized when the server loads, so this is when we specify for <tt>init()</tt> to be called:
+</p><p><code>[html,N]&lt;body onserverload="init()"&gt;</code>
+</p>
+<a name="Server-side_functions"></a><h3> <span class="mw-headline">Server-side functions</span></h3>
+<p>The WikiLite application has three functions that are specific to server-side functionality:
+</p>
+<ul><li> <tt>readAndFill()</tt>
+</li><li> <tt>getFilePath()</tt>
+</li><li> <tt>save(contents)</tt>
+</li></ul>
+<a name="readAndFill.28.29"></a><h4> <span class="mw-headline"><tt>readAndFill()</tt></span></h4>
+<p>The <tt>readAndFill()</tt> function gets the contents of a file that is obtained by calling the <tt>getFilePath</tt> function. It checks if a file exists at the filepath, and if the file exists, gets the file contents and sets the value "contents" to those file contents. If the file does not exist, <tt>readAndFill()</tt> leaves "contents" blank.
+</p><p><code>[javascript,1]function readAndFill()
+	{
+		var filePath = getFilePath();
+		var fileExists = Jaxer.File.exists(filePath);
+		$("contents").value = fileExists&nbsp;? Jaxer.File.read(filePath)&nbsp;: "";
+	}
+</code>
+</p>
+<a name="getFilePath.28.29"></a><h4> <span class="mw-headline"><tt>getFilePath()</tt></span></h4>
+<p>The <tt>getFilePath()</tt> function returns the "contents.txt" file. (This has been hard-coded for the sake of the demo application):
+</p><p><code>[javascript,1]function getFilePath()
+	{
+		return "contents.txt";
+	}
+</code>
+</p>
+<a name="save.28contents.29"></a><h4> <span class="mw-headline"><tt>save(contents)</tt></span></h4>
+<p>The <tt>save(contents)</tt> function normalizes newline characters for Windows and Mac and then does an additional validation check on the contents. <tt>save</tt> then finally writes "contents" to the file at <tt>getFilePath</tt>.
+</p><p><code>[javascript,1]function save(contents)
+	{
+		contents = contents.replace(/\r\n/g, "\n"); // normalize newlines for Windows/IE;
+		contents = contents.replace(/\r/g, "\n"); // normalize newlines for Mac;
+		checkValid(contents);
+		Jaxer.File.write(getFilePath(), contents);
+	}
+</code>
+</p><p><br />
+We set the proxy value of this function to "true" so that the function can be called from the client, but the contents are actually saved on the server.
+</p><p><code>[javascript,N]save.proxy = true;</code>
+</p>
+<a name="Testing_the_WikiLite_application"></a><h2> <span class="mw-headline">Testing the WikiLite application</span></h2>
+<p>This section walks you through a few quick tests to see how the functionality of the WikiLite application works. You'll add some text to the page, save that text to a file on the server, and perform a validation check both on the client and then on the server.
+</p>
+<a name="Editing_and_saving_text"></a><h3> <span class="mw-headline">Editing and saving text</span></h3>
+<p>To test the functionality of the WikiLite application:
+</p>
+<ol>
+<li>With the <b>index.html</b> file for the WikiLite application open, click the Firefox tab to preview the application in <b>Firefox</b>. The preview should look like the screen below.<p>When the page loads, the <tt>onserverload</tt> event triggers the <tt>init()</tt> function, which in turn calls the <tt>setEditing</tt> function to set the text area to read-only. The <tt>init()</tt> function also calls <tt>readAndFill</tt> which reads the contents of a remote file (if it exists) and fills the text area with those contents .</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=WikiLite1.png" class="new" title="Image:WikiLite1.png">Image:WikiLite1.png</a></p></li>
+<li>Click the <b>edit</b> button.<p>WikiLite enables the text area for typing, which switches from a blue background to a white background. It also changes the name of the button from "edit" to "save". These events happen as a result of calling the <tt>editOrSave</tt> function.</p></li>
+<li>In the text area, type a few characters, and click the <b>save</b> button.<p>Clicking <b>save</b> calls <tt>editOrSave</tt> again and toggles edit mode off. It also calls the <tt>save</tt> function, which normalizes whitespace, validates the text contents, and writes the contents to a file on the Jaxer server.</p></li>
+</ol>
+<a name="Validating_the_text_area_contents"></a><h3> <span class="mw-headline">Validating the text area contents</span></h3>
+<p>The <tt>checkValid</tt> function checks whether the text entered into "contents" meets its validity criteria. As currently written, the text must simply be less than 10000 characters. This function is run on the client when it is called by the <tt>editOrSave</tt> function, and it is also run on the server when it is called by the <tt>save</tt> function. To test this function yourself, you can make a couple of minor changes to the code.
+</p><p>To test validity checking on the client:
+</p>
+<ol>
+<li>Go to the <tt>checkValid</tt> function on line 87 in <b>index.html</b>.</li>
+<li>Change the length limit from 10000 to 10 (shown below):
+<p><code>[javascript,1]function checkValid(contents)
+	{
+		if (contents.length &gt; 10)
+		{
+			throw "Too long!";
+		}
+	}</code></p></li>
+<li>Test the client-side validation:<ol>
+  <li>Click the Firefox preview tab to preview the page in Firefox.</li>
+  <li>Click the <b>edit</b> button to toggle on edit mode.</li>
+  <li>In the text area, type over 10 characters of text.</li>
+  <li>Click the <b>save</b> button.<p>The WikiLite app displays a "Too long!" error telling you that the text that you entered is too long.</p></li></ol></li>
+</ol>
+<p>To test validity on the server:
+</p>
+<ol>
+<li>Leave the <tt>checkValid</tt> function with the modification that you made above.</li>
+<li>Comment out the validity check on the client-side:<ol>
+  <li>Go to the <tt>editOrSave</tt> function (line 63).</li>
+  <li>Comment out line 71, where the <tt>checkValid</tt> function is called (shown below):<p>
+<code>[javascript,1]function editOrSave()
+	{
+		var isEditing =&nbsp;!$("contents").readOnly;
+		if (isEditing) // try to save and get out of edit mode
+		{
+			try
+			{
+				var contents = $("contents").value;
+				//checkValid(contents);
+				save(contents);
+				setEditing(false);
+			}
+			catch (e)
+			{
+				alert(e);
+			}
+		}
+		else // go into edit mode
+		{
+			setEditing(true);
+		}
+	}
+</code></p></li>
+<li>Test the client-side validation:<ol>
+  <li>Click the Firefox preview tab to preview the page in Firefox.</li>
+  <li>Click the <b>edit</b> button to toggle on edit mode.</li>
+  <li>In the text area, type over 10 characters of text.</li>
+  <li>Click the <b>save</b> button.<p>The WikiLite app displays a "Too long!" server error telling you that the text that you entered is too long.</p></li></ol></li>
+</ol>
+<a name="Complete_WikiLite_application_code"></a><h2> <span class="mw-headline">Complete WikiLite application code</span></h2>
+<p>The following code sample is the entire page of code for the WikiLite application:
+</p><p><code>[html,1]&lt;html&gt;
+</p><p>	&lt;head&gt;
+</p><p>		&lt;title&gt;WikiLite&lt;/title&gt;
+</p><p>		&lt;style&gt;
+			html {
+				height: 95%;
+				width: 99%;
+				padding: 0;
+				margin: 0;
+			}
+			body {
+				font: 10pt verdana;
+				font-family: verdana;
+				height: 100%;
+				padding: 10px;
+				margin: 0;
+			}
+			#contents {
+				width: 100%;
+				height: 95%;
+			}
+			#editOrSave {
+				width: 100%;
+			}
+			.readonly {
+				font: 8pt verdana;
+				background-color: #f0f0ff;
+				border: none;
+				padding: 8px;
+			}
+		&lt;/style&gt;
+</p><p>		&lt;script type="text/javascript" runat="server"&gt;
+</p><p>			function init()
+			{
+				setEditing(false);
+				readAndFill();
+			}
+</p><p>			function setEditing(editable)
+			{
+				$("contents").readOnly =&nbsp;!editable;
+				$("contents").className = editable&nbsp;? ""&nbsp;: "readonly";
+				$("editOrSave").value = editable&nbsp;? "save"&nbsp;: "edit"; // set the button label
+				if (editable)
+				{
+					$("contents").focus();
+				}
+			}
+			setEditing.runat = "both";
+</p><p>			function $(id)
+			{
+				return document.getElementById(id);
+			}
+			$.runat = "both";
+</p><p>			function editOrSave()
+			{
+				var isEditing =&nbsp;!$("contents").readOnly;
+				if (isEditing) // try to save and get out of edit mode
+				{
+					try
+					{
+						var contents = $("contents").value;
+						checkValid(contents);
+						save(contents);
+						setEditing(false);
+					}
+					catch (e)
+					{
+						alert(e);
+					}
+				}
+				else // go into edit mode
+				{
+					setEditing(true);
+				}
+			}
+			editOrSave.runat = "client";
+</p><p>			function checkValid(contents)
+			{
+				if (contents.length &gt; 10000)
+				{
+					throw "Too long!";
+				}
+			}
+			checkValid.runat = "both";
+</p><p>			function readAndFill()
+			{
+				var filePath = getFilePath();
+				var fileExists = Jaxer.File.exists(filePath);
+				$("contents").value = fileExists&nbsp;? Jaxer.File.read(filePath)&nbsp;: "";
+			}
+</p><p>			function getFilePath()
+			{
+				return "contents.txt";
+			}
+</p><p>			function save(contents)
+			{
+				contents = contents.replace(/\r\n/g, "\n"); // normalize newlines for Windows/IE;
+				contents = contents.replace(/\r/g, "\n"); // normalize newlines for Mac;
+				checkValid(contents);
+				Jaxer.File.write(getFilePath(), contents);
+			}
+			save.proxy = true;
+</p><p>		&lt;/script&gt;
+</p><p>	&lt;/head&gt;
+</p><p>	&lt;body onserverload="init()"&gt;
+</p><p>		&lt;textarea id="contents"&gt;&lt;/textarea&gt;
+</p><p>		&lt;input type="button" id="editOrSave" onclick="editOrSave()"&gt;
+</p><p>	&lt;/body&gt;
+</p><p>&lt;/html&gt;
+</p><p></code>
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_the_Jaxer_server.html" title="About the Jaxer server">About the Jaxer server</a>
+</li><li> <a href="Getting_Started_with_Jaxer_in_Aptana_Studio.html" title="Getting Started with Jaxer in Aptana Studio">Getting Started with Jaxer in Aptana Studio</a>
+</li><li> <a href="Creating_a_new_Jaxer_project.html" title="Creating a new Jaxer project">Creating a new Jaxer project</a>
+</li><li> <a href="Previewing_a_Jaxer_project.html" title="Previewing a Jaxer project">Previewing a Jaxer project</a>
+</li><li> <a href="About_Jaxer_Views.html" title="About Jaxer Views">About Jaxer Views</a>
+<ul><li> <a href="Displaying_the_Servers_View.html" title="Displaying the Servers View">Displaying the Servers View</a>
+</li><li> <a href="Displaying_the_TailView_View.html" title="Displaying the TailView View">Displaying the TailView View</a>
+</li><li> <a href="Displaying_the_Jaxer_Activity_Monitor_View.html" title="Displaying the Jaxer Activity Monitor View">Displaying the Jaxer Activity Monitor View</a>
+</li><li> <a href="Displaying_the_Jaxer_Shell_View.html" title="Displaying the Jaxer Shell View">Displaying the Jaxer Shell View</a>
+</li></ul>
+</li><li> <a href="Configuring_your_Jaxer_servers.html" title="Configuring your Jaxer servers">Configuring your Jaxer servers</a>
+</li><li> <a href="Setting_your_TailView_preferences.html" title="Setting your TailView preferences">Setting your TailView preferences</a>
+</li><li> <a href="JaxerManager_Command_Line_Interface_(CLI)_Reference.html" title="JaxerManager Command Line Interface (CLI) Reference">JaxerManager_Command_Line_Interface_(CLI) Reference</a>
+</li><li> <a href="Jaxer_sample_application_guides.html" title="Jaxer sample application guides">Jaxer sample application guides</a>
+<ul><li><a href="Getting_started_with_Jaxer_development_using_the_Tasks_sample_application.html" title="Getting started with Jaxer development using the Tasks sample application">Getting started with Jaxer development using the Tasks sample application</a>
+</li><li><a href="Inside_the_Jaxer_Chat_application.html" title="Inside the Jaxer Chat application">Inside the Jaxer Chat application</a>
+</li><li><a href="Running_the_Jaxer_server_diagnostic_tools.html" title="Running the Jaxer server diagnostic tools">Running the Jaxer server diagnostic tools</a></ol>
+</li></ul>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2210-0!1!0!!en!2!edit=0 and timestamp 20090202085917 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Jaxer_WikiLite_Guide">http://aptana.com/docs/index.php/Jaxer_WikiLite_Guide</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

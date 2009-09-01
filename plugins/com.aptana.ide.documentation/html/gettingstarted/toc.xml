@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<toc label="Aptana Help" link_to="toc.xml#getting_started">
+		<topic  label="Aptana Studio Basics">
+		<topic href="html/gettingstarted/Installing_Aptana_Studio.html" label="Installing Aptana Studio">
+			<topic href="html/gettingstarted/Aptana_System_Requirements.html" label="Aptana Studio System Requirements"></topic>
+			<topic href="html/gettingstarted/Installing_Aptana_on_Linux.html" label="Installing Aptana Studio on Linux"></topic>
+			<topic href="html/gettingstarted/Plugging_Aptana_into_an_existing_Eclipse_configuration.html" label="Plugging Aptana Studio into an existing Eclipse install"></topic>
+			<topic href="html/gettingstarted/Running_two_versions_of_Aptana_Studio.html" label="Running two versions of Aptana Studio"></topic>
+		</topic>
+		<topic  label="Updating, Changing or Uninstalling">
+			<topic href="html/gettingstarted/Updating_to_Aptana_Studio_1.2.html" label="Updating to Aptana Studio 1.2"></topic>
+			<topic href="html/gettingstarted/Updating_your_version_of_Aptana_Studio.html" label="Updating your Aptana Studio"></topic>
+			<topic href="html/gettingstarted/Upgrading_to_Aptana_Studio_Pro.html" label="Upgrading to Aptana Studio Pro"></topic>
+			<topic href="html/gettingstarted/Moving_Studio_to_a_new_machine.html" label="Moving Studio to a new machine"></topic>
+			<topic href="html/gettingstarted/Uninstalling_Aptana_Studio.html" label="Uninstalling Aptana Studio"></topic>
+			<topic href="html/gettingstarted/Determining_your_Aptana_version.html" label="Determining your Aptana Studio version"></topic>
+			<topic href="html/gettingstarted/Reverting_to_a_previous_build_of_Aptana.html" label="Reverting to a previous Aptana Studio build"></topic>
+			<topic href="html/gettingstarted/Changing_your_update_version_type_of_Aptana.html" label="Changing your update version type"></topic>
+			<topic href="html/gettingstarted/Changing_the_VM_used_with_Aptana_Studio.html" label="Changing the VM used with Aptana Studio"></topic>
+			<topic href="html/gettingstarted/Setting_memory_usage_configuration.html" label="Setting memory usage configuration"></topic>
+		</topic>
+		<topic href="html/gettingstarted/Troubleshooting_Aptana_Studio_Issues.html" label="Troubleshooting Aptana Studio Issues"></topic>
+		<topic  label="Plugin Basics">
+			<topic href="html/gettingstarted/Installing_a_plug-in.html" label="Installing a plugin (including RadRails, PHP, iPhone, and AIR)"></topic>
+			<topic href="html/gettingstarted/Uninstalling_a_plug-in.html" label="Uninstalling a plugin"></topic>
+			<topic href="html/gettingstarted/Updating_a_plug-in.html" label="Updating a plugin"></topic>
+			<topic href="html/gettingstarted/Adding_a_source_control_plugin_to_Aptana.html" label="Adding a source control plugin to Aptana Studio"></topic>
+		</topic>
+		<topic  label="Additional resources">
+			<topic href="http://www.aptana.com/view/studio_faq" label="Studio FAQ"></topic>
+			<topic href="http://forums.aptana.com/index.php?c=13" label="Studio Forums"></topic>
+			<topic href="html/gettingstarted/Community_Resources.html" label="Community Resources"></topic>
+			<topic href="html/gettingstarted/Eclipse_Community_Resources.html" label="Eclipse Community Resources"></topic>
+			<topic href="http://aptana.com/dev/index.php/Aptana_Studio_Developer_Wiki#Accessing_the_Aptana_Source" label="Accessing Aptana Studio Source Code"></topic>
+			<topic href="html/gettingstarted/Contributing_to_Aptana_Studio_(Development).html" label="Contributing to Aptana Studio (Development)"></topic>
+			<topic href="html/gettingstarted/Contributing_to_Aptana_Studio_Wiki_(Documentation).html" label="Contributing to Aptana Studio Wiki (Documentation)"></topic>
+		</topic>
+	</topic>
+	<topic  label="Aptana Studio Pro">
+		<topic href="html/gettingstarted/Upgrading_to_Aptana_Studio_Pro.html" label="Upgrading to Aptana Studio Pro"></topic>
+		<topic href="html/gettingstarted/Installing_the_IE_debugger.html" label="Installing the IE debugger"></topic>
+		<topic href="html/gettingstarted/Importing_a_remote_project.html" label="Importing a remote project"></topic>
+		<topic href="html/gettingstarted/Generating_a_project_report.html" label="Generating a project report"></topic>
+		<topic href="html/gettingstarted/Creating_a_custom_project_report.html" label="Creating a custom project report"></topic>
+	</topic>
+	<topic  label="Getting to know Aptana Studio (General IDE Concepts)">
+		<topic href="html/gettingstarted/About_the_Eclipse_IDE_and_Aptana_Studio.html" label="About the Eclipse IDE and Aptana Studio"></topic>
+		<topic href="html/gettingstarted/Installing_a_Studio_plugin.html" label="Installing a Studio plugin"></topic>
+		<topic href="html/gettingstarted/About_the_Eclipse_Workbench.html" label="About the Eclipse Workbench">
+			<topic href="html/gettingstarted/About_Eclipse_Perspectives.html" label="About Eclipse Perspectives"></topic>
+			<topic href="html/gettingstarted/About_Eclipse_Workspaces.html" label="About Eclipse Workspaces"></topic>
+			<topic href="html/gettingstarted/About_Eclipse_Projects.html" label="About Eclipse Projects"></topic>
+		</topic>
+		<topic href="html/gettingstarted/About_the_Aptana_toolbar.html" label="About the Aptana Studio toolbar"></topic>
+		<topic href="html/gettingstarted/About_the_Aptana_menubar.html" label="About the Aptana Studio menubar"></topic>
+		<topic href="html/gettingstarted/About_preferences.html" label="About Preferences"></topic>
+		<topic href="html/gettingstarted/About_Editors.html" label="About Editors"></topic>
+		<topic href="html/gettingstarted/About_Projects.html" label="About Projects">
+			<topic href="html/gettingstarted/Importing_existing_projects.html" label="Importing existing projects"></topic>
+			<topic href="html/gettingstarted/Building_a_project.html" label="Building a project"></topic>
+			<topic href="html/gettingstarted/Debugging_a_project.html" label="Debugging a project"></topic>
+		</topic>
+	</topic>
+	<topic  label="Navigating Aptana Studio">
+		<topic href="html/gettingstarted/Searching_Aptana.html" label="Searching in Aptana Studio"></topic>
+		<topic href="html/gettingstarted/Searching_for_files_using_Open_Resource.html" label="Searching for files using Open Resource"></topic>
+		<topic href="html/gettingstarted/Rolling_back_a_file_version.html" label="Rolling a file back"></topic>
+		<topic href="html/gettingstarted/Navigating_open_files_with_Next_Editor_or_Previous_Editor.html" label="Navigating open files with Next Editor or Previous Editor"></topic>
+		<topic href="html/gettingstarted/Changing_your_Eclipse_Perspective.html" label="Changing the active Perspective"></topic>
+		<topic href="html/gettingstarted/Switching_your_Workspace.html" label="Switching your Workspace"></topic>
+		<topic href="html/gettingstarted/Using_Goto_to_jump_to_a_location.html" label="Using Goto to jump to a location"></topic>
+		<topic href="html/gettingstarted/Adding_a_Bookmark.html" label="Adding a Bookmark"></topic>
+		<topic href="html/gettingstarted/Adding_a_Task.html" label="Adding a Task"></topic>
+		<topic  label="Local History">
+			<topic href="html/gettingstarted/Setting_Local_History_preferences.html" label="Setting Local History preferences"></topic>
+			<topic href="html/gettingstarted/Comparing_different_versions_of_a_file_using_Local_History.html" label="Comparing different versions of a file using Local History"></topic>
+			<topic href="html/gettingstarted/Recovering_a_deleted_file_with_Local_History.html" label="Recovering a deleted file with Local History"></topic>
+		</topic>
+		<topic  label="Aptana Snippets">
+			<topic href="html/gettingstarted/Editing_with_Snippets.html" label="Editing with Snippets"></topic>
+			<topic href="html/gettingstarted/Adding_a_new_Snippet.html" label="Adding a new Snippet"></topic>
+			<topic href="html/gettingstarted/Editing_a_Snippet.html" label="Editing a Snippet"></topic>
+			<topic href="html/gettingstarted/Assigning_a_keyboard_shortcut_to_a_snippet.html" label="Assigning a keyboard shortcut to a snippet"></topic>
+		</topic>
+		<topic  label="Using Code Assist">
+			<topic href="html/gettingstarted/About_Code_Assist.html" label="About Code Assist"></topic>
+			<topic href="html/gettingstarted/Displaying_Code_Assist.html" label="Displaying Code Assist"></topic>
+			<topic href="html/gettingstarted/Setting_up_Code_Assist_using_ScriptDoc.html" label="Setting up Code Assist using ScriptDoc"></topic>
+			<topic href="html/gettingstarted/Documenting_your_code_using_ScriptDoc.html" label="Documenting your code using ScriptDoc"></topic>
+			<topic href="html/gettingstarted/Documenting_your_code_in_an_.sdoc_file.html" label="Documenting your code in an .sdoc file"></topic>
+			<topic href="html/gettingstarted/Documenting_dynamic_properties_and_functions_with_ScriptDoc.html" label="Documenting dynamic properties and functions with ScriptDoc"></topic>
+			<topic href="html/gettingstarted/Documenting_inheritance_with_ScriptDoc.html" label="Documenting inheritance with ScriptDoc"></topic>
+			<topic href="html/gettingstarted/Using_Open_Declaration_to_jump_to_a_function_in_your_code.html" label="Using Open Declaration to jump to a function in your code"></topic>
+			<topic href="html/gettingstarted/ScriptDoc_comprehensive_tag_reference.html" label="ScriptDoc comprehensive tag reference"></topic>
+			<topic href="html/gettingstarted/ScriptDoc_tag_quick_reference.html" label="ScriptDoc tag quick reference"></topic>
+			<topic href="html/gettingstarted/Generating_HTML_documentation_from_ScriptDoc.html" label="Generating HTML documentation from ScriptDoc"></topic>
+		</topic>
+	</topic>
+	<topic href="html/gettingstarted/Setting_your_Aptana_Preferences.html" label="Aptana Studio Preferences">
+		<topic href="html/gettingstarted/Using_Aptana_from_behind_a_web_proxy.html" label="Using Aptana Studio from behind a web proxy"></topic>
+		<topic href="html/gettingstarted/Changing_the_Aptana_Studio_interface_to_a_different_language.html" label="Changing the Aptana Studio UI to use a different language"></topic>
+		<topic href="html/gettingstarted/Displaying_or_hiding_line_numbers.html" label="Displaying or hiding line numbers"></topic>
+		<topic href="html/gettingstarted/Viewing_code_changes_with_Quick_Diff.html" label="Viewing code changes with Quick Diff"></topic>
+		<topic href="html/gettingstarted/Modifying_your_shortcut_keys.html" label="Modifying your shortcut keys"></topic>
+		<topic href="html/gettingstarted/Shortcut_key_Quick_Reference.html" label="Shortcut key Quick Reference"></topic>
+		<topic href="html/gettingstarted/Changing_the_Editor_font.html" label="Changing the Editor font"></topic>
+		<topic href="html/gettingstarted/Changing_your_file_association_preferences.html" label="Changing your file association preferences"></topic>
+		<topic href="html/gettingstarted/Setting_your_HTML_preview_preferences.html" label="Setting your HTML preview preferences"></topic>
+		<topic href="html/gettingstarted/Adding_custom_error_message_filters_to_the_Validation_View.html" label="Adding custom error message filters to the Validation View"></topic>
+		<topic href="html/gettingstarted/Setting_your_View_Source_preferences.html" label="Setting your View Source preferences"></topic>
+		<topic href="html/gettingstarted/Customizing_your_colorization_preferences.html" label="Customizing your colorization preferences"></topic>
+		<topic href="html/gettingstarted/Customizing_your_formatting_preferences.html" label="Customizing your formatting preferences"></topic>
+		<topic href="html/gettingstarted/JavaScript_Formatting.html" label="Customizing your JavaScript formatting preferences"></topic>
+		<topic href="html/gettingstarted/Customizing_your_typing_preferences.html" label="Customizing your typing preferences"></topic>
+		<topic href="html/gettingstarted/Exporting_and_importing_colorization_preferences.html" label="Exporting and importing colorization preferences"></topic>
+		<topic href="html/gettingstarted/Exporting_and_importing_preferences.html" label="Exporting and importing preferences"></topic>
+		<topic href="html/gettingstarted/Setting_your_TailView_preferences.html" label="Setting your TailView preferences"></topic>
+	</topic>
+	<topic  label="Aptana Studio Projects">
+		<topic href="html/gettingstarted/About_Aptana_projects.html" label="About Aptana Studio projects"></topic>
+		<topic href="html/gettingstarted/Opening_an_existing_Aptana_project.html" label="Opening an existing project"></topic>
+		<topic href="html/gettingstarted/Sharing_an_Aptana_project.html" label="Sharing a project/Using Source Control with your project"></topic>
+		<topic href="html/gettingstarted/Generating_a_project_report.html" label="Generating a project report"></topic>
+		<topic href="html/gettingstarted/Creating_a_custom_project_report.html" label="Creating a custom project report"></topic>
+		<topic href="html/gettingstarted/About_using_a_Strict_vs._Transitional_DOCTYPE_in_HTML.html" label="About using a Strict vs. Transitional DOCTYPE in HTML"></topic>
+		<topic href="html/gettingstarted/Using_Adobe_Dreamweaver_sites_as_Aptana_Studio_projects.html" label="Using Adobe Dreamweaver sites as Aptana Studio projects"></topic>
+		<topic  label="Creating Projects and Files">
+			<topic href="html/gettingstarted/Creating_your_first_Aptana_project.html" label="Creating your first Aptana Studio project"></topic>
+			<topic href="html/gettingstarted/Creating_a_new_Aptana_project.html" label="Creating a new project in Aptana Studio"></topic>
+			<topic href="html/gettingstarted/Starting_from_a_sample_app.html" label="Starting from a sample app"></topic>
+			<topic href="html/gettingstarted/Tutorial:_Creating_and_Using_a_Remote_Project.html" label="Tutorial: Creating and Using a Remote Project"></topic>
+			<topic href="html/gettingstarted/Importing_an_existing_project_from_Dreamweaver_or_HomeSite.html" label="Importing an existing project from Dreamweaver or HomeSite"></topic>
+			<topic href="html/gettingstarted/Adding_a_project_reference_to_your_project.html" label="Adding a project reference to your project"></topic>
+			<topic href="html/gettingstarted/Importing_a_file_into_a_project.html" label="Importing a file into a project"></topic>
+			<topic href="html/gettingstarted/Exporting_a_file_from_a_project.html" label="Exporting a file from a project"></topic>
+			<topic href="html/gettingstarted/Creating_a_working_set_of_projects.html" label="Creating a working set of projects"></topic>
+			<topic href="html/gettingstarted/Creating_a_project_from_an_existing_folder.html" label="Creating a project from an existing folder"></topic>
+			<topic href="html/gettingstarted/Creating_a_new_JavaScript_file.html" label="Creating a new JavaScript file"></topic>
+			<topic href="html/gettingstarted/Creating_a_new_HTML_or_CSS_file.html" label="Creating a new HTML or CSS file"></topic>
+			<topic href="html/gettingstarted/Applying_a_patch_to_an_Aptana_project_or_file.html" label="Applying a patch to a project or file"></topic>
+			<topic href="html/gettingstarted/Importing_existing_projects.html" label="Importing existing projects"></topic>
+		</topic>
+		<topic  label="Ajax Projects">
+			<topic href="html/gettingstarted/Creating_a_new_Studio_project_that_includes_an_Ajax_library.html" label="Creating a new Studio project that includes an Ajax library"></topic>
+			<topic href="html/gettingstarted/Creating_a_project_from_a_sample.html" label="Creating a project from a sample"></topic>
+			<topic href="html/gettingstarted/Updating_an_Ajax_library_project.html" label="Updating a Studio project that includes an Ajax library"></topic>
+			<topic href="html/gettingstarted/Creating_a_new_JavaScript_library_project_wizard.html" label="Creating a new JavaScript library project wizard"></topic>
+			<topic href="http://aptana.com/dev/index.php/Adding_support_for_a_new_Ajax_library" label="Adding support for a new Ajax library"></topic>
+		</topic>
+		<topic  label="Previewing Aptana Studio Projects">
+			<topic href="html/gettingstarted/Setting_up_your_web_browser_configuration.html" label="Setting up your web browser configuration"></topic>
+			<topic href="html/gettingstarted/Adding_a_web_browser_configuration_to_your_Favorites.html" label="Adding a web browser configuration to your Favorites"></topic>
+			<topic href="html/gettingstarted/Previewing_a_project_in_a_web_browser.html" label="Previewing a project in a web browser"></topic>
+			<topic href="html/gettingstarted/Configuring_Aptana_Studio_to_use_an_external_web_server.html" label="Using an external web server for previews"></topic>
+			<topic href="html/gettingstarted/Previewing_CSS.html" label="Previewing CSS"></topic>
+			<topic href="html/gettingstarted/Setting_your_HTML_preview_preferences.html" label="Setting your HTML preview preferences"></topic>
+			<topic href="html/gettingstarted/Previewing_a_Jaxer_project.html" label="Previewing a Jaxer project"></topic>
+		</topic>
+	</topic>
+	<topic  label="Core Studio Editors">
+		<topic href="html/gettingstarted/About_the_Aptana_JavaScript_Editor.html" label="Aptana JavaScript Editor"></topic>
+		<topic href="html/gettingstarted/About_the_Aptana_HTML_Editor.html" label="Aptana HTML Editor"></topic>
+		<topic href="html/gettingstarted/About_the_Aptana_CSS_Editor.html" label="Aptana CSS Editor"></topic>
+		<topic href="html/gettingstarted/About_the_Aptana_JSON_Editor.html" label="Aptana JSON Editor"> label=" (Pro Edition only)"></topic>
+		<topic href="html/gettingstarted/Aptana_XML_Editor.html" label="Aptana XML Editor"></topic>
+		<topic href="html/gettingstarted/Aptana_YML_Editor.html" label="Aptana YML Editor"></topic>
+	</topic>
+	<topic href="html/gettingstarted/Displaying_Aptana_Views.html" label="Aptana Studio Views">
+		<topic href="html/gettingstarted/Displaying_Fast_Views.html" label="Fast Views"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Bookmarks_View.html" label="Bookmarks View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_File_View.html" label="File View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Help_View.html" label="Help View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Jaxer_Activity_Monitor_View.html" label="Jaxer Activity Monitor View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Jaxer_Shell_View.html" label="Jaxer Shell View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Project_View.html" label="Project View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Outline_View.html" label="Outline View"></topic>
+		<topic href="html/gettingstarted/Managing_Plugins_with_the_Plugins_Manager_View.html" label="Plugins Manager View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Properties_View.html" label="Properties View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_References_View.html" label="References View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Samples_View.html" label="Samples View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Search_View.html" label="Search View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Servers_View.html" label="Servers View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Snippets_and_Scripts_Views.html" label="Snippets and Scripts Views"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Sync_Manager_View.html" label="Sync Manager View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_TailView_View.html" label="TailView View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Tasks_View.html" label="Tasks View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Validation_View.html" label="Validation View"></topic>
+		<topic href="html/gettingstarted/Displaying_the_Visual_ScriptDoc_View.html" label="Visual ScriptDoc View"></topic>
+	</topic>
+	<topic  label="Debugging JavaScript with the Aptana Studio Debugger">
+		<topic href="html/gettingstarted/About_the_JavaScript_debugger.html" label="About the JavaScript debugger"></topic>
+		<topic href="html/gettingstarted/Getting_started_with_Aptana_Studio_Debugger.html" label="Getting started with the debugger"></topic>
+		<topic href="html/gettingstarted/JavaScript_debugger_feature_comparison.html" label="JavaScript debugger feature comparison"></topic>
+		<topic href="html/gettingstarted/About_the_Aptana_Debug_perspective.html" label="The Debug perspective">
+			<topic href="html/gettingstarted/Using_the_Debug_View.html" label="Using the Debug View"></topic>
+			<topic href="html/gettingstarted/Using_the_Variables_View.html" label="Using the Variables View"></topic>
+			<topic href="html/gettingstarted/Using_the_Breakpoints_View.html" label="Using the Breakpoints View"></topic>
+			<topic href="html/gettingstarted/Using_the_Expressions_View.html" label="Using the Expressions View"></topic>
+			<topic href="html/gettingstarted/Using_the_Console_View.html" label="Using the Console View"></topic>
+			<topic href="html/gettingstarted/Using_the_AJAX_Monitor_View.html" label="Using the AJAX Monitor View"></topic>
+		</topic>
+		<topic href="html/gettingstarted/Installing_the_JavaScript_debugger.html" label="Installing the JavaScript debugger"></topic>
+		<topic href="html/gettingstarted/Installing_the_IE_debugger.html" label="Installing the IE debugger"></topic>
+		<topic href="html/gettingstarted/Uninstalling_the_debugger.html" label="Uninstalling the debugger"></topic>
+		<topic href="html/gettingstarted/Running_the_debugger.html" label="Running the debugger"></topic>
+		<topic href="html/gettingstarted/Accessing_your_debugger_log.html" label="Accessing your debugger log"></topic>
+		<topic href="html/gettingstarted/Stepping_into_and_over_functions.html" label="Stepping into and over functions"></topic>
+		<topic href="html/gettingstarted/Adding_a_breakpoint.html" label="Adding a breakpoint"></topic>
+		<topic href="html/gettingstarted/Using_the_Assert_API.html" label="Using the Assert API"></topic>
+		<topic href="html/gettingstarted/Remote_browser_debugging.html" label="Remote browser debugging"></topic>
+	</topic>
+	<topic  label="Inspecting and Debugging with Firebug">
+		<topic href="html/gettingstarted/About_Firebug.html" label="About Firebug"></topic>
+		<topic href="html/gettingstarted/Installing_the_Firebug_extension.html" label="Installing the Firebug extension"></topic>
+		<topic href="html/gettingstarted/Inspecting_HTML.html" label="Inspecting HTML"></topic>
+		<topic href="html/gettingstarted/Inspecting_CSS.html" label="Inspecting CSS"></topic>
+		<topic href="html/gettingstarted/Stepping_through_your_code.html" label="Stepping through your code"></topic>
+		<topic href="html/gettingstarted/Adding_watch_expressions.html" label="Adding watch expressions"></topic>
+		<topic href="html/gettingstarted/Monitoring_XMLHttpRequests.html" label="Monitoring XMLHttpRequests"></topic>
+		<topic href="html/gettingstarted/Editing_a_web_page.html" label="Editing a web page"></topic>
+		<topic href="html/gettingstarted/Writing_to_the_Firebug_console.html" label="Writing to the Firebug console"></topic>
+		<topic href="html/gettingstarted/Setting_breakpoints_in_Firebug.html" label="Setting breakpoints in Firebug"></topic>
+		<topic href="html/gettingstarted/Profiling_code_performance.html" label="Profiling code performance"></topic>
+		<topic href="html/gettingstarted/Firebug_hotkey_reference.html" label="Firebug hotkey reference"></topic>
+	</topic>
+	<topic href="html/gettingstarted/Transferring_Files_with_FTP_SFTP.html" label="Transferring Files with FTP/SFTP">
+		<topic href="html/gettingstarted/About_the_Aptana_FTP_SFTP_tools.html" label="About the Aptana FTP/SFTP tools"></topic>
+		<topic href="html/gettingstarted/Adding_an_FTP_site.html" label="Adding an FTP/SFTP site"></topic>
+		<topic href="html/gettingstarted/Adding_a_site_connection.html" label="Adding a site connection"></topic>
+		<topic href="html/gettingstarted/Synchronizing_your_files.html" label="Synchronizing your files"></topic>
+		<topic href="html/gettingstarted/Editing_a_file_from_a_remote_site.html" label="Editing a file from a remote site"></topic>
+		<topic href="html/gettingstarted/Uploading_or_downloading_a_file_or_folder.html" label="Uploading or downloading a file or folder"></topic>
+		<topic href="html/gettingstarted/Cloaking_files_or_folders.html" label="Ignoring/Cloaking files or folders"></topic>
+		<topic href="html/gettingstarted/Setting_remote_file_permissions.html" label="Setting remote file permissions"></topic>
+		<topic href="html/gettingstarted/Importing_a_remote_project.html" label="Importing a remote project"></topic>
+	</topic>
+	<topic href="html/gettingstarted/Developing_with_the_Aptana_PHP_Plugin.html" label="Developing with the Aptana PHP Plugin">
+		<topic href="html/gettingstarted/Configuring_PHP_Preferences.html" label="Configuring PHP Preferences"></topic>
+		<topic href="html/gettingstarted/Previewing_PHP%2C_ASP_and_other_non-HTML_pages.html" label="Previewing PHP files"></topic>
+		<topic href="html/gettingstarted/Basic_PHP_Debugging.html" label="Basic PHP Debugging"></topic>
+		<topic href="html/gettingstarted/Remote_PHP_Debugging.html" label="Remote PHP Debugging"> label=" -- "></topic>
+		<topic  label="PHP extensions embedded with Aptana Studio">
+			<topic href="html/gettingstarted/CGI_extensions.html" label="CGI extensions"></topic>
+			<topic href="html/gettingstarted/CLI_extensions.html" label="CLI extensions"></topic>
+		</topic>
+		<topic href="http://forums.aptana.com/viewforum.php?f=25" label="PHP Plugin Community Forum"></topic>
+	</topic>
+	<topic  label="Developing Jaxer Projects">
+		<topic href="http://www.aptana.com/jaxer/guide" label="The Jaxer Guide"></topic>
+		<topic href="html/gettingstarted/About_the_Jaxer_server.html" label="About the Jaxer server"></topic>
+		<topic href="html/gettingstarted/Getting_Started_with_Jaxer_in_Aptana_Studio.html" label="Getting Started with Jaxer in Aptana Studio"></topic>
+		<topic href="html/gettingstarted/Creating_a_new_Jaxer_project.html" label="Creating a new Jaxer project"></topic>
+		<topic href="html/gettingstarted/Previewing_a_Jaxer_project.html" label="Previewing a Jaxer project"></topic>
+		<topic  label="Jaxer-related Views">
+			<topic href="html/gettingstarted/Displaying_the_Servers_View.html" label="Servers View"></topic>
+			<topic href="html/gettingstarted/Displaying_the_TailView_View.html" label="TailView"></topic>
+			<topic href="html/gettingstarted/Setting_your_TailView_preferences.html" label="Setting TailView preferences"></topic>
+			<topic href="html/gettingstarted/Displaying_the_Jaxer_Activity_Monitor_View.html" label="Jaxer Activity Monitor"></topic>
+			<topic href="html/gettingstarted/Displaying_the_Jaxer_Shell_View.html" label="Jaxer Shell"></topic>
+		</topic>
+		<topic href="html/gettingstarted/Configuring_your_Jaxer_servers.html" label="Configuring Jaxer servers"></topic>
+		<topic href="html/gettingstarted/Running_the_Jaxer_Server_Diagnostic_Tools.html" label="Running the Jaxer Server Diagnostic Tools"></topic>
+	</topic>
+	<topic href="html/gettingstarted/RadRails.html" label="Developing Rails Projects with RadRails">
+		<topic href="http://www.aptana.com/rails/" label="About RadRails"></topic>
+		<topic  label="Installing and configuring RadRails">
+			<topic href="html/gettingstarted/Prepping_for_and_Installing_RadRails_on_Windows_Vista.html" label="Prepping for and Installing RadRails on Windows Vista"></topic>
+			<topic href="html/gettingstarted/Installing_RadRails_on_Ubuntu_Linux.html" label="Installing RadRails on Ubuntu Linux"></topic>
+			<topic href="html/gettingstarted/Mac_OS_X_Installation_Tips.html" label="Mac OS X Installation Tips"></topic>
+			<topic href="html/gettingstarted/Configuring_your_RadRails_setup.html" label="Configuring your RadRails setup"></topic>
+			<topic href="html/gettingstarted/Uninstalling_RadRails.html" label="Uninstalling RadRails"></topic>
+		</topic>
+		<topic href="html/gettingstarted/Get_Rolling_with_Ruby_on_Rails_in_RadRails.html" label="Tutorial: Get Rolling with Ruby on Rails in RadRails"></topic>
+		<topic href="html/gettingstarted/Starting_a_new_RadRails_project.html" label="Starting a new RadRails project">
+			<topic href="html/gettingstarted/Importing_an_existing_project_into_RadRails.html" label="Importing an existing project into RadRails"></topic>
+			<topic href="html/gettingstarted/Building_an_application_in_RadRails.html" label="Building an application in RadRails"></topic>
+			<topic href="html/gettingstarted/Running_a_unit_test_on_RadRails.html" label="Running a unit test on RadRails"></topic>
+			<topic href="html/gettingstarted/Creating_and_running_a_WEBrick_server.html" label="Creating and running a WEBrick server"></topic>
+			<topic href="html/gettingstarted/Executing_SQL_statements_in_RadRails.html" label="Executing SQL statements in RadRails"></topic>
+			<topic href="html/gettingstarted/Browsing_a_database_in_RadRails.html" label="Browsing a database in RadRails"></topic>
+			<topic href="html/gettingstarted/Using_a_Mongrel_server.html" label="Using a Mongrel server"></topic>
+		</topic>
+		<topic  label="Using RadRails Views">
+			<topic href="html/gettingstarted/Using_the_RadRails_Console_View.html" label="Using the RadRails Console View"></topic>
+			<topic href="html/gettingstarted/Using_the_Servers_View.html" label="Using the Servers View"></topic>
+			<topic href="html/gettingstarted/Using_the_Generators_View.html" label="Using the Generators View"></topic>
+			<topic href="html/gettingstarted/Using_the_Rails_Plugins_View.html" label="Using the Rails Plugins View"></topic>
+			<topic href="html/gettingstarted/Using_the_RegExp_View.html" label="Using the RegExp View"></topic>
+			<topic href="html/gettingstarted/Using_the_Rake_Tasks_View.html" label="Using the Rake Tasks View"></topic>
+			<topic href="html/gettingstarted/Using_the_Ruby_Explorer_View.html" label="Using the Ruby Explorer View"></topic>
+			<topic href="html/gettingstarted/Using_the_Rails_Shell_View.html" label="Using the Rails Shell View"></topic>
+		</topic>
+		<topic href="html/gettingstarted/About_the_Ruby_Profiler_Perspective.html" label="About the Ruby Profiler Perspective">
+			<topic href="html/gettingstarted/Using_the_Call_Graph_View.html" label="Using the Call Graph View"></topic>
+			<topic href="html/gettingstarted/Using_the_Hot_Spots_View.html" label="Using the Hot Spots View"></topic>
+		</topic>
+		<topic  label="Configuring the Eclipse SQL Explorer plug-in for RadRails">
+			<topic href="html/gettingstarted/Installing_the_SQL_Explorer_plug-in.html" label="Installing the SQL Explorer plug-in"></topic>
+			<topic href="html/gettingstarted/Deploying_ConnectorJ.html" label="Deploying ConnectorJ"></topic>
+			<topic href="html/gettingstarted/Creating_a_new_driver_in_Eclipse.html" label="Creating a new driver in Eclipse"></topic>
+			<topic href="html/gettingstarted/Creating_a_new_connection_in_SQL_Explorer.html" label="Creating a new connection in SQL Explorer"></topic>
+			<topic href="html/gettingstarted/Connecting_to_the_database_application.html" label="Connecting to the database application"></topic>
+			<topic href="html/gettingstarted/Using_SQL_Explorer.html" label="Using SQL Explorer"></topic>
+		</topic>
+		<topic href="html/gettingstarted/Fast_Rails_Debugging_using_Aptana_Rails_IDE.html" label="Fast Rails Debugging using Aptana Rails IDE"></topic>
+		<topic href="html/gettingstarted/Eclipse_Monkey_scripting_with_Ruby.html" label="Eclipse Monkey scripting with Ruby"></topic>
+	</topic>
+	<topic  label="RDT (Ruby Development Tools)">
+		<topic  label="Getting Started with RDT">
+			<topic href="html/gettingstarted/Preparing_the_RDT_Workbench.html" label="Preparing the RDT Workbench"></topic>
+			<topic href="html/gettingstarted/Important_Ruby_Settings.html" label="Important Ruby Settings"></topic>
+		</topic>
+		<topic  label="Ruby Development Concepts">
+			<topic href="html/gettingstarted/Ruby_projects.html" label="Ruby projects"></topic>
+			<topic href="html/gettingstarted/Ruby_gems.html" label="Ruby gems"></topic>
+		</topic>
+		<topic  label="Ruby perspectives">
+			<topic href="html/gettingstarted/Ruby_Perspective.html" label="Ruby Perspective"></topic>
+			<topic href="html/gettingstarted/Ruby_Debug_Perspective.html" label="Ruby Debug Perspective"></topic>
+			<topic href="html/gettingstarted/Ruby_Browsing_Perspective.html" label="Ruby Browsing Perspective"></topic>
+		</topic>
+		<topic href="html/gettingstarted/Ruby_Resources_View.html" label="Ruby Resources View"></topic>
+		<topic href="html/gettingstarted/RHTML_Editor.html" label="RHTML Editor"></topic>
+		<topic href="html/gettingstarted/Ruby_Editor.html" label="Ruby Editor">
+			<topic href="html/gettingstarted/Ruby_code_completion.html" label="Ruby code completion"></topic>
+			<topic href="html/gettingstarted/Ruby_code_formatting.html" label="Ruby code formatting"></topic>
+			<topic href="html/gettingstarted/Ruby_code_folding.html" label="Ruby code folding"></topic>
+			<topic href="html/gettingstarted/Ruby_go_to_declaration.html" label="Ruby go to declaration"></topic>
+			<topic href="html/gettingstarted/Ruby_find_references.html" label="Ruby find references"></topic>
+			<topic href="html/gettingstarted/Ruby_open_type.html" label="Ruby open type"></topic>
+			<topic href="html/gettingstarted/Ruby_custom_syntax_highlighting.html" label="Ruby custom syntax highlighting"></topic>
+			<topic href="html/gettingstarted/Ruby_quick_outline.html" label="Ruby quick outline"></topic>
+		</topic>
+		<topic href="html/gettingstarted/Ruby_Console_View.html" label="Ruby Console View"></topic>
+		<topic href="html/gettingstarted/Ruby_Outline_View.html" label="Ruby Outline View"></topic>
+		<topic href="html/gettingstarted/Ruby_Gems_View.html" label="Ruby Gems View"></topic>
+		<topic href="html/gettingstarted/Ruby_Call_Hierarchy_View.html" label="Ruby Call Hierarchy View"></topic>
+		<topic href="html/gettingstarted/RI_View_(Ruby_development).html" label="RI View (Ruby development)"></topic>
+		<topic href="html/gettingstarted/Ruby_Search.html" label="Ruby Search"></topic>
+		<topic href="html/gettingstarted/Syntax_Errors_and_Problems_View_(Ruby_development).html" label="Syntax Errors and Problems View (Ruby development)"></topic>
+		<topic href="html/gettingstarted/Task_List_(Ruby_development).html" label="Task List (Ruby development)"></topic>
+		<topic  label="Running a Ruby application">
+			<topic href="html/gettingstarted/Starting_from_Ruby_Resource_View.html" label="Starting from Ruby Resource View"></topic>
+			<topic href="html/gettingstarted/Starting_from_main_menu_(Ruby).html" label="Starting from main menu (Ruby)"></topic>
+			<topic href="html/gettingstarted/Run_configuration_(ruby).html" label="Run configuration (ruby)"></topic>
+		</topic>
+		<topic  label="Running a Test::Unit Test (Ruby)">
+			<topic href="html/gettingstarted/Starting_from_Ruby_Resource_View.html" label="Starting from Ruby Resource View"></topic>
+			<topic href="html/gettingstarted/Starting_from_main_menu_(Ruby).html" label="Starting from main menu (Ruby)"></topic>
+			<topic href="html/gettingstarted/Running_a_Test::Unit_Test_Run_Configuration_(Ruby).html" label="Running a Test::Unit Test Run Configuration (Ruby)"></topic>
+		</topic>
+		<topic  label="Ruby Debugger">
+			<topic href="html/gettingstarted/Ruby_debugger_prerequisites.html" label="Ruby debugger prerequisites"></topic>
+			<topic href="html/gettingstarted/Starting_a_Ruby_debug_session.html" label="Starting a Ruby debug session"></topic>
+			<topic href="html/gettingstarted/Ruby_Debug_Views.html" label="Ruby Debug Views"></topic>
+			<topic href="html/gettingstarted/Automatic_Ruby_code_reloading.html" label="Automatic Ruby code reloading"></topic>
+			<topic href="html/gettingstarted/Inspection_shortcuts_(Ruby).html" label="Inspection shortcuts (Ruby)"></topic>
+			<topic href="html/gettingstarted/Debugging_into_ruby_libraries.html" label="Debugging into ruby libraries"></topic>
+			<topic href="html/gettingstarted/Known_Ruby_debugging_limitations.html" label="Known Ruby debugging limitations"></topic>
+		</topic>
+	</topic>
+	<topic  label="Developing Adobe AIR projects">
+		<topic href="html/gettingstarted/Installing_a_plug-in.html" label="Install the AIR plugin for Aptana Studio"></topic>
+		<topic  label="Install the Adobe AIR Runtime by choosing Help -> Install Adobe AIR Runtime..."></topic>
+		<topic href="html/gettingstarted/Configure_the_included_AIR_runtime.html" label="Configure the included AIR runtime"></topic>
+		<topic href="html/gettingstarted/Configure_an_alternative_AIR_runtime.html" label="Configure an alternative AIR runtime"> label=" for when you need to use a different SDK"></topic>
+		<topic href="html/gettingstarted/Creating_an_AIR_project.html" label="Create your AIR project"> label=" using the Aptana Studio New Project wizard"></topic>
+		<topic href="html/gettingstarted/Run_or_Debug_your_AIR_application.html" label="Run or Debug your AIR application"></topic>
+		<topic href="html/gettingstarted/Package_and_publish_your_AIR_application.html" label="Package and publish your AIR application"></topic>
+		<topic href="html/gettingstarted/Sign_your_AIR_project.html" label="Sign your AIR project"> label=" to add a digital certificate to your AIR application"></topic>
+		<topic href="html/gettingstarted/Configure_Certificates_Preferences.html" label="Configure Certificates Preferences"></topic>
+	</topic>
+	<topic  label="Developing Apple iPhone Web App Projects">
+		<topic href="html/gettingstarted/About_Apple_iPhone_development.html" label="About Apple iPhone development"></topic>
+		<topic href="html/gettingstarted/Previewing_an_iPhone_sample_project.html" label="Previewing an iPhone sample project"></topic>
+		<topic href="html/gettingstarted/Creating_a_new_iPhone_project.html" label="Creating a new iPhone project"></topic>
+		<topic href="html/gettingstarted/Creating_an_iPhone_run_configuration.html" label="Creating an iPhone run configuration"></topic>
+		<topic href="html/gettingstarted/Viewing_a_project_on_your_iPhone.html" label="Viewing a project on your iPhone"></topic>
+		<topic href="html/gettingstarted/Using_console_logging_for_the_iPhone.html" label="Using console logging for the iPhone"></topic>
+	</topic>
+	<topic  label="Scripting with Eclipse Monkey">
+		<topic href="html/gettingstarted/About_Eclipse_Monkey.html" label="About Eclipse Monkey"></topic>
+		<topic href="html/gettingstarted/Eclipse_Monkey_Sample_Projects_and_Scripts.html" label="Eclipse Monkey Sample Projects and Scripts"></topic>
+		<topic href="html/gettingstarted/Creating_a_new_Eclipse_Monkey_script.html" label="Creating a new Eclipse Monkey script"></topic>
+		<topic href="html/gettingstarted/Adding_metadata_to_an_Eclipse_Monkey_script.html" label="Adding metadata to an Eclipse Monkey script"></topic>
+		<topic href="html/gettingstarted/Eclipse_Monkey_scripting_with_Ruby.html" label="Eclipse Monkey scripting with Ruby"></topic>
+	</topic>
+	<topic  label="References">
+		<topic href="html/gettingstarted/HTML_Entities.html" label="HTML Entities"></topic>
+		<topic href="html/gettingstarted/URL_Escape_Codes.html" label="URL Escape Codes"></topic>
+		<topic href="html/gettingstarted/Scripting_Aptana_Studio_Features.html" label="Scripting Aptana Studio Features">
+			<topic href="html/gettingstarted/Overlay_an_Image_on_Rollover.html" label="Overlay an Image on Rollover"></topic>
+		</topic>
+	
+		<topic href="html/gettingstarted/Aptana_credits_and_acknowledgments.html" label="Aptana Studio credits and acknowledgments"></topic>
+	</topic>
+</toc>

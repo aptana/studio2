@@ -1,0 +1,539 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Aptana Studio</title>
+	
+	<link href="styles.css" rel="stylesheet" type="text/css" />
+	
+	<!-- DOJO INIT STUFF -->
+	<script type="text/javascript" src="lib/dojo.js" djConfig="usePlainJson: true"></script>
+	<script type="text/javascript">
+		dojo.require('dojox.cometd');
+		// dojo.require('dojox.cometd.timestamp');
+	</script>
+	
+	<!-- THIRD PARTY SCRIPTS -->
+	
+		<!-- prototype -->
+		<script type="text/javascript" src="lib/prototype_1.6.js"></script>
+		<!-- script.aculo.us -->
+		<script type="text/javascript" src="lib/scriptaculous/effects.js"></script>
+		<script type="text/javascript" src="lib/scriptaculous/slider.js"></script>
+		<script type="text/javascript" src="lib/scriptaculous/controls.js"></script>
+		<script type="text/javascript" src="lib/scriptaculous/dragdrop.js"></script>
+		<!-- firebug lite -->
+		<script type="text/javascript" src="lib/firebug/firebug.js"></script>
+		<!-- ejs -->
+		<script type="text/javascript" src="lib/ejs.js"></script>
+		<!-- livepipe -->
+		<script type="text/javascript" src="lib/livepipe/livepipe.js"></script>
+		<script type="text/javascript" src="lib/livepipe/window.js"></script>
+		<script type="text/javascript" src="lib/livepipe/hotkey.js"></script>
+		<script type="text/javascript" src="lib/livepipe/event.behavior.js"></script>
+		<script type="text/javascript" src="lib/livepipe/control.progressbar.js"></script>
+		<script type="text/javascript" src="lib/livepipe/control.tabs.js"></script>
+		<script type="text/javascript" src="lib/livepipe/control.contextmenu.js"></script>
+		<script type="text/javascript" src="lib/livepipe/view.js"></script>
+		<!-- validation library -->
+		<script type="text/javascript" src="lib/validation.js"></script>
+		<!-- tablesort library -->
+		<script type="text/javascript" src="lib/tablesort.js"></script>
+
+		<script type="text/javascript" src="https://cloudmanager.aptana.com/cloud/captcha/javascript"></script>
+	
+	<!-- END THIRD PARTY SCRIPTS -->
+	
+	<!-- CORE STUFF -->
+
+		<script type="text/javascript" src="src/core/portal.js"></script>
+		<script type="text/javascript" src="src/core/portaltabs.js"></script>
+		<script type="text/javascript" src="src/core/eventmanager.js"></script>
+		<script type="text/javascript" src="src/core/init.js"></script>
+		<script type="text/javascript" src="src/core/periodical_pollers.js"></script>
+		
+	<!-- END CORE STUFF -->
+
+	<!-- HTML USED BY MODULES (Prototype Templates) -->
+	<script type="text/javascript" src="templates/js_html_templates.js"></script>
+	<script type="text/javascript" src="portlets/cloud/templates/js_html_templates.js"></script>
+	
+	<!-- PORTAL OBJECTS -->
+		<script type="text/javascript" src="src/portals/my_aptana.js"></script>
+		<script type="text/javascript" src="src/portals/my_account.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/portals/my_cloud_new.js"></script>
+	
+	<!-- STUDIO MODELS -->
+	
+		<script type="text/javascript" src="src/models/billingaccounts.js"></script>
+		<script type="text/javascript" src="src/models/plugins.js"></script>
+		<script type="text/javascript" src="src/models/projects.js"></script>
+		<script type="text/javascript" src="src/models/user.js"></script>
+		
+	<!-- END STUDIO MODELS -->
+	
+	<!-- STUDIO MODULES -->
+	
+		<script type="text/javascript" src="src/modules/aptanaidmanager_old.js"></script>
+		<script type="text/javascript" src="src/modules/billingaccountmanager.js"></script>
+		<script type="text/javascript" src="src/modules/cloudwelcomemat.js"></script>
+		<script type="text/javascript" src="src/modules/myprofile.js"></script>
+		<script type="text/javascript" src="src/modules/onlinestatus.js"></script>
+		<script type="text/javascript" src="src/modules/pluginmanager.js"></script>
+		<script type="text/javascript" src="src/modules/projectlist.js"></script>
+		<script type="text/javascript" src="src/modules/protrialinfo.js"></script>
+		<script type="text/javascript" src="src/modules/recentfiles.js"></script>
+		
+	<!-- END STUDIO MODULES -->
+	
+	<!-- JAXER MODULES -->
+	
+		<script type="text/javascript" src="portlets/jaxer/src/modules/jaxerservercontroller.js"></script>
+	
+	<!-- END JAXER MODULES -->
+	
+	<!-- CLOUD MODELS -->
+	
+		<script type="text/javascript" src="portlets/cloud/src/models/channels_new.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/clouduser.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/cloudproducts.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/cloudprojects.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/events_new.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/membershiproles.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/site.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/sitelist.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/sitenotificationlist.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/sitememberships.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/siteservices.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/subscriptions.js"></script>
+	
+	<!-- END CLOUD MODELS -->
+	
+	
+	<!-- CLOUD MODULES -->
+	
+		<script type="text/javascript" src="portlets/cloud/src/modules/cloudalytics.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/configurator.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/configurator_site.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/configurator_wizard.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployprojectmini.js"></script>
+		
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_controllers.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_views.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_processors.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_helpers.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_breadcrumbs.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_manager.js"></script>
+		
+		<script type="text/javascript" src="portlets/cloud/src/modules/localprojectswitcher.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/logsmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/notificationlist.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/alertsmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/servicesmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/statsmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/sitestats_new.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/teammanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/undeployedprojects.js"></script>
+	
+	<!-- END CLOUD MODULES -->
+	
+</head>
+<body>
+
+<div id="preload">
+	
+<img src="images_global/bg_bottom_content.png" />
+<img src="images_global/bg_button_left_down.png" />
+<img src="images_global/bg_button_left_up.png" />
+<img src="images_global/bg_button_right_down.png" />
+<img src="images_global/bg_button_right_up.png" />
+<img src="images_global/bg_cloud_page.png" />
+<img src="images_global/bg_configurator_item.png" />
+<img src="images_global/bg_content_bl.png" />
+<img src="images_global/bg_content_br.png" />
+<img src="images_global/bg_content_container_bl.png" />
+<img src="images_global/bg_content_container_br.png" />
+<img src="images_global/bg_content_container_tl.png" />
+<img src="images_global/bg_content_container_tr.png" />
+<img src="images_global/bg_content_header_bl.png" />
+<img src="images_global/bg_content_header_br.png" />
+<img src="images_global/bg_content_header_tl.png" />
+<img src="images_global/bg_content_header_tr.png" />
+<img src="images_global/bg_content_inset_bl.png" />
+<img src="images_global/bg_content_inset_br.png" />
+<img src="images_global/bg_content_inset_tl.png" />
+<img src="images_global/bg_content_inset_tr.png" />
+<img src="images_global/bg_content_tl.png" />
+<img src="images_global/bg_content_tr.png" />
+<img src="images_global/bg_filterbutton_left.png" />
+<img src="images_global/bg_filterbutton_right.png" />
+<img src="images_global/bg_header.png" />
+<img src="images_global/bg_icons.png" />
+<img src="images_global/bg_inputs.png" />
+<img src="images_global/bg_nostats.png" />
+<img src="images_global/bg_page.png" />
+<img src="images_global/bg_pluginbox.png" />
+<img src="images_global/bg_pluginbox2.png" />
+<img src="images_global/bg_progress_bar.png" />
+<img src="images_global/bg_serverstacks.png" />
+<img src="images_global/bg_siteinfo_header.png" />
+<img src="images_global/bg_sitelistfooter.png" />
+<img src="images_global/bg_slider.png" />
+<img src="images_global/bg_smalltabs.png" />
+<img src="images_global/bg_tab_active_left.png" />
+<img src="images_global/bg_tab_active_right.png" />
+<img src="images_global/bg_tab_inactive_left.png" />
+<img src="images_global/bg_tab_inactive_right.png" />
+<img src="images_global/bg_tableheader.png" />
+<img src="images_global/bg_tabs.png" />
+<img src="images_global/bg_tip_gray.png" />
+<img src="images_global/bg_tip_red.png" />
+<img src="images_global/bg_tip_yellow.png" />
+<img src="images_global/bg_toolbar.png" />
+<img src="images_global/bg_tree_bottom.gif" />
+<img src="images_global/bg_tree_middle.gif" />
+<img src="images_global/bg_wizard.png" />
+<img src="images_global/bg_wizardfooter.png" />
+<img src="images_global/bg_yellowbox.png" />
+<img src="images_global/button_add_contact.png" />
+<img src="images_global/button_add_credit_card.png" />
+<img src="images_global/button_addemail.png" />
+<img src="images_global/button_addteam_blue.png" />
+<img src="images_global/button_addteam_disabled.png" />
+<img src="images_global/button_adduser.png" />
+<img src="images_global/button_admin.png" />
+<img src="images_global/button_advanced_stats.png" />
+<img src="images_global/button_alert_add.png" />
+<img src="images_global/button_alert_remove.png" />
+<img src="images_global/button_alertprefs.png" />
+<img src="images_global/button_apply_blue.png" />
+<img src="images_global/button_apply_changes.png" />
+<img src="images_global/button_apply_disabled.png" />
+<img src="images_global/button_applychanges.png" />
+<img src="images_global/button_applycode.png" />
+<img src="images_global/button_backup.png" />
+<img src="images_global/button_billing_add.png" />
+<img src="images_global/button_billing_create.png" />
+<img src="images_global/button_billing_editaddress.png" />
+<img src="images_global/button_billing_editaddress_disabled.png" />
+<img src="images_global/button_billing_remove.png" />
+<img src="images_global/button_browseftp.png" />
+<img src="images_global/button_cancel.png" />
+<img src="images_global/button_change.png" />
+<img src="images_global/button_changeproject.png" />
+<img src="images_global/button_channel_email.png" />
+<img src="images_global/button_channel_studio.png" />
+<img src="images_global/button_close.png" />
+<img src="images_global/button_configure.png" />
+<img src="images_global/button_createaccount.png" />
+<img src="images_global/button_dbexplorer.png" />
+<img src="images_global/button_delete_site.png" />
+<img src="images_global/button_delete_site_disabled.png" />
+<img src="images_global/button_deletesite.png" />
+<img src="images_global/button_deletesite_disabled.png" />
+<img src="images_global/button_deploy.png" />
+<img src="images_global/button_deploytocloud.png" />
+<img src="images_global/button_disable_service.png" />
+<img src="images_global/button_do_add_contact.png" />
+<img src="images_global/button_edit_profile.png" />
+<img src="images_global/button_enable_service.png" />
+<img src="images_global/button_expandgroup.png" />
+<img src="images_global/button_hidegroup.png" />
+<img src="images_global/button_import_site.png" />
+<img src="images_global/button_invitetoteam.png" />
+<img src="images_global/button_inviteuser.png" />
+<img src="images_global/button_jaxer_start.png" />
+<img src="images_global/button_jaxer_stop.png" />
+<img src="images_global/button_leaveteam.png" />
+<img src="images_global/button_login.png" />
+<img src="images_global/button_managesites.png" />
+<img src="images_global/button_messagecenter.png" />
+<img src="images_global/button_newproject.png" />
+<img src="images_global/button_ok.png" />
+<img src="images_global/button_open.png" />
+<img src="images_global/button_openlog.png" />
+<img src="images_global/button_pluginmanager.png" />
+<img src="images_global/button_refreshsites.png" />
+<img src="images_global/button_reload.png" />
+<img src="images_global/button_remove_contact.png" />
+<img src="images_global/button_removeuser.png" />
+<img src="images_global/button_restart.png" />
+<img src="images_global/button_restartservice.png" />
+<img src="images_global/button_restartservice_disabled.png" />
+<img src="images_global/button_save.png" />
+<img src="images_global/button_save_changes.png" />
+<img src="images_global/button_start.png" />
+<img src="images_global/button_startservice.png" />
+<img src="images_global/button_stop.png" />
+<img src="images_global/button_sync_big.png" />
+<img src="images_global/button_sync_blue.png" />
+<img src="images_global/button_sync_left_public.png" />
+<img src="images_global/button_sync_left_staging.png" />
+<img src="images_global/button_sync_right.png" />
+<img src="images_global/button_synchronize.png" />
+<img src="images_global/button_syncnow.png" />
+<img src="images_global/button_toolbar_backup.png" />
+<img src="images_global/button_toolbar_browse.png" />
+<img src="images_global/button_toolbar_dbexplorer.png" />
+<img src="images_global/button_toolbar_sync.png" />
+<img src="images_global/button_uploadnow.png" />
+<img src="images_global/button_useproject.png" />
+<img src="images_global/button_viewmorestats.png" />
+<img src="images_global/button_visitproject.png" />
+<img src="images_global/button_wizard_back.png" />
+<img src="images_global/button_wizard_background.png" />
+<img src="images_global/button_wizard_cancel.png" />
+<img src="images_global/button_wizard_continue.png" />
+<img src="images_global/button_wizard_finish.png" />
+<img src="images_global/button_wizard_placeorder.png" />
+<img src="images_global/changeproject_anim.gif" />
+<img src="images_global/crumb_bg.png" />
+<img src="images_global/crumb_current.png" />
+<img src="images_global/crumb_current_left.png" />
+<img src="images_global/crumb_current_right.png" />
+<img src="images_global/crumb_separator.png" />
+<img src="images_global/down.gif" />
+<img src="images_global/img_activity.gif" />
+<img src="images_global/img_activity_big.gif" />
+<img src="images_global/img_activity_bigsnake.gif" />
+<img src="images_global/img_activity_deploy.gif" />
+<img src="images_global/img_aptana_throbber.gif" />
+<img src="images_global/img_bubblewrap.jpg" />
+<img src="images_global/img_bullet_add.png" />
+<img src="images_global/img_bullet_black.png" />
+<img src="images_global/img_bullet_blue.png" />
+<img src="images_global/img_bullet_blue2.png" />
+<img src="images_global/img_bullet_check.png" />
+<img src="images_global/img_bullet_green.png" />
+<img src="images_global/img_bullet_import.png" />
+<img src="images_global/img_bullet_warning.png" />
+<img src="images_global/img_bullet_wrench.png" />
+<img src="images_global/img_button_chart_quad.png" />
+<img src="images_global/img_button_chart_single.png" />
+<img src="images_global/img_chart_iso.png" />
+<img src="images_global/img_chart_resource_legend.png" />
+<img src="images_global/img_chart_slices.gif" />
+<img src="images_global/img_charts_placeholder.png" />
+<img src="images_global/img_check_empty.png" />
+<img src="images_global/img_check_filled.png" />
+<img src="images_global/img_check_small.png" />
+<img src="images_global/img_cloud_sizes.png" />
+<img src="images_global/img_cloudprogress.gif" />
+<img src="images_global/img_configurator_handle.png" />
+<img src="images_global/img_configurator_track.png" />
+<img src="images_global/img_credit_cards.png" />
+<img src="images_global/img_cvv2.png" />
+<img src="images_global/img_galogo.png" />
+<img src="images_global/img_gauge_sprites.png" />
+<img src="images_global/img_gauges_placeholder.png" />
+<img src="images_global/img_header_controlpanel.png" />
+<img src="images_global/img_header_events.png" />
+<img src="images_global/img_header_server.png" />
+<img src="images_global/img_header_team.png" />
+<img src="images_global/img_icon_add.png" />
+<img src="images_global/img_icon_air.png" />
+<img src="images_global/img_icon_ajaxlibraries.png" />
+<img src="images_global/img_icon_alert_general.png" />
+<img src="images_global/img_icon_apache.png" />
+<img src="images_global/img_icon_apple.png" />
+<img src="images_global/img_icon_backup.png" />
+<img src="images_global/img_icon_backup_big.png" />
+<img src="images_global/img_icon_backups.png" />
+<img src="images_global/img_icon_billing.png" />
+<img src="images_global/img_icon_billing_big.png" />
+<img src="images_global/img_icon_blue2.png" />
+<img src="images_global/img_icon_bluearrow.png" />
+<img src="images_global/img_icon_browse.png" />
+<img src="images_global/img_icon_browse_big.png" />
+<img src="images_global/img_icon_browsefile.png" />
+<img src="images_global/img_icon_browserepo.png" />
+<img src="images_global/img_icon_check.png" />
+<img src="images_global/img_icon_checked.png" />
+<img src="images_global/img_icon_close.gif" />
+<img src="images_global/img_icon_collapse.png" />
+<img src="images_global/img_icon_config.png" />
+<img src="images_global/img_icon_cost.png" />
+<img src="images_global/img_icon_db_big.png" />
+<img src="images_global/img_icon_dbexplorer.png" />
+<img src="images_global/img_icon_delete.png" />
+<img src="images_global/img_icon_deployproject.png" />
+<img src="images_global/img_icon_edit.png" />
+<img src="images_global/img_icon_error.png" />
+<img src="images_global/img_icon_excel.png" />
+<img src="images_global/img_icon_expand.png" />
+<img src="images_global/img_icon_file.png" />
+<img src="images_global/img_icon_gettingstarted.png" />
+<img src="images_global/img_icon_help.png" />
+<img src="images_global/img_icon_import.png" />
+<img src="images_global/img_icon_info.png" />
+<img src="images_global/img_icon_info2.png" />
+<img src="images_global/img_icon_ipaddress.png" />
+<img src="images_global/img_icon_item_checked.png" />
+<img src="images_global/img_icon_item_unchecked.png" />
+<img src="images_global/img_icon_jaxer.png" />
+<img src="images_global/img_icon_jaxer_small.png" />
+<img src="images_global/img_icon_key.png" />
+<img src="images_global/img_icon_log.png" />
+<img src="images_global/img_icon_log_jaxer.png" />
+<img src="images_global/img_icon_log_privateaccess.png" />
+<img src="images_global/img_icon_log_privateerror.png" />
+<img src="images_global/img_icon_log_publicaccess.png" />
+<img src="images_global/img_icon_log_publicerror.png" />
+<img src="images_global/img_icon_log_stagingaccess.png" />
+<img src="images_global/img_icon_log_stagingerror.png" />
+<img src="images_global/img_icon_membership.png" />
+<img src="images_global/img_icon_more.png" />
+<img src="images_global/img_icon_mysql.png" />
+<img src="images_global/img_icon_new.png" />
+<img src="images_global/img_icon_newfile.png" />
+<img src="images_global/img_icon_newproject.png" />
+<img src="images_global/img_icon_newproject2.png" />
+<img src="images_global/img_icon_noproject.png" />
+<img src="images_global/img_icon_noprojectteam.png" />
+<img src="images_global/img_icon_offline.png" />
+<img src="images_global/img_icon_openfile.png" />
+<img src="images_global/img_icon_option_checked.png" />
+<img src="images_global/img_icon_option_unchecked.png" />
+<img src="images_global/img_icon_php.png" />
+<img src="images_global/img_icon_plugin.png" />
+<img src="images_global/img_icon_plugin_add.png" />
+<img src="images_global/img_icon_plugin_update.png" />
+<img src="images_global/img_icon_plus.png" />
+<img src="images_global/img_icon_postfix.png" />
+<img src="images_global/img_icon_prohelp.png" />
+<img src="images_global/img_icon_project.png" />
+<img src="images_global/img_icon_project2.png" />
+<img src="images_global/img_icon_projects.png" />
+<img src="images_global/img_icon_refresh.png" />
+<img src="images_global/img_icon_refresh_small.png" />
+<img src="images_global/img_icon_resources.png" />
+<img src="images_global/img_icon_ror.png" />
+<img src="images_global/img_icon_samples.png" />
+<img src="images_global/img_icon_serverstart.png" />
+<img src="images_global/img_icon_serverstop.png" />
+<img src="images_global/img_icon_service_error_small.png" />
+<img src="images_global/img_icon_service_restarting_small.png" />
+<img src="images_global/img_icon_service_running_small.png" />
+<img src="images_global/img_icon_service_stopped_small.png" />
+<img src="images_global/img_icon_serviceplan.png" />
+<img src="images_global/img_icon_services.png" />
+<img src="images_global/img_icon_services_big.png" />
+<img src="images_global/img_icon_shared.png" />
+<img src="images_global/img_icon_site.png" />
+<img src="images_global/img_icon_site_public.png" />
+<img src="images_global/img_icon_site_staging.png" />
+<img src="images_global/img_icon_status_error.png" />
+<img src="images_global/img_icon_status_error_small.png" />
+<img src="images_global/img_icon_status_pending.gif" />
+<img src="images_global/img_icon_status_pending.png" />
+<img src="images_global/img_icon_status_running.png" />
+<img src="images_global/img_icon_status_running_small.png" />
+<img src="images_global/img_icon_status_stopped_small.png" />
+<img src="images_global/img_icon_status_warning.png" />
+<img src="images_global/img_icon_svn.png" />
+<img src="images_global/img_icon_sync_big.png" />
+<img src="images_global/img_icon_sync_both.png" />
+<img src="images_global/img_icon_sync_down.png" />
+<img src="images_global/img_icon_sync_up.png" />
+<img src="images_global/img_icon_syncexplorer.png" />
+<img src="images_global/img_icon_team.png" />
+<img src="images_global/img_icon_trial.png" />
+<img src="images_global/img_icon_unchecked.png" />
+<img src="images_global/img_icon_update.png" />
+<img src="images_global/img_icon_url.png" />
+<img src="images_global/img_icon_usage.png" />
+<img src="images_global/img_icon_user.png" />
+<img src="images_global/img_icon_viewfile.png" />
+<img src="images_global/img_icon_warning.png" />
+<img src="images_global/img_icon_wrench_small.png" />
+<img src="images_global/img_logo.png" />
+<img src="images_global/img_logo_cloud.png" />
+<img src="images_global/img_logo_exchange.png" />
+<img src="images_global/img_logo_jaxer.png" />
+<img src="images_global/img_logo_plugins.png" />
+<img src="images_global/img_logo_studio.png" />
+<img src="images_global/img_placeholder_cloudvideo.png" />
+<img src="images_global/img_placeholder_jaxervideo.png" />
+<img src="images_global/img_placeholder_studiovideo.png" />
+<img src="images_global/img_pointer.png" />
+<img src="images_global/img_progressbar.gif" />
+<img src="images_global/img_refreshing.gif" />
+<img src="images_global/img_role_admin_active.png" />
+<img src="images_global/img_role_admin_inactive.png" />
+<img src="images_global/img_role_owner.png" />
+<img src="images_global/img_role_user_active.png" />
+<img src="images_global/img_role_user_inactive.png" />
+<img src="images_global/img_sites.png" />
+<img src="images_global/img_slider.png" />
+<img src="images_global/img_status_error.png" />
+<img src="images_global/img_status_pending.png" />
+<img src="images_global/img_status_provisioning.png" />
+<img src="images_global/img_status_running.png" />
+<img src="images_global/img_status_stopped.png" />
+<img src="images_global/img_status_warning.png" />
+<img src="images_global/img_storage_placeholder.png" />
+<img src="images_global/img_storage_sprites.png" />
+<img src="images_global/img_tablebullet1.png" />
+<img src="images_global/img_tablebullet2.png" />
+<img src="images_global/plugins/img_icon_plugin_com.aptana.ide.feature.editor.php.png" />
+<img src="images_global/plugins/img_icon_plugin_com.aptana.ide.feature.framework.air.png" />
+<img src="images_global/plugins/img_icon_plugin_com.aptana.ide.framework.iphone.png" />
+<img src="images_global/plugins/img_icon_plugin_org.radrails.rails_feature.png" />
+<img src="images_global/shadown_bottom-edge.png" />
+<img src="images_global/shadown_bottom-left-corner.png" />
+<img src="images_global/shadown_bottom-right-corner.png" />
+<img src="images_global/shadown_left-edge.png" />
+<img src="images_global/shadown_right-edge.png" />
+<img src="images_global/shadown_top-edge.png" />
+<img src="images_global/shadown_top-left-corner.png" />
+<img src="images_global/shadown_top-right-corner.png" />
+<img src="images_global/up.gif" />
+<img src="images_global/window_background.png" />
+<img src="images_global/window_close.gif" />
+
+</div>
+
+<div id="header">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td nowrap="nowrap" valign="top">
+				<h1 class="logo">Aptana | End-to-End Ajax</h1>
+				<div class="clearfix"></div>
+				
+				<div class="floatLeft">
+					<ul class="tab" id="portal_tabs"></ul>
+				</div>
+				<div class="floatLeft" style="margin-right: 5px; padding-top: 5px; padding-left: 5px; display: none;" id="offlineModeCage">
+					<strong><img src="images_global/img_icon_offline.png" align="absmiddle" class="link inline"/> Cloud service unreachable</strong>
+				</div>
+				<div clas="clearfix"></div>
+			</td>
+			<td class="right" nowrap="nowrap" valign="top">
+				<div class="login_block" id="loginBlock"></div>
+				<div class="help right">
+					<div class="floatRight">
+						<span id="cloud_trial_cage" class="white bold"></span>
+						
+						<a href="javascript: Portal.API.utils.showHelp();" class="nounderline"><img src="images_global/img_icon_help.png" class="link inline" align="absmiddle" /></a>
+						<a href="javascript: Portal.API.utils.showHelp();" class="white" style="text-decoration: underline;">Help</a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+				<div class="size12 right top5" style="display: none; padding-right: 5px; color: #aeff00;" id="portalUpdateCage">
+					<a href="#" style="color: #aeff00; text-decoration: underline;" id="reloadPortalLink" title="A new version of the My Aptana portal is available.  Click here to instantly install and relaunch.">
+						<strong>New portal update ready &ndash;</strong> click here to install now.
+					</a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="portal_js_cage"></div>
+<div id="portal_main"></div>
+<div id="portal_content"></div>
+	
+</body>
+</html>

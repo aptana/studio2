@@ -1,0 +1,595 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Inside the Jaxer Chat application</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Inside_the_Jaxer_Chat_application&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Inside the Jaxer Chat application [<a href="http://www.aptana.com/docs/index.php?title=Inside_the_Jaxer_Chat_application&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page provides an overview of the Jaxer sample chat application and an introduction to the technology behind it.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Viewing_the_sample_application"><span class="tocnumber">1.1</span> <span class="toctext">Viewing the sample application</span></a></li>
+<li class="toclevel-2"><a href="#Creating_a_new_account"><span class="tocnumber">1.2</span> <span class="toctext">Creating a new account</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#What_just_happened.3F"><span class="tocnumber">2</span> <span class="toctext">What just happened?</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Jaxer_page_lifecycle"><span class="tocnumber">2.1</span> <span class="toctext">Jaxer page lifecycle</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Initial_page_load"><span class="tocnumber">3</span> <span class="toctext">Initial page load</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Processing_details"><span class="tocnumber">3.1</span> <span class="toctext">Processing details</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Callbacks_made_easy"><span class="tocnumber">4</span> <span class="toctext">Callbacks made easy</span></a>
+<ul>
+<li class="toclevel-2"><a href="#On_the_client"><span class="tocnumber">4.1</span> <span class="toctext">On the client</span></a></li>
+<li class="toclevel-2"><a href="#On_the_server"><span class="tocnumber">4.2</span> <span class="toctext">On the server</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Inside_the_Jaxer_chat_application"><span class="tocnumber">5</span> <span class="toctext">Inside the Jaxer chat application</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Architectural_distinction"><span class="tocnumber">5.1</span> <span class="toctext">Architectural distinction</span></a></li>
+<li class="toclevel-2"><a href="#Side-by-side_comparison"><span class="tocnumber">5.2</span> <span class="toctext">Side-by-side comparison</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Jaxer_runat_and_proxy_reference"><span class="tocnumber">6</span> <span class="toctext">Jaxer runat and proxy reference</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Basic_runat_values"><span class="tocnumber">6.1</span> <span class="toctext">Basic runat values</span></a></li>
+<li class="toclevel-2"><a href="#Advanced_runat_values"><span class="tocnumber">6.2</span> <span class="toctext">Advanced runat values</span></a></li>
+<li class="toclevel-2"><a href="#Programmatic_runat_configuration"><span class="tocnumber">6.3</span> <span class="toctext">Programmatic runat configuration</span></a></li>
+<li class="toclevel-2"><a href="#Recommended_style"><span class="tocnumber">6.4</span> <span class="toctext">Recommended style</span></a></li>
+<li class="toclevel-2"><a href="#Alternate_Syntax"><span class="tocnumber">6.5</span> <span class="toctext">Alternate Syntax</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#.3Cjaxer:include.3E_reference"><span class="tocnumber">7</span> <span class="toctext">&lt;jaxer:include&gt; reference</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Why_use_server-side_includes.3F"><span class="tocnumber">7.1</span> <span class="toctext">Why use server-side includes?</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">8</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Your Jaxer installation includes a demo of an online multi-room chat application. This demo application includes much of the major functionality that you would find in a typical online chat app:
+</p>
+<ul><li> Creating a new user account
+</li><li> Logging in to chat
+</li><li> Creating a new chat room
+</li><li> Entering a chat room
+</li><li> Chatting with other users
+</li><li> Exiting a chat room
+</li><li> Logging out of chat
+</li></ul>
+<p>This section briefly explains how the demo chat application works from a user perspective. After learning how a user would use chat, you'll learn about the Jaxer architecture and how to use it to create an application similar to chat.
+</p>
+<a name="Viewing_the_sample_application"></a><h3> <span class="mw-headline">Viewing the sample application</span></h3>
+<p>Your Jaxer installation (whether as a standalone Jaxer plus Apache Server or in Aptana Studio) includes this simple chat application.
+</p><p>To access the chat application from within Aptana Studio:
+</p>
+<ol>
+<li>In the Samples View, expand the <b>Aptana Jaxer</b> folder.</li>
+<li>Select the <b>chat</b> example.</li>
+<li>Click either the <b>Preview Sample</b> button <a href="Image:IconPreviewSample.png.html" class="image" title="Image:iconPreviewSample.png"><img alt="Image:iconPreviewSample.png" src="docs/images/3/30/IconPreviewSample.png" width="23" height="22" border="0" /></a> to do a quick preview of the sample, or click the <b>Import Sample</b> button <a href="Image:IconImportSample.png.html" class="image" title="Image:iconImportSample.png"><img alt="Image:iconImportSample.png" src="docs/images/f/f0/IconImportSample.png" width="23" height="22" border="0" /></a> to import the sample as a project into your workspace.
+</ol>
+<p>To access the chat application from a standalone Jaxer plus Apache Server installation:
+</p>
+<ol>
+<li>Navigate to your Jaxer installation folder, and double-click the <b>StartServers.bat</b> file.</li>
+<li>In your web browser, navigate to the following URL: <a href="http://localhost:8081/aptana/" class="external free" title="http://localhost:8081/aptana/" rel="nofollow">http://localhost:8081/aptana/</a></li>
+<li>From the column on the left, click the <b>Apps and Tools</b> link.</li>
+<li>Click the <b>Chat</b> link.</li>
+</ol>
+<p>You can now experiment with creating new users, new chat rooms, and chatting in the demo application (shown below):
+</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=ChatDefaultScreen.png" class="new" title="Image:ChatDefaultScreen.png">Image:ChatDefaultScreen.png</a>
+</p>
+<a name="Creating_a_new_account"></a><h3> <span class="mw-headline">Creating a new account</span></h3>
+<p>As with many web applications, new chat users need to create new accounts before they can log into and use chat.
+To create a new user account:
+</p>
+<ol><li> On the main chat screen, click the <b>Create new account…</b> link to go to the new account screen.<p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=ChatNewUser.png" class="new" title="Image:ChatNewUser.png">Image:ChatNewUser.png</a></p>
+</li><li> On the new account screen, type your user information:
+<ol><li> In the <b>New username</b> field, type your username.
+</li><li> In the <b>New password</b> field, type your password (at least 6 characters).
+</li><li> In the <b>Confirm</b> password field, re-type your password.
+</li></ol>
+</li><li> Click the <b>Create</b> button to create your new account.
+</li></ol>
+<p>The Jaxer chat room creates your new account and automatically logs you in to chat.
+</p>
+<a name="What_just_happened.3F"></a><h2> <span class="mw-headline">What just happened?</span></h2>
+<p>When you request the chat application's page, and when you login, a series of events takes place. Some of these events happen during page preparation, some happen locally in your browser, and some involve communicating back to the Jaxer server and &mdash; through the Jaxer server framework &mdash; to the database and the file system.
+</p>
+<a name="Jaxer_page_lifecycle"></a><h3> <span class="mw-headline">Jaxer page lifecycle</span></h3>
+<p>The following diagram shows a simple overview of the Jaxer page processing chain:
+</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=JaxerProcess-Normal.png" class="new" title="Image:JaxerProcess-Normal.png">Image:JaxerProcess-Normal.png</a>
+</p><p><b>Lifecycle events</b>
+</p><p>The following list describes what happens when Jaxer processes a web page:
+</p>
+<ol><li> The client (browser) sends a request to Apache, which either handles the request itself or delegates it to a handler such as PHP, Ruby, Java, etc.
+</li><li> Apache either retrieves the static HTML document from disk, or receives a dynamic HTML document from the handler.
+</li><li> Jaxer acts as an output (post-process) filter that receives the document from Apache, and starts to parse and execute it, just as a browser would, but on the server side. The DOM is created, JavaScript code designated to run on the server is executed, and so on until the entire document is consumed.
+</li><li> The result is a DOM modified by the Jaxer Framework and by the developer: in particular, server-side client-callable functions are automatically replaced by proxies. Some important side-effects include storing designated JavaScript functions as callbacks and persisting session-type data.
+</li><li> The new DOM is serialized (without any server-side JavaScript) as a new HTML document and streamed out to the client as usual.
+</li><li> The client receives the HTML document and the processing continues, recreating the DOM from the provided HTML and this time executing the client-side JavaScript remaining on the page as normal.
+</li></ol>
+<p>The client-side JavaScript served to the browser may contain proxy function stubs, that correspond to (and have the same name as) certain server-side functions tagged by the developer to be callable from the client. By using the proxy architecture, Jaxer is able to provide powerful server-side capabilities accessible from the client in an entirely native and seamless manner.
+</p><p>The next section examines these events in more detail.
+</p>
+<a name="Initial_page_load"></a><h2> <span class="mw-headline">Initial page load</span></h2>
+<p>The initial page load processing for Jaxer is similar to other web architectures, in that the request to the browser is passed though both a web server (in this case Apache) and an Application server layer (in this case the Jaxer apache handler/filter) before being presented to the client browser.
+</p>
+<a name="Processing_details"></a><h3> <span class="mw-headline">Processing details</span></h3>
+<p><b>Preparing the database schema</b>
+</p><p>When the Jaxer server receives the page to process, several behind the scenes actions take place, among them:
+</p>
+<ul><li> Jaxer performs any server side activity, such as database access.
+</li><li> The page is automatically instrumented with server callback capabilities by binding certain client functionality to server-side scripts. 
+</li></ul>
+<p>The enabling mechanism for controlling the server callback functionality is the <a href="http://www.aptana.com/docs/index.php?title=Jaxer_runat_script_attribute_reference&amp;action=edit" class="new" title="Jaxer runat script attribute reference">runat attribute</a>, an additional attribute that Jaxer recognizes on in-line or external <tt>script</tt> tags. 
+</p><p>Even without the presence of <tt>runat</tt> attributes on your <tt>script</tt> tags, Jaxer will still take certain actions on you code, such as persisting session-type data and inserting the <tt>Aptana</tt> namespace object into the DOM.
+</p><p>Examine the code of the first page of HTML sent, <b>index.html</b>, to see what it does: 
+</p><p>The first <tt>script</tt> tag loads the file <b>setup.js</b>.
+<code>[html,N]
+&lt;script type="text/javascript" src="jaxer-include/setup.js" runat="server"&gt;&lt;/script&gt;
+</code>
+</p>
+<p>The <tt>runat</tt> attribute provided to the <tt>script</tt> tag tells the Jaxer server that the contents of this script should execute server side and not be presented to the client browser. This means that if you view the source on the index page after it loads in your browser, you will not see any of the contents of the <b>setup.js</b> file (shown below).</p>
+<p><code>[javascript,1]
+function() {
+</p><p>if (Jaxer.application.get("isInitialized")) return;
+</p><p>var sql;
+</p><p>sql = "CREATE TABLE IF NOT EXISTS users " +
+	"( id INTEGER PRIMARY KEY AUTO_INCREMENT" +
+	", username VARCHAR(255) NOT NULL" +
+	", password VARCHAR(255) NOT NULL" +
+	", created DATETIME NOT NULL" +
+	", last_login DATETIME NOT NULL" +
+	", UNIQUE (username)" +
+	")";
+</p><p>Jaxer.DB.execute(sql);
+</p><p>sql = "CREATE TABLE IF NOT EXISTS messages " +
+	"( id INTEGER PRIMARY KEY AUTO_INCREMENT" +
+	", room_id INTEGER NOT NULL" +
+	", sent DATETIME NOT NULL" +
+	", user_id INTEGER NOT NULL" +
+	", contents TEXT NOT NULL" +
+	")";
+</p><p>Jaxer.DB.execute(sql);
+</p><p>Jaxer.application.set("isInitialized", true);
+</p><p>})();
+</p><p></code>
+</p><p>The script file <b>setup.js</b> checks the application level container object and looks for a stored variable called <tt>isInitialized</tt>. If it already exists, the application has already been run and can return
+control to the original page <b>index.html</b>. However, if the variable <tt>isInitialized</tt> is not found, this is the first time the application has been run, and some SQL DDL is executed to bootstrap the database, which creates the required schema to run the application. After the SQL executes and the database is prepared, the <tt>isInitialized</tt> flag is set to true, and the processing returns to the index page.
+</p><p>You now have a schema ready for use by the application. Note that by using the Jaxer framework modules, you can accomplish all of this using only JavaScript.
+</p><p><b>Adding server- and client-side functionality</b>
+</p><p>The next <tt>script</tt> tag that you encounter uses the <tt>runat='both'</tt> value to tell the server that the code is to be run on both the browser and the server. The server-side functions will also be cached in association with this page so that they can be used by any server-side callback functions. 
+</p><p><code>[html,1]
+&lt;script type="text/javascript" runat="both"&gt;
+</p><p>	function $(id) { return document.getElementById(id); }
+	function fromTemplate(idTarget, idSource) { $(idTarget).innerHTML = $(idSource).innerHTML.replace(/(\W)\$id\=/g, "$1id="); }
+</p><p>	function showRooms(rooms)
+	{
+		if (rooms == null)
+		{
+			$("rooms").innerHTML = "(Not logged in)";
+		}
+		else
+		{
+			var htmlStrings = [];
+			for (var i=0; i&lt;rooms.length; i++)
+			{
+				var room = rooms[i];
+				var html = $("roomTemplate").innerHTML.replace(/\$(\w+)\$/g, function(match, keyword) { return room[keyword]; });;
+				htmlStrings.push(html);
+			}
+			$("rooms").innerHTML = "\n" + htmlStrings.join("\n") + "\n";
+		}
+	}
+</p><p>&lt;/script&gt;
+</p><p></code>
+The functions in this script block will be needed on both the server and the client in order to populate the dynamic section of the DOM server-side for the initial page presentation, and then to update the DOM client-side as needed in response to user actions. Note that the <b>same</b> DOM manipulation code can be used on both client and server sides, so the DOM is consistent and the code is shorter and more maintainable.
+</p><p>The next script we encounter is only needed server-side:
+<code>[html,N]
+&lt;script type="text/javascript" src="jaxer-include/_authentication.js" runat="server"&gt;&lt;/script&gt;
+</code>
+</p><p>The script <b>_authentication.js</b> contains some functions for use both now during page preparation and later during callbacks. These functions will be cached automatically by using <tt>runat='server'</tt>. (If you know you won't need them during callbacks, and you'd like to optimize performance and memory a bit, you can use <tt>runat='server-nocache'</tt> instead.)
+</p><p><code>[javascript]
+function getAuthenticatedUser()
+{
+	var username = Jaxer.session.get("username");
+	if (typeof username == "undefined") return null;
+	var rs = Jaxer.DB.execute("SELECT * FROM users WHERE username =&nbsp;?", [username]);
+	if (rs.rows.length == 0)
+	{
+		return null;
+	}
+	return rs.rows[0];
+}
+</p><p>function makeAuthenticated(user)
+{
+	Jaxer.session.set("username", user.username);
+}
+</p><p>function initAuthentication()
+{
+	try
+	{
+		var user = getAuthenticatedUser();
+		if (user)
+		{
+			fromTemplate('loginComponent', 'loginAuthenticated');
+			$('authenticatedUsername').innerHTML = user.username;
+			Jaxer.clientData.isAuthenticated = true;
+		}
+		else
+		{
+			fromTemplate('loginComponent', 'loginRequest');
+			Jaxer.clientData.isAuthenticated = false;
+		}
+	}
+	catch (e)
+	{
+		Jaxer.Log.error("Error trying to get authenticated user: " + e);
+	}
+}
+</p><p><br />
+</code>
+</p><p>This code was encapsulated in an external .js file since it will be used on multiple pages where authentication is needed, guaranteeing that the same logic will be used consistently. Note that it only runs on the server, and in fact cannot be called from client-side JavaScript functions, for security reasons. Next we'll see an example of code that should be called from the client.
+</p><p><b>Specifying where your code runs</b>
+</p><p>This really gets to the power of the Jaxer architecture: by being able to specify whether the code runs on the server or the client or both, and allowing the server-side functions to be seamlessly called from the client, we can build highly consistent code that crosses the client/server boundary with little effort, thus avoiding the requirement in other web stacks to use templating constructs, emit JavaScript from a different language, create handler pages for your server-side callbacks, etc. In Jaxer it is <b>all</b> DOM and JavaScript.
+</p><p>The next <tt>script</tt> is an in-line script with a <tt>runat</tt> attribute set to execute on the server. 
+<code>[html]
+&lt;script type="text/javascript" runat="server"&gt;
+</p><p>	function getRooms()
+	{
+		var user = getAuthenticatedUser();
+		if (user == null) return null;
+		var rs = Jaxer.DB.execute("SELECT MIN(sent) AS started, MAX(sent) AS last, room_id FROM messages GROUP BY room_id");
+		// Fix up dates because SQLite does not (reliably?) return the declared column type on aggregates
+		for (var i=0, len = rs.rows.length; i&lt;len; i++)
+		{
+			var row = rs.rows[i];
+			if (typeof row.started == "number") row.started = new Date(row.started);
+			if (typeof row.last == "number") row.last = new Date(row.last);
+		}
+		return rs.rows;
+	}
+	getRooms.proxy = true;
+</p><p>	function prepareDOM()
+	{
+		var rooms = getRooms();
+		showRooms(rooms);
+			}
+</p><p>&lt;/script&gt;
+</code>
+One of the contained functions <tt>getRooms()</tt> adds a Jaxer-specific property on the function, <tt>getRooms.proxy = true;</tt> so it can be called from the browser. We could have used an alternate syntax: <tt>getRooms.runat = "server-proxy";</tt>.
+</p><p>The <tt>prepareDom()</tt> function is invoked later on the page by being bound to the special Jaxer event <tt>onserverload</tt>. This event is fired when the server has completed loading of the page and has a DOM available for manipulation by JavaScript code.
+</p><p>The <tt>onserverload</tt> event is the server-side equivalent of the traditional client side <tt>onload</tt>.
+<code>[html,N]
+&lt;body onserverload="initAuthentication(); prepareDOM()"&gt;
+</code>
+</p><p>At this point the authentication is initialized, and the <tt>prepareDom()</tt> function is called. This will insert rows displaying any existing chat rooms into the DOM contents of the home page before sending the page to the client. It does this by querying the database table messages (lines 7-9) and returning a distinct set of rooms as well as information on when each room was opened and when the last message was posted. This content also contains a hyperlink to enter the chatroom (shown below).
+</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=ChatRecentChatRooms.png" class="new" title="Image:ChatRecentChatRooms.png">Image:ChatRecentChatRooms.png</a>
+</p><p>Now let's turn to the callback mechanism used by the Jaxer chat app.
+</p>
+<a name="Callbacks_made_easy"></a><h2> <span class="mw-headline">Callbacks made easy</span></h2>
+<p>When you enter the application for the first time, no room will be listed and you will have to create a new room.
+</p><p>However, before you can create any new rooms, you first have to login to chat. If this is your first chat visit, you will need to create a new account before you can login.
+</p><p>The next two sections discuss what happens on both the client and the server when you login to chat (assuming that you already have an account created). Here is a detailed diagram of the process flow:
+</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=JaxerProcess-Callback.png" class="new" title="Image:JaxerProcess-Callback.png">Image:JaxerProcess-Callback.png</a>
+</p>
+<a name="On_the_client"></a><h3> <span class="mw-headline">On the client</span></h3>
+<p>The chat login process make extensive use of callbacks from the client to the server to provide the services required to authenticate users. The following code demonstrates some of the unique capabilites of the Jaxer server with respect to remote function invocation or callbacks.
+</p><p>The <tt>login</tt> function (located in <b>_login.js</b>) invokes a local (client-side) function <tt>checkCredentials(username, password)</tt> which is the proxy for the previously-shown server-side <tt>checkCredentials</tt> function.
+</p><p><code>[javascript,1,(5)]function login()
+{
+	var username = $('username').value;
+	var password = $('password').value;
+	var username = checkCredentials(username, password);
+	if (username&nbsp;!= "")
+	{
+		fromTemplate('loginComponent', 'loginAuthenticated');
+		setTimeout("$('authenticatedUsername').innerHTML = '" + username + "'", 0);
+		changeAuthentication(true);
+	}
+	else
+	{
+		$('loginMessage').innerHTML = "Sorry, try again";
+	}
+}
+login.runat = "client";
+</p><p></code>
+</p><p>The Jaxer-inserted proxy function for <tt>checkCredentials</tt> utilizes the methods available from the Framework namespace <tt>Jaxer.Callback</tt>. The important point to note here is that the call signature for <tt>checkCredentials</tt> will be exactly the same as the server function shown later in the example.
+</p><p><code>[javascript]function checkCredentials() 
+{
+</p>
+<pre>   return Jaxer.Callback.invokeFunction.call(null, "checkCredentials", arguments);
+</pre>
+<p>}
+</code>
+</p>
+<a name="On_the_server"></a><h3> <span class="mw-headline">On the server</span></h3>
+<p>The <tt>checkCredentials</tt> function can only truly execute on the server, but since it's marked to be proxied, the client will also get a function called <tt>checkCredentials</tt> (shown above) which simply provides a remote wrapper for the server code. Internally it does this by serializing its arguments to a JSON format and passing them to the server, where they are deserialized and the server-side function is invoked. When the server-side function completes, its result is serialized to JSON and then passed back to the client, where it's deserialized and returned as the result of the proxy as if the proxy function had carried out the processing. 
+</p><p><code>[javascript]function checkCredentials(username, password)
+{
+	var rs = Jaxer.DB.execute("SELECT * FROM users WHERE username =&nbsp;? AND password =&nbsp;?",
+		[username, password]);
+	if (rs.rows.length == 0)
+	{
+		return "";
+	}
+	var user = rs.rows[0];
+	makeAuthenticated(user);
+	return user.username;
+}
+checkCredentials.proxy = true;
+</code>
+</p><p>One point worth noting is that this is not asynchronous, and the client will wait for the response. For every server-side function to be proxied Jaxer emits two proxies into the client-bound page: one for synchronous remote invocation and the other for asynchronous remote invocation. The latter is named the same as the former, but with <tt>Async</tt> appended to its name, for example <tt>checkCredentials</tt> and <tt>checkCredentialsAsync</tt>.
+</p><p>This callback architecture is the key to providing the seamless client server communications without any of the complexity of the more traditional XHR techniques nomally associated with Ajax functionality. With Jaxer it is all just Javascript and the boundary between client and server can be smooth and simple.
+</p>
+<a name="Inside_the_Jaxer_chat_application"></a><h2> <span class="mw-headline">Inside the Jaxer chat application</span></h2>
+<p>You should now be familiar with the functionality of the Jaxer chat application. The next section discusses some of the key technical differences between how a typical web application is constructed and the way the demo chat application uses the unique capabilities of the Jaxer Server.
+</p>
+<a name="Architectural_distinction"></a><h3> <span class="mw-headline">Architectural distinction</span></h3>
+<p>The main architectural difference of the Jaxer server from other page composition engines, such as PHP, JSP and ASP, is that both the client side and server side use essentially the same platform. This means that you can use familiar DOM manipulation techniques with standard JavaScript tools and libraries on both the client and server side. As a developer, you benefit from this approach by no longer having to deal with complex paradigms, such as emitting JavaScript from Java. Using Jaxer, you can even invoke server-side functionality directly from the client in a completely seamless manner.
+</p><p>The Jaxer server wraps typical server-side functionality within a tightly controlled namespace (the <tt>Jaxer</tt> object) to prevent variable and scope conflict with other Javascript libraries and tools.
+</p>
+<a name="Side-by-side_comparison"></a><h3> <span class="mw-headline">Side-by-side comparison</span></h3>
+<p>The following diagram illustrates how Jaxer can replace the common server technologies of most dynamic web applications.
+</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=ComparativeStack.png" class="new" title="Image:ComparativeStack.png">Image:ComparativeStack.png</a>
+</p><p>With the Jaxer server, you can perform all the usual activities associated with web applications, such as database access, session management, error logging and file system access.
+</p><p>In the next few sections of this document, you will learn about some of the unique features of the Jaxer Server and examine at how they were implemented for the Jaxer chat application.
+</p>
+<a name="Jaxer_runat_and_proxy_reference"></a><h2> <span class="mw-headline">Jaxer runat and proxy reference</span></h2>
+<p>One of the initial differences you will notice between the Jaxer source and typical web applications is the addition of the <tt>runat</tt> attributes to the script tags in the HTML markup. These attributes tell the Jaxer server how to manage the script code. Because the server can run JavaScript on the server-side, client-side, or both, and can inject proxies into the client, this meta information instructs the server how to handle the scripts appropriately.
+</p>
+<a name="Basic_runat_values"></a><h3> <span class="mw-headline">Basic <tt>runat</tt> values</span></h3>
+<p>The following table describes the standard <tt>runat</tt> attributes that are applied to the &lt;script&gt; tag. 
+</p>
+<table border="1" cellpadding="2" cellspacing="2">
+<tr>
+  <th>value</th>
+  <th>description</th>
+</tr>
+<tr>
+  <td>client</td>
+  <td>
+<p>The functions and code contained in the script block will run in the client browser only. This functions exactly as a regular script block. This is the default value of the <tt>runat</tt> attribute, so usually you'll omit it for <tt>script</tt> blocks intended for the client. Its main use is to override the <tt>runat</tt> attribute of a specific function within a server-side <tt>script</tt> block. <i>Note: if a <tt>script</tt> block has <tt>runat = "client"</tt> (or no <tt>runat</tt> attribute), it will not run at all server-side, so you cannot override the <tt>runat</tt> behaviors of individual functions from within this block.</i>
+</p>
+  </td>
+</tr>
+<tr>
+  <td>server</td>
+  <td>
+<p>The functions and code contained in the script will run on the server only. 
+Any functions defined within the script block will be cached in association with this page. 
+These functions are not directly callable from the client, but they can be called during callback processing by other server-side functions. 
+These script blocks will not be presented to the client browser.
+</p>
+  </td>
+</tr>
+<tr>
+  <td>both</td>
+  <td>
+<p>The functions and code contained in the script will run on both the client and the server. 
+Any functions defined within the script block will be cached in association with this page. 
+The server-side functions are not directly callable from the client, but they can be called during callback processing by other server-side functions. 
+</p>
+  </td>
+</tr>
+
+</table>
+<p><b>Example</b>
+The following code snippet is an excerpt from the index.html page in the Jaxer chat application folder. 
+This example shows an external script being included on the page for server-side-only execution.
+</p><p><code>[html,N]&lt;script type="text/javascript" src="jaxer-include/_login.js" runat="server"&gt;&lt;/script&gt;
+</code>
+</p>
+<a name="Advanced_runat_values"></a><h3> <span class="mw-headline">Advanced <tt>runat</tt> values</span></h3>
+<p>The following runat values can also be used on the script tags. We expect most use cases would be covered by the basic attributes shown above.
+</p>
+<table border="1" cellpadding="2" cellspacing="2">
+<tr>
+  <th>value</th>
+  <th>description</th>
+</tr>
+<tr>
+  <td>server-proxy</td>
+  <td>Same as the basic 'server' target except ALL the functions will be proxied by default</td>
+</tr>
+<tr>
+  <td>server-nocache</td>
+  <td>Same as the basic 'server' target except NONE of the functions will be cached by default</td>
+</tr>
+<tr>
+  <td>both-proxy</td>
+  <td>Same as the basic 'both' target except ALL the functions will be proxied by default</td>
+</tr>
+<tr>
+  <td>both-nocache</td>
+  <td>Same as the basic 'both' target except NONE of the functions will be cached by default</td>
+</tr>
+</table>
+<a name="Programmatic_runat_configuration"></a><h3> <span class="mw-headline">Programmatic <tt>runat</tt> configuration</span></h3>
+<p>Jaxer is aware of some special function object properties that can be declared on individual function objects to control how they are managed. When these are specified, the property value will override the containing script block's <tt>runat</tt> setting for the individual function. This allows more granular control and prevents the need to break scripts out into separate blocks or files depending on their desired <tt>runat</tt> value.
+</p>
+<table border="1" cellpadding="2" cellspacing="2">
+<tr>
+  <th>property</th>
+  <th>description</th>
+</tr>
+<tr>
+  <td>proxy</td>
+  <td>
+<p>Server-side functions can be declared to be proxied so they are callable from the client side. This is achieved by specifying a <tt>proxy</tt> property on the function object. The possible values for this property are <tt>true</tt> or <tt>false</tt>. This is only required for enabling the proxying of the function. By default, in a <tt>&lt;script runat="server"&gt;</tt> block, the functions are not proxied. Note that if a function is not proxied, it isn't just that proxies are not inserted into the client to facilitate calling it: it's actually marked as not callable on the server, so hacking the client to try to call the function on the server will not work.
+</p>
+  </td>
+</tr>
+<tr>
+  <td>runat</td>
+  <td>
+<p>Takes the same values as the <tt>&lt;script&gt;</tt> tag <tt>runat</tt> attributes.
+</p>
+  </td>
+</tr>
+</table>
+<p><b>Example</b>
+</p><p>The <b>_login.js</b> file referenced in the example above contains some functions that explicitly override the <tt>runat='server'</tt> directive specified on the script tag used to load the file.
+</p><p>In this snippet the function will proxied:
+<code>[javascript,1,(13)]
+function checkCredentials(username, password)
+{
+	var rs = Jaxer.DB.execute("SELECT * FROM users WHERE username =&nbsp;? AND password =&nbsp;?",
+		[username, password]);
+	if (rs.rows.length == 0)
+	{
+		return "";
+	}
+	var user = rs.rows[0];
+	makeAuthenticated(user);
+	return user.username;
+}
+checkCredentials.proxy = true;
+</code>
+</p><p>In this snippet the function will run client side:
+<code>[javascript,1,(17)]
+function login()
+{
+	var username = $('username').value;
+	var password = $('password').value;
+	var username = checkCredentials(username, password);
+	if (username&nbsp;!= "")
+	{
+		fromTemplate('loginComponent', 'loginAuthenticated');
+		setTimeout("$('authenticatedUsername').innerHTML = '" + username + "'", 0);
+		changeAuthentication(true);
+	}
+	else
+	{
+		$('loginMessage').innerHTML = "Sorry, try again";
+	}
+}
+login.runat = "client";
+</code>
+</p>
+<a name="Recommended_style"></a><h3> <span class="mw-headline">Recommended style</span></h3>
+<p>The following illustrates one simple way of using the <tt>runat</tt> and <tt>proxy</tt> options
+in a typical code scenario. We choose to group all the server-side code in one <tt>script</tt>
+block, and explicitly designate a subset of function to be proxied. Then all client-side code
+goes in a different <tt>script</tt> block (where there isn't even the option of programatically
+changing it by setting a different <tt>runat</tt> or <tt>proxy</tt> value). 
+Of course you may choose a different way of organizing your code if that makes more sense.
+And for large amounts of code, it may also make sense to extract the code into (reusable)
+external JavaScript files.
+</p><p><code>[html, 1, (1,15,19)]
+&lt;script type="text/javascript" runat="server"&gt;
+</p><p>function setPassword(username, newPassword)
+{
+	// put code in here to directly set the password of a given username
+	// this code should not be callable from the client
+}
+</p><p>function changePassword(username, oldPassword, newPassword)
+{
+	// put code in here to first verify the submitted password,
+	// and then -- if successful -- call setPassword to actually make changes
+	// this code should be callable from the client
+}
+changePassword.proxy = true;
+</p><p>&lt;/script&gt;
+</p><p>&lt;script type="text/javascript"&gt;
+</p><p>function submitPassword()
+{
+	// put client-side code here to grab the username and old and new passwords
+	// and call changePassword on the server
+}
+</p><p>&lt;/script&gt;
+</code>
+</p>
+<a name="Alternate_Syntax"></a><h3> <span class="mw-headline">Alternate Syntax</span></h3>
+<p>Jaxer provides a useful convenience array inside the Jaxer namespace to allow the proxy functions to be declared in a single group within your Javascript code:
+</p><p><code>[javascript,N]
+</p><p>Jaxer.proxies = [myFunc1, myFunc2, "myFunction"]; 
+// ...
+Jaxer.proxies.push(myFunc3, "myFunction4"); 
+</p><p></code>
+</p><p>The value of Jaxer.proxies at the end of server-side page processing (i.e. when proxies are about to be inserted) determines which server-side functions will have their <tt>proxy</tt> property be set to <tt>true</tt>. You can also use this to remove all proxied functions by setting the value to <tt>null</tt>.
+</p><p><i>Note: <tt>Jaxer.proxies</tt> is NOT a complete collection of the functions being proxied by the server, it is just a convenient way to express the <tt>myFunc.proxy = true;</tt> syntax for multiple function references.</i>
+</p>
+<a name=".3Cjaxer:include.3E_reference"></a><h2> <span class="mw-headline">&lt;jaxer:include&gt; reference</span></h2>
+<p>Jaxer provides several special <tt>&lt;jaxer:include&gt;</tt> tags for implementing server-side include statements.
+</p>
+<a name="Why_use_server-side_includes.3F"></a><h3> <span class="mw-headline">Why use server-side includes?</span></h3>
+<p>If you are managing a web site that has more than a few pages, you may find that making changes to all those pages can be tedious, particularly if you are trying to maintain a standard functionality or look across all of your pages.
+</p><p>Using an include file for a header and/or a footer can reduce the burden of these updates. You just have to make one footer file, and then include it into each page with the include SSI command. The <tt>&lt;jaxer:include&gt;</tt> element can determine what file to include by the specified <tt>src</tt> attribute. The value of the <tt>src</tt> attribute should be a URL relative to the document being served, or an absolute URL starting with a / representing the web server's document root. Alternatively, you can use a <tt>path</tt> attribute instead of the <tt>src</tt> attribute; its value is an absolute path in the filesystem. In any case, the included file must be on the same server as the page being served.
+</p><p>Jaxer also provides a <tt>&lt;jaxer:includeJS&gt;</tt> element that takes a <tt>src</tt> or <tt>path</tt> attribute as well as a <tt>runat</tt> attribute, and acts much like a <tt>script</tt> element with a <tt>src</tt> attribute. It acts like the <tt>&lt;jaxer:include&gt;</tt> element but wraps the contents of the included file in a JavaScript <tt>script</tt> element.
+</p><p>Finally, Jaxer also provides <tt>Jaxer.load(src)</tt> to programatically load and evaluate (server-side) a JavaScript file.
+</p><p><b>Examples</b>
+</p><p>The following examples show how to include a file from the server's local file system as part
+of the current document. 
+</p><p><code>[html,N]&lt;jaxer:include src="_login.html"&gt;&lt;/aptana:include&gt;</code>
+</p><p><code>[html,N]&lt;jaxer:includeJS src="setup.js" runat="server"&gt;&lt;/aptana:includeJS&gt;</code>
+</p><p><code>[javascript,N]Jaxer.load("setup.js")</code>
+</p><p>This functionality is similar to the php <tt>include</tt> directive or the Apache <tt>#include</tt> functionality.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_the_Jaxer_server.html" title="About the Jaxer server">About the Jaxer server</a>
+</li><li> <a href="Getting_Started_with_Jaxer_in_Aptana_Studio.html" title="Getting Started with Jaxer in Aptana Studio">Getting Started with Jaxer in Aptana Studio</a>
+</li><li> <a href="Creating_a_new_Jaxer_project.html" title="Creating a new Jaxer project">Creating a new Jaxer project</a>
+</li><li> <a href="Previewing_a_Jaxer_project.html" title="Previewing a Jaxer project">Previewing a Jaxer project</a>
+</li><li> <a href="About_Jaxer_Views.html" title="About Jaxer Views">About Jaxer Views</a>
+<ul><li> <a href="Displaying_the_Servers_View.html" title="Displaying the Servers View">Displaying the Servers View</a>
+</li><li> <a href="Displaying_the_TailView_View.html" title="Displaying the TailView View">Displaying the TailView View</a>
+</li><li> <a href="Displaying_the_Jaxer_Activity_Monitor_View.html" title="Displaying the Jaxer Activity Monitor View">Displaying the Jaxer Activity Monitor View</a>
+</li><li> <a href="Displaying_the_Jaxer_Shell_View.html" title="Displaying the Jaxer Shell View">Displaying the Jaxer Shell View</a>
+</li></ul>
+</li><li> <a href="Configuring_your_Jaxer_servers.html" title="Configuring your Jaxer servers">Configuring your Jaxer servers</a>
+</li><li> <a href="Setting_your_TailView_preferences.html" title="Setting your TailView preferences">Setting your TailView preferences</a>
+</li><li> <a href="JaxerManager_Command_Line_Interface_(CLI)_Reference.html" title="JaxerManager Command Line Interface (CLI) Reference">JaxerManager_Command_Line_Interface_(CLI) Reference</a>
+</li><li> <a href="Jaxer_sample_application_guides.html" title="Jaxer sample application guides">Jaxer sample application guides</a>
+<ul><li><a href="Getting_started_with_Jaxer_development_using_the_Tasks_sample_application.html" title="Getting started with Jaxer development using the Tasks sample application">Getting started with Jaxer development using the Tasks sample application</a>
+</li><li><a href="Jaxer_WikiLite_Guide.html" title="Jaxer WikiLite Guide">Jaxer WikiLite Guide</a>
+</li><li><a href="Running_the_Jaxer_server_diagnostic_tools.html" title="Running the Jaxer server diagnostic tools">Running the Jaxer server diagnostic tools</a>
+</li></ul>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2209-0!1!0!!en!2!edit=0 and timestamp 20090201235355 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Inside_the_Jaxer_Chat_application">http://aptana.com/docs/index.php/Inside_the_Jaxer_Chat_application</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

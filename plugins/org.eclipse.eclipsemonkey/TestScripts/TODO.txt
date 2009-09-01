@@ -1,0 +1,46 @@
+
+Programming Tasks
+-----------------
+
+DOM: metadata causes automatic load
+website
+
+
+monkey icon drop-down menu
+add more samples from users
+paste new script from url
+
+
+handle resource changes as monkey triggers
+hard-code strings; etc
+partition projects to enable use in RCP
+handle script renames by just renaming instead remove and add
+
+dom that participates in the code completion by looking at both the static
+ type structure and the existing object structure
+
+Script Use Cases
+----------------
+1. scan for swear words [VERSION ONE WORKING] 
+A. build a manifest.txt for ourselves from the directory contents
+2. expand all in the plug-in editor
+3. watch for nearby changes
+4. expanded wiki syntax into javadoc
+5. feed something into the project dashboard
+6. replace all enum with something else -- Bill
+7. run a sequence of ant builds in a particular order; build.xmls in different projects
+8. monkey script to check id conventions
+9. systematically apply patches, whatever that means
+10. look for things in the code and announce them via IM; visibility to a larger group; something that is somehow relevant
+11. write a script to maintain a dynamic menu (hard -- threading)
+12. call home with Kudos distribution e.g.
+13. turn the JUnit test bar gray when saving a script file that was run in the tests
+	https://bugs.eclipse.org/bugs/show_bug.cgi?id=119533
+14. select multiple files in the navigator/synchronization window and export them as a jar
+15. loop over test cases looking for a heisenbug -- due to Ed Warnicke
+DOM Ideas and Use Cases
+-----------------------
+clipboard get/put
+selection
+run menu item named "x"
+

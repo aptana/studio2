@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<!-- [KEL] Leaving this defined in case the Java outline code proves to be problematic
+   <extension
+         point="org.eclipse.eclipsemonkey.scriptpath">
+      <scriptpath directory="json"/>
+   </extension>
+   -->
+   <extension
+         point="com.aptana.ide.editors.tokenList">
+      <textMatcher
+            extension=".json"
+            language="application/json"
+            resource="/json/json.lxr"/>
+   </extension>
+    <extension
+   		point="com.aptana.ide.editors.colorization" >
+   		<colorization file="/json/json.col" id="com.aptana.ide.editor.json.colorization" />
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.parser">
+      <parser
+            class="com.aptana.ide.editor.json.parsing.JSONParser"
+            language="application/json"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         
+      <page
+          category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.json.preferences.GeneralPreferencePage"
+          id="com.aptana.ide.editor.json.preferences.GeneralPreferencePage"
+          name="%generalJSONPreferencePage">
+            <keywordReference id="com.aptana.ide.editors.general"/>
+      </page>
+      <page
+          category="com.aptana.ide.editor.json.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.json.preferences.ColorizationPreferencePage"
+          id="com.aptana.ide.editor.json.preferences.ColorizationPreferencePage"
+          name="%colorPreferencePage">
+         	<keywordReference id="com.aptana.ide.editors.colors"/>
+      </page>
+      <page
+          category="com.aptana.ide.editor.json.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.json.preferences.FoldingPreferencePage"
+          id="com.aptana.ide.editor.json.preferences.FoldingPreferencePage"
+          name="%foldingPreferencePage">
+         	<keywordReference id="com.aptana.ide.editors.folding"/>
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.editor.json.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+       <wizard
+            category="com.aptana.ide.core.ui.projects"
+            class="com.aptana.ide.editor.json.wizards.JsonNewFileWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            icon="json/icons/json_file_new.gif"
+            id="com.aptana.ide.editors.wizards.JsonNewFileWizard"
+            name="%wizard.name.json"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective"/>
+       <wizard
+            canFinishEarly="true"
+            category="com.aptana.ide.core.ui"
+            class="com.aptana.ide.editor.json.wizards.JsonUntitledFileWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="false"
+            icon="json/icons/json_file_new.gif"
+            id="com.aptana.ide.editors.wizards.file.JsonUntitledFileWizard"
+            name="%wizard.name.untitled.json"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective"/>
+   </extension>
+   <extension
+          point="com.aptana.ide.core.ui.file_wizards">
+       <new-file-wizard
+             name="New JSON File"
+             wizard-id="com.aptana.ide.editors.wizards.JsonNewFileWizard"/>
+       <untitled-file-wizard
+             name="New Untitled JSON File"
+             wizard-id="om.aptana.ide.editors.wizards.file.JsonUntitledFileWizard"/>
+    </extension>
+    <extension
+         point="com.aptana.ide.editors.outline">
+      <contributor
+            content-provider="com.aptana.ide.editor.json.outline.JSONContentProvider"
+            is-sortable="true"
+            label-provider="com.aptana.ide.editor.json.outline.JSONLabelProvider"
+            language="application/json"
+            name="JSON Content Provider"/>
+   </extension>
+    <extension
+         point="com.aptana.ide.editors.pairfinder">
+      <pairFinder
+            class="com.aptana.ide.editor.json.JSONPairFinder"
+            language="application/json"
+            name="JSON Pair Finder">
+      </pairFinder>
+   </extension>
+   <extension point="com.aptana.ide.editors.folding" >
+   		<folding language="application/json" label="JSON" foldAllParents="false">
+   			<type name="ARRAY"/>
+   			<type name="OBJECT"/>
+   		</folding>
+   </extension>
+   <!-- Removing for now.  In the future if we want to use this, we will have to make the Generic Unified Editor acknowledge Activities. -->
+   <extension
+         id="com.aptana.ide.editor.json.contentTypes"
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="com.aptana.ide.editor.text.contentType"
+            file-extensions="json"
+            id="com.aptana.ide.editor.json.jsonContentType"
+            name="%content-type.name.json"
+            priority="high">
+      </content-type>
+   </extension>
+</plugin>

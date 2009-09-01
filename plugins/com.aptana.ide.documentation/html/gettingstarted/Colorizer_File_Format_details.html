@@ -1,0 +1,186 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Colorizer File Format details</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Colorizer_File_Format_details&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Colorizer File Format details [<a href="http://www.aptana.com/docs/index.php?title=Colorizer_File_Format_details&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Contributed_colorization_format"><span class="tocnumber">1</span> <span class="toctext">Contributed colorization format</span></a></li>
+<li class="toclevel-1"><a href="#Common_Colorization_patterns"><span class="tocnumber">2</span> <span class="toctext">Common Colorization patterns</span></a></li>
+<li class="toclevel-1"><a href="#Matcher_Documentation"><span class="tocnumber">3</span> <span class="toctext">Matcher Documentation</span></a>
+<ul>
+<li class="toclevel-2"><a href="#File_Format"><span class="tocnumber">3.1</span> <span class="toctext">File Format</span></a></li>
+<li class="toclevel-2"><a href="#Elements"><span class="tocnumber">3.2</span> <span class="toctext">Elements</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Contributed_colorization_format"></a><h2> <span class="mw-headline">Contributed colorization format</span></h2>
+<pre>
+&lt;!-- this example will show how the colorization used for a subset of CSS --&gt;
+&lt;colorizer
+    xmlns=&quot;http://www.aptana.com/2007/colorizer/1.0&quot;
+    language=&quot;text/css&quot;&gt;
+
+    &lt;group name=&quot;default&quot;&gt;
+
+        &lt;!-- declare default token colorization for all categories --&gt;
+        &lt;token type=&quot;*&quot; category=&quot;literal&quot; style=&quot;literal_default&quot; /&gt;
+        &lt;token type=&quot;*&quot; category=&quot;whitespace&quot; style=&quot;ws_default&quot; /&gt;
+        &lt;token type=&quot;*&quot; category=&quot;keyword&quot; style=&quot;literal_default&quot; /&gt;
+        &lt;token type=&quot;*&quot; category=&quot;punctuator&quot; style=&quot;punct_default&quot; /&gt;
+        &lt;token type=&quot;*&quot; category=&quot;error&quot; style=&quot;red_style&quot; /&gt;
+
+        &lt;!-- declare all keywords that start with '@' have different style for @ symbol --&gt;
+        &lt;token type=&quot;*&quot; category=&quot;keyword&quot; &gt;
+		&lt;subtoken type=&quot;at&quot; style=&quot;at_style&quot; /&gt;
+        &lt;/token&gt;
+        
+        &lt;!-- declare angle tokens have different styling for angle suffix (e.g deg,rad,grad) --&gt;
+        &lt;token type=&quot;time&quot; category=&quot;literal&quot; &gt;
+        	&lt;subtoken type=&quot;time_suffix&quot; style=&quot;time_style&quot; /&gt;
+        &lt;/token&gt;
+        
+        &lt;!-- declare quoted string to have their first and last character (quotes) colored differently --&gt;
+        &lt;token type=&quot;string&quot; category=&quot;literal&quot; &gt;
+        	&lt;region offset=&quot;0&quot; length=&quot;1&quot; style=&quot;quote&quot; /&gt;
+        	&lt;region offset=&quot;-1&quot; length=&quot;-1&quot; style=&quot;quote&quot; /&gt;
+        &lt;/token&gt;
+        
+        &lt;!-- style integers --&gt;
+        &lt;token type=&quot;integer&quot; category=&quot;literal&quot; style=&quot;int_style&quot; /&gt;
+        
+        &lt;!-- style floating point number with different styling for left of decimal, right of decimal, and decimal itself --&gt;
+        &lt;token type=&quot;floating_point&quot; category=literal&quot; &gt;
+        	&lt;subtoken type=&quot;int&quot; index=&quot;0&quot; style=&quot;leftside_int&quot; /&gt;
+        	&lt;subtoken type=&quot;point&quot; style=&quot;punct_default&quot; /&gt;
+        	&lt;sbutoken type=&quot;int&quot; index=&quot;1&quot; style=&quot;rightside_int&quot; /&gt;
+        &lt;/token&gt;
+        
+        &lt;!-- declare styles used --&gt;
+        &lt;style id=&quot;punct_default&quot;
+              foreground=&quot;rgb(0,255,0)&quot;
+              background=&quot;rgb(100,0,100)&quot;
+        &lt;style id=&quot;ws_default&quot;
+	      foreground=&quot;rgb(255,255,255)&quot;
+              background=&quot;rgb(255,255,255)&quot; /&gt;
+        &lt;style id=&quot;red_style&quot;
+	      foreground=&quot;rgb(255,0,0)&quot;
+              background=&quot;rgb(255,255,255)&quot; /&gt;
+	&lt;style id=&quot;leftside_int&quot;
+	      foreground=&quot;rgb(255,255,255)&quot;
+              background=&quot;rgb(0,0,255)&quot; /&gt;
+        &lt;style id=&quot;rightside_int&quot;
+              foreground=&quot;rgb(255,255,255)&quot;
+              background=&quot;rgb(0,255,0)&quot; /&gt;
+        &lt;style id=&quot;literal_default&quot;
+              foreground=&quot;rgb(100,200,100)&quot;
+              background=&quot;rgb(0,0,0)&quot; /&gt;
+        &lt;style id=&quot;quote&quot;
+              foreground=&quot;rgb(0,0,200)&quot;
+              background=&quot;rgb(200,200,0)&quot;
+              font-weight=&quot;bold&quot; /&gt;
+	&lt;style id=&quot;time_style&quot;
+	      foreground=&quot;rgb(0,0,0)&quot;
+	      background=&quot;rgb(255,0,255)&quot;
+	      font-style=&quot;italic&quot; /&gt;
+	&lt;style id=&quot;at_style&quot;
+	      foreground=&quot;rgb(0,0,255)&quot;
+              background=&quot;rgb(255,255,0)&quot;
+              font-weight=&quot;bold&quot; /&gt;
+        
+    &lt;/group&gt;
+&lt;/colorizer&gt;
+</pre>
+<p><b>This file would generate the following code colorization:</b>
+</p><p><a href="Image:Colorization_sample.jpg.html" class="image" title="Image:Colorization_sample.jpg"><img alt="Image:Colorization_sample.jpg" src="docs/images/c/c1/Colorization_sample.jpg" width="320" height="196" border="0" /></a>
+</p>
+<a name="Common_Colorization_patterns"></a><h2> <span class="mw-headline">Common Colorization patterns</span></h2>
+<ul><li> Numbers
+<ul><li>Integer
+</li><li> Floating point
+</li></ul>
+</li><li> Strings
+<ul><li> Double-quoted
+</li><li> Single-quoted
+</li></ul>
+</li><li> Identifiers
+<ul><li> Keywords
+</li></ul>
+</li><li> Punctuation
+<ul><li> Operators
+<ul><li> Arithmetic 
+</li><li> Assignment
+</li><li> Comparison
+</li><li> Boolean
+</li></ul>
+</li><li> Punctuators
+</li><li> Braces, Brackets, Parentheses
+</li></ul>
+</li><li> Comments
+</li></ul>
+<a name="Matcher_Documentation"></a><h2> <span class="mw-headline">Matcher Documentation</span></h2>
+<a name="File_Format"></a><h3> <span class="mw-headline">File Format</span></h3>
+<ul><li> Elements and attributes are converted into objects and setter calls via reflection.
+</li><li> Classes are located by iterating through a list of packages and optionally applying suffixes to the class names.
+<ul><li> An element name is mapped to a class name by capitalizing the first character, then by removing all hyphens and capitalizing the letter following the hyphen.
+</li><li> The converted name is appended to each package name
+</li><li> If the name does not appear in the package, then the suffixes are concatenated to the name and searched for in each package.
+</li><li> If no class is found, then a generic NodeBase object is created
+</li></ul>
+</li><li> Attributes are mapped to setters on the instantiated object.
+<ul><li> The attribute name is mapped to a setter method by prepending "set", then capitalizing the first character, then removing all hyphens and capitalizing the letter following the hyphen.
+</li><li> All setters that match the converted name and have one parameter are considered
+</li><li> If a setter takes a string argument, that will be preferred over all other like-named setters
+</li><li> If no setter takes a string argument, then an IConverter implementation is searched for to convert the attribute value to the setter's parameter type.
+</li></ul>
+</li></ul>
+<a name="Elements"></a><h3> <span class="mw-headline">Elements</span></h3>
+<p>Note that all matcher elements may include an optional type and category attribute. Any matcher that contains these attributes will emit a token for the given category/type pair. The category value is inheritable which allows, for example, a category group element to define a category for all its descendent matchers while allowing each descendant matcher to define its own type. A matcher may override the inherited category value simply by defining its own category attribute.
+</p><p>In addition to the type and category attributes, matchers also include the name attribute. When the given element matches successfully, the matched text will be associated with the matcher's name. These name/value pairs are stored at the group level allowing all matchers to provide and consume names and values within their group. If two matchers define that same name attribute, then the last successfully matching matcher's value will overwrite any preceding values. Values may be referenced via the UseElement. This allows for matcher definitions to be redefined based on matches ocurring at runtime.
+</p>
+<ul><li> <a href="All_Matcher_Elements.html" title="All Matcher Elements">All Matcher Elements</a>
+</li><li> <a href="Assertion_Elements.html" title="Assertion Elements">Assertion Elements</a>
+</li><li> <a href="Character_Class_Elements.html" title="Character Class Elements">Character Class Elements</a>
+</li><li> <a href="Compound_Elements.html" title="Compound Elements">Compound Elements</a>
+</li><li> <a href="Flow_Control_Elements.html" title="Flow Control Elements">Flow Control Elements</a>
+</li><li> <a href="Structural_Elements.html" title="Structural Elements">Structural Elements</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2411-0!1!0!!en!2!edit=0 and timestamp 20090202013530 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Colorizer_File_Format_details">http://aptana.com/docs/index.php/Colorizer_File_Format_details</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

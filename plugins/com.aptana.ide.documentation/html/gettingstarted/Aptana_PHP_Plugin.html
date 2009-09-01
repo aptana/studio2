@@ -1,0 +1,87 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Aptana PHP Plugin</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Aptana_PHP_Plugin&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Aptana PHP Plugin [<a href="http://www.aptana.com/docs/index.php?title=Aptana_PHP_Plugin&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>The Aptana PHP plugin gives you the tools to build better PHP applications faster.
+</p>
+<ul><li> Built-in PHP server for previewing within Aptana Studio
+</li><li> Full code assist, code outlining &amp; code formatting
+</li><li> Integrated PHP debugger
+</li><li> Easily deploy your PHP apps to Aptana Cloud within Studio
+</li></ul>
+<p>You can install the PHP plugin (as well as other Aptana-supplied plugins) using the Install Additional Features wizard on the Aptana menu.
+</p>
+<ul><li> <a href="Configuring_PHP_Preferences.html" title="Configuring PHP Preferences">Configuring PHP Preferences</a>
+</li><li> <a href="Basic_PHP_Debugging.html" title="Basic PHP Debugging">Basic PHP Debugging</a>
+</li><li> <a href="Remote_PHP_Debugging.html" title="Remote PHP Debugging">Remote PHP Debugging</a> -- <b>EXPERIMENTAL</b>
+</li><li> PHP extensions embedded with Aptana Studio
+<ul><li> <a href="CGI_extensions.html" title="CGI extensions">CGI extensions</a>
+</li><li> <a href="CLI_extensions.html" title="CLI extensions">CLI extensions</a>
+</li></ul>
+</li></ul>
+<ul><li> <a href="http://forums.aptana.com/viewforum.php?f=25" class="external text" title="http://forums.aptana.com/viewforum.php?f=25" rel="nofollow">Aptana PHP Community Forum</a>
+</li></ul>
+<a name="How_do_I_setup_PHP_previewing_with_a_web_server_besides_the_one_embedded_in_Studio.3F"></a><h2> <span class="mw-headline">How do I setup PHP previewing with a web server besides the one embedded in Studio?</span></h2>
+<p>You can use an Apache server, including those installed in packages like <a href="http://www.wampserver.com/en/" class="external text" title="http://www.wampserver.com/en/" rel="nofollow">WAMP</a>, <a href="http://www.apachefriends.org/en/xampp.html" class="external text" title="http://www.apachefriends.org/en/xampp.html" rel="nofollow">XAMP</a> and <a href="http://www.mamp.info/" class="external text" title="http://www.mamp.info/" rel="nofollow">MAMP,</a> very easily.
+</p>
+<ol><li><a href="Configuring_Aptana_Studio_to_use_an_external_web_server.html" title="Configuring Aptana Studio to use an external web server">Configuring an external web server</a>
+</li><li>Open the Preferences dialog to the PHP -&gt; Preview panel
+</li><li>Choose your server from the Preview Type Use Server dropdown list
+</li><li>Click OK
+</li></ol>
+<a name="How_do_I_remove_or_disable_the_PHP_Plugin.3F"></a><h2> <span class="mw-headline">How do I remove or disable the PHP Plugin?</span></h2>
+<ol><li>Open the Plugins Manager view
+</li><li>Select the Aptana PHP Development Environment
+</li><li>Click the Disable icon (the red minus) or the Delete icon (the red X) on the view toolbar
+</li><li>Restart Studio
+</li></ol>
+<a name="Can_I_make_my_project_a_PHP_project_even_though_it_wasn.27t_originally_created_as_one.3F"></a><h2> <span class="mw-headline">Can I make my project a PHP project even though it wasn't originally created as one?</span></h2>
+<p>Yes. There are two different ways to do so and we recommend the first.
+</p>
+<ul><li>Right click any project in your workspace and select 'Properties'. Select the 'Project Natures' and assign Aptana's PHP Nature to your project. Your project will be closed and reopened automatically to apply the changes. 
+</li><li>Edit your .project file (located in the project folder) to add the PHP nature to it using the following code block.
+</li></ul>
+<pre>&lt;natures&gt;
+  &lt;nature&gt;com.aptana.ide.editor.php.phpnature&lt;/nature&gt;
+&lt;/natures&gt;
+</pre>
+<p>If you choose the second option, you should close and reopen your project to apply the changes.
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2409-0!1!0!!en!2!edit=0 and timestamp 20090202023444 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Developing_with_the_Aptana_PHP_Plugin">http://aptana.com/docs/index.php/Developing_with_the_Aptana_PHP_Plugin</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

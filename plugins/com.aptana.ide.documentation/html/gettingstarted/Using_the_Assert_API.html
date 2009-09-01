@@ -1,0 +1,254 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Using the Assert API</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Using_the_Assert_API&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Using the Assert API [<a href="http://www.aptana.com/docs/index.php?title=Using_the_Assert_API&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains how to use the Assert API feature that is part of the Aptana JavaScript debugger.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#aptana.fail"><span class="tocnumber">2.1</span> <span class="toctext">aptana.fail</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assert"><span class="tocnumber">2.2</span> <span class="toctext">aptana.assert</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertEquals"><span class="tocnumber">2.3</span> <span class="toctext">aptana.assertEquals</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotEquals"><span class="tocnumber">2.4</span> <span class="toctext">aptana.assertNotEquals</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertGreater"><span class="tocnumber">2.5</span> <span class="toctext">aptana.assertGreater</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotGreater"><span class="tocnumber">2.6</span> <span class="toctext">aptana.assertNotGreater</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertLess"><span class="tocnumber">2.7</span> <span class="toctext">aptana.assertLess</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotLess"><span class="tocnumber">2.8</span> <span class="toctext">aptana.assertNotLess</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertContains"><span class="tocnumber">2.9</span> <span class="toctext">aptana.assertContains</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotContains"><span class="tocnumber">2.10</span> <span class="toctext">aptana.assertNotContains</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertTrue"><span class="tocnumber">2.11</span> <span class="toctext">aptana.assertTrue</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertFalse"><span class="tocnumber">2.12</span> <span class="toctext">aptana.assertFalse</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNull"><span class="tocnumber">2.13</span> <span class="toctext">aptana.assertNull</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotNull"><span class="tocnumber">2.14</span> <span class="toctext">aptana.assertNotNull</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertUndefined"><span class="tocnumber">2.15</span> <span class="toctext">aptana.assertUndefined</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotUndefined"><span class="tocnumber">2.16</span> <span class="toctext">aptana.assertNotUndefined</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertInstanceOf"><span class="tocnumber">2.17</span> <span class="toctext">aptana.assertInstanceOf</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotInstanceOf"><span class="tocnumber">2.18</span> <span class="toctext">aptana.assertNotInstanceOf</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertTypeOf"><span class="tocnumber">2.19</span> <span class="toctext">aptana.assertTypeOf</span></a></li>
+<li class="toclevel-2"><a href="#aptana.assertNotTypeOf"><span class="tocnumber">2.20</span> <span class="toctext">aptana.assertNotTypeOf</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Use the Assert API to determine whether a condition that you specify is true or false at a give moment. You can do this by adding the code "aptana.assert<i>CallName</i>" to your code where you want to test the condition.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>The Assert API has a variety of available calls for you to test various conditions in your code. The list below displays the reference information for each call.
+</p>
+<a name="aptana.fail"></a><h3> <span class="mw-headline">aptana.fail</span></h3>
+<p>Displays if the code fails at the specified point.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.fail(message,arg1,arg2,...);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.fail(&quot;Failed!&quot;, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assert"></a><h3> <span class="mw-headline">aptana.assert</span></h3>
+<p>Asserts the specified statement.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assert(object, arg1, arg2, ...);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assert(null, &quot;This is my assert message!&quot;, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertEquals"></a><h3> <span class="mw-headline">aptana.assertEquals</span></h3>
+<p>Returns true if the arguments are equal.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertEquals(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertEquals(1,2, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotEquals"></a><h3> <span class="mw-headline">aptana.assertNotEquals</span></h3>
+<p>Returns true if the arguments are not equal.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotEquals(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNotEquals(1,1 &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertGreater"></a><h3> <span class="mw-headline">aptana.assertGreater</span></h3>
+<p>Returns true if the first argument is greater than the second argument(s).
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertGreater(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertGreater(1,2,&quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotGreater"></a><h3> <span class="mw-headline">aptana.assertNotGreater</span></h3>
+<p>Returns true if the first argument is not greater than the second argument(s).
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotGreater(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNotGreater(1,2,&quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertLess"></a><h3> <span class="mw-headline">aptana.assertLess</span></h3>
+<p>Returns true if the first argument is less than the second argument(s).
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertLess(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertLess(2,1, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotLess"></a><h3> <span class="mw-headline">aptana.assertNotLess</span></h3>
+<p>Returns true if the first argument is not less than the second argument(s).
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotLess(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNotLess(2,1, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertContains"></a><h3> <span class="mw-headline">aptana.assertContains</span></h3>
+<p>Returns true if the objects contain the arguments.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertContains(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertContains(&quot;x&quot;,window, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotContains"></a><h3> <span class="mw-headline">aptana.assertNotContains</span></h3>
+<p>Returns true if the objects do not contain the arguments.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotContains(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNotContains(&quot;document&quot;,window, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertTrue"></a><h3> <span class="mw-headline">aptana.assertTrue</span></h3>
+<p>Returns true if the specified condition is true.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertTrue(object,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertTrue(false, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertFalse"></a><h3> <span class="mw-headline">aptana.assertFalse</span></h3>
+<p>Returns true if the specified condition is false.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertFalse(object,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertFalse(true, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNull"></a><h3> <span class="mw-headline">aptana.assertNull</span></h3>
+<p>Returns true if the specified object/arguments are null.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNull(object,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNull(window, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotNull"></a><h3> <span class="mw-headline">aptana.assertNotNull</span></h3>
+<p>Returns true if the specified object/arguments are not null.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotNull(object,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNotNull(null, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertUndefined"></a><h3> <span class="mw-headline">aptana.assertUndefined</span></h3>
+<p>Returns true if the specified object/arguments are undefined.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertUndefined(object,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertUndefined(window, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotUndefined"></a><h3> <span class="mw-headline">aptana.assertNotUndefined</span></h3>
+<p>Returns true if the specified object/arguments are not undefined.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotUndefined(object,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>var x; aptana.assertNotUndefined(x, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertInstanceOf"></a><h3> <span class="mw-headline">aptana.assertInstanceOf</span></h3>
+<p>Returns true if the argument(s) are an instance of the object(s).
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertInstanceOf(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertInstanceOf(&quot;str&quot;,Date, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotInstanceOf"></a><h3> <span class="mw-headline">aptana.assertNotInstanceOf</span></h3>
+<p>Returns true if the argument(s) are not an instance of the objects.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotInstanceOf(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNotInstanceOf(new Date(),Date, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertTypeOf"></a><h3> <span class="mw-headline">aptana.assertTypeOf</span></h3>
+<p>Returns true if the argument(s) are the type of the objects.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertTypeOf(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertTypeOf(1, &quot;string&quot;, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="aptana.assertNotTypeOf"></a><h3> <span class="mw-headline">aptana.assertNotTypeOf</span></h3>
+<p>Returns true if the argument(s) are not a type of the objects.
+</p><p><b>Syntax</b>
+</p>
+<pre>aptana.assertNotTypeOf(o1,o2,arguments);</pre>
+<p><b>Example</b>
+</p>
+<pre>aptana.assertNotTypeOf(1,&quot;number&quot;, &quot;arg1&quot;, &quot;arg2&quot;);</pre>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_the_JavaScript_debugger.html" title="About the JavaScript debugger">About the JavaScript debugger</a>
+</li><li> <a href="JavaScript_debugger_feature_comparison.html" title="JavaScript debugger feature comparison">JavaScript debugger feature comparison</a>
+</li><li> <a href="About_the_Aptana_Debug_perspective.html" title="About the Aptana Debug perspective">About the Aptana Debug perspective</a>
+</li><li> <a href="Installing_the_JavaScript_debugger.html" title="Installing the JavaScript debugger">Installing the JavaScript debugger</a>
+</li><li> <a href="Uninstalling_the_debugger.html" title="Uninstalling the debugger">Uninstalling the debugger</a>
+</li><li> <a href="Running_the_debugger.html" title="Running the debugger">Running the debugger</a>
+</li><li> <a href="Accessing_your_debugger_log.html" title="Accessing your debugger log">Accessing your debugger log</a>
+</li><li> <a href="Stepping_into_and_over_functions.html" title="Stepping into and over functions">Stepping into and over functions</a>
+</li><li> <a href="Adding_a_breakpoint.html" title="Adding a breakpoint">Adding a breakpoint</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1626-0!1!0!!en!2!edit=0 and timestamp 20090202170120 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Using_the_Assert_API">http://aptana.com/docs/index.php/Using_the_Assert_API</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

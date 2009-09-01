@@ -1,0 +1,114 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Toggling word wrap</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Toggling_word_wrap&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Toggling word wrap [<a href="http://www.aptana.com/docs/index.php?title=Toggling_word_wrap&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This Help topic describes how to use a short Eclipse Monkey script to toggle the current editor's text wrapping setting.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Aptana Studio currently does not support word wrapping due to a limitation in the Eclipse framework. However, it is possible to access the text widget responsible for the display of text in the Aptana editors. Gaining access to this widget allows Eclipse Monkey to toggle the word wrap setting. Please note that there are known issues when word wrap is turned on.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<ol>
+<li>Create a new, empty Eclipse Monkey script. See <a href="Creating_a_new_Eclipse_Monkey_script.html" title="Creating a new Eclipse Monkey script">Creating a new Eclipse Monkey script</a> for instructions.<p>Name the file something related to the actual script that you want to execute (e.g. <b>toggle_word_wrap.js</b>). Note that Studio may insert an author comment at the top of the new file and you should delete it.</p></li>
+<li>Copy and paste the JavaScript below into your new file:<p><pre>
+/*
+ * Menu: Editors &gt; Toggle Word Wrap
+ * Kudos: Kevin Lindsey (Aptana, Inc.)
+ * License: EPL 1.0
+ * DOM: http://download.eclipse.org/technology/dash/update/org.eclipse.eclipsemonkey.lang.javascript
+ */
+
+/**
+ * main
+ */
+function main()
+{
+	var textWidget = getTextWidget();
+	
+	if (textWidget)
+	{
+		var setting = textWidget.getWordWrap() == false;
+		
+		textWidget.setWordWrap(setting);
+		
+		if (setting)
+		{
+			out.println(&quot;Word wrap is on&quot;);
+		}
+		else
+		{
+			out.println(&quot;Word wrap is off&quot;);
+		}
+	}
+}
+
+/**
+ * getTextWidget
+ */
+function getTextWidget()
+{
+	var result = null;
+	
+	try
+	{
+		result = editors.activeEditor.textEditor.getViewer().getTextWidget()
+	}
+	catch (e)
+	{
+		// fail silently
+	}
+	
+	return result;
+}
+</pre></p></li>
+</ol>
+<p>You should now be able to execute this script using the menu item in the sample script (i.e. <b>Scripts &gt; Editors &gt; Toggle Word Wrap</b>), or any other metadata that you added on your own.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Aptana_Snippets.html" title="About Aptana Snippets">About Aptana Snippets</a>
+</li><li> <a href="Editing_with_Snippets.html" title="Editing with Snippets">Editing with Snippets</a>
+</li><li> <a href="Adding_a_new_Snippet.html" title="Adding a new Snippet">Adding a new Snippet</a>
+</li><li> <a href="Editing_a_Snippet.html" title="Editing a Snippet">Editing a Snippet</a>
+</li><li> <a href="Scripting_with_Eclipse_Monkey.html" title="Scripting with Eclipse Monkey">Scripting with Eclipse Monkey</a>
+</li><li> <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a>
+</li><li> <a href="Assigning_a_keyboard_shortcut_to_a_snippet.html" title="Assigning a keyboard shortcut to a snippet">Assigning a keyboard shortcut to a snippet</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2126-0!1!0!!en!2!edit=0 and timestamp 20090202192051 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Toggling_word_wrap">http://aptana.com/docs/index.php/Toggling_word_wrap</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

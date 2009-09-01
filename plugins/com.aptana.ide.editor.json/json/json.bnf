@@ -1,0 +1,42 @@
+Program
+	:	Values
+	;
+	
+Values
+	:	Value {FirstStatement}
+	|	Values Value {AddStatement}
+	;
+
+Value
+	:	ObjectLiteral	# pass through
+	|	ArrayLiteral	# pass through
+	|	STRING			# pass through
+	|	NUMBER			# pass through
+	|	TRUE			# pass through
+	|	FALSE			# pass through
+	|	NULL			# pass through
+	;
+
+ObjectLiteral
+	:	LCURLY RCURLY {EmptyObjectLiteral}
+	|	LCURLY Properties RCURLY {ObjectLiteral}
+	;
+
+Properties
+	:	Property {FirstProperty}
+	|	Properties COMMA Property {AddProperty}
+	;
+	
+Property
+	:	STRING COLON Value {Property}
+	;
+	
+ArrayLiteral
+	:	LBRACKET RBRACKET {EmptyArrayLiteral}
+	|	LBRACKET Elements RBRACKET {ArrayLiteral}
+	;
+	
+Elements
+	:	Value {FirstElement}
+	|	Elements COMMA Value {AddElement}
+	;

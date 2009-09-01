@@ -1,0 +1,58 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Scripting Aptana Studio Features</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Scripting_Aptana_Studio_Features&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Scripting Aptana Studio Features [<a href="http://www.aptana.com/docs/index.php?title=Scripting_Aptana_Studio_Features&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Aptana allows you to script a large part of its features. Here are some common shortcuts to popular things you may wish to do.
+</p>
+<a name="Insert_text_at_the_cursor_position"></a><h2> <span class="mw-headline"> Insert text at the cursor position </span></h2>
+<pre>var editor = editors.activeEditor; 
+var offset = editor.selectionRange.startingOffset; 
+editor.applyEdit(offset, 0, text)
+</pre>
+<a name="Replace_selected_text"></a><h2> <span class="mw-headline"> Replace selected text </span></h2>
+<pre>var editor = editors.activeEditor; 
+var offset = editor.selectionRange.startingOffset; 
+var deleteLength = editor.selectionRange.endingOffset - editor.selectionRange.startingOffset;
+editor.applyEdit(offset, deleteLength, text);
+</pre>
+<a name="Ask_for_a_value"></a><h2> <span class="mw-headline"> Ask for a value </span></h2>
+<pre>prompt(prompt-string, [default-value])
+</pre>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1681-0!1!0!!en!2!edit=0 and timestamp 20090202191542 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Scripting_Aptana_Studio_Features">http://aptana.com/docs/index.php/Scripting_Aptana_Studio_Features</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

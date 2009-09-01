@@ -1,0 +1,92 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Cloaking files or folders</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Cloaking_files_or_folders&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Cloaking files or folders [<a href="http://www.aptana.com/docs/index.php?title=Cloaking_files_or_folders&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to cloak certain files or folders from synchronization between a local folder and an FTP site.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Quickly_cloaking_a_file_type"><span class="tocnumber">2.1</span> <span class="toctext">Quickly cloaking a file type</span></a></li>
+<li class="toclevel-2"><a href="#Setting_up_cloaking_in_your_preferences"><span class="tocnumber">2.2</span> <span class="toctext">Setting up cloaking in your preferences</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The Aptana FTP tool gives you the option of cloaking (or hiding) specific files, file types, and folders from synchronization, uploads, and downloads. This feature is useful if you have a large directory of files that you want to exclude from your synchronization or uploads. 
+</p><p>You can cloak a file or folder two different ways:
+</p>
+<ul><li> You can right-click the file or folder in the File or Project View and select <b>Synchronize</b> &gt; <b>Cloak this file type</b> from the context menu.
+</li><li> You can set up your preferences to cloak certain file types, using wildcards and regular expresssions.
+</li></ul>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Quickly_cloaking_a_file_type"></a><h3> <span class="mw-headline">Quickly cloaking a file type</span></h3>
+<p>To easily cloak all files of a certain file type:
+</p>
+<ol><li> In File or Project View, right-click a file with the extension that you want to cloak (e.g. .zip, .gif, etc.).
+</li><li> From the context menu, select <b>Synchronize</b> &gt; <b>Cloak this file type</b>.
+</li></ol>
+<p>To uncloak this file type, right-click the file again, and select <b>Synchronize</b> &gt; <b>Uncloak this file type</b> from the context menu.
+</p>
+<a name="Setting_up_cloaking_in_your_preferences"></a><h3> <span class="mw-headline">Setting up cloaking in your preferences</span></h3>
+<p>To perform more complicated cloaking, you can add certain file types and folder names to your Aptana preferences, such as cloaking all folders with the name "*.svn", to cloak Subversion files.
+</p><p>To set up your cloaking preferences:
+</p>
+<ol><li> From the <b>Window</b> menu, select <b>Preferences...</b> to open a Preferences window.
+</li><li> On the left side of the Preferences window, expand the <b>Aptana</b> tree.
+</li><li> Under <b>Aptana</b>, select <b>Synchronization</b>. 
+</li><li> On the right side, click the <b>Add</b> button to add a file type, file name, or folder to be cloaked. You can use an asterisk (*) as a wildcard as part of the file or folder name. For example, adding "*svn" will cloak all folders whose names end in "svn". As another example, adding "*.project" will cloak all ".project" files.
+</li><li> Click <b>OK</b> to save your changes and close the Preferences window.
+</li></ol>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Adding_an_FTP_site.html" title="Adding an FTP site">Adding an FTP site</a>
+</li><li> <a href="Adding_a_site_connection.html" title="Adding a site connection">Adding a site connection</a>
+</li><li> <a href="Synchronizing_your_files.html" title="Synchronizing your files">Synchronizing your files</a>
+</li><li> <a href="Editing_a_file_from_a_remote_site.html" title="Editing a file from a remote site">Editing a file from a remote site</a>
+</li><li> <a href="Uploading_or_downloading_a_file_or_folder.html" title="Uploading or downloading a file or folder">Uploading or downloading a file or folder</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1572-0!1!0!!en!2!edit=0 and timestamp 20090202103646 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Cloaking_files_or_folders">http://aptana.com/docs/index.php/Cloaking_files_or_folders</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

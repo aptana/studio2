@@ -1,0 +1,22 @@
+Simple
+	:	ONE
+	|	TWO Simple
+	|	THREE FOUR FIVE Simple SIX
+	|	ChildA ChildB
+	//|	ChildA
+	//|	ChildB
+	|	Simple COMMA
+	;
+
+ChildA
+	:	// nothing
+	|	A
+	|	B
+	|	C
+	;
+	
+ChildB
+	:	D
+	|	E
+	|	F
+	;

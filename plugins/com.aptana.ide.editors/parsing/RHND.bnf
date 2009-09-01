@@ -1,0 +1,32 @@
+Grammar
+	:	Blocks
+	;
+	
+Blocks
+	:	Blocks Block {AddBlock}
+	|	Block {FirstBlock}
+	;
+
+Block
+	:	ActionNames LCURLY Statement RCURLY {Block}
+	;
+	
+ActionNames
+	:	ActionNames COMMA NONTERMINAL {AddActionName}
+	|	NONTERMINAL {FirstAction}
+	;
+
+Statement
+	:	TERMINAL
+	|	NONTERMINAL
+	|	STRING
+	|	TERMINAL LBRACKET NUMBER RBRACKET
+	|	NONTERMINAL LBRACKET NUMBER RBRACKET
+	|	NONTERMINAL LPAREN Statements RPAREN
+	# 	concatenation via '+'
+	;
+	
+Statements
+	:	Statements COMMA Statement {AddStatement}
+	|	Statement {FirstStatement}
+	;

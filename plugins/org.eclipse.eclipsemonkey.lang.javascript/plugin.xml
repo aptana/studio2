@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="javascript_dom" name="Aptana JavaScript Scripting DOM" schema="schema/javascript_dom.exsd"/>
+   <extension
+         point="org.eclipse.eclipsemonkey.language">
+      <language
+            class="org.eclipse.eclipsemonkey.lang.javascript.JavaScriptLanguageFactory"
+            languageExtension="js,em"
+            languageName="JavaScript">
+      </language>
+   </extension>
+   <extension
+         point="org.eclipse.eclipsemonkey.lang.javascript.javascript_dom">
+      <dom
+            class="org.eclipse.eclipsemonkey.lang.javascript.doms.io.IODOMFactory"
+            variableName="io">
+      </dom>
+      <dom
+            basedOn="http://download.eclipse.org/technology/dash/update/org.eclipse.eclipsemonkey.doms"
+            class="org.eclipse.eclipsemonkey.lang.javascript.doms.resources.ResourcesDOMFactory"
+            variableName="resources">
+      </dom>
+      <dom
+            class="org.eclipse.eclipsemonkey.lang.javascript.doms.views.ViewsDOMFactory"
+            variableName="views">
+      </dom>
+      <dom
+            class="org.eclipse.eclipsemonkey.lang.javascript.doms.editors.EditorsDOMFactory"
+            variableName="editors">
+      </dom>
+   </extension>
+ </plugin>

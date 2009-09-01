@@ -1,0 +1,36 @@
+<div class="modalWrap" id="loginWindow">
+	
+	<h1>
+		Log In
+		<div style="float: right;"><a href="javascript: AptanaPortal.openUrl('http://www.aptana.com/aptana_id');" style="text-decoration: none;"><img src="images_global/img_icon_help.png" style="border: none; margin-top: -2px; margin-right: 3px;" align="absmiddle" /></a><a href="javascript: AptanaPortal.openUrl('http://www.aptana.com/aptana_id');">Help</a></div>
+		<div class="clearfix"></div>
+	</h1>
+	
+	<div id="loginError" style="margin: 5px 5px 0 5px;">#{message}</div>
+	<div class="content" style="width: 350px;">
+		<p>
+			<label for="username">Username:</label><br />
+			<input name="username" id="username" class="text" size="35" />
+		</p>
+		<p>
+			<label for="password">Password:</label><br />
+			<input name="password" id="password" type="password" class="text" size="35" /><br />
+			<a href="javascript: AptanaPortal.openUrl('http://id.aptana.com/reset_password');">Forgot password?</a>
+		</p>
+		<p class="top10">
+			Don't have an Aptana ID? <a href="javascript: AptanaPortal.AptanaIdManager.showCreateWindow();">Create one Now!</a>
+		</p>
+	</div>
+	<div class="footer2">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td style="text-align: left;" width="50%">
+					<a href="javascript: Control.Modal.close();" class="close">&nbsp;</a>
+				</td>
+				<td style="text-align: right;" width="50%">
+					<a href="#" onclick="AptanaPortal.AptanaIdManager.logInUser();" class="login">&nbsp;</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,67 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Adding custom error message filters to the Problems View</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Adding_custom_error_message_filters_to_the_Problems_View&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Adding custom error message filters to the Problems View [<a href="http://www.aptana.com/docs/index.php?title=Adding_custom_error_message_filters_to_the_Problems_View&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This Help topic explains how to create custom error message filters for your Validation View.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The HTML, CSS, and JavaScript Editors in Aptana validate the code that you write against the specifications defined in HTMLTidy, CSSTidy, and JSLint, respectively. Any code that you write that cannot be validated against these tools triggers an error message in the Validation View. If you do not want to turn off 
+error reporting, but want to hide certain error messages (e.g. an error message for a particular browser-specific CSS attribute), you can create a custom filter for the Validation View. The Validation View will not display error messages that match the regular expression that you specify in your filter. These filters are located in your Aptana preferences.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>To create a custom error message filter:
+</p>
+<ol>
+	<li>Navigate to the Validation View preferences for the Editor that you are creating the filter for.<ol>
+		<li>From the <b>Window</b> menu, select <b>Preferences...</b> to open a <b>Preferences</b> window.</li>
+		<li>On the <b>Preferences</b> tree on the left, expand <b>Aptana &gt; Editors</b> and then expand the Editor that you want to create the filter for.</li>
+		<li>Under the Editor that you just expanded, select <b>Validation View.</b><p>Aptana displays the error message filters for the Editor that you selected (shown below).</p><p><a href="Image:PreferencesValidation.png.html" class="image" title="Image:preferencesValidation.png"><img alt="Image:preferencesValidation.png" src="docs/images/b/b5/PreferencesValidation.png" width="580" height="527" border="0" /></a></p></li></ol></li>
+	<li>Add your new filter.<ol>
+		<li>On the <b>Validation View</b> preferences screen, click the <b>Add</b> button to open an <b>Ignore Warning/Error</b> pop-up window.</li>
+		<li>In the <b>Message</b> field on the <b>Ignore Warning/Error</b> pop-up window, type either the exact error or warning message that you want the Validation View to ignore. You can also use an asterisk (*) as a wildcard to create a regular expression.</li>
+		<li>Click <b>OK</b> to add your error message to the list of filters.</li></ol></li>
+	<li>Click <b>OK</b> to save the changes to your preferences and to close the <b>Preferences</b> window.</li>
+</ol>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Setting_your_Aptana_preferences.html" title="Setting your Aptana preferences">Setting your Aptana preferences</a>
+</li><li> <a href="Displaying_the_Validation_View.html" title="Displaying the Validation View">Displaying the Validation View</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1580-0!1!0!!en!2!edit=0 and timestamp 20090202095855 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Adding_custom_error_message_filters_to_the_Validation_View">http://aptana.com/docs/index.php/Adding_custom_error_message_filters_to_the_Validation_View</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

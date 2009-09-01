@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2004/lexer/1.0"
+	language="JSDoc">
+
+	<group name="default">
+		<token category="WHITESPACE" type="START_COMMENT" switchTo="comment">
+			<regex>/\*[^*]</regex>
+		</token>
+		<token category="DOCUMENTATION" type="START_DOCUMENTATION" switchTo="documentation">
+			<regex>/\*\*</regex>
+		</token>
+	</group>
+	
+	<group name="comment">
+		<token category="WHITESPACE" type="LINE_TERMINATOR">
+			<regex>\r|\n|\r\n</regex>
+		</token>
+		<token category="WHITESPACE" type="WHITESPACE">
+			<regex>\s*\*\s*</regex>
+		</token>
+		<token category="WHITESPACE" type="WHITESPACE">
+			<regex>[\t\ ]+</regex>
+		</token>
+		<token category="WHITESPACE" type="COMMENT">
+			<regex>[^\s]+</regex>
+		</token>
+		<token category="WHITESPACE" type="END_COMMENT" switchTo="default">
+			<regex>\*/</regex>
+		</token>
+	</group>
+	
+	<!-- Documentation Tokens -->
+	<group name="documentation">
+		<!-- whitespace -->
+		<token category="DOCUMENTATION" type="WHITESPACE">
+			<regex>[\r\n\t\v\f\ ]+</regex>
+		</token>
+		<token category="DOCUMENTATION" type="WHITESPACE">
+			<regex>\s*\*\s*</regex>
+		</token>
+		<token category="DOCUMENTATION" type="TEXT">
+			<regex>[^\s{[\]]+</regex>
+		</token>
+		
+		<!-- keywords -->
+		<token category="DOCUMENTATION" type="AUTHOR">
+			<regex>@author</regex>
+		</token>
+		<token category="DOCUMENTATION" type="ARGUMENT">
+			<regex>@argument</regex>
+		</token>
+		<token category="DOCUMENTATION" type="CONSTRUCTOR">
+			<regex>@constructor</regex>
+		</token>
+		<token category="DOCUMENTATION" type="DEPRECATED">
+			<regex>@deprecated</regex>
+		</token>
+		<token category="DOCUMENTATION" type="EXCEPTION">
+			<regex>@exception</regex>
+		</token>
+		<token category="DOCUMENTATION" type="FILEOVERVIEW">
+			<regex>@fileoverview</regex>
+		</token>
+		<token category="DOCUMENTATION" type="FINAL">
+			<regex>@final</regex>
+		</token>
+		<token category="DOCUMENTATION" type="IGNORE">
+			<regex>@ignore</regex>
+		</token>
+		<token category="DOCUMENTATION" type="LINK">
+			<regex>@link</regex>
+		</token>
+		<token category="DOCUMENTATION" type="PARAM">
+			<regex>@param</regex>
+		</token>
+		<token category="DOCUMENTATION" type="PRIVATE">
+			<regex>@private</regex>
+		</token>
+		<token category="DOCUMENTATION" type="RETURN">
+			<regex>@return</regex>
+		</token>
+		<token category="DOCUMENTATION" type="RETURNS">
+			<regex>@returns</regex>
+		</token>
+		<token category="DOCUMENTATION" type="SEE">
+			<regex>@see</regex>
+		</token>
+		<token category="DOCUMENTATION" type="STATIC">
+			<regex>@static</regex>
+		</token>
+		<token category="DOCUMENTATION" type="THROWS">
+			<regex>@throws</regex>
+		</token>
+		<token category="DOCUMENTATION" type="TYPE">
+			<regex>@type</regex>
+		</token>
+		<token category="DOCUMENTATION" type="VERSION">
+			<regex>@version</regex>
+		</token>
+		
+		<!-- punctuators -->
+		<token category="DOCUMENTATION" type="END_DOCUMENTATION" switchTo="default">
+			<regex>\*/</regex>
+		</token>
+		<token category="DOCUMENTATION" type="LCURLY" switchTo="identifier">
+			<regex>{</regex>
+		</token>
+		<token category="DOCUMENTATION" type="LBRACKET">
+			<regex>\[</regex>
+		</token>
+		<token category="DOCUMENTATION" type="RBRACKET">
+			<regex>]</regex>
+		</token>
+		<token category="DOCUMENTATION" type="ELLIPSIS">
+			<regex>\.\.\.</regex>
+		</token>
+		<token category="DOCUMENTATION" type="DOLLAR_LCURLY" switchTo="identifier">
+			<regex>\${</regex>
+		</token>
+		<token category="DOCUMENTATION" type="POUND" switchTo="identifier">
+			<regex>#</regex>
+		</token>
+		
+		<!-- future keywords -->
+		<!--
+		<token category="DOCUMENTATION" type="CLASS">
+			<regex>@class</regex>
+		</token>
+		<token category="DOCUMENTATION" type="ENUM">
+			<regex>@enum</regex>
+		</token>
+		<token category="DOCUMENTATION" type="EVENT">
+			<regex>@event</regex>
+		</token>
+		<token category="DOCUMENTATION" type="EXTENDS">
+			<regex>@extends</regex>
+		</token>
+		<token category="DOCUMENTATION" type="FLAGS">
+			<regex>@flags</regex>
+		</token>
+		<token category="DOCUMENTATION" type="IMPLEMENTS">
+			<regex>@implements</regex>
+		</token>
+		<token category="DOCUMENTATION" type="INTERFACE">
+			<regex>@interface</regex>
+		</token>
+		<token category="DOCUMENTATION" type="MEMBER">
+			<regex>@member</regex>
+		</token>
+		<token category="DOCUMENTATION" type="REQUIRES">
+			<regex>@requires</regex>
+		</token>
+		-->
+	</group>
+	
+	<group name="identifier">
+		<token category="DOCUMENTATION" type="IDENTIFIER">
+			<regex>
+				([a-zA-Z$_] | \\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])
+				([0-9a-zA-Z$_] | \\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])*
+			</regex>
+		</token>
+		<token category="DOCUMENTATION" type="LINK">
+			<regex>@link</regex>
+		</token>
+		<token category="DOCUMENTATION" type="RCURLY" switchTo="documentation">
+			<regex>}</regex>
+		</token>
+		<token category="DOCUMENTATION" type="COMMA">
+			<regex>,</regex>
+		</token>
+		<token category="DOCUMENTATION" type="COLON">
+			<regex>:</regex>
+		</token>
+		<token category="DOCUMENTATION" type="WHITESPACE">
+			<regex>[\r\n\t\v\f\ ]+</regex>
+		</token>
+	</group>
+	
+</lexer>

@@ -1,0 +1,106 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Overlay an Image on Rollover</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Overlay_an_Image_on_Rollover&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Overlay an Image on Rollover [<a href="http://www.aptana.com/docs/index.php?title=Overlay_an_Image_on_Rollover&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This can be seen in action on aptana.tv:
+</p><p>Before:
+</p><p><a href="Image:Rollover_before.png.html" class="image" title="Image:rollover_before.png"><img alt="Image:rollover_before.png" src="docs/images/2/2b/Rollover_before.png" width="150" height="150" border="0" /></a>
+</p><p>Hover:
+</p><p><a href="Image:Rollover_after.png.html" class="image" title="Image:rollover_after.png"><img alt="Image:rollover_after.png" src="docs/images/a/aa/Rollover_after.png" width="150" height="150" border="0" /></a>
+</p>
+<a name="The_HTML"></a><h2> <span class="mw-headline">The HTML</span></h2>
+ <div>
+<pre>&lt;a href="file.html" target="_blank"&gt;
+   &lt;img alt="" src="images/overlay.png" class="overlay"/&gt;
+   &lt;img src="images/thumnail.png" alt="View Video" class="thumbnail"/&gt;
+&lt;/a&gt;
+</pre>
+<a name="The_CSS"></a><h2> <span class="mw-headline">The CSS</span></h2>
+<pre>&lt;style type="text/css"&gt;
+
+.overlay {
+   display:none;
+   padding:0;
+   border: 1px solid #333333;
+   margin:0;
+   position:absolute;
+   height:150px;
+   width:150px;
+   z-index:2;
+}
+
+.thumbnail{
+   position:relative;
+   left:1px;
+   z-index:0;
+   height:150px;
+   width:150px;
+   border: 1px solid #333333;
+}
+
+.thumbnail:hover, .thumbnail.over{
+   border: 1px solid #333333;
+}
+
+&lt;/style&gt;
+</pre>
+<a name="The_JavaScript"></a><h2> <span class="mw-headline">The JavaScript</span></h2>
+<pre>&lt;script language="JavaScript" type="text/javascript"&gt;
+       var isIE = (navigator.appVersion.toLowerCase().indexOf('msie 6.0')&nbsp;!= -1);
+       
+       function onmouseoverHover(element){
+           if(isIE){
+               element.getElementsByTagName('a')[0].getElementsByTagName('span')[0].style.display = "inline";
+           }else{
+               element.getElementsByTagName('a')[0].getElementsByTagName('img')[0].style.display = "inline";
+           }            
+       }
+
+       function onmouseoutHover(element){
+           if(isIE){
+               element.getElementsByTagName('a')[0].getElementsByTagName('span')[0].style.display = "none";
+           }else{
+               element.getElementsByTagName('a')[0].getElementsByTagName('img')[0].style.display = "none";
+           }
+       }
+</pre>
+  &lt;/script&gt;</div>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1633-0!1!0!!en!2!edit=0 and timestamp 20090202165016 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Overlay_an_Image_on_Rollover">http://aptana.com/docs/index.php/Overlay_an_Image_on_Rollover</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

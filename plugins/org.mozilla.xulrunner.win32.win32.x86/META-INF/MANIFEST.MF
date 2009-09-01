@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mozilla Xulrunner
+Bundle-SymbolicName: org.mozilla.xulrunner.win32.win32.x86;singleton:=true
+Bundle-Version: 1.9.0.5
+Bundle-Localization: plugin
+Bundle-ClassPath: .
+Bundle-Vendor: mozilla.org
+Eclipse-PlatformFilter: (& (osgi.ws=win32) (osgi.os=win32) (osgi.arch=x86) )

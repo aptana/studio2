@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.aptana.com/2005/schema/1.0">
+
+	<element name="lexer" type="root" onEnter="enterLexer" onExit="exitLexer">
+		<attribute name="language" />
+		<child-element name="token-group" />
+		<child-element name="macros" />
+	</element>
+
+	<element name="token-group" onEnter="enterGroup" onExit="exitGroup">
+		<attribute name="name" usage="required" />
+		<child-element name="macros" />
+		<child-element name="token" />
+		<child-element name="category-group" />
+		<child-element name="multi-token" />
+	</element>
+	
+	<element name="token" onEnter="enterToken" onExit="exitToken">
+		<attribute name="category" usage="optional" />
+		<attribute name="type" usage="required" />
+	</element>
+	
+	<element name="macros" onEnter="enterMacros" onExit="exitMacros">
+		<child-element name="macro" />
+	</element>
+	
+	<element name="macro" onEnter="enterMacro" onExit="exitMacro">	
+		<attribute name="name" usage="required" />
+		<attribute name="min" usage="optional" />
+		<attribute name="max" usage="optional" />
+		<child-element name="literal-string-set" />
+		<child-element name="number" />
+		<child-element name="string" />
+		<child-element name="identifier" />
+		<child-element name="whitespace" />
+		<child-element name="comment" />
+		<child-element name="character" />
+		<child-element name="hex" />
+		<child-element name="hexcolor" />
+		<child-element name="or" />
+		<child-element name="and" />
+	</element>
+	
+	<element name="character" onEnter="enterCharacter" onExit="exitCharacter">
+		<attribute name="min" usage="required" />
+		<attribute name="max" usage="required" />
+		<attribute name="negate" usage="optional" />
+	</element>
+	
+	<element name="whitespace" onEnter="enterWhitespace">
+		<attribute name="min" usage="required" />
+		<attribute name="max" usage="required" />
+		<attribute name="negate" usage="optional" />
+	</element>
+	
+	<element name="hexcolor" onEnter="enterHexcolor"/>
+	
+	<element name="identifier" onEnter="enterIdentifier" onExit="exitIdentifier">
+		<child-element name="first-character" />
+		<child-element name="body-character" />
+	</element>
+	
+	<element name="first-character" onEnter="enterFirstCharacter" onExit="exitFirstCharacter"/>
+	<element name="body-character" onEnter="enterBodyCharacter" onExit="exitBodyCharacter"/>
+	
+	<element name="hex" onEnter="enterHex">
+		<attribute name="min" usage="required" />
+		<attribute name="max" usage="required" />
+	</element>
+	
+	<element name="number" onEnter="enterNumber">
+		<attribute name="allow-positive-sign"/>
+		<attribute name="allow-negative-sign"/>
+		<attribute name="allow-scientific-notation"/>
+		<attribute name="require-preceding-digits"/>
+	</element>
+	
+	<element name="string" onEnter="enterString">
+		<attribute name="allow-single-quotes" />
+		<attribute name="allow-double-quotes" />
+		<attribute name="allow-error-string" />
+		<attribute name="allow-escaped-quotes" />
+		<attribute name="allow-multi-line" />
+		<attribute name="line-delimiter" />
+	</element>
+	
+	<element name="comment" onEnter="enterComment" onExit="exitComment">
+		<child-element name="multi-line" />
+		<child-element name="single-line" />
+	</element>
+	
+	<element name="multi-line" onEnter="enterMultiLine">
+		<attribute name="start" usage="required"/>
+		<attribute name="end" usage="required"/>
+	</element>
+	
+	<element name="single-line" onEnter="enterSingeLine">
+		<attribute name="start" usage="required"/>
+		<attribute name="end" usage="required"/>
+	</element>
+	
+	<element name="category-group" onEnter="enterCategory" onExit="exitCategory">
+		<attribute name="category" usage="required" />
+		<child-element name="token" />
+		<child-element name="or" />
+		<child-element name="and" />
+	</element>
+	
+	<element name="or" onEnter="enterOr" onExit="exitOr" >
+		<attribute name="min" usage="optional" />
+		<attribute name="max" usage="optional" />
+		<child-element name="token" />
+		<child-element name="and" />
+		<child-element name="or" />
+	</element>
+	<element name="and" onEnter="enterAnd" onExit="exitAnd" >
+		<attribute name="min" usage="optional" />
+		<attribute name="max" usage="optional" />
+		<child-element name="token" />
+		<child-element name="and" />
+		<child-element name="or" />
+	</element>
+	<element name="multi-token" onEnter="enterMultiToken" onExit="exitMultiToken">
+		<attribute name="category" usage="optional"/>
+		<child-element name="literal-string-set" />
+		<child-element name="lookahead" />
+	</element>
+	<element name="literal-string-set" onEnter="enterLiteralSet" onExit="exitLiteralSet">
+		<child-element name="item" />
+		<attribute name="type" usage="optional" />
+	</element>
+	
+	<element name="lookahead" onEnter="enterLookahead" onExit="exitLookahead" >
+		<attribute name="negate" usage="optional" />
+	</element>
+	<element name="item" onEnter="enterItem" onExit="exitItem">
+		<attribute name="type" usage="optional" />
+	</element>
+
+
+</schema>

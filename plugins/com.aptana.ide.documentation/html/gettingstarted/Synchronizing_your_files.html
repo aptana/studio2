@@ -1,0 +1,81 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Synchronizing your files</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Synchronizing_your_files&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Synchronizing your files [<a href="http://www.aptana.com/docs/index.php?title=Synchronizing_your_files&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to create a new FTP sync to synchronize the files on your hard drive with a remote site.
+</p><p><b>Prerequisite</b>: Set up a connection to your remote web site (<a href="Adding_an_FTP_site.html" title="Adding an FTP site">Adding an SFTP/FTP site</a>, <a href="Adding_a_site_connection.html" title="Adding a site connection">Adding a site connection</a>).
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>To synchronize your files using FTP:
+</p>
+<ol>
+	<li>In the Sync Manager View, double-click on your new connection or right-click on it and select <b>Synchronize...</b> from the context menu. (You can also right-click on the folder in the File View or a project in the Project View and select <b>Synchronize &gt; Synchronize...</b> from the context menu.)<p>Aptana Studio will open a <b>Smart Sync</b> dialog.</p></li>
+	<li>In the <b>Smart Sync</b> dialog, specify how you would like to synchronize your files.<ol>
+		<li>Choose your synchronization direction in the <b>Mode</b> drop-down list:<ul>
+			<li><b>Sync</b> synchronizes both the remote and local sites so that both directories have the newest versions of each file.</li>
+			<li><b>Update -&gt;</b> transfers the newer files from your hard drive to the remote site.</li>
+			<li><b>Force -&gt;</b> transfers all the files, regardless if they are changed, from your hard drive to the remote site.</li>
+			<li><b>&lt;- Update</b> downloads the newer files from the remote site to your hard drive.</li>
+			<li><b>&lt;- Force</b> downloads all the files, regardless if they are changed, from the remote site to your hard drive.</li></ul></li>
+		<li>Choose the view options using the <b>View Options:</b> drop-down list:<ul>
+			<li><b>Flat</b> displays the items as a flat list.</li>
+			<li><b>Tree</b> displays the items in a directory tree structure.</li>
+			<li>Check <b>Show Modification Dates</b> to display the modification times of the files on your local hard drive and the remote site in additional columns.</li></ul></li>
+		<li>Check the box next to either or both of the <b>Delete...</b> options for synchronization:<ul>
+			<li><b>Delete orphaned files on &lt;local drive&gt;</b> - Deletes files on your local hard drive that were not found on the remote site. This cleans up files at your local hard drive.</li>
+			<li><b>Delete orphaned files on &lt;remote site&gt;</b> - Deletes files on the remote site that were not found on your local hard drive. This cleans up files at the remote site.</li></ul></li>
+		<li>Use the "Advanced Options" to set additional settings:<ul>
+			<li><b>Use CRC check when files are less than 1 minute apart</b> - Performs a non-timestamp based check to ensure that the newest files are used in synchronization.</li>
+			<li><b>Generate synchronization status in background</b>- Runs the generation of the files to be synced in the background and only brings up the <b>Smart Sync</b> dialog when it finished.</li></ul></li>
+		<li>To have FTP "ignore" a file, check the box in the <b>Skip</b> column. Uncheck it to have the file included in the synchronization.</li>
+	</ol></li>
+	<li>Click the <b>Start Sync</b> button to synchronize your files.<p>Aptana Studio will synchronize the files between the folder or project that you specified and your remote site. Both File View and Project View will refresh automatically.</p></li>
+</li></ol>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Adding_an_FTP_site.html" title="Adding an FTP site">Adding an SFTP/FTP site</a>
+</li><li> <a href="Adding_a_site_connection.html" title="Adding a site connection">Adding a site connection</a>
+</li><li> <a href="Editing_a_file_from_a_remote_site.html" title="Editing a file from a remote site">Editing a file from a remote site</a>
+</li><li> <a href="Uploading_or_downloading_a_file_or_folder.html" title="Uploading or downloading a file or folder">Uploading or downloading a file or folder</a>
+</li><li> <a href="Displaying_the_Sync_Manager_View.html" title="Displaying the Sync Manager View">Displaying the Sync Manager View</a>
+</li><li> <a href="Cloaking_files_or_folders.html" title="Cloaking files or folders">Cloaking files or folders</a>
+</li><li> <a href="Using_Smart_Sync.html" title="Using Smart Sync">Using Smart Sync Dialog</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1542-0!1!0!!en!2!edit=0 and timestamp 20090202014214 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Synchronizing_your_files">http://aptana.com/docs/index.php/Synchronizing_your_files</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

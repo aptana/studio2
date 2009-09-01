@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2004/lexer/1.0"
+	language="EMCAScript">
+
+	<group name="default">
+		<token type="COMMENT">
+			<regex>(#|//).*</regex>
+		</token>
+		<token type="WHITESPACE">
+			<regex>\s+</regex>
+		</token>
+		
+		<token type="LOOKAHEAD">
+			<regex>lookahead</regex>
+		</token>
+		<token type="NOT">
+			<regex>not</regex>
+		</token>
+		
+		<token type="IDENTIFIER">
+			<regex>[a-zA-Z]+</regex>
+		</token>
+		<token type="TOKEN">
+			<regex>[A-Z_]+</regex>
+		</token>
+		
+		<token type="COLON">
+			<regex>:</regex>
+		</token>
+		<token type="SEMICOLON">
+			<regex>;</regex>
+		</token>
+		<token type="PIPE">
+			<regex>\|</regex>
+		</token>
+		<token type="OPTION">
+			<regex>\?</regex>
+		</token>
+		<token type="KLEENE">
+			<regex>\*</regex>
+		</token>
+		<token type="POSITIVE">
+			<regex>\+</regex>
+		</token>
+		<token type="LBRACKET">
+			<regex>\[</regex>
+		</token>
+		<token type="RBRACKET">
+			<regex>]</regex>
+		</token>
+		<token type="LCURLY">
+			<regex>{</regex>
+		</token>
+		<token type="RCURLY">
+			<regex>}</regex>
+		</token>
+	</group>
+	
+</lexer>

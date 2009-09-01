@@ -1,0 +1,34 @@
+<test>
+    <alias name="Match" type="omit"/>
+    <aliases/>
+    <availability/> => <available/>
+    <browser platform="Match" version="Match"/>=><useragent/>
+    <browsers/>=><useragents/>
+    <class superclass="Match" type="Becomes 'name' in OAA spec" visibility="Match"/>
+    <constructor scope="Not in OAA spec" visibility="Match"/>
+    <constructors/>
+    <deprecated/>
+    <description/>
+    <example/>
+    <exception type="Not in OAA spec"/>
+    <exceptions/>
+    <hint/> => ?
+    <interface type="Becomes 'name' in OAA spec"/>
+    <interfaces/>
+    <javascript/> => <api/>
+    <method deprecated="Not in OAA spec" name="Match" scope="Match" visibility="Match"/>
+    <methods/>
+    <parameter name="Match" type="Becomes 'datatype' in OAA spec" usage="Match"/>
+    <parameters/>
+    <properties/>
+    <property access="Not in OAA spec" name="Match" scope="Match" type="Becomes 'datatype' in OAA spec" visibility="Match"/>
+    <reference name=""/> => ?
+    <references/> => ?
+    <remarks/>
+    <return-description/> => ?
+    <return-type type="Becomes 'datatype' in OAA spec"/> => <returns/>
+    <return-types/> => ?
+    <specification name="" version=""/> => ?
+    <value description="" name=""/> => ?
+    <values/> => ?
+</test>

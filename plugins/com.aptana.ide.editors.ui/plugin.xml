@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.aptana.ide.js.ui"
+            class="com.aptana.ide.editors.ui.views.problems.ProblemsView"
+            icon="icons/warning.png"
+            id="com.aptana.ide.js.ui.views.problemsView"
+            name="%Validation.view.name">
+      </view>
+   </extension>
+
+</plugin>

@@ -1,0 +1,1115 @@
+#####
+#
+#   A.1 Lexical Grammar
+#
+#####
+
+// See clause 6
+InputElementDiv
+    :   WHITESPACE
+    |   LINE_TERMINATOR
+    |   Comment
+    |   Token
+    |   DivPunctuator
+
+// See clause 
+InputElementRegExp
+    :   WHITESPACE
+    |   LINE_TERMINATOR
+    |   Comment
+    |   Token
+    |   RegularExpressionLiteral
+
+// See 7.4
+Comment
+    :   MultiLineComment
+    |   SingleLineComment
+
+// See 7.4
+MultiLineComment
+    :   COMMENT_BEGIN COMMENT_END
+    |   COMMENT_BEGIN MultiLineCommentChars COMMENT_END
+
+// See 7.4
+MultiLineCommentChars
+    :   MultiLineNotAsteriskChar
+    |   MultiLineNotAsteriskChar MultiLineCommentChars
+    |   STAR
+    |   STAR PostAsteriskCommentChars
+
+// See 7.4
+PostAsteriskCommentChars
+    :   MultiLineNotForwardSlashOrAsteriskChar
+    |   MultiLineNotForwardSlashOrAsteriskChar MultiLineCommentChars
+    |   STAR
+    |   STAR PostAsteriskCommentChars
+
+// See 7.4
+MultiLineNotAsteriskChar
+    :   UNICODE - STAR
+
+// See 7.4
+MultiLineNotForwardSlashOrAsteriskChar
+    :   UNICODE - [STAR FORWARD_SLASH]
+
+// See 7.4
+SingleLineComment
+    :   COMMENT
+    |   COMMENT SingleLineCommentChars
+
+// See 7.4
+SingleLineCommentChars
+    :   SingleLineCommentChar
+    |   SingleLineCommentChar SingleLineCommentChars
+
+// See 7.4
+SingleLineCommentChar
+    :   SOURCE_CHARACTER - LINE_TERMINATOR
+
+// See 7.5
+Token
+    :   ReservedWord
+    |   Identifier
+    |   Punctuator
+    |   NumericLiteral
+    |   StringLiteral
+
+// See 7.5.1
+ReservedWord
+    :   Keyword
+    |   FutureReservedWord
+    |   NullLiteral
+    |   BooleanLiteral
+
+// See 7.5.2
+Keyword
+    :   BREAK
+    |   ELSE
+    |   NEW
+    |   VAR
+    |   CASE
+    |   FINALLY
+    |   RETURN
+    |   VOID
+    |   CATCH
+    |   FOR
+    |   SWITCH
+    |   WHILE
+    |   CONTINUE
+    |   FUNCTION
+    |   THIS
+    |   WITH
+    |   DEFAULT
+    |   IF
+    |   THROW
+    |   DELETE
+    |   IN
+    |   TRY
+    |   DO
+    |   INSTANCEOF
+    |   TYPEOF
+
+// See 7.5.3
+FutureReservedWord
+    :   ABSTRACT
+    |   ENUM
+    |   INT
+    |   SHORT
+    |   BOOLEAN
+    |   EXPORT
+    |   INTERFACE
+    |   STATIC
+    |   BYTE
+    |   EXTENDS
+    |   LONG
+    |   SUPER
+    |   CHAR
+    |   FINAL
+    |   NATIVE
+    |   SYNCHRONIZED
+    |   CLASS
+    |   FLOAT
+    |   PACKAGE
+    |   THROWS
+    |   CONST
+    |   GOTO
+    |   PRIVATE
+    |   TRANSIENT
+    |   DEBUGGER
+    |   IMPLEMENTS
+    |   PROTECTED
+    |   VOLATILE
+    |   DOUBLE
+    |   IMPORT
+    |   PUBLIC
+
+// See 7.6
+// IdentifierName but not ReservedWord
+Identifier
+    :   IdentifierName
+
+// See 7.6
+IdentifierName
+    :   IdentifierStart
+    |   IdentifierName IdentifierPart
+
+// See 7.6
+IdentifierStart
+    :   UNICODE_LETTER
+    |   DOLLAR
+    |   UNDERSCORE
+    |   UNICODE_ESCAPE_SEQUENCE
+
+// See 7.6
+IdentifierPart
+    :   IdentifierStart
+    |   UNICODE_COMBINING_MARK
+    |   UNICODE_DIGIT
+    |   UNICODE_CONNECTOR_PUNCTUATION
+    |   UNICODE_ESCAPE_SEQUENCE
+
+// See 7.7
+Punctuator
+    :   LCURLY
+    |   RCURLY
+    |   LPAREN
+    |   RPAREN
+    |   LBRACE
+    |   RBRACE
+    |   DOT
+    |   SEMICOLON
+    |   COMMA
+    |   LESS_THAN
+    |   GREATER_THAN
+    |   LESS_THAN_EQUAL
+    |   GREATER_THAN_EQUAL
+    |   EQUAL_EQUAL
+    |   NOT_EQUAL
+    |   IDENTITY
+    |   NOT_IDENTITY
+    |   PLUS
+    |   MINUS
+    |   STAR
+    |   PERCENT
+    |   PLUS_PLUS
+    |   MINUS_MINUS
+    |   SHIFT_LEFT
+    |   SHIFT_RIGHT
+    |   ARITHMETIC_SHIFT_RIGHT
+    |   BIT_AND
+    |   BIT_OR
+    |   BIT_XOR
+    |   EXCLAMATION
+    |   TILDE
+    |   BOOLEAN_AND
+    |   BOOLEAN_OR
+    |   QUESTION
+    |   COLON
+    |   EQUAL
+    |   PLUS_EQUAL
+    |   MINUS_EQUAL
+    |   STAR_EQUAL
+    |   PERCENT_EQUAL
+    |   SHIFT_LEFT_EQUAL
+    |   SHIFT_RIGHT_EQUAL
+    |   ARITHMETIC_SHIFT_RIGHT_EUQAL
+    |   BIT_AND_EQUAL
+    |   BIT_OR_EQUAL
+    |   BIT_XOR_EQUAL
+
+// See 7.7
+DivPunctuator
+    :   FORWARD_SLASH
+    |   FORWARD_SLASH_EQUAL
+
+// See 7.8
+Literal
+    :
+    |   NullLiteral
+    |   BooleanLiteral
+    |   NumericLiteral
+    |   StringLiteral
+
+// See 7.8.1
+NullLiteral
+    :   NULL
+
+// See 7.8.2
+BooleanLiteral
+    :   TRUE
+    |   FALSE
+
+// See 7.8.3
+NumericLiteral
+    :   DecimalLiteral
+    |   HexIntegerLiteral
+
+// See 7.8.3
+DecimalLiteral
+    :   DecimalIntegerLiteral DOT
+    |   DecimalIntegerLiteral DOT ExponentPart
+    |   DecimalIntegerLiteral DOT DecimalDigits
+    |   DecimalIntegerLiteral DOT DecimalDigits ExponentPart
+    |   DOT DecimalDigits
+    |   DOT DecimalDigits ExponentPart
+    |   DecimalIntegerLiteral
+    |   DecimalIntegerLiteral ExponentPart
+
+// See 7.8.3
+DecimalIntegerLiteral
+    :   ZERO
+    |   NonZeroDigit
+    |   NonZeroDigit DecimalDigits
+
+// See 7.8.3
+DecimalDigits
+    :   DECIMAL_DIGIT
+    |   DecimalDigits DECIMAL_DIGIT
+
+// See 7.8.3
+SignedInteger
+    :   DecimalDigits
+    |   PLUS DecimalDigits
+    |   MINUS DecimalDigits
+
+// See 7.8.3
+HexIntegerLiteral
+    :   0x HEX_DIGIT
+    |   0X HEX_DIGIT
+    |   HexIntegerLiteral HEX_DIGIT
+
+// See 7.8.4
+StringLiteral
+    :   DQUOTE DQUOTE
+    |   DQUOTE DoubleStringCharacters DQUOTE
+    |   SQUOTE SQUOTE
+    |   SQUOTE SingleStringCharacters SQUOTE
+
+// See 7.8.4
+DoubleStringCharacters
+    :   DoubleStringCharacter
+    :   DoubleStringCharacter DoubleStringCharacters
+
+// See 7.8.4
+SingleStringCharacters
+    :   SingleStringCharacter
+    :   SingleStringCharacter SingleStringCharacters
+
+// See 7.8.4
+DoubleStringCharacter
+    :   SOURCE_CHARACTER - [DQUOTE BACK_SLASH LINE_TERMINATOR]
+    |   BACK_SLASH EscapeSequence
+
+// See 7.8.4
+SingleStringCharacter
+    :   SOURCE_CHARACTER - [SQUOTE BACK_SLASH LINE_TERMINATOR]
+    |   BACK_SLASH EscapeSequence
+
+// See 7.8.4
+EscapeSequence
+    :   CharacterEscapeSequence
+    |   ZERO [lookahead not DECIMAL_DIGIT]
+    |   HexEscapeSequence
+    |   UNICODE_ESCAPE_SEQUENCE
+
+// See 7.8.4
+CharacterEscapeSequence
+    :   SingleEscapeCharacter
+    |   NonEscapeCharacter
+
+// See 7.8.4
+SingleEscapeCharacter
+    :   SQUOTE
+    |   DQUOTE
+    |   BACK_SLASH
+    |   B
+    |   F
+    |   N
+    |   R
+    |   T
+    |   V
+
+// See 7.8.4
+EscapeCharacter
+    :   SingleEscapeCharacter
+    |   DECIMAL_DIGIT
+    |   X
+    |   U
+
+// See 7.8.4
+HexEscapeSequence
+    :   X HEX_DIGIT HEX_DIGIT
+
+// See 7.8.5
+RegularExpressionLiteral
+    :   FORWARD_SLASH RegularExpressionBody FORWARD_SLASH RegularExpressionFlags
+
+// See 7.8.5
+RegularExpressionBody
+    :   RegularExpressionFirstChar RegularExpressionChars
+
+// See 7.8.5
+RegularExpressionChars
+    :
+    |   RegularExpressionChars RegularExpressionChar
+
+// See 7.8.5
+RegularExpressionFirstChar
+    :   NonTerminator - [STAR BACK_SLASH FORWARD_SLASH]
+    |   BackslashSequence
+
+// See 7.8.5
+RegularExpressionChar
+    :   NonTerminator - [BACK_SLASH FORWARD_SLASH]
+    |   BackslashSequence
+
+// See 7.8.5
+BackslashSequence
+    :   BACK_SLASH NonTerminator
+
+// See 7.8.5
+NonTerminator
+    :   SOURCE_CHARACTER - LINE_TERMINATOR
+
+// See 7.8.5
+RegularExpressionFlags
+    :   
+    |   RegularExpressionFlags IdentifierPart
+
+
+#####
+#
+#   A.2 Number Conversions
+#
+#####
+
+// See 9.3.1
+StringNumericLiteral
+    :
+    |   StrWhiteSpacet
+    |   StrNumericLiteral
+    |   StrNumericLiteral StrWhiteSpace
+    |   StrWhiteSpace StrNumericLiteral
+    |   StrWhiteSpace StrNumericLiteral StrWhiteSpace
+
+// See 9.3.1
+StrWhiteSpace
+    : StrWhiteSpaceChar
+    | StrWhiteSpaceChar StrWhiteSpace
+
+// See 9.3.1
+StrWhiteSpaceChar
+    :   <TAB>
+    |   <SP>
+    |   <NBSP>
+    |   <FF>
+    |   <VT>
+    |   <CR>
+    |   <LF>
+    |   <LS>
+    |   <PS>
+    |   <USP>
+
+// See 9.3.1
+StrNumericLiteral
+    :   StrDecimalLiteral
+    |   HexIntegerLiteral
+
+// See 9.3.1
+StrDecimalLiteral
+    :   StrUnsignedDecimalLiteral
+    |   PLUS StrUnsignedDecimalLiteral
+    |   MINUS StrUnsignedDecimalLiteral
+
+// See 9.3.1
+StrUnsignedDecimalLiteral
+    :   Infinity
+    |   DecimalDigits DOT
+    |   DecimalDigits DOT ExponentPart
+    |   DecimalDigits DOT DecimalDigits
+    |   DecimalDigits DOT DecimalDigits ExponentPart
+    |   DOT DecimalDigits
+    |   DOT DecimalDigits ExponentPart
+    |   DecimalDigits
+    |   DecimalDigits ExponentPart
+
+// See 9.3.1
+DecimalDigits
+    :   DecimalDigit
+    |   DecimalDigits DecimalDigit
+
+// See 9.3.1
+ExponentPart
+    :   EXPONENT SignedInteger
+
+// See 9.3.1
+SignedInteger
+    :   DecimalDigits
+    |   PLUS DecimalDigits
+    |   MINUS DecimalDigits
+
+// See 9.3.1
+HexIntegerLiteral
+    :   0x HEX_DIGIT
+    |   0X HEX_DIGIT
+    |   HexIntegerLiteral HEX_DIGIT
+
+
+#####
+#
+#   A.3 Expressions
+#
+#####
+
+// See 11.1
+PrimaryExpression
+    :   this
+    |   Identifier
+    |   Literal
+    |   ArrayLiteral
+    |   ObjectLiteral
+    |   LPAREN Expression RPAREN
+
+// See 11.1.4
+ArrayLiteral
+    :   LBRACE RBRACE
+    |   LBRACE Elision RBRACE
+    |   LBRACE ElementList RBRACE
+    |   LBRACE ElementList COMMA RBRACE
+    |   LBRACE ElementList COMMA Elision RBRACE
+
+// See 11.1.4
+ElementList
+    :   AssignmentExpression
+    |   Elision AssignmentExpression
+    |   ElementList , AssignmentExpression
+    |   ElementList , Elision AssignmentExpression
+
+// See 11.1.4
+Elision
+    :   COMMA
+    :   Elision COMMA
+
+// See 11.1.5
+ObjectLiteral
+    :   LCURLY RCURLY
+    |   LCURLY PropertyNameAndValueList RCURLY
+
+// See 11.1.5
+PropertyNameAndValueList
+    :   PropertyName COLON AssignmentExpression
+    |   PropertyNameAndValueList COMMA PropertyName COLON AssignmentExpression
+
+// See 11.1.5
+PropertyName
+    :   Identifier
+    |   StringLiteral
+    |   NumericLiteral
+
+// See 11.2
+MemberExpression
+    :   PrimaryExpression
+    |   FunctionExpression
+    |   MemberExpression LBRACE Expression RBRACE
+    |   MemberExpression DOT Identifier
+    |   NEW MemberExpression Arguments
+
+// See 11.2
+NewExpression
+    :   MemberExpression
+    |   NEW NewExpression
+
+// See 11.2
+CallExpression
+    :   MemberExpression Arguments
+    |   CallExpression Arguments
+    |   CallExpression LBRACE Expression RBRACE
+    |   CallExpression DOT Identifier
+
+// See 11.2
+Arguments
+    :   LPAREN RPAREN
+    |   LPAREN ArgumentList RPAREN
+
+// See 11.2
+ArgumentList
+    :   AssignmentExpression
+    |   ArgumentList COMMA AssignmentExpression
+
+// See 11.2
+LeftHandSideExpression
+    :   NewExpression
+    |   CallExpression
+
+// See 11.3
+PostfixExpression
+    :   LeftHandSideExpression
+    |   LeftHandSideExpression [no LINE_TERMINATOR here] PLUS_PLUS
+    |   LeftHandSideExpression [no LINE_TERMINATOR here] MINUS_MINUS
+
+// See 11.4
+UnaryExpression
+    :   PostfixExpression
+    |   DELETE UnaryExpression
+    |   VOID UnaryExpression
+    |   TYPEOF UnaryExpression
+    |   PLUS_PLUS UnaryExpression
+    |   MINUS_MINUS UnaryExpression
+    |   PLUS UnaryExpression
+    |   MINUS UnaryExpression
+    |   TILDE UnaryExpression
+    |   EXCLAMATION UnaryExpression
+
+// See 11.5
+MultiplicativeExpression
+    :   UnaryExpression
+    |   MultiplicativeExpression STAR UnaryExpression
+    |   MultiplicativeExpression FORWARD_SLASH UnaryExpression
+    |   MultiplicativeExpression PERCENT UnaryExpression
+
+// See 1.6
+AdditiveExpression
+    :   MultiplicativeExpression
+    |   AdditiveExpression PLUS MultiplicativeExpression
+    |   AdditiveExpression MINUS MultiplicativeExpression
+
+// See 11.7
+ShiftExpression
+    :   AdditiveExpression
+    |   ShiftExpression SHIFT_LEFT AdditiveExpression
+    |   ShiftExpression SHIFT_RIGHT AdditiveExpression
+    |   ShiftExpression ARITHMETIC_SHIFT_LEFT AdditiveExpression
+
+// See 11.8
+RelationalExpression
+    :   ShiftExpression
+    |   RelationalExpression LESS_THAN ShiftExpression
+    |   RelationalExpression GREATER_THAN ShiftExpression
+    |   RelationalExpression LESS_THAN_EQUAL ShiftExpression
+    |   RelationalExpression GREATER_THAN_EQUAL ShiftExpression
+    |   RelationalExpression INSTANCEOF ShiftExpression
+    |   RelationalExpression IN ShiftExpression
+
+// See 11.8
+RelationalExpressionNoIn
+    :   ShiftExpression
+    |   RelationalExpressionNoIn LESS_THAN ShiftExpression
+    |   RelationalExpressionNoIn GREATER_THAN ShiftExpression
+    |   RelationalExpressionNoIn LESS_THAN_EQUAS ShiftExpression
+    |   RelationalExpressionNoIn GREATER_THAN_EQUAL ShiftExpression
+    |   RelationalExpressionNoIn INSTANCEOF ShiftExpression
+
+// See 11.9
+EqualityExpression
+    :   RelationalExpression
+    |   EqualityExpression EQUAL_EQUAL RelationalExpression
+    |   EqualityExpression NOT_EQUAL RelationalExpression
+    |   EqualityExpression IDENTITY RelationalExpression
+    |   EqualityExpression NOT_IDENTIRTY RelationalExpression
+
+// See 11.9
+EqualityExpressionNoIn
+    :   RelationalExpressionNoIn
+    |   EqualityExpressionNoIn EQUAL_EQUAL RelationalExpressionNoIn
+    |   EqualityExpressionNoIn NOT_EQUAL RelationalExpressionNoIn
+    |   EqualityExpressionNoIn IDENTITY RelationalExpressionNoIn
+    |   EqualityExpressionNoIn NOT_IDENTITY RelationalExpressionNoIn
+
+// See 11.10
+BitwiseANDExpression
+    :   EqualityExpression
+    |   BitwiseANDExpression BIT_AND EqualityExpression
+
+// See 11.10
+BitwiseANDExpressionNoIn
+    :   EqualityExpressionNoIn
+    |   BitwiseANDExpressionNoIn BIT_AND EqualityExpressionNoIn
+
+// See 11.10
+BitwiseXORExpression
+    :   BitwiseANDExpression
+    |   BitwiseXORExpression BIT_XOR BitwiseANDExpression
+
+// See 11.10
+BitwiseXORExpressionNoIn
+    :   BitwiseANDExpressionNoIn
+    |   BitwiseXORExpressionNoIn BIT_XOR BitwiseANDExpressionNoIn
+
+// See 11.10
+BitwiseORExpression
+    :   BitwiseXORExpression
+    |   BitwiseORExpression BIT_OR BitwiseXORExpression
+
+// See 11.10
+BitwiseORExpressionNoIn
+    :   BitwiseXORExpressionNoIn
+    |   BitwiseORExpressionNoIn BIT_OR BitwiseXORExpressionNoIn
+
+// See 11.11
+LogicalANDExpression
+    :   BitwiseORExpression
+    |   LogicalANDExpression BOOLEAN_AND BitwiseORExpression
+
+// See 11.11
+LogicalANDExpressionNoIn
+    :   BitwiseORExpressionNoIn
+    |   LogicalANDExpressionNoIn BOOLEAN_AND BitwiseORExpressionNoIn
+
+// See 11.11
+LogicalORExpression
+    :   LogicalANDExpression
+    |   LogicalORExpression BOOLEAN_OR LogicalANDExpression
+
+// See 11.11
+LogicalORExpressionNoIn
+    :   LogicalANDExpressionNoIn
+    |   LogicalORExpressionNoIn BOOLEAN_OR LogicalANDExpressionNoIn
+
+// See 11.12
+ConditionalExpression
+    :   LogicalORExpression
+    |   LogicalORExpression QUESTION AssignmentExpression COLON AssignmentExpression
+
+// See 11.12
+ConditionalExpressionNoIn
+    :   LogicalORExpressionNoIn
+    |   LogicalORExpressionNoIn QUESTION AssignmentExpressionNoIn COLON AssignmentExpressionNoIn
+
+// See 11.13
+AssignmentExpression
+    :   ConditionalExpression
+    |   LeftHandSideExpression AssignmentOperator AssignmentExpression
+
+// See 11.13
+AssignmentExpressionNoIn
+    :   ConditionalExpressionNoIn
+    |   LeftHandSideExpression AssignmentOperator AssignmentExpressionNoIn
+
+// See 11.13
+AssignmentOperator
+    :   EQUAL
+    |   STAR_EQUAL
+    |   FORWARD_SLASH_EQUAL
+    |   PERCENT_EQUAL
+    |   PLUS_EQUAL
+    |   MINUS_EQUAL
+    |   SHIFT_LEFT_EQUAL
+    |   SHIFT_RIGHT_EQUAL
+    |   ARITHMETIC_SHIFT_RIGHT_EQUAL
+    |   BIT_AND_EUQAL
+    |   BIT_XOR_EQUAL
+    |   BIT_OR_EQUAL
+    = *= /= %= += 
+
+// See 11.14
+Expression
+    :   AssignmentExpression
+    |   Expression COMMA AssignmentExpression
+
+// See 11.1
+ExpressionNoIn
+    :   AssignmentExpressionNoIn
+    |   ExpressionNoIn COMMA AssignmentExpressionNoIn
+
+
+#####
+#
+#   A.4 Statements
+#
+#####
+
+// See clause 12
+Statement
+    :   Block
+    |   VariableStatement
+    |   EmptyStatement
+    |   ExpressionStatement
+    |   IfStatement
+    |   IterationStatement
+    |   ContinueStatement
+    |   BreakStatement
+    |   ReturnStatement
+    |   WithStatement
+    |   LabelledStatement
+    |   SwitchStatement
+    |   ThrowStatement
+    |   TryStatement
+
+// See 12.1
+Block
+    :   LCURLY RCURLY
+    |   LCURLY StatementList RCURLY
+
+// See 12.1
+StatementList
+    :   Statement
+    |   StatementList Statement
+
+// See 12.2
+VariableStatement
+    :   VAR VariableDeclarationList SEMICOLON
+
+// See 12.2
+VariableDeclarationList
+    :   VariableDeclaration
+    |   VariableDeclarationList COMMA VariableDeclaration
+
+// See 12.2
+VariableDeclarationListNoIn
+    :   VariableDeclarationNoIn
+    |   VariableDeclarationListNoIn COMMA VariableDeclarationNoIn
+
+// See 12.2
+VariableDeclaration
+    :   Identifier
+    |   Identifier Initialiser
+
+// See 12.2
+VariableDeclarationNoIn
+    :   Identifier
+    |   Identifier InitialiserNoIn
+
+// See 12.2
+Initialiser
+    :   EQUAL AssignmentExpression
+
+// See 12.2
+InitialiserNoIn
+    :   EQUAL AssignmentExpressionNoIn
+
+// See 12.3
+EmptyStatement
+    SEMICOLON
+
+// See 12.4
+ExpressionStatement
+    :   [lookahead not {{comma FUNCTION}] Expression SEMICOLON
+
+// See 12.5
+IfStatement
+    :   IF LPAREN Expression RPAREN Statement ELSE Statement
+    |   IF LPAREN Expression RPAREN Statement
+
+// See 12.6
+IterationStatement
+    :   DO Statement while LPAREN Expression RPAREN
+    |   WHILE LPAREN Expression RPAREN Statement
+    |   FOR LPAREN SEMICOLON SEMICOLON RPAREN Statement
+    |   FOR LPAREN SEMICOLON SEMICOLON Expression RPAREN Statement
+    |   FOR LPAREN SEMICOLON Expression SEMICOLON RPAREN Statement
+    |   FOR LPAREN SEMICOLON Expression SEMICOLON Expression RPAREN Statement
+    |   FOR LPAREN ExpressionNoIn SEMICOLON SEMICOLON RPAREN Statement
+    |   FOR LPAREN ExpressionNoIn SEMICOLON SEMICOLON Expression RPAREN Statement
+    |   FOR LPAREN ExpressionNoIn SEMICOLON Expression SEMICOLON RPAREN Statement
+    |   FOR LPAREN ExpressionNoIn SEMICOLON Expression SEMICOLON Expression RPAREN Statement
+    |   FOR LPAREN VAR VariableDeclarationListNoIn SEMICOLON SEMICOLON RPAREN Statement
+    |   FOR LPAREN VAR VariableDeclarationListNoIn SEMICOLON SEMICOLON Expression RPAREN Statement
+    |   FOR LPAREN VAR VariableDeclarationListNoIn SEMICOLON Expression SEMICOLON RPAREN Statement
+    |   FOR LPAREN VAR VariableDeclarationListNoIn SEMICOLON Expression SEMICOLON Expression RPAREN Statement
+    |   FOR LPAREN LeftHandSideExpression IN Expression RPAREN Statement
+    |   FOR LPAREN VAR VariableDeclarationNoIn IN Expression RPAREN Statement
+
+// See 12.7
+ContinueStatement
+    :   CONTINUE [no LINE_TERMINATOR here] SEMICOLON
+    :   CONTINUE [no LINE_TERMINATOR here] Identifier SEMICOLON
+
+// See 12.8
+BreakStatement
+    :   BREAK [no LINE_TERMINATOR here] SEMICOLON
+    :   BREAK [no LINE_TERMINATOR here] Identifier SEMICOLON
+
+// See 12.9
+ReturnStatement
+    :   RETURN [no LINE_TERMINATOR here] SEMICOLON
+    :   RETURN [no LINE_TERMINATOR here] Expression SEMICOLON
+
+// See 12.10
+WithStatement
+    :   with LPAREN Expression RPAREN Statement
+
+// See 12.11
+SwitchStatement
+    :   SWITCH LPAREN Expression RPAREN CaseBlock
+
+// See 12.11
+CaseBlock
+    :   LCURLY RCURLY
+    |   LCURLY CaseClauses RCURLY
+    |   LCURLY DefaultClause RCURLY
+    |   LCURLY DefaultClause CaseClauses RCURLY
+    |   LCURLY CaseClauses DefaultClause RCURLY
+    |   LCURLY CaseClauses DefaultClause CaseClauses RCURLY
+
+// See 12.11
+CaseClauses
+    :   CaseClause
+    |   CaseClauses CaseClause
+
+// See 12.11
+CaseClause
+    :   CASE Expression COLON
+    :   CASE Expression COLON StatementList
+
+// See 12.11
+DefaultClause
+    :   DEFAULT COLON
+    :   DEFAULT COLON StatementList
+
+// See 12.12
+LabelledStatement
+    :   Identifier COLON Statement
+
+// See 12.13
+ThrowStatement
+    :   THROW [no LINE_TERMINATOR here] Expression SEMICOLON
+
+// See 12.14
+TryStatement
+    :   TRY Block Catch
+    |   TRY Block Finally
+    |   TRY Block Catch Finally
+
+// See 12.14
+Catch
+    :   CATCH LPAREN Identifier RPAREN Block
+
+// See 12.14
+Finally
+    :   FINALLY Block
+
+
+#####
+#
+#   A.5 Functions and Programs
+#
+#####
+
+// See clause 13
+FunctionDeclaration
+    :   FUNCTION Identifier LPAREN RPAREN LCURLY FunctionBody RCURLY
+    |   FUNCTION Identifier LPAREN FormalParameterList RPAREN LCURLY FunctionBody RCURLY
+
+// See clause 13
+FunctionExpression
+    :   FUNCTION LPAREN RPAREN LCURLY FunctionBody RCURLY
+    |   FUNCTION LPAREN FormalParameterList RPAREN LCURLY FunctionBody RCURLY
+    |   FUNCTION Identifier LPAREN RPAREN LCURLY FunctionBody RCURLY
+    |   FUNCTION Identifier LPAREN FormalParameterList RPAREN LCURLY FunctionBody RCURLY
+
+// See clause 13
+FormalParameterList
+    :   Identifier
+    |   FormalParameterList COMMA Identifier
+
+// See clause 13
+FunctionBody
+    :   SourceElements
+
+// See clause 14
+Program
+    :   SourceElements
+
+// See clause 14
+SourceElements
+    :   SourceElement
+    |   SourceElements SourceElement
+
+// See clause 14
+SourceElement
+    :   Statement
+    |   FunctionDeclaration
+
+
+#####
+#
+#   A.6 Universal Resource Identifier Character Classes
+#
+#####
+
+// See 15.1.3
+uri
+    :
+    |   uriCharacters
+
+// See 15.1.3
+uriCharacters
+    :   uriCharacter
+    :   uriCharacter uriCharacters
+
+// See 15.1.3
+uriCharacter
+    :   uriReserved
+    |   uriUnescaped
+    |   uriEscaped
+
+// See 15.1.3
+uriReserved
+    :   SEMICOLON
+    |   FORWARD_SLASH
+    |   QUESTION
+    |   COLON
+    |   AT
+    |   AND
+    |   BIT_AND
+    |   EQUAL
+    |   PLUS
+    |   DOLLAR
+    |   COMMA
+
+// See 15.1.3
+uriUnescaped
+    :   URI_ALPHA
+    |   DECIMAL_DIGIT
+    |   uriMark
+
+// See 15.1.3
+uriEscaped
+    :   PERCENT HEX_DIGIT HEX_DIGIT  
+
+// See 15.1.3
+uriMark
+    :   MINUS
+    |   UNDERSCORE
+    |   DOT
+    |   EXCLAMATION
+    |   TILDE
+    |   STAR
+    |   SQUOTE
+    |   LPAREN
+    |   RPAREN
+
+
+#####
+#
+#   A.7 Regular Expressions
+#
+#####
+
+// See 15.10.1
+Pattern
+    :   Disjunction
+
+// See 15.10.1
+Disjunction
+    :   Alternative
+    |   Alternative BIT_OR Disjunction
+
+// See 15.10.1
+Alternative
+    :
+    |   Alternative Term
+
+// See 15.10.1
+Term
+    :   Assertion
+    |   Atom
+    |   Atom Quantifier
+
+****************************
+// See 15.10.1
+Assertion
+    :   BIT_XOR
+    |   DOLLAE
+    |   BACK_SLASH b
+    |   BACK_SLASH B
+****************************
+
+// See 15.10.1
+Quantifier
+    :   QuantifierPrefix
+    |   QuantifierPrefix QUESTION
+
+// See 15.10.1
+QuantifierPrefix
+    :   STAR
+    |   PLUS
+    |   QUESTION
+    |   LCURLY DecimalDigits RCURLY
+    |   LCURLY DecimalDigits COMMA RCURLY
+    |   LCURLY DecimalDigits COMMA DecimalDigits RCURLY
+
+// See 15.10.1
+Atom
+    :   PatternCharacter
+    |   DOT
+    |   BACK_SLASH AtomEscape
+    |   CharacterClass
+    |   LPAREN Disjunction RPAREN
+    |   LPAREN QUESTION COLON Disjunction RPAREN
+    |   LPAREN QUESTION EQUAL Disjunction RPAREN
+    |   LPAREN QUESTION EXCLAMATION Disjunction RPAREN
+
+// See 15.10.1
+PatternCharacter
+    SOURCE_CHARACTER - [^ $ \ . * + ? ( ) [ ] { } |]
+
+// See 15.10.1
+AtomEscape
+    :   DecimalEscape
+    |   CharacterEscape
+    |   CharacterClassEscape
+
+// See 15.10.1
+CharacterEscape
+    :   ControlEscape
+    |   C CONTROL_LETTER
+    |   HexEscapeSequence
+    |   UNICODE_ESCAPE_SEQUENCE
+    |   IdentityEscape
+
+// See 15.10.1
+ControlEscape
+    :   F
+    |   N
+    |   R
+    |   T
+    |   V
+
+// See 15.10.1
+IdentityEscape
+    SOURCE_CHARACTER - IdentifierPart
+
+// See 15.10.1
+DecimalEscape
+    :   DecimalIntegerLiteral [lookahead is not DECIMAL_DIGIT]
+
+// See 15.10.1
+CharacterClass
+    LBRACE [lookahead is not {^}] ClassRanges RBRACE
+    LBRACE BIT_XOR ClassRanges RBRACE
+
+// See 15.10.1
+ClassRanges
+    :  
+    |   NonemptyClassRanges
+
+// See 15.10.1
+NonemptyClassRanges
+    :   ClassAtom
+    |   ClassAtom NonemptyClassRangesNoDash
+    |   ClassAtom MINUS ClassAtom ClassRanges
+
+// See 15.10.1
+NonemptyClassRangesNoDash
+    :   ClassAtom
+    |   ClassAtomNoDash NonemptyClassRangesNoDash
+    |   ClassAtomNoDash MINUS ClassAtom ClassRanges
+
+// See 15.10.1
+ClassAtom
+    :   Minus
+    |   ClassAtomNoDash
+
+// See 15.10.1
+ClassAtomNoDash
+    :   SOURCE_CHARACTER but not one of [BACK_SLASH LBRACE MINUS]
+    |   BACK_SLASH ClassEscape
+
+// See 15.10.1
+ClassEscape
+    :   DecimalEscape
+    |   B
+    |   CharacterEscape
+    |   CharacterClassEscape
+

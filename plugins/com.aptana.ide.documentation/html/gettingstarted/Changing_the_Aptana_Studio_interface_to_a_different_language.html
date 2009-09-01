@@ -1,0 +1,102 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Changing the Aptana Studio interface to a different language</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Changing_the_Aptana_Studio_interface_to_a_different_language&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Changing the Aptana Studio interface to a different language [<a href="http://www.aptana.com/docs/index.php?title=Changing_the_Aptana_Studio_interface_to_a_different_language&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page discusses how to switch the Aptana Studio interface to a different langauge, such as Japanese or Chinese
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Windows_Users"><span class="tocnumber">2.1</span> <span class="toctext">Windows Users</span></a></li>
+<li class="toclevel-2"><a href="#Mac_OS_users"><span class="tocnumber">2.2</span> <span class="toctext">Mac OS users</span></a></li>
+<li class="toclevel-2"><a href="#Two-letter_language_abbreviations"><span class="tocnumber">2.3</span> <span class="toctext">Two-letter language abbreviations</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>You can change the language of the Aptana UI to a different language than what your operating system uses by default. Follow the instructions below to change the language of the Aptana UI.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Windows_Users"></a><h3> <span class="mw-headline">Windows Users</span></h3>
+<p>You can do either of the following to change the language of your Aptana UI:
+</p>
+<ul><li> Change your language of your operating system, or
+</li><li> Change your shortcut to Aptana by typing the following on the command line when you start Aptana (choose your two-letter language abbreviation from the list at the bottom of this page):
+</li></ul>
+<pre>Aptana.exe -nl [2-letter-language-abbreviation]
+</pre>
+<a name="Mac_OS_users"></a><h3> <span class="mw-headline">Mac OS users</span></h3>
+<p>To change the language of your UI:
+</p>
+<ol>
+<li>Quit Aptana, if it is running.</li>
+<li>Navigate to the directory where you have your <b>Aptana.app</b> installed.</li>
+<li>Right-click or Ctrl-click <b>Aptana.app</b>, and select Show Package Contents &gt; Content &gt; MacOS from the context menu.</li>
+<li>Open the <b>Aptana.ini</b> file in a text editor.</li>
+<li>At the first line of the Aptana.ini file, type the following:<p>
+<pre>
+-nl
+[2-letter-abbreviation]
+</pre></p>
+<p>Make sure that you have a new line between the "-nl" and the abbreviation. Choose your abbreviation from the list at the bottom of this page.</p>
+<li>Save your changes and close the file.</li>
+<li>Re-start Aptana. Your UI should be in the language that you chose.</li>
+</ol>
+<a name="Two-letter_language_abbreviations"></a><h3> <span class="mw-headline">Two-letter language abbreviations</span></h3>
+<p>Aptana recognizes the following language abbreviations:
+</p>
+<ul><li> en (English)
+</li><li> es (Spanish)
+</li><li> de (German)
+</li><li> fr (French)
+</li><li> hu (Hungarian)
+</li><li> ja (Japanese)
+</li><li> ko (Korean)
+</li><li> pl (Polish)
+</li><li> ru (Russian)
+</li><li> zh (Chinese)
+</li></ul>
+<p>The -nl gives you freedom to choose a language manually.
+</p><p>If there is a string which is not translated, you can translate it here: <a href="http://translate.aptana.com/" class="external free" title="http://translate.aptana.com/" rel="nofollow">http://translate.aptana.com/</a>
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1699-0!1!0!!en!2!edit=0 and timestamp 20090202055804 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Changing_the_Aptana_Studio_interface_to_a_different_language">http://aptana.com/docs/index.php/Changing_the_Aptana_Studio_interface_to_a_different_language</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

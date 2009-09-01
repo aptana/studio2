@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.aptana.com/2007/schema/1.1">
+    
+    <element name="lexer" onEnter="enterLexer">
+        <attribute name="language"/>
+        <element name="group" onEnter="enterGroup">
+            <attribute name="name" usage="optional" />
+            <element name="token" onEnter="enterToken">
+                <attribute name="category" usage="optional" />
+                <attribute name="type" usage="optional" />
+                <attribute name="switchTo" usage="optional" />
+                <element name="regex" onEnter="enterRegex" onExit="exitRegex" />
+            </element>
+        </element>
+    </element>
+
+</schema>

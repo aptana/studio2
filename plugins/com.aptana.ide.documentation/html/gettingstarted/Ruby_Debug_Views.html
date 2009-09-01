@@ -1,0 +1,145 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Ruby Debug Views</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Ruby_Debug_Views&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Ruby Debug Views [<a href="http://www.aptana.com/docs/index.php?title=Ruby_Debug_Views&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page gives an overview of the Views in the Ruby Debug perspective.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Variables_View"><span class="tocnumber">1.1</span> <span class="toctext">Variables View</span></a></li>
+<li class="toclevel-2"><a href="#Show_Constants_and_Classes"><span class="tocnumber">1.2</span> <span class="toctext">Show Constants and Classes</span></a></li>
+<li class="toclevel-2"><a href="#Arrays"><span class="tocnumber">1.3</span> <span class="toctext">Arrays</span></a></li>
+<li class="toclevel-2"><a href="#Hashes"><span class="tocnumber">1.4</span> <span class="toctext">Hashes</span></a></li>
+<li class="toclevel-2"><a href="#Breakpoints_View"><span class="tocnumber">1.5</span> <span class="toctext">Breakpoints View</span></a></li>
+<li class="toclevel-2"><a href="#Expressions_View"><span class="tocnumber">1.6</span> <span class="toctext">Expressions View</span></a></li>
+<li class="toclevel-2"><a href="#Display_View"><span class="tocnumber">1.7</span> <span class="toctext">Display View</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">2</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>The debug perspective contains the following views per default: 
+</p>
+<ul><li> Debug
+</li><li> Variables
+</li><li> Breakpoints
+</li><li> Editor
+</li><li> Outline
+</li><li> Console
+</li><li> Tasks
+</li></ul>
+<p>In addition to these there are two more view for the debug perspective: the Expression and Display view. The Expression view will be opened for displaying the results of inspect commands (runtime evaluation). The Display view allows to enter arbitrary ruby commands for evaluation.
+</p>
+<a name="Variables_View"></a><h3> <span class="mw-headline">Variables View</span></h3>
+<p>The Variables View shows the variables available in the stack trace which is selected in the Debug view.
+</p>
+<a name="Show_Constants_and_Classes"></a><h3> <span class="mw-headline">Show Constants and Classes</span></h3>
+<p>Check Show Constants to display constants, check Show Class Variables to display class variables.
+</p><p><a href="Image:VariableViewShowClassesAndConstants.png.html" class="image" title="Image:variableViewShowClassesAndConstants.png"><img alt="Image:variableViewShowClassesAndConstants.png" src="docs/images/2/28/VariableViewShowClassesAndConstants.png" width="494" height="198" border="0" /></a>
+</p><p>If you compare the default variable view with the screenshot above you will notice that there are a lot more menu commands available. They are for java debug targets. You can customize the variable view to show ruby debug commands only: Go to <b>Window &gt; Preferences &gt; General &gt; Capabilities</b> and deselect <b>Development</b>. It is a little bewildering to switch off <b>Development</b> here, but it means only to disable Java development and not Ruby development.
+</p><p><a href="Image:VariableViewWithTypes.png.html" class="image" title="Image:variableViewWithTypes.png"><img alt="Image:variableViewWithTypes.png" src="docs/images/5/5e/VariableViewWithTypes.png" width="500" height="217" border="0" /></a>
+</p><p>In the above screenshot there is a variable barney of type person. The object is represented by the return value of the to_s method, in this case "#&lt;Person:0x2ae7d20&gt;". There is one instance variable @name of type String and value "Barney".
+</p>
+<a name="Arrays"></a><h3> <span class="mw-headline">Arrays</span></h3>
+<p>Assume the following code:
+</p>
+<pre>
+class Person 
+  def initialize(name)
+   @name = name
+  end
+  
+  def to_s()
+    return @name.to_s
+  end
+end
+
+persons = [] 
+persons &lt;&lt; Person.new('Barney')
+persons &lt;&lt; Person.new('Moe')  
+</pre>
+<p>After the last assignment the variable view shows the content of the array. Note that the name appears as description for the object, because to_s is overriden.
+</p><p><a href="Image:ArrayInVariablesView.png.html" class="image" title="Image:arrayInVariablesView.png"><img alt="Image:arrayInVariablesView.png" src="docs/images/6/63/ArrayInVariablesView.png" width="500" height="235" border="0" /></a>
+</p>
+<a name="Hashes"></a><h3> <span class="mw-headline">Hashes</span></h3>
+<p>In order to show how hashes are presented in the variables view, a hash is created:
+</p>
+<pre>
+persons = Hash[ Person.new('Lisa') =&gt; Person.new('Marge'), 
+                            Person.new('Maggie') =&gt; Person.new('Marge')]
+</pre>
+<p>The view shows the name of the hash with the number of elements in the first place. If you expand the item, there will be a line for every key/value pair in the hash. Expanding a key/value pair will show the content of the value. If you want to know more about the key, select "Inspect key" from the context menu:
+</p><p><a href="Image:HashInVariablesView.png.html" class="image" title="Image:hashInVariablesView.png"><img alt="Image:hashInVariablesView.png" src="docs/images/b/b3/HashInVariablesView.png" width="501" height="215" border="0" /></a>
+</p>
+<a name="Breakpoints_View"></a><h3> <span class="mw-headline">Breakpoints View</span></h3>
+<p>Use the Breakpoints view to remove ruby breakpoints.
+</p>
+<a name="Expressions_View"></a><h3> <span class="mw-headline">Expressions View</span></h3>
+<p>Results of ruby expression evaluation are displayed here. Evaluation takes place:
+</p>
+<ul><li> If you select text in the editor, open the context menu and run "Inspect" or a quick inspect expression with "Inspect..."
+</li><li> If you use the display view to enter ruby expressions
+</li><li> If you select "inspect key" in the context menu of a hash value in the variable view
+</li></ul>
+<p><a href="Image:ExpressionViewWithInspectResult.png.html" class="image" title="Image:expressionViewWithInspectResult.png"><img alt="Image:expressionViewWithInspectResult.png" src="docs/images/3/37/ExpressionViewWithInspectResult.png" width="919" height="593" border="0" /></a>
+</p>
+<a name="Display_View"></a><h3> <span class="mw-headline">Display View</span></h3>
+<p>Enter your text in the Display view and run "Ruby inspect" from the context menu. The Expression view will open and show the re-itemized list of the expression. The expression is evaluated in the context of the selected stack frame in the Launch view.
+</p><p>The following example shows an expression which creates a hash with all global variables mapped to their values (the "Content Assist" menu entry is only valid in the context of a java program):
+</p><p><a href="Image:DisplayView.png.html" class="image" title="Image:displayView.png"><img alt="Image:displayView.png" src="docs/images/5/52/DisplayView.png" width="501" height="218" border="0" /></a>
+</p><p>The Expressions view shows the re-itemized list:
+</p><p><a href="Image:ExpressionViewWithGlobalVariables.png.html" class="image" title="Image:expressionViewWithGlobalVariables.png"><img alt="Image:expressionViewWithGlobalVariables.png" src="docs/images/d/de/ExpressionViewWithGlobalVariables.png" width="503" height="218" border="0" /></a>
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Ruby_Debugger.html" title="Ruby Debugger">Ruby Debugger</a>
+</li><li> <a href="Ruby_debugger_prerequisites.html" title="Ruby debugger prerequisites">Ruby debugger prerequisites</a>
+</li><li> <a href="Starting_a_Ruby_debug_session.html" title="Starting a Ruby debug session">Starting a Ruby debug session</a>
+</li><li> <a href="Automatic_Ruby_code_reloading.html" title="Automatic Ruby code reloading">Automatic Ruby code reloading</a>
+</li><li> <a href="Inspection_shortcuts_(Ruby).html" title="Inspection shortcuts (Ruby)">Inspection shortcuts (Ruby)</a>
+</li><li> <a href="Debugging_into_ruby_libraries.html" title="Debugging into ruby libraries">Debugging into ruby libraries</a>
+</li><li> <a href="Known_Ruby_debugging_limitations.html" title="Known Ruby debugging limitations">Known Ruby debugging limitations</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1904-0!1!0!!en!2!edit=0 and timestamp 20090202042722 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Ruby_Debug_Views">http://aptana.com/docs/index.php/Ruby_Debug_Views</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span> | <span dir='ltr'><a href="Category:RDT.html" title="Category:RDT">RDT</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

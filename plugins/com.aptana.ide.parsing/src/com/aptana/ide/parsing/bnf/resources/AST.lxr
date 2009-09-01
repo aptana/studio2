@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/ast">
+
+	<token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace/>
+			</one-or-more>
+			<comment type="COMMENT" start="/*" end="*/"/>
+			<comment type="SINGLE_LINE_COMMENT"/>
+		</category-group>
+		
+		<category-group category="KEYWORD">
+			<and>
+				<or>
+					<string type="CASE">case</string>
+					<string type="DEFAULT">default</string>
+					<string type="FALSE">false</string>
+					<string type="IMPORT">import</string>
+					<string type="NULL">null</string>
+					<string type="RESULT">result</string>
+					<string type="SWITCH">switch</string>
+					<string type="TRUE">true</string>
+				</or>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+		</category-group>
+		
+		<category-group category="LITERALS">
+			<quoted-string type="STRING">"</quoted-string>
+		</category-group>
+		
+		<category-group category="IDENTIFIER">
+			<and type="CONSTANT">
+				<one-or-more>
+					<or>
+						<uppercase-letter/>
+						<character>_</character>
+					</or>
+				</one-or-more>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+			<identifier type="IDENTIFIER" part-characters="_"/>
+			<and type="ATTRIBUTE">
+				<character>@</character>
+				<identifier/>
+			</and>
+		</category-group>
+		
+		<category-group category="PUNCTUATOR">
+			<character type="LPAREN">(</character>
+			<character type="RPAREN">)</character>
+			<character type="LCURLY">{</character>
+			<character type="RCURLY">}</character>
+			<character type="LBRACKET">[</character>
+			<character type="RBRACKET">]</character>
+			<character type="COMMA">,</character>
+			<string type="ASSIGN">:=</string>
+			<character type="COLON">:</character>
+			<character type="SEMICOLON">;</character>
+			<character type="DOT">.</character>
+			<string type="APPEND">+=</string>
+		</category-group>
+    </token-group>
+
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+    </token-group>
+
+</lexer>

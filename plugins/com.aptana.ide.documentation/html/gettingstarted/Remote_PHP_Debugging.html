@@ -1,0 +1,125 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Remote PHP Debugging</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Remote_PHP_Debugging&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Remote PHP Debugging [<a href="http://www.aptana.com/docs/index.php?title=Remote_PHP_Debugging&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p><b>THESE INSTRUCTIONS ARE EXPERIMENTAL</b>
+</p><p>Please post any problems you have using these instructions to the <a href="http://forums.aptana.com/viewforum.php?f=25" class="external text" title="http://forums.aptana.com/viewforum.php?f=25" rel="nofollow">PHP forum</a>
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Basic_Setup"><span class="tocnumber">1</span> <span class="toctext">Basic Setup</span></a></li>
+<li class="toclevel-1"><a href="#Setting_up_PHP_on_Apache"><span class="tocnumber">2</span> <span class="toctext">Setting up PHP on Apache</span></a></li>
+<li class="toclevel-1"><a href="#Setting_up_XDebug_in_php.ini"><span class="tocnumber">3</span> <span class="toctext">Setting up XDebug in php.ini</span></a></li>
+<li class="toclevel-1"><a href="#Verify_the_installation"><span class="tocnumber">4</span> <span class="toctext">Verify the installation</span></a></li>
+<li class="toclevel-1"><a href="#Aliasing_to_your_PHP_project"><span class="tocnumber">5</span> <span class="toctext">Aliasing to your PHP project</span></a></li>
+<li class="toclevel-1"><a href="#Creating_a_launch_configuration"><span class="tocnumber">6</span> <span class="toctext">Creating a launch configuration</span></a></li>
+<li class="toclevel-1"><a href="#Notes"><span class="tocnumber">7</span> <span class="toctext">Notes</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Basic_Setup"></a><h2> <span class="mw-headline">Basic Setup</span></h2>
+<ul><li> Install Apache if necessary
+</li><li> In Studio's Servers view add a new Apache server into the list, pointing the executable to the Apache httpd executable
+</li></ul>
+<a name="Setting_up_PHP_on_Apache"></a><h2> <span class="mw-headline">Setting up PHP on Apache</span></h2>
+<ul><li> Locate the the httpd.conf in your Apache install dir (usually under the conf directory).
+</li><li> Open the file and adding the following lines, with the paths modified to fit your system:
+</li></ul>
+<pre>#load the php main library
+Loadfile "C:\php\php5ts.dll"
+
+#load the sapi so that apache can use php
+LoadModule php5_module "C:\php\php5apache2_2.dll"
+
+#set the php.ini location
+PHPIniDir "C:\php"
+
+#Hook the php file extensions
+AddHandler application/x-httpd-php .php
+AddHandler application/x-httpd-php-source .phps
+</pre>
+<a name="Setting_up_XDebug_in_php.ini"></a><h2> <span class="mw-headline">Setting up XDebug in php.ini</span></h2>
+<ul><li> Locate your php.ini file (same path as you defined in the httpd.conf).
+</li><li> Open the file and add the following lines (again, paths should be modified according to your system):
+</li></ul>
+<pre>[XDebug]
+;Hook the XDebug
+zend_extension_ts=C:\php\ext\php_xdebug-2.0.3-5.2.5.dll
+xdebug.remote_enable=1
+xdebug.remote_host=127.0.0.1
+xdebug.remote_port=9000
+xdebug.remote_handler="dbgp"
+</pre>
+<a name="Verify_the_installation"></a><h2> <span class="mw-headline">Verify the installation</span></h2>
+<ol><li> Restart Apache
+</li><li> Create a PHP file named phpinfo.php in Apache's htdocs directory containing something simple, such as &lt;?php  phpinfo();&nbsp;?&gt; to the file and save it.
+</li><li> Open this file in your web browser using Apache: <a href="http://localhost/phpinfo.php" class="external free" title="http://localhost/phpinfo.php" rel="nofollow">http://localhost/phpinfo.php</a> and you should see the standard phpinfo output.
+</li><li> Verify that the XDebug was loaded by locating the note at the bottom of the first section. It should say something like: "with Xdebug v2.0.3, Copyright (c) 2002-2007, by Derick Rethans"
+</li></ol>
+<a name="Aliasing_to_your_PHP_project"></a><h2> <span class="mw-headline">Aliasing to your PHP project</span></h2>
+<p>Assuming that you already have a PHP project set up in your Aptana Studio, you need to create an Apache Alias pointing to that project. <b>It is crucial that you will name your alias exactly like you named your project</b>
+</p><p>For example, a project named RemoteDebugTest should have this Alias setting in the httpd.conf:
+</p>
+<pre>Alias /RemoteDebugTest C:\Eclipse\workspace\RemoteDebugTest
+&lt;Directory C:\Eclipse\workspace\RemoteDebugTest&gt;
+Order allow,deny
+Allow from all
+&lt;/Directory&gt;
+</pre>
+<p>After saving httpd.conf, restart Apache to make your changes effective.
+</p>
+<a name="Creating_a_launch_configuration"></a><h2> <span class="mw-headline">Creating a launch configuration</span></h2>
+<ol><li> Place one or more breakpoints in the file to be debugged, which must exist in the project you aliased for Apache
+</li><li> Open the launch configuration dialog by accessing the debug shortcut (or by using the action from the menu Run -&gt; Open Debug Dialog)
+</li><li> Create a <b>new PHP Web Page debug configuration</b>
+</li><li> Verify that the XDebug debugger is selected and that you use the properly configured Apache server
+</li><li> Select <i>Use specified script</i> and locate the file you wish to debug
+</li><li> Make sure that the Studio XDebug client is listening on port 9000. The port is set on the Preferences panel Aptana -&gt; Editors -&gt; PHP -&gt; Debug, and the XDebug listen port should be the same one you set in php.ini.
+</li><li> Start debug
+</li></ol>
+<p>At this point a debug session is initiated. A browser is opened and, in case your code hits the breakpoint, you'll see that the debug stack is paused on the line in the source code.
+</p>
+<a name="Notes"></a><h2> <span class="mw-headline">Notes</span></h2>
+<ul><li> The browser is opened with the URL to the aliased file with the added query string of <i>?XDEBUG_SESSION_START=ECLIPSE_DBGP&amp;KEY=some_number</i>, similar to <i>?XDEBUG_SESSION_START=ECLIPSE_DBGP&amp;KEY=12276559562343</i>
+</li><li> The number at the end of the URL changes for each launch
+</li><li> Once you resume execution, even if there are no more breakpoints, the launch in your debug view is still alive. It's just waiting for more requests triggered by browser actions.
+</li><li> For example: You have a form to debug. You can do so by starting a debug session and placing a breakpoint on the right spot to catch the form input after the user hits the submit button. The debug session will be terminate only when you hit the stop button on that.
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2610-0!1!0!!en!2!edit=0 and timestamp 20090202191336 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Remote_PHP_Debugging">http://aptana.com/docs/index.php/Remote_PHP_Debugging</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

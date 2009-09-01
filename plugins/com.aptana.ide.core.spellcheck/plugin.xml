@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<!--<extension point="org.eclipse.ui.workbench.texteditor.spellingEngine">
+        <engine
+              class="com.aptana.internal.ui.text.spelling.DefaultSpellingEngine"
+              default="true"
+              id="com.onpositive.text.spelling.DefaultSpellingEngine"
+              label="Aptana Spelling Engine"
+              preferencesClass="com.aptana.internal.ui.text.spelling.SpellingPreferenceBlock">
+        </engine>
+</extension>-->
+<!--<extension
+      point="org.eclipse.core.runtime.preferences">
+   <initializer
+         class="com.aptana.commons.spelling.engine.SpellingPreferenceInitializer">
+   </initializer>
+</extension>-->
+</plugin>

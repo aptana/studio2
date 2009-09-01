@@ -1,0 +1,112 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>About Eclipse Monkey</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=About_Eclipse_Monkey&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>About Eclipse Monkey [<a href="http://www.aptana.com/docs/index.php?title=About_Eclipse_Monkey&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page provides a brief introduction to the Eclipse Monkey scripting tool.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Eclipse_Monkey_features"><span class="tocnumber">2</span> <span class="toctext">Eclipse Monkey features</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Requirements"><span class="tocnumber">2.1</span> <span class="toctext">Requirements</span></a></li>
+<li class="toclevel-2"><a href="#Brief_history_of_Eclipse_Monkey"><span class="tocnumber">2.2</span> <span class="toctext">Brief history of Eclipse Monkey</span></a></li>
+<li class="toclevel-2"><a href="#Advantages_of_scripting"><span class="tocnumber">2.3</span> <span class="toctext">Advantages of scripting</span></a></li>
+<li class="toclevel-2"><a href="#Supported_languages"><span class="tocnumber">2.4</span> <span class="toctext">Supported languages</span></a></li>
+<li class="toclevel-2"><a href="#Eclipse_Monkey_DOMs"><span class="tocnumber">2.5</span> <span class="toctext">Eclipse Monkey DOMs</span></a></li>
+<li class="toclevel-2"><a href="#Running_Eclipse_Monkey_Scripts"><span class="tocnumber">2.6</span> <span class="toctext">Running Eclipse Monkey Scripts</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Eclipse Monkey is a dynamic scripting tool that allows you to automate repetitive and tedious programming tasks for Eclipse and/or Aptana Studio. Because you script against an API layer when you write Eclipse Monkey scripts, you will not need to touch the actual Eclipse code or develop separate Java plugins to perform simple tasks.
+</p>
+<a name="Eclipse_Monkey_features"></a><h2> <span class="mw-headline">Eclipse Monkey features</span></h2>
+<p>This sections lists some of the features of Eclipse Monkey.
+</p>
+<a name="Requirements"></a><h3> <span class="mw-headline">Requirements</span></h3>
+<p>Eclipse Monkey is currently available as a plug-in for Eclipse v3.2 and v3.3.
+</p>
+<a name="Brief_history_of_Eclipse_Monkey"></a><h3> <span class="mw-headline">Brief history of Eclipse Monkey</span></h3>
+<ul><li> Developed by Ward Cunningham and Bjorn Freeman-Benson
+</li><li> Inspired by Greasemonkey scripting tool for Mozilla
+</li><li> Integrated with Aptana Studio in March 2007
+</li><li> Will be part of the Europa (Eclipse 3.3) simultaneous release
+</li></ul>
+<a name="Advantages_of_scripting"></a><h3> <span class="mw-headline">Advantages of scripting</span></h3>
+<p>Scripting has many advantages over doing full-blown Java development to make small changes to the Eclipse UI:
+</p>
+<ul><li> Write scripts in JavaScript
+</li><li> No need to create new plug-ins
+</li><li> No interference with the actual Eclipse code
+</li><li> Bundle scripts with a project
+</li><li> Leverage HTML and JavaScript to create Eclipse Views
+</li><li> Add keybindings to run a script
+</li></ul>
+<p><br />
+</p>
+<a name="Supported_languages"></a><h3> <span class="mw-headline">Supported languages</span></h3>
+<p>Currently, Eclipse Monkey supports JavaScript and Ruby. In the future, Eclipse Monkey will support Groovy.
+</p>
+<a name="Eclipse_Monkey_DOMs"></a><h3> <span class="mw-headline">Eclipse Monkey DOMs</span></h3>
+<p>Script against Document Object Models (DOMs) to avoid having to change the actual Eclipse code. Eclipse Monkey ships with several built-in DOMs (e.g. "window"), and you may also specify a URL for an update site containing a DOM to download and script against that DOM.
+</p>
+<a name="Running_Eclipse_Monkey_Scripts"></a><h3> <span class="mw-headline">Running Eclipse Monkey Scripts</span></h3>
+<p>Eclipse Monkey includes a number of options for running your Eclipse Monkey scripts:
+</p>
+<ul><li> Run from a menu item
+</li><li> Hotkey / shortcut key
+</li><li> Run from Scripts View (Right-click &gt; <b>Execute</b> or double-click)
+</li><li> Trigger to run on an event
+</li><li> Run on startup
+</li></ul>
+<p>See <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a> to learn more about how to set up your Eclipse Monkey scripts to run the way that you would like.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Eclipse_Monkey_Sample_Projects_and_Scripts.html" title="Eclipse Monkey Sample Projects and Scripts">Eclipse Monkey Sample Projects and Scripts</a>
+</li><li> <a href="Creating_a_new_Eclipse_Monkey_script.html" title="Creating a new Eclipse Monkey script">Creating a new Eclipse Monkey script</a>
+</li><li> <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1701-0!1!0!!en!2!edit=0 and timestamp 20090202114057 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/About_Eclipse_Monkey">http://aptana.com/docs/index.php/About_Eclipse_Monkey</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

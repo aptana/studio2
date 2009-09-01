@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="com.aptana.ide.editors.parser" name="Parser Builder" schema="schema/parser.exsd"/>
+   <extension-point id="com.aptana.ide.editors.scanner" name="Scanner Builder" schema="schema/scanner.exsd"/>
+   <extension-point id="com.aptana.ide.editors.tokenList" name="Token List Builder" schema="schema/tokenList.exsd"/>
+</plugin>

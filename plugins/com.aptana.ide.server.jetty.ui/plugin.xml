@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.server.ui.serverImages">
+      <serverTypeImage
+            image="icons/jetty.gif"
+            typeId="com.aptana.ide.server.jetty.jettyHttpServer">
+      </serverTypeImage>
+      <serverImage
+            image="icons/jetty.gif"
+            typeId="com.aptana.ide.editor.html.previewServer">
+      </serverImage>
+   </extension>
+   <extension
+         point="com.aptana.ide.server.ui.configurationDialogs">
+      <serverDialog
+            class="com.aptana.ide.server.jetty.ui.dialogs.JettyConfigurationDialog"
+            typeId="com.aptana.ide.server.jetty.jettyHttpServer">
+      </serverDialog>
+   </extension>
+
+</plugin>

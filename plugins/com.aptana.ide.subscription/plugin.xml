@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.aptana.ide.subscription.ui.AptanaLiveEditor"
+            id="com.aptana.ide.subscription.ui.AptanaLiveEditor"
+            name="%editor.AptanaLive.name">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="y.com.aptana.ide.subscription.actionSet.AptanaLive"
+            label="%actionSet.AptanaLive.label"
+            visible="true">
+         <menu
+               id="aptanawindow"
+               label="%menu.label.aptanawindow"
+               path="window/showView">
+            <groupMarker
+                  name="top">
+            </groupMarker>
+         </menu>
+         <action
+               class="com.aptana.ide.subscription.actions.AptanaLiveAction"
+               id="com.aptana.ide.subscription.actions.AptanaLiveAction"
+               label="%action.AptanaLive.label"
+               menubarPath="window/aptanawindow/top"
+               style="push"
+               tooltip="%action.AptanaLive.tooltip">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.aptana.ide.subscription.SubscriptionStartup">
+      </startup>
+   </extension>
+
+</plugin>

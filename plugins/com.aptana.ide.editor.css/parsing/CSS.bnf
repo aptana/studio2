@@ -1,0 +1,181 @@
+Program
+	:	Statements
+	;
+
+###
+
+Statements
+	:	Statements Statement {AddStatement}
+	|	Statement {FirstStatement}
+	;
+
+###
+
+Statement
+	:	AtRule
+	|	CharSet
+	|	Import
+	|	Media
+	|	Page
+	|	Rule
+	;
+
+###
+
+AtRule
+	:	AT_KEYWORD STRING SEMICOLON {AtWord}
+	|	AT_KEYWORD STRING BLOCK
+	;
+
+CharSet
+	:	CHARSET STRING SEMICOLON {CharSet}
+	;
+	
+# import word can be a function too
+Import
+	:	IMPORT ImportWord SEMICOLON {Import}
+	|	IMPORT ImportWord List SEMICOLON {ImportList}
+	;
+
+Media
+	:	MEDIA IDENTIFIER LCURLY RCURLY {Media}
+	;
+	
+Page
+	:	PAGE LCURLY RCURLY {Page}
+	|	PAGE LCURLY Declarations RCURLY {PageDeclaration}
+	|	PAGE COLON IDENTIFIER LCURLY RCURLY {PseudoPage}
+	;
+
+Rule
+	:	Selectors LCURLY RCURLY {Rule}
+	|	Selectors LCURLY Declarations RCURLY {RuleDeclarations}
+	;
+
+###
+
+ImportWord
+	:	STRING
+	|	URL
+	;
+	
+Function
+	:	FUNCTION Expression RPAREN {Function}
+	;
+	
+List
+	:	List COMMA IDENTIFIER {AddList}
+	|	IDENTIFIER {FirstList}
+	;
+
+Declarations
+	:	Declarations SEMICOLON Declaration {AddDeclaration}
+	|	Declarations SEMICOLON {AddEmptyDeclaration}
+	|	Declaration {FirstDeclaration}
+	|	SEMICOLON {EmptyDeclaration}
+	;
+
+Declaration
+	:	Identifier COLON Expression {Declaration}
+	|	Identifier COLON Expression IMPORTANT {ImportantDeclaration}
+	;
+	
+Identifier
+	:	IDENTIFIER
+	|	PROPERTY
+	;
+
+Expression
+	:	Expression Separator Primitive {AddSeparatorPrimitiveExpression}
+	|	Expression Separator Function {AddSeparatorFunctionExpression}
+	|	Expression Primitive {AddPrimitiveExpression}
+	|	Expression Function {AddFunctionExpression}
+	|	Term {FirstExpression}
+	;
+
+Term
+	:	PlusMinus Primitive {PlusMinusTerm}
+	|	Primitive {Term}
+	|	Function
+	;
+
+PlusMinus
+	:	MINUS
+	|	PLUS
+	;
+	
+Primitive
+	:	NUMBER
+	|	PERCENTAGE
+	|	LENGTH
+	|	EMS
+	|	EXS
+	|	ANGLE
+	|	TIME
+	|	FREQUENCY
+	|	STRING
+	|	IDENTIFIER
+	|	URL
+	|	COLOR
+	;
+
+Separator
+	:	FORWARD_SLASH
+	|	COMMA
+	|	PLUS
+	|	MINUS
+	;
+
+Selectors
+	:	Selectors COMMA Selector {AddSelector}
+	|	Selector {FirstSelector}
+	;
+
+Selector
+	:	Selector SimpleSelector {AddSimpleSelector}
+	|	Selector Combinator SimpleSelector {AddSimpleCombinedSelector}
+	|	SimpleSelector {FirstSimpleSelector}
+	;
+
+SimpleSelector
+	:	TypeOrUniversalSelector {TypeOrUniversalSelector}
+	|	TypeOrUniversalSelector AttributeSelectors {TypeAndAttributeSelectors}
+	|	AttributeSelectors {AttributeSelectors}
+	;
+	
+Combinator
+	:	PLUS
+	|	GREATER
+	;
+
+TypeOrUniversalSelector
+	:	IDENTIFIER
+	|	STAR
+	|	SELECTOR
+	;
+	
+AttributeSelectors
+	:	AttributeSelectors AttributeSelector {AddAttributeSelector}
+	|	AttributeSelector {FirstAttributeSelector}
+	;
+	
+AttributeSelector
+	:	CLASS {AttributeSelector}
+	|	COLON IDENTIFIER {PseudoSelector}
+	|	COLON Function {PseudoSelectorFunction}
+	|	COLOR {AttributeSelector}
+	|	HASH {AttributeSelector}
+	|	LBRACKET IDENTIFIER RBRACKET {AttributeExistsSelector}
+	|	LBRACKET IDENTIFIER AttributeValueOperator IdentiferOrString RBRACKET {AttributeValueExistsSelector}
+	;
+
+AttributeValueOperator
+	:	EQUAL
+	|	INCLUDES
+	|	DASHMATCH
+	;
+
+IdentiferOrString
+	:	IDENTIFIER
+	|	STRING
+	;

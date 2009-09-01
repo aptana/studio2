@@ -1,0 +1,120 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Documenting inheritance with ScriptDoc</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Documenting_inheritance_with_ScriptDoc&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Documenting inheritance with ScriptDoc [<a href="http://www.aptana.com/docs/index.php?title=Documenting_inheritance_with_ScriptDoc&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page discusses how Aptana handles inheritance, and how to extend that using ScriptDoc
+</p><p>Please note, Aptana currently does not pull ScriptDoc-based inheritance tags into the JavaScript environment, but that is planned for a future revision.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Code_Assist"><span class="tocnumber">1</span> <span class="toctext">Code Assist</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Prototype-based_Inheritance"><span class="tocnumber">1.1</span> <span class="toctext">Prototype-based Inheritance</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Outline"><span class="tocnumber">2</span> <span class="toctext">Outline</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Prototype-based_Inheritance_2"><span class="tocnumber">2.1</span> <span class="toctext">Prototype-based Inheritance</span></a></li>
+<li class="toclevel-2"><a href="#Function-based_Inheritance"><span class="tocnumber">2.2</span> <span class="toctext">Function-based Inheritance</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#ScriptDoc-based_inheritance"><span class="tocnumber">3</span> <span class="toctext">ScriptDoc-based inheritance</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Code_Assist"></a><h2> <span class="mw-headline">Code Assist</span></h2>
+<p>When using certain kinds of inheritance patterns, Aptana will recognize these patterns natively.
+</p>
+<a name="Prototype-based_Inheritance"></a><h3> <span class="mw-headline">Prototype-based Inheritance</span></h3>
+<p>For example:
+</p>
+<pre>/**
+ * The foo function
+ */
+function foo() { 
+}
+
+/**
+ * The bar function
+ * @param {Object} a Object a
+ * @param {Object} b Object b
+ */
+function bar(a, b){
+};
+
+foo.prototype.b = bar;
+
+var x = new foo();
+x.b
+
+</pre>
+<p><a href="Image:Prototype_inheritance.png.html" class="image" title="Image:prototype_inheritance.png"><img alt="Image:prototype_inheritance.png" src="docs/images/6/64/Prototype_inheritance.png" width="685" height="460" border="0" /></a>
+</p><p>We will see a 'b' proposal off of the x object.
+</p>
+<a name="Outline"></a><h2> <span class="mw-headline"> Outline </span></h2>
+<p>The outline view uses a AST-based population model, so it is able to perform more advanced illustrations of code relationships. It is planned to move this functionality back to code assist.
+</p>
+<a name="Prototype-based_Inheritance_2"></a><h3> <span class="mw-headline"> Prototype-based Inheritance </span></h3>
+<p>From the above example, 'b' would appear off the prototype of 'foo'
+</p>
+<a name="Function-based_Inheritance"></a><h3> <span class="mw-headline"> Function-based Inheritance </span></h3>
+<p>Aptana provides limited support for inheritance via functions. We currently support:
+</p>
+<ul><li> dojo.lang.extend
+</li><li> MochiKit.Base.update
+</li><li> Object.extend
+</li></ul>
+<p>This will become toolkit-extensible in the near future.
+</p>
+<a name="ScriptDoc-based_inheritance"></a><h2> <span class="mw-headline">ScriptDoc-based inheritance</span></h2>
+<p>This is not currently implemented, but if you add these tags to your code, they will work automatically when this feature is implemented:
+</p>
+<pre>
+function foo() {
+}
+
+/** @inherits foo */
+function bar() {
+}
+</pre>
+<p>See here for more information: <a href="ScriptDoc_comprehensive_tag_reference.html#.40inherits" title="ScriptDoc comprehensive tag reference">@inherits</a>
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1740-0!1!0!!en!2!edit=0 and timestamp 20090202175325 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Documenting_inheritance_with_ScriptDoc">http://aptana.com/docs/index.php/Documenting_inheritance_with_ScriptDoc</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

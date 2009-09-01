@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+			xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+<RDF:Description about="urn:mozilla:extension:debugger@aptana.com">
+	<em:updates>
+		<RDF:Seq>
+			<RDF:li>
+				<RDF:Description>
+					<em:version>1.4.0</em:version>
+					
+					<em:targetApplication>
+						<RDF:Description>
+							<!-- Mozilla Firefox, version 1.5 to 3.5+ -->
+							<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+							<em:minVersion>1.5</em:minVersion>
+							<em:maxVersion>3.5.*</em:maxVersion>
+							<em:updateLink>http://firefox.aptana.com/update/aptanadebugger.xpi</em:updateLink>
+							<em:updateHash>sha256:df1facfc87253bed95e8cb589b71155aa2e4b5093ed826e05a4e13f4dcc0e6a8</em:updateHash>
+						</RDF:Description>
+					</em:targetApplication>
+				</RDF:Description>
+			</RDF:li>
+		</RDF:Seq>
+	</em:updates>
+	
+	<em:signature>
+		MIGTMA0GCSqGSIb3DQEBDQUAA4GBAIj8BsmtBOj5seVIHP3cynblaQT9v577MTorlR8
+		ZCNebj+Y5TTYUhhscb0a/vn6kwFExQDGg3lqNDWCpcPHJnFWpEtFBSXm6sphwJ9pM62
+		VbCWBVHBtGAlZnuzPye+MBSd3rE5KxWBDDd6nlGebhltWnuhGzUr+/JBqIUvgJMGdu
+	</em:signature>
+
+</RDF:Description> 
+</RDF:RDF>

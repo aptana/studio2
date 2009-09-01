@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="environmentProvider" name="XML Environment Provider" schema="schema/environmentProvider.exsd"/>
+    <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="com.aptana.ide.editors.actionSet">
+         <part
+               id="com.aptana.ide.editors.XMLEditor">
+         </part>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="com.aptana.ide.editors.XMLEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+    <extension
+   		point="com.aptana.ide.editors.colorization" >
+   		<colorization file="/colorization/DEFAULT_xml_colorization.col" id="com.aptana.ide.editor.xml.colorization" />
+    </extension>
+   
+   <extension point="com.aptana.ide.editors.folding" >
+   		<folding
+           foldAllParents="true"
+           label="XML"
+           language="text/xml">
+        <type
+              label="XML node"
+              name="node">
+        </type>
+     </folding>
+   	</extension>
+   	
+    <extension
+         point="org.eclipse.ui.newWizards">
+       <wizard
+             category="com.aptana.ide.core.ui.projects"
+             class="com.aptana.ide.editor.xml.wizards.XmlNewWizard"
+             finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+             icon="icons/xml_file_new.png"
+             id="com.aptana.ide.editors.wizards.XmlNewWizard"
+             name="%Wizard.xml.file.name"
+             preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+          <description>
+             %wizard.description.new
+          </description>
+       </wizard>
+      <wizard
+            canFinishEarly="true"
+            category="com.aptana.ide.core.ui"
+            class="com.aptana.ide.editor.xml.wizards.XMLUntitledTextFileWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="false"
+            icon="icons/xml_file_new.png"
+            id="com.aptana.ide.editors.wizards.file.XmlUntitledWizard"
+            name="%Wizard.xml.untitledfile.name"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective">
+         <description>
+            %wizard.description.new_untitled
+         </description>
+      </wizard>            
+   </extension>
+    <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            describer="com.aptana.ide.editor.xml.XMLContentDescriber"
+            file-extensions="xml,xsl,xslt,lxr,col,par"
+            id="xmlSource"
+            name="%content_type.name"
+            priority="low"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+       <editor
+             class="com.aptana.ide.editor.xml.XMLEditor"
+             contributorClass="com.aptana.ide.editors.unified.actions.UnifiedActionContributor"
+             default="true"
+             extensions="xml"
+             icon="icons/xml.png"
+             id="com.aptana.ide.editors.XMLEditor"
+             name="%Editor.xml.name">
+             <contentTypeBinding contentTypeId="com.aptana.ide.editor.xml.xmlSource"/>
+       </editor>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.editor.xml.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         
+         <page
+          category="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.xml.preferences.FormattingPreferencePage"
+          id="com.aptana.ide.editor.xml.preferences.FormattingPreferencePage"
+          name="%formattingPreferencePage"/>
+          
+          <page
+          category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          id="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          name="%generalPreferencePage"/>
+          
+          <page
+          category="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.xml.preferences.ProblemsPreferencePage"
+          id="com.aptana.ide.editor.xml.preferences.ProblemsPreferencePage"
+          name="%problemsPreferencePage"/>
+          
+          <page
+          category="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.xml.preferences.ColorizationPreferencePage"
+          id="com.aptana.ide.editor.xml.preferences.ColorizationPreferencePage"
+          name="%colorPreferencePage">
+         	<keywordReference id="com.aptana.ide.editors.colors"/>
+   		 </page>
+          
+          <page
+          category="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.xml.preferences.FoldingPreferencePage"
+          id="com.aptana.ide.editor.xml.preferences.FoldingPreferencePage"
+          name="%foldingPreferencePage">     
+          <keywordReference id="com.aptana.ide.editors.folding"/>
+  		 </page> 
+          
+          <page
+          category="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.xml.preferences.CodeAssistPreferencePage"
+          id="com.aptana.ide.editor.xml.preferences.CodeAssistPreferencePage"
+          name="%codeAssistPreferencePage">
+		  <keywordReference id="com.aptana.ide.editors.codeassist"/>
+   </page> 
+          
+          <page
+          category="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+          class="com.aptana.ide.editor.xml.preferences.TypingPreferencePage"
+          id="com.aptana.ide.editor.xml.preferences.TypingPreferencePage"
+          name="%typingPreferencePage">
+          <keywordReference id="com.aptana.ide.editors.typing"/>
+   </page>
+          <page
+                category="com.aptana.ide.editor.xml.preferences.GeneralPreferencePage"
+                class="com.aptana.ide.editor.xml.preferences.TemplatePreferencePage"
+                id="com.aptana.ide.editor.xml.preferences.TemplatePreferencePage"
+                name="%page.name.template">
+          </page>           
+          
+   </extension>
+   <extension
+         point="com.aptana.ide.core.ui.file_wizards">
+      <new-file-wizard
+            name="New XML File"
+            wizard-id="com.aptana.ide.editors.wizards.XmlNewWizard"/>
+      <untitled-file-wizard
+            name="New Untitled XML File"
+            wizard-id="com.aptana.ide.editors.wizards.file.XmlUntitledWizard"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.validator">
+      <validator
+            class="com.aptana.ide.editor.xml.validator.XMLValidator"
+            mimeType="text/xml"
+            name="XML Parser Validator"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.outline">
+      <contributor
+            content-provider="com.aptana.ide.editor.xml.outline.XMLContentProvider"
+            label-provider="com.aptana.ide.editor.xml.outline.XMLLabelProvider"
+            language="text/xml"
+            name="XML Outline Provider"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.tokenList">
+      <textMatcher
+            language="text/xml"
+            resource="src/com/aptana/ide/editor/xml/resources/xml_lexer_1_2.lxr"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.parser">
+      <parser
+            class="com.aptana.ide.editor.xml.parsing.XMLParser"
+            language="text/xml"/>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.pairfinder">
+      <pairFinder
+            class="com.aptana.ide.editor.xml.XMLPairFinder"
+            language="text/xml"
+            name="XML Pair Finder">
+      </pairFinder>
+   </extension>
+   <extension
+         point="com.aptana.ide.editors.formatter">
+      <formatter
+            class="com.aptana.ide.editor.xml.formatting.XMLCodeFormatter"
+            language="text/xml"
+            name="XML Code Formatter">
+      </formatter>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.propertyPages">  
+   	<page
+            name="%codeFormatterPageName"
+            class="com.aptana.ide.editor.xml.preferences.FormattingPreferencePage"
+            id="com.aptana.xml.ui.propertyPages.CodeFormatterPreferencePage">
+         <enabledWhen>
+		     <adapt type="org.eclipse.core.resources.IProject">		          
+		     </adapt>         
+         </enabledWhen>
+         <keywordReference id="com.aptana.xml.ui.formatter"/>
+      </page>   
+    </extension>
+   <extension
+         point="com.aptana.ide.editors.scanner">
+      <scanner
+            class="com.aptana.ide.editor.xml.parsing.XMLScanner"
+            language="text/xml">
+      </scanner>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            class="com.aptana.ide.editors.unified.contentassist.UnifiedContextType"
+            id="com.aptana.ide.editors.contextType.text/xml"
+            name="%contextType.name.xml">
+      </contextType>
+      <include
+            file="templates/xml.xml">
+      </include>
+   </extension>
+</plugin>

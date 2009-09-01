@@ -1,0 +1,236 @@
+Program
+	:	DocTypeDecl
+	;
+
+# level 0
+
+DocTypeDecl
+	:	DOCTYPE_DECL NAME GREATER_THAN
+	|	DOCTYPE_DECL NAME LBRACKET IntSubset RBRACKET GREATER_THAN
+	|	DOCTYPE_DECL NAME ExternalID GREATER_THAN
+	|	DOCTYPE_DECL NAME ExternalID LBRACKET IntSubset RBRACKET GREATER_THAN
+	;
+
+# level 1
+
+IntSubset
+	:	MarkupDecl
+	|	DeclSep
+	|	IntSubset
+	;
+
+ExternalID
+	:	SYSTEM SystemLiteral
+	|	PUBLIC PubidLiteral SystemLiteral
+	;
+
+# level 2
+
+MarkupDecl
+	:	ElementDecl
+	|	AttlistDecl
+	|	EntityDecl
+	|	NotationDecl
+	|	ProcessingInstruction	# already defined in the XML parser, so not redefined here
+	;
+
+DeclSep
+	:	PEReference
+	;
+
+SystemLiteral
+	:	STRING
+	;
+	
+PubidLiteral
+	:	STRING
+	;
+
+# level 3
+
+ElementDecl
+	:	ELEMENT_DECL NAME GREATER_THAN
+	|	ELEMENT_DECL NAME ContentSpec GREATER_THAN
+	;
+
+AttlistDecl
+	:	ATTLIST_DECL NAME GREATER_THAN
+	|	ATTLIST_DECL NAME AttDef GREATER_THAN
+	;
+
+EntityDecl
+	:	GEDecl
+	|	PEDecl
+	;
+
+NotationDecl
+	:	NOTATION_DECL NAME ExternalID GREATER_THAN
+	|	NOTATION_DECL NAME PublicID GREATER_THAN
+	;
+
+PEReference
+	:	PERCENT NAME SEMICOLON
+	;
+
+# level 4
+
+ContentSpec
+	:	EMPTY
+	|	ANY
+	|	Mixed
+	|	Children
+	;
+	
+AttDef
+	:	NAME AttType DefaultDecl
+	|	AttDef
+	;
+
+GEDecl
+	:	ENTITY_DECL NAME EntityDef GREATER_THAN
+	;
+	
+PEDecl
+	:	ENTITY_DECL PERCENT NAME PEDef
+	;
+
+PublicID
+	:	PUBLIC PubidLiteral
+	;
+
+# level 5
+
+Mixed
+	:	LPAREN PCDATA RPAREN
+	|	LPAREN PCDATA RPAREN STAR
+	|	LPAREN PCDATA MixedNames RPAREN STAR
+	;
+
+Children
+	:	Choice
+	|	Choice QUESTION
+	|	Choice STAR
+	|	Choice PLUS
+	|	Seq
+	|	Seq QUESTION
+	|	Seq STAR
+	|	Seq PLUS
+	;
+	
+AttType
+	:	StringType
+	|	TokenizedType
+	|	EnumeratedType
+	;
+	
+DefaultDecl
+	:	REQUIRED
+	|	IMPLIED
+	|	AttValue
+	|	FIXED AttValue
+	;
+	
+EntityDef
+	:	EntityValue
+	|	ExternalID
+	|	ExternalID NDataDecl
+	;
+	
+PEDef
+	:	EntityValue
+	|	ExternalID
+	;
+
+# level 6
+
+MixedNames
+	:	PIPE NAME
+	:	MixedNames
+	;
+
+Choice
+	:	LPAREN Cp ChoiceList RPAREN
+	;
+
+Seq
+	:	LPAREN Cp RPAREN
+	|	LPAREN Cp SeqList RPAREN
+	;
+
+StringType
+	:	CDATA
+	;
+
+TokenizedType
+	:	ID
+	|	IDREF
+	|	IDREFS
+	|	ENTITY
+	|	ENTITIES
+	|	NMTOKEN
+	|	NMTOKENS
+	;
+	
+EnumeratedType
+	:	NotationType
+	|	Enumeration
+	;
+	
+AttValue
+	:	STRING	# does not include References
+	;
+
+EntityValue
+	:	STRING	# does not include PEReferences or References
+	;
+
+NDataDecl
+	:	NDATA NAME
+	;
+
+# level 7
+
+Cp
+	:	Name
+	|	Name QUESTION
+	|	Name STAR
+	|	Name PLUS
+	|	Choice
+	|	Choice QUESTION
+	|	Choice STAR
+	|	Choice PLUS
+	|	Seq
+	|	Seq QUESTION
+	|	Seq STAR
+	|	Seq PLUS
+	;
+
+ChoiceList
+	:	PIPE Cp
+	|	ChoiceList
+	;
+
+SeqList
+	:	COMMA Cp
+	|	SeqList
+	;
+
+NotationType
+	:	NOTATION LPAREN NAME Notations RPAREN
+	;
+	
+Enumeration
+	:	STRING NmTokens
+	;
+
+# Level 8
+
+Notations
+	:	PIPE NAME
+	|	Notations
+	;
+
+NmTokens
+	:	PIPE NAME
+	|	NmTokens
+	;

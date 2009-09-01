@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="logging_context_view">
+		<description>The TailView displays the log output of the current Jaxer process.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_TailView_View.html"
+			label="Displaying the TailView View" />
+	</context>
+	
+	<context id="loggingview_add_simple_rule_context">
+		<description>This dialog allows adding simple log coloring rule</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Adding_TailView_Rule.html"
+			label="Adding Coloring Rule" />
+	</context>
+</contexts>

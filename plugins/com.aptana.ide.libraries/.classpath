@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="Tidy.jar"/>
+	<classpathentry exported="true" kind="lib" path="css-validator.jar"/>
+	<classpathentry exported="true" kind="lib" path="jaxen-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="xercesImpl.jar"/>
+	<classpathentry exported="true" kind="lib" path="xmlParserAPIs.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="derbytools.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbynet.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_zh_TW.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_zh_CN.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_pt_BR.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_ko_KR.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_ja_JP.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_it.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_fr.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_es.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyLocale_de_DE.jar"/>
+	<classpathentry exported="true" kind="lib" path="derbyclient.jar"/>
+	<classpathentry exported="true" kind="lib" path="derby.jar"/>
+	<classpathentry exported="true" kind="lib" path="uuid.jar"/>
+	<classpathentry exported="true" kind="lib" path="trialkey.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

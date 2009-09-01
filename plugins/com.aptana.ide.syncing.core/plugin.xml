@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.core.io.connectionPoint">
+      <connectionPointCategory
+            id="com.aptana.ide.syncing.core.sitesCategory"
+            name="Sites"
+            order="150">
+      </connectionPointCategory>
+      <connectionPointType
+            category="com.aptana.ide.syncing.core.sitesCategory"
+            class="com.aptana.ide.syncing.core.connection.SiteConnectionPoint"
+            id="site"
+            name="Site">
+      </connectionPointType>
+   </extension>
+
+</plugin>

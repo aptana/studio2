@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/regex">
+
+	<token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace/>
+			</one-or-more>
+		</category-group>
+		<category-group category="OPERATOR">
+			<character type="CARET">^</character>
+			<character type="COMMA">,</character>
+			<character type="DOLLAR">$</character>
+			<character type="DOT">.</character>
+			<character type="PIPE">|</character>
+			<character type="STAR">*</character>
+			<character type="PLUS">+</character>
+			<character type="MINUS">-</character>
+			<character type="QUESTION">?</character>
+		</category-group>
+		<category-group category="PUNCTUATOR">
+			<character type="LBRACKET">[</character>
+			<character type="RBRACKET">]</character>
+			<character type="LCURLY">{</character>
+			<character type="RCURLY">}</character>
+			<and>
+				<character type="LPAREN">(</character>
+				<optional>
+					<and>
+						<character>?</character>
+						<or>
+							<character type="LPAREN">:</character>
+							<character type="POSITIVE_LOOKAHEAD">=</character>
+							<character type="NEGATIVE_LOOKAHEAD">!</character>
+						</or>
+					</and>
+				</optional>
+			</and>
+			<character type="RPAREN">)</character>
+		</category-group>
+		<category-group category="IDENTIFIER">
+			<and type="ESCAPED_CHARACTER">
+				<character>\</character>
+				<character-class negate="true">\r\n</character-class>
+			</and>
+			<zero-or-more type="NUMBER">
+				<digit/>
+			</zero-or-more>
+			<character-class type="CHARACTER" negate="true">\r\n^,$.|*+-?[]{}()</character-class>
+		</category-group>
+    </token-group>
+
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+    </token-group>
+
+</lexer>

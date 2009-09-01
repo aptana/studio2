@@ -1,0 +1,189 @@
+<div class="content">
+	<div class="container_tl">
+		<div class="container_tr" style="min-width: 600px;">&nbsp;</div>
+	</div>
+	<div class="container_bl bottom10">
+		<div class="container_br" style="min-width: 590px;">
+			
+			<form id="user_form" name="user_form" action="#">
+			
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- BEGIN PERSONAL INFO -->
+					<td width="50%" valign="top" style="padding-right: 10px;">
+					
+						<!-- header -->
+						<div class="container_head_tl">
+							<div class="container_head_tr">&nbsp;</div>
+						</div>
+						<div class="container_head_bl">
+							<div class="container_head_br">
+								<div class="floatLeft" style="margin-bottom: -13px; top: -1px; position: relative;">
+									<div class="size16 bold gray48" style="margin-top: -2px;">
+										Your Info
+									</div>
+								</div>
+								<div class="floatRight" style="margin-bottom: -13px; top: -6px; right: -5px; position: relative; height: 24px;">
+									&nbsp;
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						
+						<!-- main content -->
+						<div class="container_content_tl">
+							<div class="container_content_tr">&nbsp;</div>
+						</div>
+						<div class="container_content_bl">
+							<div class="container_content_br gray48 line16" style="min-height: 100px;">
+								<%= (editMode) ? partial(subTemplates.personalInfoForm, userData) : partial(subTemplates.personalInfo, userData); %>								
+							</div>
+						</div>
+						
+					</td>
+					
+					<!-- BEGIN ADDRESS -->
+					<td width="50%" valign="top" style="padding-left: 5px;">
+					
+						<!-- header -->
+						<div class="container_head_tl">
+							<div class="container_head_tr">&nbsp;</div>
+						</div>
+						<div class="container_head_bl">
+							<div class="container_head_br">
+								<div class="floatLeft" style="margin-bottom: -13px; top: -1px; position: relative;">
+									<div class="size16 bold gray48" style="margin-top: -2px;">
+										Your Address
+									</div>
+								</div>
+								<div class="floatRight" style="margin-bottom: -13px; top: -6px; right: -5px; position: relative; height: 24px;">
+									&nbsp;
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						
+						<!-- main content -->
+						<div class="container_content_tl">
+							<div class="container_content_tr">&nbsp;</div>
+						</div>
+						<div class="container_content_bl">
+							<div class="container_content_br gray48 line16" style="min-height: 100px;">
+								<%= (editMode) ? partial(subTemplates.addressForm, userData.address) : partial(subTemplates.address, userData.address); %>
+							</div>
+						</div>
+						
+					</td>
+				</tr>
+				
+				<tr>
+					<!-- BEGIN COMPANY INFO -->
+					<td width="50%" valign="top" style="padding-right: 10px; padding-top: 5px;">
+					
+						<!-- header -->
+						<div class="container_head_tl">
+							<div class="container_head_tr">&nbsp;</div>
+						</div>
+						<div class="container_head_bl">
+							<div class="container_head_br">
+								<div class="floatLeft" style="margin-bottom: -13px; top: -1px; position: relative;">
+									<div class="size16 bold gray48" style="margin-top: -2px;">
+										Company Info
+									</div>
+								</div>
+								<div class="floatRight" style="margin-bottom: -13px; top: -6px; right: -5px; position: relative; height: 24px;">
+									&nbsp;
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						
+						<!-- main content -->
+						<div class="container_content_tl">
+							<div class="container_content_tr">&nbsp;</div>
+						</div>
+						<div class="container_content_bl">
+							<div class="container_content_br gray48 line16" style="min-height: 100px;">
+								<%= (editMode) ? partial(subTemplates.companyInfoForm, userData.companyInfo) : partial(subTemplates.companyInfo, userData.companyInfo); %>								
+							</div>
+						</div>
+						
+					</td>
+					
+					<!-- BEGIN INTERESTS -->
+					<td width="50%" valign="top" style="padding-left: 10px; padding-top: 5px;">
+					
+						<!-- header -->
+						<div class="container_head_tl">
+							<div class="container_head_tr">&nbsp;</div>
+						</div>
+						<div class="container_head_bl">
+							<div class="container_head_br">
+								<div class="floatLeft" style="margin-bottom: -13px; top: -1px; position: relative;">
+									<div class="size16 bold gray48" style="margin-top: -2px;">
+										Your Interests
+									</div>
+								</div>
+								<div class="floatRight" style="margin-bottom: -13px; top: -6px; right: -5px; position: relative; height: 24px;">
+									&nbsp;
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						
+						<!-- main content -->
+						<div class="container_content_tl">
+							<div class="container_content_tr">&nbsp;</div>
+						</div>
+						<div class="container_content_bl">
+							<div class="container_content_br gray48 line16" style="min-height: 100px;">
+								<%= (editMode) ? partial(subTemplates.interestsForm, userData.interests) : partial(subTemplates.interests, userData.interests); %>								
+							</div>
+						</div>
+						
+					</td>
+					
+				</tr>
+				
+				
+				<tr>
+					<td colspan="2">
+						<div class="container_content_tl">
+							<div class="container_content_tr">&nbsp;</div>
+						</div>
+						<div class="container_content_bl last">
+							<div class="container_content_br">
+								<table width="100%" cellspacing="0" cellpadding="0" border="0">
+									<tr>
+										<td width="50%">
+											<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/privacy_policy');">Your confidentiality is important to us</a>
+										</td>
+										
+										<td width="50%" class="right">
+	                                        <div id="edit_profile_button_cage">
+	                                            <a href="#" id="edit_profile_button"><img src="images_global/button_edit_profile.png" /></a>
+	                                        </div>
+											
+											<div id="do_edit_profile_cage" style="display: none">
+												<strong><a href="#" id="cancel_edit_profile">Cancel</a></strong> or <a href="#" id="do_edit_profile"><img src="images_global/button_save_changes.png" align="absmiddle" class="inline link" /></a>
+											</div>
+											<div id="edit_profile_activity" class="working" style="width: 115px; text-align: left; float: right; display: none;">
+												Saving changes...
+											</div>
+										</td>
+									</tr>
+								</table>
+								
+								<div class="clearfix" style="width: 580px;"></div>
+							</div>
+						</div>	
+					</td>
+				</tr>
+			</table>
+			
+			</form>
+			
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>

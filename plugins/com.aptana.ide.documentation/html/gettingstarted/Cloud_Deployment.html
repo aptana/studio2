@@ -1,0 +1,258 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Cloud Deployment</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Cloud_Deployment&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Cloud Deployment [<a href="http://www.aptana.com/docs/index.php?title=Cloud_Deployment&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p><a href="Aptana_Cloud_Docs_Wiki.html" title="Aptana Cloud Docs Wiki">Aptana Cloud Docs Home</a>
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#What"><span class="tocnumber">1</span> <span class="toctext">What</span></a></li>
+<li class="toclevel-1"><a href="#When"><span class="tocnumber">2</span> <span class="toctext">When</span></a></li>
+<li class="toclevel-1"><a href="#How"><span class="tocnumber">3</span> <span class="toctext">How</span></a></li>
+<li class="toclevel-1"><a href="#Deployment"><span class="tocnumber">4</span> <span class="toctext">Deployment</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Try_Cloud_Wizard"><span class="tocnumber">4.1</span> <span class="toctext">Try Cloud Wizard</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Step_1:__Site_Name"><span class="tocnumber">4.1.1</span> <span class="toctext">Step 1:  Site Name</span></a></li>
+<li class="toclevel-3"><a href="#Step_2:__User_Info"><span class="tocnumber">4.1.2</span> <span class="toctext">Step 2:  User Info</span></a></li>
+<li class="toclevel-3"><a href="#Step_3:_Agreement"><span class="tocnumber">4.1.3</span> <span class="toctext">Step 3: Agreement</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Buy_Now_Wizard"><span class="tocnumber">4.2</span> <span class="toctext">Buy Now Wizard</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Step_1:__Site_Name_2"><span class="tocnumber">4.2.1</span> <span class="toctext">Step 1:  Site Name</span></a></li>
+<li class="toclevel-3"><a href="#Step_2:__Pick_A_Plan"><span class="tocnumber">4.2.2</span> <span class="toctext">Step 2:  Pick A Plan</span></a></li>
+<li class="toclevel-3"><a href="#Step_3:__Plan_Options"><span class="tocnumber">4.2.3</span> <span class="toctext">Step 3:  Plan Options</span></a></li>
+<li class="toclevel-3"><a href="#Step_4:__User_Info"><span class="tocnumber">4.2.4</span> <span class="toctext">Step 4:  User Info</span></a></li>
+<li class="toclevel-3"><a href="#Step_5:__Payment_Info"><span class="tocnumber">4.2.5</span> <span class="toctext">Step 5:  Payment Info</span></a></li>
+<li class="toclevel-3"><a href="#Step_6:_Agreement"><span class="tocnumber">4.2.6</span> <span class="toctext">Step 6: Agreement</span></a></li>
+<li class="toclevel-3"><a href="#Step_7:__Confirm"><span class="tocnumber">4.2.7</span> <span class="toctext">Step 7:  Confirm</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#After_Placing_Your_Order"><span class="tocnumber">5</span> <span class="toctext">After Placing Your Order</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Provisioning_Progress_Screen"><span class="tocnumber">5.1</span> <span class="toctext">Provisioning Progress Screen</span></a></li>
+<li class="toclevel-2"><a href="#Your_site_is_running.21"><span class="tocnumber">5.2</span> <span class="toctext">Your site is running!</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="What"></a><h2> <span class="mw-headline">What</span></h2>
+<p><span style="display:none;">x</span>
+Cloud deployment is how you take a project in Aptana Studio to a live application on the Aptana Cloud.
+<span style="display:none;">x</span>
+</p>
+<a name="When"></a><h2> <span class="mw-headline">When</span></h2>
+<ul><li> You're ready to deploy your project to the cloud
+</li></ul>
+<a name="How"></a><h2> <span class="mw-headline">How</span></h2>
+<p><span style="display:none;">x</span>
+To deploy a project on the Aptana Cloud, select <b>Aptana -&gt; My Aptana</b>. On the My Aptana screen, click the "My Cloud" tab. Your local projects will be listed. Projects associated with an Aptana Cloud site will have a "synchronize" button next to them. If not, a "deploy to cloud" button will be shown.
+<br style="clear: both;" />
+</p>
+<div style="float: left; width: 240px;margin-right:21px;"><a href="Image:DeploySynchronizeButton.png.html" class="image" title="Image:DeploySynchronizeButton.png"><img alt="Image:DeploySynchronizeButton.png" src="docs/images/0/01/DeploySynchronizeButton.png" width="239" height="131" border="0" /></a></div><div style="float: left; width: 470px;">Clicking the "synchronize" button will launch the smart sync window. See <a href="Using_Smart_Sync.html" title="Using Smart Sync">Using Smart Sync</a> for details.</div>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 210px;margin-right:21px;"><a href="Image:DeployToCloudButton.png.html" class="image" title="Image:DeployToCloudButton.png"><img alt="Image:DeployToCloudButton.png" src="docs/images/8/81/DeployToCloudButton.png" width="113" height="21" border="0" /></a></div><div style="float: left; width: 500px;">Clicking the "deploy to cloud" button will launch the deployment wizard.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+<br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Deployment"></a><h2> <span class="mw-headline">Deployment</span></h2>
+<p><span style="display:none;">x</span>
+This page will walk you through the deploy to cloud wizard screen by screen.
+<span style="display:none;">x</span>
+</p>
+<div style="float: left; width: 210px;margin-right:21px;"><a href="Image:DeployContinueButton.png.html" class="image" title="Image:DeployContinueButton.png"><img alt="Image:DeployContinueButton.png" src="docs/images/8/82/DeployContinueButton.png" width="76" height="21" border="0" /></a></div><div style="float: left; width: 500px;">When you complete a step, click the "continue" button in the bottom right of the screen.</div>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 210px;margin-right:21px;"><a href="Image:DeployBackButton.png.html" class="image" title="Image:DeployBackButton.png"><img alt="Image:DeployBackButton.png" src="docs/images/3/31/DeployBackButton.png" width="76" height="21" border="0" /></a></div><div style="float: left; width: 500px;">If you have to make a change to a previous screen, click the "back" button in the bottom left of the screen.</div>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 210px;margin-right:21px;"><a href="Image:DeployCancelButton.png.html" class="image" title="Image:DeployCancelButton.png"><img alt="Image:DeployCancelButton.png" src="docs/images/4/4b/DeployCancelButton.png" width="76" height="21" border="0" /></a></div><div style="float: left; width: 500px;">At any time in the deploy to cloud wizard, you can cancel by clicking the "cancel" button.</div>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 210px;margin-right:21px;"><a href="Image:Cloud-deploy-deploy-my-site.png.html" class="image" title="Image:Cloud-deploy-deploy-my-site.png"><img alt="Image:Cloud-deploy-deploy-my-site.png" src="docs/images/4/49/Cloud-deploy-deploy-my-site.png" width="119" height="28" border="0" /></a></div><div style="float: left; width: 500px;">Use this button on the last step of the Try Now deployment wizard to complete the process sand order your new site.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Try_Cloud_Wizard"></a><h3> <span class="mw-headline">Try Cloud Wizard</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Step_1:__Site_Name"></a><h4> <span class="mw-headline">Step 1:  Site Name</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Cloud-deploy-wizard-v2.png.html" class="image" title="Site Name"><img alt="Site Name" src="docs/images/thumb/3/3d/Cloud-deploy-wizard-v2.png/200px-Cloud-deploy-wizard-v2.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Cloud-deploy-wizard-v2.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Site Name</div></div></div><div style="float: left; width: 500px;">Your project will be served from a unique site in the Aptana Cloud. Enter your <b>preferred URL</b> in the box. Your preferred url (or site name) must be between 3 and 35 characters long, can only contain letters, numbers, and dashes (-), and must start with a letter.
+<p>Your Aptana Cloud site will have a unique IP address so you can associate it with a custom domain name like example.com instead of example.aptanacloud.com.
+</p><p>You may also choose whether to enable Aptana Jaxer for the site, though you can also disable or enable it later through the Cloud management application.
+</p>
+When you've entered the name, click the "continue" button.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_2:__User_Info"></a><h4> <span class="mw-headline">Step 2:  User Info</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:DeployStep4.png.html" class="image" title="User Info"><img alt="User Info" src="docs/images/thumb/2/27/DeployStep4.png/200px-DeployStep4.png" width="200" height="168" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:DeployStep4.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>User Info</div></div></div><div style="float: left; width: 500px;">Select the Aptana ID associated with this site. Options are:
+<ul><li> Use an existing Aptana ID account
+</li><li> Create a new Aptana ID account
+</li></ul>
+<p>An Aptana ID is the username and password used to secure your Aptana Cloud sites. You can manage your Aptana ID at <a href="http://www.aptana.com" class="external text" title="http://www.aptana.com" rel="nofollow">the Aptana.com web site</a>.
+</p>
+When you've logged in or created an Aptana ID, click the "continue" button.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_3:_Agreement"></a><h4> <span class="mw-headline">Step 3: Agreement</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Cloud-deploy-try-tos.png.html" class="image" title="Services agreement"><img alt="Services agreement" src="docs/images/thumb/e/e0/Cloud-deploy-try-tos.png/200px-Cloud-deploy-try-tos.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Cloud-deploy-try-tos.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Services agreement</div></div></div><div style="float: left; width: 500px;">Read the services agreement. To continue deployment, you must check the <b>I agree to the above terms</b> button.<br /><br />
+To finish, click the <b>Deploy My Site</b> button at the bottom right of the wizard.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Buy_Now_Wizard"></a><h3> <span class="mw-headline">Buy Now Wizard</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Step_1:__Site_Name_2"></a><h4> <span class="mw-headline">Step 1:  Site Name</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Cloud-deploy-wizard-v2.png.html" class="image" title="Site Name"><img alt="Site Name" src="docs/images/thumb/3/3d/Cloud-deploy-wizard-v2.png/200px-Cloud-deploy-wizard-v2.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Cloud-deploy-wizard-v2.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Site Name</div></div></div><div style="float: left; width: 500px;">Your project will be served from a unique site in the Aptana Cloud. Enter your <b>preferred URL</b> in the box. Your preferred url (or site name) must be between 3 and 35 characters long, can only contain letters, numbers, and dashes (-), and must start with a letter.
+<p>Your Aptana Cloud site will have a unique IP address so you can associate it with a custom domain name like example.com instead of example.aptanacloud.com.
+</p><p>You may also choose whether to enable Aptana Jaxer for the site, though you can also disable or enable it later through the Cloud management application.
+</p>
+When you've entered the name, click the "continue" button.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_2:__Pick_A_Plan"></a><h4> <span class="mw-headline">Step 2:  Pick A Plan</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Step2.png.html" class="image" title="Pick a plan"><img alt="Pick a plan" src="docs/images/thumb/9/9f/Step2.png/200px-Step2.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Step2.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Pick a plan</div></div></div><div style="float: left; width: 500px;">The services page lets you choose the plan size of your Aptana Cloud site. You can use the slider to increase the size of your cloud. Your total monthly cost is calculated at the bottom of the screen.
+<p>Choices are:
+</p>
+<ol><li> 256 MB ram with 5 GB disk space
+</li><li> 512 MB ram with 10 GB disk space
+</li><li> 1024 MB ram with 15 GB disk space
+</li><li> 2048 MB ram with 25 GB disk space
+</li></ol>
+<p>The size of your plan will affect the average daily cost. Adjusting the slider will show you the daily average cost.
+</p>
+When you are happy with your service selections, click the "continue" button.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_3:__Plan_Options"></a><h4> <span class="mw-headline">Step 3:  Plan Options</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Step3.png.html" class="image" title="Plan Options"><img alt="Plan Options" src="docs/images/thumb/0/08/Step3.png/200px-Step3.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Step3.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Plan Options</div></div></div><div style="float: left; width: 500px;">Select your <b>support options</b>, <b>team options</b>, and <b>cloud configuration</b>.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_4:__User_Info"></a><h4> <span class="mw-headline">Step 4:  User Info</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:DeployStep4.png.html" class="image" title="User Info"><img alt="User Info" src="docs/images/thumb/2/27/DeployStep4.png/200px-DeployStep4.png" width="200" height="168" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:DeployStep4.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>User Info</div></div></div><div style="float: left; width: 500px;">Select the Aptana ID associated with this site. Options are:
+<ul><li> The account you are currently logged in with. When choosing this option, you will be prompted for the existing user's password again, for security.
+</li><li> A different existing Aptana ID account
+</li><li> Create a new Aptana ID account
+</li></ul>
+<p>An Aptana ID is the username and password used to secure your Aptana Cloud sites. You can manage your Aptana ID at <a href="http://www.aptana.com" class="external text" title="http://www.aptana.com" rel="nofollow">the Aptana.com web site</a>.
+</p>
+When you've logged in or created an Aptana ID, click the "continue" button.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_5:__Payment_Info"></a><h4> <span class="mw-headline">Step 5:  Payment Info</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Step5.png.html" class="image" title="Billing info"><img alt="Billing info" src="docs/images/thumb/4/4f/Step5.png/200px-Step5.png" width="200" height="136" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Step5.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Billing info</div></div></div><div style="float: left; width: 500px;">Enter your Billing Information on this screen and click the "continue" button.
+Enter a coupon code if you have one.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_6:_Agreement"></a><h4> <span class="mw-headline">Step 6: Agreement</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Step6.png.html" class="image" title="Services agreement"><img alt="Services agreement" src="docs/images/thumb/8/83/Step6.png/200px-Step6.png" width="200" height="178" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Step6.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Services agreement</div></div></div><div style="float: left; width: 500px;">Read the services agreement. To continue deployment, you must check the <b>I agree to the above terms</b> button. Then click the "continue" button.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Step_7:__Confirm"></a><h4> <span class="mw-headline">Step 7:  Confirm</span></h4>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Step7.png.html" class="image" title="Confirm and place order"><img alt="Confirm and place order" src="docs/images/thumb/f/f2/Step7.png/200px-Step7.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Step7.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Confirm and place order</div></div></div><div style="float: left; width: 500px;">The last step before deployment is a confirmation screen. You can view all of the information you have entered and settings you have selected for your site and confirm them. The settings you must confirm are:
+<ul><li> Project Info
+</li><li> Your Info
+</li><li> Billing Info
+</li><li> Total Monthly Cost</div>
+</li></ul>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 210px;margin-right:21px;"><a href="Image:DeployPlaceOrderButton.png.html" class="image" title="Image:DeployPlaceOrderButton.png"><img alt="Image:DeployPlaceOrderButton.png" src="docs/images/c/c4/DeployPlaceOrderButton.png" width="91" height="21" border="0" /></a></div><div style="float: left; width: 500px;">If any information is incorrect, you can use the back button to return to a previous step in the wizard. If everything looks good, finish the wizard by clicking the "place order" button.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="After_Placing_Your_Order"></a><h2> <span class="mw-headline">After Placing Your Order</span></h2>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Provisioning_Progress_Screen"></a><h3> <span class="mw-headline">Provisioning Progress Screen</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:DeploymentProvisioning.png.html" class="image" title="Provisioning your site"><img alt="Provisioning your site" src="docs/images/thumb/1/1f/DeploymentProvisioning.png/200px-DeploymentProvisioning.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:DeploymentProvisioning.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Provisioning your site</div></div></div><div style="float: left; width: 500px;">After clicking the "place order" button, you will see the provisioning progress screen. This screen shows you a progress bar and will display the current tasks and messages as your project is deployed on the Aptana Cloud. The steps include:
+<ul><li> Verifying your Order Information
+</li><li> Provisioning Your Site
+</li><li> Starting-Up the Aptana Cloud Environment</div>
+</li></ul>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Your_site_is_running.21"></a><h3> <span class="mw-headline">Your site is running!</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:DeploymentRunning.png.html" class="image" title="Your site is running"><img alt="Your site is running" src="docs/images/thumb/4/40/DeploymentRunning.png/200px-DeploymentRunning.png" width="200" height="177" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:DeploymentRunning.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Your site is running</div></div></div><div style="float: left; width: 500px;">When your site has finished provisioning, you can use it right away. To complete the deployment process, you need to synchronize your files. See <a href="Using_Smart_Sync.html" title="Using Smart Sync">Using Smart Sync</a> for details.
+You can also manage this project in My Cloud. See <a href="My_Cloud_-_Overview.html" title="My Cloud - Overview">My Cloud - Overview</a> for details.</div>
+<p><span style="display:none;">x</span>
+<br style="clear: both;" />
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2284-0!1!0!!en!2!edit=0 and timestamp 20090201223958 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Cloud_Deployment">http://aptana.com/docs/index.php/Cloud_Deployment</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

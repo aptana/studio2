@@ -1,0 +1,60 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Changing the VM used with Aptana</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Changing_the_VM_used_with_Aptana&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Changing the VM used with Aptana [<a href="http://www.aptana.com/docs/index.php?title=Changing_the_VM_used_with_Aptana&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Some Studio users (primarily Linux users) may need to change the VM that they use with running Aptana. This Help topic will show you how to switch between GCJ and Sun's JVM.
+</p><p>Open a command prompt and type <code>java -version</code> to see which VM you are currently running. If you are running GCJ, the command output will look like:
+</p>
+<pre>java version "1.5.(some number)"
+gij (GNU libgcy) version 5.1.0 (some number) (Red Hat some version number)
+</pre>
+<p>If you're running Sun's JVM, the output will look like:
+</p>
+<pre>java version "1.5.2_12"
+Java(TM) 2 Runtime Enrivonment, Standard Edition (build 1.4.5_12)
+</pre>
+<p>At the command prompt, type the path for the VM which Aptana Studio should use. An example of this for GCJ is:
+</p>
+<pre>cd &lt;path-to-aptana-root-directory&gt;
+./aptana -vm /etc/alternatives/java
+</pre>
+<p>To check that the correct VM is running, replace the path with the path to Sun's "java" executable, or update your "java" soft link to point to Sun's java.
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1631-0!1!0!!en!2!edit=0 and timestamp 20090202100021 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Changing_the_VM_used_with_Aptana_Studio">http://aptana.com/docs/index.php/Changing_the_VM_used_with_Aptana_Studio</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="problems_view_context">
+		<description>The Validation View displays errors, warnings, and information messages about the files in your workspace.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_Validation_View.html"
+			label="Displaying the Validation View" />
+	</context>
+	<context id="actions_view_context">
+		<description>The Actions View has been replaced by the Scripts View and the Snippets View.</description>
+	</context>
+	<context id="profiles_view_context">
+		<description>Use the References View to manage the libraries that you can use for Code Assist. The documentation for a library will not be available to you in Code Assist unless you add that library to the References View.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_References_View.html"
+			label="Displaying the References View" />
+		<topic href="http://aptana.tv/movies/aptana_code_assist_profiles/CodeAssistProfiles.html" label="Code Assist Screencast" />
+	</context>
+	<context id="scripts_view_context">
+		<description>Scripts are generally more complicated than Snippets and usually perform automation tasks within your IDE. An example of this would be to create a new scriptable view or a Code Assist profile. The Scripts View contains more examples for you to learn from and use.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_Snippets_and_Scripts_Views.html"
+			label="Displaying the Scripts View" />
+	</context>
+
+</contexts>

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %fragmentName
+Bundle-SymbolicName: org.eclipse.atf.mozilla.swt.browser.carbon.macosx; singleton:=true
+Bundle-Version: 0.2.1.v200703161053
+Bundle-ClassPath: org.eclipse.atf.mozilla.swt.browser.carbon.macosx_0.2.1.v200703161053.jar
+Bundle-Vendor: %providerName
+Fragment-Host: org.eclipse.swt; bundle-version="[3.1.0,4.0.0)"
+Bundle-Localization: fragment
+Export-Package: org.eclipse.swt.browser
+Require-Bundle: org.mozilla.xpcom
+Import-Package: org.eclipse.swt.browser
+Eclipse-PlatformFilter: (& (osgi.ws=carbon) (osgi.os=macosx) (|(osgi.arch=x86)(osgi.arch=ppc)) )
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

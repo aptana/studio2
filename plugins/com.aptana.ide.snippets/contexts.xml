@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="snippets_context_view">
+		<description>Snippets are short scripts that you can use to help format your code. An example of this is selecting text in the HTML editor and wrapping it with a bold tag set. The Snippet View contains many useful snippets that you can use as examples or to help you format your code.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_Snippets_and_Scripts_Views.html"
+			label="Displaying the Snippets View" />
+	</context>
+</contexts>

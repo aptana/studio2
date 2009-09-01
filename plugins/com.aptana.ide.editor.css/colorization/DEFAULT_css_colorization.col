@@ -1,0 +1,35 @@
+<colorizer
+    xmlns="http://www.aptana.com/2007/colorizer/1.0"
+    language="text/css" 
+    background="rgb(255,255,255)" 
+    line-highlight="rgb(232,242,254)" 
+    selection-foreground="COLOR_LIST_SELECTION_TEXT" 
+    selection-background="COLOR_LIST_SELECTION"
+    folding-background="COLOR_WIDGET_BACKGROUND"
+    folding-foreground="rgb(139,139,139)"
+    caret-color="rgb(0,0,0)">
+    	
+	<category name="PUNCTUATOR" style="punctuator" />
+	<category name="ERROR" style="error" />
+	<category name="IDENTIFIER" style="identifier" />
+	<category name="KEYWORD" style="keyword" />
+	<category name="LITERAL" style="literal" >
+		<token style="LITERAL_FUNCTION" type="FUNCTION">
+			<region length="1" name="PAREN" offset="LENGTH-1" style="LITERAL_FUNCTION_PAREN"/>
+		</token>
+    	<token type="HASH"  style="hash" />
+    	<token type="STRING" style="string" />
+    </category>
+    <category name="WHITESPACE" style="whitespace" />
+    
+    <style id="punctuator" foreground="rgb(0,0,0)" font-weight="bold" />
+    <style id="error" foreground="rgb(222,0,0)" />
+   	<style id="keyword" foreground="rgb(0,0,255)" />
+    <style id="string" font-style="italic" foreground="rgb(0,0,255)" />
+    <style id="identifier" foreground="rgb(163,21,21)" />
+    <style id="literal" foreground="rgb(0,0,255)" />
+	<style id="LITERAL_FUNCTION" foreground="rgb(0,0,255)"/>
+	<style id="LITERAL_FUNCTION_PAREN" font-weight="bold" foreground="rgb(0,0,0)"/>
+    <style id="hash" foreground="rgb(163,21,21)" />
+   	<style id="whitespace" foreground="rgb(0,128,0)" />
+</colorizer>

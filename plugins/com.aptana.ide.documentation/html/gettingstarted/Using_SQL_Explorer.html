@@ -1,0 +1,134 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Using SQL Explorer</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Using_SQL_Explorer&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Using SQL Explorer [<a href="http://www.aptana.com/docs/index.php?title=Using_SQL_Explorer&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains how to use the SQL Explorer plug-in with RadRails.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Creating_a_new_database"><span class="tocnumber">2.1</span> <span class="toctext">Creating a new database</span></a></li>
+<li class="toclevel-2"><a href="#Creating_a_new_table"><span class="tocnumber">2.2</span> <span class="toctext">Creating a new table</span></a></li>
+<li class="toclevel-2"><a href="#Inserting_data_into_a_table"><span class="tocnumber">2.3</span> <span class="toctext">Inserting data into a table</span></a></li>
+<li class="toclevel-2"><a href="#Querying_a_table"><span class="tocnumber">2.4</span> <span class="toctext">Querying a table</span></a></li>
+<li class="toclevel-2"><a href="#Additional_resources"><span class="tocnumber">2.5</span> <span class="toctext">Additional resources</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>This Help topic will teach you how to use SQL Explorer with RadRails after you have connected to your database. This is the final step in configuring SQL Explorer to work with RadRails. You will need to <a href="Connecting_to_the_database_application.html" title="Connecting to the database application"> connect to your database</a> before following the instructions below.
+</p><p>Note: This Help topic is based on the Rolling with Ruby on Rails tutorial from ONLamp:
+</p><p><a href="http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1" class="external free" title="http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1" rel="nofollow">http://www.onlamp.com/pub/a/onlamp/2005/01/20/rails.html?page=1</a>
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<p>This section explains how to do some of the most common tasks that you will perform in SQL Explorer.
+</p>
+<a name="Creating_a_new_database"></a><h3> <span class="mw-headline">Creating a new database</span></h3>
+<p>To create a new database in SQL Explorer, paste the SQL below into the SQL editor and click the <b>Execute</b> button:
+</p>
+<pre>
+
+CREATE DATABASE cookbook;
+
+</pre>
+<a name="Creating_a_new_table"></a><h3> <span class="mw-headline">Creating a new table</span></h3>
+<p>To create a new database table in SQL Explorer, paste the following SQL into your SQL Editor and click the <b>Execute</b> button:
+</p>
+<pre>
+
+CREATE TABLE `recipes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `instructions` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+</pre>
+<a name="Inserting_data_into_a_table"></a><h3> <span class="mw-headline">Inserting data into a table</span></h3>
+<p>To insert data into a database table in SQL Explorer, paste the following SQL code into your SQL Editor and click the <b>Execute</b> button:
+</p>
+<pre>
+
+INSERT INTO `recipes` 
+  (title, instructions)
+VALUES
+  ('test', 'this is a test record');
+
+</pre>
+<a name="Querying_a_table"></a><h3> <span class="mw-headline">Querying a table</span></h3>
+<p>To query a database table, paste the following SQL code into your SQL Editor and click the <b>Execute</b> button:
+</p>
+<pre>
+
+SELECT *
+  FROM `recipes`;
+
+</pre>
+<p>Additionally, you can use a generated SELECT statement to query a table. To generate a SELECT statement:
+</p>
+<ol><li> In the Database Structure View, navigate to the table that you want to query.
+</li><li> Right-click the table that you want to query, and select <b>Generate Select Statement</b> from the context menu.
+</li></ol>
+<p>SQL Explorer generates the SELECT statement for you.
+</p>
+<a name="Additional_resources"></a><h3> <span class="mw-headline">Additional resources</span></h3>
+<p>The following list includes additional links for SQL Explorer documentation:
+</p>
+<ul><li> <b>SQL Explorer web site</b> - <a href="http://www.sqlexplorer.org/features.php" class="external free" title="http://www.sqlexplorer.org/features.php" rel="nofollow">http://www.sqlexplorer.org/features.php</a>
+</li><li> <b>SQL Explorer Documentation</b> - <a href="http://www.sqlexplorer.org/sqleditor.php" class="external free" title="http://www.sqlexplorer.org/sqleditor.php" rel="nofollow">http://www.sqlexplorer.org/sqleditor.php</a>
+</li><li> <b>MySQL 5.1 Reference</b> -	<a href="http://dev.mysql.com/doc/refman/5.1/en/index.html" class="external free" title="http://dev.mysql.com/doc/refman/5.1/en/index.html" rel="nofollow">http://dev.mysql.com/doc/refman/5.1/en/index.html</a>
+</li><li> <b>Configuring SQLExplorer Access</b> - <a href="http://www.onjava.com/pub/a/onjava/2005/05/11/sqlexplorer.html?page=2" class="external free" title="http://www.onjava.com/pub/a/onjava/2005/05/11/sqlexplorer.html?page=2" rel="nofollow">http://www.onjava.com/pub/a/onjava/2005/05/11/sqlexplorer.html?page=2</a>
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Configuring_the_Eclipse_SQL_Explorer_plug-in_for_RadRails.html" title="Configuring the Eclipse SQL Explorer plug-in for RadRails">Configuring the Eclipse SQL Explorer plug-in for RadRails</a>
+</li><li> <a href="Installing_the_SQL_Explorer_plug-in.html" title="Installing the SQL Explorer plug-in">Installing the SQL Explorer plug-in</a>
+</li><li> <a href="Deploying_ConnectorJ.html" title="Deploying ConnectorJ">Deploying ConnectorJ</a>
+</li><li> <a href="Creating_a_new_driver_in_Eclipse.html" title="Creating a new driver in Eclipse">Creating a new driver in Eclipse</a>
+</li><li> <a href="Creating_a_new_connection_in_SQL_Explorer.html" title="Creating a new connection in SQL Explorer">Creating a new connection in SQL Explorer</a>
+</li><li> <a href="Connecting_to_the_database_application.html" title="Connecting to the database application">Connecting to the database application</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1805-0!1!0!!en!2!edit=0 and timestamp 20090202112200 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Using_SQL_Explorer">http://aptana.com/docs/index.php/Using_SQL_Explorer</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

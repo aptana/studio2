@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="library" name="library" schema="schema/library.exsd"/>
+   <extension 
+	point="org.eclipse.core.resources.natures" 
+	id="com.aptana.ide.project.nature.web"
+	name="Web Nature">
+      <runtime>
+         <run
+               class="com.aptana.ide.projects.WebNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         id="com.aptana.ide.project.remote.nature"
+         name="Remote Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.aptana.ide.projects.RemoteNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/small_globe.gif"
+            id="com.aptana.ide.project.nature.web"
+            natureId="com.aptana.ide.project.nature.web">
+      </image>
+      <image
+            icon="icons/remote_project_nature.gif"
+            id="com.aptana.ide.project.remote.remoteNatureImage"
+            natureId="com.aptana.ide.project.remote.nature">
+      </image>
+   </extension>
+   <extension point="com.aptana.ide.core.ui.wizard">
+		<page id="com.aptana.ide.wizards.WebProjectWizard"
+			  class="com.aptana.ide.wizards.LibraryWizardPageFactory" />
+	</extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+         <wizard
+               category="com.aptana.ide.aptana"
+               class="com.aptana.ide.wizards.LibraryImportWizard"
+               icon="icons/project_library_new.gif"
+               id="com.aptana.ide.wizards.LibraryImportWizard"
+               name="%Wizard.Ajaxlibrary.name">
+         <description>
+            %wizard.description.import_ajax
+         </description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            canFinishEarly="false"
+            category="com.aptana.ide.aptana.projects"
+            class="com.aptana.ide.wizards.WebProjectWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="true"
+            icon="icons/web_project.gif"
+            id="com.aptana.ide.wizards.WebProjectWizard"
+            name="%Wizard.Defaultweb.name"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective"
+            project="true">
+         
+         <description>
+            %wizard.description.new_project
+         </description>
+      </wizard>
+   </extension>
+  <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+     <perspectiveExtension
+           targetID="com.aptana.ide.js.ui.WebPerspective">
+        <newWizardShortcut
+              id="com.aptana.ide.wizards.WebProjectWizard">
+        </newWizardShortcut>
+     </perspectiveExtension>
+  </extension>
+</plugin>

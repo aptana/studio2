@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="projects_view_context">
+		<description>The Project View is a tree view of all of the projects and associated files in your workspace. You can expand and collapse the folders in this view to make it easier to access your files for editing.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_Project_View.html"
+			label="Displaying the Projects View" />
+	</context>
+</contexts>

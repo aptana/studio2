@@ -1,0 +1,139 @@
+Program
+	:	Statements
+	;
+
+# Level 1
+
+Statements
+	:	Statement {FirstStatement}
+	|	Statements Statement {AddStatement}
+	;
+
+# Level 2
+
+Statement
+	:	ImportStatement # pass through
+	|	HandlerDefinition # pass through
+	;
+
+# Level 3
+
+ImportStatement
+	:	IMPORT DottedName SEMICOLON {ImportStatement}
+	;
+
+HandlerDefinition
+	:	IDENTIFIER Parameters COLON IDENTIFIER Body {HandlerDefinition}
+	;
+
+# Level 4
+
+DottedName
+	:	Identifier {FirstName}
+	|	DottedName DOT Identifier {AddName}
+	;
+
+Parameters
+	:	LPAREN RPAREN {EmptyParameters}
+	|	LPAREN ParameterList RPAREN {Parameters}
+	;
+
+Body
+	:	LCURLY RCURLY {EmptyBody}
+	|	LCURLY BodyStatements RCURLY {Body}
+	;
+
+# Level 5
+
+Identifier
+	:	IDENTIFIER # pass through
+	|	RESULT # pass through
+	;
+	
+ParameterList
+	:	Parameter {FirstParameter}
+	|	ParameterList COMMA Parameter {AddParameter}
+	;
+
+BodyStatements
+	:	BodyStatement {FirstBodyStatement}
+	|	BodyStatements BodyStatement {AddBodyStatement}
+	;
+
+# Level 6
+
+Parameter
+	:	COLON IDENTIFIER {TypeOnlyParameter}
+	|	Identifier COLON IDENTIFIER {Parameter}
+	;
+
+BodyStatement
+	:	AppendChildStatement # pass through
+	|	AssignmentStatement # pass through
+	|	InvocationStatement # pass through
+	;
+
+# Level 7
+	
+AppendChildStatement
+	:	Identifier APPEND IDENTIFIER SEMICOLON {AppendReference}
+	|	Identifier APPEND CreateExpression SEMICOLON {AppendNode}
+	|	Identifier APPEND SwitchExpression {AppendSwitch}
+	;
+	
+AssignmentStatement
+	:	DottedName ASSIGN IDENTIFIER SEMICOLON {AssignReference}
+	|	DottedName ASSIGN CreateExpression SEMICOLON {AssignCreateExpression}
+	|	DottedName ASSIGN InvokeExpression SEMICOLON {AssignInvokeExpression}
+	|	DottedName ASSIGN SwitchExpression {AssignSwitchExpression}
+	;
+
+InvocationStatement
+	:	DottedName Arguments SEMICOLON {InvocationStatement}
+	;
+
+# Level 8
+
+CreateExpression
+	:	CONSTANT Arguments {CreateExpression}
+	;
+
+InvokeExpression
+	:	DottedName Arguments {InvokeExpression}
+	;
+
+SwitchExpression
+	:	SWITCH LPAREN IDENTIFIER RPAREN LCURLY CaseStatements RCURLY {SwitchExpression}
+	;
+
+Arguments
+	:	LPAREN RPAREN {EmptyArguments}
+	|	LPAREN ArgumentList RPAREN {Arguments}
+	;
+
+# Level 9
+
+CaseStatements
+	:	CaseStatement {FirstCaseStatement}
+	|	CaseStatements CaseStatement {AddCaseStatement}
+	;
+
+ArgumentList
+	:	Expression {FirstArgument}
+	|	ArgumentList COMMA Expression {AddArgument}
+	;
+
+# Level 10
+
+CaseStatement
+	:	CASE CONSTANT COLON CreateExpression SEMICOLON {CaseStatement}
+	;
+
+Expression
+	:	IDENTIFIER {Identifier}
+	|	NULL {Null}
+	|	TRUE {True}
+	|	FALSE {False}
+	|	STRING {String}
+	|	CreateExpression # pass through
+	;

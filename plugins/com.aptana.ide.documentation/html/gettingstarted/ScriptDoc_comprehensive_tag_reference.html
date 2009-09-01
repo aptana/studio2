@@ -1,0 +1,508 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>ScriptDoc comprehensive tag reference</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=ScriptDoc_comprehensive_tag_reference&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>ScriptDoc comprehensive tag reference [<a href="http://www.aptana.com/docs/index.php?title=ScriptDoc_comprehensive_tag_reference&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page provides comprehensive documentation for using the ScriptDoc tags to document your code. If you just want to see a list of tags and short definitions, see the <a href="ScriptDoc_tag_quick_reference.html" title="ScriptDoc tag quick reference">ScriptDoc tag quick reference</a>.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Reference"><span class="tocnumber">2</span> <span class="toctext">Reference</span></a>
+<ul>
+<li class="toclevel-2"><a href="#.40alias"><span class="tocnumber">2.1</span> <span class="toctext">@alias</span></a></li>
+<li class="toclevel-2"><a href="#.40author"><span class="tocnumber">2.2</span> <span class="toctext">@author</span></a></li>
+<li class="toclevel-2"><a href="#.40classDescription"><span class="tocnumber">2.3</span> <span class="toctext">@classDescription</span></a></li>
+<li class="toclevel-2"><a href="#.40constructor"><span class="tocnumber">2.4</span> <span class="toctext">@constructor</span></a></li>
+<li class="toclevel-2"><a href="#.40deprecated"><span class="tocnumber">2.5</span> <span class="toctext">@deprecated</span></a></li>
+<li class="toclevel-2"><a href="#.40exception"><span class="tocnumber">2.6</span> <span class="toctext">@exception</span></a></li>
+<li class="toclevel-2"><a href="#.40id"><span class="tocnumber">2.7</span> <span class="toctext">@id</span></a></li>
+<li class="toclevel-2"><a href="#.40inherits"><span class="tocnumber">2.8</span> <span class="toctext">@inherits</span></a></li>
+<li class="toclevel-2"><a href="#.40memberOf"><span class="tocnumber">2.9</span> <span class="toctext">@memberOf</span></a></li>
+<li class="toclevel-2"><a href="#.40method"><span class="tocnumber">2.10</span> <span class="toctext">@method</span></a></li>
+<li class="toclevel-2"><a href="#.40namespace"><span class="tocnumber">2.11</span> <span class="toctext">@namespace</span></a></li>
+<li class="toclevel-2"><a href="#.40param"><span class="tocnumber">2.12</span> <span class="toctext">@param</span></a></li>
+<li class="toclevel-2"><a href="#.40projectDescription"><span class="tocnumber">2.13</span> <span class="toctext">@projectDescription</span></a></li>
+<li class="toclevel-2"><a href="#.40property"><span class="tocnumber">2.14</span> <span class="toctext">@property</span></a></li>
+<li class="toclevel-2"><a href="#.40return"><span class="tocnumber">2.15</span> <span class="toctext">@return</span></a></li>
+<li class="toclevel-2"><a href="#.40sdoc"><span class="tocnumber">2.16</span> <span class="toctext">@sdoc</span></a></li>
+<li class="toclevel-2"><a href="#.40see"><span class="tocnumber">2.17</span> <span class="toctext">@see</span></a></li>
+<li class="toclevel-2"><a href="#.40since"><span class="tocnumber">2.18</span> <span class="toctext">@since</span></a></li>
+<li class="toclevel-2"><a href="#.40type"><span class="tocnumber">2.19</span> <span class="toctext">@type</span></a></li>
+<li class="toclevel-2"><a href="#.40version"><span class="tocnumber">2.20</span> <span class="toctext">@version</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>This reference page provides comprehensive documentation for all ScriptDoc tags, in alphabetical order. 
+</p><p>Several tags have "synonyms" where you can use two differently named tags to document the same thing. You can use a synonym by using the exact same syntax as the original tag, but just substituting the tag name.
+</p><p>The section for each tag includes the following information:
+</p>
+<ul><li> Short description of the tag
+</li><li> Syntax
+</li><li> What the tag applies to
+</li><li> Longer explanation of the tag
+</li></ul>
+<pre>* Example (Some tags have multiple examples)
+</pre>
+<a name="Reference"></a><h2> <span class="mw-headline">Reference</span></h2>
+<p>The following tags are valid for code documentation:
+</p>
+<a name=".40alias"></a><h3> <span class="mw-headline">@alias</span></h3>
+<p>ID for a class or function.
+</p><p>Applies to: Any
+</p><p><b>Syntax</b>
+</p><p>@alias fooBar
+</p><p><b>Description</b>
+</p><p>Use the @alias tag to ID a class or function if you have used a "shorthand" way to code the full name for that class or function.
+</p><p><b>Example</b>
+</p><p>This example shows the @alias tag used to id a function called fooBar in the FOO.Lib namespace.
+</p>
+<pre>
+
+FOO.Lib.update(FOO.Lib) {
+    
+/**
+ * Returns a function that will return a number one greater than the previous returned value, starting at n.
+ * @alias fooBar
+ * @alias FOO.Lib.fooBar
+ * @param {Object} n	Number to start with. Default is 1.
+ * @return {Function) Returns a function that will return a number one greater than the previous returned value.
+ */
+    fooBar: function (n/* = 1 */) {
+        if (arguments.length === 0) {
+            n = 1;
+        }
+        return function () {
+            return n++;
+        };
+    },
+
+</pre>
+<a name=".40author"></a><h3> <span class="mw-headline">@author</span></h3>
+<p>Author of a JavaScript file or function.
+</p><p>Applies to: Any 
+</p><p><b>Syntax</b>
+</p><p>@author <i>Author-name [email]</i>
+</p><p><b>Description</b>
+</p><p>Use @author to credit the author of a JavaScript file or function. 
+</p><p><b>Example</b>
+</p><p>This example shows the @author tag used with the <a href="#.40fileoverview" title="">@fileoverview</a> and <a href="#.40version" title="">@version</a> tags to provide header information for a JavaScript file.
+</p>
+<pre>
+/** 
+* @projectDescription 	Joe Smith's wonderful JavaScript library.
+*
+* @author	Joe Smith jsmith@company.com
+* @version	0.1 
+*/
+</pre>
+<a name=".40classDescription"></a><h3> <span class="mw-headline">@classDescription</span></h3>
+<p>Description of the class.
+</p><p>Applies to: Function
+</p><p><b>Syntax</b>
+</p><p>@classDescription <i>Description</i>
+</p><p><b>Description</b>
+</p><p>Use the @classDescription tag to give a short description of the class (if applicable).
+</p><p><b>Example</b>
+</p><p>This example shows a sample documentation block for a basic Shape class. 
+</p>
+<pre>
+/**
+* Create a new instance of Shape.
+*
+* @classDescription	This class creates a new Shape.
+* @return {Shape}	Returns a new Shape.
+* @type {Object}
+* @constructor	
+*/
+function Shape() {
+}
+</pre>
+<a name=".40constructor"></a><h3> <span class="mw-headline">@constructor</span></h3>
+<p>Shows that a function is a constructor for a class.
+</p><p>Applies to: Function
+</p><p><b>Syntax</b>
+</p><p>@constructor
+</p><p><b>Description</b>
+</p><p>Use the @constructor tag to signify that a function is a constructor if you are coding in an object-oriented programming style.
+</p><p><b>Example</b>
+</p><p>This example shows a sample documentation block for a basic Shape class. 
+</p>
+<pre>
+/**
+* Create a new instance of Shape.
+*
+* @classDescription	This class creates a new Shape.
+* @return {Object}	Returns a new Shape object.
+* @constructor	
+*/
+function Shape() {
+}
+</pre>
+<a name=".40deprecated"></a><h3> <span class="mw-headline">@deprecated</span></h3>
+<p>Signifies that a function or a property has been deprecated.
+</p><p>Applies to: Function or property.
+</p><p><b>Syntax</b>
+</p><p>@deprecated
+</p><p><b>Description</b>
+</p><p>Use the @deprecated tag to show that a function or a property has been deprecated and should not be used.
+</p><p><b>Example</b>
+</p><p>This example shows a @deprecated tag added to a documentation block for a function.
+</p>
+<pre>
+/**
+* This function gets a foo by name.
+* @param {Object}	fooName	Name of the foo to retrieve.
+* @return {Object}	Returns a new foo.
+* @deprecated
+*/
+</pre>
+<a name=".40exception"></a><h3> <span class="mw-headline">@exception</span></h3>
+<p>Specifies the type of exception thrown by a function.
+</p><p>Applies to: Function
+</p><p><b>Syntax</b>
+</p><p>@exception <i>{Exception} Exception-description</i>
+</p><p><b>Description</b>
+</p><p>Use the @exception tag to specify any exceptions thrown by a function. You can specify multiple exceptions in a documentation block.
+</p><p><b>Example</b>
+</p><p>This example shows a function that throws two exceptions--a "MemoryException" and a "GeneralShapeException".
+</p>
+<pre>
+/**
+* This function creates a new Shape object. 
+*
+* @exception	{MemoryException}	Throws a memory exception if out of memory. 
+* @exception	{GeneralShapeException}	Throws a general shape exception if the object is not a shape.
+* @return 	{Object}	Returns a new shape object.
+*/
+</pre>
+<a name=".40id"></a><h3> <span class="mw-headline">@id</span></h3>
+<p>Unique identifier for a function or property. 
+</p><p>Applies to: All
+</p><p><b>Syntax</b>
+</p><p>@id <i>identifierName</i>
+</p><p><b>Description</b>
+</p><p>Use @id to link a function or property to its documentation in an external @sdoc file. Add the @id tag both inline right above a function and to the documentation block in the .sdoc file to create the link.
+</p><p><b>Example</b>
+</p><p>This example shows an inline @id tag for the function foo.
+</p>
+<pre>
+/** @id */
+function foo() {
+   alert(&quot;Foo!&quot;);
+}
+</pre>
+<a name=".40inherits"></a><h3> <span class="mw-headline">@inherits</span></h3>
+<p>Indicates that one item "inherits" from another 
+</p><p>Applies to: Function
+</p><p><b>Syntax</b>
+</p>
+<pre>@inherits <i>functionNameA</i>
+@inherits <i>functionNameB</i>
+</pre>
+<p>or
+</p>
+<pre>@inherits <i>functionNameA</i>, <i>functionNameB</i>
+</pre>
+<p><b>Description</b>
+</p><p>Use @inherits to indicate that one "class" subclasses another in object-oriented JavaScript.
+</p><p><b>Example</b>
+</p><p>This example shows that bar inherits from foo.
+</p>
+<pre>
+function foo() {
+}
+
+/** @inherits foo */
+function bar() {
+}
+</pre>
+<p><br />
+</p>
+<a name=".40memberOf"></a><h3> <span class="mw-headline">@memberOf</span></h3>
+<p>Signifies that a function is a member of the specified class.
+</p><p>Applies to: Function, Property.
+</p><p><b>Syntax</b>
+</p><p>@memberOf <i>Class</i>
+</p><p><b>Description</b>
+</p><p>Use the @memberOf tag to signify that a function is a member of the specified class.
+</p><p><b>Example</b>
+</p><p>This example shows that the getFoo function is a member of the fooBar class.
+</p>
+<pre>
+/**
+* @memberOf fooBar
+*/
+function getFoo(){
+}
+</pre>
+<a name=".40method"></a><h3> <span class="mw-headline">@method</span></h3>
+<p>Signifies that a function is a method of a class, if applicable.
+</p><p>Applies to: Function
+</p><p><b>Syntax</b>
+</p><p>@method
+</p><p><b>Description</b>
+</p><p>Use the @method tag to signify a method of a class if you are coding in an object-oriented programming style.
+</p><p><b>Example</b>
+</p><p>This example shows a @method tag.
+</p>
+<pre>
+/**
+* @method
+*/
+</pre>
+<a name=".40namespace"></a><h3> <span class="mw-headline">@namespace</span></h3>
+<p>Creates the namespace prefix for a library file.
+</p><p>Applies to: File
+</p><p><b>Syntax</b>
+</p><p>@namespace <i>namespaceName</i>
+</p><p><b>Description</b>
+</p><p>Creates the link between the namespace of a library file and an external .sdoc file.
+</p><p><b>Example</b>
+</p><p>This example shows how to use the @namespace tag to link the namespace of a library to an .sdoc file.
+</p><p>The excerpt below would go at both the top of the library file that contains the "ajax" namespace for the "snazzyLib" library and the corresponding "ajax.sdoc" file that contains the documentation for the "ajax" namespace in snazzyLib:
+</p>
+<pre>
+/**
+ * @namespace snazzyLib.ajax
+ */
+
+</pre>
+<a name=".40param"></a><h3> <span class="mw-headline">@param</span></h3>
+<p>Use @param to tag each parameter for a function.
+</p><p>Applies to: Function
+</p><p><b>Syntax</b>
+</p><p>@param <i>{Type[, Type, ... ]} [Parameter |...] Parameter-Description</i>
+</p><p><b>Description</b>
+</p><p>Gives information about a parameter for a function. Specify the data type between the curly braces. If the parameter is optional, add '[]' around the parameter name.
+</p><p><b>Examples</b>
+</p><p><i>Standard example</i>
+</p><p>The following example shows a parameter for a function that takes a String named myDog.
+</p>
+<pre>
+/**
+ * @param {String} myDog The name of the dog. 
+ */
+</pre>
+<p><i>Optional parameter example</i>
+</p><p>The following example shows an optional parameter that can be either a String or a Date.
+</p>
+<pre>
+/**
+ * @param {String, Date} [myDate] Specifies the date, if applicable.
+ */
+</pre>
+<p><i>Multiple objects example</i>
+</p><p>The following example shows a parameter that can be one or more Strings.
+</p>
+<pre>
+/**
+ * @param {String} ... Takes one or more dog parameters.
+ */
+</pre>
+<p><br />
+</p>
+<a name=".40projectDescription"></a><h3> <span class="mw-headline">@projectDescription</span></h3>
+<p>Gives a description of a JavaScript file.
+</p><p>Applies to: File.
+</p><p><b>Syntax</b>
+</p><p>@projectDescription <i>Description</i>
+</p><p><b>Description</b>
+</p><p>Use the @projectDescription tag as the first tag in the first documentation block for a JavaScript file. The @projectDescription tag signifies that the entire documentation block is part of a project description. 
+</p><p><b>Example</b>
+</p><p>This example shows the @projectDescription tag used with the <a href="#.40author" title="">@author</a> and <a href="#.40version" title="">@version</a> tags to provide header information for a JavaScript file.
+</p>
+<pre>
+/** 
+ * @projectDescription	This library contains a lot of classes and functions.
+ *
+ * @author 	Joe Smith jsmith@company.com
+ * @version 	0.1 
+ */
+</pre>
+<a name=".40property"></a><h3> <span class="mw-headline">@property</span></h3>
+<p>Indicates that a member is a property of a class instance
+</p><p>Applies to: File.
+</p><p><b>Syntax</b>
+</p><p>@property <i>{Type [, Type, ...]}</i>
+</p><p><b>Description</b>
+</p><p>Use the @property tag to indicate that the following member is a property (as opposed to a method) of a class instance. 
+</p><p><b>Example</b>
+</p><p>This example shows the @property tag being used to define a "myProperty" property on the MyClass class. The property contains a description and will be treated as a String.
+</p>
+<pre>
+/** 
+ * This is a property of class MyClass
+ *
+ * @alias MyClass.myProperty
+ * @property {String}
+ */
+</pre>
+<p><br />
+</p>
+<a name=".40return"></a><h3> <span class="mw-headline">@return</span></h3>
+<p>Specifies information about the return value(s) of a function. 
+</p><p>Applies to: Function
+</p><p><b>Syntax</b>
+</p><p>@return <i>{Type [, Type, ...]} Returns-Description</i>
+</p><p><b>Description</b>
+</p><p>@return gives a description for the return value of a function. 
+</p><p><b>Example</b>
+</p><p>This example shows a return value for a function that returns a new foo object. 
+</p>
+<pre>
+/** 
+ * @return {Object} Returns a new foo object.	
+ */
+</pre>
+<a name=".40sdoc"></a><h3> <span class="mw-headline">@sdoc</span></h3>
+<p>Defines the path to an external .sdoc file for a library file.
+</p><p>Applies to: File
+</p><p>Syntax
+</p><p>@sdoc <i>filePath</i>
+</p><p><b>Description</b>
+</p><p>Associates an external @sdoc file with a JavaScript file. Use either a relative or absolute path.
+</p><p><b>Example</b>
+</p><p>This example shows a documentation block that associates an "ajax.sdoc" file in the "scripts/snazzyLib" directory with the current JavaScript file:
+</p>
+<pre>
+/**
+ * @sdoc scripts/snazzyLib/ajax.sdoc
+ */
+</pre>
+<a name=".40see"></a><h3> <span class="mw-headline">@see</span></h3>
+<p>Links to another related class or function.
+</p><p>Applies to: Any
+</p><p><b>Syntax</b>
+</p><p>@see <i>Class | #Function | Class#Function</i>
+</p><p><b>Description</b>
+</p><p>Use the @see tag to add a link to another class, a function within the current class, or a function in another class.
+</p><p><b>Examples</b>
+</p><p><i>Function example</i>
+</p><p>This example shows a link to a function named "foo" in the same class as the one being documented.
+</p>
+<pre>
+/**
+ * @see #foo
+ */
+</pre>
+<p><i>Class example</i>
+</p><p>This example shows a link to a class named "fooBar".
+</p>
+<pre>
+/**
+ * @see fooBar
+ */
+</pre>
+<p><i>Function in another class example</i>
+</p><p>This example shows a link to a function named "foo" in another class named "fooBar".
+</p>
+<pre>
+/**
+ * @see fooBar#foo
+ */
+</pre>
+<a name=".40since"></a><h3> <span class="mw-headline">@since</span></h3>
+<p>Specifies since which version the library, function, or property became valid.
+</p><p>Applies to: File, Function, Property
+</p><p><b>Syntax</b>
+</p><p>@since <i>Version-number</i>
+</p><p><b>Description</b>
+</p><p>Specifies since which version the library, function, or property became valid.
+</p><p><b>Example</b>
+</p><p>This example shows a @since tag, used in conjunction with @projectDescription, @author, and @version tags. A documentation block like this would go at the top of a JavaScript file.
+</p>
+<pre>
+/** 
+ * @projectDescription	This library contains a lot of classes and functions.
+ *
+ * @author 	Joe Smith jsmith@company.com
+ * @version 	1.1 
+ * @since	1.0
+ */
+</pre>
+<a name=".40type"></a><h3> <span class="mw-headline">@type</span></h3>
+<p>Specifies what data type a property is.
+</p><p>Applies to Property
+</p><p><b>Syntax</b>
+</p><p>@type {<i>Type</i>}
+</p><p><b>Description</b>
+</p><p>Specifies what data type a property is.
+</p><p><b>Example</b>
+</p><p>This example uses the <a href="#.40return" title="">@return</a> tag with the @type tag to show the return type for a function that creates a new foo.
+</p>
+<pre>
+/**
+ * This property describes what type of shape an object is.
+ * @type {Object} This property describes what type of shape an object is.
+ */
+</pre>
+<a name=".40version"></a><h3> <span class="mw-headline">@version</span></h3>
+<p>Specifies the version number of the JavaScript file or class.
+</p><p>Applies to: Any
+</p><p><b>Syntax</b>
+</p><p>@version <i>Version-Number</i>
+</p><p><b>Description</b>
+</p><p>Specifies the version number of the JavaScript file or class. 
+</p><p><b>Example</b>
+</p><p>This example shows the @version tag used with the <a href="#.40projectDescription" title="">@projectDescription</a> and <a href="#.40author" title="">@author</a> tags to provide header information for a JavaScript file.
+</p>
+<pre>
+/** 
+ * @projectDescription A description of the file ahead
+ *
+ * @author 	Joe Smith jsmith@company.com
+ * @version 	0.1 
+ */
+</pre>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Code_Assist.html" title="About Code Assist">About Code Assist</a>
+</li><li> <a href="Displaying_Code_Assist.html" title="Displaying Code Assist">Displaying Code Assist</a>
+</li><li> <a href="Documenting_your_code_using_ScriptDoc.html" title="Documenting your code using ScriptDoc">Documenting your code using ScriptDoc</a>
+</li><li> <a href="Documenting_your_code_in_an_.sdoc_file.html" title="Documenting your code in an .sdoc file">Documenting your code in an .sdoc file</a>
+</li><li> <a href="Documenting_dynamic_properties_and_functions_with_ScriptDoc.html" title="Documenting dynamic properties and functions with ScriptDoc">Documenting dynamic properties and functions with ScriptDoc</a>
+</li><li> <a href="ScriptDoc_tag_quick_reference.html" title="ScriptDoc tag quick reference">ScriptDoc tag quick reference</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1333-0!1!0!!en!2!edit=0 and timestamp 20090201214314 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/ScriptDoc_comprehensive_tag_reference">http://aptana.com/docs/index.php/ScriptDoc_comprehensive_tag_reference</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Figure out installation directory
+INSTALL_DIR=`(cd "$(dirname "${0}")/.."; pwd)`
+
+/usr/bin/gconftool-2 -s /desktop/gnome/url-handlers/aptanaplugininstaller/command "\"@eclipse.launcher@\" -application com.aptana.ide.desktop.integration.Application -handleURL \"%s\"" --type String
+/usr/bin/gconftool-2 -s /desktop/gnome/url-handlers/aptanaplugininstaller/enabled --type Boolean true
+/usr/bin/gconftool-2 -s /desktop/gnome/url-handlers/aptanaplugininstaller/needs_terminal --type Boolean false
+
+

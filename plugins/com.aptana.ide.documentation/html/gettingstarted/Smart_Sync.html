@@ -1,0 +1,100 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Smart Sync</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Smart_Sync&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Smart Sync [<a href="http://www.aptana.com/docs/index.php?title=Smart_Sync&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p><a href="Aptana_Cloud_Docs_Wiki.html" title="Aptana Cloud Docs Wiki">Aptana Cloud Docs Home</a>
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#What"><span class="tocnumber">1</span> <span class="toctext">What</span></a></li>
+<li class="toclevel-1"><a href="#When"><span class="tocnumber">2</span> <span class="toctext">When</span></a></li>
+<li class="toclevel-1"><a href="#How"><span class="tocnumber">3</span> <span class="toctext">How</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Using_Smart_Sync"><span class="tocnumber">3.1</span> <span class="toctext">Using Smart Sync</span></a></li>
+<li class="toclevel-2"><a href="#Changing_default_permissions"><span class="tocnumber">3.2</span> <span class="toctext">Changing default permissions</span></a></li>
+<li class="toclevel-2"><a href="#Launching_Smart_Sync"><span class="tocnumber">3.3</span> <span class="toctext">Launching Smart Sync</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="What"></a><h2> <span class="mw-headline">What</span></h2>
+<p>The Smart Sync tool lets you quickly compare files in your local project with those in the associated Aptana Cloud site and deploy them.
+</p>
+<a name="When"></a><h2> <span class="mw-headline">When</span></h2>
+<ul><li> You're ready to deploy your project to the Cloud site
+</li><li> You need to bring changes from other team members down from the Cloud site
+</li></ul>
+<a name="How"></a><h2> <span class="mw-headline">How</span></h2>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Using_Smart_Sync"></a><h3> <span class="mw-headline">Using Smart Sync</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:SmartSync.png.html" class="image" title="Smart Sync Tool"><img alt="Smart Sync Tool" src="docs/images/thumb/5/57/SmartSync.png/200px-SmartSync.png" width="200" height="213" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:SmartSync.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Smart Sync Tool</div></div></div><div style="float: left; width: 500px;">After Smart Sync is launched, it will compare files in the local project with files on the Cloud site. A list will be generated, along with a status on each file to be synced (it will be either "create it", "update it", "overwrite it", or "deleted it"). Syncing of a file can be skipped by clicking the "skip" check box in the column next to the file's name.
+<p>A summary in the top right corner will tell you the number of files to be updated, skipped, or deleted.
+</p><p>By default the <b>Delete orphaned files on &lt;cloud_site&gt;</b> box is checked. This will remove from the Aptana Cloud any files which you have deleted locally since your last sync.
+</p>
+If you check the <b>Delete orphaned files on &lt;local_project&gt;</b> box, files which have been deleted from the Aptana Cloud site - or more commonly, which have never been synced - will be removed from your local project.</div>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 210px;margin-right:21px;"><a href="Image:SyncStartButton.png.html" class="image" title="Image:SyncStartButton.png"><img alt="Image:SyncStartButton.png" src="docs/images/8/88/SyncStartButton.png" width="83" height="23" border="0" /></a></div><div style="float: left; width: 500px;">To start the sync, click the "Start Sync" button.
+Once the sync is started, you can click "Run in Background". If "Close when done" is checked, the Smart Sync window will close on its own when syncing is complete.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Changing_default_permissions"></a><h3> <span class="mw-headline">Changing default permissions</span></h3>
+<div style="float: left; width: 210px;margin-right:21px;"><div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Permissions-preferences.png.html" class="image" title="Permissions preferences panel"><img alt="Permissions preferences panel" src="docs/images/thumb/d/d6/Permissions-preferences.png/200px-Permissions-preferences.png" width="200" height="202" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Permissions-preferences.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Permissions preferences panel</div></div></div></div><div style="float: left; width: 500px;">Default permissions are set on the Aptana Studio preferences dialog, on the Aptana -&gt; Permissions panel. You may set the defaults differently for files and folders.</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Launching_Smart_Sync"></a><h3> <span class="mw-headline">Launching Smart Sync</span></h3>
+<p><span style="display:none;">x</span>
+There are several ways to launch the Smart Sync window.
+</p>
+<div style="float: left; width: 240px;margin-right:21px;"><a href="Image:StudioProjectSyncButton.png.html" class="image" title="Image:StudioProjectSyncButton.png"><img alt="Image:StudioProjectSyncButton.png" src="docs/images/0/03/StudioProjectSyncButton.png" width="26" height="26" border="0" /></a></div><div style="float: left; width: 470px;">From the project view, on projects that are deployed to the Aptana Cloud, you can click the "sync" icon (see <a href="Displaying_the_Project_View.html" title="Displaying the Project View">Displaying the Project View</a> for details).</div>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 240px;margin-right:21px;"><a href="Image:DeploySynchronizeButton.png.html" class="image" title="Image:DeploySynchronizeButton.png"><img alt="Image:DeploySynchronizeButton.png" src="docs/images/0/01/DeploySynchronizeButton.png" width="239" height="131" border="0" /></a></div><div style="float: left; width: 470px;">From the Aptana Home - My Cloud screen, projects deployed to the Aptana Cloud will have a "Synchronize" button next to them. Clicking this launches SmartSync (see <a href="Aptana_Home_-_My_Cloud.html" title="Aptana Home - My Cloud">Aptana Home - My Cloud</a> for details).</div>
+<p><br style="clear: both;" />
+</p>
+<div style="float: left; width: 240px;margin-right:21px;"><a href="Image:DeploySynchronizeButton.png.html" class="image" title="Image:DeploySynchronizeButton.png"><img alt="Image:DeploySynchronizeButton.png" src="docs/images/0/01/DeploySynchronizeButton.png" width="239" height="131" border="0" /></a></div><div style="float: left; width: 470px;">From the My Cloud - Overview screen - the main Cloud screen for a single cloud project, you can click the "Synchronize" button to launch Smart Sync (see <a href="My_Cloud_-_Overview.html" title="My Cloud - Overview">My Cloud - Overview</a> for details).</div>
+<p><br style="clear: both;" />
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2285-0!1!0!!en!2!edit=0 and timestamp 20090201195117 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Smart_Sync">http://aptana.com/docs/index.php/Smart_Sync</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

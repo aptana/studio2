@@ -1,0 +1,29 @@
+<div id="myAccountCage">
+	<div class="header">
+		<h1><%= username %></h1>
+	</div>
+	<table cellspacing="0" cellpadding="0" border="0"  width="100%">
+		<tr>
+			<td nowrap="nowrap" style="height: 25px; overflow: hidden;">
+				<ul id="myAccountTabs" class="smallTabs" style="padding-left: 10px;">
+					<% tabs.each(function(tab) { %>
+					<li><a href="#<%= tab.value.id %>"><%= tab.value.title %></a></li>
+					<% }); %>
+				</ul>
+			</td>
+		</tr>
+	</table>
+	
+	<div id="myAccountContent">
+		
+		<% tabs.each(function(tab) { %>
+		<div id="<%= tab.value.id %>" style="display: none;">
+			<div class="content">
+				<div class="working">Loading <%= tab.value.title %>...</div>
+			</div>
+		</div>		
+		<% }); %>
+				
+	</div>
+	
+</div>

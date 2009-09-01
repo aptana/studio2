@@ -1,0 +1,105 @@
+<div class="borderGray" style="padding: 10px; margin-bottom: 20px;">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td class="gray48 size11">
+                <img src="images_global/img_icon_checked.png" align="absmiddle" class="inline" /> <span id="totalUpdated" class="bold"><%= totalUpdated; %></span> Updated
+				<img src="images_global/img_icon_plus.png" align="absmiddle" class="inline" style="margin-left: 15px;" /> <span id="totalAdded" class="bold"><%= totalNew; %></span> New
+            </td>
+            <td class="right">
+                <a href="javascript: Portal.API.utils.openView('com.aptana.ide.ui.ViewPlugins');" class="size11">View Plugin Manager</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<ul id="plugin_tabs" class="smallTabs borderBottom lightGray">
+	
+	<!-- this needs to come first always -->
+	<% if (pluginList.get('platform')) { %>
+	<li>
+		<a href="#platform_plugins">Platform</a>
+	</li>
+	<% } %>
+	
+	<% pluginList.keys().each(function(item) { %>
+	
+	<% if (item.toLowerCase() == 'platform') { return ; } %>
+	<li>
+		<a href="#<%= item %>_plugins"><%= item.capitalize(); %></a>
+	</li>
+	<% }); %>
+
+	<% if (updatesExist) { %>
+    <li>
+        <a href="#update_details">Updated</a>
+    </li>
+	<% } %>
+</ul>
+
+<div class="pad5">
+	<% pluginList.each(function(item) { %>
+	<div id="<%= item.key %>_plugins" style="display: none;">
+		<% item.value.each(function (plugin) { %>
+			<table width="100%" style="margin: 0px 0px 3px 0px; border-bottom: 1px dotted #e4e4e4;">
+	            <tr>
+	                <td style="padding: 8px 5px 5px 8px; width: 22px;" class="center" valign="top">
+	                    <% if (item.key == 'platform' || item.key == 'official') { %>
+							<img src="images_global/plugins/img_icon_plugin_<%= plugin.value.id %>.png" align="absmiddle" />
+						<% } else { %>
+							<img src="images_global/img_icon_plugin.png" align="absmiddle" />
+						<% } %>
+	                </td>
+	                <td style="padding: 5px 5px 10px 5px;">
+	                    <div class="gray48 size12 bold line16"><%= plugin.value.name %></div>
+	                    <div class="size10 gray87 line14">
+	                        <%= plugin.value.description %>
+	                    </div>
+	                    <div class="size10" style="margin-top: 3px;">
+	                        <% if (plugin.value.installed) { %>
+								<% if (plugin.value.update) { %>
+									<a href="javascript: Portal.Modules.PluginManager.showUpdates();">Update available</a>
+								<% } else { %>
+									<em>This plugin is up to date</em>
+								<% } %>
+							<% } else { %>
+								<a href="javascript: Portal.API.utils.openUrl('<%= plugin.value.more %>');">Learn More</a> | <a href="javascript: Portal.Modules.PluginManager.installPlugin('<%= plugin.value.id %>');">Get It</a>
+							<% } %>
+	                    </div>
+	                </td>
+	            </tr>
+	        </table>
+		<% }); %>
+	</div>
+	<% }); %>
+	
+	<% if (updatesExist) { %>
+	<div id="update_details" style="display: none;">
+		<% pluginChanges.each(function(item) { %>
+        <table width="100%" style="margin: 0px 0px 3px 0px; border-bottom: 1px dotted #e4e4e4;">
+            <tr>
+                <td style="padding: 8px 5px 5px 8px; width: 22px;" class="center" valign="top">
+					<% if (item.oldVersion == '' || item.oldVersion == null || item.oldVersion == 'null') { %>
+						<img src="images_global/img_icon_plus.png" align="absmiddle" class="inline" />
+					<% } else { %>
+						<img src="images_global/img_icon_checked.png" align="absmiddle" class="inline" />
+					<% } %>
+				</td>
+				<td style="padding: 5px;" class="size11 line14">
+	                <div class="size12 bold gray48 line16">
+	                    <%= item.label %>
+	                </div>
+					<div class="size10 gray87 line14">
+					<% if (item.oldVersion == '' || item.oldVersion == null || item.oldVersion == 'null') { %>
+						Version: <%= item.newVersion %>
+					<% } else { %>
+						Version: <%= item.newVersion %><br />
+						Prior Version: <%= item.oldVersion %>
+					<% } %>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<% }); %>
+	</div>
+	<% } %>
+</div>

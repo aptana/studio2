@@ -1,0 +1,195 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Adding metadata to an Eclipse Monkey script</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Adding_metadata_to_an_Eclipse_Monkey_script&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Adding metadata to an Eclipse Monkey script [<a href="http://www.aptana.com/docs/index.php?title=Adding_metadata_to_an_Eclipse_Monkey_script&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Adding metadata to your script tells Eclipse <i>how</i> it should run your script. The list below gives examples of the type of metadata that you can add to a script. 
+</p>
+<ul><li> Menu label
+</li><li> Hotkey(s)
+</li><li> Listener(s)
+</li><li> Kudos to the writer(s)
+</li><li> License information
+</li><li> DOM URL
+</li></ul>
+<p>All metadata is optional; it simply helps your script run the way that you would like it to run. 
+</p><p>The example below shows some of the common ways to use metadata. In this example, a script called "Fun with Monkey" can be run either via the <b>Scripts &gt; Fun with Monkey</b> menu item, the <b>Alt+M</b> hotkey, and will also run the "main" routine when Eclipse loads. This script was written by Michelle Petersen, uses the Eclipse Public License 1.0, and codes against the DOM "sample.doms", which is available on the Aptana snippets web site. The instructions below give more details about how to use each piece of metadata.
+</p>
+<pre>
+/*
+ * Menu: Fun with Monkey
+ * Key: M3+M
+ * Kudos: Michelle Petersen
+ * License: EPL 1.0
+ * DOM: http://snippets.aptana.com/sample.doms
+ * OnLoad: main()
+ */
+</pre>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Reference"><span class="tocnumber">1</span> <span class="toctext">Reference</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Menu_metadata"><span class="tocnumber">1.1</span> <span class="toctext">Menu metadata</span></a></li>
+<li class="toclevel-2"><a href="#Key_metadata"><span class="tocnumber">1.2</span> <span class="toctext">Key metadata</span></a></li>
+<li class="toclevel-2"><a href="#Image_metadata"><span class="tocnumber">1.3</span> <span class="toctext">Image metadata</span></a></li>
+<li class="toclevel-2"><a href="#Listener_metadata"><span class="tocnumber">1.4</span> <span class="toctext">Listener metadata</span></a></li>
+<li class="toclevel-2"><a href="#DOM_metadata"><span class="tocnumber">1.5</span> <span class="toctext">DOM metadata</span></a></li>
+<li class="toclevel-2"><a href="#onLoad_metadata"><span class="tocnumber">1.6</span> <span class="toctext">onLoad metadata</span></a></li>
+<li class="toclevel-2"><a href="#Kudos_metadata"><span class="tocnumber">1.7</span> <span class="toctext">Kudos metadata</span></a></li>
+<li class="toclevel-2"><a href="#License_metadata"><span class="tocnumber">1.8</span> <span class="toctext">License metadata</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">2</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Reference"></a><h2> <span class="mw-headline">Reference</span></h2>
+<a name="Menu_metadata"></a><h3> <span class="mw-headline">Menu metadata</span></h3>
+<p>To add menu information to a script:
+</p>
+<ul><li> Add the keyword <b>Menu</b> to your metadata.
+</li><li> All menu items will be available under the <b>Scripts</b> menu.
+</li><li> Use standard Eclipse syntax for menu and submenu items.
+</li></ul>
+<p>Example 1:
+</p>
+<pre>
+Menu: Fun with Monkey
+</pre>
+<p>In the above example, you can access the script via <b>Scripts &gt; Fun with Monkey</b>.
+</p>
+<pre>
+Menu: my_submenu &gt; Fun with Monkey
+</pre>
+<p>In the above example, you can access the script via <b>Scripts &gt; my_submenu &gt; Fun with Monkey</b>.
+</p>
+<a name="Key_metadata"></a><h3> <span class="mw-headline">Key metadata</span></h3>
+<p>Use the <b>Key</b> keyword to add hotkey shortcuts to your scripts.
+</p><p>To assign hotkeys to your scripts:
+</p>
+<ul><li> Add the <b>Key</b> keyword to your metadata.
+</li><li> Use the following modifier key(s) + ASCII key:
+<ul><li>M1 (Command or Ctrl)
+</li><li>M2 (Shift)
+</li><li>M3 (Option or Alt)
+</li><li>M4 (Ctrl on Mac)
+</li></ul>
+</li><li> Also recognized (not preferred): ALT, COMMAND, CTRL, and SHIFT
+</li><li> See Eclipse site for more key codes: <a href="http://www.eclipse.org/dash/monkey-help.php?key=writing" class="external free" title="http://www.eclipse.org/dash/monkey-help.php?key=writing" rel="nofollow">http://www.eclipse.org/dash/monkey-help.php?key=writing</a>
+</li></ul>
+<p>Example:
+</p><p>The following example assigns the Alt+M key shortcut to a script:
+</p>
+<pre>
+Key: M3+M
+</pre>
+<a name="Image_metadata"></a><h3> <span class="mw-headline">Image metadata</span></h3>
+<p>Use the <b>Image</b> keyword to assign a small icon to appear on the toolbar for running your script. You can then just click the specified icon to run your script. Specify the path to your image location to set that image as your script icon.
+</p><p>Example:
+</p>
+<pre>
+Image: ../Images/iconComment.png
+</pre>
+<a name="Listener_metadata"></a><h3> <span class="mw-headline">Listener metadata</span></h3>
+<p>Use the <b>Listener</b> keyword to add an event listener to your metadata. This will trigger your script to run on a specified event.
+</p><p>To assign an event listener to your script:
+</p>
+<ul><li> Add the <b>Listener</b> keyword to your metadata. This will attach itself to the specified event.
+</li></ul>
+<p>Example:
+</p>
+<pre>
+Listener: commandService().addExecutionListener(this);
+</pre>
+<a name="DOM_metadata"></a><h3> <span class="mw-headline">DOM metadata</span></h3>
+<p>Use the <b>DOM</b> keyword to specify which DOM(s) you are scripting against.
+</p><p>To add DOM information to your script:
+</p>
+<ul><li> Add the <b>DOM</b> keyword to you metadata.
+</li><li> A DOM is similar to any other plug-in in that if you not already have a DOM installed, Eclipse will automatically download it for you.
+</li><li> You can use either a built-in DOM or specify a DOM URL:
+<ul><li> Built-in: "window"
+</li><li> DOM URL: <a href="http://" class="external free" title="http://" rel="nofollow">http://</a>&lt;update-site&gt;/&lt;dom-plugin-ID&gt;
+</li></ul>
+</li></ul>
+<p>The following example downloads the DOM <b>sample.doms</b> from the Aptana snippets site:
+</p>
+<pre>DOM: <a href="http://snippets.aptana.com/sample.doms" class="external free" title="http://snippets.aptana.com/sample.doms" rel="nofollow">http://snippets.aptana.com/sample.doms</a>
+</pre>
+<a name="onLoad_metadata"></a><h3> <span class="mw-headline">onLoad metadata</span></h3>
+<p>Use the <b>onLoad</b> keyword to have your script run on startup.
+</p>
+<ul><li> Add the <b>onLoad</b> keyword to your metadata.
+</li><li> Specify the name of the function that you want to call when Eclipse loads.
+</li></ul>
+<p>Example:
+</p><p>The following example calls the <b>main()</b> function when Eclipse loads:
+</p>
+<pre>
+OnLoad: main()
+</pre>
+<a name="Kudos_metadata"></a><h3> <span class="mw-headline">Kudos metadata</span></h3>
+<p>Use the <b>Kudos</b> keyword to give yourself or the writer of the script credit for writing the script.
+</p>
+<ul><li> Add the <b>Kudos</b> keyword to your metadata.
+</li></ul>
+<p>Example:
+</p>
+<pre>
+Kudos: Michelle Petersen
+</pre>
+<a name="License_metadata"></a><h3> <span class="mw-headline">License metadata</span></h3>
+<p>Use the <b>License</b> keyword to specify the appropriate license for your script.
+</p>
+<ul><li> Add the <b>License</b> keyword to your metadata.
+</li></ul>
+<p>Example:
+</p><p>The following example uses the Eclipse Public License 1.0:
+</p>
+<pre>
+License: EPL 1.0
+</pre>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Eclipse_Monkey.html" title="About Eclipse Monkey">About Eclipse Monkey</a>
+</li><li> <a href="Eclipse_Monkey_Sample_Projects_and_Scripts.html" title="Eclipse Monkey Sample Projects and Scripts">Eclipse Monkey Sample Projects and Scripts</a>
+</li><li> <a href="Creating_a_new_Eclipse_Monkey_script.html" title="Creating a new Eclipse Monkey script">Creating a new Eclipse Monkey script</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1706-0!1!0!!en!2!edit=0 and timestamp 20090201193518 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Adding_metadata_to_an_Eclipse_Monkey_script">http://aptana.com/docs/index.php/Adding_metadata_to_an_Eclipse_Monkey_script</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.editors.contentassistant">
+      <contentassistant
+            class="com.aptana.ide.editors.unified.contentassist.ContentAssistant"
+            name="Aptana Code Assistant"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.aptana.ide.core.ui.preferences.GeneralPreferencePage"
+            class="com.aptana.ide.editors.preferences.UserAgentPreferencePage"
+            id="com.aptana.ide.editors.preferences.UserAgentPreferencePage"
+            name="%userAgentsPreferencePage"/>            
+   </extension>   
+</plugin>

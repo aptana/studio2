@@ -1,0 +1,443 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Character Class Elements</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Character_Class_Elements&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Character Class Elements [<a href="http://www.aptana.com/docs/index.php?title=Character_Class_Elements&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Character_Matcher"><span class="tocnumber">1</span> <span class="toctext">Character Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax"><span class="tocnumber">1.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class"><span class="tocnumber">1.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children"><span class="tocnumber">1.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes"><span class="tocnumber">1.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Character_Class_Matcher"><span class="tocnumber">2</span> <span class="toctext">Character Class Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_2"><span class="tocnumber">2.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_2"><span class="tocnumber">2.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_2"><span class="tocnumber">2.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_2"><span class="tocnumber">2.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Digit_Matcher"><span class="tocnumber">3</span> <span class="toctext">Digit Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_3"><span class="tocnumber">3.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_3"><span class="tocnumber">3.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_3"><span class="tocnumber">3.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_3"><span class="tocnumber">3.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Hex_Matcher"><span class="tocnumber">4</span> <span class="toctext">Hex Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_4"><span class="tocnumber">4.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_4"><span class="tocnumber">4.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_4"><span class="tocnumber">4.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_4"><span class="tocnumber">4.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Letter_Matcher"><span class="tocnumber">5</span> <span class="toctext">Letter Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_5"><span class="tocnumber">5.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_5"><span class="tocnumber">5.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_5"><span class="tocnumber">5.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_5"><span class="tocnumber">5.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Letter_or_Digit_Matcher"><span class="tocnumber">6</span> <span class="toctext">Letter or Digit Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_6"><span class="tocnumber">6.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_6"><span class="tocnumber">6.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_6"><span class="tocnumber">6.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_6"><span class="tocnumber">6.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Lowercase_Letter_Matcher"><span class="tocnumber">7</span> <span class="toctext">Lowercase Letter Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_7"><span class="tocnumber">7.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_7"><span class="tocnumber">7.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_7"><span class="tocnumber">7.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_7"><span class="tocnumber">7.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Uppercase_Letter_Matcher"><span class="tocnumber">8</span> <span class="toctext">Uppercase Letter Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_8"><span class="tocnumber">8.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_8"><span class="tocnumber">8.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_8"><span class="tocnumber">8.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_8"><span class="tocnumber">8.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Whitespace_Matcher"><span class="tocnumber">9</span> <span class="toctext">Whitespace Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_9"><span class="tocnumber">9.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_9"><span class="tocnumber">9.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_9"><span class="tocnumber">9.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_9"><span class="tocnumber">9.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Word_Matcher"><span class="tocnumber">10</span> <span class="toctext">Word Matcher</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Syntax_10"><span class="tocnumber">10.1</span> <span class="toctext">Syntax</span></a></li>
+<li class="toclevel-2"><a href="#Class_10"><span class="tocnumber">10.2</span> <span class="toctext">Class</span></a></li>
+<li class="toclevel-2"><a href="#Children_10"><span class="tocnumber">10.3</span> <span class="toctext">Children</span></a></li>
+<li class="toclevel-2"><a href="#Attributes_10"><span class="tocnumber">10.4</span> <span class="toctext">Attributes</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Character_Matcher"></a><h1> <span class="mw-headline">Character Matcher</span></h1>
+<hr />
+<p>The character matcher matches a single character. The character to match is defined by the matcher's text content. Only the first letter of that content is used when performing the match.
+</p>
+<a name="Syntax"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;character&gt;a&lt;/character&gt;
+</pre>
+<a name="Class"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.CharacterMatcher
+</pre>
+<a name="Children"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre><a href="Structural_Elements.html#Use_Element" title="Structural Elements">&lt;use/&gt;</a>
+</pre>
+<a name="Attributes"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match its character. True will match the character and false will match anything except its character.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Character_Class_Matcher"></a><h1> <span class="mw-headline">Character Class Matcher</span></h1>
+<hr />
+<p>The character class matcher matches one of a set of characters. The character set to match against is defined by the matcher's text content.
+</p>
+<a name="Syntax_2"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;character-class&gt;abcdefghijklmnopqrstuvwxyz&lt;/character-class&gt;
+</pre>
+<a name="Class_2"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.CharacterClassMatcher
+</pre>
+<a name="Children_2"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_2"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match its characters. True will match any character in its set and false will match anything except its characters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Digit_Matcher"></a><h1> <span class="mw-headline">Digit Matcher</span></h1>
+<hr />
+<p>The digit matcher matches a single digit character. This matcher will return true for all values that return true in the Character.isDigit method.
+</p>
+<a name="Syntax_3"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;digit/&gt;
+</pre>
+<a name="Class_3"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.DigitMatcher
+</pre>
+<a name="Children_3"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_3"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match digit character. True will match digits and false will match anything except digits.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Hex_Matcher"></a><h1> <span class="mw-headline">Hex Matcher</span></h1>
+<hr />
+<p>The hex matcher matches a single hexadecimal character. This matcher will return true for any of the following letters: abcdef ABCDEF 0123456789.
+</p>
+<a name="Syntax_4"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;hex/&gt;
+</pre>
+<a name="Class_4"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.HexMatcher
+</pre>
+<a name="Children_4"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_4"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match hexadecimal characters. True will match hex digits and false will match anything except hex digits.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Letter_Matcher"></a><h1> <span class="mw-headline">Letter Matcher</span></h1>
+<hr />
+<p>The letter matcher matches a single letter. This matcher will return true for all values that return true in the Character.isLetter method.
+</p>
+<a name="Syntax_5"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;letter/&gt;
+</pre>
+<a name="Class_5"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.LetterMatcher
+</pre>
+<a name="Children_5"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_5"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters. True will match letters and false will match anything except letters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Letter_or_Digit_Matcher"></a><h1> <span class="mw-headline">Letter or Digit Matcher</span></h1>
+<hr />
+<p>The letter-or-digit matcher matches a single letter or digit. This matcher will return true for all values that return true in the Character.isLetter or the Character.isDigit method. This character class is commonly used as the first character of an identifier in many programming languages.
+</p>
+<a name="Syntax_6"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;letter-or-digit/&gt;
+</pre>
+<a name="Class_6"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.LetterOrDigitMatcher
+</pre>
+<a name="Children_6"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_6"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters and digits. True will match letters and digits and false will match anything except letters and digits.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<a name="Lowercase_Letter_Matcher"></a><h1> <span class="mw-headline">Lowercase Letter Matcher</span></h1>
+<hr />
+<p>The lowercase letter matcher matches a single lowercase letter. This matcher will return true for all values that return true in the Character.isLowerCase method.
+</p>
+<a name="Syntax_7"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;lowercase-letter/&gt;
+</pre>
+<a name="Class_7"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.LowercaseLetterMatcher
+</pre>
+<a name="Children_7"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_7"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters. True will match letters and false will match anything except letters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Uppercase_Letter_Matcher"></a><h1> <span class="mw-headline">Uppercase Letter Matcher</span></h1>
+<hr />
+<p>The uppercase letter matcher matches a single uppercase letter. This matcher will return true for all values that return true in the Character.isUpperCase method.
+</p>
+<a name="Syntax_8"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;uppercase-letter/&gt;
+</pre>
+<a name="Class_8"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.UppercaseLetterMatcher
+</pre>
+<a name="Children_8"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_8"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters. True will match letters and false will match anything except letters.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Whitespace_Matcher"></a><h1> <span class="mw-headline">Whitespace Matcher</span></h1>
+<hr />
+<p>The whitespace matcher matches a single whitespace character. This matcher will return true for all values that return true in the Character.isWhitespace method.
+</p>
+<a name="Syntax_9"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;whitespace/&gt;
+</pre>
+<a name="Class_9"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.WhitespaceMatcher
+</pre>
+<a name="Children_9"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_9"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match whitespace..</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+<p><br />
+</p>
+<a name="Word_Matcher"></a><h1> <span class="mw-headline">Word Matcher</span></h1>
+<hr />
+<p>The word matcher matches a single letter, digit, or underscore. This matcher will return true for all values that return true in the Character.isLetter or the Character.isDigit method or if the character is an underscore. This character class is commonly used as the character following the first character of an identifier in many programming languages.
+</p>
+<a name="Syntax_10"></a><h2> <span class="mw-headline">Syntax</span></h2>
+<pre>&lt;word/&gt;
+</pre>
+<a name="Class_10"></a><h2> <span class="mw-headline">Class</span></h2>
+<pre>com.aptana.ide.lexer.matcher.WordMatcher
+</pre>
+<a name="Children_10"></a><h2> <span class="mw-headline">Children</span></h2>
+<pre>none
+</pre>
+<a name="Attributes_10"></a><h2> <span class="mw-headline">Attributes</span></h2>
+<table class="standard-table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+    <td>negate</td>
+    <td>Determines if the matcher should or should not match letters and digits and underscores. True will match letters and digits and underscores and false will match anything except letters and digits and underscores.</td>
+    <td>boolean</td>
+    <td>true</td>
+    <td>no</td>
+  </tr>
+</table>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1832-0!1!0!!en!2!edit=0 and timestamp 20090202192153 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Character_Class_Elements">http://aptana.com/docs/index.php/Character_Class_Elements</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<colorizer
+	xmlns="http://www.aptana.com/2007/colorizer/1.0"
+	language="text/regex"
+	background="rgb(255,255,255)" 
+    line-highlight="rgb(232,242,254)" 
+    selection-foreground="COLOR_LIST_SELECTION_TEXT" 
+    selection-background="COLOR_LIST_SELECTION"
+    folding-background="COLOR_WIDGET_BACKGROUND"
+    folding-foreground="rgb(139,139,139)"
+    caret-color="rgb(0,0,0)">
+
+	<category name="WHITESPACE" style="WHITESPACE"/>
+	<category name="ERROR" style="ERROR"/>
+	<category name="PUNCTUATOR" style="PUNCTUATOR"/>
+	<category name="IDENTIFIER" style="IDENTIFIER"/>
+	<category name="OPERATOR" style="OPERATOR"/>
+	
+	<style foreground="rgb(0,0,0)" id="WHITESPACE"/>
+	<style foreground="rgb(255,0,0)" id="ERROR"/>
+	<style font-weight="bold" foreground="rgb(0,0,0)" id="PUNCTUATOR"/>
+	<style foreground="rgb(0,128,0)" id="IDENTIFIER"/>
+	<style foreground="rgb(0,128,255)" id="OPERATOR"/>
+
+</colorizer>

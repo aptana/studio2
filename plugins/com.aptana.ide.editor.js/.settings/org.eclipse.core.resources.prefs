@@ -1,0 +1,18 @@
+#Wed Jun 04 20:30:44 CDT 2008
+eclipse.preferences.version=1
+encoding//src/com/aptana/ide/editor/js/contentassist/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/environment/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/formatting/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/outline/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/parsing/nodes/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/preferences/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/runtime/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/js/wizards/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/jscomment/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/jscomment/parsing/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/scriptdoc/contentassist/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/scriptdoc/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/scriptdoc/parsing/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/scriptdoc/parsing/reader/messages.properties=8859_1
+encoding//src/com/aptana/ide/editor/scriptdoc/wizards/messages.properties=8859_1

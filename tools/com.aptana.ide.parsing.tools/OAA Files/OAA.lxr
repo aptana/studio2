@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/oaa">
+
+	<token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace/>
+			</one-or-more>
+			<comment type="SINGLE_LINE_COMMENT" start="#"/>
+			<comment type="MULTI_LINE_COMMENT" start="/*" end="*/"/>
+		</category-group>
+		
+		<category-group category="KEYWORD">
+			<string type="ANY">any</string>
+			<string type="ELEMENT">element</string>
+			<string type="EMPTY">empty</string>
+		</category-group>
+		
+		<identifier category="IDENTIFIER" type="IDENTIFIER" start-characters="_" part-characters="_"/>
+		
+		<category-group category="PUNCTUATOR">
+			<string type="AT_LPAREN">@(</string>
+			<character type="LPAREN">(</character>
+			<character type="RPAREN">)</character>
+			<character type="LCURLY">{</character>
+			<character type="RCURLY">}</character>
+			<character type="AMPERSAND">&amp;</character>
+			<character type="QUESTION">?</character>
+			<character type="STAR">*</character>
+			<character type="EQUAL">=</character>
+		</category-group>
+    </token-group>
+
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+    </token-group>
+
+</lexer>

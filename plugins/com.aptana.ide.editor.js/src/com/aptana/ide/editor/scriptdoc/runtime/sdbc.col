@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colorizer
+	xmlns="http://www.aptana.com/2007/colorizer/1.0"
+	language="text/sdbc"
+    background="rgb(255,255,255)" 
+    line-highlight="rgb(232,242,254)" 
+    selection-foreground="COLOR_LIST_SELECTION_TEXT" 
+    selection-background="COLOR_LIST_SELECTION"
+    folding-background="COLOR_WIDGET_BACKGROUND"
+    folding-foreground="rgb(139,139,139)"
+    caret-color="rgb(0,0,0)">
+    	
+	<category name="ERROR" style="ERROR"/>
+	<style foreground="rgb(255,0,255)" id="ERROR"/>
+	<category name="KEYWORD" style="KEYWORD"/>
+	<style foreground="rgb(128,0,0)" id="KEYWORD"/>
+	<category name="WHITESPACE" style="WHITESPACE">
+	<token style="WHITESPACE_COMMENT" type="COMMENT"/>
+	</category>
+	<style foreground="rgb(0,0,0)" id="WHITESPACE"/>
+	<style foreground="rgb(129,129,129)" id="WHITESPACE_COMMENT"/>
+	
+</colorizer>

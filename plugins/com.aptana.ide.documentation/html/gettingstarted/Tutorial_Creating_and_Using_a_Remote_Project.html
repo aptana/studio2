@@ -1,0 +1,68 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Tutorial Creating and Using a Remote Project</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Tutorial_Creating_and_Using_a_Remote_Project&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Tutorial Creating and Using a Remote Project [<a href="http://www.aptana.com/docs/index.php?title=Tutorial_Creating_and_Using_a_Remote_Project&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<a name="Create_a_new_FTP_connection"></a><h2> <span class="mw-headline">Create a new FTP connection</span></h2>
+<ol><li> Using the File browser, scroll down the tree until you see the branches for FTP, FTPS and SFTP (the latter may only be available if you have Aptana Studio Pro).
+</li><li> Right click on the appropriate protocol and choose Add New FTP (or Add New FTPS or Add New SFTP) Site.
+</li><li> Complete the setup form with your remote site's details.
+</li><li> <b>Tip:</b> Use the Test button! This will let you know that your setup is correct.
+</li><li> Click OK.
+</li></ol>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:File-browser-sftp.png.html" class="image" title="File browser"><img alt="File browser" src="docs/images/thumb/f/f5/File-browser-sftp.png/200px-File-browser-sftp.png" width="200" height="468" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:File-browser-sftp.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>File browser</div></div></div> <div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Sftp-site-configuration-dialog.png.html" class="image" title="SFTP Configuration"><img alt="SFTP Configuration" src="docs/images/thumb/a/a7/Sftp-site-configuration-dialog.png/300px-Sftp-site-configuration-dialog.png" width="300" height="404" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Sftp-site-configuration-dialog.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>SFTP Configuration</div></div></div> 
+<p><br style="clear: both;" /> 
+<i>Note:</i> You can do this in the wizards but cleaner to explain this way.
+</p>
+<a name="Project_exists_remotely_already"></a><h2> <span class="mw-headline">Project exists remotely already</span></h2>
+<ol><li> Create a new remote project using the New Project Wizard. This is in the Aptana Projects folder on the first wizard screen. 
+</li><li> On the third wizard screen select the FTP connection, leave the 'Download Files Now' box checked and click Finish.
+</li></ol>
+<p>When you're ready to upload new code right click on the project folder and chose Synchronize (to choose which files/foolders are changed) or Upload (to push any changed files/folders) from the Synchronize menu.
+</p>
+<a name="Project_exists_only_locally"></a><h2> <span class="mw-headline">Project exists only locally</span></h2>
+<ol><li> If you've not yet created a project (that is, the files live in a directory but there's no Studio project), find the top-level folder in the File browser, right click on it and select Promote to Project.
+</li><li>Right click on the project name in the Project browser and choose Create New Synchronization Connection from the Synchronize menu. Select the connection you created in the previous step from the server list.
+</li></ol>
+<p>When you're ready to upload new code right click on the project folder and chose Synchronize (to choose which files/foolders are changed) or Upload (to push any changed files/folders) from the Synchronize menu.
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Project-context-menu.png.html" class="image" title="Project Context Menu"><img alt="Project Context Menu" src="docs/images/thumb/4/49/Project-context-menu.png/200px-Project-context-menu.png" width="200" height="341" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Project-context-menu.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Project Context Menu</div></div></div>
+<p><br style="clear: both;" />
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2457-0!1!0!!en!2!edit=0 and timestamp 20090202130311 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Tutorial:_Creating_and_Using_a_Remote_Project">http://aptana.com/docs/index.php/Tutorial:_Creating_and_Using_a_Remote_Project</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

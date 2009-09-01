@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Aptana Studio</title>
+	
+	<link href="styles.css" rel="stylesheet" type="text/css" />
+	
+	<!-- DOJO INIT STUFF -->
+	<script type="text/javascript" src="lib/dojo.js" djConfig="usePlainJson: true"></script>
+	<script type="text/javascript">
+		dojo.require('dojox.cometd');
+		// dojo.require('dojox.cometd.timestamp');
+	</script>
+	
+	<!-- THIRD PARTY SCRIPTS -->
+	
+		<!-- prototype -->
+		<script type="text/javascript" src="lib/prototype_1.6.js"></script>
+		<!-- script.aculo.us -->
+		<script type="text/javascript" src="lib/scriptaculous/effects.js"></script>
+		<script type="text/javascript" src="lib/scriptaculous/slider.js"></script>
+		<script type="text/javascript" src="lib/scriptaculous/controls.js"></script>
+		<script type="text/javascript" src="lib/scriptaculous/dragdrop.js"></script>
+		<!-- firebug lite -->
+		<script type="text/javascript" src="lib/firebug/firebug.js"></script>
+		<!-- ejs -->
+		<script type="text/javascript" src="lib/ejs.js"></script>
+		<!-- livepipe -->
+		<script type="text/javascript" src="lib/livepipe/livepipe.js"></script>
+		<script type="text/javascript" src="lib/livepipe/window.js"></script>
+		<script type="text/javascript" src="lib/livepipe/hotkey.js"></script>
+		<script type="text/javascript" src="lib/livepipe/event.behavior.js"></script>
+		<script type="text/javascript" src="lib/livepipe/control.progressbar.js"></script>
+		<script type="text/javascript" src="lib/livepipe/control.tabs.js"></script>
+		<script type="text/javascript" src="lib/livepipe/control.contextmenu.js"></script>
+		<script type="text/javascript" src="lib/livepipe/view.js"></script>
+		<!-- validation library -->
+		<script type="text/javascript" src="lib/validation.js"></script>
+		<!-- tablesort library -->
+		<script type="text/javascript" src="lib/tablesort.js"></script>
+
+		<!-- CAPTCHA_SOURCE -->
+	
+	<!-- END THIRD PARTY SCRIPTS -->
+	
+	<!-- CORE STUFF -->
+	
+		<script type="text/javascript" src="src/core/portal.js"></script>
+		<script type="text/javascript" src="src/core/portaltabs.js"></script>
+		<script type="text/javascript" src="src/core/eventmanager.js"></script>
+		<script type="text/javascript" src="src/core/init.js"></script>
+		<script type="text/javascript" src="src/core/periodical_pollers.js"></script>
+		
+	<!-- END CORE STUFF -->
+
+	<!-- HTML USED BY MODULES (Prototype Templates) -->
+	<script type="text/javascript" src="templates/js_html_templates.js"></script>
+	<script type="text/javascript" src="portlets/cloud/templates/js_html_templates.js"></script>
+	
+	<!-- PORTAL OBJECTS -->
+		<script type="text/javascript" src="src/portals/my_aptana.js"></script>
+		<script type="text/javascript" src="src/portals/my_account.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/portals/my_cloud_new.js"></script>
+	
+	<!-- STUDIO MODELS -->
+	
+		<script type="text/javascript" src="src/models/billingaccounts.js"></script>
+		<script type="text/javascript" src="src/models/plugins.js"></script>
+		<script type="text/javascript" src="src/models/projects.js"></script>
+		<script type="text/javascript" src="src/models/user.js"></script>
+		
+	<!-- END STUDIO MODELS -->
+	
+	<!-- STUDIO MODULES -->
+	
+		<script type="text/javascript" src="src/modules/aptanaidmanager_old.js"></script>
+		<script type="text/javascript" src="src/modules/billingaccountmanager.js"></script>
+		<script type="text/javascript" src="src/modules/cloudwelcomemat.js"></script>
+		<script type="text/javascript" src="src/modules/myprofile.js"></script>
+		<script type="text/javascript" src="src/modules/onlinestatus.js"></script>
+		<script type="text/javascript" src="src/modules/pluginmanager.js"></script>
+		<script type="text/javascript" src="src/modules/portalupdates.js"></script>
+		<script type="text/javascript" src="src/modules/projectlist.js"></script>
+		<script type="text/javascript" src="src/modules/protrialinfo.js"></script>
+		<script type="text/javascript" src="src/modules/recentfiles.js"></script>
+		
+	<!-- END STUDIO MODULES -->
+	
+	<!-- JAXER MODULES -->
+	
+		<script type="text/javascript" src="portlets/jaxer/src/modules/jaxerservercontroller.js"></script>
+	
+	<!-- END JAXER MODULES -->
+	
+	<!-- CLOUD MODELS -->
+	
+		<script type="text/javascript" src="portlets/cloud/src/models/channels_new.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/clouduser.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/cloudproducts.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/cloudprojects.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/events_new.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/membershiproles.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/site.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/sitelist.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/sitenotificationlist.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/sitememberships.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/siteservices.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/models/subscriptions.js"></script>
+	
+	<!-- END CLOUD MODELS -->
+	
+	
+	<!-- CLOUD MODULES -->
+	
+		<script type="text/javascript" src="portlets/cloud/src/modules/cloudtrialstatus.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/configurator_site.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/configurator_wizard.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployprojectmini.js"></script>
+		
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_controllers.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_views.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_processors.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_helpers.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_breadcrumbs.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/deployment_wizard/deploymentwizard_manager.js"></script>
+		
+		<script type="text/javascript" src="portlets/cloud/src/modules/localprojectswitcher.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/logsmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/notificationlist.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/alertsmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/servicesmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/statsmanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/sitestats_new.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/teammanager.js"></script>
+		<script type="text/javascript" src="portlets/cloud/src/modules/undeployedprojects.js"></script>
+	
+	<!-- END CLOUD MODULES -->
+	
+</head>
+<body>
+
+<div id="preload">
+	<!-- IMAGES_PRELOAD -->
+</div>
+
+<div id="header">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td nowrap="nowrap" valign="top">
+				<h1 class="logo">Aptana | End-to-End Ajax</h1>
+				<div class="clearfix"></div>
+				
+				<div class="floatLeft">
+					<ul class="tab" id="portal_tabs"></ul>
+				</div>
+				<div class="floatLeft" style="margin-right: 5px; padding-top: 5px; padding-left: 5px; display: none;" id="offlineModeCage">
+					<strong><img src="images_global/img_icon_offline.png" align="absmiddle" class="link inline"/> Cloud service unreachable</strong>
+				</div>
+				<div clas="clearfix"></div>
+			</td>
+			<td class="right" nowrap="nowrap" valign="top">
+				<div class="login_block" id="loginBlock"></div>
+				<div class="help right">
+					<div class="floatRight">
+						<span id="cloud_trial_cage" class="white bold"></span>
+						
+						<a href="javascript: Portal.API.utils.showHelp();" class="nounderline"><img src="images_global/img_icon_help.png" class="link inline" align="absmiddle" /></a>
+						<a href="javascript: Portal.API.utils.showHelp();" class="white" style="text-decoration: underline;">Help</a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+				<div class="size12 right top5" style="display: none; padding-right: 5px; color: #aeff00;" id="portalUpdateCage">
+					<a href="#" style="color: #aeff00; text-decoration: underline;" id="reloadPortalLink" title="A new version of the My Aptana portal is available.  Click here to instantly install and relaunch.">
+						<strong>New portal update ready &ndash;</strong> click here to install now.
+					</a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="portal_js_cage"></div>
+<div id="portal_main"></div>
+<div id="portal_content"></div>
+	
+</body>
+</html>

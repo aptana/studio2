@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.eclipsemonkey.dom">
+      <dom
+            class="com.aptana.ide.syncing.doms.SyncDOMFactory"
+            id="SyncDOMFactory"
+            variableName="sync">
+      </dom>
+   </extension>
+   <extension
+         point="org.eclipse.eclipsemonkey.scriptpath">
+      <scriptpath
+            directory="scripts">
+      </scriptpath>
+   </extension>
+
+</plugin>

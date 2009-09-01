@@ -1,0 +1,1 @@
+alert("Message from portlet2.js");

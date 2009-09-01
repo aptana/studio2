@@ -1,0 +1,76 @@
+<html>   <head>      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">      <title>Known Issues</title>      <link rel="stylesheet" href="../../content/shared.css" type="text/css">	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Known_Issues&action=raw&gen=js">-->	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	   </head>   <body>      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Known Issues [<a href="http://www.aptana.com/docs/index.php?title=Known_Issues&action=edit">edit</a>]</h1>         <div class="content">            
+					<p>This page contains a list of known issues for Aptana Studio:
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Preview"><span class="tocnumber">1</span> <span class="toctext">Preview</span></a></li>
+<li class="toclevel-1"><a href="#FTPS"><span class="tocnumber">2</span> <span class="toctext">FTPS</span></a></li>
+<li class="toclevel-1"><a href="#Debugging_.28all_debugging.29"><span class="tocnumber">3</span> <span class="toctext">Debugging (all debugging)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Breakpoints"><span class="tocnumber">3.1</span> <span class="toctext">Breakpoints</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#IE_Debugging"><span class="tocnumber">4</span> <span class="toctext">IE Debugging</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Unsupported_features"><span class="tocnumber">4.1</span> <span class="toctext">Unsupported features</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Firebug"><span class="tocnumber">5</span> <span class="toctext">Firebug</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Preview"></a><h2> <span class="mw-headline">Preview</span></h2>
+<p>Currently, Aptana Studio does not support "Default Preview" of php files on Linux. This may crash Aptana Studio. (See <a href="http://www.aptana.com/trac/ticket/6607" class="external text" title="http://www.aptana.com/trac/ticket/6607" rel="nofollow">Trac Issue# 6607</a> for details.
+</p>
+<a name="FTPS"></a><h2> <span class="mw-headline">FTPS</span></h2>
+<p>Not all settings available in the Aptana Studio configuration screens are supported by all file transfer servers. A server might return an error if it does not support a particular setting. You might need to try different settings to get the connection to work; however, Aptana Studio defaults these values to what is typically supported and recommended for the given protocol.
+</p>
+<a name="Debugging_.28all_debugging.29"></a><h2> <span class="mw-headline">Debugging (all debugging)</span></h2>
+<p><b>Note:</b> Using an old version of the debugger and attempting to upgrade may cause errors. Uninstall your old debugger before installing the new version. See <a href="Uninstalling_the_debugger.html" title="Uninstalling the debugger">Uninstalling the debugger</a> for instructions.
+</p>
+<a name="Breakpoints"></a><h3> <span class="mw-headline">Breakpoints</span></h3>
+<ul><li> Deleting JavaScript code does not currently delete associated breakpoints. (See <a href="http://www.aptana.com/trac/ticket/6595" class="external text" title="http://www.aptana.com/trac/ticket/6595" rel="nofollow">Issue #6595</a> in Trac.)
+</li><li> Breakpoint line numbers are currently not sensitive to code deletions/insertions. (See <a href="http://www.aptana.com/trac/ticket/6594" class="external text" title="http://www.aptana.com/trac/ticket/6594" rel="nofollow">Issue #6594</a> in Trac.)
+</li><li> Wrapping JavaScript code in a function currently causes breakpoints to disappear. (See <a href="http://www.aptana.com/trac/ticket/6578" class="external text" title="http://www.aptana.com/trac/ticket/6578" rel="nofollow">Issue #6578</a> in Trac.)
+</li></ul>
+<a name="IE_Debugging"></a><h2> <span class="mw-headline">IE Debugging</span></h2>
+<a name="Unsupported_features"></a><h3> <span class="mw-headline">Unsupported features</span></h3>
+<ul><li> Debugging files that are not part of a project. (Promote your folder to a "project" to debug these files.)
+</li><li> Debugging straight JavaScript files 
+</li><li> Debugging local file:// pages
+</li><li> Breakpoints in eval() code (dojo etc.)
+</li><li> Detail formatters
+</li><li> Anonymous functions name resolving
+</li><li> Exception trace/breakpoint handling
+</li><li> Assert API (like in Firefox extension)
+</li><li> XMLHttpRequest: response data is not displayed
+</li><li> Scripts tree
+</li></ul>
+<a name="Firebug"></a><h2> <span class="mw-headline">Firebug</span></h2>
+<p>For users of the YSlow plug-in, you may experience conflicts with the current version of Firebug.
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2093-0!1!0!!en!2!edit=0 and timestamp 20080310200936 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Known_Issues">http://aptana.com/docs/index.php/Known_Issues</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					          </div>      </div>   </body></html> 

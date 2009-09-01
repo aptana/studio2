@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.aptana.ide.js.ui"
+            class="com.aptana.ide.samples.ui.SamplesView"
+            icon="icons/samples.gif"
+            id="com.aptana.ide.samples.ui.SamplesView"
+            name="%View.samples.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="SamplesViewActions"
+            targetID="com.aptana.ide.samples.ui.SamplesView">
+         <action
+               class="com.aptana.ide.core.ui.actions.HelpAction"
+               icon="icons/help.png"
+               id="com.aptana.ide.samples.samples_context_view"
+               label="%Action.showhelp.label"
+               style="push"
+               toolbarPath="additions"
+               tooltip="%Action.showhelp.tooltip"/>     
+   		</viewContribution>
+   </extension> 
+   <extension point="org.eclipse.help.contexts"> 
+		<contexts file="contexts.xml" /> 
+   </extension>	   
+   <extension
+             point="org.eclipse.ui.themes">          
+          <colorDefinition
+                categoryId="com.aptana.ide.core.ui.apearance"
+                colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
+                id="com.aptana.ide.core.ui.background.color.samplesView"
+                isEditable="true"
+                label="%samplesView.bcolor.name"/>
+		  <colorDefinition
+                categoryId="com.aptana.ide.core.ui.apearance"
+                colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
+                id="com.aptana.ide.core.ui.foreground.color.samplesView"
+                isEditable="true"
+                label="%samplesView.fcolor.name"/>                               
+   </extension>
+   	<extension point="com.aptana.ide.server.jetty.cometClient">
+		<client id="/portal/samples" class="com.aptana.ide.samples.ui.clients.SamplesClient"/>	
+   </extension>
+</plugin>

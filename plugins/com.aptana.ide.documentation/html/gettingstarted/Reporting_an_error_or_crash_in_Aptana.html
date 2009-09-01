@@ -1,0 +1,80 @@
+<html>   <head>      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">      <title>Reporting an error or crash in Aptana</title>      <link rel="stylesheet" href="../../content/shared.css" type="text/css">	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Reporting_an_error_or_crash_in_Aptana&action=raw&gen=js">-->	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	   </head>   <body>      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Reporting an error or crash in Aptana [<a href="http://www.aptana.com/docs/index.php?title=Reporting_an_error_or_crash_in_Aptana&action=edit">edit</a>]</h1>         <div class="content">            
+					<p>Report problems in the <a href="http://support.aptana.com" class="external text" title="http://support.aptana.com" rel="nofollow">Aptana ASAP Issue Tracker</a>.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#JVM_Terminated"><span class="tocnumber">1</span> <span class="toctext">JVM Terminated</span></a></li>
+<li class="toclevel-1"><a href="#Other_Errors"><span class="tocnumber">2</span> <span class="toctext">Other Errors</span></a></li>
+<li class="toclevel-1"><a href="#Using_the_Aptana_Console"><span class="tocnumber">3</span> <span class="toctext">Using the Aptana Console</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">4</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="JVM_Terminated"></a><h2> <span class="mw-headline"> JVM Terminated </span></h2>
+<p>When this happens, you'll get a rectangular dialog with a simple title of "JVM Terminated" and Aptana will disappear. This indicates Java itself has crashed, but it has left behind a log file of what occurred.
+</p><p>By default, the crash file should be in either the Aptana program directory, or in the system temp directory, most likely with an extension of *.hs. If you still cannot locate it, follow the directions here:
+</p>
+<ul><li> <a href="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/felog.html#felog" class="external text" title="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/felog.html#felog" rel="nofollow">Finding your Error Log</a>
+</li><li> On the Macintosh, the location is ~/Library/Logs/Java/*.crash.log or ~/Library/Logs/CrashReporter. It will have "java" in the title
+</li></ul>
+<p>You can also find some more troubleshooting ideas here:
+</p>
+<ul><li> <a href="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/crashes.html" class="external text" title="http://java.sun.com/javase/6/webnotes/trouble/TSG-VM/html/crashes.html" rel="nofollow">Troubleshooting System Crashes</a>
+</li></ul>
+<p>Once you have located that file, make sure you submit it to <a href="http://support.aptana.com/asap/secure/Dashboard.jspa" class="external text" title="http://support.aptana.com/asap/secure/Dashboard.jspa" rel="nofollow">ASAP</a> so that we can fix the issue.
+</p>
+<a name="Other_Errors"></a><h2> <span class="mw-headline"> Other Errors </span></h2>
+<p>If Aptana fails at startup with a dialog box, or behaves in an unexpected manner, it's highly likely that an error occurred and was written out to the log file. Please follow the directions here to find your log file:
+</p>
+<ul><li> <a href="Accessing_your_Aptana_log.html" title="Accessing your Aptana log">Accessing your Aptana log</a>
+</li></ul>
+<p>And then add that as an attachment to a <a href="http://support.aptana.com/asap/secure/Dashboard.jspa" class="external text" title="http://support.aptana.com/asap/secure/Dashboard.jspa" rel="nofollow">ASAP</a> ticket, or snip out the relevant sections.
+</p>
+<a name="Using_the_Aptana_Console"></a><h2> <span class="mw-headline"> Using the Aptana Console </span></h2>
+<p>If Aptana does not appear to work properly, you can try and use the console to figure out what is happening.
+</p>
+<ol><li> Add -console to the launch arguments for Aptana or Eclipse
+<ol><li> On Windows, you can create a shortcut, and add that to the properties of the shortcut.
+</li><li> For OS X, follow he directions below:
+<ol><li> Navigate to the Applications folder. Open the Aptana Studio folder.
+</li><li> Right-click (or control-click) on the Aptana Studio application. Choose "Show package contents".
+</li><li> Navigate to Contents/MacOS/AptanaStudio.ini.
+</li><li> Edit AptanaStudio.ini, and add -console at the very top of the file on a separate line.
+</li><li> Save the file.
+</li><li> Close any folders you just opened.
+</li><li> You can follow the same procedures on Eclipse. The folder structure will be identical, and look for the eclipse.ini file 
+</li></ol>
+</li><li> On Linux, it is recommended you start Aptana/Eclipse on the command line and jsut add -console as a launch argument
+</li></ol>
+</li><li> Once the application launches, you will see a separate console window start. Type 'ss' (no quotes) at the command prompt.
+</li><li> It will show you a list of bundles. Pick the one which is not starting. If you don't see any Studio features at all, you might pick com.aptana.ide.core.ui. Note the "bundle number". See if the bundle says "Started".
+</li><li> If not, type 'start #', replacing # with the number you just saw above. Note any error message displayed and log that with a ticket in ASAP.
+</li></ol>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Tips_and_Tricks.html" title="Tips and Tricks">Tips and Tricks</a>
+</li><li> <a href="Reporting_an_Aptana_bug_or_requesting_a_feature.html" title="Reporting an Aptana bug or requesting a feature">Reporting an Aptana bug or requesting a feature</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1690-0!1!0!!en!2!edit=0 and timestamp 20081020183217 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Reporting_an_error_or_crash_in_Aptana">http://aptana.com/docs/index.php/Reporting_an_error_or_crash_in_Aptana</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					          </div>      </div>   </body></html> 

@@ -1,0 +1,61 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Automatic Ruby code reloading</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Automatic_Ruby_code_reloading&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Automatic Ruby code reloading [<a href="http://www.aptana.com/docs/index.php?title=Automatic_Ruby_code_reloading&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This help topic gives an overview of automatic Ruby code reloading.
+</p>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>If there is a debug session every file you edit and save will be reloaded from the interpreter. This allows to debug and change a ruby application without restarting. While this is a convenient feature, there are some drawbacks to consider:
+</p>
+<ul><li> The code reload does not affect the current stack trace. The current stack frame will not be reentered and will be finished with the old code. So, if you change the code of a method this method will be finished with old code and the next call to this method will use the new code. That means that Drop to Frame functionality is not available.
+</li><li> The interpreter reloads the file with the updated content and therefore also executes the code at the main level. That might turn the application in an undesirable state.
+</li><li> You cannot delete methods by reloading. 
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Ruby_Debugger.html" title="Ruby Debugger">Ruby Debugger</a>
+</li><li> <a href="Ruby_debugger_prerequisites.html" title="Ruby debugger prerequisites">Ruby debugger prerequisites</a>
+</li><li> <a href="Starting_a_Ruby_debug_session.html" title="Starting a Ruby debug session">Starting a Ruby debug session</a>
+</li><li> <a href="Ruby_Debug_Views.html" title="Ruby Debug Views">Ruby Debug Views</a>
+</li><li> <a href="Inspection_shortcuts_(Ruby).html" title="Inspection shortcuts (Ruby)">Inspection shortcuts (Ruby)</a>
+</li><li> <a href="Debugging_into_ruby_libraries.html" title="Debugging into ruby libraries">Debugging into ruby libraries</a>
+</li><li> <a href="Known_Ruby_debugging_limitations.html" title="Known Ruby debugging limitations">Known Ruby debugging limitations</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1912-0!1!0!!en!2!edit=0 and timestamp 20090201191820 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Automatic_Ruby_code_reloading">http://aptana.com/docs/index.php/Automatic_Ruby_code_reloading</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span> | <span dir='ltr'><a href="Category:RDT.html" title="Category:RDT">RDT</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

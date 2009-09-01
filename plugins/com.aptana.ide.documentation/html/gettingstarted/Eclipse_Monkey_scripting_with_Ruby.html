@@ -1,0 +1,143 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Eclipse Monkey scripting with Ruby</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Eclipse_Monkey_scripting_with_Ruby&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Eclipse Monkey scripting with Ruby [<a href="http://www.aptana.com/docs/index.php?title=Eclipse_Monkey_scripting_with_Ruby&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page gives an introduction to how to write Eclipse Monkey scripts using the Ruby scripting language.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Reference"><span class="tocnumber">2</span> <span class="toctext">Reference</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Location_for_your_Eclipse_Monkey_scripts"><span class="tocnumber">2.1</span> <span class="toctext">Location for your Eclipse Monkey scripts</span></a></li>
+<li class="toclevel-2"><a href="#Example_Script"><span class="tocnumber">2.2</span> <span class="toctext">Example Script</span></a></li>
+<li class="toclevel-2"><a href="#Adding_metadata_to_your_script"><span class="tocnumber">2.3</span> <span class="toctext">Adding metadata to your script</span></a></li>
+<li class="toclevel-2"><a href="#Running_your_script"><span class="tocnumber">2.4</span> <span class="toctext">Running your script</span></a></li>
+<li class="toclevel-2"><a href="#DOM_Objects"><span class="tocnumber">2.5</span> <span class="toctext">DOM Objects</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>If you are new to scripting with Eclipse Monkey, writing an Eclipse Monkey script in Ruby is very similar to writing an Eclipse Monkey script in JavaScript. You might want to familiarize yourself with Eclipse Monkey first by reading through some of the links in the <a href="Scripting_with_Eclipse_Monkey.html" title="Scripting with Eclipse Monkey">Scripting with Eclipse Monkey</a> Help topic.
+</p><p>The reference below lists the information that you will need to know when writing an Eclipse Monkey script in Ruby.
+</p>
+<a name="Reference"></a><h2> <span class="mw-headline">Reference</span></h2>
+<a name="Location_for_your_Eclipse_Monkey_scripts"></a><h3> <span class="mw-headline">Location for your Eclipse Monkey scripts</span></h3>
+<p>The Scripts menu and Scripts View will recognize any *.rb files placed in a top-level "monkey" or "script" folder in any project. Simply create a top-level "monkey" or "script" folder in any of your projects, and copy or move your Eclipse Monkey scripts there.
+</p><p>You can uninstall your scripts by removing them from this folder.
+</p><p>The complete set of scripts is the cumulation of the scripts in all the top-level <b>monkey</b> and <b>script</b> folders in your workspace. 
+</p>
+<a name="Example_Script"></a><h3> <span class="mw-headline">Example Script</span></h3>
+<p>The example Eclipse Monkey script below converts a string to a symbol:
+</p>
+<pre>
+
+=begin
+ Menu: Ruby &gt; String to Symbol
+ Kudos: Christopher Williams
+ Key: M1+Shift+;
+ License: EPL 1.0
+ DOM: http://download.eclipse.org/technology/dash/update/org.eclipse.eclipsemonkey.lang.ruby
+=end
+ 
+# If the current token is a string containing alnums, change it to
+# a symbol
+editor = $editors.get_active_editor
+selection = editor.selection_range
+selected_src = editor.source[selection]
+
+# if entire selection is a string with no dynamic content, then convert the string to a symbol
+match = selected_src.match(/(['&quot;])([_a-zA-Z][_\w]*)\1/)
+return if match.nil? || match.size&nbsp;!= 3
+symbol = &quot;:&quot; + match[2]
+editor.apply_edit(selection.first, selection.length - 1, symbol)
+</pre>
+<a name="Adding_metadata_to_your_script"></a><h3> <span class="mw-headline">Adding metadata to your script</span></h3>
+<p>Script metadata, which consists of keyword value pairs, specifies both how a script is to be run and additional resource requirements. Place your metadata in the first comment block of your script. Your metadata block must be a mult-line (=begin … =end) comment. Only recognized keywords are processed. See the sample script (above) to see an example of a script with metadata.
+</p>
+<a name="Running_your_script"></a><h3> <span class="mw-headline">Running your script</span></h3>
+<p>You can easily set up a menu or keybindings to run your script. Use the metadata to configure your menu and keybinding settings.
+</p><p><b>Menu metadata</b>
+</p><p>Use the <b>Menu:</b> metadata tag to specify that this script is to be included in the Scripts menu. If more than one script specifies the same menu item, the menu item will appear more than once. You can create Submenus using the Eclipse standard notation "Menu &gt; SubMenu" or "Menu &gt; SubMenu &gt; SubSubMenu" (etc.) in the metadata string.
+</p><p><b>Keybinding metadata</b>
+</p><p>Use the <b>Key:</b> metadata tag to specify any single keystroke hotkeys to be assigned to the script. 
+</p><p>The format of keystrokes is described in the org.eclipse.ui.bindings extension point documentation for the sequence attribute which is reproduced below.
+</p><p>The recognized modifiers keys are M1, M2, M3, M4, ALT, COMMAND, CTRL, and SHIFT. The "M" modifier keys are a platform-independent way of representing keys, and these are generally preferred. M1 is the COMMAND key on MacOS X, and the CTRL key on most other platforms. M2 is the SHIFT key. M3 is the Option key on MacOS X, and the ALT key on most other platforms. M4 is the CTRL key on MacOS X, and is undefined on other platforms. 
+</p><p>The actual key is generally specified simply as the ASCII character, in uppercase. So, for example F or , are examples of such keys. However, there are some special keys; keys that have no printable ASCII representation. The following is a list of the current special keys: ARROW_DOWN, ARROW_LEFT, ARROW_RIGHT, ARROW_UP, BREAK, BS, CAPS_LOCK, CR, DEL, END, ESC, F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15, FF, HOME, INSERT, LF, NUL, NUM_LOCK, NUMPAD_0, NUMPAD_1, NUMPAD_2, NUMPAD_3, NUMPAD_4, NUMPAD_5, NUMPAD_6, NUMPAD_7, NUMPAD_8, NUMPAD_9, NUMPAD_ADD, NUMPAD_DECIMAL, NUMPAD_DIVIDE, NUMPAD_ENTER, NUMPAD_EQUAL, NUMPAD_MULTIPLY, NUMPAD_SUBTRACT, PAGE_UP, PAGE_DOWN, PAUSE, PRINT_SCREEN, SCROLL_LOCK, SPACE, TAB and VT. 
+</p><p>We also understand some alternative names for some common special keys. For example, we accept both ESC and ESCAPE, and CR, ENTER and RETURN are all the same.
+</p>
+<a name="DOM_Objects"></a><h3> <span class="mw-headline">DOM Objects</span></h3>
+<p>DOM objects appear as globals in the script namespace. Some DOMs are primitively supported, others are supplied by DOM plug-ins (standard Eclipse plug-ins that contribute an org.eclipse.eclipsemonkey.dom extensions). 
+</p><p>The Ruby extension provides an Editors DOM. This DOM provides access to editors within Eclipse. To access the DOM, simply call the <code>$editors</code> global:
+</p>
+<pre>
+editor = $editors.get_active_editor
+</pre>
+<p>The Editors DOM Object provides two methods:
+</p>
+<ul><li> <code>get_active_editor</code> - Returns an Editor object referring to the active editor in the workspace.
+</li><li> <code>all</code> - Returns an array of Editor objects.
+</li></ul>
+<p>The Editor DOM Object provides:
+</p>
+<ul><li> <code>currentOffset</code> (aliased as <code>current_offset</code>) - Returns a Fixnum with the current offset of the cursor in the editor
+</li><li> <code>source</code> - Returns a String with the contents of the editor
+</li><li> <code>sourceLength</code> (aliased as <code>source_length</code>) - Returns a Fixnum with the length of the editor's contents
+</li><li> <code>id</code> - Returns a String with the unique identifier
+</li><li> <code>close</code>(boolean save)- Closes the editor, and optionally saves the contents first (depending upon boolean value)
+</li><li> <code>save</code> - Saves the editor's contents
+</li><li> <code>selectionRange</code> (aliased as <code>selection_range</code>) - Returns a Range of Fixnums with the offsets of the currently selected text in the editor.
+</li><li> <code>lineDelimeter</code> (aliased as <code>line_delimeter</code>) - Returns a String with the line deleimeter (e.g. \n, \r\n)
+</li><li> <code>applyEdit</code>(Fixnum offset, Fixnum deleteLength, String insertion) (aliased as <code>apply_edit</code>) - Inserts the string at the offset specified, and removes deleteLength characters first from the source.
+</li><li> <code>selectAndReveal</code>(Fixnum offset, Fixnum length) (aliased as <code>select_and_reveal</code>) - Highlights/selects the text at offset to offset + length in the source, and repositions editor to show the selection.
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Scripting_with_Eclipse_Monkey.html" title="Scripting with Eclipse Monkey">Scripting with Eclipse Monkey</a>
+</li><li> <a href="About_Eclipse_Monkey.html" title="About Eclipse Monkey">About Eclipse Monkey</a>
+</li><li> <a href="Eclipse_Monkey_Sample_Projects_and_Scripts.html" title="Eclipse Monkey Sample Projects and Scripts">Eclipse Monkey Sample Projects and Scripts</a>
+</li><li> <a href="Creating_a_new_Eclipse_Monkey_script.html" title="Creating a new Eclipse Monkey script">Creating a new Eclipse Monkey script</a>
+</li><li> <a href="Adding_metadata_to_an_Eclipse_Monkey_script.html" title="Adding metadata to an Eclipse Monkey script">Adding metadata to an Eclipse Monkey script</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2038-0!1!0!!en!2!edit=0 and timestamp 20090202095719 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Eclipse_Monkey_scripting_with_Ruby">http://aptana.com/docs/index.php/Eclipse_Monkey_scripting_with_Ruby</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span> | <span dir='ltr'><a href="Category:RDT.html" title="Category:RDT">RDT</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

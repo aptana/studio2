@@ -1,0 +1,52 @@
+<html>   <head>      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">      <title>User talkKfoster</title>      <link rel="stylesheet" href="../../content/shared.css" type="text/css">	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=User_talkKfoster&action=raw&gen=js">-->	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	   </head>   <body>      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>User talkKfoster [<a href="http://www.aptana.com/docs/index.php?title=User_talkKfoster&action=edit">edit</a>]</h1>         <div class="content">            
+					<p><b>Aptana on Slackware 11</b>
+</p><p>These instructions will probably work for most other distributions also.
+</p><p>Slackware 11<br />
+Aptana build 0.2.8.15936<br />
+Firebug extension 1.1b6.15936 - This will be installed by Aptana the first time you use Debug.<br />
+Firefox-2.0.06 - From mozilla.com, not .tgz package since wanted newest version. Other 2.0 versions seem to work OK also.<br />
+JDK 1.5.0_09 - from Slack install<br />
+</p><p><br />
+1. Unzip Aptana to /opt, creating /opt/aptana.
+</p><p>2. Get a gtk2/xft enabled version of Mozilla 1.7.12 here:
+</p><p><a href="http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla1.7.12/contrib/mozilla-i686-pc-linux-gnu-1.7.12-gtk2+xft.tar.gz" class="external free" title="http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla1.7.12/contrib/mozilla-i686-pc-linux-gnu-1.7.12-gtk2+xft.tar.gz" rel="nofollow">http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla1.7.12/contrib/mozilla-i686-pc-linux-gnu-1.7.12-gtk2+xft.tar.gz</a>
+</p><p>Yes, you need mozilla to get help screens and it is also used on the Aptana Startup Screen. You can actually run without it but I recommend it. That is all it is used for. That's just the way it is.
+</p><p>3. Untar mozilla to /opt/aptana, creating /opt/aptana/mozilla.
+</p><p>4. Create a file called runAptana in /opt/aptana which contains the following:<br /><br />
+export MOZILLA_FIVE_HOME=/opt/Aptana/mozilla<br />
+/opt/aptana/Aptana
+</p><p>Of course you could just add MOZILLA_FIVE_HOME to ~/.bash_profile or /etc/profile instead if you want.
+</p><p>5. chmod +x /opt/aptana/runAptana
+</p><p>6. If you have a previous version of firebug in firefox, uninstall it and then shutdown firefox. You must shutdown firefox or the addon will not really be uninstalled. You need to do this since Aptana uses a modified version of firebug.
+</p><p>7. Startup Aptana with the runAptana script. You can create a link to it on the desktop if you want. I started Aptana from an X console such as konsole the first couple of times so I could see if any standard err messages are generated.
+</p><p>8. In Aptana, open an html file with some javascript.
+</p><p>9. Click on Run/Debug.
+</p><p>10. On Debug screen (Create, manage, and run screen) select the Debug tab for the configuration you are going to use.
+On the Debug tab, select 'Use launch specific options' and then select 'Suspend on start'. For some reason I wasn't able to create breakpoints/step through code unless this was selected. This might change in the future.
+</p><p>11. The first time you launch a debug session in Aptana, firefox will be scanned to see if a plugin Aptana uses is installed. The Aptana plugin is based on firebug and if there is an existing version already installed, the Aptana plugin and the existing plugin will conflict. Be sure to uninstall any version of firebug you have installed before running Aptana debug. You will be prompted to allow Aptana to install the plugin. Do so.
+</p><p>12. Hopefully everything will now be operational. Now it's time to read some Aptana faqs. Visit the forums for any questions you might have: <a href="http://www.aptana.com/forums/index.php" class="external free" title="http://www.aptana.com/forums/index.php" rel="nofollow">http://www.aptana.com/forums/index.php</a>
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2051-0!1!0!!en!2!edit=0 and timestamp 20080310143652 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/User_talk:Kfoster">http://aptana.com/docs/index.php/User_talk:Kfoster</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					          </div>      </div>   </body></html> 

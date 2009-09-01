@@ -1,0 +1,102 @@
+/**
+ * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * dual-licensed under both the Aptana Public License and the GNU General
+ * Public license. You may elect to use one or the other of these licenses.
+ * 
+ * This program is distributed in the hope that it will be useful, but
+ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
+ * NONINFRINGEMENT. Redistribution, except as permitted by whichever of
+ * the GPL or APL you select, is prohibited.
+ *
+ * 1. For the GPL license (GPL), you can redistribute and/or modify this
+ * program under the terms of the GNU General Public License,
+ * Version 3, as published by the Free Software Foundation.  You should
+ * have received a copy of the GNU General Public License, Version 3 along
+ * with this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ * 
+ * Aptana provides a special exception to allow redistribution of this file
+ * with certain Eclipse Public Licensed code and certain additional terms
+ * pursuant to Section 7 of the GPL. You may view the exception and these
+ * terms on the web at http://www.aptana.com/legal/gpl/.
+ * 
+ * 2. For the Aptana Public License (APL), this program and the
+ * accompanying materials are made available under the terms of the APL
+ * v1.0 which accompanies this distribution, and is available at
+ * http://www.aptana.com/legal/apl/.
+ * 
+ * You may view the GPL, Aptana's exception and additional terms, and the
+ * APL in the file titled license.html at the root of the corresponding
+ * plugin containing this source file.
+ * 
+ * Any modifications to this file must keep this entire header intact.
+ */
+package com.aptana.ide.server.jetty;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.eclipse.core.runtime.Path;
+
+import com.aptana.jaxer.connectors.servlet.interfaces.IDocumentRootResolver;
+
+/**
+ * @author Kevin Sawicki (ksawicki@aptana.com)
+ */
+public class JettyDocumentRootResolver implements IDocumentRootResolver
+{
+
+	private String documentRoot;
+	private Path rootPath;
+
+	/**
+	 * Jetty document root resolver
+	 * 
+	 * @param documentRoot
+	 */
+	public JettyDocumentRootResolver(String documentRoot)
+	{
+		this.documentRoot = documentRoot;
+		this.rootPath = new Path(documentRoot);
+	}
+
+	/**
+	 * @see com.aptana.jaxer.connectors.servlet.interfaces.IDocumentRootResolver#getDocumentRoot(javax.servlet.ServletRequest,
+	 *      javax.servlet.ServletResponse)
+	 */
+	public String getDocumentRoot(ServletRequest request, ServletResponse response)
+	{
+		return documentRoot;
+	}
+
+	/**
+	 * @see com.aptana.jaxer.connectors.servlet.interfaces.IDocumentRootResolver#getPageFile(javax.servlet.ServletRequest,
+	 *      javax.servlet.ServletResponse)
+	 */
+	public String getPageFile(ServletRequest request, ServletResponse response)
+	{
+		String path = null;
+		try
+		{
+			if (request instanceof HttpServletRequest)
+			{
+				path = ((HttpServletRequest) request).getServletPath();
+//				String ref = ((HttpServletRequest) request).getHeader("Referer"); //$NON-NLS-1$
+//				if (ref != null)
+//				{
+//					URL url = new URL(ref);
+//					path = url.getPath();
+//				}
+				path = this.rootPath.append(path).makeAbsolute().toString();
+			}
+		}
+		catch (Exception e)
+		{
+			path = null;
+		}
+		return path;
+	}
+
+}

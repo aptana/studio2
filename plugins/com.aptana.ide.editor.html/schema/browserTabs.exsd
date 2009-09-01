@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.editor.html" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.editor.html" id="browserTabs" name="Browser Tabs"/>
+      </appInfo>
+      <documentation>
+         This extension point allows tabs to be added to an opened HTML editor either dynamically or statically.  The dynamic tabs are added via a callback when the editor opens and the static pages are build with the metadata in the extension point and added when the editor first opens.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="tab" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="static" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="tab">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class that returns an array of preview pages to add.  This class must implement com.aptana.ide.editor.html.preview.IBrowserTabAdder or it will be ignored.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.editor.html.preview.IBrowserTabAdder"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="static">
+      <complexType>
+         <attribute name="url" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Url that the preview tab will have it&apos;s browser widget set to
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Name that will be displayed on the preview tab
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         This extension pointed was added in Aptana Studio 1.2.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.editor.html.browserTabs&quot;&gt;
+	&lt;tab class=&quot;com.my.xyz.MyTabAdder&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+This examples contributes the MyTabAdder class to be called each time an HTML editor is opened.  MyTabAdder must implement com.aptana.ide.editor.html.preview.IBrowserTabAdder.  Each HTML editor opened will make a call to getAddOnTabs(MultiPageHTMLEditor editor, Composite parent) and MyTabAdder can then introspect the editor and return any com.aptana.ide.editor.html.preview.IPreviewConfigurationPage objects that should be added as preview tabs.
+
+&lt;p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.editor.html.browserTabs&quot;&gt;
+	&lt;static url=&quot;http://docs.jquery.com/Main_Page&quot; name=&quot;jQuery Docs&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+This example contributes a preview page named jQuery Docs that will be an embedded browser with a url set to http://docs.jquery.com/Main_Page
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to add a cloud preview tab when an HTML file is opened in a project that has an associated Aptana Cloud site.  This is done the by the com.aptana.ide.server.cloud.ui.CloudTabAdder class.
+      </documentation>
+   </annotation>
+
+
+</schema>

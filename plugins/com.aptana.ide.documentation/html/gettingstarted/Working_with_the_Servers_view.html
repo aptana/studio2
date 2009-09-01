@@ -1,0 +1,99 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Working with the Servers view</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Working_with_the_Servers_view&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Working with the Servers view [<a href="http://www.aptana.com/docs/index.php?title=Working_with_the_Servers_view&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Use the Servers View to start, stop, and manage your servers in Aptana Studio.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Displaying_the_Servers_View"><span class="tocnumber">1</span> <span class="toctext">Displaying the Servers View</span></a></li>
+<li class="toclevel-1"><a href="#Adding_or_Configuring_a_server"><span class="tocnumber">2</span> <span class="toctext">Adding or Configuring a server</span></a></li>
+<li class="toclevel-1"><a href="#Starting_a_server"><span class="tocnumber">3</span> <span class="toctext">Starting a server</span></a></li>
+<li class="toclevel-1"><a href="#Restarting_a_server"><span class="tocnumber">4</span> <span class="toctext">Restarting a server</span></a></li>
+<li class="toclevel-1"><a href="#Stopping_a_server"><span class="tocnumber">5</span> <span class="toctext">Stopping a server</span></a></li>
+<li class="toclevel-1"><a href="#Monitoring_your_servers"><span class="tocnumber">6</span> <span class="toctext">Monitoring your servers</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">7</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Displaying_the_Servers_View"></a><h2> <span class="mw-headline">Displaying the Servers View</span></h2>
+<p>From the Aptana menu, select the <b>Show Views submenu</b> and choose <b>Servers</b>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:502px;"><a href="Image:ServersViewJax.png.html" class="image" title="Servers view"><img alt="Servers view" src="docs/images/thumb/8/85/ServersViewJax.png/500px-ServersViewJax.png" width="500" height="165" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:ServersViewJax.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Servers view</div></div></div><br style="Clear:both;" />
+<a name="Adding_or_Configuring_a_server"></a><h2> <span class="mw-headline">Adding or Configuring a server</span></h2>
+<ol><li>On the Servers view toolbar, click the <b>Add Server</b> button <a href="Image:IconAddServer.png.html" class="image" title="Image:iconAddServer.png"><img alt="Image:iconAddServer.png" src="docs/images/7/76/IconAddServer.png" width="36" height="22" border="0" /></a>
+</li><li>Select the type of server that you want to add or configure and click <b>OK</b>--choices include Generic Web Server, Internal Jetty Server, Jaxer, Jaxer+Apache, Local Apache, MySQL and Rails but your list may differ depending on your specific confiuguration
+</li><li>Fill in the information for your server, including server name, host name, port, path to log file and document root as well as settings specific to the server type
+</li><li>Click <b>OK</b>
+</li></ol>
+<div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:Generic_Doc-Root.jpg.html" class="image" title="Generic Webserver settings"><img alt="Generic Webserver settings" src="docs/images/thumb/b/bd/Generic_Doc-Root.jpg/300px-Generic_Doc-Root.jpg" width="300" height="291" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Generic_Doc-Root.jpg.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Generic Webserver settings</div></div></div> <div class="thumb tleft"><div class="thumbinner" style="width:302px;"><a href="Image:LocalApache_Doc-root.jpg.html" class="image" title="Local Apache settings"><img alt="Local Apache settings" src="docs/images/thumb/6/6b/LocalApache_Doc-root.jpg/300px-LocalApache_Doc-root.jpg" width="300" height="250" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:LocalApache_Doc-root.jpg.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Local Apache settings</div></div></div><br style="clear: both;" />
+<a name="Starting_a_server"></a><h2> <span class="mw-headline">Starting a server</span></h2>
+<p>Select the server in the Servers View and click the <b>Start Server</b> button <a href="Image:IconStartServer.png.html" class="image" title="Image:iconStartServer.png"><img alt="Image:iconStartServer.png" src="docs/images/5/56/IconStartServer.png" width="23" height="22" border="0" /></a>.
+</p>
+<a name="Restarting_a_server"></a><h2> <span class="mw-headline">Restarting a server</span></h2>
+<p>Select the paused server in the Servers View and click the <b>Restart Server</b> button <a href="Image:IconRestartServer.png.html" class="image" title="Image:iconRestartServer.png"><img alt="Image:iconRestartServer.png" src="docs/images/7/7e/IconRestartServer.png" width="23" height="22" border="0" /></a>
+</p>
+<a name="Stopping_a_server"></a><h2> <span class="mw-headline">Stopping a server</span></h2>
+<p>Select the server in the Servers View and click the <b>Stop Server</b> button <a href="Image:IconStopServer.png.html" class="image" title="Image:iconStopServer.png"><img alt="Image:iconStopServer.png" src="docs/images/4/46/IconStopServer.png" width="23" height="22" border="0" /></a>.
+</p>
+<a name="Monitoring_your_servers"></a><h2> <span class="mw-headline">Monitoring your servers</span></h2>
+<p>The Servers View provides you with access to several tools to monitor and help troubleshoot your server:
+</p>
+<ul><li> Click the <b>Open Console</b> button to open a console view <a href="Image:IconOpenConsole.png.html" class="image" title="Image:iconOpenConsole.png"><img alt="Image:iconOpenConsole.png" src="docs/images/4/47/IconOpenConsole.png" width="36" height="22" border="0" /></a>
+</li><li> Click the <b>Open Log</b> button to open a log in the TailView View <a href="Image:IconOpenLog.png.html" class="image" title="Image:iconOpenLog.png"><img alt="Image:iconOpenLog.png" src="docs/images/2/22/IconOpenLog.png" width="23" height="22" border="0" /></a>
+</li><li> Click the <b>View Statistics</b> button to ping the server and view statistics for it <a href="Image:IconViewStatistics.png.html" class="image" title="Image:iconViewStatistics.png"><img alt="Image:iconViewStatistics.png" src="docs/images/a/ad/IconViewStatistics.png" width="23" height="22" border="0" /></a>
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Displaying_Aptana_Views.html" title="Displaying Aptana Views">Displaying Aptana Views</a>
+</li><li> <a href="About_the_Jaxer_server.html" title="About the Jaxer server">About the Jaxer server</a>
+</li><li> <a href="Getting_Started_with_Jaxer_in_Aptana_Studio.html" title="Getting Started with Jaxer in Aptana Studio">Getting Started with Jaxer in Aptana Studio</a>
+</li><li> <a href="Creating_a_new_Jaxer_project.html" title="Creating a new Jaxer project">Creating a new Jaxer project</a>
+</li><li> <a href="Previewing_a_Jaxer_project.html" title="Previewing a Jaxer project">Previewing a Jaxer project</a>
+</li><li> <a href="About_Jaxer_Views.html" title="About Jaxer Views">About Jaxer Views</a>
+<ul><li> <a href="Displaying_the_TailView_View.html" title="Displaying the TailView View">Displaying the TailView View</a>
+</li><li> <a href="Displaying_the_Jaxer_Activity_Monitor_View.html" title="Displaying the Jaxer Activity Monitor View">Displaying the Jaxer Activity Monitor View</a>
+</li><li> <a href="Displaying_the_Jaxer_Shell_View.html" title="Displaying the Jaxer Shell View">Displaying the Jaxer Shell View</a>
+</li></ul>
+</li><li> <a href="Configuring_your_Jaxer_servers.html" title="Configuring your Jaxer servers">Configuring your Jaxer servers</a>
+</li><li> <a href="Setting_your_TailView_preferences.html" title="Setting your TailView preferences">Setting your TailView preferences</a>
+</li><li> <a href="JaxerManager_Command_Line_Interface_(CLI)_Reference.html" title="JaxerManager Command Line Interface (CLI) Reference">JaxerManager_Command_Line_Interface_(CLI) Reference</a>
+</li><li><a href="Running_the_Jaxer_server_diagnostic_tools.html" title="Running the Jaxer server diagnostic tools">Running the Jaxer server diagnostic tools</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2142-0!1!0!!en!2!edit=0 and timestamp 20090202130336 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Working_with_the_Servers_view">http://aptana.com/docs/index.php/Working_with_the_Servers_view</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

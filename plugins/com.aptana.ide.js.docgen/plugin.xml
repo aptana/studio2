@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+	<extension point="org.eclipse.ui.editorActions"> 
+	<editorContribution 
+	      id="org.eclipse.ui.articles.action.contribution.editor" 
+	   targetID="com.aptana.ide.editors.JSEditor">
+	   <action
+	         id="com.aptana.ide.js.docgen.actions.GenerateHTMLDocsAction" 
+	         label="%action.label.HTML" 
+	         icon="icons/icon_js_doc.gif"
+	         tooltip="%action.tooltip.HTML"
+	      toolbarPath="Normal/additions"
+	         class="com.aptana.ide.js.docgen.actions.GenerateHTMLDocsAction"> 
+	      </action> 
+	   </editorContribution> 
+	</extension>
+	   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="com.aptana.ide.js.docgen.views.EditorContentPreviewView"
+            id="com.aptana.ide.js.docgen.views.visualscriptdoc"
+            category="com.aptana.ide.js.ui"
+            icon="icons/icon_js_doc.gif"            
+            name="%view.name.ScriptDoc"/>
+   </extension>
+   <extension
+             point="org.eclipse.ui.themes">          
+          <colorDefinition
+                categoryId="com.aptana.ide.core.ui.apearance"
+                colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
+                id="com.aptana.ide.core.ui.background.color.visualscriptdocView"
+                isEditable="true"
+                label="%visualscriptdocView.name"/>
+		 <colorDefinition
+                categoryId="com.aptana.ide.core.ui.apearance"
+                colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
+                id="com.aptana.ide.core.ui.foreground.color.visualscriptdocView"
+                isEditable="true"
+                label="%visualscriptdocforeView.name"/>                               
+   </extension>
+</plugin>

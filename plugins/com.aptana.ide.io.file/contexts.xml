@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+	<context id="file_view_context">
+		<description>The File View gives you access to the entire file system on your local hard drive.</description>
+		<topic
+			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_File_View.html"
+			label="Displaying the File View" />
+	</context>
+</contexts>

@@ -1,0 +1,112 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Writing to the Firebug console</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Writing_to_the_Firebug_console&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Writing to the Firebug console [<a href="http://www.aptana.com/docs/index.php?title=Writing_to_the_Firebug_console&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page describes how to add code to write messages to the Firebug console.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Writing_to_the_console"><span class="tocnumber">2.1</span> <span class="toctext">Writing to the console</span></a></li>
+<li class="toclevel-2"><a href="#Console_commands"><span class="tocnumber">2.2</span> <span class="toctext">Console commands</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Use the Firebug console to log information about a web page. 
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Writing_to_the_console"></a><h3> <span class="mw-headline">Writing to the console</span></h3>
+<p>To write messages to the Firebug console:
+</p>
+<ol>
+			<li>In the lower right corner of Firefox, click the <b>Firebug</b> button <a href="Image:IconFirebug.png.html" class="image" title="Image:iconFirebug.png"><img alt="Image:iconFirebug.png" src="docs/images/2/26/IconFirebug.png" width="22" height="20" border="0" /></a> to start Firebug.</li>
+			<li>Click the <a href="Image:IconFirebugConsole.png.html" class="image" title="Image:iconFirebugConsole.png"><img alt="Image:iconFirebugConsole.png" src="docs/images/c/c3/IconFirebugConsole.png" width="62" height="20" border="0" /></a> tab to view the <b>Console</b> tab.</li>
+			<li>Place your cursor on the command line (shown below) and type one of the console commands (described below).
+				<p><a href="Image:FirebugCommandLine.png.html" class="image" title="Image:firebugCommandLine.png"><img alt="Image:firebugCommandLine.png" src="docs/images/5/5e/FirebugCommandLine.png" width="301" height="160" border="0" /></a></p></li>
+			<li>Press the <b>Return</b> key on your keyboard to execute the command.</li>			
+		</ol>
+<a name="Console_commands"></a><h3> <span class="mw-headline">Console commands</span></h3>
+<p>Firebug recognizes a number of commands in addition to <b>console.log</b>. See <a href="http://www.getfirebug.com/console.html" class="external free" title="http://www.getfirebug.com/console.html" rel="nofollow">http://www.getfirebug.com/console.html</a> for a complete list of commands.
+</p><p><b>console.log</b>
+</p><p>Use <b>console.log</b> to write any message to the console. You may use either of the following formats:
+</p>
+<pre>
+console.log(&quot;Hello&quot;, postman, &quot;!&quot;);
+</pre>
+<p>which displays as
+</p>
+<pre>Hello Newman!</pre>
+<p>or 
+</p>
+<pre>
+console.log(&quot;Hello&nbsp;%s!&quot;, postman);
+</pre>
+<p>which also displays as 
+</p>
+<pre>Hello Newman!</pre>
+<p>You can use the following characters to format your log message output:
+</p>
+<ul><li>&nbsp;%s = string
+</li><li>&nbsp;%d = integer (number formatting not yet supported in Firebug)
+</li><li>&nbsp;%i = integer
+</li><li>&nbsp;%f = floating point number (number formatting not yet supported in Firebug)
+</li><li>&nbsp;%o = object hyperlink 
+</li></ul>
+<p>See <a href="http://www.getfirebug.com/console.html" class="external free" title="http://www.getfirebug.com/console.html" rel="nofollow">http://www.getfirebug.com/console.html</a> for a full list of console API commands for Firebug.
+</p>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Firebug.html" title="About Firebug">About Firebug</a>
+</li><li> <a href="Installing_the_Firebug_extension.html" title="Installing the Firebug extension">Installing the Firebug extension</a>
+</li><li> <a href="Inspecting_HTML.html" title="Inspecting HTML">Inspecting HTML</a>
+</li><li> <a href="Inspecting_CSS.html" title="Inspecting CSS">Inspecting CSS</a>
+</li><li> <a href="Monitoring_XMLHttpRequests.html" title="Monitoring XMLHttpRequests">Monitoring XMLHttpRequests</a>
+</li><li> <a href="Editing_a_web_page.html" title="Editing a web page">Editing a web page</a>
+</li><li> <a href="Setting_breakpoints_in_Firebug.html" title="Setting breakpoints in Firebug">Setting breakpoints in Firebug</a>
+</li><li> <a href="Profiling_code_performance.html" title="Profiling code performance">Profiling code performance</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1659-0!1!0!!en!2!edit=0 and timestamp 20090201194053 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Writing_to_the_Firebug_console">http://aptana.com/docs/index.php/Writing_to_the_Firebug_console</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

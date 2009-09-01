@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.aptana.ide.feature"
+      label="%featureName"
+      version="1.5.1.qualifier"
+      provider-name="%providerName"
+      plugin="com.aptana.ide.branding">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://update.aptana.com/update/studio/"/>
+   </url>
+
+   <includes
+         id="com.aptana.ide.feature.editors"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.eclipsemonkey"
+         version="0.0.0"/>
+
+   <includes
+         id="com.aptana.ide.feature.xul"
+         version="0.0.0"
+         os="macosx,win32"/>
+
+   <includes
+         id="com.aptana.ide.feature.syncing.ftp"
+         version="0.0.0"/>
+
+   <includes
+         id="com.aptana.ide.feature.doc"
+         version="0.0.0"/>
+
+   <includes
+         id="com.aptana.ide.feature.desktop.integration"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.ui.intro"/>
+   </requires>
+
+   <plugin
+         id="com.aptana.ide.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>

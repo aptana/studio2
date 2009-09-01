@@ -1,0 +1,73 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Setting memory usage configuration</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Setting_memory_usage_configuration&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Setting memory usage configuration [<a href="http://www.aptana.com/docs/index.php?title=Setting_memory_usage_configuration&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>By default, Eclipse allocates a maximum of 256MB of Java heap memory, which is usually enough for most development tasks. However, depending on the JRE that you are running and if you are working with additional plugins and have many files open, you may need to increase your amount of memory. Use the -vmargs command line argument to increase your heap memory, with the &lt;memory size&gt; set to a value greater than <b>256M</b>
+</p>
+<pre>   eclipse -vmargs -Xmx&lt;memory size&gt;
+</pre>
+<p>If you are using a Sun VM, you may also need to increase the size of the permanent generation memory, which has a default maximum of 64MB. Use the <code>-XX:MaxPermSize=[memory size]</code> argument to increase the maximum permanent generation size:
+</p>
+<pre>   eclipse -vmargs -XX:MaxPermSize=&lt;memory size&gt;
+</pre>
+<p>Check your VM documentation to see if this argument is available for your VM.
+</p><p><b>Note:</b> Setting memory sizes to be larger than the amount of available physical memory on your machine can cause issues with Java that severely degrades your computer's performance.
+</p><p>You can also add this entry to AptanaStudio.ini or eclipse.ini to make the change permanent.
+</p>
+<a name="Aptana_Studio"></a><h2> <span class="mw-headline">Aptana Studio</span></h2>
+<pre>   -name
+   Aptana
+   -vmargs
+   -Xms512m
+   -Xmx512m
+   -XX:PermSize=256m
+   -XX:MaxPermSize=256m
+   -Djava.awt.headless=true
+</pre>
+<a name="Eclipse_with_Studio_plugged_in"></a><h2> <span class="mw-headline">Eclipse with Studio plugged in</span></h2>
+<pre>   -showsplash
+   org.eclipse.platform
+   -vmargs
+   -Xms512m
+   -Xmx512m
+   -XX:PermSize=256m
+   -XX:MaxPermSize=256m
+</pre>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2529-0!1!0!!en!2!edit=0 and timestamp 20090201231630 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Setting_memory_usage_configuration">http://aptana.com/docs/index.php/Setting_memory_usage_configuration</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

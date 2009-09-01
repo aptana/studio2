@@ -1,0 +1,113 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Documenting your code using ScriptDoc</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Documenting_your_code_using_ScriptDoc&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Documenting your code using ScriptDoc [<a href="http://www.aptana.com/docs/index.php?title=Documenting_your_code_using_ScriptDoc&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Using Aptana's ScriptDoc system to document your code enables Code Assist to work for your own code in addition to built-in support the core JavaScript language and many popular Ajax JavaScript libraries. This page gives some of the guidelines to think about when adding ScriptDoc blocks to your code.
+</p><p>Peter Geil has posted a <a href="http://www.scribd.com/doc/10040039/ScriptDoc-Cheatsheet-v01" class="external text" title="http://www.scribd.com/doc/10040039/ScriptDoc-Cheatsheet-v01" rel="nofollow">nice one page cheat sheet</a> for ScriptDoc on Scribd.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Basic_Instructions"><span class="tocnumber">1</span> <span class="toctext">Basic Instructions</span></a></li>
+<li class="toclevel-1"><a href="#Example:_A_basic_documentation_block_for_a_getFoo.28.29_function"><span class="tocnumber">2</span> <span class="toctext">Example: A basic documentation block for a getFoo() function</span></a></li>
+<li class="toclevel-1"><a href="#Ordering_your_tags"><span class="tocnumber">3</span> <span class="toctext">Ordering your tags</span></a></li>
+<li class="toclevel-1"><a href="#Guidelines_for_ordering_multiple_versions_of_the_same_tag"><span class="tocnumber">4</span> <span class="toctext">Guidelines for ordering multiple versions of the same tag</span></a></li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">5</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Basic_Instructions"></a><h2> <span class="mw-headline">Basic Instructions</span></h2>
+<ul><li> Add a documentation block immediately before each function or class. The ScriptDoc parser automatically associates the documentation block with the function or class following it.
+</li><li> Enclose each documentation block within a slash-asterisk-asterisk (/**) and asterisk-slash (*/) comment set.
+</li><li> The first line in the block, except for file overviews, should be a short description of the function or class.
+</li><li> After the description add <a href="ScriptDoc_comprehensive_tag_reference.html" title="ScriptDoc comprehensive tag reference">tags</a> that explain the function, including a description, what parameters it takes and its return type. You can also use the <a href="ScriptDoc_tag_quick_reference.html" title="ScriptDoc tag quick reference">ScriptDoc tag quick reference</a> to quickly look up a tag once you are familiar with the syntax for each tag.
+</li><li> As an alternative to inline comments in your JavaScript file, you may insert @id tags above your JavaScript functions and <a href="Documenting_your_code_in_an_.sdoc_file.html" title="Documenting your code in an .sdoc file">store the documentation in a separate .sdoc file</a>.
+</li></ul>
+<a name="Example:_A_basic_documentation_block_for_a_getFoo.28.29_function"></a><h2> <span class="mw-headline">Example: A basic documentation block for a getFoo() function</span></h2>
+<pre>/** 
+* Gets the current foo 
+* @param {String} fooId	The unique identifier for the foo.
+* @return {Object}	Returns the current foo.
+*/
+function getFoo(fooID){
+}
+</pre>
+<a name="Ordering_your_tags"></a><h2> <span class="mw-headline">Ordering your tags</span></h2>
+<p>Add your tags in the following order, as appropriate:
+</p>
+<ul><li> @classDescription (constructors only)  
+</li><li> @param (classes, interfaces, functions and constructors only) 
+</li><li> @return (functions only) 
+</li><li> @type (functions only)  
+</li><li> @author (classes and interfaces only, required) 
+</li><li> @version (classes and interfaces only, required) 
+</li><li> @see 
+</li><li> @since 
+</li><li> @deprecated
+</li></ul>
+<a name="Guidelines_for_ordering_multiple_versions_of_the_same_tag"></a><h2> <span class="mw-headline">Guidelines for ordering multiple versions of the same tag</span></h2>
+<ul><li> @author - List @author tags chronologically, starting with the author who created the file or function.
+</li><li> @param - List @param tags in argument declaration order.
+</li><li> @see - List @see tags from nearest to furthest access, shown below:
+</li></ul>
+<pre>@see #Constructor(Type, Type...)
+@see #Constructor(Type id, Type id...)
+@see #method(Type, Type,...)
+@see #method(Type id, Type, id...)
+@see Class
+@see Class#field
+@see Class#Constructor(Type, Type...)
+@see Class#Constructor(Type id, Type id)
+@see Class#method(Type, Type,...)
+@see Class#method(Type id, Type id,...)
+@see package.Class
+@see package.Class#field
+@see package.Class#Constructor(Type, Type...)
+@see package.Class#Constructor(Type id, Type id)
+@see package.Class#method(Type, Type,...)
+@see package.Class#method(Type id, Type, id)
+@see package
+</pre>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="About_Code_Assist.html" title="About Code Assist">About Code Assist</a>
+</li><li> <a href="Documenting_your_code_in_an_.sdoc_file.html" title="Documenting your code in an .sdoc file">Documenting your code in an .sdoc file</a>
+</li><li> <a href="ScriptDoc_comprehensive_tag_reference.html" title="ScriptDoc comprehensive tag reference">ScriptDoc comprehensive tag reference</a>
+</li><li> <a href="ScriptDoc_tag_quick_reference.html" title="ScriptDoc tag quick reference">ScriptDoc tag quick reference</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1336-0!1!0!!en!2!edit=0 and timestamp 20090201221502 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Documenting_your_code_using_ScriptDoc">http://aptana.com/docs/index.php/Documenting_your_code_using_ScriptDoc</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Category</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

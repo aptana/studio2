@@ -1,0 +1,90 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Connect to Jaxer plus Apache Server</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Connect_to_Jaxer_plus_Apache_Server&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Connect to Jaxer plus Apache Server [<a href="http://www.aptana.com/docs/index.php?title=Connect_to_Jaxer_plus_Apache_Server&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#What"><span class="tocnumber">1</span> <span class="toctext">What</span></a></li>
+<li class="toclevel-1"><a href="#How"><span class="tocnumber">2</span> <span class="toctext">How</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Getting_to_the_Connection_Window"><span class="tocnumber">2.1</span> <span class="toctext">Getting to the Connection Window</span></a></li>
+<li class="toclevel-2"><a href="#Using_the_Dialog_Box"><span class="tocnumber">2.2</span> <span class="toctext">Using the Dialog Box</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="What"></a><h2> <span class="mw-headline">What</span></h2>
+<p><span style="display:none;">x</span>
+The Jaxer Package Server is a pre-configured Jaxer/Apache stand-alone server.
+<br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="How"></a><h2> <span class="mw-headline">How</span></h2>
+<p><span style="display:none;">x</span>
+</p>
+<a name="Getting_to_the_Connection_Window"></a><h3> <span class="mw-headline">Getting to the Connection Window</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:ConnPackageServer.png.html" class="image" title="Open connection window"><img alt="Open connection window" src="docs/images/thumb/4/49/ConnPackageServer.png/200px-ConnPackageServer.png" width="200" height="138" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:ConnPackageServer.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Open connection window</div></div></div><div style="float: left; width: 500px;">The <b>Connect to Package Server</b> dialog box can be accessed in two ways:
+<ol><li> On the <a href="My_Aptana_-_Jaxer.html" title="My Aptana - Jaxer">My Aptana - Jaxer</a> page <b>Actions</b> list, click the last link:  <b>Connect to Jaxer Package Server</b>
+</li><li> Click the Jaxer menu in the top left corner of the IDE. A drop-down menu includes the <b>Connect to Jaxer Package Server</b> option.
+</li></ol>
+</div>
+<p><br style="clear: both;" />
+<span style="display:none;">x</span>
+</p>
+<a name="Using_the_Dialog_Box"></a><h3> <span class="mw-headline">Using the Dialog Box</span></h3>
+<p><span style="display:none;">x</span>
+</p>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:JaxerPackage.png.html" class="image" title="Connect to a Jaxer Package Server"><img alt="Connect to a Jaxer Package Server" src="docs/images/thumb/8/8f/JaxerPackage.png/200px-JaxerPackage.png" width="200" height="133" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:JaxerPackage.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Connect to a Jaxer Package Server</div></div></div><div style="float: left; width: 500px;">A popup-window allows you to connect to an instance of the Jaxer Package Server, the pre-configured Jaxer/Apache stand-alone server.
+<p>You can edit the following properties:
+</p>
+<ul><li> Name
+</li><li> Description
+</li><li> Hostname - This will be the hostname or IP address where the Jaxer Package is available, usually 127.0.0.1 or localhost.
+</li><li> Path - The local path to the installation directory, e.g. C:\Aptana Jaxer or /Applications/Aptana_Jaxer
+</li><li> Heartbeat URL - This will be the URL where HEAD requests will be sent at regular intervals to determine server status, defaults to: <a href="http://127.0.0.1:8081/aptana" class="external free" title="http://127.0.0.1:8081/aptana" rel="nofollow">http://127.0.0.1:8081/aptana</a>
+</li><li> Web Server Port - The port your Jaxer Package server will be running on. This should match the port specified in the Heartbeat URL field. By default the serve listens on 8081 to minimize conflicts.
+</li><li> Jaxer Admin Port - This is the port JaxerManager is listening on for its commands (<a href="JaxerManager_Command_Line_Interface_(CLI)_Reference.html" title="JaxerManager Command Line Interface (CLI) Reference">JaxerManager Command Line Interface (CLI) Reference</a>)
+</li><li> Jaxer Connector Port - This is the port web requests from the web server will use to connect to Jaxer.</div>
+</li></ul>
+<p><br style="clear: both;" />
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2300-0!1!0!!en!2!edit=0 and timestamp 20090202192301 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Connect_to_Jaxer_plus_Apache_Server">http://aptana.com/docs/index.php/Connect_to_Jaxer_plus_Apache_Server</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

@@ -1,0 +1,117 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Rails Cloud Deployment</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Rails_Cloud_Deployment&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Rails Cloud Deployment [<a href="http://www.aptana.com/docs/index.php?title=Rails_Cloud_Deployment&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p><b>Related:</b> <a href="Cloud_Deployment.html" title="Cloud Deployment">Deploying a Project to an Aptana Cloud</a>, this page discusses only the differences at the very end of the deployment process for Ruby on Rails projects.
+</p><p>Aptana Studio's <a href="Using_Smart_Sync.html" title="Using Smart Sync">Smart Sync</a> does not include the functionality frequently required when deploying Rails apps and so while Smart Sync can still be used with Rails projects we recommend that <a href="http://capify.org/" class="external text" title="http://capify.org/" rel="nofollow">Capistrano</a> be used for pushing changes to your project out to the Cloud.
+</p><p>Capistrano can run database migrations, restarting the web server, and deploy out of your source code repository rather than directly from the files system. Further, if members of your Cloud development team use Capistrano all members should because Smart Sync will not be able to follow file changes properly. As part of the initial deployment process Aptana Studio will generate a capistrano deployment recipe in the config folder of your rails project. This recipe is set up to work with the SVN (the default) or Git repositories that are included on your Cloud.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Getting_Capistrano"><span class="tocnumber">1</span> <span class="toctext">Getting Capistrano</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Capistrano_Requirements"><span class="tocnumber">1.1</span> <span class="toctext">Capistrano Requirements</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Capistrano_Deployment_.28and_generated_Recipe.29"><span class="tocnumber">2</span> <span class="toctext">Capistrano Deployment (and generated Recipe)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#svn:import_and_git:import"><span class="tocnumber">2.1</span> <span class="toctext">svn:import and git:import</span></a></li>
+<li class="toclevel-2"><a href="#Deploy_and_Run_Migrations"><span class="tocnumber">2.2</span> <span class="toctext">Deploy and Run Migrations</span></a></li>
+<li class="toclevel-2"><a href="#Listing_available_tasks"><span class="tocnumber">2.3</span> <span class="toctext">Listing available tasks</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Tailing_your_Rails_application_log"><span class="tocnumber">3</span> <span class="toctext">Tailing your Rails application log</span></a></li>
+<li class="toclevel-1"><a href="#Git_repository"><span class="tocnumber">4</span> <span class="toctext">Git repository</span></a></li>
+<li class="toclevel-1"><a href="#Gem_Management"><span class="tocnumber">5</span> <span class="toctext">Gem Management</span></a></li>
+<li class="toclevel-1"><a href="#Enabling.2FDisabling_Rails_support"><span class="tocnumber">6</span> <span class="toctext">Enabling/Disabling Rails support</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Getting_Capistrano"></a><h2> <span class="mw-headline"> Getting Capistrano </span></h2>
+<p><a href="http://capify.org/" class="external text" title="http://capify.org/" rel="nofollow">Capistrano</a> is a  package written in Ruby which provides powerful tools for managing deployments and related changes to remote computers, and is widely used in the Rails community for deploying Rails applications. These instructions assume you have Ruby, Rails and Rubygems installed. To install Capistrano, open a command line and enter the following command:
+</p>
+<pre>[sudo] gem install capistrano
+</pre>
+<a name="Capistrano_Requirements"></a><h3> <span class="mw-headline"> Capistrano Requirements </span></h3>
+<p>Capistrano deployments will require a local install of the command line executables for  svn or git (whichever SCM you're using).
+You can download the SVN command line client from <a href="http://subversion.tigris.org/getting.html#binary-packages" class="external text" title="http://subversion.tigris.org/getting.html#binary-packages" rel="nofollow">subversion's home page</a> (requires registration) or <a href="http://www.sliksvn.com/en/download" class="external text" title="http://www.sliksvn.com/en/download" rel="nofollow">a 3rd-party site</a>.
+You can download git from <a href="http://git.or.cz/#download" class="external text" title="http://git.or.cz/#download" rel="nofollow">Git's home page</a>. Window's users will typically want to grab the <a href="http://code.google.com/p/msysgit/" class="external text" title="http://code.google.com/p/msysgit/" rel="nofollow">MSYS binary for git</a>.
+</p>
+<a name="Capistrano_Deployment_.28and_generated_Recipe.29"></a><h2> <span class="mw-headline">Capistrano Deployment (and generated Recipe)</span></h2>
+<p>The Aptana Cloud plugin will generate a working <i>deploy.rb</i> Capistrano recipe for you on Rails projects. If a version of that file already exists in your project it's renamed to <i>deploy.rb.bak</i>. The generated recipe is set up by default to use the SVN repository created as a part of your Cloud site, though you can change it to use Git instead.
+</p><p>The recipe includes tasks to generate your production <i>database.yml</i> file and manage it for you on the deployed cloud site. It will create a database matching your site's name (for instance, example-site.aptanacloud.com gets a database called <i>example_site</i>) as well as a MySQL account for an  <i>app_user</i> user granted all privileges on localhost. The deploy task also properly <i>restarts</i> your Rails app after completing its other tasks.
+</p><p>Capistrano recipes are written in Ruby and can be quite powerful, check <a href="http://capify.org" class="external text" title="http://capify.org" rel="nofollow">their website</a> for tutorials and other kinds of recipes which might be helpful for your applications.
+</p><p>To get started: Open a command line/terminal, change to your Rails project root directory and run the following commands:
+</p>
+<pre>cap deploy:setup
+cap svn:import (or cap git:import) [optional, see below]
+cap deploy
+cap deploy:migrations [optional, see below]
+</pre>
+<p>This command sets up the Cloud box for deployments, imports your project's contents into the source code repository and makes the first push of the project codebase out to the Cloud. Further deployments should be done by checking your code into the source code repository and then running <i>cap deploy</i>.
+</p>
+<a name="svn:import_and_git:import"></a><h3> <span class="mw-headline"> svn:import and git:import </span></h3>
+<p><tt>cap svn:import</tt> and <tt>cap git:import</tt> are one time commands to import your current project into the supplied SVN or Git repository on your Cloud box. If you already have your project under source control, you'll need to edit the recipe to point at them and you can skip this command. <i><b>If the code isn't checked in then please run one of these two commands</b></i> before trying to run <tt>cap deploy</tt>. Deployment assumes your code is in the repository pointed at by the recipe and will attempt to check the code out. <b>It will fail if the code is not checked in!</b>
+</p>
+<a name="Deploy_and_Run_Migrations"></a><h3> <span class="mw-headline"> Deploy and Run Migrations </span></h3>
+<p><tt>cap deploy:migrations</tt> is a command that will run your pending DB migrations remotely on your Cloud. If you have any pending migrations that need to be run you should run this command.
+</p>
+<a name="Listing_available_tasks"></a><h3> <span class="mw-headline"> Listing available tasks </span></h3>
+<p>Capistrano has a switch which allows you to see the list of available tasks. The builtin set of tasks will usually cover most of your needs and you should take a look at what is there to manage your rails application.
+</p><p>To view the list enter:
+</p>
+<pre>cap -T
+</pre>
+<a name="Tailing_your_Rails_application_log"></a><h2> <span class="mw-headline"> Tailing your Rails application log </span></h2>
+<p>If you run into issues running migrations or want to see the logs for your Cloud Rails application, you can view, download or tail your rails application log from the <b>Logs</b> tab for the site in the <b>My Cloud</b> section of <b>My Aptana</b>. The links will appear alongside other common logs like the apache access and error logs.
+</p>
+<a name="Git_repository"></a><h2> <span class="mw-headline">Git repository</span></h2>
+<p>A bare (empty) Git repository is created on every box in the <i>/var/git</i> folder and the clone URL is <i>user@example.aptanacloud.com:/var/git</i>. The specific value for your site can be found in the <i>Access information</i> section of the MyCloud Overview alongside details on your MySQL application username and password, the SVN URL, etc. 
+</p><p>It’d be nice to give the commands to push the initial contents of their project into the repo. I don’t use Git so I’m not sure what those are, I think you do a “git add remote &lt;clone-url&gt; master�? and then a “git push�?. Kris R can probably provide these steps.
+</p>
+<a name="Gem_Management"></a><h2> <span class="mw-headline">Gem Management</span></h2>
+<p>Gems must be installed and uninstalled manually by SSHing into your server and running the gem command under sudo (i.e. <i>sudo gem install mongrel</i>)&mdash;currently the gem command is the only command permitted under sudo.
+</p><p>Use your Aptana ID password when prompted for a password by sudo.
+</p><p>All team members for a site have SSH access to the box.
+</p>
+<a name="Enabling.2FDisabling_Rails_support"></a><h2> <span class="mw-headline">Enabling/Disabling Rails support</span></h2>
+<p>The deployment wizard has an option to enable or disable Rails support. For RadRails projects, this is automatically detected and set to <i>enabled</i>. Non-RadRails users can select <i>Enable</i> manually.
+</p><p>Enabling Rails support also alters your DocumentRoot slightly to work properly (appends <i>/public</i> to the base setting).
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2573-0!1!0!!en!2!edit=0 and timestamp 20090201224254 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Rails_Cloud_Deployment">http://aptana.com/docs/index.php/Rails_Cloud_Deployment</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

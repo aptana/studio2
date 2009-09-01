@@ -1,0 +1,25 @@
+Program
+	:	Statements
+	;
+	
+# level 1
+
+Statements
+	:	Statement {FirstStatement}
+	|	Statements Statement {AddStatement}
+	;
+	
+# level 2
+
+Statement
+	:	DUPLICATE {Duplicate}
+	|	GET_GLOBAL {GetGlobal}
+	|	GET {Get}
+	|	INSTANTIATE {Instantiate}
+	|	INVOKE {Invoke}
+	|	NO_OPERATION {NoOperation}
+	|	POP {Pop}
+	|	PUT {Put}
+	|	PUSH {Push}
+	|	SWAP {Swap}
+	;

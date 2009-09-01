@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.core.buildParticipants">
+      <buildParticipant
+            class="com.aptana.ide.internal.index.core.BuildIndexCleaner"
+            priority="2000000000">
+      </buildParticipant>
+   </extension>
+
+</plugin>

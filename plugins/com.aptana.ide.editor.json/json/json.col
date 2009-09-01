@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<colorizer xmlns="http://www.aptana.com/2007/colorizer/1.0" 
+	language="application/json"
+	background="rgb(255,255,255)" 
+    line-highlight="rgb(232,242,254)" 
+    selection-foreground="COLOR_LIST_SELECTION_TEXT" 
+    selection-background="COLOR_LIST_SELECTION"
+    folding-background="COLOR_WIDGET_BACKGROUND"
+    folding-foreground="rgb(139,139,139)"
+    caret-color="rgb(0,0,0)">
+<category name="WHITESPACE" style="WHITESPACE">
+<token style="WHITESPACE_COMMENT" type="COMMENT"/>
+</category>
+<style foreground="rgb(0,0,0)" id="WHITESPACE"/>
+<style font-style="italic" foreground="rgb(128,128,128)" id="WHITESPACE_COMMENT"/>
+<category name="LITERAL" style="LITERAL">
+<token style="LITERAL_REFERENCE" type="REFERENCE"/>
+<token style="LITERAL_PROPERTY" type="PROPERTY"/>
+</category>
+<style foreground="rgb(0,85,170)" id="LITERAL"/>
+<style foreground="rgb(128,0,0)" id="LITERAL_REFERENCE"/>
+<style font-weight="bold" foreground="rgb(88,137,167)" id="LITERAL_PROPERTY"/>
+<category name="KEYWORD" style="KEYWORD"/>
+<style foreground="rgb(0,64,128)" id="KEYWORD"/>
+<category name="ERROR" style="ERROR"/>
+<style foreground="rgb(255,0,0)" id="ERROR"/>
+<category name="PUNCTUATOR" style="PUNCTUATOR">
+<token style="PUNCTUATOR_RCURLY" type="RCURLY"/>
+<token style="PUNCTUATOR_LBRACKET" type="LBRACKET"/>
+<token style="PUNCTUATOR_LCURLY" type="LCURLY"/>
+<token style="PUNCTUATOR_RBRACKET" type="RBRACKET"/>
+</category>
+<style foreground="rgb(0,0,0)" id="PUNCTUATOR"/>
+<style font-weight="bold" foreground="rgb(0,128,0)" id="PUNCTUATOR_RCURLY"/>
+<style font-weight="bold" foreground="rgb(0,128,0)" id="PUNCTUATOR_LBRACKET"/>
+<style font-weight="bold" foreground="rgb(0,128,0)" id="PUNCTUATOR_LCURLY"/>
+<style font-weight="bold" foreground="rgb(0,128,0)" id="PUNCTUATOR_RBRACKET"/>
+</colorizer>

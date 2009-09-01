@@ -1,0 +1,57 @@
+version						VERSION
+encoding					ENCODING
+standalone					STANDALONE
+yes							YES
+no							NO
+SYSTEM						SYSTEM
+PUBLIC						PUBLIC
+EMPTY						EMPTY
+ANY							ANY
+#PCDATA						PCDATA
+#REQUIRED					REQUIRED
+#IMPLIED					IMPLIED
+#FIXED						FIXED
+CDATA						CDATA
+ID							ID
+IDREF						IDREF
+IDREFS						IDREFS
+ENTITY						ENTITY
+ENTITIES					ENTITIES
+NMTOKEN						NMTOKEN
+NMTOKENS					NMTOKENS
+NDATA						NDATA
+NOTATION					NOTATION
+
+<?xml						XML_DECL
+?>							QUESTION_GREATER_THAN
+[							LBRACKET
+]							RBRACKET
+>							GREATER_THAN
+<							LESS_THAN
+/>							SLASH_GREATER_THAN
+</							LESS_THAN_SLASH
+<!--						COMMENT_OPEN
+-->							COMMENT_CLOSE
+<?							PI_OPEN
+=							EQUAL
+?							QUESTION
+*							STAR
++							PLUS
+<![CDATA[					CDATA_START
+]]>							CDATA_END
+<!DOCTYPE					DOCTYPE_DECL
+<!ELEMENT					ELEMENT_DECL
+<!ATTLIST					ATTLIST_DECL
+<!NOTATION					NOTATION_DECL
+<!ENTITY					ENTITY_DECL
+
+[ \t\r\n]+					WHITESPACE
+[a-zA-Z_:][-a-zA-Z0-9_:]*	NAME
+"[^"]*"						STRING
+'[^']*'						STRING
+&[a-zA-Z_:][-a-zA-Z0-9_:]*;	ENTITY_REF
+&#([0-9]+|x[0-9a-fA-F]+);	CHAR_REF
+%[a-zA-Z_:][-a-zA-Z0-9_:]*;	PE_REF
+
+[^<&]*						CHARDATA
+[\x09\x0a\x0d\x20-\x7f]		CHAR

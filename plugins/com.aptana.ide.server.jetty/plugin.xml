@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension-point id="context" name="Context Customizer" schema="schema/context.exsd"/>
+	<extension-point id="portalService" name="Portlets" schema="schema/portalService.exsd"/>
+	<extension-point id="cometClient" name="Portlets" schema="schema/cometClient.exsd"/>
+	 <extension point="org.eclipse.core.runtime.preferences">
+		<initializer class="com.aptana.ide.server.jetty.preferences.PreferencesInitializer"/>
+   </extension>
+	<extension point="com.aptana.ide.server.jetty.cometClient">
+		<client id="/portal/portlets" class="com.aptana.ide.server.jetty.portal.PortletClient"/>
+		<client id="/portal/user" class="com.aptana.ide.server.jetty.comet.UserClient"/>
+		<client id="/portal/projects" class="com.aptana.ide.server.jetty.ProjectsClient"/>
+		<client id="/portal/projects/show" class="com.aptana.ide.server.jetty.ShowProjectClient"/>
+		<client id="/portal/perspectives/show" class="com.aptana.ide.server.jetty.ShowPerspectiveClient"/>
+		<client id="/portal/views/show" class="com.aptana.ide.server.jetty.ShowViewClient"/>
+		<client id="/portal/browser" class="com.aptana.ide.server.jetty.ShowBrowserClient"/>
+		<client id="/portal/preferences" class="com.aptana.ide.server.jetty.PreferenceClient"/>
+		<client id="/portal/user/available" class="com.aptana.ide.server.jetty.comet.UserNameAvailableClient"/>
+        <client id="/portal/network/online" class="com.aptana.ide.server.jetty.comet.OnlineDetectorClient"/>
+	</extension>
+ <extension
+       point="com.aptana.ide.server.serverTypes">
+    <serverType
+          category="%serverType.category.jetty"
+          class="com.aptana.ide.server.jetty.JettyServerTypeDelegate"
+          description="%serverType.description.jetty"
+          id="com.aptana.ide.server.jetty.jettyHttpServer"
+          launchModes="run"
+          name="%serverType.name.jetty"
+          supportsPublish="false"
+          supportsRestart="true">
+    </serverType>
+    <serverType
+          category="%serverType.category.preview"
+          class="com.aptana.ide.server.jetty.server.PreviewServerTypeDelegate"
+          description="%serverType.description.preview"
+          id="com.aptana.ide.editor.html.previewServer"
+          launchModes="run"
+          name="%serverType.name.preview"
+          supportsPublish="false"
+          supportsRestart="true">
+    </serverType>
+ </extension>
+  <extension
+         point="com.aptana.ide.server.serverProvider">
+      <provider
+            class="com.aptana.ide.server.jetty.server.PreviewServerProvider"
+            icon="icons/jetty.gif"
+            id="com.aptana.ide.editor.html.previewProvider"
+            name="HTML Preview Server Provider">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="com.aptana.ide.debug.core.JSLaunchConfigurationDelegate"
+            class="com.aptana.ide.server.jetty.server.HttpServerProviderAdapterFactory">
+         <adapter type="com.aptana.ide.server.core.IHttpServerProviderAdapter"/>
+      </factory>
+   </extension>
+   <extension
+         point="com.aptana.ide.server.jetty.portalService">
+      <service
+      		id=""
+            resource="content/index.html">
+      </service>
+   </extension>
+   <extension
+         point="com.aptana.ide.core.ui.diagnosis">
+      <diagnosis
+            class="com.aptana.ide.server.jetty.portal.PortalDiagnosticLog"
+            ordinal="1200">
+      </diagnosis>
+   </extension>
+</plugin>

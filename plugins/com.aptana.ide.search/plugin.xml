@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension
+    	id="FileSearchPage"
+        point="org.eclipse.search.searchResultViewPages">
+  <viewPage
+        class="com.aptana.ide.search.AptanaFileSearchPage"
+        icon="icons/searchres.gif"
+        id="org.eclipse.search.text.AptanaFileSearchResultPage"
+        searchResultClass="org.eclipse.search.internal.ui.text.FileSearchResult">
+  </viewPage>
+  <viewPage
+        class="com.aptana.ide.search.ui.filesystem.AptanaFileSystemSearchPage"
+        icon="icons/searchres.gif"
+        id="org.eclipse.search.text.AptanaFileSystemSearchResultPage"
+        searchResultClass="com.aptana.ide.search.epl.FileSystemSearchResult">
+  </viewPage>
+	</extension>
+	
+	<extension point="org.eclipse.search.searchPages">
+		<page
+        canSearchEnclosingProjects="true"
+        class="com.aptana.ide.search.epl.AptanaTextSearchPage"
+        enabled="true"
+        extensions="*:1"
+        icon="icons/tsearch_obj.gif"
+        id="com.aptana.ide.search.epl.internal.ui.text.TextSearchPage"
+        label="%fileSearch"
+        showScopeSection="true"
+        sizeHint="400,430"
+        tabPosition="1">
+		</page>
+	</extension>
+ <extension
+       point="org.eclipse.search.textSearchQueryProvider">
+    <textSearchQueryProvider
+          class="com.aptana.ide.search.epl.AptanaTextSearchQueryProvider"
+          id="com.aptana.ide.search.AptanaTextSearchQueryProvider"
+          label="Aptana Search Query Provider">
+    </textSearchQueryProvider>
+ </extension>
+</plugin>

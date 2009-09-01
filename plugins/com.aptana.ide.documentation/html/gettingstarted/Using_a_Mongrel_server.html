@@ -1,0 +1,98 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Using a Mongrel server</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Using_a_Mongrel_server&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Using a Mongrel server [<a href="http://www.aptana.com/docs/index.php?title=Using_a_Mongrel_server&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>This page explains how to use a Mongrel server with RadRails.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Instructions"><span class="tocnumber">2</span> <span class="toctext">Instructions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Creating_a_Mongrel_server"><span class="tocnumber">2.1</span> <span class="toctext">Creating a Mongrel server</span></a></li>
+<li class="toclevel-2"><a href="#Running_a_Mongrel_server"><span class="tocnumber">2.2</span> <span class="toctext">Running a Mongrel server</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Related_Topics"><span class="tocnumber">3</span> <span class="toctext">Related Topics</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>You can set up and run a Mongrel server the same way that you would run a WEBrick server. You can create a new Mongrel server either when you create a Rails project or after you create the project. Use the Servers View to control your Mongrel server. 
+</p><p>Before starting to work with a Mongrel server, make sure that you set your Mongrel path in your Rails preferences. (See  <a href="Configuring_your_RadRails_setup.html" title="Configuring your RadRails setup">Configuring your RadRails setup</a> for instructions.
+</p>
+<a name="Instructions"></a><h2> <span class="mw-headline">Instructions</span></h2>
+<a name="Creating_a_Mongrel_server"></a><h3> <span class="mw-headline">Creating a Mongrel server</span></h3>
+<p>You can create a Mongrel server when you initially create your Rails project (see <a href="Starting_a_new_RadRails_project.html" title="Starting a new RadRails project">Starting a new RadRails project</a>), or you can create one afterwards. To create a Mongrel server after you have created a RadRails project:
+</p>
+<ol><li> In the Rails Navigator View, right-click your project and select <b>New &gt; Mongrel Server</b> from the context menu to open a <b>New Mongrel Server</b> window.
+</li><li> In the <b>Project</b> field, type the name of your project (if it is different from the default value).
+</li><li> In the <b>Name</b> field, type a name for your server (if different from the default value).
+</li><li> In the <b>Port</b> field, type the port number for your server (if different from the default).
+</li><li> Click the <b>Finish</b> button to create your server.
+</li></ol>
+<a name="Running_a_Mongrel_server"></a><h3> <span class="mw-headline">Running a Mongrel server</span></h3>
+<p>To run a Mongrel server:
+</p>
+<ol><li> In the lower portion of your workbench, click the <b>Servers</b> tab to access the Servers View.
+</li><li> In the Servers View, select your server.
+</li><li> Click the <b>Start</b> button <a href="Image:IconStart.png.html" class="image" title="Image:iconStart.png"><img alt="Image:iconStart.png" src="docs/images/3/31/IconStart.png" width="23" height="22" border="0" /></a> to start your server.
+</li><li> Click the <b>Stop</b> button <a href="Image:IconStop.png.html" class="image" title="Image:iconStop.png"><img alt="Image:iconStop.png" src="docs/images/6/66/IconStop.png" width="23" height="22" border="0" /></a> to stop your server.
+</li></ol>
+<p>The Servers View also gives you the following options:
+</p>
+<ul><li> Click the <b>Launch Browser</b> button <a href="Image:IconLaunchBrowser.png.html" class="image" title="Image:iconLaunchBrowser.png"><img alt="Image:iconLaunchBrowser.png" src="docs/images/1/1b/IconLaunchBrowser.png" width="23" height="22" border="0" /></a> to launch your project in a web browser.
+</li><li> Click the <b>Refresh</b> button <a href="Image:IconRefresh.png.html" class="image" title="Image:iconRefresh.png"><img alt="Image:iconRefresh.png" src="docs/images/f/f7/IconRefresh.png" width="23" height="22" border="0" /></a> to refresh your server.
+</li><li> Click the <b>Edit</b> button <a href="Image:IconEdit.png.html" class="image" title="Image:iconEdit.png"><img alt="Image:iconEdit.png" src="docs/images/3/32/IconEdit.png" width="23" height="22" border="0" /></a> to edit your server properties.
+</li><li> Click the <b>Remove</b> button <a href="Image:IconRemove.png.html" class="image" title="Image:iconRemove.png"><img alt="Image:iconRemove.png" src="docs/images/8/8b/IconRemove.png" width="23" height="22" border="0" /></a> to delete the selected server.
+</li></ul>
+<a name="Related_Topics"></a><h2> <span class="mw-headline">Related Topics</span></h2>
+<ul><li> <a href="Getting_started_with_RadRails.html" title="Getting started with RadRails">Getting started with RadRails</a>
+</li><li> <a href="Starting_a_new_RadRails_project.html" title="Starting a new RadRails project">Starting a new RadRails project</a>
+</li><li> <a href="Importing_an_existing_project_into_RadRails.html" title="Importing an existing project into RadRails">Importing an existing project into RadRails</a>
+</li><li> <a href="Building_an_application_in_RadRails.html" title="Building an application in RadRails">Building an application in RadRails</a>
+</li><li> <a href="Running_a_unit_test_on_RadRails.html" title="Running a unit test on RadRails">Running a unit test on RadRails</a>
+</li><li> <a href="Creating_and_running_a_WEBrick_server.html" title="Creating and running a WEBrick server">Creating and running a WEBrick server</a>
+</li><li> <a href="Executing_SQL_statements_in_RadRails.html" title="Executing SQL statements in RadRails">Executing SQL statements in RadRails</a>
+</li><li> <a href="Browsing_a_database_in_RadRails.html" title="Browsing a database in RadRails">Browsing a database in RadRails</a>
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:1765-0!1!0!!en!2!edit=0 and timestamp 20090202004845 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Using_a_Mongrel_server">http://aptana.com/docs/index.php/Using_a_Mongrel_server</a>"</div>
+					<div id="catlinks"><p class='catlinks'><a href="Special:Categories.html" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:AptanaHelp&amp;action=edit" class="new" title="Category:AptanaHelp">AptanaHelp</a></span> | <span dir='ltr'><a href="http://www.aptana.com/docs/index.php?title=Category:RadRails&amp;action=edit" class="new" title="Category:RadRails">RadRails</a></span></p></div>					<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

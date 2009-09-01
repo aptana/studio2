@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+          point="com.aptana.ide.editors.browser">
+          <browser
+          		class="com.aptana.ide.xul.browser.FirefoxBrowser"
+          		outline="com.aptana.ide.xul.FirefoxOutline">
+          		<label os="win32" value="Firefox"/>
+          		<label os="linux" value="Firefox (XUL)"/>
+          		<label os="macosx" value="Firefox" />
+          </browser>
+    </extension>
+</plugin>

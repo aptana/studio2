@@ -1,0 +1,58 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Prepping for and Installing RadRails on Windows Vista</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Prepping_for_and_Installing_RadRails_on_Windows_Vista&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Prepping for and Installing RadRails on Windows Vista [<a href="http://www.aptana.com/docs/index.php?title=Prepping_for_and_Installing_RadRails_on_Windows_Vista&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Since Windows doesn't ship with Ruby, Ruby on Rails, Apache or MySQL the first thing you need to do is install a package which provides them. You can install each piece separately but for simplicity you may prefer to use an all-in-one package such as <a href="http://bitnami.org/stack/rubystack" class="external text" title="http://bitnami.org/stack/rubystack" rel="nofollow">Bitnami RubyStack</a> or <a href="http://www.apachefriends.org/en/xampp.html" class="external text" title="http://www.apachefriends.org/en/xampp.html" rel="nofollow">XAMPP</a>; in this tutorial we'll use RubyStack though other than using different paths to the apps set in the next to last step there's no practical difference in what you do.
+</p><p>1) Install RubyStack (to: C:\RubyStack)
+</p><p>2) <a href="Installing_Aptana_Studio.html" title="Installing Aptana Studio">Install Aptana Studio</a> to: C:\Aptana Studio (Don't put it in C:\Programs\Aptana Studio because Vista's security rules will cause you trouble later on)
+</p><p>3) Set the Aptana Vista Config by renaming C:\Aptana Studio\configuration\config_vista\config_vista.ini to config.ini and copying it over the default config.ini in C:\Aptana Studio\configuration
+</p><p>4) Add Aptana Studio to the Quick Launch bar or create a shortcut to it on Desktop. Right click on what you made, select Properties, click the <i>Advanced</i> button and check <i>Start with Administrator rights</i> (illustrated below)
+</p><p>5) Start Aptana Studio and install all updates, then restart as requested
+</p><p>6) Install RadRails from My Aptana Plugins and restart as requested
+</p><p>7) Modify the relevant Preferences:
+</p>
+<ul><li> Ruby -&gt; Installed Interpreters -&gt; Add C:\RubyStack\ruby\
+</li><li> Ruby -&gt; Rake -&gt; set rake path to C:\RubyStack\ruby\bin\rake
+</li><li> Rails -&gt; Configuration -&gt; set rails path to C:\RubyStack\ruby\bin\rails and mongrel path to C:\RubyStack\ruby\bin\mongrel_rails
+</li></ul>
+<p>8) Open the Aptana RadRails Perspective and start working!
+</p><p><a href="Image:Windows-vista-shortcut-advanced-properties.png.html" class="image" title="Image:Windows-vista-shortcut-advanced-properties.png"><img alt="Image:Windows-vista-shortcut-advanced-properties.png" src="docs/images/7/75/Windows-vista-shortcut-advanced-properties.png" width="395" height="296" border="0" /></a>
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2562-0!1!0!!en!2!edit=0 and timestamp 20090202113059 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Prepping_for_and_Installing_RadRails_on_Windows_Vista">http://aptana.com/docs/index.php/Prepping_for_and_Installing_RadRails_on_Windows_Vista</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

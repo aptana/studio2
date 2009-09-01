@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Aptana Studio</title>
+	
+	<link href="styles.css" rel="stylesheet" type="text/css" />
+	
+	
+	<!-- DOJO INIT STUFF -->
+	<script type="text/javascript" src="lib/dojo.js" djConfig="usePlainJson: true"></script>
+	<script type="text/javascript">
+		dojo.require('dojox.cometd');
+		// dojo.require('dojox.cometd.timestamp');
+	</script>
+	
+	<!-- THIRD PARTY SCRIPTS -->
+	
+	<!-- prototype -->
+	<script type="text/javascript" src="lib/prototype_1.6.js"></script>
+	<!-- script.aculo.us -->
+	<script type="text/javascript" src="lib/scriptaculous/effects.js"></script>
+	<!-- firebug lite -->
+	<script type="text/javascript" src="lib/firebug/firebug.js"></script>
+	<!-- ejs -->
+	<script type="text/javascript" src="lib/ejs.js"></script>
+	<!-- livepipe -->
+	<script type="text/javascript" src="lib/livepipe/livepipe.js"></script>
+	<script type="text/javascript" src="lib/livepipe/window.js"></script>
+	<script type="text/javascript" src="lib/livepipe/hotkey.js"></script>
+	<script type="text/javascript" src="lib/livepipe/event.behavior.js"></script>
+	<script type="text/javascript" src="lib/livepipe/control.progressbar.js"></script>
+	<script type="text/javascript" src="lib/livepipe/control.tabs.js"></script>
+	<script type="text/javascript" src="lib/livepipe/control.contextmenu.js"></script>
+	<script type="text/javascript" src="lib/livepipe/view.js"></script>
+	
+	<!-- CORE STUFF -->
+	<script type="text/javascript" src="src/portal.js"></script>
+	<script type="text/javascript" src="src/eventmanager.js"></script>
+	<script type="text/javascript" src="src/init.js"></script>
+	
+	<script type="text/javascript" src="src/models/plugins.js"></script>
+	<script type="text/javascript" src="src/modules/my_aptana.js"></script>
+	<script type="text/javascript" src="src/modules/pluginmanager.js"></script>
+<!--	<script type="text/javascript" src="src/modules/protrialinfo.js"></script> -->
+	<script type="text/javascript" src="src/modules/recentfiles.js"></script>
+	
+	<!-- CLOUD PRESENCE CHECK -->
+	<script type="text/javascript" src="portlets/cloud/src/modules/undeployedprojects.js"></script>
+</head>
+<body>
+<div id="header">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<td nowrap="nowrap" valign="top">
+			<h1 class="logo">Aptana | End-to-End Ajax</h1>
+			<div class="clearfix"></div>
+			
+			<div class="floatLeft">
+				<ul class="tab" id="portal_tabs"></ul>
+			</div>
+			<div clas="clearfix"></div>
+		</td>
+		<td class="right" nowrap="nowrap" valign="top">
+			<div class="login_block" id="loginBlock"></div>
+			<div class="help right">
+				<div class="floatRight">
+					<a href="javascript: Portal.API.utils.showHelp();" class="nounderline"><img src="images_global/img_icon_help.png" class="link inline" align="absmiddle" /></a>
+					<a href="javascript: Portal.API.utils.showHelp();" class="white" style="text-decoration: underline;">Help</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</td>
+	</tr>
+</table>
+</div>
+<div id="icon_block" style="border-top: 1px solid #e4e4e4;">
+	<div id="icon_block_wrap" style="width: 300px; margin: 0px auto;">
+		<div class="logo_block studio" id="logo_studio">
+			<div class="notification" id="notify_studio" style="display: none;"><div></div></div>
+			<a id="product_link_studio"></a>
+		</div>
+		<div class="logo_block plugins" id="logo_plugins">
+			<div class="notification" id="notify_plugins" style="display: none;"><div></div></div>
+			<a id="product_link_plugins"></a>
+		</div>
+		<div class="logo_block cloud" id="logo_cloud" style="display: none;">
+			<div class="notification" id="notify_cloud" style="display: none;"><div></div></div>
+			<a id="product_link_cloud"></a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+	
+<div id="bottom_content">
+	<div id="bottom_content_wrap">
+		<div id="current_pointer" style="margin-left: 150px;">&nbsp;</div>
+		
+		<div id="product_content"></div>
+		
+	</div>
+</div>
+
+
+
+</body>
+</html>

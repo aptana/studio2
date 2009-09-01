@@ -1,0 +1,129 @@
+/*******************************************************************************
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+
+package com.aptana.ide.search.epl.filesystem.text;
+
+
+import java.io.File;
+import java.util.regex.Pattern;
+
+import org.eclipse.core.runtime.MultiStatus;
+
+import com.aptana.ide.search.epl.internal.filesystem.text.FileNamePatternSearchScope;
+import com.aptana.ide.search.epl.internal.filesystem.text.FilesOfScopeCalculator;
+
+/**
+ * A {@link FileSystemTextSearchScope} defines the scope of a search. The scope consists of all workbench resources that
+ * are accepted by {@link #contains(IResourceProxy)} and that either are a root element ({@link #getRoots()}) or have
+ * a root element in their parent chain.
+ * 
+ * @see #newSearchScope(IResource[], java.util.regex.Pattern, boolean)
+ * @since 3.2
+ */
+public abstract class FileSystemTextSearchScope
+{
+	
+	private boolean fOpenEditors;
+
+	/**
+	 * Creates a scope that consists of all files that match the <code>fileNamePattern</code> and that either are one
+	 * of the roots, or have one of the roots in their parent chain. If <code>visitDerivedResources</code> is not
+	 * enabled, all files that are marked derived or have a derived container in their parent chain are not part of the
+	 * scope.
+	 * 
+	 * @param rootResources
+	 *            the resources that are the roots of the scope
+	 * @param fileNamePattern
+	 *            file name pattern for this scope.
+	 * @param visitDerivedResources
+	 *            if set also derived folders and files are searched.
+	 * @return a scope the search scope
+	 */
+	public static FileSystemTextSearchScope newSearchScope(File[] rootResources, Pattern fileNamePattern,
+			boolean visitDerivedResources)
+	{
+		FileNamePatternSearchScope scope = FileNamePatternSearchScope.newSearchScope(new String(), rootResources,
+				visitDerivedResources);
+		scope.setFileNamePattern(fileNamePattern);
+		return null;
+	}
+
+	
+
+	/**
+	 * Returns the resources that form the root. Roots can not contain each other. Root elements are only part of the
+	 * scope if they are also accepted by {@link #contains(IResourceProxy)}.
+	 * 
+	 * @return returns the set of root resources. The default behavior is to return the workspace root.
+	 */
+	public File[] getRoots()
+	{
+		return File.listRoots();
+	}
+
+	/**
+	 * Returns if a given resource is part of the scope. If a container is not part of the scope, also all its members
+	 * are not part of the scope.
+	 * 
+	 * @param proxy
+	 *            the resource proxy to test.
+	 * @return returns <code>true</code> if a resource is part of the scope. if <code>false</code> is returned the
+	 *         resource and all its children are not part of the scope.
+	 */
+	public abstract boolean contains(File proxy);
+
+	/**
+	 * Evaluates all files in this scope.
+	 * 
+	 * @param status
+	 *            a {@link MultiStatus} to collect the error status that occurred while collecting resources.
+	 * @return returns the files in the scope.
+	 */
+	public File[] evaluateFilesInScope(MultiStatus status)
+	{
+		return new FilesOfScopeCalculator(this, status).process();
+	}
+
+	/**
+	 * @param files
+	 * @param strings
+	 * @param b
+	 * @return new search scope
+	 */
+	public static FileSystemTextSearchScope newSearchScope(File[] files, String[] strings, boolean b)
+	{
+		FileNamePatternSearchScope scope = FileNamePatternSearchScope.newSearchScope(new String(), files,
+				true);
+		for (int a=0;a<strings.length;a++){
+			scope.addFileNamePattern(strings[a]);
+		}
+		return scope;
+	}
+
+	/**
+	 * @return true if searching in open text editors
+	 */
+	public boolean isOpenEditors()
+	{
+		return fOpenEditors;
+	}
+
+
+
+	/**
+	 * @param isOpenEditorsOnly
+	 */
+	public void setOpenEditors(boolean isOpenEditorsOnly)
+	{
+		this.fOpenEditors=isOpenEditorsOnly;
+	}
+
+}

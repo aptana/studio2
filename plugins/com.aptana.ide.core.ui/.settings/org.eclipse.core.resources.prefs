@@ -1,0 +1,7 @@
+#Tue Apr 21 16:15:11 PDT 2009
+eclipse.preferences.version=1
+encoding//src/com/aptana/ide/core/ui/messages.properties=8859_1
+encoding//src/com/aptana/ide/core/ui/plugin.properties=8859_1
+encoding//src/com/aptana/ide/core/ui/preferences/messages.properties=8859_1
+encoding//src/com/aptana/ide/core/ui/syncing/messages.properties=8859_1
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true

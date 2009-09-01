@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.eclipsemonkey.ui; singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.eclipsemonkey,
+ org.mozilla.rhino,
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources,
+ org.eclipse.ui.editors,
+ com.aptana.ide.editor.js,
+ com.aptana.ide.editors,
+ org.eclipse.ui.workbench.texteditor,
+ com.aptana.ide.core.ui,
+ org.eclipse.jface.text
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.eclipsemonkey.ui.scriptableView,
+ org.eclipse.eclipsemonkey.views,
+ org.eclipse.eclipsemonkey.views.scriptsView
+Bundle-Vendor: %providerName
+Bundle-Activator: org.eclipse.eclipsemonkey.ui.EclipseMonkeyUIPlugin

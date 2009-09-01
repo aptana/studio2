@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.core.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.core.ui" id="decorator" name="Aptana Navigator Decorator"/>
+      </appInfo>
+      <documentation>
+         This extension points allows decorators to be added to the underlying SWT Tree widget in the AptanaNavigator (Project view).  Each time an AptanaNavigator is created it will make a callback to each INavigatorDecorator found and allow them to augment or add listeners to the Tree object being used to display projects, files and folders.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="decorator" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="decorator">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  This class must have a default constructor and implement com.aptana.ide.core.ui.INavigatorDecorator.  Classes that are contributed and do not implement com.aptana.ide.core.ui.INavigatorDecorator will be ignored.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.core.ui.INavigatorDecorator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         This extension point was added in Aptana Studio 1.2
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;com.aptana.ide.core.ui.decorator&quot;&gt;
+	&lt;decorator class=&quot;com.my.xyz.decorator.MyDecorator&quot; /&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+The example above contributes MyDecorator as a decorator on the AptanaNavigator (Project view).
+
+The MyDecorator class must have a default constructor and must implement com.aptana.ide.core.ui.INavigatorDecorator
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The addDecorator(Tree tree) method will be called each time a new Project view is opened and the createPartControl(Composite parent) is executed for the AptanaNavigator.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         This extension point is used by the com.aptana.ide.server.cloud plugin to add an icon decorator to the right of the project name when that project is associated with an Aptana Cloud site.
+      </documentation>
+   </annotation>
+
+
+</schema>

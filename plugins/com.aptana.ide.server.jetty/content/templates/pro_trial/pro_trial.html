@@ -1,0 +1,75 @@
+<!-- trial is active -->
+<% if (data.licenseType == 'trial') { %>
+	<!-- active trial -->
+	<% if (data.daysLeft > 0) { %>
+		<div class="bottom10 size16 gray48 bold">Studio Pro Trial</div>
+		
+		<div style="border: 1px solid #666; height: 10px; width: 165px; overflow: hidden;">
+			<div style="background: url(images_global/bg_progress_bar.png) repeat-x left top; width: <%= (data.daysLeft * 5.5) %>px; height: 10px;">&nbsp;</div>
+		</div>
+		
+		<div class="size11">
+			Days Remaining: <strong><%= data.daysLeft %></strong><br />
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/pro/buy');">Buy</a> | 
+			<a href="javascript: EventManager.publish('/portal/preferences', { request: 'show', id: 'com.aptana.ide.intro.preferences.LicensePreferencePage' });">Enter Pro License Key</a><br /><br />
+			
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/pro/compare');">What's in Aptana Studio Pro?</a><br />
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/pro/compare');">What's in the free Aptana Studio?</a>
+		</div>		
+		
+	<!-- expired trial -->
+	<% } else { %>
+		<div class="bottom10 size16 gray48 bold">Upgrade to Studio Pro</div>
+		
+        <div class="size11">
+            <a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/pro/compare');">Check out the latest Pro features!</a>
+        </div>
+	<% } %>
+
+<!-- no trial -->
+<% } else if (data.licenseType == 'none') { %>
+	<div class="bottom10 size16 gray48 bold">Got Studio Pro?</div>
+	
+	<a class="bold" href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/download');">Start 30-day trial now</a>.<br />
+	<a href="javascript: EventManager.publish('/portal/preferences', { request: 'show', id: 'com.aptana.ide.intro.preferences.LicensePreferencePage' });">Enter Pro or Trial License</a>
+	
+	<div class="size11 top5">
+		<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/pro/compare');">What's in Aptana Studio Pro?</a>
+	</div>
+	
+<!-- pro license -->
+<% } else { %>
+	<!-- active license -->
+	<% if (data.daysLeft > 30) { %>
+		<div class="bottom10 size16 gray48 bold">Studio Pro</div>
+        <div class="size11">
+            <img src="images_global/img_icon_prohelp.png" align="absmiddle" class="inline" /> <a href="javascript: Portal.API.utils.openUrl('http://support.aptana.com/asap');">Pro Support</a>
+        </div>
+	
+	<!-- license expiring soon -->
+	<% } else if (data.daysLeft > 0 && data.daysLeft <= 30) { %>
+		<div class="bottom10 size16 gray48 bold">Pro License Expires Soon</div>
+		
+		<div style="border: 1px solid #666; height: 10px; width: 165px; overflow: hidden;">
+			<div style="background: url(images_global/bg_progress_bar.png) repeat-x left top; width: <%= (data.daysLeft * 5.5) %>px; height: 10px;">&nbsp;</div>
+		</div>
+		
+		<div class="size11 gray48">
+			Days Remaining: <strong><%= data.daysLeft %></strong><br />
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/pro/renew/?expdate=');">Renew</a> | 
+			<a href="javascript: EventManager.publish('/portal/preferences', { request: 'show', id: 'com.aptana.ide.intro.preferences.LicensePreferencePage' });">Enter Pro License Key</a>
+		</div>
+		
+		<div class="size11 top5">
+            <img src="images_global/img_icon_prohelp.png" align="absmiddle" class="inline" /> <a href="javascript: Portal.API.utils.openUrl('http://support.aptana.com/asap');">Pro Support</a>
+        </div>
+		
+	<!-- license expired -->
+	<% } else { %>
+		<div class="bottom10 size16 gray48 bold">Pro Subscription Expired!</div>
+		<div class="size11">
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/studio/pro/renew/?expdate=');">Renew</a> | <a href="javascript: EventManager.publish('/portal/preferences', { request: 'show', id: 'com.aptana.ide.intro.preferences.LicensePreferencePage' });">Enter Pro License Key</a>
+		</div>
+	<% } %>
+
+<% } %>

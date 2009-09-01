@@ -1,0 +1,11 @@
+<!--
+	category: Snippet Templates
+	name: XML Snippet Template
+	prompt(name): Enter the name for this snippet
+-->
+<!--
+	category: XML
+	name: ${name}
+	toolTip: ${name}
+-->
+

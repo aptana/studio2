@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.editors">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.editors" id="browser" name="Embedded Browsers"/>
+      </appInfo>
+      <documentation>
+         This extension point allows browser and outlines to be contributed to the HTML editor.  The outline attribute is optional.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="browser"/>
+            <element ref="decorator"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="browser">
+      <complexType>
+         <sequence>
+            <element ref="label" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="outline" type="string">
+            <annotation>
+               <documentation>
+                  Outline class that must extend com.aptana.ide.editors.unified.ContributedOutline
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.editors.unified.ContributedOutline"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Browser class that must extend com.aptana.ide.editors.unified.ContributedBrowser
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.editors.unified.ContributedBrowser"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="label">
+      <complexType>
+         <attribute name="os" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The OS string identifier
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The string label for the browser
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="decorator">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Decorator class that can augment the UI presentation of the browser
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.aptana.ide.editors.unified.IBrowserDecorator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="browser" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Browser id to decorate
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;extension
+ point=&quot;com.aptana.ide.editors.browser&quot;&gt;
+ &lt;browser
+  class=&quot;com.xyz.MyBrowser&quot;
+  outline=&quot;com.xyz.MyOutline&quot;
+  name=&quot;Browser1&quot;&gt;
+ &lt;/browser&gt;
+ &lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The name attribute will be used to label the browser and outline.  The browser class must extend com.aptana.ide.editors.unified.ContributedBrowser and the outline class must extend com.aptana.ide.editors.unified.ContributedOutline.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         com.aptana.ide.xul contributes a browser and outline by using this extension point.  The default eclipse SWT browser is also contributed via this extension point but without a corresponding outline page.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

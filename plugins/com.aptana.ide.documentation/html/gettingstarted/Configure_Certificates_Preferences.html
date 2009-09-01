@@ -1,0 +1,58 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Configure Certificates Preferences</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Configure_Certificates_Preferences&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Configure Certificates Preferences [<a href="http://www.aptana.com/docs/index.php?title=Configure_Certificates_Preferences&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Use this dialog to create and delete digital certificates for use in signing your AIR applications. Signing provides your customers assurance of the publisher's identity. 
+</p><p><a href="http://www.aptana.com/docs/index.php?title=Special:Upload&amp;wpDestFile=ConfigureCertificatePreferencesPage.png" class="new" title="Image:ConfigureCertificatePreferencesPage.png">Image:ConfigureCertificatePreferencesPage.png</a>
+</p>
+<a name="Add_Certificate"></a><h2> <span class="mw-headline">Add Certificate</span></h2>
+<div class="thumb tleft"><div class="thumbinner" style="width:202px;"><a href="Image:Add_Certificate.png.html" class="image" title="Add Certificate dialog"><img alt="Add Certificate dialog" src="docs/images/thumb/0/0e/Add_Certificate.png/200px-Add_Certificate.png" width="200" height="195" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify" style="float:right"><a href="Image:Add_Certificate.png.html" class="internal" title="Enlarge"><img src="docs/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>Add Certificate dialog</div></div></div><div style="float: left; width: 500px;">
+<ul><li> Indicate if an existing certificate should be used or a new one created
+</li><li> Specify the publisher, organization unit and name, and country (Optional)
+</li><li> Enter and confirm the password <b>(very important)</b>
+</li><li> Select the type of keystore to use.</div>
+</li></ul>
+<p><br style="clear: both;" />
+</p>
+<a name="About_Keystores"></a><h3> <span class="mw-headline">About Keystores</span></h3>
+<p>ADT uses the Java Cryptography Architecture (JCA) to access private keys and certificates for signing AIR applications. The signing options identify the keystore and the private key and certificate within that keystore. 
+</p><p>The default keystore implementation included with most installations of Java supports the JKS and PKCS12 types. Java 5.0 includes support for the PKCS11 type, for accessing keystores on hardware tokens, and the Keychain type, for accessing the Mac OS X keychain. Java 6.0 adds support for the MSCAPI type on Microsoft Windows. If other JCA providers have been installed and configured on your computer, additional keystore types may be available. If no keystore type is specified, the default type for the default JCA provider is used.
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2576-0!1!0!!en!2!edit=0 and timestamp 20090201231712 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Configure_Certificates_Preferences">http://aptana.com/docs/index.php/Configure_Certificates_Preferences</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 

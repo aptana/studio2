@@ -1,0 +1,81 @@
+<div class="modalWrap" id="createWindow" style="overflow: auto;">
+	<h1>
+		<div class="floatLeft size18">Create Aptana ID</div>
+		<div class="floatRight">
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/aptana_id');" style="text-decoration: none;"><img src="images_global/img_icon_help.png" class="inline link" align="absmiddle" /></a>
+			<a href="javascript: Portal.API.utils.openUrl('http://www.aptana.com/aptana_id');">Help</a>
+		</div>
+		<div class="clearfix"></div>
+	</h1>
+	<div class="content" style="width: 350px;">
+		<div id="createMessage" style="margin: 5px;" class="size11 gray48">Fill out the form below to create your Aptana ID.</div>
+		
+		
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td class="pad1">
+					<label for="username" class="gray48 small3 bold">Username:</label>
+				</td>
+				<td class="pad1">
+					<input name="username" id="username" class="text3" size="25" maxlength="16" onblur="Portal.Modules.AptanaIdManager.maskUsername()" />
+				</td>
+			</tr>
+			<tr>
+				<td class="pad1" colspan="2"><span class="size10 gray87"><em>Your username must be between 3 and 16 lowercase characters</em></span></td>
+			</tr>
+			<tr>
+				<td class="pad1" >
+					<label for="password" class="gray48 small3 bold">Password:</label>
+				</td>
+				<td class="pad1">
+					<input name="password" id="password" type="password" class="text3" size="25" /><br />
+				</td>
+			</tr>
+			<tr>
+				<td class="pad1" colspan="2"><span class="size10 gray87"><em>Your password must be at least 5 characters</em></span></td>
+			</tr>
+			<tr>
+				<td class="pad1" nowrap="nowrap">
+					<label for="confirm_password" class="gray48 small3 bold">Confirm Password:</label>
+				</td>
+				<td class="pad1">
+					<input name="confirm_password" id="confirm_password" type="password" class="text3" size="25" />		
+				</td>
+			</tr>
+			<tr>
+				<td class="pad1" nowrap="nowrap">
+					<label for="email" class="gray48 small3 bold">Email:</label>
+				</td>
+				<td class="pad1">
+					<input name="email" id="email" class="text3" size="25" />		
+				</td>
+			</tr>
+						
+		</table>
+	</div>
+	
+	<script type="text/javascript">
+		
+	</script>
+	
+	<div class="footer2">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td style="text-align: left;" width="50%">
+					<a href="javascript: Portal.Modules.AptanaIdManager.cancelCreate();" class="close">&nbsp;</a>
+				</td>
+				<td style="text-align: right;" width="50%">
+					<a href="#" onclick="Portal.Modules.AptanaIdManager.createNewUser();" class="create">&nbsp;</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="top-left-edge"></div>
+<div class="top-edge"></div>
+<div class="top-right-edge"></div>
+<div class="right-edge"></div>
+<div class="bottom-right-edge"></div>
+<div class="bottom-edge"></div>
+<div class="bottom-left-edge"></div>
+<div class="left-edge"></div>

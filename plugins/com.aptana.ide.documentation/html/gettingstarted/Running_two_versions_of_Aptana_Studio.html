@@ -1,0 +1,56 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>Running two versions of Aptana Studio</title>
+      <link rel="stylesheet" href="../../content/shared.css" type="text/css">
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/help.js"></script>-->
+	  <!--<script type="text/javascript" src="http://www.aptana.com/docs/index.php?title=Running_two_versions_of_Aptana_Studio&action=raw&gen=js">-->
+	  <link rel="stylesheet" href="http://www.aptana.com/docs/" type="text/css">      
+	  	<script>
+	  var lastModifiedClient = "";
+	  var fullUrl = "";
+	  try
+	  {
+	     if(lastModifiedServer)
+	        notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+	  }
+	  catch(e) {}	  
+	</script>
+	
+   </head>
+   <body>
+      <div class="classBlock">		    <a href="http://www.aptana.com/" target="_blank"><img src="../../content/aptana.gif" border="0" hspace="21" vspace="7"></img></a><h1>Running two versions of Aptana Studio [<a href="http://www.aptana.com/docs/index.php?title=Running_two_versions_of_Aptana_Studio&action=edit">edit</a>]</h1>
+         <div class="content">
+            
+					<p>Install Studio normally for the first version
+</p>
+<a name="For_the_second_install"></a><h2> <span class="mw-headline">For the second install</span></h2>
+<ol><li>Run installer again but change the installation location to a different folder
+</li><li>Before launching this instance, edit config.ini in the installation folder
+</li><li>Find the last section of the file, starting with <b># The default workspace location</b> and change each of the three locations in it (the values will differ based on your OS, but in this example we added the word Beta to the default folder name):
+<ul><li>osgi.instance.area.default=@user.home/Documents/Aptana Studio Beta
+</li><li>osgi.configuration.area=@user.home/Library/Application Support/Aptana/Aptana Studio Beta/configuration
+</li><li>osgi.user.area=@user.home/Library/Application Support/Aptana/Aptana Studio Beta/user
+</li></ul>
+</li><li>Save your changes
+</li></ol>
+<p>Note that you will only be able to run one instance at a time but you can switch as needed.
+</p>
+<!-- Saved in parser cache with key wikidb-aptana_:pcache:idhash:2386-0!1!0!!en!2!edit=0 and timestamp 20090201211753 -->
+<div class="printfooter">
+Retrieved from "<a href="http://aptana.com/docs/index.php/Running_two_versions_of_Aptana_Studio">http://aptana.com/docs/index.php/Running_two_versions_of_Aptana_Studio</a>"</div>
+										<script>
+						var lastModifiedClient = "";
+						var fullUrl = "";
+						try
+						{
+						   if(lastModifiedServer)
+						      notifyUpdatedSource(lastModifiedClient, lastModifiedServer, fullUrl);
+						}
+						catch(e) {}
+					</script>
+					 
+         </div>
+      </div>
+   </body>
+</html> 
