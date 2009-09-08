@@ -471,5 +471,11 @@
        <buildParticipant
              class="com.aptana.ide.editor.html.InvalidXHTMLCommentChecker">
        </buildParticipant>
+       <buildParticipant
+             class="com.aptana.ide.editor.html.RequiredAttributeHTMLBuildParticipant">
+       </buildParticipant>
+       <buildParticipant
+             class="com.aptana.ide.editor.html.UnclosedTagHTMLBuildParticipant">
+       </buildParticipant>
     </extension>
 </plugin>
