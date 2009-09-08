@@ -20,9 +20,47 @@
    </extension>
    <extension
          point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="com.aptana.ide.syncing.ui.navigator.SiteConnectionContentProvider"
+            icon="icons/full/obj16/ftp.png"
+            id="com.aptana.ide.syncing.ui.navigatorContent"
+            labelProvider="com.aptana.ide.ui.io.navigator.FileTreeLabelProvider"
+            name="Site Connection Contents">
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="org.eclipse.core.resources.IProject">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
+               </instanceof>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+            <instanceof
+                  value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
+            </instanceof>
+            <instanceof
+                  value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
+            </instanceof>
+         </possibleChildren>
+         <dropAssistant
+               class="com.aptana.ide.ui.io.navigator.resources.FileDropAdapterAssistant"
+               id="com.aptana.ide.syncing.ui.navigator.resources.ProjectSiteDropAdapterAssistant">
+            <possibleDropTargets>
+               <instanceof
+                     value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
+               </instanceof>
+            </possibleDropTargets>
+         </dropAssistant>
+      </navigatorContent>
       <actionProvider
             class="com.aptana.ide.syncing.ui.navigator.actions.ExtendedActionProvider"
-            id="com.aptana.ide.ui.io.navigator.actions.syncing.ExtendedActions">
+            id="com.aptana.ide.syncing.ui.navigator.actions.ExtendedActions">
          <enablement>
             <or>
                <and>
@@ -37,8 +75,61 @@
                <instanceof
                      value="com.aptana.ide.syncing.core.connection.SiteConnectionPoint">
                </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
+               </instanceof>
             </or></enablement>
       </actionProvider>
+      <actionProvider
+            class="com.aptana.ide.ui.io.navigator.actions.RemoteNewActionProvider"
+            id="com.aptana.ide.syncing.ui.navigator.actions.RemoteNewActions"
+            overrides="com.aptana.ide.ui.io.navigator.actions.FileSystemNewActions">
+         <enablement>
+            <instanceof
+                  value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
+            </instanceof>
+         </enablement>
+      </actionProvider>
+      <actionProvider
+            class="com.aptana.ide.ui.io.navigator.actions.FileSystemMgmtActionProvider"
+            id="com.aptana.ide.syncing.ui.navigator.actions.FileSystemMgmtActions">
+         <enablement>
+            <instanceof
+                  value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
+            </instanceof>
+         </enablement>
+      </actionProvider>
+      <actionProvider
+            class="org.eclipse.ui.navigator.resources.GoIntoActionProvider"
+            id="com.aptana.ide.syncing.ui.navigator.actions.GoIntoActions">
+         <enablement>
+            <instanceof
+                  value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
+            </instanceof>
+         </enablement>
+      </actionProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="com.aptana.ide.ui.io.fileExplorerView">
+         <includes>
+            <contentExtension
+                  pattern="com.aptana.ide.syncing.ui.navigatorContent">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+      <viewerActionBinding
+            viewerId="com.aptana.ide.ui.io.fileExplorerView">
+         <includes>
+            <actionExtension
+                  pattern="com.aptana.ide.syncing.ui.navigator.actions.*">
+            </actionExtension>
+         </includes>
+      </viewerActionBinding>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -93,7 +184,7 @@
             </groupMarker>
          </menu>
          <action
-               class="com.aptana.ide.syncing.ui.actions.ResourceNewSiteAction"
+               class="com.aptana.ide.syncing.ui.actions.NewSiteAction"
                enablesFor="1"
                id="com.aptana.ide.syncing.ui.actions.ResourceNewSiteAction"
                label="%Action.NewConnection.name"
@@ -189,7 +280,7 @@
             </groupMarker>
          </menu>
          <action
-               class="com.aptana.ide.syncing.ui.actions.FilesystemNewSiteAction"
+               class="com.aptana.ide.syncing.ui.actions.NewSiteAction"
                enablesFor="1"
                id="com.aptana.ide.syncing.ui.actions.FilesystemNewSiteAction"
                label="%Action.NewConnection.name"
@@ -248,6 +339,18 @@
                   value="true">
             </objectState>
          </visibility>
+      </objectContribution>
+      <objectContribution
+            id="com.aptana.ide.syncing.ui.projectSitesContribution"
+            objectClass="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
+         <action
+               class="com.aptana.ide.syncing.ui.actions.NewSiteAction"
+               enablesFor="1"
+               id="com.aptana.ide.syncing.ui.actions.NewSiteAction"
+               label="%Action.NewConnection.name"
+               menubarPath="group.new"
+               tooltip="%Action.NewConnection.tooltip">
+         </action>
       </objectContribution>
    </extension>
    <extension

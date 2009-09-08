@@ -32,42 +32,63 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.internal;
+package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.navigator.ICommonContentExtensionSite;
+import org.eclipse.ui.navigator.ICommonLabelProvider;
 
-public class Messages extends NLS {
+import com.aptana.ide.core.io.IConnectionPoint;
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.internal.messages"; //$NON-NLS-1$
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class SiteConnectionLabelProvider implements ICommonLabelProvider {
 
-    public static String ChooseSiteConnectionDialog_LBL_Connection;
-    public static String ChooseSiteConnectionDialog_LBL_Message;
-    public static String ChooseSiteConnectionDialog_LBL_PropertyPage;
-    public static String ChooseSiteConnectionDialog_LBL_RememberMyDecision;
-    public static String ChooseSiteConnectionDialog_Title;
-
-    public static String NewSiteDialog_LBL_Apply;
-    public static String NewSiteDialog_Title;
-
-    public static String NewSiteWidget_ERR_DuplicateNames;
-    public static String NewSiteWidget_ERR_InvalidFileSource;
-    public static String NewSiteWidget_ERR_InvalidFileTarget;
-    public static String NewSiteWidget_LBL_Destination;
-    public static String NewSiteWidget_LBL_Filesystem;
-    public static String NewSiteWidget_LBL_Folder;
-    public static String NewSiteWidget_LBL_Project;
-    public static String NewSiteWidget_LBL_Remote;
-    public static String NewSiteWidget_LBL_SelectDestTarget;
-    public static String NewSiteWidget_LBL_SelectSrcLocation;
-    public static String NewSiteWidget_LBL_Sites;
-    public static String NewSiteWidget_LBL_Source;
-    public static String NewSiteWidget_TXT_NewSite;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    public void init(ICommonContentExtensionSite aConfig) {
     }
 
-    private Messages() {
+    public Image getImage(Object element) {
+        return null;
+    }
+
+    public String getText(Object element) {
+        if (element instanceof ProjectSiteConnections) {
+            return ((ProjectSiteConnections) element).getLabel(element);
+        }
+        if (element instanceof ProjectSiteConnection) {
+            ProjectSiteConnection site = (ProjectSiteConnection) element;
+            IConnectionPoint connection = (IConnectionPoint) site
+                    .getAdapter(IConnectionPoint.class);
+            if (connection != null) {
+                return connection.getName();
+            }
+        }
+        return null;
+    }
+
+    public void addListener(ILabelProviderListener listener) {
+    }
+
+    public void dispose() {
+    }
+
+    public boolean isLabelProperty(Object element, String property) {
+        return false;
+    }
+
+    public void removeListener(ILabelProviderListener listener) {
+    }
+
+    public void restoreState(IMemento aMemento) {
+    }
+
+    public void saveState(IMemento aMemento) {
+    }
+
+    public String getDescription(Object anElement) {
+        return null;
     }
 }
