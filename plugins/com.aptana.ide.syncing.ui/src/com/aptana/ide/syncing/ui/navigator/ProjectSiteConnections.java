@@ -32,42 +32,59 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.internal;
+package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 
-public class Messages extends NLS {
+import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
+import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.internal.messages"; //$NON-NLS-1$
+/**
+ * Contains a list of available sites that have the specific project as the
+ * source.
+ * 
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class ProjectSiteConnections extends PlatformObject implements IWorkbenchAdapter {
 
-    public static String ChooseSiteConnectionDialog_LBL_Connection;
-    public static String ChooseSiteConnectionDialog_LBL_Message;
-    public static String ChooseSiteConnectionDialog_LBL_PropertyPage;
-    public static String ChooseSiteConnectionDialog_LBL_RememberMyDecision;
-    public static String ChooseSiteConnectionDialog_Title;
+    private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin
+            .getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
 
-    public static String NewSiteDialog_LBL_Apply;
-    public static String NewSiteDialog_Title;
+    private IProject fProject;
 
-    public static String NewSiteWidget_ERR_DuplicateNames;
-    public static String NewSiteWidget_ERR_InvalidFileSource;
-    public static String NewSiteWidget_ERR_InvalidFileTarget;
-    public static String NewSiteWidget_LBL_Destination;
-    public static String NewSiteWidget_LBL_Filesystem;
-    public static String NewSiteWidget_LBL_Folder;
-    public static String NewSiteWidget_LBL_Project;
-    public static String NewSiteWidget_LBL_Remote;
-    public static String NewSiteWidget_LBL_SelectDestTarget;
-    public static String NewSiteWidget_LBL_SelectSrcLocation;
-    public static String NewSiteWidget_LBL_Sites;
-    public static String NewSiteWidget_LBL_Source;
-    public static String NewSiteWidget_TXT_NewSite;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    public ProjectSiteConnections(IProject project) {
+        fProject = project;
     }
 
-    private Messages() {
+    public Object[] getChildren(Object o) {
+        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(fProject);
+        ProjectSiteConnection[] targets = new ProjectSiteConnection[sites.length];
+        for (int i = 0; i < sites.length; ++i) {
+            targets[i] = new ProjectSiteConnection(fProject, sites[i].getDestination());
+        }
+        return targets;
+    }
+
+    public ImageDescriptor getImageDescriptor(Object object) {
+        return IMAGE_DESCRIPTOR;
+    }
+
+    public String getLabel(Object o) {
+        return "Sites";
+    }
+
+    public Object getParent(Object o) {
+        return null;
+    }
+
+    public Object getAdapter(Class adapter) {
+        if (adapter == IProject.class) {
+            return fProject;
+        }
+        return super.getAdapter(adapter);
     }
 }

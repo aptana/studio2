@@ -32,45 +32,63 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.navigator.ICommonContentExtensionSite;
+import org.eclipse.ui.navigator.ICommonLabelProvider;
 
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ResourceNewSiteAction implements IObjectActionDelegate {
+public class SiteConnectionLabelProvider implements ICommonLabelProvider {
 
-    private IWorkbenchPart fActivePart;
-    private ISelection fSelection;
-
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        fActivePart = targetPart;
+    public void init(ICommonContentExtensionSite aConfig) {
     }
 
-    public void run(IAction action) {
-        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
-            return;
-        }
-        Object element = ((IStructuredSelection) fSelection).getFirstElement();
-        if (!(element instanceof IResource)) {
-            return;
-        }
-
-        IResource resource = (IResource) element;
-        NewSiteDialog dialog = new NewSiteDialog(fActivePart.getSite().getShell(), true, resource,
-                null);
-        dialog.open();
+    public Image getImage(Object element) {
+        return null;
     }
 
-    public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
+    public String getText(Object element) {
+        if (element instanceof ProjectSiteConnections) {
+            return ((ProjectSiteConnections) element).getLabel(element);
+        }
+        if (element instanceof ProjectSiteConnection) {
+            ProjectSiteConnection site = (ProjectSiteConnection) element;
+            IConnectionPoint connection = (IConnectionPoint) site
+                    .getAdapter(IConnectionPoint.class);
+            if (connection != null) {
+                return connection.getName();
+            }
+        }
+        return null;
+    }
+
+    public void addListener(ILabelProviderListener listener) {
+    }
+
+    public void dispose() {
+    }
+
+    public boolean isLabelProperty(Object element, String property) {
+        return false;
+    }
+
+    public void removeListener(ILabelProviderListener listener) {
+    }
+
+    public void restoreState(IMemento aMemento) {
+    }
+
+    public void saveState(IMemento aMemento) {
+    }
+
+    public String getDescription(Object anElement) {
+        return null;
     }
 }

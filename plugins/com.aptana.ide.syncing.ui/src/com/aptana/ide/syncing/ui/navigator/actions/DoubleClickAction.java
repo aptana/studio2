@@ -40,10 +40,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
 import com.aptana.ide.syncing.ui.views.FTPManagerView;
 import com.aptana.ide.ui.io.navigator.actions.BaseDoubleClickAction;
 
@@ -67,6 +70,11 @@ public class DoubleClickAction extends BaseDoubleClickAction {
         if (element instanceof SiteConnectionPoint) {
             // double-clicked on a site; opens it in the FTP Manager view
             openFTPManagerView((SiteConnectionPoint) element);
+        } else if (element instanceof ProjectSiteConnection) {
+            // double-clicked on a site inside a project; both expands the node
+            // and opens the FTP Manager view
+            super.run();
+            openFTPManagerView(findSite((ProjectSiteConnection) element));
         } else {
             if (selectionHasChildren()) {
                 super.run();
@@ -93,5 +101,17 @@ public class DoubleClickAction extends BaseDoubleClickAction {
     private void openNewSiteDialog() {
         NewSiteDialog dialog = new NewSiteDialog(fShell, true);
         dialog.open();
+    }
+
+    private static SiteConnectionPoint findSite(ProjectSiteConnection connection) {
+        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(connection
+                .getProject(), true);
+        IConnectionPoint target = connection.getDestination();
+        for (SiteConnectionPoint site : sites) {
+            if (site.getDestination() == target) {
+                return site;
+            }
+        }
+        return null;
     }
 }

@@ -32,42 +32,22 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.internal;
+package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.ui.model.WorkbenchContentProvider;
 
-public class Messages extends NLS {
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class SiteConnectionContentProvider extends WorkbenchContentProvider {
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.internal.messages"; //$NON-NLS-1$
-
-    public static String ChooseSiteConnectionDialog_LBL_Connection;
-    public static String ChooseSiteConnectionDialog_LBL_Message;
-    public static String ChooseSiteConnectionDialog_LBL_PropertyPage;
-    public static String ChooseSiteConnectionDialog_LBL_RememberMyDecision;
-    public static String ChooseSiteConnectionDialog_Title;
-
-    public static String NewSiteDialog_LBL_Apply;
-    public static String NewSiteDialog_Title;
-
-    public static String NewSiteWidget_ERR_DuplicateNames;
-    public static String NewSiteWidget_ERR_InvalidFileSource;
-    public static String NewSiteWidget_ERR_InvalidFileTarget;
-    public static String NewSiteWidget_LBL_Destination;
-    public static String NewSiteWidget_LBL_Filesystem;
-    public static String NewSiteWidget_LBL_Folder;
-    public static String NewSiteWidget_LBL_Project;
-    public static String NewSiteWidget_LBL_Remote;
-    public static String NewSiteWidget_LBL_SelectDestTarget;
-    public static String NewSiteWidget_LBL_SelectSrcLocation;
-    public static String NewSiteWidget_LBL_Sites;
-    public static String NewSiteWidget_LBL_Source;
-    public static String NewSiteWidget_TXT_NewSite;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
-
-    private Messages() {
+    public Object[] getChildren(Object element) {
+        if (element instanceof IProject) {
+            Object[] children = new Object[1];
+            children[0] = new ProjectSiteConnections((IProject) element);
+            return children;
+        }
+        return super.getChildren(element);
     }
 }

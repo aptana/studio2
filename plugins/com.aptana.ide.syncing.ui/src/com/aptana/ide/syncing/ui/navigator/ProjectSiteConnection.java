@@ -32,45 +32,62 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.navigator;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.progress.IElementCollector;
 
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FilesystemNewSiteAction implements IObjectActionDelegate {
+public class ProjectSiteConnection extends FileSystemWorkbenchAdapter implements IAdaptable {
 
-    private IWorkbenchPart fActivePart;
-    private ISelection fSelection;
+    private IProject fProject;
+    private IConnectionPoint fTarget;
 
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        fActivePart = targetPart;
+    public ProjectSiteConnection(IProject project, IConnectionPoint target) {
+        fProject = project;
+        fTarget = target;
     }
 
-    public void run(IAction action) {
-        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
-            return;
-        }
-        Object element = ((IStructuredSelection) fSelection).getFirstElement();
-        if (!(element instanceof IAdaptable)) {
-            return;
-        }
-
-        IAdaptable source = (IAdaptable) element;
-        NewSiteDialog dialog = new NewSiteDialog(fActivePart.getSite().getShell(), true, source,
-                null);
-        dialog.open();
+    public IProject getProject() {
+        return fProject;
     }
 
-    public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
+    public IConnectionPoint getDestination() {
+        return fTarget;
+    }
+
+    public Object[] getChildren(Object object) {
+        return super.getChildren(fTarget);
+    }
+
+    public ImageDescriptor getImageDescriptor(Object object) {
+        return super.getImageDescriptor(fTarget);
+    }
+
+    public String getLabel(Object object) {
+        return super.getLabel(fTarget);
+    }
+
+    public void fetchDeferredChildren(Object object, IElementCollector collector,
+            IProgressMonitor monitor) {
+        super.fetchDeferredChildren(fTarget, collector, monitor);
+    }
+
+    public Object getAdapter(Class adapter) {
+        if (adapter == IProject.class) {
+            return fProject;
+        }
+        if (adapter == IConnectionPoint.class) {
+            return fTarget;
+        }
+        return fTarget.getAdapter(adapter);
     }
 }
