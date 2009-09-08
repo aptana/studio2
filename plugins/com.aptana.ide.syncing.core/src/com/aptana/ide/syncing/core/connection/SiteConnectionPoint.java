@@ -34,7 +34,8 @@
  */
 package com.aptana.ide.syncing.core.connection;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 
@@ -173,11 +174,13 @@ public class SiteConnectionPoint extends ConnectionPoint {
                 return category.getConnectionPoint(connectionName);
             }
         } else if (categoryId.equals(WorkspaceConnectionPoint.CATEGORY)) {
-            // finds the workspace project with the specified name
-            IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(connectionName);
-            if (project != null) {
-                WorkspaceConnectionPoint connection = new WorkspaceConnectionPoint(project);
-                connection.setName(project.getName());
+            // finds the workspace container with the specified name
+            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            IContainer container = (IContainer) root.findMember(new Path(connectionName));
+            if (container != null) {
+                WorkspaceConnectionPoint connection = new WorkspaceConnectionPoint(
+                        (IContainer) container);
+                connection.setName(connectionName);
                 return connection;
             }
         } else if (categoryId.equals(LocalConnectionPoint.CATEGORY)) {

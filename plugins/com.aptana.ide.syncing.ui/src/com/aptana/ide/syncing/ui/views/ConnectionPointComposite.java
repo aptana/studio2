@@ -46,6 +46,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -72,6 +73,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.WorkspaceConnectionPoint;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
@@ -301,18 +303,23 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         items.add(fConnectionPoint.getName());
 
         if (data instanceof IContainer) {
+            // a workspace project/folder
             IContainer container = (IContainer) data;
+            IContainer root = ((WorkspaceConnectionPoint) fConnectionPoint).getResource();
 
-            IPath path = container.getProjectRelativePath();
-            IContainer segmentPath = container.getProject();
-            String[] segments = path.segments();
-            for (String segment : segments) {
-                segmentPath = (IContainer) segmentPath.findMember(segment);
-                // adds the path segment in reverse order
-                fComboData.add(0, segmentPath);
-                items.add(0, segment);
+            String path = getRelativePath(root, container);
+            if (path != null) {
+                String[] segments = (new Path(path)).segments();
+                IContainer segmentPath = root;
+                for (String segment : segments) {
+                    segmentPath = (IContainer) segmentPath.findMember(segment);
+                    // adds the path segment in reverse order
+                    fComboData.add(0, segmentPath);
+                    items.add(0, segment);
+                }
             }
         } else {
+            // a filesystem or remote path
             IFileStore fileStore = getFileStore(data);
             if (fileStore != null) {
                 IFileStore homeFileStore = getFileStore(fConnectionPoint);
@@ -339,7 +346,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         setComboData(rootElement);
 
         if (rootElement instanceof IContainer) {
-            setPath(((IContainer) rootElement).getProjectRelativePath().toString());
+            setPath(getRelativePath(((WorkspaceConnectionPoint) fConnectionPoint).getResource(),
+                    (IContainer) rootElement));
         } else {
             IFileStore fileStore = getFileStore(rootElement);
             if (fileStore != null) {
@@ -377,4 +385,20 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 
+    /**
+     * @param root
+     *            the root container
+     * @param element
+     *            a container under the root
+     * @return the relative path string of the element from the root
+     */
+    private static String getRelativePath(IContainer root, IContainer element) {
+        String rootPath = root.getFullPath().toString();
+        String elementPath = element.getFullPath().toString();
+        int index = elementPath.indexOf(rootPath);
+        if (index == -1) {
+            return null;
+        }
+        return elementPath.substring(index + rootPath.length());
+    }
 }
