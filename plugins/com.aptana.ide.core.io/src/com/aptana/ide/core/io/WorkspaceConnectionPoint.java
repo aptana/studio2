@@ -101,7 +101,8 @@ public final class WorkspaceConnectionPoint extends ConnectionPoint {
 	 */
 	@Override
     public URI getRootURI() {
-        return URIUtil.toURI(path);
+	    IContainer resource = getResource();
+        return resource == null ? URIUtil.toURI(path) : resource.getLocationURI();
     }
 
 	/**

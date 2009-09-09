@@ -37,6 +37,10 @@ package com.aptana.ide.syncing.ui.actions;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
+
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 
 public class SyncUtils {
@@ -59,5 +63,13 @@ public class SyncUtils {
         }
 
         return intersectionSet;
+    }
+
+    public static IFileStore getFileStore(IAdaptable adaptable, IFileStore rootStore) {
+        if (adaptable instanceof IResource) {
+            IResource resource = (IResource) adaptable;
+            return rootStore.getFileStore(resource.getProjectRelativePath());
+        }
+        return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 }

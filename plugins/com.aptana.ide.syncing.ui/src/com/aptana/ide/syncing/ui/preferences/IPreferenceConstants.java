@@ -39,5 +39,16 @@ public interface IPreferenceConstants {
     /**
      * Preference for which files to cloak by default during syncing operations
      */
-    public String GLOBAL_CLOAKING_EXTENSIONS = "GLOBAL_CLOAKING_EXTENSIONS"; //$NON-NLS-1$
+    public static final String GLOBAL_CLOAKING_EXTENSIONS = "GLOBAL_CLOAKING_EXTENSIONS"; //$NON-NLS-1$
+
+    /**
+     * Preference to not show the confirmation dialog after upload is completed
+     */
+    public static final String IGNORE_DIALOG_FILE_UPLOAD = "IGNORE_DIALOG_FILE_UPLOAD"; //$NON-NLS-1$
+
+    /**
+     * Preference to not show the confirmation dialog after download is
+     * completed
+     */
+    public static final String IGNORE_DIALOG_FILE_DOWNLOAD = "IGNORE_DIALOG_FILE_DOWNLOAD"; //$NON-NLS-1$
 }

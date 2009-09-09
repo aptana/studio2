@@ -192,7 +192,7 @@
                tooltip="%Action.NewConnection.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.ResourceDownloadAction"
+               class="com.aptana.ide.syncing.ui.actions.DownloadAction"
                icon="icons/full/obj16/get.gif"
                id="com.aptana.ide.syncing.ui.actions.ResourceDownloadAction"
                label="%Action.Download.name"
@@ -200,7 +200,7 @@
                tooltip="%Action.Download.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.ResourceUploadAction"
+               class="com.aptana.ide.syncing.ui.actions.UploadAction"
                icon="icons/full/obj16/put.gif"
                id="com.aptana.ide.syncing.ui.actions.ResourceUploadAction"
                label="%Action.Upload.name"
@@ -208,7 +208,7 @@
                tooltip="%Action.Upload.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.ResourceSynchronizeAction"
+               class="com.aptana.ide.syncing.ui.actions.SynchronizeAction"
                enablesFor="1"
                icon="icons/full/obj16/sync_vertical.gif"
                id="com.aptana.ide.syncing.ui.actions.ResourceSynchronizeAction"
@@ -288,7 +288,7 @@
                tooltip="%Action.NewConnection.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.FilesystemDownloadAction"
+               class="com.aptana.ide.syncing.ui.actions.DownloadAction"
                icon="icons/full/obj16/get.gif"
                id="com.aptana.ide.syncing.ui.actions.FilesystemDownloadAction"
                label="%Action.Download.name"
@@ -296,7 +296,7 @@
                tooltip="%Action.Download.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.FilesystemUploadAction"
+               class="com.aptana.ide.syncing.ui.actions.UploadAction"
                icon="icons/full/obj16/put.gif"
                id="com.aptana.ide.syncing.ui.actions.FilesystemUploadAction"
                label="%Action.Upload.name"
@@ -304,7 +304,7 @@
                tooltip="%Action.Upload.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.FilesystemSynchronizeAction"
+               class="com.aptana.ide.syncing.ui.actions.SynchronizeAction"
                enablesFor="1"
                icon="icons/full/obj16/sync_vertical.gif"
                id="com.aptana.ide.syncing.ui.actions.FilesystemSynchronizeAction"

@@ -42,6 +42,7 @@ import java.util.Set;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -53,6 +54,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 
+import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.WorkspaceConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIUtils;
@@ -61,10 +63,12 @@ import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.internal.ChooseSiteConnectionDialog;
-import com.aptana.ide.syncing.ui.navigator.actions.Messages;
 import com.aptana.ide.syncing.ui.views.FTPManagerView;
 
-public class BaseSyncAction implements IObjectActionDelegate {
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public abstract class BaseSyncAction implements IObjectActionDelegate {
 
     private IWorkbenchPart fActivePart;
     private List<IAdaptable> fSelectedElements;
@@ -86,11 +90,8 @@ public class BaseSyncAction implements IObjectActionDelegate {
         SiteConnectionPoint[] sites = getSiteConnections();
         if (sites.length == 0) {
             // the selected elements do not belong to a common source location
-            MessageDialog
-                    .openWarning(
-                            getShell(),
-                            "Warning",
-                            "Unable to perform the action because the selected elements do not belong to a common site source location.");
+            MessageDialog.openWarning(getShell(), getMessageTitle(),
+                    Messages.BaseSyncAction_Warning_NoCommonParent);
             return;
         }
 
@@ -133,14 +134,24 @@ public class BaseSyncAction implements IObjectActionDelegate {
                 }
             }
         }
-        
+
         if (site != null) {
-            
+            try {
+                performAction(fSelectedElements.toArray(new IAdaptable[fSelectedElements.size()]),
+                        site);
+            } catch (CoreException e) {
+                // TODO: Opens an error dialog
+            }
         }
     }
 
     public void selectionChanged(IAction action, ISelection selection) {
         action.setEnabled(false);
+        setSelection(selection);
+        action.setEnabled(fSelectedElements.size() > 0);
+    }
+
+    public void setSelection(ISelection selection) {
         fSelectedElements.clear();
 
         if (!(selection instanceof IStructuredSelection) || selection.isEmpty()) {
@@ -156,7 +167,13 @@ public class BaseSyncAction implements IObjectActionDelegate {
                 }
             }
         }
-        action.setEnabled(fSelectedElements.size() > 0);
+    }
+
+    protected abstract void performAction(IAdaptable[] files, SiteConnectionPoint site)
+            throws CoreException;
+
+    protected String getMessageTitle() {
+        return StringUtils.ellipsify(Messages.BaseSyncAction_MessageTitle);
     }
 
     protected Shell getShell() {
@@ -201,7 +218,7 @@ public class BaseSyncAction implements IObjectActionDelegate {
                 }
             }
         } catch (PartInitException e) {
-            SyncingUIPlugin.log(Messages.DoubleClickAction_ERR_FailToOpenFTPView, e);
+            SyncingUIPlugin.log(Messages.BaseSyncAction_FailedToOpenFTPView, e);
         }
     }
 
