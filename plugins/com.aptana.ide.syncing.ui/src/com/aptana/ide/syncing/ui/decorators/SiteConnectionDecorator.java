@@ -34,7 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.decorators;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -84,8 +84,8 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                     if (!isDisposed(tree) && event.item instanceof TreeItem) {
                         Object data = ((TreeItem) event.item).getData();
 
-                        if (data instanceof IProject) {
-                            String lastConnection = getLastSyncConnection((IProject) data);
+                        if (data instanceof IContainer) {
+                            String lastConnection = getLastSyncConnection((IContainer) data);
                             if (lastConnection != null) {
                                 Point stringExtent = event.gc.stringExtent(lastConnection);
                                 event.width += DECORATOR.getBounds().width + PADDING
@@ -117,8 +117,8 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                     if (!isDisposed(tree) && event.item instanceof TreeItem) {
                         Object data = ((TreeItem) event.item).getData();
 
-                        if (data instanceof IProject) {
-                            String lastConnection = getLastSyncConnection((IProject) data);
+                        if (data instanceof IContainer) {
+                            String lastConnection = getLastSyncConnection((IContainer) data);
                             if (lastConnection != null) {
                                 int x = event.x + event.width + PADDING;
                                 int itemHeight = tree.getItemHeight();
@@ -168,23 +168,23 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
         });
     }
 
-    private static String getLastSyncConnection(IProject project) {
-        if (project == null) {
+    private static String getLastSyncConnection(IContainer container) {
+        if (container == null) {
             return null;
         }
         // only shows the decorator when user chooses to
         // remember the decision
-        boolean remember = ResourceSynchronizationUtils.isRememberDecision(project);
+        boolean remember = ResourceSynchronizationUtils.isRememberDecision(container);
         if (!remember) {
             return null;
         }
 
-        String lastConnection = ResourceSynchronizationUtils.getLastSyncConnection(project);
+        String lastConnection = ResourceSynchronizationUtils.getLastSyncConnection(container);
         if (lastConnection == null) {
             return null;
         }
 
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(project);
+        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(container, true);
         String target;
         for (SiteConnectionPoint site : sites) {
             target = site.getDestination().getName();

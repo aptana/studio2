@@ -39,6 +39,6 @@ import org.eclipse.jface.action.IAction;
 public class ResourceSynchronizeAction extends BaseSyncAction {
 
     public void run(IAction action) {
-        // opens the FTP Manager view
+        openFTPManagerView();
     }
 }

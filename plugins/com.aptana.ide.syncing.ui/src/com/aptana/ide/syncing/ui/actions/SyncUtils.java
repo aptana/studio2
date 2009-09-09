@@ -34,11 +34,30 @@
  */
 package com.aptana.ide.syncing.ui.actions;
 
-import org.eclipse.jface.action.IAction;
+import java.util.HashSet;
+import java.util.Set;
 
-public class FilesystemSynchronizeAction extends BaseSyncAction {
+import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 
-    public void run(IAction action) {
-        openFTPManagerView();
+public class SyncUtils {
+
+    /**
+     * Computes the intersection of an array of sets.
+     * 
+     * @param sets
+     *            the array of sets
+     * @return a result set that contains the intersection
+     */
+    public static Set<SiteConnectionPoint> getIntersection(Set<SiteConnectionPoint>[] sets) {
+        Set<SiteConnectionPoint> intersectionSet = new HashSet<SiteConnectionPoint>();
+
+        for (Set<SiteConnectionPoint> set : sets) {
+            intersectionSet.addAll(set);
+        }
+        for (Set<SiteConnectionPoint> set : sets) {
+            intersectionSet.retainAll(set);
+        }
+
+        return intersectionSet;
     }
 }

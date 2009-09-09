@@ -750,7 +750,13 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
 
         if (category.equals(WorkspaceConnectionPoint.CATEGORY)) {
             fSrcProjectButton.setSelection(true);
-            fSrcProjectCombo.setText(name);
+            int index = name.indexOf("/");
+            if (index == -1) {
+                fSrcProjectCombo.setText(name);
+            } else {
+                fSrcProjectCombo.setText(name.substring(0, index));
+                fSrcFolderText.setText(name.substring(index));
+            }
             fSrcFileButton.setSelection(false);
             fSrcFileText.setText(""); //$NON-NLS-1$
         } else if (category.equals(LocalConnectionPoint.CATEGORY)) {
@@ -772,7 +778,13 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         } else if (category.equals(WorkspaceConnectionPoint.CATEGORY)) {
             fDestRemoteButton.setSelection(false);
             fDestProjectButton.setSelection(true);
-            fDestProjectCombo.setText(name);
+            int index = name.indexOf("/");
+            if (index == -1) {
+                fDestProjectCombo.setText(name);
+            } else {
+                fDestProjectCombo.setText(name.substring(0, index));
+                fDestFolderText.setText(name.substring(index));
+            }
             fDestFileButton.setSelection(false);
             fDestFileText.setText(""); //$NON-NLS-1$
         } else if (category.equals(LocalConnectionPoint.CATEGORY)) {

@@ -461,7 +461,7 @@
                icon="icons/full/obj16/sync_vertical.gif">
          </command>
          <command
-               commandId="com.aptana.ide.syncing.ui.commands.synchronize"
+               commandId="com.aptana.ide.syncing.ui.commands.upload"
                icon="icons/full/obj16/put.gif">
          </command>
          <command
@@ -499,14 +499,16 @@
             class="com.aptana.ide.syncing.ui.handlers.SynchronizeHandler"
             commandId="com.aptana.ide.syncing.ui.commands.synchronize">
          <activeWhen>
-            <or>
-               <instanceof
-                     value="org.eclipse.core.resources.IResource">
-               </instanceof>
-               <instanceof
-                     value="com.aptana.ide.ui.io.navigator.FileSystemObject">
-               </instanceof>
-            </or>
+            <iterate>
+               <or>
+                  <instanceof
+                        value="org.eclipse.core.resources.IResource">
+                  </instanceof>
+                  <instanceof
+                        value="com.aptana.ide.ui.io.navigator.FileSystemObject">
+                  </instanceof>
+               </or>
+            </iterate>
          </activeWhen>
          <enabledWhen>
             <count
@@ -518,14 +520,16 @@
             class="com.aptana.ide.syncing.ui.handlers.UploadHandler"
             commandId="com.aptana.ide.syncing.ui.commands.upload">
          <activeWhen>
-            <or>
-               <instanceof
-                     value="org.eclipse.core.resources.IResource">
-               </instanceof>
-               <instanceof
-                     value="com.aptana.ide.ui.io.navigator.FileSystemObject">
-               </instanceof>
-            </or>
+            <iterate>
+               <or>
+                  <instanceof
+                        value="org.eclipse.core.resources.IResource">
+                  </instanceof>
+                  <instanceof
+                        value="com.aptana.ide.ui.io.navigator.FileSystemObject">
+                  </instanceof>
+               </or>
+            </iterate>
          </activeWhen>
          <enabledWhen>
             <count
@@ -537,14 +541,16 @@
             class="com.aptana.ide.syncing.ui.handlers.DownloadHandler"
             commandId="com.aptana.ide.syncing.ui.commands.download">
          <activeWhen>
-            <or>
-               <instanceof
-                     value="org.eclipse.core.resources.IResource">
-               </instanceof>
-               <instanceof
-                     value="com.aptana.ide.ui.io.navigator.FileSystemObject">
-               </instanceof>
-            </or>
+            <iterate>
+               <or>
+                  <instanceof
+                        value="org.eclipse.core.resources.IResource">
+                  </instanceof>
+                  <instanceof
+                        value="com.aptana.ide.ui.io.navigator.FileSystemObject">
+                  </instanceof>
+               </or>
+            </iterate>
          </activeWhen>
          <enabledWhen>
             <count
