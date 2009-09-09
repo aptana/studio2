@@ -84,7 +84,6 @@ public class BaseSyncAction implements IObjectActionDelegate {
 
         // gets the site connection user wants to use
         SiteConnectionPoint[] sites = getSiteConnections();
-        SiteConnectionPoint site = null;
         if (sites.length == 0) {
             // the selected elements do not belong to a common source location
             MessageDialog
@@ -92,7 +91,11 @@ public class BaseSyncAction implements IObjectActionDelegate {
                             getShell(),
                             "Warning",
                             "Unable to perform the action because the selected elements do not belong to a common site source location.");
-        } else if (sites.length == 1) {
+            return;
+        }
+
+        SiteConnectionPoint site = null;
+        if (sites.length == 1) {
             site = sites[0];
         } else {
             // multiple connections on the selected source
@@ -129,6 +132,10 @@ public class BaseSyncAction implements IObjectActionDelegate {
                     setRememberMyDecision(site, dialog.isRememberMyDecision());
                 }
             }
+        }
+        
+        if (site != null) {
+            
         }
     }
 
