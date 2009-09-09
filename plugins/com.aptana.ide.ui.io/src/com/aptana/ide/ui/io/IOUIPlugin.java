@@ -38,7 +38,6 @@ package com.aptana.ide.ui.io;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -51,7 +50,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.BundleContext;
 
 import com.aptana.ide.core.io.ConnectionPointType;
@@ -193,10 +191,9 @@ public class IOUIPlugin extends AbstractUIPlugin {
     }
 
     public static void refreshNavigatorViewAndSelect(final Object element, final Object selection) {
-        UIJob job = new UIJob("Refreshing File view") { //$NON-NLS-1$
+        CoreUIUtils.getDisplay().asyncExec(new Runnable() {
 
-            @Override
-            public IStatus runInUIThread(IProgressMonitor monitor) {
+            public void run() {
                 try {
                     IViewPart view = CoreUIUtils.findView("com.aptana.ide.ui.io.fileExplorerView"); //$NON-NLS-1$
                     if (view != null && view instanceof CommonNavigator) {
@@ -216,12 +213,8 @@ public class IOUIPlugin extends AbstractUIPlugin {
                     }
                 } catch (PartInitException e) {
                 }
-                return Status.OK_STATUS;
             }
-
-        };
-        job.setSystem(true);
-        job.schedule();
+        });
     }
 
     public static void log(String msg, Throwable e) {

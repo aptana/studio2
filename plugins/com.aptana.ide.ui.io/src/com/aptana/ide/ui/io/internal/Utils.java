@@ -37,12 +37,20 @@ package com.aptana.ide.ui.io.internal;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
 public class Utils {
 
     public static IFileStore getFileStore(IAdaptable adaptable) {
+        if (adaptable instanceof IResource) {
+            try {
+                return EFS.getStore(((IResource) adaptable).getLocationURI());
+            } catch (CoreException e) {
+                return null;
+            }
+        }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 

@@ -34,6 +34,14 @@
  */
 package com.aptana.ide.syncing.ui.views;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -51,9 +59,12 @@ import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPointEvent;
 import com.aptana.ide.core.io.IConnectionPointListener;
+import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -110,9 +121,35 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
             dialog.setSelectedSite(fSitesCombo.getText());
             dialog.open();
         } else if (source == fTransferRightButton) {
+            transferItems(fSource.getSelectedElements(), fTarget.getCurrentInput(),
+                    new JobChangeAdapter() {
 
+                        @Override
+                        public void done(IJobChangeEvent event) {
+                            IOUIPlugin.refreshNavigatorView(fTarget.getCurrentInput());
+                            CoreUIUtils.getDisplay().asyncExec(new Runnable() {
+
+                                public void run() {
+                                    fTarget.refresh();
+                                }
+                            });
+                        }
+                    });
         } else if (source == fTransferLeftButton) {
+            transferItems(fTarget.getSelectedElements(), fSource.getCurrentInput(),
+                    new JobChangeAdapter() {
 
+                        @Override
+                        public void done(IJobChangeEvent event) {
+                            IOUIPlugin.refreshNavigatorView(fSource.getCurrentInput());
+                            CoreUIUtils.getDisplay().asyncExec(new Runnable() {
+
+                                public void run() {
+                                    fSource.refresh();
+                                }
+                            });
+                        }
+                    });
         }
     }
 
@@ -213,13 +250,13 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         return main;
     }
 
-    private String[] getExistingSiteNames() {
-        SiteConnectionPoint[] sites = SiteConnectionManager.getExistingSites();
-        String[] names = new String[sites.length];
-        for (int i = 0; i < names.length; ++i) {
-            names[i] = sites[i].getName();
+    private void transferItems(IAdaptable[] sourceItems, IAdaptable targetRoot,
+            IJobChangeListener listener) {
+        IFileStore targetStore = getFileStore(targetRoot);
+        if (targetStore != null) {
+            CopyFilesOperation operation = new CopyFilesOperation(getControl().getShell());
+            operation.copyFiles(sourceItems, targetStore, listener);
         }
-        return names;
     }
 
     private void update() {
@@ -231,5 +268,25 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
                 break;
             }
         }
+    }
+
+    private static String[] getExistingSiteNames() {
+        SiteConnectionPoint[] sites = SiteConnectionManager.getExistingSites();
+        String[] names = new String[sites.length];
+        for (int i = 0; i < names.length; ++i) {
+            names[i] = sites[i].getName();
+        }
+        return names;
+    }
+
+    private static IFileStore getFileStore(IAdaptable adaptable) {
+        if (adaptable instanceof IContainer) {
+            try {
+                return EFS.getStore(((IContainer) adaptable).getLocationURI());
+            } catch (CoreException e) {
+                return null;
+            }
+        }
+        return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 }

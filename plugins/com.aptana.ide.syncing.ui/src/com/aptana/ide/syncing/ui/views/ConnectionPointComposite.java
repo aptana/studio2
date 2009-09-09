@@ -48,6 +48,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -112,6 +113,27 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         return fMain;
     }
 
+    public IAdaptable getCurrentInput() {
+        // the root input is always IAdaptable
+        return (IAdaptable) fTreeViewer.getInput();
+    }
+
+    public IAdaptable[] getSelectedElements() {
+        ISelection selection = fTreeViewer.getSelection();
+        if (selection.isEmpty() || !(selection instanceof IStructuredSelection)) {
+            return new IAdaptable[0];
+        }
+        Object[] elements = ((IStructuredSelection) selection).toArray();
+        // the selection should be all IAdaptable objects, but just to make sure
+        List<IAdaptable> list = new ArrayList<IAdaptable>();
+        for (Object element : elements) {
+            if (element instanceof IAdaptable) {
+                list.add((IAdaptable) element);
+            }
+        }
+        return list.toArray(new IAdaptable[list.size()]);
+    }
+
     public void setFocus() {
         fMain.setFocus();
     }
@@ -134,6 +156,23 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         setPath(""); //$NON-NLS-1$
 
         fTreeViewer.setInput(connection);
+    }
+
+    public void refresh() {
+        Object input = fTreeViewer.getInput();
+        IContainer resource = null;
+        if (input instanceof WorkspaceConnectionPoint) {
+            resource = ((WorkspaceConnectionPoint) input).getResource();
+        } else if (input instanceof IContainer) {
+            resource = (IContainer) input;
+        }
+        if (resource != null) {
+            try {
+                resource.refreshLocal(IResource.DEPTH_INFINITE, null);
+            } catch (CoreException e) {
+            }
+        }
+        updateContent(fComboData.get(fEndpointCombo.getSelectionIndex()));
     }
 
     public void widgetDefaultSelected(SelectionEvent e) {
@@ -279,10 +318,6 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             return;
         }
         updateContent(fComboData.get(index + 1));
-    }
-
-    private void refresh() {
-        updateContent(fComboData.get(fEndpointCombo.getSelectionIndex()));
     }
 
     private void gotoHome() {

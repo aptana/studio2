@@ -61,6 +61,9 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.actions.MoveFilesOperation;
 import com.aptana.ide.ui.io.internal.Utils;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
 
     public FileDropAdapterAssistant() {
@@ -156,7 +159,7 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
 
         IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
         CopyFilesOperation operation = new CopyFilesOperation(getShell());
-        operation.copyFiles(sources, destination);
+        operation.copyFiles(sources, destination, null);
 
         return problems;
     }
@@ -172,7 +175,7 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
 
         IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
         CopyFilesOperation operation = new CopyFilesOperation(getShell());
-        operation.copyFiles((String[]) data, destination);
+        operation.copyFiles((String[]) data, destination, null);
 
         return problems;
     }
@@ -188,7 +191,7 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
 
         IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
         MoveFilesOperation operation = new MoveFilesOperation(getShell());
-        operation.copyFiles(sources, destination);
+        operation.copyFiles(sources, destination, null);
 
         return problems;
     }

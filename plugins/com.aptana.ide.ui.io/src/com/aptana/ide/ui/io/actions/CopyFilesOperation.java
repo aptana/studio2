@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -86,7 +87,7 @@ public class CopyFilesOperation {
 
             final String returnCode[] = { CANCEL };
             final String msg = MessageFormat.format(
-                    "{0} exists at the destination. Do you wish to overwrite?", pathString);
+                    "{0} already exists. Do you wish to overwrite?", pathString);
             final String[] options = { IDialogConstants.YES_LABEL,
                     IDialogConstants.YES_TO_ALL_LABEL, IDialogConstants.NO_LABEL,
                     IDialogConstants.CANCEL_LABEL };
@@ -129,16 +130,16 @@ public class CopyFilesOperation {
         }
     }
 
-    public void copyFiles(IAdaptable[] sources, IFileStore destination) {
+    public void copyFiles(IAdaptable[] sources, IFileStore destination, IJobChangeListener listener) {
         IFileStore[] fileStores = new IFileStore[sources.length];
         for (int i = 0; i < fileStores.length; ++i) {
             fileStores[i] = Utils.getFileStore(sources[i]);
         }
-        copyFiles(fileStores, destination);
+        copyFiles(fileStores, destination, listener);
     }
 
-    public void copyFiles(String[] filenames, IFileStore destination) {
-        copyFiles(getFileStores(filenames), destination);
+    public void copyFiles(String[] filenames, IFileStore destination, IJobChangeListener listener) {
+        copyFiles(getFileStores(filenames), destination, listener);
     }
 
     public IStatus copyFiles(IFileStore[] sources, IFileStore destination, IProgressMonitor monitor) {
@@ -228,7 +229,8 @@ public class CopyFilesOperation {
         return fOverwriteQuery;
     }
 
-    private void copyFiles(final IFileStore[] sources, final IFileStore destination) {
+    private void copyFiles(final IFileStore[] sources, final IFileStore destination,
+            IJobChangeListener listener) {
         Job job = new Job("Copying files") {
 
             @Override
@@ -247,6 +249,9 @@ public class CopyFilesOperation {
                 return super.belongsTo(family);
             }
         };
+        if (listener != null) {
+            job.addJobChangeListener(listener);
+        }
         job.schedule();
     }
 
