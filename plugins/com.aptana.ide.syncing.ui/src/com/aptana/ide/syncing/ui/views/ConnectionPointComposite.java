@@ -45,7 +45,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -283,13 +282,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     }
 
     private void refresh() {
-        Object input = fTreeViewer.getInput();
-        if (input instanceof IResource) {
-            try {
-                ((IResource) input).refreshLocal(IResource.DEPTH_INFINITE, null);
-            } catch (CoreException e) {
-            }
-        }
+        updateContent(fComboData.get(fEndpointCombo.getSelectionIndex()));
     }
 
     private void gotoHome() {

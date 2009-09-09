@@ -39,6 +39,7 @@ import java.util.List;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -102,19 +103,19 @@ public class SiteConnectionManager {
         SiteConnectionPoint[] allSites = getExistingSites();
         if (sourceObject instanceof IConnectionPoint) {
             for (SiteConnectionPoint site : allSites) {
-                if (site == sourceObject && site.getDestination() != null) {
+                if (site.getSource() == sourceObject && site.getDestination() != null) {
                     sites.add(site);
                 }
             }
-        } else if (sourceObject instanceof IContainer) {
+        } else if (sourceObject instanceof IResource) {
             // project source
+            IResource resource = (IResource) sourceObject;
             IConnectionPoint source;
             for (SiteConnectionPoint site : allSites) {
                 source = site.getSource();
                 if (source instanceof WorkspaceConnectionPoint && site.getDestination() != null) {
-                    IContainer container = ((WorkspaceConnectionPoint) source).getResource();
-                    if (container.equals(sourceObject)
-                            || (!strict && container.getProject().equals(sourceObject))) {
+                    IContainer root = ((WorkspaceConnectionPoint) source).getResource();
+                    if (root.equals(sourceObject) || (!strict && contains(root, resource))) {
                         sites.add(site);
                     }
                 }
@@ -140,5 +141,9 @@ public class SiteConnectionManager {
             }
         }
         return sites.toArray(new SiteConnectionPoint[sites.size()]);
+    }
+
+    private static boolean contains(IContainer root, IResource element) {
+        return element.getFullPath().toString().indexOf(root.getFullPath().toString()) > -1;
     }
 }
