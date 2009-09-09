@@ -32,8 +32,22 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.navigator;
 
-public class ResourceUploadAction extends BaseSyncAction {
+import org.eclipse.core.resources.IProject;
+import org.eclipse.ui.model.WorkbenchContentProvider;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class SiteConnectionContentProvider extends WorkbenchContentProvider {
+
+    public Object[] getChildren(Object element) {
+        if (element instanceof IProject) {
+            Object[] children = new Object[1];
+            children[0] = new ProjectSiteConnections((IProject) element);
+            return children;
+        }
+        return super.getChildren(element);
+    }
 }

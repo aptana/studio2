@@ -32,13 +32,63 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.navigator.ICommonContentExtensionSite;
+import org.eclipse.ui.navigator.ICommonLabelProvider;
 
-public class FilesystemSynchronizeAction extends BaseSyncAction {
+import com.aptana.ide.core.io.IConnectionPoint;
 
-    public void run(IAction action) {
-        // opens the FTP Manager view
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class SiteConnectionLabelProvider implements ICommonLabelProvider {
+
+    public void init(ICommonContentExtensionSite aConfig) {
+    }
+
+    public Image getImage(Object element) {
+        return null;
+    }
+
+    public String getText(Object element) {
+        if (element instanceof ProjectSiteConnections) {
+            return ((ProjectSiteConnections) element).getLabel(element);
+        }
+        if (element instanceof ProjectSiteConnection) {
+            ProjectSiteConnection site = (ProjectSiteConnection) element;
+            IConnectionPoint connection = (IConnectionPoint) site
+                    .getAdapter(IConnectionPoint.class);
+            if (connection != null) {
+                return connection.getName();
+            }
+        }
+        return null;
+    }
+
+    public void addListener(ILabelProviderListener listener) {
+    }
+
+    public void dispose() {
+    }
+
+    public boolean isLabelProperty(Object element, String property) {
+        return false;
+    }
+
+    public void removeListener(ILabelProviderListener listener) {
+    }
+
+    public void restoreState(IMemento aMemento) {
+    }
+
+    public void saveState(IMemento aMemento) {
+    }
+
+    public String getDescription(Object anElement) {
+        return null;
     }
 }

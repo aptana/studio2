@@ -34,6 +34,18 @@
  */
 package com.aptana.ide.syncing.ui.actions;
 
-public class ResourceDownloadAction extends BaseSyncAction {
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.IAction;
 
+import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+
+public class SynchronizeAction extends BaseSyncAction {
+
+    public void run(IAction action) {
+        openFTPManagerView();
+    }
+
+    protected void performAction(IAdaptable[] files, SiteConnectionPoint site) throws CoreException {
+    }
 }

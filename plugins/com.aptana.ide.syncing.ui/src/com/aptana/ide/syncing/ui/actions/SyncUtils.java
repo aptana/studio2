@@ -34,43 +34,42 @@
  */
 package com.aptana.ide.syncing.ui.actions;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.core.runtime.IAdaptable;
 
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 
-/**
- * @author Michael Xia (mxia@aptana.com)
- */
-public class ResourceNewSiteAction implements IObjectActionDelegate {
+public class SyncUtils {
 
-    private IWorkbenchPart fActivePart;
-    private ISelection fSelection;
+    /**
+     * Computes the intersection of an array of sets.
+     * 
+     * @param sets
+     *            the array of sets
+     * @return a result set that contains the intersection
+     */
+    public static Set<SiteConnectionPoint> getIntersection(Set<SiteConnectionPoint>[] sets) {
+        Set<SiteConnectionPoint> intersectionSet = new HashSet<SiteConnectionPoint>();
 
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        fActivePart = targetPart;
-    }
-
-    public void run(IAction action) {
-        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
-            return;
+        for (Set<SiteConnectionPoint> set : sets) {
+            intersectionSet.addAll(set);
         }
-        Object element = ((IStructuredSelection) fSelection).getFirstElement();
-        if (!(element instanceof IResource)) {
-            return;
+        for (Set<SiteConnectionPoint> set : sets) {
+            intersectionSet.retainAll(set);
         }
 
-        IResource resource = (IResource) element;
-        NewSiteDialog dialog = new NewSiteDialog(fActivePart.getSite().getShell(), true, resource,
-                null);
-        dialog.open();
+        return intersectionSet;
     }
 
-    public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
+    public static IFileStore getFileStore(IAdaptable adaptable, IFileStore rootStore) {
+        if (adaptable instanceof IResource) {
+            IResource resource = (IResource) adaptable;
+            return rootStore.getFileStore(resource.getProjectRelativePath());
+        }
+        return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 }

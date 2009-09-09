@@ -39,6 +39,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -70,6 +73,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.internal.ide.dialogs.FileFolderSelectionDialog;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
@@ -100,6 +104,8 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
     private Button fRemoveButton;
     private Button fSrcProjectButton;
     private Combo fSrcProjectCombo;
+    private Text fSrcFolderText;
+    private Button fSrcFolderBrowse;
     private Button fSrcFileButton;
     private Text fSrcFileText;
     private Button fSrcFileBrowse;
@@ -108,6 +114,8 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
     private Button fDestRemoteNew;
     private Button fDestProjectButton;
     private Combo fDestProjectCombo;
+    private Text fDestFolderText;
+    private Button fDestFolderBrowse;
     private Button fDestFileButton;
     private Text fDestFileText;
     private Button fDestFileBrowse;
@@ -117,7 +125,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
     private java.util.List<SiteConnectionPoint> fSites;
     private java.util.List<SiteConnectionPoint> fOriginalSites;
 
-    // for appending a number to "New Site" for differentiation
+    // for appending a number to "New Site" to avoid duplicates
     private int fCount;
 
     public NewSiteWidget(Composite parent) {
@@ -151,6 +159,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
             if (site.getName().equals(siteName)) {
                 fSitesTable.select(i);
                 updateSelection(site);
+                break;
             }
         }
     }
@@ -159,10 +168,11 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         if (source == null) {
             return;
         }
-        if (source instanceof IResource) {
-            IProject project = ((IResource) source).getProject();
+        IContainer container = getContainer(source);
+        if (container != null) {
             fSrcProjectButton.setSelection(true);
-            fSrcProjectCombo.setText(project.getName());
+            fSrcProjectCombo.setText(container.getProject().getName());
+            fSrcFolderText.setText(container.getProjectRelativePath().toString());
         }
 
         updateEnabledStates();
@@ -172,10 +182,11 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         if (target == null) {
             return;
         }
-        if (target instanceof IResource) {
-            IProject project = ((IResource) target).getProject();
+        IContainer container = getContainer(target);
+        if (container != null) {
             fDestProjectButton.setSelection(true);
-            fDestProjectCombo.setText(project.getName());
+            fDestProjectCombo.setText(container.getProject().getName());
+            fDestFolderText.setText(container.getProjectRelativePath().toString());
         }
 
         updateEnabledStates();
@@ -223,8 +234,14 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
             }
         } else if (source == fSrcProjectCombo) {
             site.setSource(getSourceName());
+        } else if (source == fSrcFolderBrowse) {
+            String folder = openFolderBrowseDialog();
+            if (folder != null) {
+                fSrcFolderText.setText(folder);
+                site.setSource(getSourceName());
+            }
         } else if (source == fSrcFileBrowse) {
-            String dir = openBrowseDialog();
+            String dir = openFileBrowseDialog();
             if (dir != null) {
                 fSrcFileText.setText(dir);
                 site.setSource(getSourceName());
@@ -236,8 +253,14 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
             site.setDestination(getDestinationName());
         } else if (source == fDestProjectCombo) {
             site.setDestination(getDestinationName());
+        } else if (source == fDestFolderBrowse) {
+            String folder = openFolderBrowseDialog();
+            if (folder != null) {
+                fDestFolderText.setText(folder);
+                site.setDestination(getDestinationName());
+            }
         } else if (source == fDestFileBrowse) {
-            String dir = openBrowseDialog();
+            String dir = openFileBrowseDialog();
             if (dir != null) {
                 fDestFileText.setText(dir);
                 site.setDestination(getDestinationName());
@@ -278,9 +301,9 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         }
 
         Object source = e.getSource();
-        if (source == fSrcFileText) {
+        if (source == fSrcFolderText || source == fSrcFileText) {
             site.setSource(getSourceName());
-        } else if (source == fDestFileText) {
+        } else if (source == fDestFolderText || source == fDestFileText) {
             site.setDestination(getDestinationName());
         }
     }
@@ -289,6 +312,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         Object source = e.getSource();
 
         if (source == fSitesTable) {
+            // edits the site name when the selection is double-clicked
             editSiteName(fSitesTable.getSelection()[0], fSites.get(fSitesTable.getSelectionIndex()));
         }
     }
@@ -306,12 +330,15 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         layout.marginWidth = 0;
         main.setLayout(layout);
 
+        // the left side shows the list of existing sites
         Composite left = createSitesList(main);
-        left.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+        left.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+        // the right side shows the details on the selected site from the left
         Composite right = createSiteDetails(main);
-        right.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+        right.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+        // adds the existing sites
         for (SiteConnectionPoint site : fOriginalSites) {
             createNewSiteItem(site);
         }
@@ -338,11 +365,12 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         Group group = new Group(main, SWT.NONE);
         group.setText(Messages.NewSiteWidget_LBL_Sites);
         group.setLayout(new GridLayout());
-        group.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+        group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+        // uses table widget for an editable list
         fSitesTable = new Table(group, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
         fSitesTable.setHeaderVisible(false);
-        fSitesTable.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+        fSitesTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         TableColumn column = new TableColumn(fSitesTable, SWT.NONE);
         column.setWidth(150);
         fSitesEditor = new TableEditor(fSitesTable);
@@ -352,13 +380,13 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         fSitesTable.addSelectionListener(this);
         fSitesTable.addMouseListener(this);
 
-        // the action buttons
+        // the actions to add to and remove from the list
         Composite buttons = new Composite(group, SWT.NULL);
         layout = new GridLayout(2, false);
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         buttons.setLayout(layout);
-        buttons.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+        buttons.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
         fAddButton = new Button(buttons, SWT.PUSH);
         fAddButton.setImage(SWTUtils.getImage(CoreUIPlugin.getDefault(), "/icons/add.gif")); //$NON-NLS-1$
@@ -395,6 +423,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         layout.marginWidth = 0;
         location.setLayout(layout);
 
+        // project specs
         fSrcProjectButton = new Button(location, SWT.RADIO);
         fSrcProjectButton.setText(Messages.NewSiteWidget_LBL_Project);
         fSrcProjectButton.setSelection(true);
@@ -404,17 +433,40 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         String[] projects = getWorkspaceProjectNames();
         fSrcProjectCombo.setItems(projects);
         fSrcProjectCombo.select(0);
-        GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
+        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 2;
         fSrcProjectCombo.setLayoutData(gridData);
         fSrcProjectCombo.addSelectionListener(this);
 
+        // empty placeholder label so the folders are intended to the right
+        new Label(location, SWT.NONE);
+
+        Composite folder = new Composite(location, SWT.NONE);
+        layout = new GridLayout(2, false);
+        layout.horizontalSpacing = 0;
+        layout.verticalSpacing = 0;
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        folder.setLayout(layout);
+        folder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        label = new Label(folder, SWT.NONE);
+        label.setText(Messages.NewSiteWidget_LBL_Folder);
+        fSrcFolderText = new Text(folder, SWT.BORDER | SWT.READ_ONLY);
+        fSrcFolderText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        fSrcFolderText.addModifyListener(this);
+
+        fSrcFolderBrowse = new Button(location, SWT.PUSH);
+        fSrcFolderBrowse.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
+        fSrcFolderBrowse.addSelectionListener(this);
+
+        // filesystem specs
         fSrcFileButton = new Button(location, SWT.RADIO);
         fSrcFileButton.setText(Messages.NewSiteWidget_LBL_Filesystem);
         fSrcFileButton.addSelectionListener(this);
 
         fSrcFileText = new Text(location, SWT.BORDER);
-        gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.widthHint = 250;
         fSrcFileText.setLayoutData(gridData);
         fSrcFileText.addModifyListener(this);
@@ -438,6 +490,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         layout.marginWidth = 0;
         location.setLayout(layout);
 
+        // remote specs
         fDestRemoteButton = new Button(location, SWT.RADIO);
         fDestRemoteButton.setText(Messages.NewSiteWidget_LBL_Remote);
         fDestRemoteButton.setSelection(true);
@@ -453,6 +506,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         fDestRemoteNew.setText(StringUtils.ellipsify(CoreStrings.NEW));
         fDestRemoteNew.addSelectionListener(this);
 
+        // project specs
         fDestProjectButton = new Button(location, SWT.RADIO);
         fDestProjectButton.setText(Messages.NewSiteWidget_LBL_Project);
         fDestProjectButton.addSelectionListener(this);
@@ -465,6 +519,29 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         fDestProjectCombo.setLayoutData(gridData);
         fDestProjectCombo.addSelectionListener(this);
 
+        // empty placeholder label so the folders are intended to the right
+        new Label(location, SWT.NONE);
+
+        folder = new Composite(location, SWT.NONE);
+        layout = new GridLayout(2, false);
+        layout.horizontalSpacing = 0;
+        layout.verticalSpacing = 0;
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        folder.setLayout(layout);
+        folder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        label = new Label(folder, SWT.NONE);
+        label.setText(Messages.NewSiteWidget_LBL_Folder);
+        fDestFolderText = new Text(folder, SWT.BORDER | SWT.READ_ONLY);
+        fDestFolderText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        fDestFolderText.addModifyListener(this);
+
+        fDestFolderBrowse = new Button(location, SWT.PUSH);
+        fDestFolderBrowse.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
+        fDestFolderBrowse.addSelectionListener(this);
+
+        // filesystem specs
         fDestFileButton = new Button(location, SWT.RADIO);
         fDestFileButton.setText(Messages.NewSiteWidget_LBL_Filesystem);
         fDestFileButton.addSelectionListener(this);
@@ -542,7 +619,40 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         fSitesEditor.setEditor(newEditor, item, 0);
     }
 
-    private String openBrowseDialog() {
+    private String openFolderBrowseDialog() {
+        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+                fSrcProjectCombo.getText());
+        IFileStore fileStore = null;
+        try {
+            fileStore = EFS.getStore(project.getLocationURI());
+        } catch (CoreException e) {
+        }
+
+        FileFolderSelectionDialog dialog = new FileFolderSelectionDialog(fMain.getShell(), false,
+                IResource.FOLDER);
+        if (fileStore != null) {
+            dialog.setInput(fileStore);
+        }
+        dialog.open();
+
+        // computes the folder directory relative to the project from the user
+        // selection
+        Object result = dialog.getFirstResult();
+        if (result == null) {
+            return null;
+        }
+        String text = result.toString();
+        if (fileStore == null) {
+            return text;
+        }
+        int index = text.indexOf(fileStore.toString());
+        if (index < 0) {
+            return text;
+        }
+        return text.substring(index + fileStore.toString().length());
+    }
+
+    private String openFileBrowseDialog() {
         DirectoryDialog dialog = new DirectoryDialog(fMain.getShell());
         return dialog.open();
     }
@@ -593,10 +703,14 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
     private void updateEnabledStates() {
         if (fSrcProjectButton.getSelection()) {
             fSrcProjectCombo.setEnabled(true);
+            fSrcFolderText.setEnabled(true);
+            fSrcFolderBrowse.setEnabled(true);
             fSrcFileText.setEnabled(false);
             fSrcFileBrowse.setEnabled(false);
         } else if (fSrcFileButton.getSelection()) {
             fSrcProjectCombo.setEnabled(false);
+            fSrcFolderText.setEnabled(false);
+            fSrcFolderBrowse.setEnabled(false);
             fSrcFileText.setEnabled(true);
             fSrcFileBrowse.setEnabled(true);
         }
@@ -605,18 +719,24 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
             fDestRemoteCombo.setEnabled(true);
             fDestRemoteNew.setEnabled(true);
             fDestProjectCombo.setEnabled(false);
+            fDestFolderText.setEnabled(false);
+            fDestFolderBrowse.setEnabled(false);
             fDestFileText.setEnabled(false);
             fDestFileBrowse.setEnabled(false);
         } else if (fDestProjectButton.getSelection()) {
             fDestRemoteCombo.setEnabled(false);
             fDestRemoteNew.setEnabled(false);
             fDestProjectCombo.setEnabled(true);
+            fDestFolderText.setEnabled(true);
+            fDestFolderBrowse.setEnabled(true);
             fDestFileText.setEnabled(false);
             fDestFileBrowse.setEnabled(false);
         } else if (fDestFileButton.getSelection()) {
             fDestRemoteCombo.setEnabled(false);
             fDestRemoteNew.setEnabled(false);
             fDestProjectCombo.setEnabled(false);
+            fDestFolderText.setEnabled(false);
+            fDestFolderBrowse.setEnabled(false);
             fDestFileText.setEnabled(true);
             fDestFileBrowse.setEnabled(true);
         }
@@ -630,7 +750,13 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
 
         if (category.equals(WorkspaceConnectionPoint.CATEGORY)) {
             fSrcProjectButton.setSelection(true);
-            fSrcProjectCombo.setText(name);
+            int index = name.indexOf("/");
+            if (index == -1) {
+                fSrcProjectCombo.setText(name);
+            } else {
+                fSrcProjectCombo.setText(name.substring(0, index));
+                fSrcFolderText.setText(name.substring(index));
+            }
             fSrcFileButton.setSelection(false);
             fSrcFileText.setText(""); //$NON-NLS-1$
         } else if (category.equals(LocalConnectionPoint.CATEGORY)) {
@@ -652,7 +778,13 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         } else if (category.equals(WorkspaceConnectionPoint.CATEGORY)) {
             fDestRemoteButton.setSelection(false);
             fDestProjectButton.setSelection(true);
-            fDestProjectCombo.setText(name);
+            int index = name.indexOf("/");
+            if (index == -1) {
+                fDestProjectCombo.setText(name);
+            } else {
+                fDestProjectCombo.setText(name.substring(0, index));
+                fDestFolderText.setText(name.substring(index));
+            }
             fDestFileButton.setSelection(false);
             fDestFileText.setText(""); //$NON-NLS-1$
         } else if (category.equals(LocalConnectionPoint.CATEGORY)) {
@@ -739,7 +871,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
 
     private String getSourceName() {
         if (fSrcProjectButton.getSelection()) {
-            return fSrcProjectCombo.getText();
+            return fSrcProjectCombo.getText() + fSrcFolderText.getText();
         }
         return fSrcFileText.getText();
     }
@@ -759,7 +891,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
             return fDestRemoteCombo.getText();
         }
         if (fDestProjectButton.getSelection()) {
-            return fDestProjectCombo.getText();
+            return fDestProjectCombo.getText() + fDestFolderText.getText();
         }
         return fDestFileText.getText();
     }
@@ -780,6 +912,24 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         }
 
         return names.toArray(new String[names.size()]);
+    }
+
+    private static IContainer getContainer(IAdaptable adaptable) {
+        // checks if it adapts to a project first
+        IProject project = (IProject) adaptable.getAdapter(IProject.class);
+        if (project != null) {
+            return project;
+        }
+        IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+        if (resource == null) {
+            return null;
+        }
+        switch (resource.getType()) {
+        case IResource.FILE:
+            return resource.getParent();
+        default:
+            return (IContainer) resource;
+        }
     }
 
     private static String[] getWorkspaceProjectNames() {

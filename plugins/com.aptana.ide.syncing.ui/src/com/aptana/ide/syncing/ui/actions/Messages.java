@@ -34,6 +34,29 @@
  */
 package com.aptana.ide.syncing.ui.actions;
 
-public class FilesystemUploadAction extends BaseSyncAction {
+import org.eclipse.osgi.util.NLS;
 
+public class Messages extends NLS {
+
+    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
+
+    public static String BaseSyncAction_FailedToOpenFTPView;
+    public static String BaseSyncAction_MessageTitle;
+    public static String BaseSyncAction_Warning_NoCommonParent;
+
+    public static String DownloadAction_MainTask;
+    public static String DownloadAction_MessageTitle;
+    public static String DownloadAction_PostMessage;
+
+    public static String UploadAction_MainTask;
+    public static String UploadAction_MessageTitle;
+    public static String UploadAction_PostMessage;
+
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    private Messages() {
+    }
 }

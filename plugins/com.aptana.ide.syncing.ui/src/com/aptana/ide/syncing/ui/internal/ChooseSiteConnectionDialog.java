@@ -205,12 +205,7 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
         label.setText(Messages.ChooseSiteConnectionDialog_LBL_Message);
 
         comp = new Composite(main, SWT.NONE);
-        layout = new GridLayout(2, false);
-        layout.verticalSpacing = 10;
-        layout.horizontalSpacing = 10;
-        layout.marginHeight = 10;
-        layout.marginWidth = 10;
-        comp.setLayout(layout);
+        comp.setLayout(new GridLayout(2, false));
         comp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         label = new Label(comp, SWT.NONE);
@@ -224,7 +219,7 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
 
         fSiteDescriptionLabel = new Label(comp, SWT.NONE);
         gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-        gridData.widthHint = 360;
+        gridData.widthHint = 450;
         fSiteDescriptionLabel.setLayoutData(gridData);
 
         if (fShowRememberMyDecision) {
@@ -311,11 +306,11 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
         IConnectionPoint target = fSelectedSite.getDestination();
 
         try {
-            fSiteDescriptionLabel.setText(FileUtils.compressPath(source.getRoot().toString(), 30)
-                    + " <-> " + FileUtils.compressPath(target.getRoot().toString(), 30)); //$NON-NLS-1$
+            fSiteDescriptionLabel.setText(FileUtils.compressPath(source.getRoot().toString(), 25)
+                    + " <-> " + FileUtils.compressPath(target.getRoot().toString(), 25)); //$NON-NLS-1$
         } catch (CoreException e) {
-            fSiteDescriptionLabel.setText(FileUtils.compressPath(source.getName(), 30) + " <-> " //$NON-NLS-1$
-                    + FileUtils.compressPath(target.getName(), 30));
+            fSiteDescriptionLabel.setText(FileUtils.compressPath(source.getName(), 25) + " <-> " //$NON-NLS-1$
+                    + FileUtils.compressPath(target.getName(), 25));
         }
     }
 }

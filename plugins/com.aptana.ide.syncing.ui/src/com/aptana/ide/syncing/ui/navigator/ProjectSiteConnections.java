@@ -32,45 +32,59 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
+import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 /**
+ * Contains a list of available sites that have the specific project as the
+ * source.
+ * 
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FilesystemNewSiteAction implements IObjectActionDelegate {
+public class ProjectSiteConnections extends PlatformObject implements IWorkbenchAdapter {
 
-    private IWorkbenchPart fActivePart;
-    private ISelection fSelection;
+    private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin
+            .getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
 
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        fActivePart = targetPart;
+    private IProject fProject;
+
+    public ProjectSiteConnections(IProject project) {
+        fProject = project;
     }
 
-    public void run(IAction action) {
-        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
-            return;
+    public Object[] getChildren(Object o) {
+        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(fProject, true);
+        ProjectSiteConnection[] targets = new ProjectSiteConnection[sites.length];
+        for (int i = 0; i < sites.length; ++i) {
+            targets[i] = new ProjectSiteConnection(fProject, sites[i].getDestination());
         }
-        Object element = ((IStructuredSelection) fSelection).getFirstElement();
-        if (!(element instanceof IAdaptable)) {
-            return;
-        }
-
-        IAdaptable source = (IAdaptable) element;
-        NewSiteDialog dialog = new NewSiteDialog(fActivePart.getSite().getShell(), true, source,
-                null);
-        dialog.open();
+        return targets;
     }
 
-    public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
+    public ImageDescriptor getImageDescriptor(Object object) {
+        return IMAGE_DESCRIPTOR;
+    }
+
+    public String getLabel(Object o) {
+        return "Sites";
+    }
+
+    public Object getParent(Object o) {
+        return null;
+    }
+
+    public Object getAdapter(Class adapter) {
+        if (adapter == IProject.class) {
+            return fProject;
+        }
+        return super.getAdapter(adapter);
     }
 }

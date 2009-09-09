@@ -180,7 +180,11 @@ public class AJAXMonitorView extends AbstractDebugView implements IDebugEventSet
 			}
 
 		}
-		return (IXHRService) DebugUtil.findAdapter(adaptable, IXHRService.class);
+		IDebugTarget target = (IDebugTarget) DebugUtil.findAdapter(adaptable, IDebugTarget.class);
+		if (target != null) {
+			return (IXHRService) target.getAdapter(IXHRService.class);
+		}
+		return null;
 	}
 
 	private void setViewerInput(IXHRService input)

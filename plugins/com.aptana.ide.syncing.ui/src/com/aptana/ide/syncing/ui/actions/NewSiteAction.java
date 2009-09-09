@@ -34,8 +34,10 @@
  */
 package com.aptana.ide.syncing.ui.actions;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -47,6 +49,7 @@ import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
 public class NewSiteAction implements IObjectActionDelegate {
 
     private IWorkbenchPart fActivePart;
+    private ISelection fSelection;
 
     public NewSiteAction() {
     }
@@ -56,11 +59,20 @@ public class NewSiteAction implements IObjectActionDelegate {
     }
 
     public void run(IAction action) {
-        NewSiteDialog dialog = new NewSiteDialog(fActivePart.getSite().getShell(), true);
+        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
+            return;
+        }
+        Object element = ((IStructuredSelection) fSelection).getFirstElement();
+        
+        IAdaptable source = null;
+        if (element instanceof IAdaptable) {
+            source = (IAdaptable) element;
+        }
+        NewSiteDialog dialog = new NewSiteDialog(fActivePart.getSite().getShell(), true, source, null);
         dialog.open();
     }
 
     public void selectionChanged(IAction action, ISelection selection) {
+        fSelection = selection;
     }
-
 }

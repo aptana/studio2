@@ -54,6 +54,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 
 import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
 
 /**
@@ -84,8 +85,8 @@ public class CopyFilesOperation {
             }
 
             final String returnCode[] = { CANCEL };
-            final String msg = MessageFormat.format("{0} exists. Do you wish to overwrite?",
-                    pathString);
+            final String msg = MessageFormat.format(
+                    "{0} exists at the destination. Do you wish to overwrite?", pathString);
             final String[] options = { IDialogConstants.YES_LABEL,
                     IDialogConstants.YES_TO_ALL_LABEL, IDialogConstants.NO_LABEL,
                     IDialogConstants.CANCEL_LABEL };
@@ -114,6 +115,12 @@ public class CopyFilesOperation {
         }
     };
 
+    /**
+     * Constructor.
+     * 
+     * @param shell
+     *            the active shell
+     */
     public CopyFilesOperation(Shell shell) {
         if (shell == null) {
             fShell = CoreUIUtils.getActiveShell();
@@ -132,6 +139,19 @@ public class CopyFilesOperation {
 
     public void copyFiles(String[] filenames, IFileStore destination) {
         copyFiles(getFileStores(filenames), destination);
+    }
+
+    public IStatus copyFiles(IFileStore[] sources, IFileStore destination, IProgressMonitor monitor) {
+        int successCount = 0;
+        for (IFileStore source : sources) {
+            if (fCancelled || monitor.isCanceled()) {
+                return Status.CANCEL_STATUS;
+            }
+            if (copyFile(source, destination, monitor)) {
+                successCount++;
+            }
+        }
+        return new Status(IStatus.OK, IOUIPlugin.PLUGIN_ID, successCount, "OK", null);
     }
 
     public static String validateDestination(IAdaptable destination, IAdaptable[] sources) {
@@ -163,27 +183,41 @@ public class CopyFilesOperation {
         return null;
     }
 
-    protected void copyFile(IFileStore sourceStore, IFileStore destination, IProgressMonitor monitor) {
-        if (sourceStore != null) {
-            monitor.subTask(MessageFormat.format("Copying {0} to {1}", sourceStore.getName(),
-                    destination.getName()));
-            IFileStore targetStore = destination.getChild(sourceStore.getName());
-            try {
-                if (fAlwaysOverwrite) {
-                    sourceStore.copy(targetStore, EFS.OVERWRITE, monitor);
-                } else if (targetStore.fetchInfo(0, monitor).exists()) {
-                    String overwrite = fOverwriteQuery.queryOverwrite(targetStore.toString());
-                    if (overwrite.equals(IOverwriteQuery.ALL)
-                            || overwrite.equals(IOverwriteQuery.YES)) {
-                        sourceStore.copy(targetStore, EFS.OVERWRITE, monitor);
-                    }
-                } else {
-                    sourceStore.copy(targetStore, 0, monitor);
-                }
-            } catch (CoreException e) {
-                // TODO: report the error
-            }
+    /**
+     * @param sourceStore
+     * @param destination
+     * @param monitor
+     * @return true if the file is successfully copied, false if the operation
+     *         did not go through for any reason
+     */
+    protected boolean copyFile(IFileStore sourceStore, IFileStore destination,
+            IProgressMonitor monitor) {
+        if (sourceStore == null) {
+            return false;
         }
+        boolean success = true;
+        monitor.subTask(MessageFormat.format("Copying {0} to {1}", sourceStore.getName(),
+                destination.getName()));
+        IFileStore targetStore = destination.getChild(sourceStore.getName());
+        try {
+            if (fAlwaysOverwrite) {
+                sourceStore.copy(targetStore, EFS.OVERWRITE, monitor);
+            } else if (targetStore.fetchInfo(0, monitor).exists()) {
+                String overwrite = fOverwriteQuery.queryOverwrite(targetStore.toString());
+                if (overwrite.equals(IOverwriteQuery.ALL) || overwrite.equals(IOverwriteQuery.YES)) {
+                    sourceStore.copy(targetStore, EFS.OVERWRITE, monitor);
+                } else {
+                    success = false;
+                }
+            } else {
+                sourceStore.copy(targetStore, 0, monitor);
+            }
+        } catch (CoreException e) {
+            // TODO: report the error
+            success = false;
+        }
+        monitor.worked(1);
+        return success;
     }
 
     protected boolean getAlwaysOverwrite() {
@@ -200,16 +234,10 @@ public class CopyFilesOperation {
             @Override
             protected IStatus run(IProgressMonitor monitor) {
                 monitor.beginTask("Copying files", sources.length);
-                for (IFileStore source : sources) {
-                    if (fCancelled || monitor.isCanceled()) {
-                        return Status.CANCEL_STATUS;
-                    }
-                    copyFile(source, destination, monitor);
-                    monitor.worked(1);
-                }
+                IStatus status = copyFiles(sources, destination, monitor);
                 monitor.done();
 
-                return Status.OK_STATUS;
+                return status;
             }
 
             public boolean belongsTo(Object family) {
@@ -219,7 +247,6 @@ public class CopyFilesOperation {
                 return super.belongsTo(family);
             }
         };
-        job.setUser(true);
         job.schedule();
     }
 

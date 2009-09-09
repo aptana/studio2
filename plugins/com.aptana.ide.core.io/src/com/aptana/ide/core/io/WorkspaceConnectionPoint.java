@@ -35,6 +35,9 @@
 
 package com.aptana.ide.core.io;
 
+import java.net.URI;
+
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -92,6 +95,15 @@ public final class WorkspaceConnectionPoint extends ConnectionPoint {
 		}
 		return super.getAdapter(adapter);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.core.io.ConnectionPoint#getRootURI()
+	 */
+	@Override
+    public URI getRootURI() {
+	    IContainer resource = getResource();
+        return resource == null ? URIUtil.toURI(path) : resource.getLocationURI();
+    }
 
 	/**
 	 * @return the resource

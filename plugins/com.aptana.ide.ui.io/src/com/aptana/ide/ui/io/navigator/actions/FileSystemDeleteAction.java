@@ -120,6 +120,9 @@ public class FileSystemDeleteAction extends BaseSelectionListenerAction {
                 monitor.beginTask(Messages.FileSystemDeleteAction_Task,
                         files.length);
                 for (IFileStore file : files) {
+                    if (monitor.isCanceled()) {
+                        return Status.CANCEL_STATUS;
+                    }
                     monitor.subTask(MessageFormat.format(
                             Messages.FileSystemDeleteAction_SubTask, file
                                     .toString()));

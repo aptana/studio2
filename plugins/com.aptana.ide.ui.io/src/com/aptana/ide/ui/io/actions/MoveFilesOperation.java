@@ -32,7 +32,6 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-
 package com.aptana.ide.ui.io.actions;
 
 import java.text.MessageFormat;
@@ -53,26 +52,33 @@ public class MoveFilesOperation extends CopyFilesOperation {
         super(shell);
     }
 
-    protected void copyFile(IFileStore sourceStore, IFileStore destination, IProgressMonitor monitor) {
-        if (sourceStore != null) {
-            monitor.subTask(MessageFormat.format("Moving {0} to {1}", sourceStore.getName(),
-                    destination.getName()));
-            IFileStore targetStore = destination.getChild(sourceStore.getName());
-            try {
-                if (getAlwaysOverwrite()) {
-                    sourceStore.move(targetStore, EFS.OVERWRITE, monitor);
-                } else if (targetStore.fetchInfo(0, monitor).exists()) {
-                    String overwrite = getOverwriteQuery().queryOverwrite(targetStore.toString());
-                    if (overwrite.equals(IOverwriteQuery.ALL)
-                            || overwrite.equals(IOverwriteQuery.YES)) {
-                        sourceStore.move(targetStore, EFS.OVERWRITE, monitor);
-                    }
-                } else {
-                    sourceStore.move(targetStore, 0, monitor);
-                }
-            } catch (CoreException e) {
-                // TODO: report the error
-            }
+    protected boolean copyFile(IFileStore sourceStore, IFileStore destination,
+            IProgressMonitor monitor) {
+        if (sourceStore == null) {
+            return false;
         }
+        boolean success = true;
+        monitor.subTask(MessageFormat.format("Moving {0} to {1}", sourceStore.getName(),
+                destination.getName()));
+        IFileStore targetStore = destination.getChild(sourceStore.getName());
+        try {
+            if (getAlwaysOverwrite()) {
+                sourceStore.move(targetStore, EFS.OVERWRITE, monitor);
+            } else if (targetStore.fetchInfo(0, monitor).exists()) {
+                String overwrite = getOverwriteQuery().queryOverwrite(targetStore.toString());
+                if (overwrite.equals(IOverwriteQuery.ALL) || overwrite.equals(IOverwriteQuery.YES)) {
+                    sourceStore.move(targetStore, EFS.OVERWRITE, monitor);
+                } else {
+                    success = false;
+                }
+            } else {
+                sourceStore.move(targetStore, 0, monitor);
+            }
+        } catch (CoreException e) {
+            // TODO: report the error
+            success = false;
+        }
+        monitor.worked(1);
+        return success;
     }
 }

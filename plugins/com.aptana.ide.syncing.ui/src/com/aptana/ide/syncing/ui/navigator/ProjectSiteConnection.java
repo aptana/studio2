@@ -32,8 +32,62 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.navigator;
 
-public class FilesystemDownloadAction extends BaseSyncAction {
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.progress.IElementCollector;
 
+import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
+
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class ProjectSiteConnection extends FileSystemWorkbenchAdapter implements IAdaptable {
+
+    private IProject fProject;
+    private IConnectionPoint fTarget;
+
+    public ProjectSiteConnection(IProject project, IConnectionPoint target) {
+        fProject = project;
+        fTarget = target;
+    }
+
+    public IProject getProject() {
+        return fProject;
+    }
+
+    public IConnectionPoint getDestination() {
+        return fTarget;
+    }
+
+    public Object[] getChildren(Object object) {
+        return super.getChildren(fTarget);
+    }
+
+    public ImageDescriptor getImageDescriptor(Object object) {
+        return super.getImageDescriptor(fTarget);
+    }
+
+    public String getLabel(Object object) {
+        return super.getLabel(fTarget);
+    }
+
+    public void fetchDeferredChildren(Object object, IElementCollector collector,
+            IProgressMonitor monitor) {
+        super.fetchDeferredChildren(fTarget, collector, monitor);
+    }
+
+    public Object getAdapter(Class adapter) {
+        if (adapter == IProject.class) {
+            return fProject;
+        }
+        if (adapter == IConnectionPoint.class) {
+            return fTarget;
+        }
+        return fTarget.getAdapter(adapter);
+    }
 }
