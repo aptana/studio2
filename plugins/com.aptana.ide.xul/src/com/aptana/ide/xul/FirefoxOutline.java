@@ -205,8 +205,12 @@ public class FirefoxOutline extends ContributedOutline
 	public void setFilterText(String text)
 	{
 		pattern = text;
-		filter.setPattern(text);
-		refreshJob.cancel();
-		refreshJob.schedule(200);
+		if (filter != null) {
+			filter.setPattern(text);
+		}
+		if (refreshJob != null) {
+			refreshJob.cancel();
+			refreshJob.schedule(200);
+		}
 	}
 }
