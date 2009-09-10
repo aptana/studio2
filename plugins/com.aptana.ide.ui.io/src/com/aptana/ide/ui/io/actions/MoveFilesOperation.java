@@ -52,33 +52,33 @@ public class MoveFilesOperation extends CopyFilesOperation {
         super(shell);
     }
 
-    protected boolean copyFile(IFileStore sourceStore, IFileStore destination,
+    @Override
+    protected boolean copyFile(IFileStore sourceStore, IFileStore destinationStore,
             IProgressMonitor monitor) {
         if (sourceStore == null) {
             return false;
         }
+
         boolean success = true;
         monitor.subTask(MessageFormat.format("Moving {0} to {1}", sourceStore.getName(),
-                destination.getName()));
-        IFileStore targetStore = destination.getChild(sourceStore.getName());
+                destinationStore.getName()));
         try {
             if (getAlwaysOverwrite()) {
-                sourceStore.move(targetStore, EFS.OVERWRITE, monitor);
-            } else if (targetStore.fetchInfo(0, monitor).exists()) {
-                String overwrite = getOverwriteQuery().queryOverwrite(targetStore.toString());
+                sourceStore.move(destinationStore, EFS.OVERWRITE, monitor);
+            } else if (destinationStore.fetchInfo(0, monitor).exists()) {
+                String overwrite = getOverwriteQuery().queryOverwrite(destinationStore.toString());
                 if (overwrite.equals(IOverwriteQuery.ALL) || overwrite.equals(IOverwriteQuery.YES)) {
-                    sourceStore.move(targetStore, EFS.OVERWRITE, monitor);
+                    sourceStore.move(destinationStore, EFS.OVERWRITE, monitor);
                 } else {
                     success = false;
                 }
             } else {
-                sourceStore.move(targetStore, 0, monitor);
+                sourceStore.move(destinationStore, EFS.NONE, monitor);
             }
         } catch (CoreException e) {
             // TODO: report the error
             success = false;
         }
-        monitor.worked(1);
         return success;
     }
 }

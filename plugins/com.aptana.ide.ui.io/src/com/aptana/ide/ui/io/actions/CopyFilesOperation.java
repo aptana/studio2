@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
@@ -130,6 +131,16 @@ public class CopyFilesOperation {
         }
     }
 
+    /**
+     * Copies an array of sources to the destination location.
+     * 
+     * @param sources
+     *            the array of IAdaptable objects
+     * @param destination
+     *            the destination file store
+     * @param listener
+     *            an optional job listener
+     */
     public void copyFiles(IAdaptable[] sources, IFileStore destination, IJobChangeListener listener) {
         IFileStore[] fileStores = new IFileStore[sources.length];
         for (int i = 0; i < fileStores.length; ++i) {
@@ -138,19 +149,73 @@ public class CopyFilesOperation {
         copyFiles(fileStores, destination, listener);
     }
 
+    /**
+     * Copies an array of sources to the destination location.
+     * 
+     * @param sources
+     *            the array of filenames
+     * @param destination
+     *            the destination file store
+     * @param listener
+     *            an optional job listener
+     */
     public void copyFiles(String[] filenames, IFileStore destination, IJobChangeListener listener) {
         copyFiles(getFileStores(filenames), destination, listener);
     }
 
+    /**
+     * Copies an array of sources to the destination location.
+     * 
+     * @param sources
+     *            the array of source file stores
+     * @param destination
+     *            the file store representing the destination folder
+     * @param monitor
+     *            an optional progress monitor
+     */
     public IStatus copyFiles(IFileStore[] sources, IFileStore destination, IProgressMonitor monitor) {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
         int successCount = 0;
         for (IFileStore source : sources) {
+            if (copyFile(source, destination.getChild(source.getName()), monitor)) {
+                successCount++;
+            }
             if (fCancelled || monitor.isCanceled()) {
                 return Status.CANCEL_STATUS;
             }
-            if (copyFile(source, destination, monitor)) {
+            monitor.worked(1);
+        }
+        return new Status(IStatus.OK, IOUIPlugin.PLUGIN_ID, successCount, "OK", null);
+    }
+
+    /**
+     * Copies an array of files from the source to the destination.
+     * 
+     * @param sources
+     *            the array of source file stores
+     * @param sourceRoot
+     *            the file store representing the root of source connection
+     * @param destinationRoot
+     *            the file store representing the root of target connection
+     * @param monitor
+     *            an optional progress monitor
+     */
+    public IStatus copyFiles(IFileStore[] sources, IFileStore sourceRoot,
+            IFileStore destinationRoot, IProgressMonitor monitor) {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        int successCount = 0;
+        for (IFileStore source : sources) {
+            if (copyFile(source, sourceRoot, destinationRoot, monitor)) {
                 successCount++;
             }
+            if (fCancelled || monitor.isCanceled()) {
+                return Status.CANCEL_STATUS;
+            }
+            monitor.worked(1);
         }
         return new Status(IStatus.OK, IOUIPlugin.PLUGIN_ID, successCount, "OK", null);
     }
@@ -167,57 +232,103 @@ public class CopyFilesOperation {
         return validateDestination(destination, getFileStores(sourceNames));
     }
 
-    public static String validateDestination(IAdaptable destination, IFileStore[] sourceStores) {
-        IFileStore destinationStore = getFolderStore(destination);
-        IFileStore sourceParentStore;
-        for (IFileStore sourceStore : sourceStores) {
-            sourceParentStore = sourceStore.getParent();
-            if (destinationStore.equals(sourceStore)
-                    || (sourceParentStore != null && destinationStore.equals(sourceParentStore))) {
-                return "The source is already contained in the destination";
-            }
-
-            if (sourceStore.isParentOf(destinationStore)) {
-                return "Destination cannot be a descendent of the source";
-            }
-        }
-        return null;
-    }
-
     /**
      * @param sourceStore
-     * @param destination
+     *            the file to be copied
+     * @param destinationStore
+     *            the destination location
      * @param monitor
+     *            the progress monitor
      * @return true if the file is successfully copied, false if the operation
      *         did not go through for any reason
      */
-    protected boolean copyFile(IFileStore sourceStore, IFileStore destination,
+    protected boolean copyFile(IFileStore sourceStore, IFileStore destinationStore,
             IProgressMonitor monitor) {
         if (sourceStore == null) {
             return false;
         }
+
         boolean success = true;
         monitor.subTask(MessageFormat.format("Copying {0} to {1}", sourceStore.getName(),
-                destination.getName()));
-        IFileStore targetStore = destination.getChild(sourceStore.getName());
+                destinationStore.getName()));
         try {
             if (fAlwaysOverwrite) {
-                sourceStore.copy(targetStore, EFS.OVERWRITE, monitor);
-            } else if (targetStore.fetchInfo(0, monitor).exists()) {
-                String overwrite = fOverwriteQuery.queryOverwrite(targetStore.toString());
+                sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
+            } else if (destinationStore.fetchInfo(0, monitor).exists()) {
+                String overwrite = fOverwriteQuery.queryOverwrite(destinationStore.toString());
                 if (overwrite.equals(IOverwriteQuery.ALL) || overwrite.equals(IOverwriteQuery.YES)) {
-                    sourceStore.copy(targetStore, EFS.OVERWRITE, monitor);
+                    sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
                 } else {
                     success = false;
                 }
             } else {
-                sourceStore.copy(targetStore, 0, monitor);
+                sourceStore.copy(destinationStore, EFS.NONE, monitor);
             }
         } catch (CoreException e) {
             // TODO: report the error
             success = false;
         }
-        monitor.worked(1);
+        return success;
+    }
+
+    /**
+     * @param sourceStore
+     *            the file to be copied
+     * @param sourceRoot
+     *            the source root
+     * @param destinationRoot
+     *            the destination root
+     * @param monitor
+     *            the progress monitor
+     * @return true if the file is successfully copied, false if the operation
+     *         did not go through for any reason
+     */
+    protected boolean copyFile(IFileStore sourceStore, IFileStore sourceRoot,
+            IFileStore destinationRoot, IProgressMonitor monitor) {
+        if (sourceStore == null) {
+            return false;
+        }
+
+        boolean success = true;
+        IFileStore[] sourceStores = null, targetStores = null;
+        try {
+            if (sourceStore.equals(sourceRoot)) {
+                // copying the whole source
+                sourceStores = sourceRoot.childStores(EFS.NONE, monitor);
+                targetStores = new IFileStore[sourceStores.length];
+                for (int i = 0; i < targetStores.length; ++i) {
+                    targetStores[i] = destinationRoot.getChild(sourceStores[i].getName());
+                }
+            } else if (sourceRoot.isParentOf(sourceStore)) {
+                // finds the relative path of the file to be copied and maps to
+                // the destination target
+                sourceStores = new IFileStore[1];
+                sourceStores[0] = sourceStore;
+
+                targetStores = new IFileStore[1];
+                String sourceRootPath = sourceRoot.toString();
+                String sourcePath = sourceStore.toString();
+                int index = sourcePath.indexOf(sourceRootPath);
+                if (index > -1) {
+                    String relativePath = sourcePath.substring(index + sourceRootPath.length());
+                    targetStores[0] = destinationRoot.getFileStore(new Path(relativePath));
+                }
+            }
+            if (sourceStores == null) {
+                // the file to be copied is not a child of the source root;
+                // cannot copy
+                success = false;
+                sourceStores = new IFileStore[0];
+                targetStores = new IFileStore[0];
+            }
+
+            for (int i = 0; i < sourceStores.length; ++i) {
+                success = copyFile(sourceStores[i], targetStores[i], monitor) && success;
+            }
+        } catch (CoreException e) {
+            // TODO: report the error
+            success = false;
+        }
         return success;
     }
 
@@ -253,6 +364,23 @@ public class CopyFilesOperation {
             job.addJobChangeListener(listener);
         }
         job.schedule();
+    }
+
+    private static String validateDestination(IAdaptable destination, IFileStore[] sourceStores) {
+        IFileStore destinationStore = getFolderStore(destination);
+        IFileStore sourceParentStore;
+        for (IFileStore sourceStore : sourceStores) {
+            sourceParentStore = sourceStore.getParent();
+            if (destinationStore.equals(sourceStore)
+                    || (sourceParentStore != null && destinationStore.equals(sourceParentStore))) {
+                return "The source is already contained in the destination";
+            }
+
+            if (sourceStore.isParentOf(destinationStore)) {
+                return "Destination cannot be a descendent of the source";
+            }
+        }
+        return null;
     }
 
     private static IFileStore getFileStore(String filename) {

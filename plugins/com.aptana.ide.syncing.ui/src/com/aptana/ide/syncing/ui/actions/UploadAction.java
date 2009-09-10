@@ -67,6 +67,7 @@ public class UploadAction extends BaseSyncAction {
             protected IStatus run(IProgressMonitor monitor) {
                 IConnectionPoint source = site.getSource();
                 IConnectionPoint target = site.getDestination();
+                // retrieves the root filestore of each end
                 IFileStore sourceRoot;
                 IFileStore targetRoot;
                 try {
@@ -76,17 +77,19 @@ public class UploadAction extends BaseSyncAction {
                     }
                     targetRoot = target.getRoot();
                 } catch (CoreException e) {
-                    return Status.CANCEL_STATUS;
+                    return new Status(Status.ERROR, SyncingUIPlugin.PLUGIN_ID, e
+                            .getLocalizedMessage(), e);
                 }
 
+                // gets the filestores of the files to be copied
                 IFileStore[] fileStores = new IFileStore[files.length];
                 for (int i = 0; i < fileStores.length; ++i) {
-                    fileStores[i] = SyncUtils.getFileStore(files[i], sourceRoot);
+                    fileStores[i] = SyncUtils.getFileStore(files[i]);
                 }
 
                 monitor.beginTask(Messages.UploadAction_MainTask, fileStores.length);
                 CopyFilesOperation operation = new CopyFilesOperation(getShell());
-                IStatus status = operation.copyFiles(fileStores, targetRoot, monitor);
+                IStatus status = operation.copyFiles(fileStores, sourceRoot, targetRoot, monitor);
                 monitor.done();
 
                 if (status != Status.CANCEL_STATUS) {
@@ -98,6 +101,7 @@ public class UploadAction extends BaseSyncAction {
         job.schedule();
     }
 
+    @Override
     protected String getMessageTitle() {
         return MESSAGE_TITLE;
     }

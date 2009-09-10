@@ -37,8 +37,10 @@ package com.aptana.ide.syncing.ui.actions;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
@@ -65,10 +67,19 @@ public class SyncUtils {
         return intersectionSet;
     }
 
-    public static IFileStore getFileStore(IAdaptable adaptable, IFileStore rootStore) {
+    /**
+     * @param adaptable
+     *            the IAdaptable object
+     * @return the file store corresponding to the object
+     */
+    public static IFileStore getFileStore(IAdaptable adaptable) {
         if (adaptable instanceof IResource) {
             IResource resource = (IResource) adaptable;
-            return rootStore.getFileStore(resource.getProjectRelativePath());
+            try {
+                return EFS.getStore(resource.getLocationURI());
+            } catch (CoreException e) {
+                return null;
+            }
         }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }

@@ -37,10 +37,12 @@ package com.aptana.ide.syncing.ui.actions;
 import java.text.MessageFormat;
 
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
@@ -52,6 +54,9 @@ import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.preferences.IPreferenceConstants;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public class DownloadAction extends BaseSyncAction {
 
     private static String MESSAGE_TITLE = StringUtils
@@ -65,6 +70,7 @@ public class DownloadAction extends BaseSyncAction {
             protected IStatus run(IProgressMonitor monitor) {
                 IConnectionPoint source = site.getSource();
                 IConnectionPoint target = site.getDestination();
+                // retrieves the root filestore of each end
                 IFileStore sourceRoot;
                 IFileStore targetRoot;
                 try {
@@ -74,23 +80,46 @@ public class DownloadAction extends BaseSyncAction {
                     }
                     targetRoot = target.getRoot();
                 } catch (CoreException e) {
-                    return Status.CANCEL_STATUS;
+                    return new Status(Status.ERROR, SyncingUIPlugin.PLUGIN_ID, e
+                            .getLocalizedMessage(), e);
                 }
 
-                // needs to fix this to grab the right files from remote
+                // gets the filestores of the files to be copied
                 IFileStore[] fileStores = new IFileStore[files.length];
+                IFileStore fileStore;
+                String sourceRootPath, sourcePath;
+                int index;
                 for (int i = 0; i < fileStores.length; ++i) {
-                    fileStores[i] = SyncUtils.getFileStore(files[i], targetRoot);
+                    fileStore = SyncUtils.getFileStore(files[i]);
+                    // since we're downloading, needs to find the corresponding
+                    // file on the target
+                    sourceRootPath = sourceRoot.toString();
+                    sourcePath = fileStore.toString();
+                    index = sourcePath.indexOf(sourceRootPath);
+                    if (index > -1) {
+                        sourcePath = sourcePath.substring(index + sourceRootPath.length());
+                        fileStore = targetRoot.getFileStore(new Path(sourcePath));
+                    }
+                    fileStores[i] = fileStore;
                 }
 
                 monitor.beginTask(Messages.DownloadAction_MainTask, fileStores.length);
                 CopyFilesOperation operation = new CopyFilesOperation(getShell());
-                IStatus status = operation.copyFiles(fileStores, sourceRoot, monitor);
-                monitor.done();
+                IStatus status = operation.copyFiles(fileStores, targetRoot, sourceRoot, monitor);
 
                 if (status != Status.CANCEL_STATUS) {
                     postAction(status);
                 }
+                for (IAdaptable file : files) {
+                    if (file instanceof IResource) {
+                        try {
+                            ((IResource) file).refreshLocal(IResource.DEPTH_INFINITE, monitor);
+                        } catch (CoreException e) {
+                        }
+                    }
+                }
+                monitor.done();
+
                 return status;
             }
         };
