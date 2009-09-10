@@ -56,7 +56,6 @@ import org.eclipse.ui.PartInitException;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.WorkspaceConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.ResourceSynchronizationUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
@@ -245,11 +244,10 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
 
     private void setRememberMyDecision(SiteConnectionPoint site, boolean rememberMyDecision) {
         IConnectionPoint source = site.getSource();
-        if (!(source instanceof WorkspaceConnectionPoint)) {
-            return;
+        IContainer container = (IContainer) source.getAdapter(IContainer.class);
+        if (container == null) {
+        	return;
         }
-
-        IContainer container = ((WorkspaceConnectionPoint) source).getResource();
         if (rememberMyDecision) {
             ResourceSynchronizationUtils.setRememberDecision(container, rememberMyDecision);
         }

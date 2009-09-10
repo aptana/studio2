@@ -81,7 +81,8 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
         return null;
     }
 
-    public Object getAdapter(Class adapter) {
+    @SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapter) {
         if (adapter == IProject.class) {
             return fProject;
         }

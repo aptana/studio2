@@ -81,7 +81,8 @@ public class ProjectSiteConnection extends FileSystemWorkbenchAdapter implements
         super.fetchDeferredChildren(fTarget, collector, monitor);
     }
 
-    public Object getAdapter(Class adapter) {
+    @SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapter) {
         if (adapter == IProject.class) {
             return fProject;
         }

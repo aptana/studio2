@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -51,7 +52,6 @@ import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPointEvent;
 import com.aptana.ide.core.io.IConnectionPointListener;
-import com.aptana.ide.core.io.WorkspaceConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.navigator.actions.Messages;
@@ -103,8 +103,8 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
             // if an associated site is created or deleted, and the source is a project, refreshes the source project
             if (connection instanceof SiteConnectionPoint) {
                 IConnectionPoint source = ((SiteConnectionPoint) connection).getSource();
-                if (source instanceof WorkspaceConnectionPoint) {
-                    IContainer container = ((WorkspaceConnectionPoint) source).getResource();
+                IContainer container = (IContainer) source.getAdapter(IResource.class);
+                if (container != null) {
                     IOUIPlugin.refreshNavigatorView(container.getProject());
                 }
             }

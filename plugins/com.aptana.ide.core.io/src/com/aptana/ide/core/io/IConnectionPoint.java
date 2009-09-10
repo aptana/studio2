@@ -49,6 +49,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  */
 public interface IConnectionPoint extends IAdaptable {
 
+	public String getId();
 	public String getName();
 		
 	public URI getRootURI();

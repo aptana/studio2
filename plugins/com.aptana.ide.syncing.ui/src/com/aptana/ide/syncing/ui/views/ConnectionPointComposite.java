@@ -85,7 +85,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.WorkspaceConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
@@ -177,10 +176,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     public void refresh() {
         Object input = fTreeViewer.getInput();
         IContainer resource = null;
-        if (input instanceof WorkspaceConnectionPoint) {
-            resource = ((WorkspaceConnectionPoint) input).getResource();
-        } else if (input instanceof IContainer) {
-            resource = (IContainer) input;
+        if (input instanceof IAdaptable) {
+            resource = (IContainer) ((IAdaptable) input).getAdapter(IResource.class);
         }
         if (resource != null) {
             try {
@@ -443,7 +440,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         if (data instanceof IContainer) {
             // a workspace project/folder
             IContainer container = (IContainer) data;
-            IContainer root = ((WorkspaceConnectionPoint) fConnectionPoint).getResource();
+            IContainer root = (IContainer) fConnectionPoint.getAdapter(IResource.class);
 
             String path = getRelativePath(root, container);
             if (path != null) {
@@ -484,7 +481,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         setComboData(rootElement);
 
         if (rootElement instanceof IContainer) {
-            setPath(getRelativePath(((WorkspaceConnectionPoint) fConnectionPoint).getResource(),
+            setPath(getRelativePath((IContainer) fConnectionPoint.getAdapter(IResource.class),
                     (IContainer) rootElement));
         } else {
             IFileStore fileStore = getFileStore(rootElement);
