@@ -65,393 +65,311 @@ import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
 /**
  * @author Spike Washburn
  */
-public class WebPerspectiveFactory extends AbstractPerspectiveFactory implements IPerspectiveFactory
-{
-	private static final float MINIMUM_VIEW_WIDTH = 0.50f;
-	private static final float MAXIMUM_VIEW_HEIGHT = 0.8f;
-	private static final float MINIMUM_VIEW_HEIGHT = 0.20f;
+public class WebPerspectiveFactory implements IPerspectiveFactory {
 
-	private static final String FILE_WIZARD_ID = "file_wizards"; //$NON-NLS-1$
-	private static final String TAG_NEW_FILE_WIZARD = "new-file-wizard"; //$NON-NLS-1$
-	private static final String TAG_UNTITLED_FILE_WIZARD = "untitled-file-wizard"; //$NON-NLS-1$
-	private static final String ATTR_WIZARD_ID = "wizard-id"; //$NON-NLS-1$
+    private static final float MINIMUM_VIEW_WIDTH = 0.50f;
+    private static final float MAXIMUM_VIEW_HEIGHT = 0.8f;
+    private static final float MINIMUM_VIEW_HEIGHT = 0.20f;
 
-	private static boolean showFileView = true;
+    private static final String FILE_WIZARD_ID = "file_wizards"; //$NON-NLS-1$
+    private static final String TAG_NEW_FILE_WIZARD = "new-file-wizard"; //$NON-NLS-1$
+    private static final String TAG_UNTITLED_FILE_WIZARD = "untitled-file-wizard"; //$NON-NLS-1$
+    private static final String ATTR_WIZARD_ID = "wizard-id"; //$NON-NLS-1$
 
-	// /**
-	// * TEMP: Determine which version of Eclipse we're running
-	// */
-	// static
-	// {
-	// String version = System.getProperty("osgi.framework.version"); //$NON-NLS-1$
-	//
-	// if (version != null && version.startsWith("3.2")) //$NON-NLS-1$
-	// {
-	// showFileView = false;
-	// }
-	// }
+    /**
+     * VERSION
+     * 
+     * NOTE: Update this when the perspective layout changes for a new release
+     */
+    public static final int VERSION = 65;
 
-	/**
-	 * VERSION
-	 * 
-	 * NOTE: Update this when the perspective layout changes for a new release
-	 */
-	public static final int VERSION = 64;
+    /**
+     * PERSPECTIVE_ID
+     */
+    public static final String PERSPECTIVE_ID = "com.aptana.ide.js.ui.WebPerspective"; //$NON-NLS-1$
 
-	/**
-	 * PERSPECTIVE_ID
-	 */
-	public static final String PERSPECTIVE_ID = "com.aptana.ide.js.ui.WebPerspective"; //$NON-NLS-1$
+    /**
+     * RAILS_PERSPECTIVE_ID
+     */
+    public static final String RAILS_PERSPECTIVE_ID = "org.radrails.rails.ui.PerspectiveRails"; //$NON-NLS-1$
 
-	/**
-	 * DB_PERSPECTIVE_ID
-	 */
-	public static final String DB_PERSPECTIVE_ID = "com.aptana.ide.db.PerspectiveFactory"; //$NON-NLS-1$
+    /**
+     * RUBY_PERSPECTIVE_ID
+     */
+    public static final String RUBY_PERSPECTIVE_ID = "org.rubypeople.rdt.ui.PerspectiveRuby"; //$NON-NLS-1$
 
-	/**
-	 * RAILS_PERSPECTIVE_ID
-	 */
-	public static final String RAILS_PERSPECTIVE_ID = "org.radrails.rails.ui.PerspectiveRails"; //$NON-NLS-1$
+    private static List<Runnable> resettingHandlers;
 
-	/**
-	 * RUBY_PERSPECTIVE_ID
-	 */
-	public static final String RUBY_PERSPECTIVE_ID = "org.rubypeople.rdt.ui.PerspectiveRuby"; //$NON-NLS-1$
+    /**
+     * addResetHandler
+     * 
+     * @param handler
+     */
+    public static void addResettingHandler(Runnable handler) {
+        if (resettingHandlers == null) {
+            resettingHandlers = new ArrayList<Runnable>();
+        }
 
-	private static List<Runnable> resettingHandlers;
+        resettingHandlers.add(handler);
+    }
 
-	/**
-	 * addResetHandler
-	 * 
-	 * @param handler
-	 */
-	public static void addResettingHandler(Runnable handler)
-	{
-		if (resettingHandlers == null)
-		{
-			resettingHandlers = new ArrayList<Runnable>();
-		}
+    /**
+     * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
+     */
+    public void createInitialLayout(IPageLayout layout) {
+        defineActions(layout);
+        defineLayout(layout);
+    }
 
-		resettingHandlers.add(handler);
-	}
+    /**
+     * defineLayout
+     * 
+     * @param layout
+     */
+    private void defineLayout(IPageLayout layout) {
+        IFolderLayout leftTop = layout.createFolder(
+                "leftTop", IPageLayout.LEFT, MINIMUM_VIEW_HEIGHT, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
+        leftTop.addView("com.aptana.ide.ui.io.fileExplorerView"); //$NON-NLS-1$
+        leftTop.addPlaceholder("com.aptana.ide.ui.io.fileExplorerView:*"); //$NON-NLS-1$
+        leftTop.addView("com.aptana.ide.js.ui.views.profilesView"); //$NON-NLS-1$
 
-	/**
-	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
-	 */
-	public void createInitialLayout(IPageLayout layout)
-	{
-		defineActions(layout);
-		defineLayout(layout);
-		addPerspectiveShortcuts(layout);
-	}
-	
-	private void addPerspectiveShortcuts(IPageLayout layout) {
-		// Add shortcut for Database Explorer Perspective
-		layout.addPerspectiveShortcut("com.aptana.ide.db.PerspectiveFactory"); //$NON-NLS-1$
-	}
+        IFolderLayout left = layout.createFolder(
+                "left", IPageLayout.BOTTOM, MINIMUM_VIEW_WIDTH, "leftTop"); //$NON-NLS-1$ //$NON-NLS-2$
+        left.addView("com.aptana.ide.documentation.TutorialView"); //$NON-NLS-1$
+        left.addView(IPageLayout.ID_OUTLINE);
 
-	/**
-	 * defineLayout
-	 * 
-	 * @param layout
-	 */
-	private void defineLayout(IPageLayout layout)
-	{
-		IFolderLayout leftTop = layout.createFolder(
-				"leftTop", IPageLayout.LEFT, MINIMUM_VIEW_HEIGHT, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
+        IPlaceholderFolderLayout right = layout.createPlaceholderFolder(
+                "right", IPageLayout.RIGHT, MAXIMUM_VIEW_HEIGHT, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
 
-		if (showFileView)
-		{
-			leftTop.addView("com.aptana.ide.js.ui.views.FileExplorerView"); //$NON-NLS-1$
-			leftTop.addPlaceholder("com.aptana.ide.js.ui.views.FileExplorerView:*"); //$NON-NLS-1$
-		}
-		leftTop.addView(AptanaNavigator.ID);
-		leftTop.addView("com.aptana.ide.js.ui.views.profilesView"); //$NON-NLS-1$
-		// leftTop.addView("com.aptana.ide.syncing.SyncView"); //$NON-NLS-1$
+        right.addPlaceholder("com.aptana.ide.samples.SamplesView"); //$NON-NLS-1$
 
-		IFolderLayout left = layout.createFolder("left", IPageLayout.BOTTOM, MINIMUM_VIEW_WIDTH, "leftTop"); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		left.addView("com.aptana.ide.documentation.TutorialView"); //$NON-NLS-1$
-		left.addView(IPageLayout.ID_OUTLINE);
-		
-		IPlaceholderFolderLayout right = layout.createPlaceholderFolder(
-				"right", IPageLayout.RIGHT, MAXIMUM_VIEW_HEIGHT, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
+        IPlaceholderFolderLayout rightBottom = layout.createPlaceholderFolder(
+                "rightBottom", IPageLayout.BOTTOM, MAXIMUM_VIEW_HEIGHT, "right"); //$NON-NLS-1$ //$NON-NLS-2$
+        rightBottom.addPlaceholder("org.eclipse.eclipsemonkey.views.ScriptsView"); //$NON-NLS-1$
+        rightBottom.addPlaceholder("com.aptana.ide.scripting.SnippetsView"); //$NON-NLS-1$
 
-		right.addPlaceholder("com.aptana.ide.samples.SamplesView"); //$NON-NLS-1$
+        IPlaceholderFolderLayout bottom = layout.createPlaceholderFolder(
+                "bottom", IPageLayout.BOTTOM, MAXIMUM_VIEW_HEIGHT, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.js.ui.views.problemsView"); //$NON-NLS-1$
+        bottom.addPlaceholder("org.eclipse.ui.console.ConsoleView"); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.server.ui.serversView"); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.ui.ViewPlugins"); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.documentation.jquery.visualjquery"); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.js.ui.views.GenericScriptableView:*"); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.logging.LogView"); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.syncing.ui.views.FTPManagerView"); //$NON-NLS-1$
+        bottom.addPlaceholder("com.aptana.ide.syncing.views.SyncManagerView"); //$NON-NLS-1$
+    }
 
-		IPlaceholderFolderLayout rightBottom = layout
-				.createPlaceholderFolder("rightBottom", IPageLayout.BOTTOM, MAXIMUM_VIEW_HEIGHT, "right"); //$NON-NLS-1$ //$NON-NLS-2$
-		rightBottom.addPlaceholder("org.eclipse.eclipsemonkey.views.ScriptsView"); //$NON-NLS-1$
-		rightBottom.addPlaceholder("com.aptana.ide.scripting.SnippetsView"); //$NON-NLS-1$
+    /**
+     * Gets the default set of wizard shortcuts
+     * 
+     * @return String[]
+     */
+    private static String[] getWizardShortcuts() {
+        List<String> ids = getFileWizardShortcuts();
 
-		IPlaceholderFolderLayout bottom = layout.createPlaceholderFolder(
-				"bottom", IPageLayout.BOTTOM, MAXIMUM_VIEW_HEIGHT, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.js.ui.views.problemsView"); //$NON-NLS-1$
-		bottom.addPlaceholder("org.eclipse.ui.console.ConsoleView"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.framework.jaxer.interactiveConsole"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.server.ui.serversView"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.ui.ViewPlugins"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.documentation.jquery.visualjquery"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.js.ui.views.GenericScriptableView:*"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.logging.LogView"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.framework.jaxer.monitor"); //$NON-NLS-1$
-		bottom.addPlaceholder("com.aptana.ide.syncing.views.SyncManagerView"); //$NON-NLS-1$
-		layout.addPerspectiveShortcut("com.aptana.ide.js.ui.WebPerspective"); //$NON-NLS-1$
-	}
-	
-	/**
-	 * Gets the default set of wizard shortcuts
-	 * 
-	 * @return String[]
-	 */
-	public static String[] getWizardShortcuts()
-	{
-		List<String> ids = getFileWizardShortcuts();
+        return ids.toArray(new String[ids.size()]);
+    }
 
-		return ids.toArray(new String[ids.size()]);
-	}
+    /**
+     * Gets the default set of project-based wizard shortcuts
+     * 
+     * @return String[]
+     */
+    public static List<String> getProjectWizardShortcuts() {
+        List<String> ids = new ArrayList<String>();
+        addFromExtension(ids, TAG_NEW_FILE_WIZARD);
+        // sort items
+        Collections.sort(ids);
 
-	/**
-	 * Gets the default set of project-based wizard shortcuts
-	 * 
-	 * @return String[]
-	 */
-	public static List<String> getProjectWizardShortcuts()
-	{
-		List<String> ids = new ArrayList<String>();
+        // add file and folder to the end of the list
+        ids.add("org.eclipse.ui.wizards.new.file"); //$NON-NLS-1$
+        ids.add("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$
 
-		addFromExtension(ids, TAG_NEW_FILE_WIZARD);
+        return ids;
+    }
 
-		// sort items
-		Collections.sort(ids);
+    /**
+     * Gets the default set of file-based wizard shortcuts
+     * 
+     * @return String[]
+     */
+    public static List<String> getFileWizardShortcuts() {
+        List<String> ids = new ArrayList<String>();
+        addFromExtension(ids, TAG_UNTITLED_FILE_WIZARD);
+        // sort items
+        Collections.sort(ids);
 
-		// add file and folder to the end of the list
-		ids.add("org.eclipse.ui.wizards.new.file"); //$NON-NLS-1$
-		ids.add("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$
+        return ids;
+    }
 
-		return ids;
-	}
+    /**
+     * addFromExtension
+     * 
+     * @param ids
+     * @param elementName
+     */
+    private static void addFromExtension(List<String> ids, String elementName) {
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
 
-	/**
-	 * Gets the default set of file-based wizard shortcuts
-	 * 
-	 * @return String[]
-	 */
-	public static List<String> getFileWizardShortcuts()
-	{
-		List<String> ids = new ArrayList<String>();
+        if (registry != null) {
+            IExtensionPoint extensionPoint = registry.getExtensionPoint(CoreUIPlugin.ID,
+                    FILE_WIZARD_ID);
 
-		addFromExtension(ids, TAG_UNTITLED_FILE_WIZARD);
+            if (extensionPoint != null) {
+                IExtension[] extensions = extensionPoint.getExtensions();
 
-		// sort items
-		Collections.sort(ids);
+                for (int i = 0; i < extensions.length; i++) {
+                    IExtension extension = extensions[i];
+                    IConfigurationElement[] elements = extension.getConfigurationElements();
 
-		return ids;
-	}
+                    for (int j = 0; j < elements.length; j++) {
+                        IConfigurationElement element = elements[j];
 
-	/**
-	 * addFromExtension
-	 * 
-	 * @param ids
-	 * @param elementName
-	 */
-	private static void addFromExtension(List<String> ids, String elementName)
-	{
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
+                        if (element.getName().equals(elementName)) {
+                            String id = element.getAttribute(ATTR_WIZARD_ID);
 
-		if (registry != null)
-		{
-			IExtensionPoint extensionPoint = registry.getExtensionPoint(CoreUIPlugin.ID, FILE_WIZARD_ID);
+                            if (id != null) {
+                                ids.add(id);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-			if (extensionPoint != null)
-			{
-				IExtension[] extensions = extensionPoint.getExtensions();
+    /**
+     * defineActions
+     * 
+     * @param layout
+     */
+    private void defineActions(IPageLayout layout) {
+        String[] wizards = getWizardShortcuts();
+        for (int i = 0; i < wizards.length; i++) {
+            layout.addNewWizardShortcut(wizards[i]);
+        }
 
-				for (int i = 0; i < extensions.length; i++)
-				{
-					IExtension extension = extensions[i];
-					IConfigurationElement[] elements = extension.getConfigurationElements();
+        layout.addActionSet("com.aptana.ide.server.ui.launchActionSet"); //$NON-NLS-1$
+        layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
 
-					for (int j = 0; j < elements.length; j++)
-					{
-						IConfigurationElement element = elements[j];
+        // Add "show views".
+        layout.addShowViewShortcut("com.aptana.ide.scripting.SnippetsView"); //$NON-NLS-1$
+        layout.addShowViewShortcut("com.aptana.ide.ui.io.fileExplorerView"); //$NON-NLS-1$
+        layout.addShowViewShortcut("com.aptana.ide.js.ui.views.profilesView"); //$NON-NLS-1$
+        layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
+        layout.addShowViewShortcut("com.aptana.ide.js.ui.views.problemsView"); //$NON-NLS-1$
+        layout.addShowViewShortcut("org.eclipse.ui.console.ConsoleView"); //$NON-NLS-1$
+        layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
+        layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
+        layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
+        layout.addShowViewShortcut("om.aptana.ide.syncing.ui.views.FTPManagerView"); //$NON-NLS-1$
+        layout.addShowViewShortcut("com.aptana.ide.syncing.views.SyncManagerView"); //$NON-NLS-1$
+        layout.addShowViewShortcut("com.aptana.ide.js.docgen.views.visualscriptdoc"); //$NON-NLS-1$
+        layout.addShowViewShortcut("com.aptana.ide.logging.LogView"); //$NON-NLS-1$
+        layout.addShowViewShortcut("com.aptana.ide.server.ui.serversView"); //$NON-NLS-1$
+    }
 
-						if (element.getName().equals(elementName))
-						{
-							String id = element.getAttribute(ATTR_WIZARD_ID);
+    /**
+     * removeResetHandler
+     * 
+     * @param handler
+     */
+    public static void removeResettingHandler(Runnable handler) {
+        resettingHandlers.remove(handler);
+    }
 
-							if (id != null)
-							{
-								ids.add(id);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    /**
+     * Resets the current perspective.
+     * 
+     * @param page
+     */
+    public static void resetPerspective(final IWorkbenchPage page) {
+        if (Display.getCurrent() == null) {
+            return;
+        }
 
-	/**
-	 * defineActions
-	 * 
-	 * @param layout
-	 */
-	private void defineActions(IPageLayout layout)
-	{
-		String[] wizards = getWizardShortcuts();
-		for (int i = 0; i < wizards.length; i++)
-		{
-			layout.addNewWizardShortcut(wizards[i]);
-		}
+        final Shell shell = Display.getCurrent().getActiveShell();
+        final IPreferenceStore p = CoreUIPlugin.getDefault().getPreferenceStore();
+        if (p.getBoolean(IPreferenceConstants.WEB_PERSPECTIVE_RESET_PERSPECTIVE)) {
+            return;
+        }
 
-		layout.addActionSet("com.aptana.ide.server.ui.launchActionSet"); //$NON-NLS-1$
-		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
-
-		// Add "show views".
-		layout.addShowViewShortcut("com.aptana.ide.scripting.SnippetsView"); //$NON-NLS-1$
-		layout.addShowViewShortcut(AptanaNavigator.ID);
-		if (showFileView)
-		{
-		    layout.addShowViewShortcut("com.aptana.ide.js.ui.views.FileExplorerView"); //$NON-NLS-1$
-		}
-		layout.addShowViewShortcut("com.aptana.ide.js.ui.views.profilesView"); //$NON-NLS-1$
-		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
-		layout.addShowViewShortcut("com.aptana.ide.js.ui.views.problemsView"); //$NON-NLS-1$
-		layout.addShowViewShortcut("org.eclipse.ui.console.ConsoleView"); //$NON-NLS-1$
-		layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
-		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
-		layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
-		layout.addShowViewShortcut("com.aptana.ide.syncing.views.SyncManagerView"); //$NON-NLS-1$
-		layout.addShowViewShortcut("com.aptana.ide.js.docgen.views.visualscriptdoc"); //$NON-NLS-1$
-		layout.addShowViewShortcut("com.aptana.ide.logging.LogView"); //$NON-NLS-1$
-		layout.addShowViewShortcut("com.aptana.ide.server.ui.serversView"); //$NON-NLS-1$
-	}
-
-	/**
-	 * removeResetHandler
-	 * 
-	 * @param handler
-	 */
-	public static void removeResettingHandler(Runnable handler)
-	{
-		resettingHandlers.remove(handler);
-	}
-
-	/**
-	 * Resets the current perspective.
-	 * 
-	 * @param page
-	 */
-	public static void resetPerspective(final IWorkbenchPage page)
-	{
-		if (Display.getCurrent() == null)
-		{
-			return;
-		}
-
-		final Shell shell = Display.getCurrent().getActiveShell();
-		final IPreferenceStore p = CoreUIPlugin.getDefault().getPreferenceStore();
-		if (p.getBoolean(IPreferenceConstants.WEB_PERSPECTIVE_RESET_PERSPECTIVE))
-		{
-			return;
-		}
-
-		UIJob job = new UIJob("Resetting Aptana perspective") { //$NON-NLS-1$
+        UIJob job = new UIJob("Resetting Aptana perspective") { //$NON-NLS-1$
 
             @Override
             public IStatus runInUIThread(IProgressMonitor monitor) {
-                if (shell != null)
-                {
+                if (shell != null) {
                     p.setValue(IPreferenceConstants.WEB_PERSPECTIVE_RESETTING_PERSPECTIVE, true);
 
-                    boolean ret = MessageDialog
-                            .openQuestion(
-                                    CoreUIUtils.getActiveShell(),
-                                    Messages.WebPerspectiveFactory_UpdatePerspectiveTitle,
-                                    Messages.WebPerspectiveFactory_UpdatePerspectiveConfirmation);
-        			p.setValue(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION,
-        					WebPerspectiveFactory.VERSION);
-                    if (!ret)
-                    {
+                    boolean ret = MessageDialog.openQuestion(CoreUIUtils.getActiveShell(),
+                            Messages.WebPerspectiveFactory_UpdatePerspectiveTitle,
+                            Messages.WebPerspectiveFactory_UpdatePerspectiveConfirmation);
+                    p.setValue(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION,
+                            WebPerspectiveFactory.VERSION);
+                    if (!ret) {
                         return Status.OK_STATUS;
                     }
 
                     p.setValue(IPreferenceConstants.WEB_PERSPECTIVE_RESET_PERSPECTIVE, true);
 
                     // fire all resetting handlers
-                    if (resettingHandlers != null)
-                    {
-                        for (int i = 0; i < resettingHandlers.size(); i++)
-                        {
+                    if (resettingHandlers != null) {
+                        for (int i = 0; i < resettingHandlers.size(); i++) {
                             resettingHandlers.get(i).run();
                         }
                     }
 
                     page.resetPerspective();
-
-                    showUIHelpPage(PERSPECTIVE_ID);
-
                 }
                 return Status.OK_STATUS;
             }
-		    
-		};
-		job.setRule(MutexJobRule.getInstance());
-		job.setSystem(true);
-		job.schedule();
-	}
 
-	/**
-	 * Is the perspective one of the aptana derived perspectives
-	 * 
-	 * @param desc
-	 * @return - true if an aptana perspective
-	 */
-	public static boolean isValidAptanaPerspective(IPerspectiveDescriptor desc)
-	{
-		if (WebPerspectiveFactory.RAILS_PERSPECTIVE_ID.equals(desc.getId())
-				|| WebPerspectiveFactory.RUBY_PERSPECTIVE_ID.equals(desc.getId())
-				|| WebPerspectiveFactory.DB_PERSPECTIVE_ID.equals(desc.getId())
-				|| WebPerspectiveFactory.PERSPECTIVE_ID.equals(desc.getId()))
-		{
-			return true;
-		}
+        };
+        job.setRule(MutexJobRule.getInstance());
+        job.setSystem(true);
+        job.schedule();
+    }
 
-		if (desc instanceof PerspectiveDescriptor)
-		{
-			PerspectiveDescriptor pd = (PerspectiveDescriptor) desc;
-			return pd.getOriginalId().equals(WebPerspectiveFactory.PERSPECTIVE_ID)
-					|| pd.getOriginalId().equals(WebPerspectiveFactory.RUBY_PERSPECTIVE_ID)
-					|| pd.getOriginalId().equals(WebPerspectiveFactory.RAILS_PERSPECTIVE_ID)
-					|| pd.getOriginalId().equals(WebPerspectiveFactory.DB_PERSPECTIVE_ID);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    /**
+     * Is the perspective one of the aptana derived perspectives
+     * 
+     * @param desc
+     * @return - true if an aptana perspective
+     */
+    public static boolean isValidAptanaPerspective(IPerspectiveDescriptor desc) {
+        if (WebPerspectiveFactory.RAILS_PERSPECTIVE_ID.equals(desc.getId())
+                || WebPerspectiveFactory.RUBY_PERSPECTIVE_ID.equals(desc.getId())
+                || WebPerspectiveFactory.PERSPECTIVE_ID.equals(desc.getId())) {
+            return true;
+        }
 
-	/**
-	 * Is the current perspective a descendant perspective of the original perspective
-	 * 
-	 * @param desc
-	 * @return - true if same or descendant
-	 */
-	public static boolean isSameOrDescendantPerspective(IPerspectiveDescriptor desc)
-	{
-		if (desc.getId().equals(WebPerspectiveFactory.PERSPECTIVE_ID))
-		{
-			return true;
-		}
+        if (desc instanceof PerspectiveDescriptor) {
+            PerspectiveDescriptor pd = (PerspectiveDescriptor) desc;
+            return pd.getOriginalId().equals(WebPerspectiveFactory.PERSPECTIVE_ID)
+                    || pd.getOriginalId().equals(WebPerspectiveFactory.RUBY_PERSPECTIVE_ID)
+                    || pd.getOriginalId().equals(WebPerspectiveFactory.RAILS_PERSPECTIVE_ID);
+        }
+        return false;
+    }
 
-		if (desc instanceof PerspectiveDescriptor)
-		{
-			PerspectiveDescriptor pd = (PerspectiveDescriptor) desc;
-			return pd.getOriginalId().equals(WebPerspectiveFactory.PERSPECTIVE_ID);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    /**
+     * Is the current perspective a descendant perspective of the original
+     * perspective
+     * 
+     * @param desc
+     * @return - true if same or descendant
+     */
+    public static boolean isSameOrDescendantPerspective(IPerspectiveDescriptor desc) {
+        if (desc.getId().equals(WebPerspectiveFactory.PERSPECTIVE_ID)) {
+            return true;
+        }
+
+        if (desc instanceof PerspectiveDescriptor) {
+            PerspectiveDescriptor pd = (PerspectiveDescriptor) desc;
+            return pd.getOriginalId().equals(WebPerspectiveFactory.PERSPECTIVE_ID);
+        }
+        return false;
+    }
 }

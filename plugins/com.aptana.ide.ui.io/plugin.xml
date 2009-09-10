@@ -107,13 +107,9 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="com.aptana.ide.core.ui.category"
-            name="%commonViewCategory.name">
-      </category>
       <view
             allowMultiple="true"
-            category="com.aptana.ide.core.ui.category"
+            category="com.aptana.ide.js.ui"
             class="org.eclipse.ui.navigator.CommonNavigator"
             icon="icons/full/eview16/file_explorer.png"
             id="com.aptana.ide.ui.io.fileExplorerView"

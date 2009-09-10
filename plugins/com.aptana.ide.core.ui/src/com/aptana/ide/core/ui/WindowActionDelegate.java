@@ -142,8 +142,6 @@ public class WindowActionDelegate implements IWorkbenchWindowActionDelegate
 			catch (Exception e)
 			{
 			}
-
-			AbstractPerspectiveFactory.showUIHelpPage(currentPerspectiveID);
 		}
 		else if (id.equals(CLEAN_CONFIG_ID))
 		{
