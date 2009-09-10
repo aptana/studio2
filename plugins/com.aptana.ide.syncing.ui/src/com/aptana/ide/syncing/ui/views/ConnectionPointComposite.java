@@ -46,12 +46,23 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -67,6 +78,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -74,15 +86,19 @@ import org.eclipse.ui.ide.IDE;
 
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.WorkspaceConnectionPoint;
+import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 import com.aptana.ide.ui.io.navigator.FileTreeNameSorter;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ConnectionPointComposite implements SelectionListener, IDoubleClickListener {
+public class ConnectionPointComposite implements SelectionListener, IDoubleClickListener,
+        TransferDragSourceListener, DropTargetListener {
 
     private static final String[] COLUMN_NAMES = {
             Messages.ConnectionPointComposite_Column_Filename,
@@ -222,6 +238,95 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         }
     }
 
+    public Transfer getTransfer() {
+        return LocalSelectionTransfer.getTransfer();
+    }
+
+    public void dragFinished(DragSourceEvent event) {
+        LocalSelectionTransfer.getTransfer().setSelection(null);
+        LocalSelectionTransfer.getTransfer().setSelectionSetTime(0);
+    }
+
+    public void dragSetData(DragSourceEvent event) {
+        event.data = fTreeViewer.getSelection();
+    }
+
+    public void dragStart(DragSourceEvent event) {
+        LocalSelectionTransfer.getTransfer().setSelection(fTreeViewer.getSelection());
+        LocalSelectionTransfer.getTransfer().setSelectionSetTime(event.time & 0xFFFFFFFFL);
+    }
+
+    public void dragEnter(DropTargetEvent event) {
+        if (event.detail == DND.DROP_DEFAULT) {
+            if ((event.operations & DND.DROP_COPY) == 0) {
+                event.detail = DND.DROP_NONE;
+            } else {
+                event.detail = DND.DROP_COPY;
+            }
+        }
+    }
+
+    public void dragLeave(DropTargetEvent event) {
+    }
+
+    public void dragOperationChanged(DropTargetEvent event) {
+    }
+
+    public void dragOver(DropTargetEvent event) {
+    }
+
+    public void drop(DropTargetEvent event) {
+        IFileStore targetStore = null;
+        if (event.item == null) {
+            targetStore = getFileStore((IAdaptable) fTreeViewer.getInput());
+        } else {
+            TreeItem target = (TreeItem) event.item;
+            targetStore = getFolderStore((IAdaptable) target.getData());
+        }
+        if (targetStore == null) {
+            return;
+        }
+
+        if (event.data instanceof ITreeSelection) {
+            ITreeSelection selection = (ITreeSelection) event.data;
+            TreePath[] paths = selection.getPaths();
+            if (paths.length > 0) {
+                List<IAdaptable> elements = new ArrayList<IAdaptable>();
+                for (TreePath path : paths) {
+                    boolean alreadyIn = false;
+                    for (TreePath path2 : paths) {
+                        if (!path.equals(path2) && path.startsWith(path2, null)) {
+                            alreadyIn = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyIn) {
+                        elements.add((IAdaptable) path.getLastSegment());
+                    }
+                }
+
+                CopyFilesOperation operation = new CopyFilesOperation(getControl().getShell());
+                operation.copyFiles(elements.toArray(new IAdaptable[elements.size()]), targetStore,
+                        new JobChangeAdapter() {
+
+                            @Override
+                            public void done(IJobChangeEvent event) {
+                                IOUIPlugin.refreshNavigatorView(fTreeViewer.getInput());
+                                CoreUIUtils.getDisplay().asyncExec(new Runnable() {
+
+                                    public void run() {
+                                        refresh();
+                                    }
+                                });
+                            }
+                        });
+            }
+        }
+    }
+
+    public void dropAccept(DropTargetEvent event) {
+    }
+
     protected Composite createControl(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
         main.setLayout(new GridLayout());
@@ -307,6 +412,11 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         fTreeViewer.setLabelProvider(new ConnectionPointLabelProvider());
         fTreeViewer.setComparator(new FileTreeNameSorter());
         fTreeViewer.addDoubleClickListener(this);
+
+        fTreeViewer.addDragSupport(DND.DROP_COPY | DND.DROP_DEFAULT,
+                new Transfer[] { LocalSelectionTransfer.getTransfer() }, this);
+        fTreeViewer.addDropSupport(DND.DROP_COPY | DND.DROP_DEFAULT,
+                new Transfer[] { LocalSelectionTransfer.getTransfer() }, this);
 
         return fTreeViewer;
     }
@@ -410,7 +520,23 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     }
 
     private static IFileStore getFileStore(IAdaptable adaptable) {
+        if (adaptable instanceof IResource) {
+            try {
+                return EFS.getStore(((IResource) adaptable).getLocationURI());
+            } catch (CoreException e) {
+                return null;
+            }
+        }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
+    }
+
+    private static IFileStore getFolderStore(IAdaptable destination) {
+        IFileStore store = getFileStore(destination);
+        IFileInfo info = getFileInfo(destination);
+        if (store != null && info != null && !info.isDirectory()) {
+            store = store.getParent();
+        }
+        return store;
     }
 
     /**
