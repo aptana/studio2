@@ -67,9 +67,9 @@ import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
  */
 public class WebPerspectiveFactory implements IPerspectiveFactory {
 
-    private static final float MINIMUM_VIEW_WIDTH = 0.50f;
-    private static final float MAXIMUM_VIEW_HEIGHT = 0.8f;
-    private static final float MINIMUM_VIEW_HEIGHT = 0.20f;
+    private static final float MINIMUM_VIEW_WIDTH = 0.5f;
+    private static final float MAXIMUM_VIEW_HEIGHT = 0.7f;
+    private static final float MINIMUM_VIEW_HEIGHT = 0.2f;
 
     private static final String FILE_WIZARD_ID = "file_wizards"; //$NON-NLS-1$
     private static final String TAG_NEW_FILE_WIZARD = "new-file-wizard"; //$NON-NLS-1$

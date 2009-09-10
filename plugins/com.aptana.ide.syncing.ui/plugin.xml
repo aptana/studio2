@@ -421,6 +421,26 @@
             </and>
          </enablement>
       </decorator>
+      <decorator
+            adaptable="true"
+            class="com.aptana.ide.syncing.ui.decorators.SiteCategoryDecorator"
+            icon="icons/full/obj16/sync_decorator.gif"
+            id="com.aptana.ide.syncing.ui.decorators.SiteCategoryDecorator"
+            label="%Decorator.SiteCategory.name"
+            lightweight="true"
+            location="BOTTOM_RIGHT"
+            state="true">
+         <enablement>
+            <or>
+               <objectClass
+                     name="com.aptana.ide.core.io.IConnectionPointCategory">
+               </objectClass>
+               <objectClass
+                     name="com.aptana.ide.syncing.core.connection.SiteConnectionPoint">
+               </objectClass>
+            </or>
+         </enablement>
+      </decorator>
    </extension>
    <extension
          point="com.aptana.ide.ui.propertyDialogs">
