@@ -212,8 +212,12 @@ import org.eclipse.osgi.util.NLS;
 	 */
 	@Override
 	public void copy(IFileStore destination, int options, IProgressMonitor monitor) throws CoreException {
-		// TODO Auto-generated method stub
-		super.copy(destination, options, monitor);
+		ensureLocalFileStore();
+		if (localFileStore != null) {
+			localFileStore.copy(destination, options, monitor);
+		} else {
+			super.copy(destination, options, monitor);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -221,8 +225,10 @@ import org.eclipse.osgi.util.NLS;
 	 */
 	@Override
 	public void delete(int options, IProgressMonitor monitor) throws CoreException {
-		// TODO Auto-generated method stub
-		super.delete(options, monitor);
+		ensureLocalFileStore();
+		if (localFileStore != null) {
+			localFileStore.delete(options, monitor);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -289,7 +295,27 @@ import org.eclipse.osgi.util.NLS;
 			}
 			Policy.error(EFS.ERROR_NOT_EXISTS, NLS.bind(Messages.fileNotFound, path));
 		}
-		/* TODO */
+		monitor = Policy.monitorFor(monitor);
+		monitor.beginTask(NLS.bind(Messages.moving, destination.toString()), 100);
+		try {
+			ensureResource();
+			if (resource == null) {
+				Policy.error(EFS.ERROR_NOT_EXISTS, NLS.bind(Messages.fileNotFound, path));
+			}
+			IResource destinationResource = (IResource) destination.getAdapter(IResource.class);
+			boolean sourceEqualsDest = resource.equals(destinationResource);
+			boolean overwrite = (options & EFS.OVERWRITE) != 0;
+			if (!sourceEqualsDest && !overwrite) {
+				Policy.error(EFS.ERROR_EXISTS,  NLS.bind(Messages.fileExists, path));
+			}
+			try {
+				resource.move(destinationResource.getFullPath(), true, Policy.subMonitorFor(monitor, 100));
+			} catch (CoreException e) {
+				Policy.error(EFS.ERROR_WRITE, NLS.bind(Messages.failedMove, toString(), destination.toString()), e);
+			}
+		} finally {
+			monitor.done();
+		}
 	}
 
 	/* (non-Javadoc)

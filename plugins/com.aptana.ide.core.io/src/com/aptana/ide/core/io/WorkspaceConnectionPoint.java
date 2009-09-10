@@ -37,15 +37,17 @@ package com.aptana.ide.core.io;
 
 import java.net.URI;
 
-import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.epl.IMemento;
+import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 
 
 /**
@@ -101,9 +103,16 @@ public final class WorkspaceConnectionPoint extends ConnectionPoint {
 	 */
 	@Override
     public URI getRootURI() {
-	    IContainer resource = getResource();
-        return resource == null ? URIUtil.toURI(path) : resource.getLocationURI();
+		return WorkspaceFileSystem.getInstance().getStore(path).toURI();
     }
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.core.io.ConnectionPoint#getRoot()
+	 */
+	@Override
+	public IFileStore getRoot() throws CoreException {
+		return WorkspaceFileSystem.getInstance().getStore(path);
+	}
 
 	/**
 	 * @return the resource
