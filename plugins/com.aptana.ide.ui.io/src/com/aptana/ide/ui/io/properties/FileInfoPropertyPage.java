@@ -62,7 +62,7 @@ import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
 
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.aptana.ide.ui.UIUtils;
-import com.aptana.ide.ui.io.FileSystemUtils;
+import com.aptana.ide.ui.io.internal.Utils;
 
 /**
  * @author Max Stepanov
@@ -82,7 +82,7 @@ public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchProp
 	@Override
 	protected Control createContents(Composite parent) {
 		// first try to adapt to IFileStore directly
-		final IFileStore fileStore = (IFileStore) getElement().getAdapter(IFileStore.class);
+		final IFileStore fileStore = Utils.getFileStore(getElement());
 		if (fileStore == null) {
 			Label label = new Label(parent, SWT.NONE);
 			label.setText(IDEWorkbenchMessages.ResourceInfoPage_noResource);

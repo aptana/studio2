@@ -40,6 +40,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
+import com.aptana.ide.ui.io.internal.Utils;
+
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
@@ -67,8 +69,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
         if (selection != null && !selection.isEmpty()) {
             Object element = selection.getFirstElement();
             if (element instanceof IAdaptable) {
-                IAdaptable adaptable = (IAdaptable) element;
-                fFileStore = (IFileStore) adaptable.getAdapter(IFileStore.class);
+                fFileStore = Utils.getFileStore((IAdaptable) element);
             }
         }
 

@@ -52,8 +52,8 @@ public class FileSystemObjectPropertyTester extends PropertyTester {
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         if (receiver instanceof IAdaptable) {
             IAdaptable adaptable = (IAdaptable) receiver;
-            IFileStore fileStore = (IFileStore) adaptable.getAdapter(IFileStore.class);
-            IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
+            IFileStore fileStore = Utils.getFileStore(adaptable);
+            IFileInfo fileInfo = Utils.getFileInfo(adaptable);
 
             boolean value = toBoolean(expectedValue);
             if (property.equals(PROPERTY_IS_DIRECTORY)) {

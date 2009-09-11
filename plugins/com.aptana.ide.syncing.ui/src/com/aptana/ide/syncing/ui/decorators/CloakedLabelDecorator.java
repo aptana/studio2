@@ -34,12 +34,17 @@
  */
 package com.aptana.ide.syncing.ui.decorators;
 
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
+import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.actions.CloakingUtils;
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
 
 /**
  * A class to decorate which objects are cloaked from synchronization.
@@ -56,6 +61,23 @@ public class CloakedLabelDecorator implements ILightweightLabelDecorator {
      * subclass should override.
      */
     public void decorate(Object element, IDecoration decoration) {
+        if (!(element instanceof IAdaptable)) {
+            return;
+        }
+
+        IAdaptable adaptable = (IAdaptable) element;
+        // only shows the cloak decorator when the resource has a sync
+        // connection
+        if (SiteConnectionManager.getSitesWithSource(adaptable).length == 0) {
+            return;
+        }
+
+        IFileStore fileStore = SyncUtils.getFileStore(adaptable);
+        if (fileStore != null) {
+            if (CloakingUtils.isFileCloaked(fileStore.getName())) {
+                addDecoration(decoration);
+            }
+        }
     }
 
     public void addListener(ILabelProviderListener listener) {

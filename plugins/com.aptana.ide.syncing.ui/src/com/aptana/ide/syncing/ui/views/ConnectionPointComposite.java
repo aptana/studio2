@@ -40,7 +40,6 @@ import java.util.List;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -82,9 +81,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.io.IConnectionPoint;
@@ -97,6 +94,7 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 import com.aptana.ide.ui.io.navigator.FileTreeNameSorter;
 import com.aptana.ide.ui.io.navigator.actions.FileSystemDeleteAction;
+import com.aptana.ide.ui.io.navigator.actions.OpenFileAction;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -220,25 +218,19 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         }
 
         Object object = selection.getFirstElement();
-        if (object instanceof IResource) {
-            if (object instanceof IContainer) {
-                updateContent((IContainer) object);
-            } else if (object instanceof IFile) {
+        if (object instanceof IAdaptable) {
+            IAdaptable adaptable = (IAdaptable) object;
+            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
+            if (fileInfo.isDirectory()) {
+                // goes into the folder
+                updateContent(adaptable);
+            } else {
                 // opens the file in the editor
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                         .getActivePage();
-                try {
-                    IDE.openEditor(page, (IFile) object);
-                } catch (PartInitException e) {
-                    // ignores the exception
-                }
-            }
-        } else if (object instanceof IAdaptable) {
-            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
-            if (fileInfo.isDirectory()) {
-                updateContent((IAdaptable) object);
-            } else {
-                // TODO: opens the file in the editor
+                OpenFileAction action = new OpenFileAction(page);
+                action.updateSelection(selection);
+                action.run();
             }
         }
     }

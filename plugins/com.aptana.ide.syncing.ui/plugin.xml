@@ -224,14 +224,14 @@
                tooltip="%Action.CloakPreferences.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.ResourceUncloakAction"
+               class="com.aptana.ide.syncing.ui.actions.UncloakAction"
                id="com.aptana.ide.syncing.ui.actions.ResourceUncloakAction"
                label="%Action.Uncloak.name"
                menubarPath="synchronize/cloakingGroup"
                tooltip="%Action.Uncloak.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.ResourceCloakAction"
+               class="com.aptana.ide.syncing.ui.actions.CloakAction"
                id="com.aptana.ide.syncing.ui.actions.ResourceCloakAction"
                label="%Action.Cloak.name"
                menubarPath="synchronize/cloakingGroup"
@@ -320,14 +320,14 @@
                tooltip="%Action.CloakPreferences.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.FilesystemUncloakAction"
+               class="com.aptana.ide.syncing.ui.actions.UncloakAction"
                id="com.aptana.ide.syncing.ui.actions.FilesystemUncloakAction"
                label="%Action.Uncloak.name"
                menubarPath="synchronize/cloakingGroup"
                tooltip="%Action.Uncloak.tooltip">
          </action>
          <action
-               class="com.aptana.ide.syncing.ui.actions.FilesystemCloakAction"
+               class="com.aptana.ide.syncing.ui.actions.CloakAction"
                id="com.aptana.ide.syncing.ui.actions.FilesystemCloakAction"
                label="%Action.Cloak.name"
                menubarPath="synchronize/cloakingGroup"
@@ -357,32 +357,22 @@
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
-            class="com.aptana.ide.syncing.ui.decorators.CloakedResourceDecorator"
+            class="com.aptana.ide.syncing.ui.decorators.CloakedLabelDecorator"
             icon="icons/full/obj16/cloaked_decorator.gif"
-            id="com.aptana.ide.syncing.ui.decorators.CloakedResourceDecorator"
+            id="com.aptana.ide.syncing.ui.decorators.CloakedLabelDecorator"
             label="%Decorator.CloakedResource.name"
             lightweight="true"
             location="TOP_RIGHT"
             state="true">
          <enablement>
-            <objectClass
-                  name="org.eclipse.core.resources.IResource">
-            </objectClass>
-         </enablement>
-      </decorator>
-      <decorator
-            adaptable="true"
-            class="com.aptana.ide.syncing.ui.decorators.CloakedFileDecorator"
-            icon="icons/full/obj16/cloaked_decorator.gif"
-            id="com.aptana.ide.syncing.ui.decorators.CloakedFileDecorator"
-            label="%Decorator.CloakedFile.name"
-            lightweight="true"
-            location="TOP_RIGHT"
-            state="true">
-         <enablement>
-            <objectClass
-                  name="com.aptana.ide.ui.io.navigator.FileSystemObject">
-            </objectClass>
+            <or>
+               <objectClass
+                     name="org.eclipse.core.resources.IResource">
+               </objectClass>
+               <objectClass
+                     name="com.aptana.ide.ui.io.navigator.FileSystemObject">
+               </objectClass>
+            </or>
          </enablement>
       </decorator>
       <decorator

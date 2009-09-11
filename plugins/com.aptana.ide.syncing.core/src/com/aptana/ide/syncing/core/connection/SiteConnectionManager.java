@@ -115,7 +115,7 @@ public class SiteConnectionManager {
                 source = site.getSource();
                 if (source instanceof WorkspaceConnectionPoint && site.getDestination() != null) {
                     IContainer root = ((WorkspaceConnectionPoint) source).getResource();
-                    if (root.equals(sourceObject) || (!strict && contains(root, resource))) {
+                    if ((root != null && root.equals(sourceObject)) || (!strict && contains(root, resource))) {
                         sites.add(site);
                     }
                 }
@@ -144,6 +144,9 @@ public class SiteConnectionManager {
     }
 
     private static boolean contains(IContainer root, IResource element) {
+        if (root == null || element == null) {
+            return false;
+        }
         return element.getFullPath().toString().indexOf(root.getFullPath().toString()) > -1;
     }
 }

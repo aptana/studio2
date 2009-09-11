@@ -35,7 +35,6 @@
 package com.aptana.ide.syncing.ui.views;
 
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
@@ -54,7 +53,6 @@ import org.eclipse.swt.widgets.Label;
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.EFSUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPointEvent;
 import com.aptana.ide.core.io.IConnectionPointListener;
@@ -62,6 +60,7 @@ import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 
@@ -251,7 +250,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
     private void transferItems(IAdaptable[] sourceItems, IAdaptable targetRoot,
             IJobChangeListener listener) {
-        IFileStore targetStore = getFileStore(targetRoot);
+        IFileStore targetStore = SyncUtils.getFileStore(targetRoot);
         if (targetStore != null) {
             CopyFilesOperation operation = new CopyFilesOperation(getControl().getShell());
             operation.copyFiles(sourceItems, targetStore, listener);
@@ -276,12 +275,5 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
             names[i] = sites[i].getName();
         }
         return names;
-    }
-
-    private static IFileStore getFileStore(IAdaptable adaptable) {
-        if (adaptable instanceof IResource) {
-        	return EFSUtils.getFileStore((IResource) adaptable);
-        }
-        return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 }

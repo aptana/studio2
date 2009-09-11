@@ -37,16 +37,14 @@ package com.aptana.ide.syncing.ui.views;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.io.navigator.FileTreeLabelProvider;
 
 /**
@@ -110,7 +108,7 @@ public class ConnectionPointLabelProvider extends LabelProvider implements ITabl
         if (element instanceof IResource) {
             rawSize = ((IResource) element).getLocation().toFile().length();
         } else if (element instanceof IAdaptable) {
-            IFileInfo fileInfo = getFileInfo((IAdaptable) element);
+            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) element);
             if (fileInfo != null) {
                 rawSize = fileInfo.getLength();
             }
@@ -165,7 +163,7 @@ public class ConnectionPointLabelProvider extends LabelProvider implements ITabl
         if (element instanceof IResource) {
             timestamp = ((IResource) element).getModificationStamp();
         } else if (element instanceof IAdaptable) {
-            IFileInfo fileInfo = getFileInfo((IAdaptable) element);
+            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) element);
             if (fileInfo != null) {
                 timestamp = fileInfo.getLastModified();
             }
@@ -175,20 +173,5 @@ public class ConnectionPointLabelProvider extends LabelProvider implements ITabl
             return formatter.format(new Date(timestamp));
         }
         return ""; //$NON-NLS-1$
-    }
-
-    private static IFileInfo getFileInfo(IAdaptable adaptable) {
-        IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
-        if (fileInfo == null) {
-            IFileStore fileStore = (IFileStore) adaptable.getAdapter(IFileStore.class);
-            if (fileStore != null) {
-                try {
-                    fileInfo = fileStore.fetchInfo(EFS.NONE, null);
-                } catch (CoreException e) {
-                    // ignores the exception
-                }
-            }
-        }
-        return fileInfo;
     }
 }

@@ -37,24 +37,27 @@ package com.aptana.ide.syncing.ui.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
+
 /**
  * Cloaks a specific file type so the files will be ignored during syncing.
  * 
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ResourceCloakAction implements IObjectActionDelegate {
+public class UncloakAction implements IObjectActionDelegate {
 
-    private List<IResource> fSelectedResources;
+    private List<IFileStore> fSelectedFiles;
 
-    public ResourceCloakAction() {
-        fSelectedResources = new ArrayList<IResource>();
+    public UncloakAction() {
+        fSelectedFiles = new ArrayList<IFileStore>();
     }
 
     /**
@@ -62,9 +65,9 @@ public class ResourceCloakAction implements IObjectActionDelegate {
      */
     public void run(IAction action) {
         String expression;
-        for (IResource resource : fSelectedResources) {
-            expression = getFileType(resource);
-            CloakingUtils.addCloakFileType(expression);
+        for (IFileStore fileStore : fSelectedFiles) {
+            expression = getFileType(fileStore);
+            CloakingUtils.removeCloakFileType(expression);
         }
 
         CloakingUtils.updateDecorator();
@@ -75,23 +78,25 @@ public class ResourceCloakAction implements IObjectActionDelegate {
      */
     public void selectionChanged(IAction action, ISelection selection) {
         action.setEnabled(false);
-        fSelectedResources.clear();
+        fSelectedFiles.clear();
 
         if (!(selection instanceof IStructuredSelection) || selection.isEmpty()) {
             return;
         }
 
         Object[] elements = ((IStructuredSelection) selection).toArray();
-        IResource resource;
+        IFileStore fileStore;
         for (Object element : elements) {
-            if (element instanceof IResource) {
-                resource = (IResource) element;
-                if (!CloakingUtils.isFileCloaked(resource.getName())) {
-                    fSelectedResources.add(resource);
+            if (element instanceof IAdaptable) {
+                fileStore = SyncUtils.getFileStore((IAdaptable) element);
+                if (fileStore != null) {
+                    if (CloakingUtils.isFileCloaked(fileStore.getName())) {
+                        fSelectedFiles.add(fileStore);
+                    }
                 }
             }
         }
-        action.setEnabled(fSelectedResources.size() > 0);
+        action.setEnabled(fSelectedFiles.size() > 0);
     }
 
     /**
@@ -101,11 +106,12 @@ public class ResourceCloakAction implements IObjectActionDelegate {
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
     }
 
-    private static String getFileType(IResource resource) {
-        String extension = resource.getFileExtension();
-        if (extension == null || extension.equals("")) { //$NON-NLS-1$
-            return resource.getName();
+    private static String getFileType(IFileStore fileStore) {
+        String name = fileStore.getName();
+        int index = name.lastIndexOf("."); //$NON-NLS-1$
+        if (index < 0) {
+            return name;
         }
-        return "*." + extension; //$NON-NLS-1$
+        return "*." + name.substring(index + 1); //$NON-NLS-1$
     }
 }

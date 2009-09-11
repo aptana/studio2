@@ -45,16 +45,18 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
+
 /**
  * Cloaks a specific file type so the files will be ignored during syncing.
  * 
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FilesystemCloakAction implements IObjectActionDelegate {
+public class CloakAction implements IObjectActionDelegate {
 
     private List<IFileStore> fSelectedFiles;
 
-    public FilesystemCloakAction() {
+    public CloakAction() {
         fSelectedFiles = new ArrayList<IFileStore>();
     }
 
@@ -86,7 +88,7 @@ public class FilesystemCloakAction implements IObjectActionDelegate {
         IFileStore fileStore;
         for (Object element : elements) {
             if (element instanceof IAdaptable) {
-                fileStore = (IFileStore) ((IAdaptable) element).getAdapter(IFileStore.class);
+                fileStore = SyncUtils.getFileStore((IAdaptable) element);
                 if (fileStore != null) {
                     if (!CloakingUtils.isFileCloaked(fileStore.getName())) {
                         fSelectedFiles.add(fileStore);

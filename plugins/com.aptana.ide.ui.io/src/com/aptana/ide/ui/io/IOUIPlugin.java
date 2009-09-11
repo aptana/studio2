@@ -35,6 +35,7 @@
 
 package com.aptana.ide.ui.io;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -76,7 +77,10 @@ public class IOUIPlugin extends AbstractUIPlugin {
 
         public void resourceChanged(IResourceChangeEvent event) {
             if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-                refreshNavigatorView(null);
+                IResource resource = event.getResource();
+                if (resource != null) {
+                    refreshNavigatorView(resource.getParent());
+                }
             }
         }
 

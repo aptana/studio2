@@ -123,7 +123,7 @@ public class CloakingUtils {
      */
     public static void updateDecorator() {
         IDecoratorManager dm = SyncingUIPlugin.getDefault().getWorkbench().getDecoratorManager();
-        dm.update("com.aptana.ide.syncing.ui.decorators.CloakedFileDecorator"); //$NON-NLS-1$
+        dm.update("com.aptana.ide.syncing.ui.decorators.CloakedLabelDecorator"); //$NON-NLS-1$
     }
 
     private static String convertCloakExpressionToRegex(String expression) {

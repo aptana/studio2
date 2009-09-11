@@ -49,6 +49,11 @@ import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.ICommonMenuConstants;
 import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
 
+import com.aptana.ide.ui.io.internal.Utils;
+
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public class FileSystemNewActionProvider extends CommonActionProvider {
 
     private FileSystemNewAction fNewAction;
@@ -107,8 +112,7 @@ public class FileSystemNewActionProvider extends CommonActionProvider {
 
         Object object = selection.getFirstElement();
         if (object instanceof IAdaptable) {
-            IAdaptable adaptable = (IAdaptable) object;
-            IFileStore fileStore = (IFileStore) adaptable.getAdapter(IFileStore.class);
+            IFileStore fileStore = Utils.getFileStore((IAdaptable) object);
             if (fileStore == null) {
                 return false;
             }

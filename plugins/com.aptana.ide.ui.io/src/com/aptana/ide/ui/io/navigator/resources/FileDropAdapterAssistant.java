@@ -40,10 +40,13 @@ import java.util.List;
 
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -92,16 +95,14 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         if (FileTransfer.getInstance().isSupportedType(currentTransfer)) {
             status = performDrop(aDropAdapter, aDropTargetEvent.data);
         } else if (sources != null && sources.length > 0) {
-            if (aDropAdapter.getCurrentOperation() == DND.DROP_COPY) {
+            if (aDropAdapter.getCurrentOperation() == DND.DROP_COPY
+                    || (sources[0] instanceof IResource)) {
                 status = performCopy(aDropAdapter, sources);
             } else {
                 status = performMove(aDropAdapter, sources);
             }
         }
         openError(status);
-
-        // TODO: improves to refresh only the folders that contain the change
-        IOUIPlugin.refreshNavigatorView(null);
 
         return status;
     }
@@ -157,9 +158,14 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             problems.merge(validate);
         }
 
-        IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
+        final IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
         CopyFilesOperation operation = new CopyFilesOperation(getShell());
-        operation.copyFiles(sources, destination, null);
+        operation.copyFiles(sources, destination, new JobChangeAdapter() {
+
+            public void done(IJobChangeEvent event) {
+                IOUIPlugin.refreshNavigatorView(destination);
+            }
+        });
 
         return problems;
     }
@@ -173,9 +179,14 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             problems.merge(validate);
         }
 
-        IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
+        final IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
         CopyFilesOperation operation = new CopyFilesOperation(getShell());
-        operation.copyFiles((String[]) data, destination, null);
+        operation.copyFiles((String[]) data, destination, new JobChangeAdapter() {
+
+            public void done(IJobChangeEvent event) {
+                IOUIPlugin.refreshNavigatorView(destination);
+            }
+        });
 
         return problems;
     }
@@ -189,9 +200,14 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             problems.merge(validate);
         }
 
-        IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
+        final IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
         MoveFilesOperation operation = new MoveFilesOperation(getShell());
-        operation.copyFiles(sources, destination, null);
+        operation.copyFiles(sources, destination, new JobChangeAdapter() {
+
+            public void done(IJobChangeEvent event) {
+                IOUIPlugin.refreshNavigatorView(destination);
+            }
+        });
 
         return problems;
     }
