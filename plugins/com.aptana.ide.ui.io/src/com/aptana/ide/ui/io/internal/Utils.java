@@ -41,12 +41,15 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
+import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
+
 public class Utils {
 
     public static IFileStore getFileStore(IAdaptable adaptable) {
         if (adaptable instanceof IResource) {
             try {
-                return EFS.getStore(((IResource) adaptable).getLocationURI());
+                return EFS.getFileSystem(WorkspaceFileSystem.SCHEME_WORKSPACE).getStore(
+                        ((IResource) adaptable).getFullPath());
             } catch (CoreException e) {
                 return null;
             }

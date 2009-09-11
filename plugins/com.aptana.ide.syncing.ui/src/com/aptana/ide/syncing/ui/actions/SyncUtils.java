@@ -43,6 +43,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
+import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 
 public class SyncUtils {
@@ -76,7 +77,8 @@ public class SyncUtils {
         if (adaptable instanceof IResource) {
             IResource resource = (IResource) adaptable;
             try {
-                return EFS.getStore(resource.getLocationURI());
+                return EFS.getFileSystem(WorkspaceFileSystem.SCHEME_WORKSPACE).getStore(
+                        resource.getFullPath());
             } catch (CoreException e) {
                 return null;
             }
