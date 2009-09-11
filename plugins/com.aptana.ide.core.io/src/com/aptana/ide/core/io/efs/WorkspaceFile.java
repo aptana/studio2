@@ -347,7 +347,7 @@ import org.eclipse.osgi.util.NLS;
 	 */
 	@Override
 	public OutputStream openOutputStream(int options, IProgressMonitor monitor) throws CoreException {
-		ensureLocalFileStore();
+		ensureLocalFileStore(true);
 		if (localFileStore != null) {
 			return localFileStore.openOutputStream(options, monitor);
 		}
