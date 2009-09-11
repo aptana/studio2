@@ -34,14 +34,12 @@
  */
 package com.aptana.ide.ui.io.internal;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
-import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
+import com.aptana.ide.core.io.EFSUtils;
 import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
@@ -51,12 +49,7 @@ public class Utils {
 
     public static IFileStore getFileStore(IAdaptable adaptable) {
         if (adaptable instanceof IResource) {
-            try {
-                return EFS.getFileSystem(WorkspaceFileSystem.SCHEME_WORKSPACE).getStore(
-                        ((IResource) adaptable).getFullPath());
-            } catch (CoreException e) {
-                return null;
-            }
+        	return EFSUtils.getFileStore((IResource) adaptable);
         }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
