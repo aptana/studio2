@@ -54,6 +54,7 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
 import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.FileSystemUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.ui.io.internal.Utils;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -75,8 +76,8 @@ public class NewFolderAction extends BaseSelectionListenerAction {
         if (fSelectedElement == null) {
             return;
         }
-        final IFileStore fileStore = getFileStore(fSelectedElement);
-        final IFileInfo fileInfo = getFileInfo(fSelectedElement);
+        final IFileStore fileStore = Utils.getFileStore(fSelectedElement);
+        final IFileInfo fileInfo = Utils.getFileInfo(fSelectedElement);
 
         InputDialog input = new InputDialog(fWindow.getShell(),
                 Messages.NewFolderAction_InputTitle,
@@ -127,20 +128,4 @@ public class NewFolderAction extends BaseSelectionListenerAction {
     private void showError(Exception exception) {
         UIUtils.showErrorMessage(exception.getLocalizedMessage(), exception);
     }
-
-    private static IFileStore getFileStore(IAdaptable adaptable) {
-        return (IFileStore) adaptable.getAdapter(IFileStore.class);
-    }
-
-    private IFileInfo getFileInfo(IAdaptable adaptable) {
-        IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
-    	if (fileInfo == null) {
-    		IFileStore fileStore = getFileStore(adaptable);
-    		if (fileStore != null) {
-    			fileInfo = FileSystemUtils.fetchFileInfo(fileStore);
-    		}
-    	}
-        return fileInfo;
-    }
-
 }

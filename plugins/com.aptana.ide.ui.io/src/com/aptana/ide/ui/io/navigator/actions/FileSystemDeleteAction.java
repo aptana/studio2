@@ -45,6 +45,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -53,6 +54,7 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
 import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.ui.io.internal.Utils;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -62,10 +64,23 @@ public class FileSystemDeleteAction extends BaseSelectionListenerAction {
     private Shell fShell;
     private List<IFileStore> fFiles;
 
+    private List<IJobChangeListener> fListeners;
+
     public FileSystemDeleteAction(Shell shell) {
         super(Messages.FileSystemDeleteAction_Text);
         fShell = shell;
         fFiles = new ArrayList<IFileStore>();
+        fListeners = new ArrayList<IJobChangeListener>();
+    }
+
+    public void addJobListener(IJobChangeListener listener) {
+        if (!fListeners.contains(listener)) {
+            fListeners.add(listener);
+        }
+    }
+
+    public void removeJobListener(IJobChangeListener listener) {
+        fListeners.remove(listener);
     }
 
     public void run() {
@@ -76,23 +91,20 @@ public class FileSystemDeleteAction extends BaseSelectionListenerAction {
         String message;
         int count = fFiles.size();
         if (count == 1) {
-            message = MessageFormat.format(
-                    Messages.FileSystemDeleteAction_Confirm_SingleFile, fFiles
-                            .get(0));
+            message = MessageFormat.format(Messages.FileSystemDeleteAction_Confirm_SingleFile,
+                    fFiles.get(0));
         } else {
-            message = MessageFormat.format(
-                    Messages.FileSystemDeleteAction_Confirm_MultipleFiles,
+            message = MessageFormat.format(Messages.FileSystemDeleteAction_Confirm_MultipleFiles,
                     count);
 
         }
-        if (!MessageDialog.openQuestion(fShell,
-                Messages.FileSystemDeleteAction_Confirm_Title, message)) {
-            return;
+        if (MessageDialog.openQuestion(fShell, Messages.FileSystemDeleteAction_Confirm_Title,
+                message)) {
+            delete(fFiles.toArray(new IFileStore[fFiles.size()]));
         }
-        delete(fFiles.toArray(new IFileStore[fFiles.size()]));
     }
 
-    protected boolean updateSelection(IStructuredSelection selection) {
+    public boolean updateSelection(IStructuredSelection selection) {
         fFiles.clear();
 
         if (selection != null && !selection.isEmpty()) {
@@ -100,7 +112,7 @@ public class FileSystemDeleteAction extends BaseSelectionListenerAction {
             IFileStore fileStore;
             for (Object element : elements) {
                 if (element instanceof IAdaptable) {
-                    fileStore = getFileStore((IAdaptable) element);
+                    fileStore = Utils.getFileStore((IAdaptable) element);
                     if (fileStore != null) {
                         fFiles.add(fileStore);
                     }
@@ -111,26 +123,26 @@ public class FileSystemDeleteAction extends BaseSelectionListenerAction {
         return super.updateSelection(selection) && !fFiles.isEmpty();
     }
 
-    private static void delete(final IFileStore[] files) {
+    private void delete(final IFileStore[] files) {
         // performs the deletion in a job
         Job deleteJob = new Job(Messages.FileSystemDeleteAction_JobTitle) {
 
             @Override
             protected IStatus run(IProgressMonitor monitor) {
-                monitor.beginTask(Messages.FileSystemDeleteAction_Task,
-                        files.length);
+                monitor.beginTask(Messages.FileSystemDeleteAction_Task, files.length);
                 for (IFileStore file : files) {
+                    monitor.subTask(MessageFormat.format(Messages.FileSystemDeleteAction_SubTask,
+                            file.toString()));
+                    deleteFile(file, monitor);
+                    monitor.worked(1);
                     if (monitor.isCanceled()) {
                         return Status.CANCEL_STATUS;
                     }
-                    monitor.subTask(MessageFormat.format(
-                            Messages.FileSystemDeleteAction_SubTask, file
-                                    .toString()));
-                    deleteFile(file, monitor);
-                    monitor.worked(1);
                 }
                 monitor.done();
+                // TODO: needs improve to not refresh the whole File view here
                 IOUIPlugin.refreshNavigatorView(null);
+
                 return Status.OK_STATUS;
             }
 
@@ -142,6 +154,9 @@ public class FileSystemDeleteAction extends BaseSelectionListenerAction {
             }
         };
         deleteJob.setUser(true);
+        for (IJobChangeListener listener : fListeners) {
+            deleteJob.addJobChangeListener(listener);
+        }
         deleteJob.schedule();
     }
 
@@ -151,9 +166,5 @@ public class FileSystemDeleteAction extends BaseSelectionListenerAction {
         } catch (CoreException e) {
             UIUtils.showErrorMessage(e.getLocalizedMessage(), e);
         }
-    }
-
-    private static IFileStore getFileStore(IAdaptable adaptable) {
-        return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 }

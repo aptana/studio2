@@ -57,6 +57,7 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
 import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.ui.io.internal.Utils;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -85,7 +86,7 @@ public class FileSystemRenameAction extends BaseSelectionListenerAction {
         if (!(data instanceof IAdaptable)) {
             return;
         }
-        final IFileStore fileStore = getFileStore((IAdaptable) data);
+        final IFileStore fileStore = Utils.getFileStore((IAdaptable) data);
         if (fileStore == null) {
             return;
         }
@@ -174,10 +175,6 @@ public class FileSystemRenameAction extends BaseSelectionListenerAction {
 
     private static void showError(Exception exception) {
         UIUtils.showErrorMessage(exception.getLocalizedMessage(), exception);
-    }
-
-    private static IFileStore getFileStore(IAdaptable adaptable) {
-        return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
 
     /**

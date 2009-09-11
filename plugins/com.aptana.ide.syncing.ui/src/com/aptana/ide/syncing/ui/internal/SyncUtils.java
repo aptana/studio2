@@ -32,12 +32,13 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.internal;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -45,7 +46,11 @@ import org.eclipse.core.runtime.IAdaptable;
 
 import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.ui.io.FileSystemUtils;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public class SyncUtils {
 
     /**
@@ -84,5 +89,21 @@ public class SyncUtils {
             }
         }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
+    }
+
+    /**
+     * @param adaptable
+     *            the IAdaptable object
+     * @return the file info corresponding to the object
+     */
+    public static IFileInfo getFileInfo(IAdaptable adaptable) {
+        IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
+        if (fileInfo == null) {
+            IFileStore fileStore = getFileStore(adaptable);
+            if (fileStore != null) {
+                fileInfo = FileSystemUtils.fetchFileInfo(fileStore);
+            }
+        }
+        return fileInfo;
     }
 }

@@ -55,8 +55,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
 import com.aptana.ide.ui.UIUtils;
-import com.aptana.ide.ui.io.FileSystemUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.ui.io.internal.Utils;
 
 public class NewFileAction extends BaseSelectionListenerAction {
 
@@ -97,8 +97,8 @@ public class NewFileAction extends BaseSelectionListenerAction {
     }
 
     private void createFile(final String filename) {
-        final IFileStore fileStore = getFileStore(fSelectedElement);
-        final IFileInfo fileInfo = getFileInfo(fSelectedElement);
+        final IFileStore fileStore = Utils.getFileStore(fSelectedElement);
+        final IFileInfo fileInfo = Utils.getFileInfo(fSelectedElement);
 
         // run the file creation in a job
         Job job = new Job(Messages.NewFolderAction_JobTitle) {
@@ -140,20 +140,4 @@ public class NewFileAction extends BaseSelectionListenerAction {
     private void showError(Exception exception) {
         UIUtils.showErrorMessage(exception.getLocalizedMessage(), exception);
     }
-
-    private static IFileStore getFileStore(IAdaptable adaptable) {
-        return (IFileStore) adaptable.getAdapter(IFileStore.class);
-    }
-
-    private IFileInfo getFileInfo(IAdaptable adaptable) {
-        IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
-        if (fileInfo == null) {
-            IFileStore fileStore = getFileStore(adaptable);
-            if (fileStore != null) {
-                fileInfo = FileSystemUtils.fetchFileInfo(fileStore);
-            }
-        }
-        return fileInfo;
-    }
-
 }

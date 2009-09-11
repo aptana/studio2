@@ -51,6 +51,7 @@ import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.ui.DialogUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.syncing.ui.preferences.IPreferenceConstants;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 

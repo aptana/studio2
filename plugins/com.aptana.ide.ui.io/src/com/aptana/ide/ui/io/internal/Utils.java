@@ -42,7 +42,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
 import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
+import com.aptana.ide.ui.io.FileSystemUtils;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public class Utils {
 
     public static IFileStore getFileStore(IAdaptable adaptable) {
@@ -62,14 +66,9 @@ public class Utils {
         if (fileInfo == null) {
             IFileStore fileStore = getFileStore(adaptable);
             if (fileStore != null) {
-                try {
-                    fileInfo = fileStore.fetchInfo(EFS.NONE, null);
-                } catch (CoreException e) {
-                    // ignores the exception
-                }
+                fileInfo = FileSystemUtils.fetchFileInfo(fileStore);
             }
         }
         return fileInfo;
     }
-
 }

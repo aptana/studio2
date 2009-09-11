@@ -54,6 +54,7 @@ import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
 import com.aptana.ide.ui.io.FileSystemUtils;
+import com.aptana.ide.ui.io.internal.Utils;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -102,7 +103,7 @@ public class FileSystemNewAction extends BaseSelectionListenerAction {
             if (selection != null && !selection.isEmpty()) {
                 Object element = selection.getFirstElement();
                 if (element instanceof IAdaptable) {
-                    IFileStore fileStore = getFileStore((IAdaptable) element);
+                    IFileStore fileStore = Utils.getFileStore((IAdaptable) element);
                     IFileInfo fileInfo = getFileInfo((IAdaptable) element);
                     if (fileStore != null && fileInfo != null) {
                     	String path = StringUtils.EMPTY;
@@ -127,14 +128,10 @@ public class FileSystemNewAction extends BaseSelectionListenerAction {
             }
         }
 
-        private IFileStore getFileStore(IAdaptable adaptable) {
-            return (IFileStore) adaptable.getAdapter(IFileStore.class);
-        }
-
         private IFileInfo getFileInfo(IAdaptable adaptable) {
             IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
         	if (fileInfo == null && !(adaptable instanceof IConnectionPoint)) {
-        		IFileStore fileStore = getFileStore(adaptable);
+        		IFileStore fileStore = Utils.getFileStore(adaptable);
         		if (fileStore != null) {
         			fileInfo = FileSystemUtils.fetchFileInfo(fileStore);
         		}

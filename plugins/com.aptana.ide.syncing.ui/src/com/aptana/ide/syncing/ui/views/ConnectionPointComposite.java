@@ -37,7 +37,6 @@ package com.aptana.ide.syncing.ui.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
@@ -74,25 +73,30 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
+import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 import com.aptana.ide.ui.io.navigator.FileTreeNameSorter;
+import com.aptana.ide.ui.io.navigator.actions.FileSystemDeleteAction;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -113,6 +117,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     private Label fPathLabel;
 
     private TreeViewer fTreeViewer;
+    private MenuItem fDeleteItem;
 
     private String fName;
     private IConnectionPoint fConnectionPoint;
@@ -203,6 +208,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             refresh();
         } else if (source == fHomeItem) {
             gotoHome();
+        } else if (source == fDeleteItem) {
+            delete(fTreeViewer.getSelection());
         }
     }
 
@@ -227,7 +234,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
                 }
             }
         } else if (object instanceof IAdaptable) {
-            IFileInfo fileInfo = getFileInfo((IAdaptable) object);
+            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
             if (fileInfo.isDirectory()) {
                 updateContent((IAdaptable) object);
             } else {
@@ -276,7 +283,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     public void drop(DropTargetEvent event) {
         IFileStore targetStore = null;
         if (event.item == null) {
-            targetStore = getFileStore((IAdaptable) fTreeViewer.getInput());
+            targetStore = SyncUtils.getFileStore((IAdaptable) fTreeViewer.getInput());
         } else {
             TreeItem target = (TreeItem) event.item;
             targetStore = getFolderStore((IAdaptable) target.getData());
@@ -416,6 +423,15 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         fTreeViewer.addDropSupport(DND.DROP_COPY | DND.DROP_DEFAULT,
                 new Transfer[] { LocalSelectionTransfer.getTransfer() }, this);
 
+        // builds the context menu
+        Menu menu = new Menu(tree);
+        fDeleteItem = new MenuItem(menu, SWT.PUSH);
+        fDeleteItem.setText(CoreStrings.DELETE);
+        fDeleteItem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
+                ISharedImages.IMG_ETOOL_DELETE));
+        fDeleteItem.addSelectionListener(this);
+        tree.setMenu(menu);
+
         return fTreeViewer;
     }
 
@@ -430,6 +446,28 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
     private void gotoHome() {
         updateContent(fConnectionPoint);
+    }
+
+    private void delete(ISelection selection) {
+        if (!(selection instanceof IStructuredSelection)) {
+            return;
+        }
+        final FileSystemDeleteAction action = new FileSystemDeleteAction(getControl().getShell());
+        action.updateSelection((IStructuredSelection) selection);
+        action.addJobListener(new JobChangeAdapter() {
+
+            @Override
+            public void done(IJobChangeEvent event) {
+                CoreUIUtils.getDisplay().asyncExec(new Runnable() {
+
+                    public void run() {
+                        refresh();
+                    }
+                });
+                action.removeJobListener(this);
+            }
+        });
+        action.run();
     }
 
     private void setComboData(IAdaptable data) {
@@ -456,9 +494,9 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             }
         } else {
             // a filesystem or remote path
-            IFileStore fileStore = getFileStore(data);
+            IFileStore fileStore = SyncUtils.getFileStore(data);
             if (fileStore != null) {
-                IFileStore homeFileStore = getFileStore(fConnectionPoint);
+                IFileStore homeFileStore = SyncUtils.getFileStore(fConnectionPoint);
                 while (fileStore.getParent() != null && !fileStore.equals(homeFileStore)) {
                     fComboData.add(fComboData.size() - 1, fileStore);
                     items.add(items.size() - 1, fileStore.getName());
@@ -485,10 +523,10 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             setPath(getRelativePath((IContainer) fConnectionPoint.getAdapter(IResource.class),
                     (IContainer) rootElement));
         } else {
-            IFileStore fileStore = getFileStore(rootElement);
+            IFileStore fileStore = SyncUtils.getFileStore(rootElement);
             if (fileStore != null) {
                 String path = fileStore.toString();
-                IFileStore homeFileStore = getFileStore(fConnectionPoint);
+                IFileStore homeFileStore = SyncUtils.getFileStore(fConnectionPoint);
                 if (homeFileStore != null) {
                     String homePath = homeFileStore.toString();
                     int index = path.indexOf(homePath);
@@ -502,36 +540,9 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         fTreeViewer.setInput(rootElement);
     }
 
-    private static IFileInfo getFileInfo(IAdaptable adaptable) {
-        IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
-        if (fileInfo == null) {
-            IFileStore fileStore = getFileStore(adaptable);
-            if (fileStore != null) {
-                try {
-                    fileInfo = fileStore.fetchInfo(EFS.NONE, null);
-                } catch (CoreException e) {
-                    // ignores the exception
-                }
-            }
-        }
-        return fileInfo;
-    }
-
-    private static IFileStore getFileStore(IAdaptable adaptable) {
-        if (adaptable instanceof IResource) {
-            try {
-                return EFS.getFileSystem(WorkspaceFileSystem.SCHEME_WORKSPACE).getStore(
-                        ((IResource) adaptable).getFullPath());
-            } catch (CoreException e) {
-                return null;
-            }
-        }
-        return (IFileStore) adaptable.getAdapter(IFileStore.class);
-    }
-
     private static IFileStore getFolderStore(IAdaptable destination) {
-        IFileStore store = getFileStore(destination);
-        IFileInfo info = getFileInfo(destination);
+        IFileStore store = SyncUtils.getFileStore(destination);
+        IFileInfo info = SyncUtils.getFileInfo(destination);
         if (store != null && info != null && !info.isDirectory()) {
             store = store.getParent();
         }
