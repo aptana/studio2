@@ -34,11 +34,8 @@
  */
 package com.aptana.ide.syncing.ui.views;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
@@ -57,10 +54,10 @@ import org.eclipse.swt.widgets.Label;
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.EFSUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPointEvent;
 import com.aptana.ide.core.io.IConnectionPointListener;
-import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
@@ -283,12 +280,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
     private static IFileStore getFileStore(IAdaptable adaptable) {
         if (adaptable instanceof IResource) {
-            try {
-                return EFS.getFileSystem(WorkspaceFileSystem.SCHEME_WORKSPACE).getStore(
-                        ((IResource) adaptable).getFullPath());
-            } catch (CoreException e) {
-                return null;
-            }
+        	return EFSUtils.getFileStore((IResource) adaptable);
         }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }

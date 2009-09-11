@@ -84,8 +84,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
+import com.aptana.ide.core.io.EFSUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
@@ -519,12 +519,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
     private static IFileStore getFileStore(IAdaptable adaptable) {
         if (adaptable instanceof IResource) {
-            try {
-                return EFS.getFileSystem(WorkspaceFileSystem.SCHEME_WORKSPACE).getStore(
-                        ((IResource) adaptable).getFullPath());
-            } catch (CoreException e) {
-                return null;
-            }
+        	return EFSUtils.getFileStore((IResource) adaptable);
         }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }

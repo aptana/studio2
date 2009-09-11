@@ -37,13 +37,11 @@ package com.aptana.ide.syncing.ui.actions;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
-import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
+import com.aptana.ide.core.io.EFSUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 
 public class SyncUtils {
@@ -76,12 +74,7 @@ public class SyncUtils {
     public static IFileStore getFileStore(IAdaptable adaptable) {
         if (adaptable instanceof IResource) {
             IResource resource = (IResource) adaptable;
-            try {
-                return EFS.getFileSystem(WorkspaceFileSystem.SCHEME_WORKSPACE).getStore(
-                        resource.getFullPath());
-            } catch (CoreException e) {
-                return null;
-            }
+            return EFSUtils.getFileStore(resource);
         }
         return (IFileStore) adaptable.getAdapter(IFileStore.class);
     }
