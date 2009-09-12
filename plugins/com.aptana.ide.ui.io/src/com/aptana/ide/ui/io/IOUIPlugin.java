@@ -35,7 +35,6 @@
 
 package com.aptana.ide.ui.io;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -60,6 +59,7 @@ import com.aptana.ide.core.io.IConnectionPointEvent;
 import com.aptana.ide.core.io.IConnectionPointListener;
 import com.aptana.ide.core.io.IConnectionPointManager;
 import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.ui.io.navigator.WorkspaceProjects;
 import com.aptana.ide.ui.io.navigator.internal.NavigatorDecoratorLoader;
 
 /**
@@ -77,10 +77,7 @@ public class IOUIPlugin extends AbstractUIPlugin {
 
         public void resourceChanged(IResourceChangeEvent event) {
             if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-                IResource resource = event.getResource();
-                if (resource != null) {
-                    refreshNavigatorView(resource.getParent());
-                }
+                refreshNavigatorView(WorkspaceProjects.getInstance());
             }
         }
 

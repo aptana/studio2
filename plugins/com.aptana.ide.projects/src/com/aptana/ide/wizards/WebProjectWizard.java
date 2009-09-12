@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -45,167 +45,118 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.progress.UIJob;
-import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
-import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 import org.osgi.framework.Bundle;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.builder.UnifiedProjectBuilder;
-import com.aptana.ide.core.ui.AptanaNavigator;
-import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.wizards.BaseWizard;
 import com.aptana.ide.projects.ProjectsPlugin;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public class WebProjectWizard extends BaseWizard implements IExecutableExtension
-{
+public class WebProjectWizard extends BaseWizard implements IExecutableExtension {
 
-	/**
-	 * ID
-	 */
-	public static final String ID = "com.aptana.ide.wizards.WebProjectWizard"; //$NON-NLS-1$
+    /**
+     * ID
+     */
+    public static final String ID = "com.aptana.ide.wizards.WebProjectWizard"; //$NON-NLS-1$
 
-	/**
-	 * INDEX_PATH
-	 */
-	private static final String INDEX_PATH = "/project/index.html"; //$NON-NLS-1$
+    /**
+     * INDEX_PATH
+     */
+    private static final String INDEX_PATH = "/project/index.html"; //$NON-NLS-1$
 
-	private IFile indexFile;
+    private IFile indexFile;
 
-	private IConfigurationElement fConfigElement;
+    /**
+     * Creates a new web project wizard
+     */
+    public WebProjectWizard() {
+        super();
+        super.setIncludeProjectPage(true);
+        super.setWindowTitle(Messages.WebProjectWizard_WebProjectWizard);
+        indexFile = null;
+    }
 
-	private IWorkbench fWorkbench;
+    /**
+     * @see com.aptana.ide.core.ui.wizards.BaseWizard#getID()
+     */
+    public String getID() {
+        return ID;
+    }
 
-	/**
-	 * Creates a new web project wizard
-	 */
-	public WebProjectWizard()
-	{
-		super();
-		super.setIncludeProjectPage(true);
-		super.setWindowTitle(Messages.WebProjectWizard_WebProjectWizard);
-		indexFile = null;
-	}
+    /**
+     * @see com.aptana.ide.core.ui.wizards.BaseWizard#createProjectDescription(java.lang.String,
+     *      org.eclipse.core.runtime.IPath)
+     */
+    protected IProjectDescription createProjectDescription(String name, IPath path) {
+        IProjectDescription description = super.createProjectDescription(name, path);
+        description.setNatureIds(new String[] { "com.aptana.ide.project.nature.web" }); //$NON-NLS-1$
+        ICommand command = description.newCommand();
+        command.setBuilderName(UnifiedProjectBuilder.BUILDER_ID);
+        description.setBuildSpec(new ICommand[] { command });
+        return description;
+    }
 
-	/**
-	 * @see com.aptana.ide.core.ui.wizards.BaseWizard#getID()
-	 */
-	public String getID()
-	{
-		return ID;
-	}
+    /**
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+     *      org.eclipse.jface.viewers.IStructuredSelection)
+     */
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+        setDefaultPageImageDescriptor(ProjectsPlugin
+                .getImageDescriptor("icons/web_project_wiz.png")); //$NON-NLS-1$
+    }
 
-	/**
-	 * @see com.aptana.ide.core.ui.wizards.BaseWizard#createProjectDescription(java.lang.String,
-	 *      org.eclipse.core.runtime.IPath)
-	 */
-	protected IProjectDescription createProjectDescription(String name, IPath path)
-	{
-		IProjectDescription description = super.createProjectDescription(name, path);
-		description.setNatureIds(new String[] { "com.aptana.ide.project.nature.web" }); //$NON-NLS-1$
-		ICommand command = description.newCommand();
-		command.setBuilderName(UnifiedProjectBuilder.BUILDER_ID);
-		description.setBuildSpec(new ICommand[] {command});
-		return description;
-	}
+    /**
+     * @see com.aptana.ide.core.ui.wizards.BaseWizard#getFileToOpenOnFinish()
+     */
+    public IFile getFileToOpenOnFinish() {
+        if (isCreatingHostedSite()) {
+            return null;
+        }
 
-	/**
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-	 *      org.eclipse.jface.viewers.IStructuredSelection)
-	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection)
-	{
-		this.fWorkbench = workbench;
-		setDefaultPageImageDescriptor(ProjectsPlugin.getImageDescriptor("icons/web_project_wiz.png")); //$NON-NLS-1$
-	}
+        if (this.indexFile != null && this.indexFile.exists()) {
+            return this.indexFile;
+        }
+        return null;
+    }
 
-	/**
-	 * @see com.aptana.ide.core.ui.wizards.BaseWizard#getFileToOpenOnFinish()
-	 */
-	public IFile getFileToOpenOnFinish()
-	{
-		if (isCreatingHostedSite()) {
-			return null;
-		}
-		
-		if (this.indexFile != null && this.indexFile.exists())
-		{
-			return this.indexFile;
-		}
-		return null;
-	}
+    /**
+     * @see com.aptana.ide.core.ui.wizards.BaseWizard#getFileNamesToSelect()
+     */
+    public String[] getFileNamesToSelect() {
+        return new String[] { "index.html", "index.htm" }; //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
-	/**
-	 * @see com.aptana.ide.core.ui.wizards.BaseWizard#getFileNamesToSelect()
-	 */
-	public String[] getFileNamesToSelect()
-	{
-		return new String[] { "index.html", "index.htm" }; //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    /**
+     * @see com.aptana.ide.core.ui.wizards.BaseWizard#finishProjectCreation()
+     */
+    public void finishProjectCreation() {
+        final IProject project = super.getCreatedProject();
+        indexFile = project.getFile("index.html"); //$NON-NLS-1$
+        if (indexFile != null && !indexFile.exists()) {
+            Bundle bundle = Platform.getBundle(ProjectsPlugin.PLUGIN_ID);
+            if (bundle != null) {
+                URL indexUrl = bundle.getEntry(INDEX_PATH);
+                if (indexUrl != null) {
+                    try {
+                        indexUrl = FileLocator.toFileURL(indexUrl);
+                        indexFile.create(indexUrl.openStream(), true, null);
+                    } catch (Exception e) {
+                        IdeLog.logError(ProjectsPlugin.getDefault(),
+                                Messages.WebProjectWizard_ERR_Creating, e);
+                    }
+                }
+            }
+        }
+    }
 
-	/**
-	 * @see com.aptana.ide.core.ui.wizards.BaseWizard#finishProjectCreation()
-	 */
-	public void finishProjectCreation()
-	{
-		final IProject project = super.getCreatedProject();
-		indexFile = project.getFile("index.html"); //$NON-NLS-1$
-		if (indexFile != null && !indexFile.exists())
-		{
-			Bundle bundle = Platform.getBundle(ProjectsPlugin.PLUGIN_ID);
-			if (bundle != null)
-			{
-				URL indexUrl = bundle.getEntry(INDEX_PATH);
-				if (indexUrl != null)
-				{
-					try
-					{
-						indexUrl = FileLocator.toFileURL(indexUrl);
-						indexFile.create(indexUrl.openStream(), true, null);
-					}
-					catch (Exception e)
-					{
-						IdeLog.logError(ProjectsPlugin.getDefault(),
-								Messages.WebProjectWizard_ERR_Creating, e);
-					}
-				}
-			}
-		}
-		
-		// Show Project view
-		UIJob uiJob = new UIJob("Show Project view") { //$NON-NLS-1$
-			@Override
-			public IStatus runInUIThread(IProgressMonitor monitor) {
-				BasicNewProjectResourceWizard.updatePerspective(fConfigElement);
-				try {
-					CoreUIUtils.showView(AptanaNavigator.ID);
-				} catch (PartInitException pe) {
-					IdeLog.logInfo(ProjectsPlugin.getDefault(), pe.getMessage(), pe);
-				}
-				BasicNewResourceWizard.selectAndReveal(project, fWorkbench.getActiveWorkbenchWindow());
-				return Status.OK_STATUS;
-			} 
-			
-		};
-		uiJob.setSystem(true);
-		uiJob.setPriority(UIJob.INTERACTIVE);
-		uiJob.schedule(); 		
-	}
-	
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
-			throws CoreException
-	{
-		this.fConfigElement = config;
-	}
+    public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+            throws CoreException {
+    }
 
 }
