@@ -42,6 +42,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
+import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.installer.wizard.InstallerWizard;
 import com.aptana.ide.installer.wizard.InstallerWizardDialog;
 import com.aptana.ide.update.manager.IPluginManager;
@@ -133,8 +134,7 @@ public class Activator extends AbstractUIPlugin
         IWorkbench workbench = PlatformUI.getWorkbench();
         InstallerWizard wizard = new InstallerWizard(showWelcome);
         wizard.init(workbench, null);
-        WizardDialog dialog = new InstallerWizardDialog(workbench.getDisplay()
-                .getActiveShell(), wizard);
+        WizardDialog dialog = new InstallerWizardDialog(CoreUIUtils.getActiveShell(), wizard);
         dialog.create();
         wizard.setExpandedCategories(expandedCategoryIDs);
         dialog.open();

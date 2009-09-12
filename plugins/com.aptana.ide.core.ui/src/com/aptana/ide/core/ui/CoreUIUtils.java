@@ -312,7 +312,14 @@ public final class CoreUIUtils
 	 */
 	public static Shell getActiveShell()
 	{
-		return getDisplay().getActiveShell();
+		Shell shell = getDisplay().getActiveShell();
+		if (shell == null) {
+		    IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		    if (window != null) {
+		        shell = window.getShell();
+		    }
+		}
+		return shell;
 	}
 
 	/**

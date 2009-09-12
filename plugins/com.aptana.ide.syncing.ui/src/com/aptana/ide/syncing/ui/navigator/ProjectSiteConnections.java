@@ -74,7 +74,7 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
     }
 
     public String getLabel(Object o) {
-        return "Sites";
+        return Messages.ProjectSiteConnections_Name;
     }
 
     public Object getParent(Object o) {

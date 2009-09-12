@@ -5,7 +5,7 @@
          point="com.aptana.ide.core.io.connectionPoint">
       <connectionPointCategory
             id="com.aptana.ide.syncing.core.sitesCategory"
-            name="Sites"
+            name="Connections"
             order="150">
       </connectionPointCategory>
       <connectionPointType
