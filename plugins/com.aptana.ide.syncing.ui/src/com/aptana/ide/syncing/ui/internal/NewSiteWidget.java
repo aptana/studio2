@@ -52,7 +52,10 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -278,6 +281,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
                 fSites.remove(index);
                 clearTableEditor();
                 fSitesTable.remove(index);
+                packSitesTable();
 
                 index = fSitesTable.getSelectionIndex();
                 if (index > -1) {
@@ -324,20 +328,21 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
     }
 
     protected Composite createControl(Composite parent) {
-        Composite main = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout(2, false);
+        SashForm sash = new SashForm(parent, SWT.HORIZONTAL);
+        GridLayout layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-        main.setLayout(layout);
+        sash.setLayout(layout);
 
         // the left side shows the list of existing sites
-        Composite left = createSitesList(main);
+        Composite left = createSitesList(sash);
         left.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         // the right side shows the details on the selected site from the left
-        Composite right = createSiteDetails(main);
+        Composite right = createSiteDetails(sash);
         right.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+        sash.setWeights(new int[] { 1, 3 });
         // adds the existing sites
         for (SiteConnectionPoint site : fOriginalSites) {
             createNewSiteItem(site);
@@ -352,24 +357,19 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
             updateSelection(fOriginalSites.get(0));
         }
 
-        return main;
+        packSitesTable();
+
+        return sash;
     }
 
     private Composite createSitesList(Composite parent) {
-        Composite main = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        main.setLayout(layout);
-
-        Group group = new Group(main, SWT.NONE);
+        Group group = new Group(parent, SWT.NONE);
         group.setText(Messages.NewSiteWidget_LBL_Sites);
         group.setLayout(new GridLayout());
         group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         // uses table widget for an editable list
         fSitesTable = new Table(group, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
-        fSitesTable.setHeaderVisible(false);
         fSitesTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         TableColumn column = new TableColumn(fSitesTable, SWT.NONE);
         column.setWidth(150);
@@ -382,7 +382,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
 
         // the actions to add to and remove from the list
         Composite buttons = new Composite(group, SWT.NULL);
-        layout = new GridLayout(2, false);
+        GridLayout layout = new GridLayout(2, false);
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         buttons.setLayout(layout);
@@ -398,7 +398,7 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         fRemoveButton.setToolTipText(CoreStrings.REMOVE);
         fRemoveButton.addSelectionListener(this);
 
-        return main;
+        return group;
     }
 
     private Composite createSiteDetails(Composite parent) {
@@ -612,6 +612,16 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
                 Text text = (Text) fSitesEditor.getEditor();
                 fSitesEditor.getItem().setText(0, text.getText());
                 site.setName(text.getText());
+            }
+        });
+        newEditor.addFocusListener(new FocusListener() {
+
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                // re-adjusts the column width
+                packSitesTable();
             }
         });
         newEditor.selectAll();
@@ -894,6 +904,10 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
             return fDestProjectCombo.getText() + fDestFolderText.getText();
         }
         return fDestFileText.getText();
+    }
+
+    private void packSitesTable() {
+        fSitesTable.getColumn(0).pack();
     }
 
     private static IConnectionPointCategory getConnectionCategory(String categoryId) {
