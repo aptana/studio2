@@ -46,6 +46,7 @@ public class Messages extends NLS {
     public static String ChooseSiteConnectionDialog_LBL_RememberMyDecision;
     public static String ChooseSiteConnectionDialog_Title;
 
+    public static String NewSiteDialog_DefaultMessage;
     public static String NewSiteDialog_LBL_Apply;
     public static String NewSiteDialog_Title;
 

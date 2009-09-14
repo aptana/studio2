@@ -36,7 +36,7 @@ package com.aptana.ide.syncing.ui.internal;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.TrayDialog;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class NewSiteDialog extends TrayDialog {
+public class NewSiteDialog extends TitleAreaDialog {
 
     private static final int APPLY_ID = 31;
     private static final String APPLY_LABEL = Messages.NewSiteDialog_LBL_Apply;
@@ -118,6 +118,7 @@ public class NewSiteDialog extends TrayDialog {
         gridData.heightHint = 450;
         fWidget.getControl().setLayoutData(gridData);
 
+        setMessage(Messages.NewSiteDialog_DefaultMessage);
         return main;
     }
 
