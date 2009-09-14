@@ -172,6 +172,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         setPath(""); //$NON-NLS-1$
 
         fTreeViewer.setInput(connection);
+        updateActionStates();
     }
 
     public void refresh() {
@@ -340,6 +341,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
         TreeViewer treeViewer = createTreeViewer(main);
         treeViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        updateActionStates();
 
         return main;
     }
@@ -517,6 +520,13 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             }
         }
         fTreeViewer.setInput(rootElement);
+
+        updateActionStates();
+    }
+
+    private void updateActionStates() {
+        // disables the up button when it is at the root
+        fUpItem.setEnabled(fEndPointData.size() > 1);
     }
 
     private static IFileStore getFolderStore(IAdaptable destination) {
