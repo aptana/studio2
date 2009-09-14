@@ -34,6 +34,13 @@
  */
 package com.aptana.ide.syncing.core;
 
+import org.eclipse.core.resources.ISaveContext;
+import org.eclipse.core.resources.ISaveParticipant;
+import org.eclipse.core.resources.ISavedState;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -61,6 +68,14 @@ public class SyncingPlugin extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(this,
+				new WorkspaceSaveParticipant());
+		if (lastState != null) {
+			IPath location = lastState.lookup(new Path(SiteConnectionManager.STATE_FILENAME));
+			if (location != null) {
+				SiteConnectionManager.getInstance().loadState(getStateLocation().append(location));
+			}
+		}
 	}
 
 	/*
@@ -68,6 +83,7 @@ public class SyncingPlugin extends Plugin {
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
 		plugin = null;
 		super.stop(context);
 	}
@@ -79,6 +95,61 @@ public class SyncingPlugin extends Plugin {
 	 */
 	public static SyncingPlugin getDefault() {
 		return plugin;
+	}
+
+	/**
+	 * Returns the site Connection Manager instance
+	 * @return
+	 */
+	public static ISiteConnectionManager getSiteConnectionManager() {
+		return SiteConnectionManager.getInstance();
+	}
+
+	private class WorkspaceSaveParticipant implements ISaveParticipant {
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.core.resources.ISaveParticipant#prepareToSave(org.eclipse.core.resources.ISaveContext)
+		 */
+		public void prepareToSave(ISaveContext context) throws CoreException {
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.core.resources.ISaveParticipant#saving(org.eclipse.core.resources.ISaveContext)
+		 */
+		public void saving(ISaveContext context) throws CoreException {
+			switch (context.getKind()) {
+			case ISaveContext.SNAPSHOT:
+				if (!SiteConnectionManager.getInstance().isChanged()) {
+					break;
+				}
+			case ISaveContext.FULL_SAVE:
+				IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME)
+							.addFileExtension(Integer.toString(context.getSaveNumber()));
+				SiteConnectionManager.getInstance().saveState(getStateLocation().append(savePath));
+				context.map(new Path(SiteConnectionManager.STATE_FILENAME), savePath);
+				context.needSaveNumber();
+				break;
+			}
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.eclipse.core.resources.ISaveParticipant#doneSaving(org.eclipse.core.resources.ISaveContext)
+		 */
+		public void doneSaving(ISaveContext context) {
+			IPath prevSavePath = new Path(SiteConnectionManager.STATE_FILENAME)
+						.addFileExtension(Integer.toString(context.getPreviousSaveNumber()));
+			getStateLocation().append(prevSavePath).toFile().delete();
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.core.resources.ISaveParticipant#rollback(org.eclipse.core.resources.ISaveContext)
+		 */
+		public void rollback(ISaveContext context) {
+			IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME)
+						.addFileExtension(Integer.toString(context.getSaveNumber()));
+			getStateLocation().append(savePath).toFile().delete();
+		}
+
 	}
 
 }
