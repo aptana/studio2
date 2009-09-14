@@ -234,6 +234,7 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
             createNewFTPConnection();
             fireSourceChanged(getSourceName());
         } else if (source == fProjectCombo) {
+            updateEnabledStates();
             fireSourceChanged(getSourceName());
         } else if (source == fFolderBrowse) {
             String folder = openFolderBrowseDialog();
@@ -293,7 +294,7 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
         // project specs
         fProjectButton = new Button(location, SWT.RADIO);
         fProjectButton.setText(Messages.NewSiteWidget_LBL_Project);
-        fProjectButton.setSelection(true);
+        fProjectButton.setSelection(!fShowRemote);
         fProjectButton.addSelectionListener(this);
 
         fProjectCombo = new Combo(location, SWT.READ_ONLY);
@@ -342,6 +343,8 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
         fFileBrowse = new Button(location, SWT.PUSH);
         fFileBrowse.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
         fFileBrowse.addSelectionListener(this);
+
+        updateEnabledStates();
 
         return group;
     }
@@ -421,8 +424,9 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
             fRemoteCombo.setEnabled(false);
             fRemoteNew.setEnabled(false);
             fProjectCombo.setEnabled(true);
-            fFolderText.setEnabled(true);
-            fFolderBrowse.setEnabled(true);
+            boolean hasFolders = hasFolders(fProjectCombo.getText());
+            fFolderText.setEnabled(hasFolders);
+            fFolderBrowse.setEnabled(hasFolders);
             fFileText.setEnabled(false);
             fFileBrowse.setEnabled(false);
         } else if (fFileButton.getSelection()) {
@@ -492,5 +496,22 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
             }
         }
         return names.toArray(new String[names.size()]);
+    }
+
+    private static boolean hasFolders(String projectName) {
+        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+        if (project == null || !project.isAccessible()) {
+            return false;
+        }
+        try {
+            IResource[] children = project.members();
+            for (IResource child : children) {
+                if (child instanceof IContainer) {
+                    return true;
+                }
+            }
+        } catch (CoreException e) {
+        }
+        return false;
     }
 }
