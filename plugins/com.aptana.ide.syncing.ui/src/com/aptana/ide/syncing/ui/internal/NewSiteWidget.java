@@ -36,6 +36,8 @@ package com.aptana.ide.syncing.ui.internal;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -130,6 +132,14 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
 
     // for appending a number to "New Site" to avoid duplicates
     private int fCount;
+
+    // the sorter for the site connections
+    private static class SitesComparator implements Comparator<SiteConnectionPoint> {
+
+        public int compare(SiteConnectionPoint o1, SiteConnectionPoint o2) {
+            return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+        }
+    }
 
     public NewSiteWidget(Composite parent) {
         this(parent, false);
@@ -371,8 +381,8 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         // uses table widget for an editable list
         fSitesTable = new Table(group, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
         fSitesTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        TableColumn column = new TableColumn(fSitesTable, SWT.NONE);
-        column.setWidth(150);
+        final TableColumn sitesColumn = new TableColumn(fSitesTable, SWT.NONE);
+        sitesColumn.setWidth(150);
         fSitesEditor = new TableEditor(fSitesTable);
         fSitesEditor.horizontalAlignment = SWT.LEFT;
         fSitesEditor.grabHorizontal = true;
@@ -704,9 +714,13 @@ public class NewSiteWidget implements SelectionListener, ModifyListener, MouseLi
         for (IConnectionPoint connection : connections) {
             if (connection instanceof SiteConnectionPoint) {
                 SiteConnectionPoint site = (SiteConnectionPoint) connection;
-                fSites.add(site);
                 fOriginalSites.add(site);
             }
+        }
+        Collections.sort(fOriginalSites, new SitesComparator());
+
+        for (SiteConnectionPoint site : fOriginalSites) {
+            fSites.add(site);
         }
     }
 
