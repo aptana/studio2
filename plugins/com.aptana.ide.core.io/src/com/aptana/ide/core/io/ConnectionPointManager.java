@@ -75,6 +75,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 
 	private static final String ELEMENT_ROOT = "connections";
 	private static final String ELEMENT_CONNECTION = "connection";
+	private static final String ATTR_ID = "id";
 	private static final String ATTR_TYPE = "type";
 
 	private static ConnectionPointManager instance;
@@ -138,7 +139,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 	public void saveState(IPath path) {
 		XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
 		for (ConnectionPoint connectionPoint : connections) {
-			IMemento child = memento.createChild(ELEMENT_CONNECTION, connectionPoint.getId());
+			IMemento child = memento.createChild(ELEMENT_CONNECTION);
 			child.putMemento(storeConnectionPoint(connectionPoint));
 		}
 		for (IMemento child : unresolvedConnections) {
@@ -265,8 +266,9 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 
 	private IMemento storeConnectionPoint(ConnectionPoint connectionPoint) {
 		IMemento saveMemento = XMLMemento.createWriteRoot(ELEMENT_ROOT)
-									.createChild(ELEMENT_CONNECTION, connectionPoint.getId());
+									.createChild(ELEMENT_CONNECTION);
 		connectionPoint.saveState(saveMemento);
+		saveMemento.putString(ATTR_ID, connectionPoint.getId());
 		saveMemento.putString(ATTR_TYPE, connectionPoint.getType());
 		return saveMemento;
 	}
@@ -280,7 +282,8 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 				Object object = element.createExecutableExtension(ATT_CLASS);
 				if (object instanceof ConnectionPoint) {
 					connectionPoint = (ConnectionPoint) object;
-					connectionPoint.setId(memento.getID());
+					connectionPoint.setId(memento.getString(ATTR_ID) != null ? memento.getString(ATTR_ID) : memento.getID());
+					//TODO: remove memento.getID() before production
 					connectionPoint.loadState(memento);
 				}
 			}
