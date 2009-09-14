@@ -68,7 +68,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -108,7 +107,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             Messages.ConnectionPointComposite_Column_LastModified };
 
     private Composite fMain;
-    private Combo fEndpointCombo;
+    private Label fEndPointLabel;
     private ToolItem fUpItem;
     private ToolItem fRefreshItem;
     private ToolItem fHomeItem;
@@ -119,11 +118,11 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
     private String fName;
     private IConnectionPoint fConnectionPoint;
-    private List<IAdaptable> fComboData;
+    private List<IAdaptable> fEndPointData;
 
     public ConnectionPointComposite(Composite parent, String name) {
         fName = name;
-        fComboData = new ArrayList<IAdaptable>();
+        fEndPointData = new ArrayList<IAdaptable>();
 
         fMain = createControl(parent);
     }
@@ -163,14 +162,12 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         }
         fConnectionPoint = connection;
 
-        fComboData.clear();
+        fEndPointData.clear();
         if (fConnectionPoint == null) {
-            fEndpointCombo.setItems(new String[0]);
-            fEndpointCombo.clearSelection();
+            fEndPointLabel.setText(""); //$NON-NLS-1$
         } else {
-            fEndpointCombo.setItems(new String[] { fConnectionPoint.getName() });
-            fEndpointCombo.select(0);
-            fComboData.add(fConnectionPoint);
+            fEndPointLabel.setText(fConnectionPoint.getName());
+            fEndPointData.add(fConnectionPoint);
         }
         setPath(""); //$NON-NLS-1$
 
@@ -189,7 +186,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             } catch (CoreException e) {
             }
         }
-        updateContent(fComboData.get(fEndpointCombo.getSelectionIndex()));
+        updateContent(fEndPointData.get(fEndPointData.size() - 1));
     }
 
     public void widgetDefaultSelected(SelectionEvent e) {
@@ -198,9 +195,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     public void widgetSelected(SelectionEvent e) {
         Object source = e.getSource();
 
-        if (source == fEndpointCombo) {
-            updateContent(fComboData.get(fEndpointCombo.getSelectionIndex()));
-        } else if (source == fUpItem) {
+        if (source == fUpItem) {
             goUp();
         } else if (source == fRefreshItem) {
             refresh();
@@ -333,6 +328,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
         fPathLabel = new Label(main, SWT.NONE);
         fPathLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        // uses a bold font for path
         final Font font = new Font(fPathLabel.getDisplay(), SWTUtils.boldFont(fPathLabel.getFont()));
         fPathLabel.setFont(font);
         fPathLabel.addDisposeListener(new DisposeListener() {
@@ -358,9 +354,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         Label label = new Label(main, SWT.NONE);
         label.setText(fName + ":"); //$NON-NLS-1$
 
-        fEndpointCombo = new Combo(main, SWT.READ_ONLY);
-        fEndpointCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        fEndpointCombo.addSelectionListener(this);
+        fEndPointLabel = new Label(main, SWT.NONE);
+        fEndPointLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         createActionsBar(main);
 
@@ -428,12 +423,12 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     }
 
     private void goUp() {
-        int index = fEndpointCombo.getSelectionIndex();
-        if (index == fEndpointCombo.getItemCount() - 1) {
-            // we're at root already
-            return;
+        if (fEndPointData.size() > 1) {
+            updateContent(fEndPointData.get(fEndPointData.size() - 2));
+        } else {
+            // already at root
+            updateContent(fConnectionPoint);
         }
-        updateContent(fComboData.get(index + 1));
     }
 
     private void gotoHome() {
@@ -463,10 +458,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     }
 
     private void setComboData(IAdaptable data) {
-        fComboData.clear();
-        fComboData.add(fConnectionPoint);
-        List<String> items = new ArrayList<String>();
-        items.add(fConnectionPoint.getName());
+        fEndPointData.clear();
 
         if (data instanceof IContainer) {
             // a workspace project/folder
@@ -479,9 +471,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
                 IContainer segmentPath = root;
                 for (String segment : segments) {
                     segmentPath = (IContainer) segmentPath.findMember(segment);
-                    // adds the path segment in reverse order
-                    fComboData.add(0, segmentPath);
-                    items.add(0, segment);
+                    fEndPointData.add(segmentPath);
                 }
             }
         } else {
@@ -490,15 +480,12 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             if (fileStore != null) {
                 IFileStore homeFileStore = SyncUtils.getFileStore(fConnectionPoint);
                 while (fileStore.getParent() != null && !fileStore.equals(homeFileStore)) {
-                    fComboData.add(fComboData.size() - 1, fileStore);
-                    items.add(items.size() - 1, fileStore.getName());
+                    fEndPointData.add(0, fileStore);
                     fileStore = fileStore.getParent();
                 }
             }
         }
-
-        fEndpointCombo.setItems(items.toArray(new String[items.size()]));
-        fEndpointCombo.setText(items.get(0));
+        fEndPointData.add(0, fConnectionPoint);
     }
 
     private void setPath(String path) {

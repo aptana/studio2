@@ -332,6 +332,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         fSrcComposite.setDescription(Messages.NewSiteWidget_LBL_SelectSrcLocation);
         fSrcComposite.getControl().setLayoutData(
                 new GridData(GridData.FILL, GridData.FILL, true, true));
+        fSrcComposite.addListener(this);
 
         // the destination info
         fDestComposite = new SiteEndPointComposite(main, Messages.NewSiteWidget_LBL_Destination,
@@ -339,6 +340,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         fDestComposite.setDescription(Messages.NewSiteWidget_LBL_SelectDestTarget);
         fDestComposite.getControl().setLayoutData(
                 new GridData(GridData.FILL, GridData.FILL, true, true));
+        fDestComposite.addListener(this);
 
         return main;
     }
