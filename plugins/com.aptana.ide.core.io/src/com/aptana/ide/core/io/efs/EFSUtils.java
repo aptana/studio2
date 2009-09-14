@@ -33,12 +33,11 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.core.io;
+package com.aptana.ide.core.io.efs;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
 
-import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 
 /**
  * @author Max Stepanov
