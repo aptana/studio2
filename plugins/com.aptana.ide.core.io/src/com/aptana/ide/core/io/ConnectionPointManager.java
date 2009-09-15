@@ -47,14 +47,15 @@ import java.util.UUID;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.PlatformObject;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.epl.IMemento;
 import com.aptana.ide.core.epl.XMLMemento;
-import com.aptana.ide.core.io.internal.ConnectionPointEvent;
-import com.aptana.ide.core.io.internal.NotificationManager;
+import com.aptana.ide.core.io.events.ConnectionPointEvent;
+import com.aptana.ide.core.io.events.IConnectionPointListener;
 
 /**
  * @author Max Stepanov
@@ -87,14 +88,13 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 	private List<IMemento> unresolvedConnections = new ArrayList<IMemento>();
 	private boolean dirty = false;
 	
-	private NotificationManager notificationManager;
+	private ListenerList listeners = new ListenerList();
 
 	/**
 	 * 
 	 */
 	private ConnectionPointManager() {
 		readExtensionRegistry();
-		notificationManager = new NotificationManager();
 	}
 	
 	/**
@@ -170,8 +170,11 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 		}		
 	}
 	
-	/* package */ void broadcastEvent(IConnectionPointEvent event) {
-	    notificationManager.broadcastChanges(event);
+	private void broadcastEvent(ConnectionPointEvent event) {
+		final Object[] list = listeners.getListeners();
+	    for (Object listener : list) {
+	        ((IConnectionPointListener) listener).connectionPointChanged(event);
+	    }
 	}
 
 	/* package */ IConnectionPoint[] getConnectionPointsForType(String type) {
@@ -194,7 +197,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 		if (!connections.contains(connectionPoint)) {
 			connections.add((ConnectionPoint) connectionPoint);
 			dirty = true;
-			broadcastEvent(new ConnectionPointEvent(this, IConnectionPointEvent.POST_ADD, connectionPoint));
+			broadcastEvent(new ConnectionPointEvent(this, ConnectionPointEvent.POST_ADD, connectionPoint));
 		}
 	}
 
@@ -205,7 +208,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 		if (connections.contains(connectionPoint)) {
 			connections.remove(connectionPoint);
 			dirty = true;
-			broadcastEvent(new ConnectionPointEvent(this, IConnectionPointEvent.POST_DELETE, connectionPoint));
+			broadcastEvent(new ConnectionPointEvent(this, ConnectionPointEvent.POST_DELETE, connectionPoint));
 		}
 	}
 
@@ -320,14 +323,14 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 	 * @see com.aptana.ide.core.io.IConnectionPointManager#addConectionPointListener(com.aptana.ide.core.io.IConnectionPointListener)
 	 */
     public void addConnectionPointListener(IConnectionPointListener listener) {
-        notificationManager.addListener(listener);
+        listeners.add(listener);
     }
 
     /* (non-Javadoc)
      * @see com.aptana.ide.core.io.IConnectionPointManager#removeConnectionPointListener(com.aptana.ide.core.io.IConnectionPointListener)
      */
     public void removeConnectionPointListener(IConnectionPointListener listener) {
-        notificationManager.removeListener(listener);
+        listeners.remove(listener);
     }
 
 	private void readExtensionRegistry() {

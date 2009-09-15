@@ -38,6 +38,8 @@ package com.aptana.ide.core.io;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
+import com.aptana.ide.core.io.events.IConnectionPointListener;
+
 /**
  * @author Max Stepanov
  *

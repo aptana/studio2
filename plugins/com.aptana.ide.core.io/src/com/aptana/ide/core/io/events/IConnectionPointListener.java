@@ -32,38 +32,18 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.io.internal;
 
-import java.util.ArrayList;
-import java.util.List;
+package com.aptana.ide.core.io.events;
 
-import com.aptana.ide.core.io.IConnectionPointEvent;
-import com.aptana.ide.core.io.IConnectionPointListener;
+import java.util.EventListener;
+
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class NotificationManager {
+public interface IConnectionPointListener extends EventListener {
 
-    private List<IConnectionPointListener> fListeners;
-
-    public NotificationManager() {
-        fListeners = new ArrayList<IConnectionPointListener>();
-    }
-
-    public void addListener(IConnectionPointListener listener) {
-        if (!fListeners.contains(listener)) {
-            fListeners.add(listener);
-        }
-    }
-
-    public void removeListener(IConnectionPointListener listener) {
-        fListeners.remove(listener);
-    }
-
-    public void broadcastChanges(IConnectionPointEvent event) {
-        for (IConnectionPointListener listener : fListeners) {
-            listener.connectionPointChanged(event);
-        }
-    }
+	public void connectionPointChanged(ConnectionPointEvent event);
+	
 }
