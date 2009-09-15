@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -221,16 +222,23 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     }
 
     private Composite createSitePresentation(Composite parent) {
-        Composite main = new Composite(parent, SWT.BORDER);
-        GridLayout layout = new GridLayout(3, false);
+        SashForm sash = new SashForm(parent, SWT.HORIZONTAL);
+        GridLayout layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-        main.setLayout(layout);
+        sash.setLayout(layout);
 
-        fSource = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Source);
+        // source end point
+        fSource = new ConnectionPointComposite(sash, Messages.FTPManagerComposite_LBL_Source);
         fSource.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        Composite directions = new Composite(main, SWT.NONE);
+        Composite right = new Composite(sash, SWT.NONE);
+        layout = new GridLayout(2, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        right.setLayout(layout);
+
+        Composite directions = new Composite(right, SWT.NONE);
         layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
@@ -242,10 +250,11 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         fTransferLeftButton = new Button(directions, SWT.ARROW | SWT.LEFT);
         fTransferLeftButton.addSelectionListener(this);
 
-        fTarget = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Target);
+        // destination end point
+        fTarget = new ConnectionPointComposite(right, Messages.FTPManagerComposite_LBL_Target);
         fTarget.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        return main;
+        return sash;
     }
 
     private void transferItems(IAdaptable[] sourceItems, IAdaptable targetRoot,
