@@ -35,66 +35,30 @@
 
 package com.aptana.ide.core.io;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.net.URI;
 
 /**
  * @author Max Stepanov
  *
  */
-/* package */ class ConnectionPointCategory implements IConnectionPointCategory {
+public final class ConnectionPointUtils {
 
-	private final String id;
-	private final String name;
-	private final int order;
-	private List<ConnectionPointType> types = new ArrayList<ConnectionPointType>();
-	
 	/**
 	 * 
 	 */
-	public ConnectionPointCategory(String id, String name, int order) {
-		this.id = id;
-		this.name = name;
-		this.order = order;
+	private ConnectionPointUtils() {
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Object o) {
-		if (order != ((ConnectionPointCategory) o).order) {
-			return order - ((ConnectionPointCategory) o).order;
+	public static IConnectionPoint findConnectionPoint(URI uri) {
+		IConnectionPointManager connectionPointManager = CoreIOPlugin.getConnectionPointManager();
+		for (IConnectionPointCategory category : connectionPointManager.getConnectionPointCategories()) {
+			for (IConnectionPoint i : category.getConnectionPoints()) {
+				if (i.getRootURI().equals(uri)) {
+					return i;
+				}
+			}
 		}
-		return name.compareTo(((ConnectionPointCategory) o).name);
+		return null;
 	}
-
-	/* package */ void addType(ConnectionPointType type) {
-		types.add(type);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.Identifiable#getId()
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.IConnectionPointCategory#getName()
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.IConnectionPointCategory#getConnectionPoints()
-	 */
-	public IConnectionPoint[] getConnectionPoints() {
-		List<IConnectionPoint> list = new ArrayList<IConnectionPoint>();
-		for (ConnectionPointType type : types) {
-			list.addAll(Arrays.asList(ConnectionPointManager.getInstance().getConnectionPointsForType(type.getType())));
-		}
-		return list.toArray(new IConnectionPoint[list.size()]);
-	}
+	
 }

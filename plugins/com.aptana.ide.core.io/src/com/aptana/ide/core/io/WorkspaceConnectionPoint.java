@@ -131,6 +131,10 @@ public final class WorkspaceConnectionPoint extends ConnectionPoint {
 	public void setResource(IContainer resource) {
 		this.path = resource.getFullPath();
 	}
+	
+	protected IPath getPath() {
+		return path;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.io.ConnectionPoint#loadState(com.aptana.ide.core.epl.IMemento)
