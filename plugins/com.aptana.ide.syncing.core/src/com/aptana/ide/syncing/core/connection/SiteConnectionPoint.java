@@ -41,10 +41,12 @@ import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.epl.IMemento;
 import com.aptana.ide.core.io.ConnectionPoint;
+import com.aptana.ide.core.io.ConnectionPointType;
 import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IBaseRemoteConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPointCategory;
+import com.aptana.ide.core.io.IConnectionPointManager;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 import com.aptana.ide.core.io.WorkspaceConnectionPoint;
 
@@ -112,6 +114,38 @@ public class SiteConnectionPoint extends ConnectionPoint {
 
     public void setDestination(String destinationName) {
         setDestination(getConnectionPoint(fDestCategory, destinationName));
+    }
+
+    @Override
+    public String toString() {
+        IConnectionPoint source = getSource();
+        IConnectionPoint target = getDestination();
+        IConnectionPointManager manager = CoreIOPlugin.getConnectionPointManager();
+
+        StringBuilder text = new StringBuilder();
+        text.append("("); //$NON-NLS-1$
+        if (source == null) {
+            text.append("source missing");
+        } else {
+            ConnectionPointType type = manager.getType(source);
+            if (type != null) {
+                text.append(type.getName()).append(":"); //$NON-NLS-1$
+            }
+            text.append(source.getName());
+        }
+        text.append(" <-> "); //$NON-NLS-1$
+        if (target == null) {
+            text.append("destination missing");
+        } else {
+            ConnectionPointType type = manager.getType(target);
+            if (type != null) {
+                text.append(type.getName()).append(":"); //$NON-NLS-1$
+            }
+            text.append(target.getName());
+        }
+        text.append(")"); //$NON-NLS-1$
+
+        return text.toString();
     }
 
     /**

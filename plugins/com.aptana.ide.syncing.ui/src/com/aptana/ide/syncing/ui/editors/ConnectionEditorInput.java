@@ -32,30 +32,68 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.editors;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPersistableElement;
 
-public class Messages extends NLS {
+import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class ConnectionEditorInput implements IEditorInput {
 
-    public static String BaseSyncAction_MessageTitle;
-    public static String BaseSyncAction_Warning_NoCommonParent;
+    private SiteConnectionPoint fSite;
 
-    public static String DownloadAction_MainTask;
-    public static String DownloadAction_MessageTitle;
-    public static String DownloadAction_PostMessage;
-
-    public static String UploadAction_MainTask;
-    public static String UploadAction_MessageTitle;
-    public static String UploadAction_PostMessage;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    public ConnectionEditorInput(SiteConnectionPoint site) {
+        fSite = site;
     }
 
-    private Messages() {
+    public SiteConnectionPoint getConnection() {
+        return fSite;
+    }
+
+    public void setConnection(SiteConnectionPoint site) {
+        fSite = site;
+    }
+
+    public boolean exists() {
+        return false;
+    }
+
+    public ImageDescriptor getImageDescriptor() {
+        return null;
+    }
+
+    public String getName() {
+        return fSite == null ? "" : fSite.getName(); //$NON-NLS-1$
+    }
+
+    public IPersistableElement getPersistable() {
+        return null;
+    }
+
+    public String getToolTipText() {
+        return fSite == null ? "" : fSite.toString(); //$NON-NLS-1$
+    }
+
+    public Object getAdapter(Class adapter) {
+        return null;
+    }
+
+    @Override
+    public int hashCode() {
+        return fSite.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ConnectionEditorInput)) {
+            return false;
+        }
+        ConnectionEditorInput other = (ConnectionEditorInput) obj;
+        return fSite == other.getConnection();
     }
 }

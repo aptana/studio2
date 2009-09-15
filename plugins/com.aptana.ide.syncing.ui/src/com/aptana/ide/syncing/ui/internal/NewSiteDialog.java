@@ -39,6 +39,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -109,8 +110,11 @@ public class NewSiteDialog extends TitleAreaDialog implements NewSiteWidget.Clie
         } else {
             setErrorMessage(error);
         }
-        getButton(APPLY_ID).setEnabled(noError);
-        getButton(IDialogConstants.OK_ID).setEnabled(noError);
+        Button button = getButton(APPLY_ID);
+        if (button != null) {
+            getButton(APPLY_ID).setEnabled(noError);
+            getButton(IDialogConstants.OK_ID).setEnabled(noError);
+        }
     }
 
     protected void configureShell(Shell newShell) {

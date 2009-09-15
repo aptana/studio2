@@ -38,7 +38,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -169,12 +172,20 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
             return false;
         }
 
+        // finds what changed and updates the connections list
         IConnectionPointManager manager = CoreIOPlugin.getConnectionPointManager();
-        for (SiteConnectionPoint site : fOriginalSites) {
-            manager.removeConnectionPoint(site);
-        }
+        List<SiteConnectionPoint> deletedSites = new ArrayList<SiteConnectionPoint>();
+        deletedSites.addAll(fOriginalSites);
         for (SiteConnectionPoint site : fSites) {
-            manager.addConnectionPoint(site);
+            if (fOriginalSites.contains(site)) {
+                // has not been removed or added
+                deletedSites.remove(site);
+            } else {
+                manager.addConnectionPoint(site);
+            }
+        }
+        for (SiteConnectionPoint site : deletedSites) {
+            manager.removeConnectionPoint(site);
         }
         return true;
     }

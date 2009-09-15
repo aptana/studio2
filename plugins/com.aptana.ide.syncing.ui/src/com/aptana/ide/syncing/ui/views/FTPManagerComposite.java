@@ -34,6 +34,9 @@
  */
 package com.aptana.ide.syncing.ui.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
@@ -72,6 +75,10 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
  */
 public class FTPManagerComposite implements SelectionListener, IConnectionPointListener {
 
+    public static interface Listener {
+        public void siteConnectionChanged(SiteConnectionPoint site);
+    }
+
     private Composite fMain;
     private Combo fSitesCombo;
     private Button fEditButton;
@@ -80,12 +87,28 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     private Button fTransferRightButton;
     private Button fTransferLeftButton;
 
+    private SiteConnectionPoint fSelectedSite;
+    private List<Listener> fListeners;
+
     public FTPManagerComposite(Composite parent) {
+        fListeners = new ArrayList<Listener>();
         fMain = createControl(parent);
         CoreIOPlugin.getConnectionPointManager().addConnectionPointListener(this);
     }
 
+    public void addListener(Listener listener) {
+        if (!fListeners.contains(listener)) {
+            fListeners.add(listener);
+        }
+    }
+
+    public void removeListener(Listener listener) {
+        fListeners.remove(listener);
+    }
+
     public void dispose() {
+        fSelectedSite = null;
+        fListeners.clear();
         CoreIOPlugin.getConnectionPointManager().removeConnectionPointListener(this);
     }
 
@@ -98,6 +121,10 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     }
 
     public void setSelectedSite(SiteConnectionPoint site) {
+        if (site == fSelectedSite) {
+            return;
+        }
+        fSelectedSite = site;
         if (site == null) {
             fSitesCombo.clearSelection();
             fSource.setConnectionPoint(null);
@@ -107,6 +134,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
             fSource.setConnectionPoint(site.getSource());
             fTarget.setConnectionPoint(site.getDestination());
         }
+        fireSiteConnectionChanged(fSelectedSite);
     }
 
     public void widgetDefaultSelected(SelectionEvent e) {
@@ -164,20 +192,9 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
                 public void run() {
                     // updates the drop-down list
+                    String text = fSitesCombo.getText();
                     fSitesCombo.setItems(getExistingSiteNames());
-
-                    if (type == IConnectionPointEvent.POST_ADD) {
-                        // auto-selects the new site
-                        setSelectedSite((SiteConnectionPoint) connection);
-                    } else if (type == IConnectionPointEvent.POST_DELETE) {
-                        if (fSitesCombo.getItemCount() == 0) {
-                            setSelectedSite(null);
-                        } else {
-                            // selects the first site
-                            fSitesCombo.select(0);
-                            setSelectedSite(SiteConnectionManager.getExistingSites()[0]);
-                        }
-                    }
+                    fSitesCombo.setText(text);
                 }
             });
         }
@@ -283,6 +300,12 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
                 setSelectedSite(site);
                 break;
             }
+        }
+    }
+
+    private void fireSiteConnectionChanged(SiteConnectionPoint site) {
+        for (Listener listener : fListeners) {
+            listener.siteConnectionChanged(site);
         }
     }
 

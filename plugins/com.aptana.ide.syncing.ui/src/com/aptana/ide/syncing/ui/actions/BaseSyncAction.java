@@ -50,20 +50,16 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.ResourceSynchronizationUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.internal.ChooseSiteConnectionDialog;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
-import com.aptana.ide.syncing.ui.views.FTPManagerView;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -203,22 +199,12 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
     }
 
     /**
-     * Opens the FTP Manager view.
+     * Opens the connection editor.
      */
-    protected void openFTPManagerView() {
-        // opens the FTP Manager view
-        try {
-            IViewPart view = CoreUIUtils.showView(FTPManagerView.ID);
-            if (view != null && view instanceof FTPManagerView) {
-                // selects the site if there is one
-                FTPManagerView ftpView = (FTPManagerView) view;
-                SiteConnectionPoint[] sites = getSiteConnections();
-                if (sites.length > 0) {
-                    ftpView.setSelectedSite(sites[0]);
-                }
-            }
-        } catch (PartInitException e) {
-            SyncingUIPlugin.log(Messages.BaseSyncAction_FailedToOpenFTPView, e);
+    protected void openConnectionEditor() {
+        SiteConnectionPoint[] sites = getSiteConnections();
+        if (sites.length > 0) {
+            EditorUtils.openConnectionEditor(sites[0]);
         }
     }
 

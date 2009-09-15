@@ -43,7 +43,7 @@ import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 public class SynchronizeAction extends BaseSyncAction {
 
     public void run(IAction action) {
-        openFTPManagerView();
+        openConnectionEditor();
     }
 
     protected void performAction(IAdaptable[] files, SiteConnectionPoint site) throws CoreException {
