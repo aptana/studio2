@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class NewSiteDialog extends TitleAreaDialog {
+public class NewSiteDialog extends TitleAreaDialog implements NewSiteWidget.Client {
 
     private static final int APPLY_ID = 31;
     private static final String APPLY_LABEL = Messages.NewSiteDialog_LBL_Apply;
@@ -102,6 +102,17 @@ public class NewSiteDialog extends TitleAreaDialog {
         }
     }
 
+    public void validationChanged(String error) {
+        boolean noError = (error == null || error.length() == 0);
+        if (noError) {
+            setErrorMessage(null);
+        } else {
+            setErrorMessage(error);
+        }
+        getButton(APPLY_ID).setEnabled(noError);
+        getButton(IDialogConstants.OK_ID).setEnabled(noError);
+    }
+
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(Messages.NewSiteDialog_Title);
@@ -110,7 +121,7 @@ public class NewSiteDialog extends TitleAreaDialog {
     protected Control createDialogArea(Composite parent) {
         Composite main = (Composite) super.createDialogArea(parent);
 
-        fWidget = new NewSiteWidget(main, fCreateNew);
+        fWidget = new NewSiteWidget(main, fCreateNew, this);
         fWidget.setSelectedSite(fSelectedSiteName);
         fWidget.setSource(fInitialSource);
         fWidget.setDestination(fInitialTarget);
@@ -118,6 +129,7 @@ public class NewSiteDialog extends TitleAreaDialog {
         gridData.heightHint = 450;
         fWidget.getControl().setLayoutData(gridData);
 
+        setTitle(Messages.NewSiteDialog_Title);
         setMessage(Messages.NewSiteDialog_DefaultMessage);
         return main;
     }

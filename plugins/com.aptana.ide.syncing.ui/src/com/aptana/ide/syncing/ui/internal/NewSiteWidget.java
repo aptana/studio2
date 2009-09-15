@@ -83,6 +83,10 @@ import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 public class NewSiteWidget implements SelectionListener, MouseListener,
         SiteEndPointComposite.Listener {
 
+    public static interface Client {
+        public void validationChanged(String error);
+    }
+
     private Composite fMain;
     private Table fSitesTable;
     private TableEditor fSitesEditor;
@@ -99,6 +103,8 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     // for appending a number to "New Site" to avoid duplicates
     private int fCount;
 
+    private Client fClient;
+
     // the sorter for the site connections
     private static class SitesComparator implements Comparator<SiteConnectionPoint> {
 
@@ -107,8 +113,8 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         }
     }
 
-    public NewSiteWidget(Composite parent) {
-        this(parent, false);
+    public NewSiteWidget(Composite parent, Client client) {
+        this(parent, false, client);
     }
 
     /**
@@ -118,8 +124,9 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
      *            true if a new site entry should be created by default, false
      *            otherwise
      */
-    public NewSiteWidget(Composite parent, boolean createNew) {
+    public NewSiteWidget(Composite parent, boolean createNew, Client client) {
         fCreateNew = createNew;
+        fClient = client;
         fSites = new ArrayList<SiteConnectionPoint>();
         fOriginalSites = new ArrayList<SiteConnectionPoint>();
         loadSites();
@@ -244,6 +251,12 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
             site.setSource(newSource);
         } else if (source == fDestComposite) {
             site.setDestination(newSource);
+        }
+    }
+
+    public void validationError(SiteEndPointComposite source, String error) {
+        if (fClient != null) {
+            fClient.validationChanged(error);
         }
     }
 

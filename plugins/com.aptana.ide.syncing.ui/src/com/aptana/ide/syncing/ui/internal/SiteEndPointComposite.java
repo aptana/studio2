@@ -34,6 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.internal;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.core.filesystem.EFS;
@@ -87,6 +88,8 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
         public void categoryChanged(SiteEndPointComposite source, String category);
 
         public void sourceChanged(SiteEndPointComposite source, String newSource);
+
+        public void validationError(SiteEndPointComposite source, String error);
     }
 
     private Control fMain;
@@ -252,6 +255,14 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
     }
 
     public void modifyText(ModifyEvent e) {
+        fireValidationError(validate());
+
+        Object source = e.getSource();
+        if (source == fFolderText) {
+            fireSourceChanged(getSourceName());
+        } else if (source == fFileText) {
+            fireSourceChanged(getSourceName());
+        }
     }
 
     protected Control createControl(Composite parent) {
@@ -270,7 +281,7 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
         // remote specs
         fRemoteButton = new Button(location, SWT.RADIO);
         fRemoteButton.setText(Messages.NewSiteWidget_LBL_Remote);
-        fRemoteButton.setSelection(true);
+        fRemoteButton.setSelection(fShowRemote);
         GridData gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
         gridData.exclude = !fShowRemote;
         fRemoteButton.setLayoutData(gridData);
@@ -438,6 +449,25 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
             fFileText.setEnabled(true);
             fFileBrowse.setEnabled(true);
         }
+
+        fireValidationError(validate());
+    }
+
+    private String validate() {
+        if (fProjectButton.getSelection()) {
+            IProject project = getProject(fProjectCombo.getText());
+            IResource resource = project.findMember(fFolderText.getText());
+            if (!(resource instanceof IContainer)) {
+                return "Please specifies a valid folder or '/' for the project root.";
+            }
+        }
+        if (fFileButton.getSelection()) {
+            String text = fFileText.getText();
+            if (!(new File(text)).exists()) {
+                return "Please specifies a valid filesystem location.";
+            }
+        }
+        return null;
     }
 
     private void fireCategoryChanged(String category) {
@@ -449,6 +479,12 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
     private void fireSourceChanged(String newSource) {
         for (Listener listener : fListeners) {
             listener.sourceChanged(this, newSource);
+        }
+    }
+
+    private void fireValidationError(String error) {
+        for (Listener listener : fListeners) {
+            listener.validationError(this, error);
         }
     }
 
@@ -498,8 +534,12 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
         return names.toArray(new String[names.size()]);
     }
 
+    private static IProject getProject(String projectName) {
+        return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+    }
+
     private static boolean hasFolders(String projectName) {
-        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+        IProject project = getProject(projectName);
         if (project == null || !project.isAccessible()) {
             return false;
         }
