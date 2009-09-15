@@ -51,6 +51,8 @@ public class Messages extends NLS {
     public static String FTPManagerComposite_LBL_Sites;
     public static String FTPManagerComposite_LBL_Source;
     public static String FTPManagerComposite_LBL_Target;
+    public static String FTPManagerComposite_TTP_TransferLeft;
+    public static String FTPManagerComposite_TTP_TransferRight;
 
     static {
         // initialize resource bundle

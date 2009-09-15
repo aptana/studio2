@@ -50,6 +50,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
@@ -238,6 +240,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         layout.marginWidth = 0;
         right.setLayout(layout);
 
+        // transfer arrows
         Composite directions = new Composite(right, SWT.NONE);
         layout = new GridLayout();
         layout.marginHeight = 0;
@@ -245,9 +248,15 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         directions.setLayout(layout);
         directions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 
-        fTransferRightButton = new Button(directions, SWT.ARROW | SWT.RIGHT);
+        fTransferRightButton = new Button(directions, SWT.BORDER);
+        fTransferRightButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
+                ISharedImages.IMG_TOOL_FORWARD));
+        fTransferRightButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferRight);
         fTransferRightButton.addSelectionListener(this);
-        fTransferLeftButton = new Button(directions, SWT.ARROW | SWT.LEFT);
+        fTransferLeftButton = new Button(directions, SWT.BORDER);
+        fTransferLeftButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
+                ISharedImages.IMG_TOOL_BACK));
+        fTransferLeftButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferLeft);
         fTransferLeftButton.addSelectionListener(this);
 
         // destination end point
