@@ -33,23 +33,17 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.syncing.core;
+package com.aptana.ide.syncing.core.events;
 
-import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
+import java.util.EventListener;
 
 
 /**
  * @author Max Stepanov
  *
  */
-public interface ISiteConnectionManager {
+public interface ISiteConnectionListener extends EventListener {
 
-	public void addSiteConnection(ISiteConnection siteConnection);
-	public void removeSiteConnection(ISiteConnection siteConnection);
-
-	public ISiteConnection[] getSiteConnections();
-
-	public void addListener(ISiteConnectionListener listener);
-	public void removeListener(ISiteConnectionListener listener);
-
+	public void siteConnectionChanged(SiteConnectionEvent event);
+	
 }

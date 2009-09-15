@@ -44,9 +44,12 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.ListenerList;
 
 import com.aptana.ide.core.epl.IMemento;
 import com.aptana.ide.core.epl.XMLMemento;
+import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
+import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
 
 /**
  * @author Max Stepanov
@@ -63,6 +66,8 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 	
 	private List<SiteConnection> connections = new ArrayList<SiteConnection>();
 	private boolean dirty = false;
+	
+	private ListenerList listeners = new ListenerList();
 	
 	/**
 	 * 
@@ -157,6 +162,7 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 		if (!connections.contains(siteConnection)) {
 			connections.add((SiteConnection) siteConnection);
 			dirty = true;
+			broadcastEvent(new SiteConnectionEvent(this, SiteConnectionEvent.POST_ADD, siteConnection));
 		}
 	}
 
@@ -167,6 +173,7 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 		if (connections.contains(siteConnection)) {
 			connections.remove(siteConnection);
 			dirty = true;
+			broadcastEvent(new SiteConnectionEvent(this, SiteConnectionEvent.POST_DELETE, siteConnection));
 		}
 	}
 
@@ -175,6 +182,27 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 	 */
 	public ISiteConnection[] getSiteConnections() {
 		return connections.toArray(new ISiteConnection[connections.size()]);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.core.ISiteConnectionManager#addListener(com.aptana.ide.syncing.core.events.ISiteConnectionListener)
+	 */
+	public void addListener(ISiteConnectionListener listener) {
+		listeners.add(listener);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.core.ISiteConnectionManager#removeListener(com.aptana.ide.syncing.core.events.ISiteConnectionListener)
+	 */
+	public void removeListener(ISiteConnectionListener listener) {
+		listeners.add(listener);
+	}
+
+	private void broadcastEvent(SiteConnectionEvent event) {
+		final Object[] list = listeners.getListeners();
+	    for (Object listener : list) {
+	        ((ISiteConnectionListener) listener).siteConnectionChanged(event);
+	    }
 	}
 
 }
