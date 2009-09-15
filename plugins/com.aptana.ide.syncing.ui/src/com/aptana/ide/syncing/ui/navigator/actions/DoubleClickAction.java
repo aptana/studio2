@@ -39,9 +39,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Shell;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
+import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SiteConnectionUtils;
+import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
 import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
 import com.aptana.ide.ui.io.navigator.actions.BaseDoubleClickAction;
@@ -63,9 +65,9 @@ public class DoubleClickAction extends BaseDoubleClickAction {
     public void run() {
         IStructuredSelection selection = (IStructuredSelection) fTreeViewer.getSelection();
         Object element = selection.getFirstElement();
-        if (element instanceof SiteConnectionPoint) {
+        if (element instanceof ISiteConnection) {
             // double-clicked on a site; opens it in the FTP Manager view
-            EditorUtils.openConnectionEditor((SiteConnectionPoint) element);
+            EditorUtils.openConnectionEditor((ISiteConnection) element);
         } else if (element instanceof ProjectSiteConnection) {
             // double-clicked on a site inside a project; both expands the node
             // and opens the FTP Manager view
@@ -87,11 +89,11 @@ public class DoubleClickAction extends BaseDoubleClickAction {
         dialog.open();
     }
 
-    private static SiteConnectionPoint findSite(ProjectSiteConnection connection) {
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(connection
-                .getProject(), true);
+    private static ISiteConnection findSite(ProjectSiteConnection connection) {
+    	ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(
+    			connection.getProject(), true);
         IConnectionPoint target = connection.getDestination();
-        for (SiteConnectionPoint site : sites) {
+        for (ISiteConnection site : sites) {
             if (site.getDestination() == target) {
                 return site;
             }

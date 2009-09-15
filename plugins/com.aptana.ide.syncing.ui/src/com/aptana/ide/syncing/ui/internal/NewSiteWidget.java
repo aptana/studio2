@@ -36,6 +36,7 @@ package com.aptana.ide.syncing.ui.internal;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -80,7 +81,10 @@ import com.aptana.ide.core.io.IConnectionPointManager;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.core.ui.SWTUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.ISiteConnectionManager;
+import com.aptana.ide.syncing.core.SiteConnection;
+import com.aptana.ide.syncing.core.SyncingPlugin;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -104,15 +108,15 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     private SiteEndPointComposite fDestComposite;
 
     private boolean fCreateNew;
-    private java.util.List<SiteConnectionPoint> fSites;
-    private java.util.List<SiteConnectionPoint> fOriginalSites;
+    private java.util.List<ISiteConnection> fSites;
+    private java.util.List<ISiteConnection> fOriginalSites;
 
     private Client fClient;
 
     // the sorter for the site connections
-    private static class SitesComparator implements Comparator<SiteConnectionPoint> {
+    private static class SitesComparator implements Comparator<ISiteConnection> {
 
-        public int compare(SiteConnectionPoint o1, SiteConnectionPoint o2) {
+        public int compare(ISiteConnection o1, ISiteConnection o2) {
             return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
         }
     }
@@ -131,8 +135,8 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     public NewSiteWidget(Composite parent, boolean createNew, Client client) {
         fCreateNew = createNew;
         fClient = client;
-        fSites = new ArrayList<SiteConnectionPoint>();
-        fOriginalSites = new ArrayList<SiteConnectionPoint>();
+        fSites = new ArrayList<ISiteConnection>();
+        fOriginalSites = new ArrayList<ISiteConnection>();
         loadSites();
 
         fMain = createControl(parent);
@@ -146,7 +150,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         if (siteName == null) {
             return;
         }
-        SiteConnectionPoint site;
+        ISiteConnection site;
         int count = fSites.size();
         for (int i = 0; i < count; ++i) {
             site = fSites.get(i);
@@ -174,19 +178,19 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         }
 
         // finds what changed and updates the connections list
-        IConnectionPointManager manager = CoreIOPlugin.getConnectionPointManager();
-        List<SiteConnectionPoint> deletedSites = new ArrayList<SiteConnectionPoint>();
+        ISiteConnectionManager manager = SyncingPlugin.getSiteConnectionManager();
+        List<ISiteConnection> deletedSites = new ArrayList<ISiteConnection>();
         deletedSites.addAll(fOriginalSites);
-        for (SiteConnectionPoint site : fSites) {
+        for (ISiteConnection site : fSites) {
             if (fOriginalSites.contains(site)) {
                 // has not been removed or added
                 deletedSites.remove(site);
             } else {
-                manager.addConnectionPoint(site);
+                manager.addSiteConnection(site);
             }
         }
-        for (SiteConnectionPoint site : deletedSites) {
-            manager.removeConnectionPoint(site);
+        for (ISiteConnection site : deletedSites) {
+            manager.removeSiteConnection(site);
         }
         return true;
     }
@@ -238,7 +242,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
 
         if (source == fSitesTable) {
             // edits the site name when the selection is double-clicked
-            editSiteName(fSitesTable.getSelection()[0], fSites.get(fSitesTable.getSelectionIndex()));
+            editSiteName(fSitesTable.getSelection()[0], (SiteConnection) fSites.get(fSitesTable.getSelectionIndex()));
         }
     }
 
@@ -249,7 +253,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     }
 
     public void categoryChanged(SiteEndPointComposite source, String newCategory) {
-        SiteConnectionPoint site = getSelectedSite();
+    	ISiteConnection site = getSelectedSite();
         if (site == null) {
             return;
         }
@@ -261,7 +265,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     }
 
     public void sourceChanged(SiteEndPointComposite source, String newSource) {
-        SiteConnectionPoint site = getSelectedSite();
+        ISiteConnection site = getSelectedSite();
         if (site == null) {
             return;
         }
@@ -295,7 +299,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
 
         sash.setWeights(new int[] { 1, 2 });
         // adds the existing sites
-        for (SiteConnectionPoint site : fOriginalSites) {
+        for (ISiteConnection site : fOriginalSites) {
             createNewSiteItem(site);
         }
         if (fCreateNew) {
@@ -398,20 +402,8 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
      * @param existingSite
      *            the existing site
      */
-    private SiteConnectionPoint createNewSite(String baseName) {
-        IConnectionPoint connection;
-        try {
-            connection = CoreIOPlugin.getConnectionPointManager().createConnectionPoint(
-                    SiteConnectionPoint.TYPE);
-        } catch (CoreException e) {
-            return null;
-        }
-        if (!(connection instanceof SiteConnectionPoint)) {
-            // should not happen
-            return null;
-        }
-
-        SiteConnectionPoint newSite = (SiteConnectionPoint) connection;
+    private void createNewSite(String baseName) {
+        SiteConnection newSite = new SiteConnection();
         newSite.setName(getUniqueNewSiteName(baseName));
         newSite.setSourceCategory(fSrcComposite.getCategory());
         newSite.setSource(fSrcComposite.getSourceName());
@@ -425,7 +417,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         return newSite;
     }
 
-    private TableItem createNewSiteItem(SiteConnectionPoint newSite) {
+    private TableItem createNewSiteItem(SiteConnection newSite) {
         TableItem item = new TableItem(fSitesTable, SWT.NONE);
         item.setText(newSite.getName());
         editSiteName(item, newSite);
@@ -440,7 +432,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         }
     }
 
-    private void editSiteName(TableItem item, final SiteConnectionPoint site) {
+    private void editSiteName(TableItem item, final SiteConnection site) {
         // cleans up any previous editor control
         clearTableEditor();
         if (item == null) {
@@ -491,26 +483,15 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         fSites.clear();
         fOriginalSites.clear();
 
-        IConnectionPointCategory category = getConnectionCategory(SiteConnectionPoint.CATEGORY);
-        if (category == null) {
-            // should not happen
-            return;
-        }
-        IConnectionPoint[] connections = category.getConnectionPoints();
-        for (IConnectionPoint connection : connections) {
-            if (connection instanceof SiteConnectionPoint) {
-                SiteConnectionPoint site = (SiteConnectionPoint) connection;
-                fOriginalSites.add(site);
-            }
-        }
+        fOriginalSites.addAll(Arrays.asList(SyncingPlugin.getSiteConnectionManager().getSiteConnections()));
         Collections.sort(fOriginalSites, new SitesComparator());
 
-        for (SiteConnectionPoint site : fOriginalSites) {
+        for (ISiteConnection site : fOriginalSites) {
             fSites.add(site);
         }
     }
 
-    private void updateSelection(SiteConnectionPoint connection) {
+    private void updateSelection(ISiteConnection connection) {
         // updates the source
         fSrcComposite.setCategory(connection.getSourceCategory());
         IConnectionPoint source = connection.getSource();
@@ -531,7 +512,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     private String verify() {
         Set<String> siteNames = new HashSet<String>();
         String name;
-        for (SiteConnectionPoint site : fSites) {
+        for (ISiteConnection site : fSites) {
             name = site.getName();
             if (siteNames.contains(name)) {
                 return MessageFormat.format(Messages.NewSiteWidget_ERR_DuplicateNames, name);
@@ -541,7 +522,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
 
         String category;
         LocalConnectionPoint connection;
-        for (SiteConnectionPoint site : fSites) {
+        for (ISiteConnection site : fSites) {
             category = site.getSourceCategory();
             // only needs to worry about the filesytem case
             if (category.equals(LocalConnectionPoint.CATEGORY)) {
@@ -578,7 +559,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         // finds the maximum number among the sites that contains the base name
         int maxCount = 0;
         String siteName;
-        for (SiteConnectionPoint site : fSites) {
+        for (ISiteConnection site : fSites) {
             siteName = site.getName();
             index = siteName.indexOf(baseName);
             if (index > -1) {
@@ -595,16 +576,12 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         return MessageFormat.format("{0} {1}", baseName, maxCount + 1); //$NON-NLS-1$
     }
 
-    private SiteConnectionPoint getSelectedSite() {
+    private ISiteConnection getSelectedSite() {
         int index = fSitesTable.getSelectionIndex();
         return (index == -1) ? null : fSites.get(index);
     }
 
     private void packSitesTable() {
         fSitesTable.getColumn(0).pack();
-    }
-
-    private static IConnectionPointCategory getConnectionCategory(String categoryId) {
-        return CoreIOPlugin.getConnectionPointManager().getConnectionPointCategory(categoryId);
     }
 }

@@ -39,8 +39,7 @@ import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
-import com.aptana.ide.core.io.IConnectionPointCategory;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 public class SiteCategoryDecorator implements ILightweightLabelDecorator {
@@ -53,9 +52,7 @@ public class SiteCategoryDecorator implements ILightweightLabelDecorator {
      *      org.eclipse.jface.viewers.IDecoration)
      */
     public void decorate(Object element, IDecoration decoration) {
-        if ((element instanceof IConnectionPointCategory && ((IConnectionPointCategory) element)
-                .getId().equals(SiteConnectionPoint.CATEGORY))
-                || (element instanceof SiteConnectionPoint)) {
+        if (element instanceof ISiteConnection) {
             addDecoration(decoration);
         }
     }

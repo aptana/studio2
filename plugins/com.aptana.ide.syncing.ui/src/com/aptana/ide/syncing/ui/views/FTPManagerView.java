@@ -37,7 +37,7 @@ package com.aptana.ide.syncing.ui.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -51,8 +51,8 @@ public class FTPManagerView extends ViewPart {
     public FTPManagerView() {
     }
 
-    public void setSelectedSite(SiteConnectionPoint site) {
-        fFTPComposite.setSelectedSite(site);
+    public void setSelectedSite(ISiteConnection siteConnection) {
+        fFTPComposite.setSelectedSite(siteConnection);
     }
 
     @Override

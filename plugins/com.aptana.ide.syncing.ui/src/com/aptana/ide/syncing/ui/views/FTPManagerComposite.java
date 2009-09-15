@@ -58,14 +58,11 @@ import org.eclipse.ui.PlatformUI;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.IConnectionPointEvent;
-import com.aptana.ide.core.io.IConnectionPointListener;
-import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.ui.CoreUIUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
+import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
@@ -74,10 +71,10 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FTPManagerComposite implements SelectionListener, IConnectionPointListener {
+public class FTPManagerComposite implements SelectionListener, ISiteConnectionListener {
 
     public static interface Listener {
-        public void siteConnectionChanged(SiteConnectionPoint site);
+        public void siteConnectionChanged(ISiteConnection site);
     }
 
     private Composite fMain;
@@ -88,13 +85,13 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     private Button fTransferRightButton;
     private Button fTransferLeftButton;
 
-    private SiteConnectionPoint fSelectedSite;
+    private ISiteConnection fSelectedSite;
     private List<Listener> fListeners;
 
     public FTPManagerComposite(Composite parent) {
         fListeners = new ArrayList<Listener>();
         fMain = createControl(parent);
-        CoreIOPlugin.getConnectionPointManager().addConnectionPointListener(this);
+        SyncingPlugin.getSiteConnectionManager().addListener(this);
     }
 
     public void addListener(Listener listener) {
@@ -110,7 +107,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     public void dispose() {
         fSelectedSite = null;
         fListeners.clear();
-        CoreIOPlugin.getConnectionPointManager().removeConnectionPointListener(this);
+        SyncingPlugin.getSiteConnectionManager().removeListener(this);
     }
 
     public Control getControl() {
@@ -121,19 +118,19 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         fMain.setFocus();
     }
 
-    public void setSelectedSite(SiteConnectionPoint site) {
-        if (site == fSelectedSite) {
-            return;
-        }
-        fSelectedSite = site;
-        if (site == null) {
+    public void setSelectedSite(ISiteConnection siteConnection) {
+	    if (siteConnection == fSelectedSite) {
+	        return;
+	    }
+	    fSelectedSite = siteConnection;
+	    if (siteConnection == null) {
             fSitesCombo.clearSelection();
             fSource.setConnectionPoint(null);
             fTarget.setConnectionPoint(null);
         } else {
-            fSitesCombo.setText(site.getName());
-            fSource.setConnectionPoint(site.getSource());
-            fTarget.setConnectionPoint(site.getDestination());
+            fSitesCombo.setText(siteConnection.getName());
+            fSource.setConnectionPoint(siteConnection.getSource());
+            fTarget.setConnectionPoint(siteConnection.getDestination());
         }
         fireSiteConnectionChanged(fSelectedSite);
     }
@@ -183,12 +180,13 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         }
     }
 
-    public void connectionPointChanged(IConnectionPointEvent event) {
-        final int type = event.getType();
-        final IConnectionPoint connection = event.getConnectionPoint();
-
-        if ((type == IConnectionPointEvent.POST_ADD || type == IConnectionPointEvent.POST_DELETE)
-                && (connection instanceof SiteConnectionPoint)) {
+    /* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.core.events.ISiteConnectionListener#siteConnectionChanged(com.aptana.ide.syncing.core.events.SiteConnectionEvent)
+	 */
+	public void siteConnectionChanged(final SiteConnectionEvent event) {        
+        switch (event.getKind()) {
+		case SiteConnectionEvent.POST_ADD:
+		case SiteConnectionEvent.POST_DELETE:
             fMain.getDisplay().asyncExec(new Runnable() {
 
                 public void run() {
@@ -197,8 +195,9 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
                     fSitesCombo.setItems(getExistingSiteNames());
                     fSitesCombo.setText(text);
                 }
-            });
-        }
+            });			
+			break;
+		}
     }
 
     protected Composite createControl(Composite parent) {
@@ -295,26 +294,25 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
     private void update() {
         String siteName = fSitesCombo.getText();
-        SiteConnectionPoint[] sites = SiteConnectionManager.getExistingSites();
-        for (SiteConnectionPoint site : sites) {
-            if (site.getName().equals(siteName)) {
-                setSelectedSite(site);
+        for (ISiteConnection siteConnection : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
+            if (siteConnection.getName().equals(siteName)) {
+                setSelectedSite(siteConnection);
                 break;
             }
         }
     }
 
-    private void fireSiteConnectionChanged(SiteConnectionPoint site) {
+    private void fireSiteConnectionChanged(ISiteConnection site) {
         for (Listener listener : fListeners) {
             listener.siteConnectionChanged(site);
         }
     }
 
     private static String[] getExistingSiteNames() {
-        SiteConnectionPoint[] sites = SiteConnectionManager.getExistingSites();
-        String[] names = new String[sites.length];
+        ISiteConnection[] all = SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+        String[] names = new String[all.length];
         for (int i = 0; i < names.length; ++i) {
-            names[i] = sites[i].getName();
+            names[i] = all[i].getName();
         }
         return names;
     }

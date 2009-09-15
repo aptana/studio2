@@ -36,7 +36,7 @@ package com.aptana.ide.syncing.ui.internal;
 
 import org.eclipse.swt.widgets.Shell;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.ui.IPropertyDialog;
 
 public class SitePropertyDialog extends NewSiteDialog implements IPropertyDialog {
@@ -46,8 +46,8 @@ public class SitePropertyDialog extends NewSiteDialog implements IPropertyDialog
     }
 
     public void setPropertySource(Object element) {
-        if (element instanceof SiteConnectionPoint) {
-            setSelectedSite(((SiteConnectionPoint) element).getName());
+        if (element instanceof ISiteConnection) {
+            setSelectedSite(((ISiteConnection) element).getName());
         }
     }
 

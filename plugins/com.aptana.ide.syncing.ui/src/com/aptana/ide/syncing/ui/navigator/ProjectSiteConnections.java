@@ -39,8 +39,8 @@ import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 /**
@@ -61,7 +61,7 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
     }
 
     public Object[] getChildren(Object o) {
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(fProject, true);
+        ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(fProject, true);
         ProjectSiteConnection[] targets = new ProjectSiteConnection[sites.length];
         for (int i = 0; i < sites.length; ++i) {
             targets[i] = new ProjectSiteConnection(fProject, sites[i].getDestination());
