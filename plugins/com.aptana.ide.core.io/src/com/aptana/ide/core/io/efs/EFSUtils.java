@@ -35,6 +35,9 @@
 
 package com.aptana.ide.core.io.efs;
 
+import java.io.File;
+
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
 
@@ -53,5 +56,9 @@ public final class EFSUtils {
 
 	public static IFileStore getFileStore(IResource resource) {
 		return WorkspaceFileSystem.getInstance().getStore(resource.getFullPath());
+	}
+	
+	public static IFileStore getFileStore(File file) {
+		return EFS.getLocalFileSystem().fromLocalFile(file);
 	}
 }

@@ -37,6 +37,9 @@ package com.aptana.ide.core.io;
 
 import java.net.URI;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.runtime.IPath;
+
 /**
  * @author Max Stepanov
  *
@@ -59,6 +62,14 @@ public final class ConnectionPointUtils {
 			}
 		}
 		return null;
+	}
+	
+	public static IConnectionPoint createLocalConnectionPoint(IPath path) {
+		return new LocalConnectionPoint(path);
+	}
+	
+	public static IConnectionPoint createWorkspaceConnectionPoint(IContainer resource) {
+		return new WorkspaceConnectionPoint(resource);
 	}
 	
 }
