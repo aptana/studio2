@@ -54,6 +54,7 @@ public class Messages extends NLS {
     public static String NewSiteWidget_ERR_InvalidFileSource;
     public static String NewSiteWidget_ERR_InvalidFileTarget;
     public static String NewSiteWidget_LBL_Destination;
+    public static String NewSiteWidget_LBL_Duplicate;
     public static String NewSiteWidget_LBL_Filesystem;
     public static String NewSiteWidget_LBL_Folder;
     public static String NewSiteWidget_LBL_Project;

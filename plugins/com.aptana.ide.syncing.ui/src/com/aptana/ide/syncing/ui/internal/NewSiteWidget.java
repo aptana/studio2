@@ -38,10 +38,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -52,6 +50,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -64,6 +64,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -93,7 +95,9 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     private Composite fMain;
     private Table fSitesTable;
     private TableEditor fSitesEditor;
+    private MenuItem fDuplicateItem;
     private Button fAddButton;
+    private Button fEditButton;
     private Button fRemoveButton;
 
     private SiteEndPointComposite fSrcComposite;
@@ -102,9 +106,6 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     private boolean fCreateNew;
     private java.util.List<SiteConnectionPoint> fSites;
     private java.util.List<SiteConnectionPoint> fOriginalSites;
-
-    // for appending a number to "New Site" to avoid duplicates
-    private int fCount;
 
     private Client fClient;
 
@@ -197,12 +198,12 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         Object source = e.getSource();
 
         if (source == fAddButton) {
-            fSitesTable.deselectAll();
-            createNewSite();
-
-            int index = fSitesTable.getItemCount() - 1;
-            fSitesTable.select(index);
-            updateSelection(fSites.get(index));
+            createNewSite(Messages.NewSiteWidget_TXT_NewSite);
+        } else if (source == fEditButton) {
+            int index = fSitesTable.getSelectionIndex();
+            if (index > -1) {
+                editSiteName(fSitesTable.getSelection()[0], fSites.get(index));
+            }
         } else if (source == fRemoveButton) {
             int index = fSitesTable.getSelectionIndex();
             if (index > -1) {
@@ -223,6 +224,12 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
             if (index > -1) {
                 updateSelection(fSites.get(index));
             }
+        } else if (source == fDuplicateItem) {
+            SiteConnectionPoint selectedSite = getSelectedSite();
+            if (selectedSite == null) {
+                return;
+            }
+            createNewSite(selectedSite.getName());
         }
     }
 
@@ -286,14 +293,13 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         Composite right = createSiteDetails(sash);
         right.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        sash.setWeights(new int[] { 1, 3 });
+        sash.setWeights(new int[] { 1, 2 });
         // adds the existing sites
         for (SiteConnectionPoint site : fOriginalSites) {
             createNewSiteItem(site);
         }
         if (fCreateNew) {
-            createNewSite();
-            fSitesTable.select(fSitesTable.getItemCount() - 1);
+            createNewSite(Messages.NewSiteWidget_TXT_NewSite);
         } else {
             clearTableEditor();
             fSitesTable.select(0);
@@ -322,10 +328,11 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         fSitesEditor.minimumWidth = 50;
         fSitesTable.addSelectionListener(this);
         fSitesTable.addMouseListener(this);
+        fSitesTable.setMenu(createMenu(fSitesTable));
 
-        // the actions to add to and remove from the list
+        // the actions to modify the connection list
         Composite buttons = new Composite(group, SWT.NULL);
-        GridLayout layout = new GridLayout(2, false);
+        GridLayout layout = new GridLayout(3, false);
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         buttons.setLayout(layout);
@@ -336,12 +343,27 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         fAddButton.setToolTipText(StringUtils.ellipsify(CoreStrings.ADD));
         fAddButton.addSelectionListener(this);
 
+        fEditButton = new Button(buttons, SWT.PUSH);
+        fEditButton.setImage(SWTUtils.getImage(CoreUIPlugin.getDefault(), "/icons/edit.png")); //$NON-NLS-1$
+        fEditButton.setToolTipText(StringUtils.ellipsify(CoreStrings.EDIT));
+        fEditButton.addSelectionListener(this);
+
         fRemoveButton = new Button(buttons, SWT.PUSH);
         fRemoveButton.setImage(SWTUtils.getImage(CoreUIPlugin.getDefault(), "/icons/delete.gif")); //$NON-NLS-1$
         fRemoveButton.setToolTipText(CoreStrings.REMOVE);
         fRemoveButton.addSelectionListener(this);
 
         return group;
+    }
+
+    private Menu createMenu(Control parent) {
+        Menu menu = new Menu(parent);
+        // for duplicating the currently selected connection
+        fDuplicateItem = new MenuItem(menu, SWT.PUSH);
+        fDuplicateItem.setText(Messages.NewSiteWidget_LBL_Duplicate);
+        fDuplicateItem.addSelectionListener(this);
+
+        return menu;
     }
 
     private Composite createSiteDetails(Composite parent) {
@@ -369,26 +391,38 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         return main;
     }
 
-    private void createNewSite() {
+    /**
+     * Creates a new site connection. If an existing site is passed in,
+     * duplicates its information in the new site.
+     * 
+     * @param existingSite
+     *            the existing site
+     */
+    private SiteConnectionPoint createNewSite(String baseName) {
         IConnectionPoint connection;
         try {
             connection = CoreIOPlugin.getConnectionPointManager().createConnectionPoint(
                     SiteConnectionPoint.TYPE);
         } catch (CoreException e) {
-            return;
+            return null;
         }
         if (!(connection instanceof SiteConnectionPoint)) {
-            return;
+            // should not happen
+            return null;
         }
+
         SiteConnectionPoint newSite = (SiteConnectionPoint) connection;
-        newSite.setName(getUniqueNewSiteName());
+        newSite.setName(getUniqueNewSiteName(baseName));
         newSite.setSourceCategory(fSrcComposite.getCategory());
         newSite.setSource(fSrcComposite.getSourceName());
         newSite.setDestinationCategory(fDestComposite.getCategory());
         newSite.setDestination(fDestComposite.getSourceName());
         fSites.add(newSite);
-
+        // creates the table item
         createNewSiteItem(newSite);
+        fSitesTable.select(fSitesTable.getItemCount() - 1);
+
+        return newSite;
     }
 
     private TableItem createNewSiteItem(SiteConnectionPoint newSite) {
@@ -416,6 +450,20 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         // makes the text editable
         Text newEditor = new Text(fSitesTable, SWT.NONE);
         newEditor.setText(item.getText(0));
+        newEditor.addKeyListener(new KeyListener() {
+
+            public void keyPressed(KeyEvent e) {
+                // handles the "Enter" key
+                if (e.keyCode == '\r') {
+                    clearTableEditor();
+                    packSitesTable();
+                }
+            }
+
+            public void keyReleased(KeyEvent e) {
+            }
+
+        });
         newEditor.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent me) {
@@ -516,24 +564,35 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         return null;
     }
 
-    private String getUniqueNewSiteName() {
+    private String getUniqueNewSiteName(String baseName) {
+        // removes any number from the end
+        int index = baseName.lastIndexOf(" "); //$NON-NLS-1$
+        if (index > -1) {
+            String lastSegment = baseName.substring(index + 1);
+            try {
+                Integer.parseInt(lastSegment);
+                baseName = baseName.substring(0, index);
+            } catch (NumberFormatException e) {
+            }
+        }
+        // finds the maximum number among the sites that contains the base name
+        int maxCount = 0;
         String siteName;
-        int index;
         for (SiteConnectionPoint site : fSites) {
             siteName = site.getName();
-            index = siteName.indexOf(Messages.NewSiteWidget_TXT_NewSite);
+            index = siteName.indexOf(baseName);
             if (index > -1) {
                 try {
-                    int count = Integer.parseInt(siteName.substring(index
-                            + Messages.NewSiteWidget_TXT_NewSite.length()));
-                    if (fCount < count) {
-                        fCount = count;
+                    int count = Integer.parseInt(siteName.substring(index + baseName.length())
+                            .trim());
+                    if (maxCount < count) {
+                        maxCount = count;
                     }
                 } catch (NumberFormatException e) {
                 }
             }
         }
-        return Messages.NewSiteWidget_TXT_NewSite + (++fCount);
+        return MessageFormat.format("{0} {1}", baseName, maxCount + 1); //$NON-NLS-1$
     }
 
     private SiteConnectionPoint getSelectedSite() {
