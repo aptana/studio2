@@ -13,6 +13,7 @@
             Builds the Studio feature
     </description>
 
+	<property environment="env" />
 	<property file="build_local.properties" />
 	<!-- Set is.windows property IF the OS is from the Windows family -->
 	<condition property="is.windows" value="true">
@@ -175,5 +176,11 @@
 			</sequential>
 		</for>
 	</target>
-
+	
+	<target name="create-artifact-symlink">
+		<exec executable="unlink">
+			<arg value="${env.WORKSPACE}/build-artifacts" />
+		</exec>
+		<symlink link="${env.WORKSPACE}/build-artifacts" resource="${deploy.dir}" failonerror="false"/>
+	</target>
 </project>
