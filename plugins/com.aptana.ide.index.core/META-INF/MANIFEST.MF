@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Indexing Core Plugin
+Bundle-Name: %pluginName
 Bundle-SymbolicName: com.aptana.ide.index.core;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.6.0.qualifier
 Bundle-Activator: com.aptana.ide.index.core.Activator
-Bundle-Vendor: Aptana, Inc.
+Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.4.0",
  com.aptana.ide.epl;bundle-version="1.5.0",

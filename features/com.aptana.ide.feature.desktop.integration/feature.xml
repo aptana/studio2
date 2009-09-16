@@ -2,7 +2,7 @@
 <feature
       id="com.aptana.ide.feature.desktop.integration"
       label="%featureName"
-      version="1.5.0.qualifier"
+      version="1.6.0.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -22,7 +22,10 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.ui.intro"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="com.aptana.ide.core"/>
+      <import plugin="com.aptana.ide.desktop.integration.server"/>
    </requires>
 
    <plugin

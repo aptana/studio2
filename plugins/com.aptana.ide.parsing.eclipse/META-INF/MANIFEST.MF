@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Parsing Eclipse Adapter Plugin
+Bundle-Name: %pluginName
 Bundle-SymbolicName: com.aptana.ide.parsing.eclipse;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.6.0.qualifier
 Bundle-Activator: com.aptana.ide.parsing.eclipse.Activator
-Bundle-Vendor: Aptana, Inc.
+Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime,
  com.aptana.ide.parsing;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
