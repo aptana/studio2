@@ -43,7 +43,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import com.aptana.ide.core.ui.CoreUIUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 /**
@@ -57,7 +57,7 @@ public class EditorUtils {
      * @param site
      *            the connection
      */
-    public static void openConnectionEditor(final SiteConnectionPoint site) {
+    public static void openConnectionEditor(final ISiteConnection site) {
         CoreUIUtils.getDisplay().asyncExec(new Runnable() {
 
             public void run() {
@@ -82,7 +82,7 @@ public class EditorUtils {
      * @param site
      *            the connection
      */
-    public static void closeConnectionEditor(final SiteConnectionPoint site) {
+    public static void closeConnectionEditor(final ISiteConnection site) {
         CoreUIUtils.getDisplay().asyncExec(new Runnable() {
 
             public void run() {
