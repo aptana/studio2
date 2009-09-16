@@ -93,6 +93,7 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 import com.aptana.ide.ui.io.navigator.FileTreeNameSorter;
 import com.aptana.ide.ui.io.navigator.actions.FileSystemDeleteAction;
+import com.aptana.ide.ui.io.navigator.actions.FileSystemRenameAction;
 import com.aptana.ide.ui.io.navigator.actions.OpenFileAction;
 
 /**
@@ -115,6 +116,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
     private TreeViewer fTreeViewer;
     private MenuItem fDeleteItem;
+    private MenuItem fRenameItem;
 
     private String fName;
     private IConnectionPoint fConnectionPoint;
@@ -177,9 +179,9 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
     public void refresh() {
         Object input = fTreeViewer.getInput();
-        IContainer resource = null;
+        IResource resource = null;
         if (input instanceof IAdaptable) {
-            resource = (IContainer) ((IAdaptable) input).getAdapter(IResource.class);
+            resource = (IResource) ((IAdaptable) input).getAdapter(IResource.class);
         }
         if (resource != null) {
             try {
@@ -204,6 +206,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             gotoHome();
         } else if (source == fDeleteItem) {
             delete(fTreeViewer.getSelection());
+        } else if (source == fRenameItem) {
+            rename();
         }
     }
 
@@ -414,15 +418,26 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
                 new Transfer[] { LocalSelectionTransfer.getTransfer() }, this);
 
         // builds the context menu
-        Menu menu = new Menu(tree);
+        tree.setMenu(createMenu(tree));
+
+        return fTreeViewer;
+    }
+
+    private Menu createMenu(Control parent) {
+        Menu menu = new Menu(parent);
         fDeleteItem = new MenuItem(menu, SWT.PUSH);
         fDeleteItem.setText(CoreStrings.DELETE);
         fDeleteItem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
                 ISharedImages.IMG_ETOOL_DELETE));
+        fDeleteItem.setAccelerator(SWT.DEL);
         fDeleteItem.addSelectionListener(this);
-        tree.setMenu(menu);
 
-        return fTreeViewer;
+        fRenameItem = new MenuItem(menu, SWT.PUSH);
+        fRenameItem.setText(CoreStrings.RENAME);
+        fRenameItem.setAccelerator(SWT.F2);
+        fRenameItem.addSelectionListener(this);
+
+        return menu;
     }
 
     private void goUp() {
@@ -458,6 +473,13 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             }
         });
         action.run();
+    }
+
+    private void rename() {
+        FileSystemRenameAction action = new FileSystemRenameAction(getControl().getShell(),
+                fTreeViewer.getTree());
+        action.run();
+        refresh();
     }
 
     private void setComboData(IAdaptable data) {
