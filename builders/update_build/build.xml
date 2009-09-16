@@ -168,7 +168,7 @@
 			<sequential>
 				<exec executable="/bin/bash" dir="@{file}" outputproperty="@{file}.committed.max">
 					<arg value="-c" />
-					<arg value="${git.executable} log --max-count=1 --pretty=format:'%ct'" />
+					<arg value="${git.executable} log --max-count=1 --pretty=format:'%ct' ." />
 				</exec>
 				<echo message="Replacing qualifier for @{file} with ${@{file}.committed.max}" />
 				<replaceregexp file="@{file}/build.properties" match="qualifier\s*=\s*context" replace="qualifier = ${@{file}.committed.max}" byline="true" />
