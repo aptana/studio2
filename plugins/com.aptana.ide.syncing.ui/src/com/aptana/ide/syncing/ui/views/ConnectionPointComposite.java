@@ -46,13 +46,16 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -79,8 +82,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.io.IConnectionPoint;
@@ -99,8 +102,8 @@ import com.aptana.ide.ui.io.navigator.actions.OpenFileAction;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ConnectionPointComposite implements SelectionListener, IDoubleClickListener,
-        TransferDragSourceListener, DropTargetListener {
+public class ConnectionPointComposite implements SelectionListener, ISelectionChangedListener,
+        IDoubleClickListener, TransferDragSourceListener, DropTargetListener {
 
     private static final String[] COLUMN_NAMES = {
             Messages.ConnectionPointComposite_Column_Filename,
@@ -115,8 +118,11 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     private Label fPathLabel;
 
     private TreeViewer fTreeViewer;
+    private MenuItem fOpenItem;
     private MenuItem fDeleteItem;
     private MenuItem fRenameItem;
+    private MenuItem fRefreshMenuItem;
+    private MenuItem fPropertiesItem;
 
     private String fName;
     private IConnectionPoint fConnectionPoint;
@@ -204,35 +210,25 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             refresh();
         } else if (source == fHomeItem) {
             gotoHome();
+        } else if (source == fOpenItem) {
+            open(fTreeViewer.getSelection());
         } else if (source == fDeleteItem) {
             delete(fTreeViewer.getSelection());
         } else if (source == fRenameItem) {
             rename();
+        } else if (source == fRefreshMenuItem) {
+            refresh(fTreeViewer.getSelection());
+        } else if (source == fPropertiesItem) {
+            openPropertyPage(fTreeViewer.getSelection());
         }
     }
 
-    public void doubleClick(DoubleClickEvent event) {
-        IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-        if (selection.isEmpty()) {
-            return;
-        }
+    public void selectionChanged(SelectionChangedEvent event) {
+        updateMenuStates();
+    }
 
-        Object object = selection.getFirstElement();
-        if (object instanceof IAdaptable) {
-            IAdaptable adaptable = (IAdaptable) object;
-            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
-            if (fileInfo.isDirectory()) {
-                // goes into the folder
-                updateContent(adaptable);
-            } else {
-                // opens the file in the editor
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getActivePage();
-                OpenFileAction action = new OpenFileAction(page);
-                action.updateSelection(selection);
-                action.run();
-            }
-        }
+    public void doubleClick(DoubleClickEvent event) {
+        open(event.getSelection());
     }
 
     public Transfer getTransfer() {
@@ -410,6 +406,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         fTreeViewer.setContentProvider(new FileTreeContentProvider());
         fTreeViewer.setLabelProvider(new ConnectionPointLabelProvider());
         fTreeViewer.setComparator(new FileTreeNameSorter());
+        fTreeViewer.addSelectionChangedListener(this);
         fTreeViewer.addDoubleClickListener(this);
 
         fTreeViewer.addDragSupport(DND.DROP_COPY | DND.DROP_DEFAULT,
@@ -425,6 +422,12 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
     private Menu createMenu(Control parent) {
         Menu menu = new Menu(parent);
+        fOpenItem = new MenuItem(menu, SWT.PUSH);
+        fOpenItem.setText(CoreStrings.OPEN);
+        fOpenItem.setAccelerator(SWT.F3);
+        fOpenItem.addSelectionListener(this);
+
+        new MenuItem(menu, SWT.SEPARATOR);
         fDeleteItem = new MenuItem(menu, SWT.PUSH);
         fDeleteItem.setText(CoreStrings.DELETE);
         fDeleteItem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
@@ -436,6 +439,19 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         fRenameItem.setText(CoreStrings.RENAME);
         fRenameItem.setAccelerator(SWT.F2);
         fRenameItem.addSelectionListener(this);
+
+        new MenuItem(menu, SWT.SEPARATOR);
+        fRefreshMenuItem = new MenuItem(menu, SWT.PUSH);
+        fRefreshMenuItem.setText(CoreStrings.REFRESH);
+        fRefreshMenuItem.setImage(SyncingUIPlugin.getImage("/icons/full/obj16/refresh.gif")); //$NON-NLS-1$
+        fRefreshMenuItem.setAccelerator(SWT.F5);
+        fRefreshMenuItem.addSelectionListener(this);
+
+        new MenuItem(menu, SWT.SEPARATOR);
+        fPropertiesItem = new MenuItem(menu, SWT.PUSH);
+        fPropertiesItem.setText(CoreStrings.PROPERTIES);
+        fPropertiesItem.setAccelerator(SWT.ALT | '\r');
+        fPropertiesItem.addSelectionListener(this);
 
         return menu;
     }
@@ -453,10 +469,24 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         updateContent(fConnectionPoint);
     }
 
-    private void delete(ISelection selection) {
-        if (!(selection instanceof IStructuredSelection)) {
-            return;
+    private void open(ISelection selection) {
+        Object object = ((IStructuredSelection) selection).getFirstElement();
+        if (object instanceof IAdaptable) {
+            IAdaptable adaptable = (IAdaptable) object;
+            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
+            if (fileInfo.isDirectory()) {
+                // goes into the folder
+                updateContent(adaptable);
+            } else {
+                // opens the file in the editor
+                OpenFileAction action = new OpenFileAction(CoreUIUtils.getActivePage());
+                action.updateSelection((IStructuredSelection) selection);
+                action.run();
+            }
         }
+    }
+
+    private void delete(ISelection selection) {
         final FileSystemDeleteAction action = new FileSystemDeleteAction(getControl().getShell());
         action.updateSelection((IStructuredSelection) selection);
         action.addJobListener(new JobChangeAdapter() {
@@ -480,6 +510,36 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
                 fTreeViewer.getTree());
         action.run();
         refresh();
+    }
+
+    private void refresh(ISelection selection) {
+        if (selection.isEmpty()) {
+            // refreshes the root
+            refresh();
+        } else {
+            Object[] elements = ((IStructuredSelection) selection).toArray();
+            IResource resource;
+            for (Object element : elements) {
+                resource = null;
+                if (element instanceof IAdaptable) {
+                    resource = (IResource) ((IAdaptable) element).getAdapter(IResource.class);
+                }
+                if (resource != null) {
+                    try {
+                        resource.refreshLocal(IResource.DEPTH_INFINITE, null);
+                    } catch (CoreException e) {
+                    }
+                }
+                fTreeViewer.refresh(element);
+            }
+        }
+    }
+
+    private void openPropertyPage(ISelection selection) {
+        IAdaptable element = (IAdaptable) ((IStructuredSelection) selection).getFirstElement();
+        PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn(getControl().getShell(),
+                element, null, null, null);
+        dialog.open();
     }
 
     private void setComboData(IAdaptable data) {
@@ -549,6 +609,15 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     private void updateActionStates() {
         // disables the up button when it is at the root
         fUpItem.setEnabled(fEndPointData.size() > 1);
+    }
+
+    private void updateMenuStates() {
+        ISelection selection = fTreeViewer.getSelection();
+        boolean hasSelection = !selection.isEmpty();
+        fOpenItem.setEnabled(hasSelection);
+        fDeleteItem.setEnabled(hasSelection);
+        fRenameItem.setEnabled(hasSelection);
+        fPropertiesItem.setEnabled(hasSelection);
     }
 
     private static IFileStore getFolderStore(IAdaptable destination) {
