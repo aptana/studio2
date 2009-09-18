@@ -44,10 +44,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.aptana.ide.core.io.ConnectionPointType;
-import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.IConnectionPointManager;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.INavigatorDecorator;
 import com.aptana.ide.syncing.core.connection.ResourceSynchronizationUtils;
@@ -55,6 +51,9 @@ import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public class SiteConnectionDecorator implements INavigatorDecorator {
 
     private static final Image DECORATOR = SyncingUIPlugin
@@ -92,8 +91,7 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                                         + stringExtent.x + PADDING;
                             }
                         } else if (data instanceof SiteConnectionPoint) {
-                            String text = getSiteDescription((SiteConnectionPoint) data);
-
+                            String text = data.toString();
                             Point stringExtent = event.gc.stringExtent(text);
                             event.width += stringExtent.x + PADDING;
                         }
@@ -135,8 +133,7 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                                 event.x += stringExtent.x;
                             }
                         } else if (data instanceof SiteConnectionPoint) {
-                            String text = getSiteDescription((SiteConnectionPoint) data);
-
+                            String text = data.toString();
                             Point stringExtent = event.gc.stringExtent(text);
                             int x = event.x + event.width + PADDING;
                             int y = event.y + (tree.getItemHeight() - stringExtent.y) / 2;
@@ -193,37 +190,6 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
             }
         }
         return null;
-    }
-
-    private static String getSiteDescription(SiteConnectionPoint site) {
-        IConnectionPoint source = site.getSource();
-        IConnectionPoint target = site.getDestination();
-        IConnectionPointManager manager = CoreIOPlugin.getConnectionPointManager();
-
-        StringBuilder text = new StringBuilder();
-        text.append("(");
-        if (source == null) {
-            text.append("source missing");
-        } else {
-            ConnectionPointType type = manager.getType(source);
-            if (type != null) {
-                text.append(type.getName()).append(":");
-            }
-            text.append(source.getName());
-        }
-        text.append(" <-> ");
-        if (target == null) {
-            text.append("destination missing");
-        } else {
-            ConnectionPointType type = manager.getType(target);
-            if (type != null) {
-                text.append(type.getName()).append(":");
-            }
-            text.append(target.getName());
-        }
-        text.append(")");
-
-        return text.toString();
     }
 
     private static boolean isDisposed(Tree tree) {

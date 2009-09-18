@@ -41,6 +41,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.filechooser.FileSystemView;
+
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IPath;
@@ -55,7 +57,14 @@ import com.aptana.ide.core.PlatformUtils;
  *
  */
 public final class LocalRoot extends PlatformObject {
-	
+
+    private static final String HOME_DIR = PlatformUtils
+            .expandEnvironmentStrings(PlatformUtils.HOME_DIRECTORY);
+    private static final String DESKTOP = PlatformUtils
+            .expandEnvironmentStrings(PlatformUtils.DESKTOP_DIRECTORY);
+    private static final boolean ON_WINDOWS = Platform.OS_WIN32.equals(Platform.getOS());
+    private static final String MY_COMPUTER_GUID = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"; //$NON-NLS-1$
+
 	private final String name;
 	private final File root;
 
@@ -146,7 +155,16 @@ public final class LocalRoot extends PlatformObject {
 				} catch (IOException e) {
 				}
 			}
-		} else {
+		} else if (ON_WINDOWS) {
+            File[] roots = getWindowsDriveFiles();
+            for (File root : roots) {
+                try {
+                    list.add(new LocalRoot(FileSystemView.getFileSystemView().getSystemDisplayName(
+                            root), root.getCanonicalFile()));
+                } catch (IOException e) {
+                }
+            }       
+        } else {
 			for (File root : File.listRoots()) {
 				try {
 					list.add(new LocalRoot(root.getName(), root.getCanonicalFile()));
@@ -155,24 +173,34 @@ public final class LocalRoot extends PlatformObject {
 			}			
 		}
 		{	/* Home */
-			IPath homePath = new Path(PlatformUtils.expandEnvironmentStrings(PlatformUtils.HOME_DIRECTORY));
-			File homeFile = homePath.toFile();
-			if (homeFile.exists() && homeFile.isDirectory()) {
-				try {
-					list.add(new LocalRoot(homePath.lastSegment(), homeFile.getCanonicalFile()));
-				} catch (IOException e) {
-				}				
-			}
+		    File homeFile;
+            if (ON_WINDOWS) {
+                homeFile = getWindowsHomeFile();
+            } else {
+                IPath homePath = new Path(HOME_DIR);
+                homeFile = homePath.toFile();
+            }
+            if (homeFile != null && homeFile.exists() && homeFile.isDirectory()) {
+                try {
+                    list.add(new LocalRoot(homeFile.getName(), homeFile.getCanonicalFile()));
+                } catch (IOException e) {
+                }
+            }
 		}
 		{	/* Desktop */
-			IPath desktopPath = new Path(PlatformUtils.expandEnvironmentStrings(PlatformUtils.DESKTOP_DIRECTORY));
-			File desktopFile = desktopPath.toFile();
-			if (desktopFile.exists() && desktopFile.isDirectory()) {
-				try {
-					list.add(new LocalRoot(desktopPath.lastSegment(), desktopFile.getCanonicalFile()));
-				} catch (IOException e) {
-				}				
-			}
+		    File desktopFile;
+            if (ON_WINDOWS) {
+                desktopFile = getWindowsDesktopFile();
+            } else {
+                IPath desktopPath = new Path(DESKTOP);
+                desktopFile = desktopPath.toFile();
+            }
+            if (desktopFile != null && desktopFile.exists() && desktopFile.isDirectory()) {
+                try {
+                    list.add(new LocalRoot(desktopFile.getName(), desktopFile.getCanonicalFile()));
+                } catch (IOException e) {
+                }
+            }
 		}
 		{	/* Documents */
 			IPath docsPath = new Path(PlatformUtils.expandEnvironmentStrings(PlatformUtils.DOCUMENTS_DIRECTORY));
@@ -188,5 +216,45 @@ public final class LocalRoot extends PlatformObject {
 		return list.toArray(new LocalRoot[list.size()]);
 	}
 
+    private static File[] getWindowsDriveFiles() {
+        File desktop = getWindowsDesktopFile();
+        if (desktop == null) {
+            return new File[0];
+        }
+        File[] files = FileSystemView.getFileSystemView().getFiles(desktop, false);
+        for (File file : files) {
+            if (file.getName().equals(MY_COMPUTER_GUID)) {
+                return FileSystemView.getFileSystemView().getFiles(file, false);
+            }
+        }
+        return files;
+    }
 
+    private static File getWindowsHomeFile() {
+        File desktop = getWindowsDesktopFile();
+        if (desktop == null) {
+            return null;
+        }
+        IPath homePath = new Path(HOME_DIR);
+        String homeFilename = homePath.lastSegment();
+        File[] files = FileSystemView.getFileSystemView().getFiles(desktop, false);
+        for (File file : files) {
+            if (file.getName().equals(homeFilename)) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    private static File getWindowsDesktopFile() {
+        IPath desktopPath = new Path(DESKTOP);
+        String desktopFilename = desktopPath.lastSegment();
+        File[] files = FileSystemView.getFileSystemView().getRoots();
+        for (File file : files) {
+            if (file.getName().equals(desktopFilename)) {
+                return file;
+            }
+        }
+        return null;
+    }
 }

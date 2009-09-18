@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %fragmentName
 Bundle-SymbolicName: com.aptana.ide.core.win32; singleton:=true
-Bundle-Version: 1.5.0.qualifier
+Bundle-Version: 1.6.0.qualifier
 Bundle-Vendor: %providerName
 Fragment-Host: com.aptana.ide.core;bundle-version="[1.4.0,3.0.0)"
 Bundle-Localization: fragment

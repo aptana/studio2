@@ -297,16 +297,24 @@ import org.eclipse.osgi.util.NLS;
 		}
 		monitor = Policy.monitorFor(monitor);
 		monitor.beginTask(NLS.bind(Messages.moving, destination.toString()), 100);
+		WorkspaceFile destinationFile = (WorkspaceFile) destination;
 		try {
 			ensureResource();
 			if (resource == null) {
 				Policy.error(EFS.ERROR_NOT_EXISTS, NLS.bind(Messages.fileNotFound, path));
 			}
-			IResource destinationResource = (IResource) destination.getAdapter(IResource.class);
+			IResource destinationResource = (IResource) destinationFile.getAdapter(IResource.class);
+			if (destinationResource == null) {
+			    if (resource instanceof IContainer) {
+			        destinationResource = workspaceRoot.getFolder(destinationFile.path);
+			    } else {
+			        destinationResource = workspaceRoot.getFile(destinationFile.path);
+			    }
+			}
 			boolean sourceEqualsDest = resource.equals(destinationResource);
 			boolean overwrite = (options & EFS.OVERWRITE) != 0;
-			if (!sourceEqualsDest && !overwrite) {
-				Policy.error(EFS.ERROR_EXISTS,  NLS.bind(Messages.fileExists, path));
+			if (!sourceEqualsDest && !overwrite && destinationResource.exists()) {
+				Policy.error(EFS.ERROR_EXISTS,  NLS.bind(Messages.fileExists, destinationResource.getFullPath()));
 			}
 			try {
 				resource.move(destinationResource.getFullPath(), true, Policy.subMonitorFor(monitor, 100));

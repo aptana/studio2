@@ -36,9 +36,10 @@ package com.aptana.ide.syncing.ui.internal;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.TrayDialog;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -46,7 +47,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class NewSiteDialog extends TrayDialog {
+public class NewSiteDialog extends TitleAreaDialog implements NewSiteWidget.Client {
 
     private static final int APPLY_ID = 31;
     private static final String APPLY_LABEL = Messages.NewSiteDialog_LBL_Apply;
@@ -102,6 +103,20 @@ public class NewSiteDialog extends TrayDialog {
         }
     }
 
+    public void validationChanged(String error) {
+        boolean noError = (error == null || error.length() == 0);
+        if (noError) {
+            setErrorMessage(null);
+        } else {
+            setErrorMessage(error);
+        }
+        Button button = getButton(APPLY_ID);
+        if (button != null) {
+            getButton(APPLY_ID).setEnabled(noError);
+            getButton(IDialogConstants.OK_ID).setEnabled(noError);
+        }
+    }
+
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(Messages.NewSiteDialog_Title);
@@ -110,7 +125,7 @@ public class NewSiteDialog extends TrayDialog {
     protected Control createDialogArea(Composite parent) {
         Composite main = (Composite) super.createDialogArea(parent);
 
-        fWidget = new NewSiteWidget(main, fCreateNew);
+        fWidget = new NewSiteWidget(main, fCreateNew, this);
         fWidget.setSelectedSite(fSelectedSiteName);
         fWidget.setSource(fInitialSource);
         fWidget.setDestination(fInitialTarget);
@@ -118,11 +133,13 @@ public class NewSiteDialog extends TrayDialog {
         gridData.heightHint = 450;
         fWidget.getControl().setLayoutData(gridData);
 
+        setTitle(Messages.NewSiteDialog_Title);
+        setMessage(Messages.NewSiteDialog_DefaultMessage);
         return main;
     }
 
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, APPLY_ID, APPLY_LABEL, true);
+        createButton(parent, APPLY_ID, APPLY_LABEL, false);
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
     }

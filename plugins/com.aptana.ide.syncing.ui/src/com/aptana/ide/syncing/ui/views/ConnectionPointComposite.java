@@ -46,13 +46,16 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -68,7 +71,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -80,8 +82,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.io.IConnectionPoint;
@@ -94,13 +96,14 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 import com.aptana.ide.ui.io.navigator.FileTreeNameSorter;
 import com.aptana.ide.ui.io.navigator.actions.FileSystemDeleteAction;
+import com.aptana.ide.ui.io.navigator.actions.FileSystemRenameAction;
 import com.aptana.ide.ui.io.navigator.actions.OpenFileAction;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ConnectionPointComposite implements SelectionListener, IDoubleClickListener,
-        TransferDragSourceListener, DropTargetListener {
+public class ConnectionPointComposite implements SelectionListener, ISelectionChangedListener,
+        IDoubleClickListener, TransferDragSourceListener, DropTargetListener {
 
     private static final String[] COLUMN_NAMES = {
             Messages.ConnectionPointComposite_Column_Filename,
@@ -108,22 +111,26 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             Messages.ConnectionPointComposite_Column_LastModified };
 
     private Composite fMain;
-    private Combo fEndpointCombo;
+    private Label fEndPointLabel;
     private ToolItem fUpItem;
     private ToolItem fRefreshItem;
     private ToolItem fHomeItem;
     private Label fPathLabel;
 
     private TreeViewer fTreeViewer;
+    private MenuItem fOpenItem;
     private MenuItem fDeleteItem;
+    private MenuItem fRenameItem;
+    private MenuItem fRefreshMenuItem;
+    private MenuItem fPropertiesItem;
 
     private String fName;
     private IConnectionPoint fConnectionPoint;
-    private List<IAdaptable> fComboData;
+    private List<IAdaptable> fEndPointData;
 
     public ConnectionPointComposite(Composite parent, String name) {
         fName = name;
-        fComboData = new ArrayList<IAdaptable>();
+        fEndPointData = new ArrayList<IAdaptable>();
 
         fMain = createControl(parent);
     }
@@ -163,25 +170,24 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         }
         fConnectionPoint = connection;
 
-        fComboData.clear();
+        fEndPointData.clear();
         if (fConnectionPoint == null) {
-            fEndpointCombo.setItems(new String[0]);
-            fEndpointCombo.clearSelection();
+            fEndPointLabel.setText(""); //$NON-NLS-1$
         } else {
-            fEndpointCombo.setItems(new String[] { fConnectionPoint.getName() });
-            fEndpointCombo.select(0);
-            fComboData.add(fConnectionPoint);
+            fEndPointLabel.setText(fConnectionPoint.getName());
+            fEndPointData.add(fConnectionPoint);
         }
         setPath(""); //$NON-NLS-1$
 
         fTreeViewer.setInput(connection);
+        updateActionStates();
     }
 
     public void refresh() {
         Object input = fTreeViewer.getInput();
-        IContainer resource = null;
+        IResource resource = null;
         if (input instanceof IAdaptable) {
-            resource = (IContainer) ((IAdaptable) input).getAdapter(IResource.class);
+            resource = (IResource) ((IAdaptable) input).getAdapter(IResource.class);
         }
         if (resource != null) {
             try {
@@ -189,7 +195,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             } catch (CoreException e) {
             }
         }
-        updateContent(fComboData.get(fEndpointCombo.getSelectionIndex()));
+        updateContent(fEndPointData.get(fEndPointData.size() - 1));
     }
 
     public void widgetDefaultSelected(SelectionEvent e) {
@@ -198,41 +204,31 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
     public void widgetSelected(SelectionEvent e) {
         Object source = e.getSource();
 
-        if (source == fEndpointCombo) {
-            updateContent(fComboData.get(fEndpointCombo.getSelectionIndex()));
-        } else if (source == fUpItem) {
+        if (source == fUpItem) {
             goUp();
         } else if (source == fRefreshItem) {
             refresh();
         } else if (source == fHomeItem) {
             gotoHome();
+        } else if (source == fOpenItem) {
+            open(fTreeViewer.getSelection());
         } else if (source == fDeleteItem) {
             delete(fTreeViewer.getSelection());
+        } else if (source == fRenameItem) {
+            rename();
+        } else if (source == fRefreshMenuItem) {
+            refresh(fTreeViewer.getSelection());
+        } else if (source == fPropertiesItem) {
+            openPropertyPage(fTreeViewer.getSelection());
         }
     }
 
-    public void doubleClick(DoubleClickEvent event) {
-        IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-        if (selection.isEmpty()) {
-            return;
-        }
+    public void selectionChanged(SelectionChangedEvent event) {
+        updateMenuStates();
+    }
 
-        Object object = selection.getFirstElement();
-        if (object instanceof IAdaptable) {
-            IAdaptable adaptable = (IAdaptable) object;
-            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
-            if (fileInfo.isDirectory()) {
-                // goes into the folder
-                updateContent(adaptable);
-            } else {
-                // opens the file in the editor
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getActivePage();
-                OpenFileAction action = new OpenFileAction(page);
-                action.updateSelection(selection);
-                action.run();
-            }
-        }
+    public void doubleClick(DoubleClickEvent event) {
+        open(event.getSelection());
     }
 
     public Transfer getTransfer() {
@@ -333,6 +329,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
         fPathLabel = new Label(main, SWT.NONE);
         fPathLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        // uses a bold font for path
         final Font font = new Font(fPathLabel.getDisplay(), SWTUtils.boldFont(fPathLabel.getFont()));
         fPathLabel.setFont(font);
         fPathLabel.addDisposeListener(new DisposeListener() {
@@ -344,6 +341,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
 
         TreeViewer treeViewer = createTreeViewer(main);
         treeViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        updateActionStates();
 
         return main;
     }
@@ -358,9 +357,8 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         Label label = new Label(main, SWT.NONE);
         label.setText(fName + ":"); //$NON-NLS-1$
 
-        fEndpointCombo = new Combo(main, SWT.READ_ONLY);
-        fEndpointCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        fEndpointCombo.addSelectionListener(this);
+        fEndPointLabel = new Label(main, SWT.NONE);
+        fEndPointLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         createActionsBar(main);
 
@@ -408,6 +406,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         fTreeViewer.setContentProvider(new FileTreeContentProvider());
         fTreeViewer.setLabelProvider(new ConnectionPointLabelProvider());
         fTreeViewer.setComparator(new FileTreeNameSorter());
+        fTreeViewer.addSelectionChangedListener(this);
         fTreeViewer.addDoubleClickListener(this);
 
         fTreeViewer.addDragSupport(DND.DROP_COPY | DND.DROP_DEFAULT,
@@ -416,34 +415,78 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
                 new Transfer[] { LocalSelectionTransfer.getTransfer() }, this);
 
         // builds the context menu
-        Menu menu = new Menu(tree);
-        fDeleteItem = new MenuItem(menu, SWT.PUSH);
-        fDeleteItem.setText(CoreStrings.DELETE);
-        fDeleteItem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
-                ISharedImages.IMG_ETOOL_DELETE));
-        fDeleteItem.addSelectionListener(this);
-        tree.setMenu(menu);
+        tree.setMenu(createMenu(tree));
 
         return fTreeViewer;
     }
 
+    private Menu createMenu(Control parent) {
+        Menu menu = new Menu(parent);
+        fOpenItem = new MenuItem(menu, SWT.PUSH);
+        fOpenItem.setText(CoreStrings.OPEN);
+        fOpenItem.setAccelerator(SWT.F3);
+        fOpenItem.addSelectionListener(this);
+
+        new MenuItem(menu, SWT.SEPARATOR);
+        fDeleteItem = new MenuItem(menu, SWT.PUSH);
+        fDeleteItem.setText(CoreStrings.DELETE);
+        fDeleteItem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
+                ISharedImages.IMG_ETOOL_DELETE));
+        fDeleteItem.setAccelerator(SWT.DEL);
+        fDeleteItem.addSelectionListener(this);
+
+        fRenameItem = new MenuItem(menu, SWT.PUSH);
+        fRenameItem.setText(CoreStrings.RENAME);
+        fRenameItem.setAccelerator(SWT.F2);
+        fRenameItem.addSelectionListener(this);
+
+        new MenuItem(menu, SWT.SEPARATOR);
+        fRefreshMenuItem = new MenuItem(menu, SWT.PUSH);
+        fRefreshMenuItem.setText(CoreStrings.REFRESH);
+        fRefreshMenuItem.setImage(SyncingUIPlugin.getImage("/icons/full/obj16/refresh.gif")); //$NON-NLS-1$
+        fRefreshMenuItem.setAccelerator(SWT.F5);
+        fRefreshMenuItem.addSelectionListener(this);
+
+        new MenuItem(menu, SWT.SEPARATOR);
+        fPropertiesItem = new MenuItem(menu, SWT.PUSH);
+        fPropertiesItem.setText(CoreStrings.PROPERTIES);
+        fPropertiesItem.setAccelerator(SWT.ALT | '\r');
+        fPropertiesItem.addSelectionListener(this);
+
+        return menu;
+    }
+
     private void goUp() {
-        int index = fEndpointCombo.getSelectionIndex();
-        if (index == fEndpointCombo.getItemCount() - 1) {
-            // we're at root already
-            return;
+        if (fEndPointData.size() > 1) {
+            updateContent(fEndPointData.get(fEndPointData.size() - 2));
+        } else {
+            // already at root
+            updateContent(fConnectionPoint);
         }
-        updateContent(fComboData.get(index + 1));
     }
 
     private void gotoHome() {
         updateContent(fConnectionPoint);
     }
 
-    private void delete(ISelection selection) {
-        if (!(selection instanceof IStructuredSelection)) {
-            return;
+    private void open(ISelection selection) {
+        Object object = ((IStructuredSelection) selection).getFirstElement();
+        if (object instanceof IAdaptable) {
+            IAdaptable adaptable = (IAdaptable) object;
+            IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
+            if (fileInfo.isDirectory()) {
+                // goes into the folder
+                updateContent(adaptable);
+            } else {
+                // opens the file in the editor
+                OpenFileAction action = new OpenFileAction(CoreUIUtils.getActivePage());
+                action.updateSelection((IStructuredSelection) selection);
+                action.run();
+            }
         }
+    }
+
+    private void delete(ISelection selection) {
         final FileSystemDeleteAction action = new FileSystemDeleteAction(getControl().getShell());
         action.updateSelection((IStructuredSelection) selection);
         action.addJobListener(new JobChangeAdapter() {
@@ -462,11 +505,45 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
         action.run();
     }
 
+    private void rename() {
+        FileSystemRenameAction action = new FileSystemRenameAction(getControl().getShell(),
+                fTreeViewer.getTree());
+        action.run();
+        refresh();
+    }
+
+    private void refresh(ISelection selection) {
+        if (selection.isEmpty()) {
+            // refreshes the root
+            refresh();
+        } else {
+            Object[] elements = ((IStructuredSelection) selection).toArray();
+            IResource resource;
+            for (Object element : elements) {
+                resource = null;
+                if (element instanceof IAdaptable) {
+                    resource = (IResource) ((IAdaptable) element).getAdapter(IResource.class);
+                }
+                if (resource != null) {
+                    try {
+                        resource.refreshLocal(IResource.DEPTH_INFINITE, null);
+                    } catch (CoreException e) {
+                    }
+                }
+                fTreeViewer.refresh(element);
+            }
+        }
+    }
+
+    private void openPropertyPage(ISelection selection) {
+        IAdaptable element = (IAdaptable) ((IStructuredSelection) selection).getFirstElement();
+        PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn(getControl().getShell(),
+                element, null, null, null);
+        dialog.open();
+    }
+
     private void setComboData(IAdaptable data) {
-        fComboData.clear();
-        fComboData.add(fConnectionPoint);
-        List<String> items = new ArrayList<String>();
-        items.add(fConnectionPoint.getName());
+        fEndPointData.clear();
 
         if (data instanceof IContainer) {
             // a workspace project/folder
@@ -479,9 +556,7 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
                 IContainer segmentPath = root;
                 for (String segment : segments) {
                     segmentPath = (IContainer) segmentPath.findMember(segment);
-                    // adds the path segment in reverse order
-                    fComboData.add(0, segmentPath);
-                    items.add(0, segment);
+                    fEndPointData.add(segmentPath);
                 }
             }
         } else {
@@ -490,15 +565,12 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             if (fileStore != null) {
                 IFileStore homeFileStore = SyncUtils.getFileStore(fConnectionPoint);
                 while (fileStore.getParent() != null && !fileStore.equals(homeFileStore)) {
-                    fComboData.add(fComboData.size() - 1, fileStore);
-                    items.add(items.size() - 1, fileStore.getName());
+                    fEndPointData.add(0, fileStore);
                     fileStore = fileStore.getParent();
                 }
             }
         }
-
-        fEndpointCombo.setItems(items.toArray(new String[items.size()]));
-        fEndpointCombo.setText(items.get(0));
+        fEndPointData.add(0, fConnectionPoint);
     }
 
     private void setPath(String path) {
@@ -530,6 +602,22 @@ public class ConnectionPointComposite implements SelectionListener, IDoubleClick
             }
         }
         fTreeViewer.setInput(rootElement);
+
+        updateActionStates();
+    }
+
+    private void updateActionStates() {
+        // disables the up button when it is at the root
+        fUpItem.setEnabled(fEndPointData.size() > 1);
+    }
+
+    private void updateMenuStates() {
+        ISelection selection = fTreeViewer.getSelection();
+        boolean hasSelection = !selection.isEmpty();
+        fOpenItem.setEnabled(hasSelection);
+        fDeleteItem.setEnabled(hasSelection);
+        fRenameItem.setEnabled(hasSelection);
+        fPropertiesItem.setEnabled(hasSelection);
     }
 
     private static IFileStore getFolderStore(IAdaptable destination) {

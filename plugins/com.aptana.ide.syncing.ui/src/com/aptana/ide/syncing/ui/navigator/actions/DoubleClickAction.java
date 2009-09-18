@@ -37,17 +37,13 @@ package com.aptana.ide.syncing.ui.navigator.actions;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.PartInitException;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
 import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
-import com.aptana.ide.syncing.ui.views.FTPManagerView;
 import com.aptana.ide.ui.io.navigator.actions.BaseDoubleClickAction;
 
 /**
@@ -69,12 +65,12 @@ public class DoubleClickAction extends BaseDoubleClickAction {
         Object element = selection.getFirstElement();
         if (element instanceof SiteConnectionPoint) {
             // double-clicked on a site; opens it in the FTP Manager view
-            openFTPManagerView((SiteConnectionPoint) element);
+            EditorUtils.openConnectionEditor((SiteConnectionPoint) element);
         } else if (element instanceof ProjectSiteConnection) {
             // double-clicked on a site inside a project; both expands the node
             // and opens the FTP Manager view
             super.run();
-            openFTPManagerView(findSite((ProjectSiteConnection) element));
+            EditorUtils.openConnectionEditor(findSite((ProjectSiteConnection) element));
         } else {
             if (selectionHasChildren()) {
                 super.run();
@@ -83,18 +79,6 @@ public class DoubleClickAction extends BaseDoubleClickAction {
                 // dialog
                 openNewSiteDialog();
             }
-        }
-    }
-
-    private void openFTPManagerView(SiteConnectionPoint site) {
-        try {
-            IViewPart view = CoreUIUtils.showView(FTPManagerView.ID);
-            if (view != null && view instanceof FTPManagerView) {
-                FTPManagerView ftpView = (FTPManagerView) view;
-                ftpView.setSelectedSite(site);
-            }
-        } catch (PartInitException e) {
-            SyncingUIPlugin.log(Messages.DoubleClickAction_ERR_FailToOpenFTPView, e);
         }
     }
 

@@ -132,19 +132,6 @@
       </viewerActionBinding>
    </extension>
    <extension
-         point="org.eclipse.ui.views">
-      <view
-            category="com.aptana.ide.js.ui"
-            class="com.aptana.ide.syncing.ui.views.FTPManagerView"
-            icon="icons/full/obj16/sync.gif"
-            id="com.aptana.ide.syncing.ui.views.FTPManagerView"
-            name="%view.FTPManager.name">
-         <description>
-            %view.FTPManager.description
-         </description>
-      </view>
-   </extension>
-   <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             adaptable="false"
@@ -574,6 +561,16 @@
       <decorator
             class="com.aptana.ide.syncing.ui.decorators.SiteConnectionDecorator">
       </decorator>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.aptana.ide.syncing.ui.editors.ConnectionEditor"
+            default="false"
+            icon="icons/full/obj16/sync.gif"
+            id="com.aptana.ide.syncing.ui.editors.ConnectionEditor"
+            name="Connection Explorer">
+      </editor>
    </extension>
 
 </plugin>

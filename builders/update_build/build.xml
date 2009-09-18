@@ -13,6 +13,7 @@
             Builds the Studio feature
     </description>
 
+	<property environment="env" />
 	<property file="build_local.properties" />
 	<!-- Set is.windows property IF the OS is from the Windows family -->
 	<condition property="is.windows" value="true">
@@ -168,12 +169,18 @@
 			<sequential>
 				<exec executable="/bin/bash" dir="@{file}" outputproperty="@{file}.committed.max">
 					<arg value="-c" />
-					<arg value="${git.executable} log --max-count=1 --pretty=format:'%ct'" />
+					<arg value="${git.executable} log --max-count=1 --pretty=format:'%ct' ." />
 				</exec>
 				<echo message="Replacing qualifier for @{file} with ${@{file}.committed.max}" />
 				<replaceregexp file="@{file}/build.properties" match="qualifier\s*=\s*context" replace="qualifier = ${@{file}.committed.max}" byline="true" />
 			</sequential>
 		</for>
 	</target>
-
+	
+	<target name="create-artifact-symlink">
+		<exec executable="unlink">
+			<arg value="${env.WORKSPACE}/build-artifacts" />
+		</exec>
+		<symlink link="${env.WORKSPACE}/build-artifacts" resource="${deploy.dir}" failonerror="false"/>
+	</target>
 </project>

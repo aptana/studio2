@@ -2,7 +2,7 @@
 <feature
       id="com.aptana.ide.feature"
       label="%featureName"
-      version="1.5.1.qualifier"
+      version="1.6.0.qualifier"
       provider-name="%providerName"
       plugin="com.aptana.ide.branding">
 
@@ -46,10 +46,6 @@
    <includes
          id="com.aptana.ide.feature.desktop.integration"
          version="0.0.0"/>
-
-   <requires>
-      <import plugin="org.eclipse.ui.intro"/>
-   </requires>
 
    <plugin
          id="com.aptana.ide.branding"

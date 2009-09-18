@@ -34,12 +34,16 @@
  */
 package com.aptana.ide.syncing.ui.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -49,6 +53,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
@@ -69,6 +75,10 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
  */
 public class FTPManagerComposite implements SelectionListener, IConnectionPointListener {
 
+    public static interface Listener {
+        public void siteConnectionChanged(SiteConnectionPoint site);
+    }
+
     private Composite fMain;
     private Combo fSitesCombo;
     private Button fEditButton;
@@ -77,12 +87,28 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     private Button fTransferRightButton;
     private Button fTransferLeftButton;
 
+    private SiteConnectionPoint fSelectedSite;
+    private List<Listener> fListeners;
+
     public FTPManagerComposite(Composite parent) {
+        fListeners = new ArrayList<Listener>();
         fMain = createControl(parent);
         CoreIOPlugin.getConnectionPointManager().addConnectionPointListener(this);
     }
 
+    public void addListener(Listener listener) {
+        if (!fListeners.contains(listener)) {
+            fListeners.add(listener);
+        }
+    }
+
+    public void removeListener(Listener listener) {
+        fListeners.remove(listener);
+    }
+
     public void dispose() {
+        fSelectedSite = null;
+        fListeners.clear();
         CoreIOPlugin.getConnectionPointManager().removeConnectionPointListener(this);
     }
 
@@ -95,6 +121,10 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     }
 
     public void setSelectedSite(SiteConnectionPoint site) {
+        if (site == fSelectedSite) {
+            return;
+        }
+        fSelectedSite = site;
         if (site == null) {
             fSitesCombo.clearSelection();
             fSource.setConnectionPoint(null);
@@ -104,6 +134,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
             fSource.setConnectionPoint(site.getSource());
             fTarget.setConnectionPoint(site.getDestination());
         }
+        fireSiteConnectionChanged(fSelectedSite);
     }
 
     public void widgetDefaultSelected(SelectionEvent e) {
@@ -161,20 +192,9 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
                 public void run() {
                     // updates the drop-down list
+                    String text = fSitesCombo.getText();
                     fSitesCombo.setItems(getExistingSiteNames());
-
-                    if (type == IConnectionPointEvent.POST_ADD) {
-                        // auto-selects the new site
-                        setSelectedSite((SiteConnectionPoint) connection);
-                    } else if (type == IConnectionPointEvent.POST_DELETE) {
-                        if (fSitesCombo.getItemCount() == 0) {
-                            setSelectedSite(null);
-                        } else {
-                            // selects the first site
-                            fSitesCombo.select(0);
-                            setSelectedSite(SiteConnectionManager.getExistingSites()[0]);
-                        }
-                    }
+                    fSitesCombo.setText(text);
                 }
             });
         }
@@ -221,31 +241,46 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     }
 
     private Composite createSitePresentation(Composite parent) {
-        Composite main = new Composite(parent, SWT.BORDER);
-        GridLayout layout = new GridLayout(3, false);
+        SashForm sash = new SashForm(parent, SWT.HORIZONTAL);
+        GridLayout layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-        main.setLayout(layout);
+        sash.setLayout(layout);
 
-        fSource = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Source);
+        // source end point
+        fSource = new ConnectionPointComposite(sash, Messages.FTPManagerComposite_LBL_Source);
         fSource.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        Composite directions = new Composite(main, SWT.NONE);
+        Composite right = new Composite(sash, SWT.NONE);
+        layout = new GridLayout(2, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        right.setLayout(layout);
+
+        // transfer arrows
+        Composite directions = new Composite(right, SWT.NONE);
         layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
         directions.setLayout(layout);
         directions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 
-        fTransferRightButton = new Button(directions, SWT.ARROW | SWT.RIGHT);
+        fTransferRightButton = new Button(directions, SWT.BORDER);
+        fTransferRightButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
+                ISharedImages.IMG_TOOL_FORWARD));
+        fTransferRightButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferRight);
         fTransferRightButton.addSelectionListener(this);
-        fTransferLeftButton = new Button(directions, SWT.ARROW | SWT.LEFT);
+        fTransferLeftButton = new Button(directions, SWT.BORDER);
+        fTransferLeftButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
+                ISharedImages.IMG_TOOL_BACK));
+        fTransferLeftButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferLeft);
         fTransferLeftButton.addSelectionListener(this);
 
-        fTarget = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Target);
+        // destination end point
+        fTarget = new ConnectionPointComposite(right, Messages.FTPManagerComposite_LBL_Target);
         fTarget.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        return main;
+        return sash;
     }
 
     private void transferItems(IAdaptable[] sourceItems, IAdaptable targetRoot,
@@ -265,6 +300,12 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
                 setSelectedSite(site);
                 break;
             }
+        }
+    }
+
+    private void fireSiteConnectionChanged(SiteConnectionPoint site) {
+        for (Listener listener : fListeners) {
+            listener.siteConnectionChanged(site);
         }
     }
 

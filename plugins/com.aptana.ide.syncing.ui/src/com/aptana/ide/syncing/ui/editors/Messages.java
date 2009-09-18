@@ -32,15 +32,15 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.navigator.actions;
+package com.aptana.ide.syncing.ui.editors;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.navigator.actions.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.editors.messages"; //$NON-NLS-1$
 
-    public static String DoubleClickAction_ERR_FailToOpenFTPView;
+    public static String EditorUtils_FailedToOpenEditor;
 
     static {
         // initialize resource bundle

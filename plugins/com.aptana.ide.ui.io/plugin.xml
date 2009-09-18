@@ -39,7 +39,7 @@
          </action>
          <action
                class="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
-               enablesFor="1"
+               enablesFor="+"
                icon="icons/full/etool16/delete.png"
                id="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
                label="%deleteAction.label"

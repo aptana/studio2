@@ -35,6 +35,8 @@
 
 package com.aptana.ide.ui.io.actions;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -44,8 +46,8 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
 
 import com.aptana.ide.core.IdeLog;
-import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.ui.io.IOUIPlugin;
 
 /**
@@ -58,20 +60,24 @@ public class DeleteConnectionAction extends ConnectionActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		if (connectionPoint == null) {
+	    final IConnectionPoint[] connections = getSelectedConnectionPoints();
+		if (connections.length == 0) {
 			return;
 		}
-		Job job = new Job(StringUtils.format("Delete {0}", connectionPoint.getName())) {
+		Job job = new Job("Deleting connection(s)") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				CoreIOPlugin.getConnectionPointManager().removeConnectionPoint(connectionPoint);
-				if (connectionPoint.canDisconnect()) {
-					try {
-						connectionPoint.disconnect(monitor);
-					} catch (CoreException e) {
-						IdeLog.logError(IOUIPlugin.getDefault(), "Disconnect failed", e);
-					}
-				}
+                for (IConnectionPoint connection : connections) {
+                    monitor.subTask(MessageFormat.format("Deleting {0}", connection));
+                    CoreIOPlugin.getConnectionPointManager().removeConnectionPoint(connection);
+                    if (connection.canDisconnect()) {
+                        try {
+                            connection.disconnect(monitor);
+                        } catch (CoreException e) {
+                            IdeLog.logError(IOUIPlugin.getDefault(), "Disconnect failed", e);
+                        }
+                    }
+                }
 				return Status.OK_STATUS;
 			}
 		};
@@ -80,6 +86,5 @@ public class DeleteConnectionAction extends ConnectionActionDelegate {
 		job.setRule((ISchedulingRule) connectionPoint.getAdapter(ISchedulingRule.class));
 		job.schedule();
 	}
-
 
 }

@@ -35,6 +35,9 @@
 
 package com.aptana.ide.ui.io.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -52,6 +55,12 @@ public abstract class ConnectionActionDelegate implements IObjectActionDelegate 
 	protected IConnectionPoint connectionPoint;
 	protected IWorkbenchPart targetPart;
 	
+	private List<IConnectionPoint> connectionPoints;
+
+	public ConnectionActionDelegate() {
+	    connectionPoints = new ArrayList<IConnectionPoint>();
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction, org.eclipse.ui.IWorkbenchPart)
 	 */
@@ -63,13 +72,22 @@ public abstract class ConnectionActionDelegate implements IObjectActionDelegate 
 	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
+	    connectionPoints.clear();
 		connectionPoint = null;
 		if (selection instanceof IStructuredSelection) {
-			Object object = ((IStructuredSelection) selection).getFirstElement();
-			if (object instanceof IConnectionPoint) {
-				connectionPoint = (IConnectionPoint) object;
-			}
+		    Object[] elements = ((IStructuredSelection) selection).toArray();
+		    for (Object element : elements) {
+		        if (element instanceof IConnectionPoint) {
+		            connectionPoints.add((IConnectionPoint) element);
+		        }
+		    }
+		    if (connectionPoints.size() > 0) {
+		        connectionPoint = connectionPoints.get(0);
+		    }
 		}
 	}
 
+	protected IConnectionPoint[] getSelectedConnectionPoints() {
+	    return connectionPoints.toArray(new IConnectionPoint[connectionPoints.size()]);
+	}
 }

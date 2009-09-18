@@ -40,7 +40,6 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
 
-    public static String BaseSyncAction_FailedToOpenFTPView;
     public static String BaseSyncAction_MessageTitle;
     public static String BaseSyncAction_Warning_NoCommonParent;
 
