@@ -39,7 +39,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.WeakHashMap;
 
+import javax.swing.Icon;
+import javax.swing.filechooser.FileSystemView;
+
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.resource.JFaceResources;
@@ -53,12 +57,18 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.misc.ExternalProgramImageDescriptor;
 
+import com.aptana.ide.core.PlatformUtils;
+
 /**
  * @author Max Stepanov
  *
  */
 @SuppressWarnings("restriction")
 public final class ImageUtils {
+
+    private static final String USER_HOME = PlatformUtils.expandEnvironmentStrings(PlatformUtils.HOME_DIRECTORY);
+    private static final String DESKTOP = PlatformUtils.expandEnvironmentStrings(PlatformUtils.DESKTOP_DIRECTORY);
+    private static final boolean ON_WINDOWS = Platform.OS_WIN32.equals(Platform.getOS());
 
 	private static javax.swing.JFileChooser jFileChooser;
 	private static final WeakHashMap<Object, String> iconToKeyMap = new WeakHashMap<Object, String>();
@@ -81,24 +91,29 @@ public final class ImageUtils {
 				jFileChooser = new javax.swing.JFileChooser();
 			}
 			String fileType = jFileChooser.getTypeDescription(file);
-			if (fileType == null || fileType.length() == 0 || "Directory".equals(fileType) || "Generic File".equals(fileType)) {
+			if (fileType == null || fileType.length() == 0 || "Directory".equals(fileType) || "System Folder".equals(fileType) || "Generic File".equals(fileType)) {
 				String name = file.getName();
 				try {
-					name = file.getCanonicalFile().getName();
-				} catch (IOException e) {
-				}
-				if (!file.isDirectory()) {
+                    name = file.getCanonicalFile().getName();
+                } catch (IOException e) {
+                    name = file.getName();
+                }
+                if (name.equals((new Path(DESKTOP)).lastSegment())) {
+                    fileType = "Desktop";
+                } else if (!file.isDirectory()) {
 					int index = name.lastIndexOf('.');
 					if (index >= 0 && index < name.length()-1) {
 						fileType = name.substring(index+1);
 					} else {
 						fileType = "unknown";
 					}
-				} else {
-					if ("Directory".equals(fileType) || name.length() == 0) {
-						fileType = file.getAbsolutePath();
-					}
-				}
+				} else if ("Directory".equals(fileType) || name.length() == 0) {
+                    fileType = file.getAbsolutePath();
+                } else if ("System Folder".equals(fileType)) {
+                    if (file.getAbsolutePath().equals(USER_HOME)) {
+                        fileType = "UserHome";
+                    }
+                }
 			}
 			String imageKey = "os.fileType_" + fileType;
 	
@@ -108,7 +123,12 @@ public final class ImageUtils {
 				return imageDescriptor;
 			}
 	
-			javax.swing.Icon icon = jFileChooser.getIcon(file);
+			Icon icon;
+			if (ON_WINDOWS) {
+			    icon = FileSystemView.getFileSystemView().getSystemIcon(file);
+			} else {
+			    icon = jFileChooser.getIcon(file);
+			}
 			if (icon != null) {
 				String existingImageKey = iconToKeyMap.get(icon);
 				if (existingImageKey != null) {
