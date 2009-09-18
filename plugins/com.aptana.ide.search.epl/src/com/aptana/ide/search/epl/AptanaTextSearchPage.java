@@ -9,7 +9,6 @@
  */
 package com.aptana.ide.search.epl;
 
-import java.io.File;
 import java.lang.reflect.Method;
 
 import org.eclipse.core.runtime.CoreException;
@@ -45,11 +44,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.PlatformUI;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.ui.views.fileexplorer.FileExplorerView;
 import com.aptana.ide.search.epl.filesystem.ui.text.FileSystemReplaceAction;
 import com.aptana.ide.search.epl.filesystem.ui.text.FileSystemSearchPage;
 
@@ -338,30 +335,6 @@ public class AptanaTextSearchPage extends TextSearchPage {
             return false;
         }
         return this.fSearchInDirectory.getSelection();
-    }
-
-    /**
-     * @see org.eclipse.search.internal.ui.text.TextSearchPage#setVisible(boolean)
-     */
-    public void setVisible(boolean visible) {
-        if (visible) {
-            FileExplorerView findView = (FileExplorerView) PlatformUI
-                    .getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                    .findView(FileExplorerView.ID);
-            if (findView != null) {
-                String lastSelected = FileExplorerView.lastSelected;
-                if (lastSelected != null) {
-                    File fs = new File(lastSelected);
-                    if (!fs.isDirectory()) {
-                        fs = fs.getParentFile();
-                    }
-                    if (fs != null && fs.exists()) {
-                        this.fDirectory.setText(fs.getPath());
-                    }
-                }
-            }
-        }
-        super.setVisible(visible);
     }
 
     /**

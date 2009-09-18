@@ -255,9 +255,13 @@ public class RecentFilesClient extends CometClient
 			EditorHistoryItem[] editorHistoryItems = editorHistory.getItems();
 			for (EditorHistoryItem editorHistoryItem : editorHistoryItems)
 			{
-				if (!editorHistoryItem.isRestored()) {
-					editorHistoryItem.restoreState();
-				}
+                try {
+                    if (!editorHistoryItem.isRestored()) {
+                        editorHistoryItem.restoreState();
+                    }
+                } catch (Exception e) {
+                }
+
 				IEditorInput editorInput = editorHistoryItem.getInput();
 				if (editorInput instanceof FileEditorInput)
 				{

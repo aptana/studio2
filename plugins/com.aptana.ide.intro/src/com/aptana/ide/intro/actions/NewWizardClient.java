@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2007 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -37,20 +37,14 @@ package com.aptana.ide.intro.actions;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 
 import com.aptana.ide.core.IdeLog;
-import com.aptana.ide.core.ui.AptanaNavigator;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.intro.IntroPlugin;
 import com.aptana.ide.server.jetty.comet.CometClient;
@@ -58,94 +52,68 @@ import com.aptana.ide.server.jetty.comet.CometClient;
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public class NewWizardClient extends CometClient
-{
+public class NewWizardClient extends CometClient {
 
-	/**
-	 * NEW_PROJECT
-	 */
-	public static final String NEW_PROJECT = "/portal/projects/new"; //$NON-NLS-1$
+    /**
+     * NEW_PROJECT
+     */
+    public static final String NEW_PROJECT = "/portal/projects/new"; //$NON-NLS-1$
 
-	/**
-	 * @see com.aptana.ide.server.jetty.comet.CometClient#getResponse(java.lang.String, java.lang.Object)
-	 */
-	protected Object getResponse(String toChannel, Object request)
-	{
-		if (NEW_PROJECT.equals(toChannel))
-		{
-			if (request instanceof String)
-			{
-				String id = (String) request;
-				final String wizardId = id.length() > 0 ? id : "com.aptana.ide.wizards.WebProjectWizard"; //$NON-NLS-1$
-				UIJob job = new UIJob(Messages.NewWizardClient_Job_NewProjectDialog)
-				{
+    /**
+     * @see com.aptana.ide.server.jetty.comet.CometClient#getResponse(java.lang.String,
+     *      java.lang.Object)
+     */
+    protected Object getResponse(String toChannel, Object request) {
+        if (NEW_PROJECT.equals(toChannel)) {
+            if (request instanceof String) {
+                String id = (String) request;
+                final String wizardId = id.length() > 0 ? id
+                        : "com.aptana.ide.wizards.WebProjectWizard"; //$NON-NLS-1$
 
-					public IStatus runInUIThread(IProgressMonitor monitor)
-					{
-						try
-						{
-							IWizardDescriptor descriptor = PlatformUI.getWorkbench().getNewWizardRegistry().findWizard(wizardId);
-							if (descriptor != null)
-							{
-								IWorkbenchWizard wizard = descriptor.createWizard();
-								IStructuredSelection selectionToPass = StructuredSelection.EMPTY;
-								IWorkbenchPart[] views = CoreUIUtils.getViewsInternal(AptanaNavigator.ID);
-								if (views != null && views.length == 1)
-								{
-									if (views[0] instanceof AptanaNavigator)
-									{
-										ISelection selection = ((AptanaNavigator) views[0]).getTreeViewer()
-												.getSelection();
-										if (selection instanceof IStructuredSelection)
-										{
-											selectionToPass = (IStructuredSelection) selection;
-										}
+                UIJob job = new UIJob(Messages.NewWizardClient_Job_NewProjectDialog) {
 
-									}
-								}
-								wizard.init(IntroPlugin.getDefault().getWorkbench(), selectionToPass);
-								if (wizard instanceof IWizard)
-								{
-									WizardDialog dialog = new WizardDialog(Display.getDefault().getActiveShell(),
-											(IWizard) wizard);
-									dialog.create();
-									if (wizard.getPageCount() > 0)
-									{
-										dialog.open();
-									}
-								}
+                    public IStatus runInUIThread(IProgressMonitor monitor) {
+                        try {
+                            IWizardDescriptor descriptor = PlatformUI.getWorkbench()
+                                    .getNewWizardRegistry().findWizard(wizardId);
+                            if (descriptor != null) {
+                                IWorkbenchWizard wizard = descriptor.createWizard();
+                                wizard.init(IntroPlugin.getDefault().getWorkbench(), ClientUtils
+                                        .getNavigatorSelection());
+                                if (wizard instanceof IWizard) {
+                                    WizardDialog dialog = new WizardDialog(CoreUIUtils
+                                            .getActiveShell(), wizard);
+                                    dialog.create();
+                                    if (wizard.getPageCount() > 0) {
+                                        dialog.open();
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            IdeLog.logInfo(IntroPlugin.getDefault(),
+                                    Messages.NewWizardClient_INF_ErrorLaunchWizard, e);
+                        }
+                        return Status.OK_STATUS;
+                    }
+                };
+                job.schedule();
+            }
 
-							}
-						}
-						catch (Exception e)
-						{
-							IdeLog.logInfo(IntroPlugin.getDefault(), Messages.NewWizardClient_INF_ErrorLaunchWizard, e);
-						}
-						return Status.OK_STATUS;
-					}
+        }
+        return null;
+    }
 
-				};
-				job.schedule();
-			}
+    /**
+     * @see com.aptana.ide.server.jetty.comet.CometClient#getSubscriptionIDs()
+     */
+    protected String[] getSubscriptionIDs() {
+        return new String[] { NEW_PROJECT };
+    }
 
-		}
-		return null;
-	}
-
-	/**
-	 * @see com.aptana.ide.server.jetty.comet.CometClient#getSubscriptionIDs()
-	 */
-	protected String[] getSubscriptionIDs()
-	{
-		return new String[] { NEW_PROJECT };
-	}
-
-	/**
-	 * @see com.aptana.ide.server.jetty.comet.CometClient#getID(java.lang.String)
-	 */
-	protected String getID(String msgId)
-	{
-		return NEW_PROJECT;
-	}
-
+    /**
+     * @see com.aptana.ide.server.jetty.comet.CometClient#getID(java.lang.String)
+     */
+    protected String getID(String msgId) {
+        return NEW_PROJECT;
+    }
 }

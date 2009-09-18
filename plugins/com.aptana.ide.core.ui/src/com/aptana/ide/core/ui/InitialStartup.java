@@ -62,6 +62,7 @@ import org.eclipse.ui.internal.EditorAreaHelper;
 import org.eclipse.ui.internal.LayoutPart;
 import org.eclipse.ui.internal.Perspective;
 import org.eclipse.ui.internal.WorkbenchPage;
+import org.eclipse.ui.navigator.CommonNavigator;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.db.EventInfo;
@@ -237,7 +238,7 @@ public class InitialStartup
 				try
 				{
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					if (part.getSite().getPart() instanceof AptanaNavigator)
+					if (part.getSite().getPart() instanceof CommonNavigator)
 					{
 						if (page instanceof WorkbenchPage)
 						{
@@ -278,7 +279,7 @@ public class InitialStartup
 				try
 				{
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					if (part.getSite().getPart() instanceof AptanaNavigator)
+					if (part.getSite().getPart() instanceof CommonNavigator)
 					{
 						WorkbenchPage wp = (WorkbenchPage) page;
 						Perspective persp = wp.getActivePerspective();

@@ -171,29 +171,8 @@
       <category
             id="com.aptana.ide.js.ui"
             name="%View.Aptana.name"/>
-      <view
-            category="com.aptana.ide.js.ui"
-            class="com.aptana.ide.core.ui.AptanaNavigator"
-            icon="icons/filenav_nav.gif"
-            id="com.aptana.ide.core.ui.AptanaNavigator"
-            name="%View.Project.name"/>
    </extension>
    
-   <extension
-         point="org.eclipse.ui.viewActions">
-      <viewContribution
-            id="AptanaNavigatorViewActions"
-            targetID="com.aptana.ide.core.ui.AptanaNavigator">
-         <action
-               class="com.aptana.ide.core.ui.actions.HelpAction"
-               icon="icons/help.png"
-               id="com.aptana.ide.core.ui.projects_view_context"
-               label="%Action.ProjectView.ShowHelp.label"
-               style="push"
-               toolbarPath="helpEnd"
-               tooltip="%Action.ProjectView.ShowHelp.tooltip"/>     
-   		</viewContribution>
-   </extension> 
    <extension
          point="org.eclipse.ui.console.consolePageParticipants">
       <consolePageParticipant

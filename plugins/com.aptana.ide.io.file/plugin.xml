@@ -61,19 +61,6 @@
    </extension>
    
    <extension
-         point="org.eclipse.ui.views">
-      <category
-            id="com.aptana.ide.js.ui"
-            name="%Views.aptana.name"/>
-       <view
-            allowMultiple="true"
-            category="com.aptana.ide.js.ui"
-            class="com.aptana.ide.core.ui.views.fileexplorer.FileExplorerView"
-            icon="icons/file_explorer.png"
-            id="com.aptana.ide.js.ui.views.FileExplorerView"
-            name="%View.file.name"/>
-   </extension>
-   <extension
          point="com.aptana.ide.core.protocols">
       <protocol
             allowNew="true"
@@ -94,21 +81,6 @@
       </protocol>
    </extension>
    
-  <extension
-         point="org.eclipse.ui.viewActions">
-      <viewContribution
-            id="FileViewActions"
-            targetID="com.aptana.ide.js.ui.views.FileExplorerView">
-         <action
-               class="com.aptana.ide.core.ui.actions.HelpAction"
-               icon="icons/help.png"
-               id="com.aptana.ide.io.file.file_view_context"
-               label="%Action.showhelp.label"
-               style="push"
-               toolbarPath="helpEnd"
-               tooltip="%Action.showhelp.tooltip"/>     
-   		</viewContribution>
-   </extension> 
    <extension point="org.eclipse.help.contexts"> 
 		<contexts file="contexts.xml" /> 
    </extension>

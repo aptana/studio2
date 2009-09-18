@@ -43,90 +43,79 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.progress.UIJob;
 
-import com.aptana.ide.core.ui.AptanaNavigator;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.server.jetty.comet.CometClient;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public class ShowProjectClient extends CometClient
-{
+public class ShowProjectClient extends CometClient {
 
-	/**
-	 * SHOW_PROJECT
-	 */
-	public static final String SHOW_PROJECT = "/portal/projects/show"; //$NON-NLS-1$
+    /**
+     * SHOW_PROJECT
+     */
+    public static final String SHOW_PROJECT = "/portal/projects/show"; //$NON-NLS-1$
 
-	/**
-	 * PROJECT
-	 */
-	public static final String PROJECT = "project"; //$NON-NLS-1$
+    /**
+     * PROJECT
+     */
+    public static final String PROJECT = "project"; //$NON-NLS-1$
 
-	/**
-	 * @see com.aptana.ide.server.jetty.comet.CometClient#getID(java.lang.String)
-	 */
-	protected String getID(String msgId)
-	{
-		return null;
-	}
+    private static final String NAVIGATOR_ID = "com.aptana.ide.ui.io.fileExplorerView"; //$NON-NLS-1$
 
-	/**
-	 * @see com.aptana.ide.server.jetty.comet.CometClient#getResponse(java.lang.String, java.lang.Object)
-	 */
-	protected Object getResponse(String toChannel, Object request)
-	{
-		if (SHOW_PROJECT.equals(toChannel))
-		{
-			if (request instanceof Map)
-			{
-				Map requestData = (Map) request;
-				if (requestData.containsKey(PROJECT))
-				{
-					final String projectName = requestData.get(PROJECT).toString();
-					UIJob job = new UIJob(Messages.ShowProjectClient_Job_DisplayProject)
-					{
+    /**
+     * @see com.aptana.ide.server.jetty.comet.CometClient#getID(java.lang.String)
+     */
+    protected String getID(String msgId) {
+        return null;
+    }
 
-						public IStatus runInUIThread(IProgressMonitor monitor)
-						{
-							for (IProject project : CoreUIUtils.getWorkspaceRoot().getProjects())
-							{
-								if (projectName.equals(project.getName()))
-								{
-									try
-									{
-										IViewPart view = CoreUIUtils.showView(AptanaNavigator.ID);
-										if (view instanceof AptanaNavigator)
-										{
-											AptanaNavigator nav = (AptanaNavigator) view;
-											nav.selectReveal(new StructuredSelection(project));
-											nav.getTreeViewer().expandToLevel(project, 1);
-										}
-									}
-									catch (PartInitException e)
-									{
-									}
-								}
-							}
-							return Status.OK_STATUS;
-						}
+    /**
+     * @see com.aptana.ide.server.jetty.comet.CometClient#getResponse(java.lang.String,
+     *      java.lang.Object)
+     */
+    protected Object getResponse(String toChannel, Object request) {
+        if (SHOW_PROJECT.equals(toChannel)) {
+            if (request instanceof Map) {
+                Map requestData = (Map) request;
+                if (requestData.containsKey(PROJECT)) {
+                    final String projectName = requestData.get(PROJECT).toString();
 
-					};
-					job.schedule();
-				}
-			}
-		}
-		return null;
-	}
+                    UIJob job = new UIJob(Messages.ShowProjectClient_Job_DisplayProject) {
 
-	/**
-	 * @see com.aptana.ide.server.jetty.comet.CometClient#getSubscriptionIDs()
-	 */
-	protected String[] getSubscriptionIDs()
-	{
-		return new String[] { SHOW_PROJECT };
-	}
+                        public IStatus runInUIThread(IProgressMonitor monitor) {
+                            for (IProject project : CoreUIUtils.getWorkspaceRoot().getProjects()) {
+                                if (projectName.equals(project.getName())) {
+                                    try {
+                                        IViewPart view = CoreUIUtils.showView(NAVIGATOR_ID);
+                                        if (view instanceof CommonNavigator) {
+                                            CommonNavigator nav = (CommonNavigator) view;
+                                            nav.selectReveal(new StructuredSelection(project));
+                                            nav.getCommonViewer().expandToLevel(project, 1);
+                                        }
+                                    } catch (PartInitException e) {
+                                    }
+                                    break;
+                                }
+                            }
+                            return Status.OK_STATUS;
+                        }
 
+                    };
+                    job.schedule();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @see com.aptana.ide.server.jetty.comet.CometClient#getSubscriptionIDs()
+     */
+    protected String[] getSubscriptionIDs() {
+        return new String[] { SHOW_PROJECT };
+    }
 }
