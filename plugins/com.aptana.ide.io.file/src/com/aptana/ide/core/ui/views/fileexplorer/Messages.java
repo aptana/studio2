@@ -585,21 +585,6 @@ public final class Messages extends NLS
 
 	public static String FtpBrowserContentProvider_WRN_UnableToConnect;
 
-	/**
-	 * PermissionPreferencePage_DirectoryGroupTitle
-	 */
-	public static String PermissionPreferencePage_DirectoryGroupTitle;
-
-	/**
-	 * PermissionPreferencePage_GroupTitle
-	 */
-	public static String PermissionPreferencePage_FileGroupTitle;
-
-	/**
-	 * PermissionPreferencePage_Notes
-	 */
-	public static String PermissionPreferencePage_Notes;
-
 	public static String RemoteConnectionSelectionPage_Connections;
 
 	public static String RemoteConnectionSelectionPage_ERR_SelectSiteOrCreateNewOne;
@@ -611,5 +596,4 @@ public final class Messages extends NLS
 	public static String RemoteConnectionSelectionPage_LBL_Options;
 
 	public static String RemoteConnectionSelectionPage_LBL_SelectRemoteLocationOfThisProject;
-
 }

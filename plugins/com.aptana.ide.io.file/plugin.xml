@@ -109,22 +109,6 @@
                tooltip="%Action.showhelp.tooltip"/>     
    		</viewContribution>
    </extension> 
-   <extension
-         point="org.eclipse.ui.preferencePages">
-
-    <page
-          category="com.aptana.ide.core.ui.preferences.GeneralPreferencePage"
-          class="com.aptana.ide.core.ui.views.fileexplorer.FileExplorerPreferencePage"
-          id="com.aptana.ide.core.ui.views.fileexplorer.FileExplorerPreferencePage"
-          name="%fileExplorerPreferencePage"/>
-    <page
-          category="com.aptana.ide.core.ui.preferences.GeneralPreferencePage"
-          class="com.aptana.ide.core.ui.views.fileexplorer.PermissionPreferencePage"
-          id="com.aptana.ide.core.ui.views.fileexplorer.PermissionPreferencePage"
-          name="%PermissionPreferencePage">
-    </page>
-   
-   </extension>
    <extension point="org.eclipse.help.contexts"> 
 		<contexts file="contexts.xml" /> 
    </extension>

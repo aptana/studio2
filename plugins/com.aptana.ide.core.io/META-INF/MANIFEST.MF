@@ -18,4 +18,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: com.aptana.ide.core.io,
  com.aptana.ide.core.io.auth,
  com.aptana.ide.core.io.efs,
+ com.aptana.ide.core.io.preferences,
  com.aptana.ide.core.io.vfs

@@ -694,5 +694,20 @@
          </enabledWhen>
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.aptana.ide.core.ui.preferences.GeneralPreferencePage"
+            class="com.aptana.ide.ui.io.preferences.PermissionPreferencePage"
+            id="com.aptana.ide.ui.io.preferences.PermissionPreferencePage"
+            name="%PreferencePage.permissions.label">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.aptana.ide.ui.io.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>
