@@ -27,8 +27,7 @@ Export-Package: com.aptana.ide.core,
  com.aptana.ide.core.online,
  com.aptana.ide.core.preferences,
  com.aptana.ide.core.resources,
- com.aptana.ide.core.xpath,
- com.eaio.uuid
+ com.aptana.ide.core.xpath
 Bundle-ClassPath: .,
  jsse.jar,
  jce.jar
