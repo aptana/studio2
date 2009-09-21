@@ -49,18 +49,15 @@ public class Messages extends NLS {
     public static String ConnectionPointComposite_TTP_Up;
 
     public static String FTPManagerComposite_ERR_EmptyName;
-
+    public static String FTPManagerComposite_ERR_NameExists;
     public static String FTPManagerComposite_LBL_SaveAs;
-
     public static String FTPManagerComposite_LBL_Sites;
     public static String FTPManagerComposite_LBL_Source;
     public static String FTPManagerComposite_LBL_Target;
     public static String FTPManagerComposite_NameInput_Message;
-
     public static String FTPManagerComposite_NameInput_Title;
-
-    public static String FTPManagerComposite_ERR_NameExists;
-
+    public static String FTPManagerComposite_TTP_Edit;
+    public static String FTPManagerComposite_TTP_SaveAs;
     public static String FTPManagerComposite_TTP_TransferLeft;
     public static String FTPManagerComposite_TTP_TransferRight;
 

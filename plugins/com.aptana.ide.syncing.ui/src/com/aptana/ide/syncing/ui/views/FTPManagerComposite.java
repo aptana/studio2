@@ -245,10 +245,12 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
         fEditButton = new Button(main, SWT.PUSH);
         fEditButton.setText(StringUtils.ellipsify(CoreStrings.EDIT));
+        fEditButton.setToolTipText(Messages.FTPManagerComposite_TTP_Edit);
         fEditButton.addSelectionListener(this);
 
         fSaveAsButton = new Button(main, SWT.PUSH);
         fSaveAsButton.setText(StringUtils.ellipsify(Messages.FTPManagerComposite_LBL_SaveAs));
+        fSaveAsButton.setToolTipText(Messages.FTPManagerComposite_TTP_SaveAs);
         fSaveAsButton.addSelectionListener(this);
 
         return main;
