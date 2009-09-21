@@ -41,8 +41,9 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.navigator.SiteConnections;
 
-public class SiteCategoryDecorator implements ILightweightLabelDecorator {
+public class SiteConnectionsDecorator implements ILightweightLabelDecorator {
 
     private static final ImageDescriptor IMAGE = SyncingUIPlugin
             .getImageDescriptor("icons/full/obj16/sync_decorator.gif"); //$NON-NLS-1$
@@ -52,7 +53,8 @@ public class SiteCategoryDecorator implements ILightweightLabelDecorator {
      *      org.eclipse.jface.viewers.IDecoration)
      */
     public void decorate(Object element, IDecoration decoration) {
-        if (element instanceof ISiteConnection) {
+        if (element instanceof ISiteConnection
+        		|| element instanceof SiteConnections) {
             addDecoration(decoration);
         }
     }

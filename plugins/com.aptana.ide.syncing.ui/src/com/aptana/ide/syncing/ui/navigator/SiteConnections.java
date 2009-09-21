@@ -32,63 +32,61 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
+
 package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.navigator.ICommonContentExtensionSite;
-import org.eclipse.ui.navigator.ICommonLabelProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 
-import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class SiteConnectionLabelProvider implements ICommonLabelProvider {
+public class SiteConnections implements IWorkbenchAdapter {
 
-    public void init(ICommonContentExtensionSite aConfig) {
-    }
+	private static SiteConnections instance;
 
-    public Image getImage(Object element) {
-        return null;
-    }
+    private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
 
-    public String getText(Object element) {
-        if (element instanceof ProjectSiteConnections) {
-            return ((ProjectSiteConnections) element).getLabel(element);
-        }
-        if (element instanceof ProjectSiteConnection) {
-            ProjectSiteConnection site = (ProjectSiteConnection) element;
-            IConnectionPoint connection = (IConnectionPoint) site
-                    .getAdapter(IConnectionPoint.class);
-            if (connection != null) {
-                return connection.getName();
-            }
-        }
-        return null;
-    }
+	private SiteConnections() {
+	}
+	
+	public static SiteConnections getInstance() {
+		if (instance == null) {
+			instance = new SiteConnections();
+		}
+		return instance;
+	}
 
-    public void addListener(ILabelProviderListener listener) {
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
+	 */
+	public Object[] getChildren(Object o) {
+		return SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+	}
 
-    public void dispose() {
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
+	 */
+	public ImageDescriptor getImageDescriptor(Object object) {
+		return IMAGE_DESCRIPTOR;
+	}
 
-    public boolean isLabelProperty(Object element, String property) {
-        return false;
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
+	 */
+	public String getLabel(Object o) {
+		return "Connections";
+	}
 
-    public void removeListener(ILabelProviderListener listener) {
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
+	 */
+	public Object getParent(Object o) {
+		return null;
+	}
 
-    public void restoreState(IMemento aMemento) {
-    }
-
-    public void saveState(IMemento aMemento) {
-    }
-
-    public String getDescription(Object anElement) {
-        return null;
-    }
 }

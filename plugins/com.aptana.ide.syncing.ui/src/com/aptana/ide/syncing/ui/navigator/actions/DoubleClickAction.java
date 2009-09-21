@@ -39,11 +39,9 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Shell;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.ui.editors.EditorUtils;
-import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
 import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
 import com.aptana.ide.ui.io.navigator.actions.BaseDoubleClickAction;
