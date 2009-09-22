@@ -65,7 +65,12 @@ public class EditorUtils {
                 if (window != null) {
                     IWorkbenchPage page = window.getActivePage();
                     try {
-                        page.openEditor(new ConnectionEditorInput(site), ConnectionEditor.ID);
+                        IEditorPart editorPart = page.openEditor(new ConnectionEditorInput(site),
+                                ConnectionEditor.ID);
+                        if (editorPart instanceof ConnectionEditor) {
+                            // in case the site information has changed
+                            ((ConnectionEditor) editorPart).setSelectedSite(site);
+                        }
                     } catch (PartInitException e) {
                         SyncingUIPlugin.log(MessageFormat.format(
                                 Messages.EditorUtils_FailedToOpenEditor, site.getName()), e);

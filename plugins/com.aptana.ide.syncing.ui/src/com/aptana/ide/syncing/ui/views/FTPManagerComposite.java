@@ -68,6 +68,7 @@ import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPointEvent;
 import com.aptana.ide.core.io.IConnectionPointListener;
 import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.syncing.core.connection.DefaultSiteConnectionPoint;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
@@ -128,15 +129,13 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     }
 
     public void setSelectedSite(SiteConnectionPoint site) {
-        if (site == fSelectedSite) {
-            return;
-        }
         fSelectedSite = site;
         if (site == null) {
             fSitesCombo.clearSelection();
             fSource.setConnectionPoint(null);
             fTarget.setConnectionPoint(null);
         } else {
+            updateSitesCombo();
             fSitesCombo.setText(site.getName());
             fSource.setConnectionPoint(site.getSource());
             fTarget.setConnectionPoint(site.getDestination());
@@ -202,9 +201,11 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
                 public void run() {
                     // updates the drop-down list
-                    String text = fSitesCombo.getText();
-                    fSitesCombo.setItems(getExistingSiteNames());
-                    fSitesCombo.setText(text);
+                    if (!fSitesCombo.isDisposed()) {
+                        String text = fSitesCombo.getText();
+                        updateSitesCombo();
+                        fSitesCombo.setText(text);
+                    }
                 }
             });
         }
@@ -236,7 +237,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         label.setText(Messages.FTPManagerComposite_LBL_Sites);
 
         fSitesCombo = new Combo(main, SWT.READ_ONLY);
-        fSitesCombo.setItems(getExistingSiteNames());
+        updateSitesCombo();
         fSitesCombo.select(0);
         GridData gridData = new GridData();
         gridData.widthHint = 250;
@@ -300,7 +301,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     }
 
     private void saveAs() {
-        // builds the initial value from the current selection
+        // builds the initial name from the current selection
         String initialValue = fSitesCombo.getText();
         if (initialValue.length() > 0) {
             initialValue = "Copy of " + initialValue; //$NON-NLS-1$
@@ -311,10 +312,12 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
                 new IInputValidator() {
 
                     public String isValid(String newText) {
-                        if (newText.trim().length() == 0) {
+                        if (newText.length() == 0) {
                             return Messages.FTPManagerComposite_ERR_EmptyName;
                         }
-                        if (fSitesCombo.indexOf(newText) > -1) {
+                        if (fSitesCombo.indexOf(newText) > -1
+                                || newText.equals(DefaultSiteConnectionPoint.getInstance()
+                                        .getName())) {
                             return MessageFormat.format(
                                     Messages.FTPManagerComposite_ERR_NameExists, newText);
                         }
@@ -327,6 +330,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         if (dialog.getReturnCode() != Window.OK) {
             return;
         }
+        // creates the new connection
         String name = dialog.getValue();
         IConnectionPoint connection = null;
         try {
@@ -370,6 +374,14 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
                 setSelectedSite(site);
                 break;
             }
+        }
+    }
+
+    private void updateSitesCombo() {
+        if (fSelectedSite == DefaultSiteConnectionPoint.getInstance()) {
+            fSitesCombo.setItems(new String[] { fSelectedSite.getName() });
+        } else {
+            fSitesCombo.setItems(getExistingSiteNames());
         }
     }
 

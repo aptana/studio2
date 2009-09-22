@@ -328,10 +328,40 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     protected Composite createControl(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
-        main.setLayout(new GridLayout());
+        GridLayout layout = new GridLayout();
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        main.setLayout(layout);
 
         Composite top = createTopComposite(main);
         top.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        Composite path = createPathComposite(main);
+        path.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        TreeViewer treeViewer = createTreeViewer(main);
+        treeViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        updateActionStates();
+
+        return main;
+    }
+
+    private Composite createTopComposite(Composite parent) {
+        Composite main = new Composite(parent, SWT.NONE);
+        main.setLayout(new GridLayout(2, false));
+
+        Label label = new Label(main, SWT.NONE);
+        label.setText(fName + ":"); //$NON-NLS-1$
+        fEndPointLabel = new Label(main, SWT.NONE);
+        fEndPointLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        return main;
+    }
+
+    private Composite createPathComposite(Composite parent) {
+        Composite main = new Composite(parent, SWT.NONE);
+        main.setLayout(new GridLayout(2, false));
 
         fPathLink = new Link(main, SWT.NONE);
         fPathLink.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -345,28 +375,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             }
         });
         fPathLink.addSelectionListener(this);
-
-        TreeViewer treeViewer = createTreeViewer(main);
-        treeViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        updateActionStates();
-
-        return main;
-    }
-
-    private Composite createTopComposite(Composite parent) {
-        Composite main = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout(3, false);
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        main.setLayout(layout);
-
-        Label label = new Label(main, SWT.NONE);
-        label.setText(fName + ":"); //$NON-NLS-1$
-
-        fEndPointLabel = new Label(main, SWT.NONE);
-        fEndPointLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
         createActionsBar(main);
 
         return main;
