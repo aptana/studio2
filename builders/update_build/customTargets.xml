@@ -194,7 +194,7 @@
 
 		<!-- Generate the release notes -->
 		<copy file="${buildDirectory}/plugins/com.aptana.ide.core.ui/content/release_notes/release_notes.xml" tofile="${p2.repo.dir}/release_notes.xml" />
-		<get src="http://www.aptana.com/rss/release_notes_asap.xsl" dest="${p2.repo.dir}/release_notes.xsl" />
+		<get src="http://www2.aptana.com/rss/release_notes_asap.xsl" dest="${p2.repo.dir}/release_notes.xsl" />
 		<replace file="${p2.repo.dir}/release_notes.xsl" token="{build.revision}" value="${version.full}" />
 		<xslt in="${p2.repo.dir}/release_notes.xml" out="${p2.repo.dir}/release_notes.html" style="${p2.repo.dir}/release_notes.xsl" />
 		<delete file="${p2.repo.dir}/release_notes.xml" />
