@@ -51,18 +51,25 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
 
+import com.aptana.ide.core.StringUtils;
+import com.aptana.ide.core.io.preferences.IPreferenceConstants;
+import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.aptana.ide.ui.UIUtils;
+import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
+import com.aptana.ide.ui.io.preferences.PermissionsGroup;
 
 /**
  * @author Max Stepanov
@@ -72,6 +79,10 @@ import com.aptana.ide.ui.io.internal.Utils;
 public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchPropertyPage {
 
 	private static final int MAX_VALUE_WIDTH = 80;
+
+	private PermissionsGroup fPermissionsGroup;
+	
+	private IFileInfo fFileInfo;
 
 	//private EncodingFieldEditor encodingEditor;
 	//private LineDelimiterEditor lineDelimiterEditor;
@@ -88,10 +99,9 @@ public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchProp
 			label.setText(IDEWorkbenchMessages.ResourceInfoPage_noResource);
 			return label;
 		}
-		IFileInfo fileInfo = null;
 		try {
 			if (getElement().getAdapter(File.class) != null) {
-				fileInfo = fileStore.fetchInfo(EFS.NONE, new NullProgressMonitor());
+				fFileInfo = fileStore.fetchInfo(EFS.NONE, new NullProgressMonitor());
 			} else {
 				final IFileInfo[] result = new IFileInfo[1];
 				ProgressMonitorDialog dlg = new ProgressMonitorDialog(parent.getShell());
@@ -111,28 +121,42 @@ public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchProp
 					 throw (CoreException) e.getTargetException();
 				} catch (InterruptedException e) {
 				}
-				fileInfo = result[0];
+				fFileInfo = result[0];
 			}
 		} catch (CoreException e) {
 			UIUtils.showErrorMessage("Fetch info error", e);
 		}
-		if (fileInfo == null) {
+		if (fFileInfo == null) {
 			Label label = new Label(parent, SWT.NONE);
 			label.setText(IDEWorkbenchMessages.ResourceInfoPage_noResource);
 			return label;
 		}
-		
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(GridLayoutFactory.swtDefaults().margins(0, 0).create());
 		composite.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
-		createBasicInfoGroup(composite, fileStore, fileInfo);
+		Composite basicInfo = createBasicInfoGroup(composite, fileStore, fFileInfo);
+        basicInfo.setLayoutData(GridDataFactory.fillDefaults().create());
 
 		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		separator.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
-		createStateGroup(composite, fileStore, fileInfo);
-		
+		Composite state = createStateGroup(composite, fileStore, fFileInfo);
+		state.setLayoutData(GridDataFactory.fillDefaults().create());
+
+        if (fFileInfo instanceof IExtendedFileInfo) {
+            IExtendedFileInfo extendedInfo = (IExtendedFileInfo) fFileInfo;
+            Composite owner = createOwnerGroup(composite, extendedInfo);
+            owner.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).indent(0, 10)
+                    .create());
+
+            Composite permissions = createPermissionsGroup(composite, extendedInfo);
+            permissions.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).indent(0, 5)
+                    .create());
+
+        }
+
 		/* TODO
 		new Label(composite, SWT.NONE); // a vertical spacer
 		encodingEditor = new EncodingFieldEditor("",
@@ -161,9 +185,48 @@ public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchProp
 		return composite;
 	}
 
+    public boolean performOk() {
+        if (fFileInfo != null && (fFileInfo instanceof IExtendedFileInfo)) {
+            long permissions = fPermissionsGroup.getPermissions();
+            IExtendedFileInfo extendedInfo = (IExtendedFileInfo) fFileInfo;
+            if (permissions != extendedInfo.getPermissions()) {
+                // the permissions have been modified
+                extendedInfo.setPermissions(permissions);
+
+                IFileStore fileStore = Utils.getFileStore(getElement());
+                if (fileStore != null) {
+                    try {
+                        fileStore.putInfo(fFileInfo, IExtendedFileInfo.SET_PERMISSIONS,
+                                new NullProgressMonitor());
+                    } catch (CoreException e) {
+                        UIUtils.showErrorMessage("Error storing file info", e);
+                    }
+                }
+            }
+        }
+
+        return super.performOk();
+    }
+
+    protected void performDefaults() {
+        if (fPermissionsGroup != null) {
+            if (fFileInfo.isDirectory()) {
+                fPermissionsGroup.setPermissions(doGetPreferenceStore().getLong(
+                        IPreferenceConstants.DIRECTORY_PERMISSION));
+            } else {
+                fPermissionsGroup.setPermissions(doGetPreferenceStore().getLong(
+                        IPreferenceConstants.FILE_PERMISSION));
+            }
+        }
+        super.performDefaults();
+    }
+
+    protected IPreferenceStore doGetPreferenceStore() {
+        return IOUIPlugin.getDefault().getPreferenceStore();
+    }
+
 	private Composite createBasicInfoGroup(Composite parent, IFileStore fileStore, IFileInfo fileInfo) {
 		Composite container = new Composite(parent, SWT.NULL);
-		container.setLayoutData(GridDataFactory.fillDefaults().create());
 		container.setLayout(GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).create());
 
 		Label label = new Label(container, SWT.NONE);
@@ -210,10 +273,9 @@ public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchProp
 		return container;
 	}
 
-	private void createStateGroup(Composite parent, IFileStore fileStore, IFileInfo fileInfo) {
+	private Composite createStateGroup(Composite parent, IFileStore fileStore, IFileInfo fileInfo) {
 		Composite container = new Composite(parent, SWT.NULL);
 		container.setLayout(GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).create());
-		container.setLayoutData(GridDataFactory.fillDefaults().create());
 
 		Label timeStampLabel = new Label(container, SWT.NONE);
 		timeStampLabel.setText(IDEWorkbenchMessages.ResourceInfo_lastModified);
@@ -224,6 +286,36 @@ public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchProp
 		timeStampText.setBackground(timeStampText.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 		timeStampText.setLayoutData(GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).create());
 
+		return container;
 	}
 
+    private Composite createOwnerGroup(Composite parent, IExtendedFileInfo fileInfo) {
+        Group container = new Group(parent, SWT.NONE);
+        container.setText("Owner and Group");
+        container.setLayout(GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).create());
+
+        Label label = new Label(container, SWT.NONE);
+        label.setText(StringUtils.makeFormLabel("Owner"));
+        Text text = new Text(container, SWT.READ_ONLY);
+        text.setText(fileInfo.getOwner());
+        text.setLayoutData(GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+                false).create());
+
+        label = new Label(container, SWT.NONE);
+        label.setText(StringUtils.makeFormLabel("Group"));
+        text = new Text(container, SWT.READ_ONLY);
+        text.setText(fileInfo.getGroup());
+        text.setLayoutData(GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+                false).create());
+
+        return container;
+    }
+
+    private Composite createPermissionsGroup(Composite parent, IExtendedFileInfo fileInfo) {
+        fPermissionsGroup = new PermissionsGroup(parent);
+        fPermissionsGroup.setText("Permissions");
+        fPermissionsGroup.setPermissions(fileInfo.getPermissions());
+
+        return (Composite) fPermissionsGroup.getControl();
+    }
 }

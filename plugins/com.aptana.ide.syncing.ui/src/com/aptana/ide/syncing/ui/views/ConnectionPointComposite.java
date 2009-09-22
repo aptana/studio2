@@ -34,6 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.views;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +75,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
@@ -115,7 +117,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
     private ToolItem fUpItem;
     private ToolItem fRefreshItem;
     private ToolItem fHomeItem;
-    private Label fPathLabel;
+    private Link fPathLink;
 
     private TreeViewer fTreeViewer;
     private MenuItem fOpenItem;
@@ -220,6 +222,10 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             refresh(fTreeViewer.getSelection());
         } else if (source == fPropertiesItem) {
             openPropertyPage(fTreeViewer.getSelection());
+        } else if (source == fPathLink) {
+            // e.text has the index; needs to increment by 1 since 0 for
+            // fEndPointData is the root
+            updateContent(fEndPointData.get(Integer.parseInt(e.text) + 1));
         }
     }
 
@@ -327,17 +333,18 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         Composite top = createTopComposite(main);
         top.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        fPathLabel = new Label(main, SWT.NONE);
-        fPathLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        fPathLink = new Link(main, SWT.NONE);
+        fPathLink.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         // uses a bold font for path
-        final Font font = new Font(fPathLabel.getDisplay(), SWTUtils.boldFont(fPathLabel.getFont()));
-        fPathLabel.setFont(font);
-        fPathLabel.addDisposeListener(new DisposeListener() {
+        final Font font = new Font(fPathLink.getDisplay(), SWTUtils.boldFont(fPathLink.getFont()));
+        fPathLink.setFont(font);
+        fPathLink.addDisposeListener(new DisposeListener() {
 
             public void widgetDisposed(DisposeEvent e) {
                 font.dispose();
             }
         });
+        fPathLink.addSelectionListener(this);
 
         TreeViewer treeViewer = createTreeViewer(main);
         treeViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -574,10 +581,20 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
     }
 
     private void setPath(String path) {
-        if (!path.startsWith("/")) { //$NON-NLS-1$
-            path = "/" + path; //$NON-NLS-1$
+        String separator = "/"; //$NON-NLS-1$
+        if (!path.startsWith(separator)) {
+            path = separator + path;
         }
-        fPathLabel.setText(Messages.ConnectionPointComposite_LBL_Path + path);
+        String[] folders = path.split(separator);
+        StringBuilder linkPath = new StringBuilder(separator);
+        int index = 0;
+        for (String folder : folders) {
+            if (folder.length() > 0) {
+                linkPath.append(MessageFormat.format("<a href=\"{0}\">{1}</a>", index++, folder)); //$NON-NLS-1$
+                linkPath.append(separator);
+            }
+        }
+        fPathLink.setText(Messages.ConnectionPointComposite_LBL_Path + linkPath.toString());
     }
 
     private void updateContent(IAdaptable rootElement) {

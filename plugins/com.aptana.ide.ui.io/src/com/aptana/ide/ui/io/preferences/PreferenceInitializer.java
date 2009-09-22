@@ -17,7 +17,7 @@
  * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  * 
  * Aptana provides a special exception to allow redistribution of this file
- * with certain other free and open source software ("FOSS") code and certain additional terms
+ * with certain Eclipse Public Licensed code and certain additional terms
  * pursuant to Section 7 of the GPL. You may view the exception and these
  * terms on the web at http://www.aptana.com/legal/gpl/.
  * 
@@ -32,43 +32,23 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.views;
+package com.aptana.ide.ui.io.preferences;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.jface.preference.IPreferenceStore;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.core.io.preferences.IPreferenceConstants;
+import com.aptana.ide.ui.io.IOUIPlugin;
 
-/**
- * @author Michael Xia (mxia@aptana.com)
- */
-public class FTPManagerView extends ViewPart {
+public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-    public static final String ID = "com.aptana.ide.syncing.ui.views.FTPManagerView"; //$NON-NLS-1$
-
-    private FTPManagerComposite fFTPComposite;
-
-    public FTPManagerView() {
-    }
-
-    public void setSelectedSite(SiteConnectionPoint site) {
-        fFTPComposite.setSelectedSite(site);
-    }
+    private static final long DEFAULT_FILE_PERMISSIONS = 0666;
+    private static final long DEFAULT_DIRECTORY_PERMISSIONS = 0777;
 
     @Override
-    public void createPartControl(Composite parent) {
-        fFTPComposite = new FTPManagerComposite(parent);
+    public void initializeDefaultPreferences() {
+        IPreferenceStore store = IOUIPlugin.getDefault().getPreferenceStore();
+        store.setDefault(IPreferenceConstants.FILE_PERMISSION, DEFAULT_FILE_PERMISSIONS);
+        store.setDefault(IPreferenceConstants.DIRECTORY_PERMISSION, DEFAULT_DIRECTORY_PERMISSIONS);
     }
-
-    @Override
-    public void dispose() {
-        fFTPComposite.dispose();
-        super.dispose();
-    }
-
-    @Override
-    public void setFocus() {
-        fFTPComposite.setFocus();
-    }
-
 }

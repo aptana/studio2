@@ -34,14 +34,19 @@
  */
 package com.aptana.ide.syncing.ui.views;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
@@ -65,6 +70,7 @@ import com.aptana.ide.core.io.IConnectionPointListener;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
@@ -82,6 +88,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     private Composite fMain;
     private Combo fSitesCombo;
     private Button fEditButton;
+    private Button fSaveAsButton;
     private ConnectionPointComposite fSource;
     private ConnectionPointComposite fTarget;
     private Button fTransferRightButton;
@@ -146,9 +153,12 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         if (source == fSitesCombo) {
             update();
         } else if (source == fEditButton) {
+            // opens the connection manager with the current connection selected
             NewSiteDialog dialog = new NewSiteDialog(fMain.getShell(), false);
             dialog.setSelectedSite(fSitesCombo.getText());
             dialog.open();
+        } else if (source == fSaveAsButton) {
+            saveAs();
         } else if (source == fTransferRightButton) {
             transferItems(fSource.getSelectedElements(), fTarget.getCurrentInput(),
                     new JobChangeAdapter() {
@@ -220,7 +230,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
     private Composite createSiteInfo(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
-        main.setLayout(new GridLayout(3, false));
+        main.setLayout(new GridLayout(4, false));
 
         Label label = new Label(main, SWT.NONE);
         label.setText(Messages.FTPManagerComposite_LBL_Sites);
@@ -236,6 +246,10 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         fEditButton = new Button(main, SWT.PUSH);
         fEditButton.setText(StringUtils.ellipsify(CoreStrings.EDIT));
         fEditButton.addSelectionListener(this);
+
+        fSaveAsButton = new Button(main, SWT.PUSH);
+        fSaveAsButton.setText(StringUtils.ellipsify(Messages.FTPManagerComposite_LBL_SaveAs));
+        fSaveAsButton.addSelectionListener(this);
 
         return main;
     }
@@ -281,6 +295,60 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         fTarget.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         return sash;
+    }
+
+    private void saveAs() {
+        // builds the initial value from the current selection
+        String initialValue = fSitesCombo.getText();
+        if (initialValue.length() > 0) {
+            initialValue = "Copy of " + initialValue; //$NON-NLS-1$
+        }
+        InputDialog dialog = new InputDialog(fMain.getShell(),
+                Messages.FTPManagerComposite_NameInput_Title,
+                Messages.FTPManagerComposite_NameInput_Message, initialValue,
+                new IInputValidator() {
+
+                    public String isValid(String newText) {
+                        if (newText.trim().length() == 0) {
+                            return Messages.FTPManagerComposite_ERR_EmptyName;
+                        }
+                        if (fSitesCombo.indexOf(newText) > -1) {
+                            return MessageFormat.format(
+                                    Messages.FTPManagerComposite_ERR_NameExists, newText);
+                        }
+                        return null;
+                    }
+
+                });
+        dialog.open();
+
+        if (dialog.getReturnCode() != Window.OK) {
+            return;
+        }
+        String name = dialog.getValue();
+        IConnectionPoint connection = null;
+        try {
+            connection = CoreIOPlugin.getConnectionPointManager().createConnectionPoint(
+                    SiteConnectionPoint.TYPE);
+        } catch (CoreException e) {
+            return;
+        }
+        if (!(connection instanceof SiteConnectionPoint)) {
+            // should not happen
+            return;
+        }
+        SiteConnectionPoint newSite = (SiteConnectionPoint) connection;
+        newSite.setName(name);
+        if (fSelectedSite != null) {
+            newSite.setSourceCategory(fSelectedSite.getSourceCategory());
+            newSite.setSource(fSelectedSite.getSource());
+            newSite.setDestinationCategory(fSelectedSite.getDestinationCategory());
+            newSite.setDestination(fSelectedSite.getDestination());
+        }
+        CoreIOPlugin.getConnectionPointManager().addConnectionPoint(connection);
+
+        // opens the connection in a new editor
+        EditorUtils.openConnectionEditor(newSite);
     }
 
     private void transferItems(IAdaptable[] sourceItems, IAdaptable targetRoot,
