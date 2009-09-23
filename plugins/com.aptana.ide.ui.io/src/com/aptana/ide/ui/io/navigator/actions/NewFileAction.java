@@ -54,6 +54,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
+import com.aptana.ide.core.io.preferences.IPreferenceConstants;
+import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
 import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
@@ -121,6 +123,15 @@ public class NewFileAction extends BaseSelectionListenerAction {
                     try {
                         out.close();
                     } catch (IOException e) {
+                    }
+
+                    // sets the permissions
+                    IFileInfo newInfo = newFile.fetchInfo(EFS.NONE, monitor);
+                    if (newInfo instanceof IExtendedFileInfo) {
+                        IExtendedFileInfo extendedInfo = (IExtendedFileInfo) newInfo;
+                        extendedInfo.setPermissions(IOUIPlugin.getDefault().getPreferenceStore()
+                                .getLong(IPreferenceConstants.FILE_PERMISSION));
+                        newFile.putInfo(extendedInfo, IExtendedFileInfo.SET_PERMISSIONS, monitor);
                     }
 
                     // opens it in the editor
