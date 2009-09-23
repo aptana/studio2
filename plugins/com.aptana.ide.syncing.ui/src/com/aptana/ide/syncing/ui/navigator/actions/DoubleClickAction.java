@@ -41,8 +41,8 @@ import org.eclipse.swt.widgets.Shell;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
+import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
 import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
 import com.aptana.ide.ui.io.navigator.actions.BaseDoubleClickAction;
 
@@ -75,16 +75,16 @@ public class DoubleClickAction extends BaseDoubleClickAction {
             if (selectionHasChildren()) {
                 super.run();
             } else {
-                // no connection point has been defined; opens the new site
-                // dialog
+                // no connection point has been defined; opens the new site dialog
                 openNewSiteDialog();
             }
         }
     }
 
     private void openNewSiteDialog() {
-        NewSiteDialog dialog = new NewSiteDialog(fShell, true);
-        dialog.open();
+        SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fShell);
+        dlg.setCreateNew("New Connection", null, null);
+        dlg.open();
     }
 
     private static ISiteConnection findSite(ProjectSiteConnection connection) {

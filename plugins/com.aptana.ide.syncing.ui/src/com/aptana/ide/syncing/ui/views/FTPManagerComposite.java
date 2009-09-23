@@ -63,7 +63,7 @@ import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
 import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
@@ -144,9 +144,9 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         if (source == fSitesCombo) {
             update();
         } else if (source == fEditButton) {
-            NewSiteDialog dialog = new NewSiteDialog(fMain.getShell(), false);
-            dialog.setSelectedSite(fSitesCombo.getText());
-            dialog.open();
+            SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fMain.getShell());
+            dlg.setSelection(null/*fSitesCombo.getText()*/); // TODO: site connection
+            dlg.open();
         } else if (source == fTransferRightButton) {
             transferItems(fSource.getSelectedElements(), fTarget.getCurrentInput(),
                     new JobChangeAdapter() {

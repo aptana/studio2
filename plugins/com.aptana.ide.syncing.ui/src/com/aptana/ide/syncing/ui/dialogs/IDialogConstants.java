@@ -32,23 +32,17 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.internal;
 
-import org.eclipse.swt.widgets.Shell;
+package com.aptana.ide.syncing.ui.dialogs;
 
-import com.aptana.ide.syncing.core.ISiteConnection;
-import com.aptana.ide.ui.IPropertyDialog;
+/**
+ * @author Max Stepanov
+ *
+ */
+public interface IDialogConstants extends org.eclipse.jface.dialogs.IDialogConstants {
 
-public class SitePropertyDialog extends NewSiteDialog implements IPropertyDialog {
-
-    public SitePropertyDialog(Shell parentShell) {
-        super(parentShell);
-    }
-
-    public void setPropertySource(Object element) {
-        if (element instanceof ISiteConnection) {
-            setSelectedSite(((ISiteConnection) element).getName());
-        }
-    }
+    public int APPLY_ID = 31;
+    
+    public String APPLY_LABEL = "Apply";
 
 }
