@@ -69,13 +69,25 @@ public final class ConnectionPointUtils {
 	public static IConnectionPoint[] getRemoteConnectionPoints() {
 		List<IConnectionPoint> list = new ArrayList<IConnectionPoint>();
 		for (IConnectionPoint i : CoreIOPlugin.getConnectionPointManager().getConnectionPoints()) {
-			if (i instanceof IBaseRemoteConnectionPoint) {
+			if (isRemote(i)) {
 				list.add(i);
 			}
 		}
 		return list.toArray(new IConnectionPoint[list.size()]);
 	}
 	
+	public static boolean isLocal(IConnectionPoint connectionPoint) {
+		return connectionPoint instanceof LocalConnectionPoint;
+	}
+
+	public static boolean isWorkspace(IConnectionPoint connectionPoint) {
+		return connectionPoint instanceof WorkspaceConnectionPoint;
+	}
+
+	public static boolean isRemote(IConnectionPoint connectionPoint) {
+		return connectionPoint instanceof IBaseRemoteConnectionPoint;
+	}
+
 	public static IConnectionPoint createLocalConnectionPoint(IPath path) {
 		return new LocalConnectionPoint(path);
 	}

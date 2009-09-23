@@ -70,7 +70,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
 	/**
 	 * 
 	 */
-	public SiteConnection() {
+	/* package */ SiteConnection() {
 	}
 	
 	/* (non-Javadoc)

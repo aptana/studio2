@@ -35,6 +35,8 @@
 
 package com.aptana.ide.syncing.core;
 
+import org.eclipse.core.runtime.CoreException;
+
 import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
 
 
@@ -47,6 +49,9 @@ public interface ISiteConnectionManager {
 	public void addSiteConnection(ISiteConnection siteConnection);
 	public void removeSiteConnection(ISiteConnection siteConnection);
 
+	ISiteConnection createSiteConnection();
+	ISiteConnection cloneSiteConnection(ISiteConnection siteConnection) throws CoreException;
+	
 	public ISiteConnection[] getSiteConnections();
 
 	public void addListener(ISiteConnectionListener listener);

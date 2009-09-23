@@ -178,6 +178,23 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 	}
 
 	/* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.core.ISiteConnectionManager#cloneSiteConnection(com.aptana.ide.syncing.core.ISiteConnection)
+	 */
+	public ISiteConnection cloneSiteConnection(ISiteConnection siteConnection) throws CoreException {
+		if (!(siteConnection instanceof SiteConnection)) {
+			throw new IllegalArgumentException();
+		}
+		return restoreConnection(storeConnection((SiteConnection) siteConnection));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.core.ISiteConnectionManager#createSiteConnection()
+	 */
+	public ISiteConnection createSiteConnection() {
+		return new SiteConnection();
+	}
+
+	/* (non-Javadoc)
 	 * @see com.aptana.ide.syncing.core.ISiteConnectionManager#getSiteConnections()
 	 */
 	public ISiteConnection[] getSiteConnections() {
