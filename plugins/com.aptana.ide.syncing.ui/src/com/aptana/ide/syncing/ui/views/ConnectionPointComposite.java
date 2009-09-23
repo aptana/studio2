@@ -88,6 +88,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.aptana.ide.core.CoreStrings;
+import com.aptana.ide.core.FileUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
@@ -585,12 +586,32 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         if (!path.startsWith(separator)) {
             path = separator + path;
         }
-        String[] folders = path.split(separator);
+
         StringBuilder linkPath = new StringBuilder(separator);
-        int index = 0;
-        for (String folder : folders) {
-            if (folder.length() > 0) {
-                linkPath.append(MessageFormat.format("<a href=\"{0}\">{1}</a>", index++, folder)); //$NON-NLS-1$
+        String displayedPath = FileUtils.compressPath(path, 50);
+        if (displayedPath.equals(path)) {
+            String[] folders = path.split(separator);
+            for (int i = 1; i < folders.length; ++i) {
+                linkPath.append(MessageFormat.format("<a href=\"{0}\">{1}</a>", i - 1, folders[i])); //$NON-NLS-1$
+                linkPath.append(separator);
+            }
+        } else {
+            // deals with the compression
+            String[] paths = displayedPath.split("/.../"); //$NON-NLS-1$
+            String beginPath = paths[0];
+            String[] beginFolders = beginPath.split(separator);
+            for (int i = 1; i < beginFolders.length; ++i) {
+                linkPath.append(MessageFormat.format(
+                        "<a href=\"{0}\">{1}</a>", i - 1, beginFolders[i])); //$NON-NLS-1$
+                linkPath.append(separator);
+            }
+            linkPath.append("...").append(separator); //$NON-NLS-1$
+            String endPath = paths[1];
+            String[] endFolders = endPath.split(separator);
+            int startIndex = path.split(separator).length - 1 - endFolders.length;
+            for (int i = 0; i < endFolders.length; ++i) {
+                linkPath.append(MessageFormat.format(
+                        "<a href=\"{0}\">{1}</a>", startIndex + i, endFolders[i])); //$NON-NLS-1$
                 linkPath.append(separator);
             }
         }
