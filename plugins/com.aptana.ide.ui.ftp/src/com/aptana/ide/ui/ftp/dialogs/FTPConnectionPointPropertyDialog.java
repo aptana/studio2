@@ -151,8 +151,11 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		}
 	}
 	
-	public IConnectionPoint getConnectionPoint() {
-	    return ftpConnectionPoint;
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.ui.IPropertyDialog#getPropertySource()
+	 */
+	public Object getPropertySource() {
+		return ftpConnectionPoint;
 	}
 
 	protected ConnectionPointType getConnectionPointType() {

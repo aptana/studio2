@@ -109,6 +109,13 @@ public class WorkspaceConnectionPropertyDialog extends TitleAreaDialog implement
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.ui.IPropertyDialog#getPropertySource()
+	 */
+	public Object getPropertySource() {
+		return workspaceConnectionPoint;
+	}
+
 	private String getConnectionPointType() {
 		return WorkspaceConnectionPoint.TYPE;
 	}

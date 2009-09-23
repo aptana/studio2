@@ -104,6 +104,13 @@ public class LocalConnectionPropertyDialog extends TitleAreaDialog implements IP
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.ui.IPropertyDialog#getPropertySource()
+	 */
+	public Object getPropertySource() {
+		return localConnectionPoint;
+	}
+
 	private String getConnectionPointType() {
 		return LocalConnectionPoint.TYPE;
 	}

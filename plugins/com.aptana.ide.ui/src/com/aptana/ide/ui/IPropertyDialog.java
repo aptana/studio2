@@ -42,4 +42,5 @@ package com.aptana.ide.ui;
 public interface IPropertyDialog {
 
 	public void setPropertySource(Object element);
+	public Object getPropertySource();
 }
