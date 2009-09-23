@@ -61,6 +61,8 @@ public interface IConnectionPointManager extends IAdaptable {
 	public IConnectionPointCategory[] getConnectionPointCategories();
 	public IConnectionPointCategory getConnectionPointCategory(String categoryId);
 	
+	public IConnectionPoint[] getConnectionPoints();
+	
 	public void addConnectionPointListener(IConnectionPointListener listener);
 	public void removeConnectionPointListener(IConnectionPointListener listener);
 }

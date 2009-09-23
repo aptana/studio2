@@ -267,6 +267,13 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 	    return categories.get(categoryId);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IConnectionPointManager#getConnectionPoints()
+	 */
+	public IConnectionPoint[] getConnectionPoints() {
+		return connections.toArray(new IConnectionPoint[connections.size()]);
+	}
+
 	private IMemento storeConnectionPoint(ConnectionPoint connectionPoint) {
 		IMemento saveMemento = XMLMemento.createWriteRoot(ELEMENT_ROOT)
 									.createChild(ELEMENT_CONNECTION);

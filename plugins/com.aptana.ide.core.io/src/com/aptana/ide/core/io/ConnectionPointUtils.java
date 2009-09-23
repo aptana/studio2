@@ -36,6 +36,8 @@
 package com.aptana.ide.core.io;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.IPath;
@@ -62,6 +64,16 @@ public final class ConnectionPointUtils {
 			}
 		}
 		return null;
+	}
+	
+	public static IConnectionPoint[] getRemoteConnectionPoints() {
+		List<IConnectionPoint> list = new ArrayList<IConnectionPoint>();
+		for (IConnectionPoint i : CoreIOPlugin.getConnectionPointManager().getConnectionPoints()) {
+			if (i instanceof IBaseRemoteConnectionPoint) {
+				list.add(i);
+			}
+		}
+		return list.toArray(new IConnectionPoint[list.size()]);
 	}
 	
 	public static IConnectionPoint createLocalConnectionPoint(IPath path) {
