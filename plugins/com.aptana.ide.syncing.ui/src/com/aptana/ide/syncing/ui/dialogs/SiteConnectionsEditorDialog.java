@@ -35,11 +35,18 @@
 
 package com.aptana.ide.syncing.ui.dialogs;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -67,6 +74,7 @@ import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnection;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.ui.internal.SiteConnectionPropertiesWidget;
+import com.aptana.ide.ui.UIUtils;
 
 /**
  * @author Max Stepanov
@@ -74,7 +82,7 @@ import com.aptana.ide.syncing.ui.internal.SiteConnectionPropertiesWidget;
  */
 public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 
-	private ISiteConnection selection;
+	private ISiteConnection initialSelection;
 	
 	private ListViewer sitesViewer;
 	private Button addButton;
@@ -92,14 +100,17 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
         setHelpAvailable(false);
         
 		sites.addAll(Arrays.asList(SyncingPlugin.getSiteConnectionManager().getSiteConnections()));
+		if (!sites.isEmpty()) {
+			setSelection(sites.get(0));
+		}
 	}
 
 	public void setCreateNew(String name, IAdaptable source, IAdaptable destination) {
 		IConnectionPoint sourceConnection = null;
 		IConnectionPoint destinationConnection = null;
 
-		SiteConnection siteConnection = new SiteConnection();
-		siteConnection.setName(name);
+		SiteConnection siteConnection = (SiteConnection) SyncingPlugin.getSiteConnectionManager().createSiteConnection();
+		siteConnection.setName(createUniqueSiteName(name));
 		siteConnection.setSource(sourceConnection);
 		siteConnection.setDestination(destinationConnection);
 		sites.add(siteConnection);
@@ -149,7 +160,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 		removeButton.setToolTipText(CoreStrings.REMOVE);
 		
 		/* column 2 */
-		sitePropertiesWidget = new SiteConnectionPropertiesWidget(sashForm, SWT.NONE);
+		sitePropertiesWidget = new SiteConnectionPropertiesWidget(sashForm, SWT.NONE, this);
 		sitePropertiesWidget.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 
 		sashForm.setWeights(new int[] { 30, 70 });
@@ -157,13 +168,34 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 		/* -- */
 		sitesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				sitePropertiesWidget.setSource((ISiteConnection) ((IStructuredSelection) event.getSelection()).getFirstElement());
+				if (!event.getSelection().isEmpty() && doSelectionChange()) {
+					sitePropertiesWidget.setSource((ISiteConnection) ((IStructuredSelection) event.getSelection()).getFirstElement());
+				} else {
+					sitesViewer.setSelection(new StructuredSelection(sitePropertiesWidget.getSource()), true);
+				}
 			}
 		});
 		sitesViewer.setInput(sites);
 		
-		if (selection != null) {
-			sitesViewer.setSelection(new StructuredSelection(selection), true);
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Action("Duplicate") {
+			@Override
+			public void run() {
+				ISiteConnection siteConnection = (ISiteConnection) ((IStructuredSelection) sitesViewer.getSelection()).getFirstElement();
+				if (siteConnection != null && doSelectionChange()) {
+					try {
+						siteConnection = SyncingPlugin.getSiteConnectionManager().cloneSiteConnection(siteConnection);
+						sitesViewer.setSelection(new StructuredSelection(siteConnection), true);
+					} catch (CoreException e) {
+						UIUtils.showErrorMessage("Duplicate error", e);
+					}
+				}
+			}
+		});
+		sitesViewer.getControl().setMenu(menuManager.createContextMenu(sitesViewer.getControl()));
+		
+		if (initialSelection != null) {
+			sitesViewer.setSelection(new StructuredSelection(initialSelection), true);
 		}
 
 		return dialogArea;
@@ -173,6 +205,26 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 		createButton(parent, IDialogConstants.APPLY_ID, IDialogConstants.APPLY_LABEL, false);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
+	}
+	
+	protected boolean doSelectionChange() {
+		if (sitePropertiesWidget.isChanged()) {
+			MessageDialog dlg = new MessageDialog(getShell(), "Confirmition",
+				null,
+				StringUtils.format("The site \"{0}\" has been modified. Save changes ?", sitePropertiesWidget.getSource().getName()),
+				MessageDialog.QUESTION,
+				new String[] { IDialogConstants.NO_LABEL, IDialogConstants.YES_LABEL, IDialogConstants.CANCEL_LABEL },
+				1);
+			switch (dlg.open()) {
+			case 1:
+				if (sitePropertiesWidget.applyChanges()) {
+					break;
+				}
+			case 2:
+				return false;
+			}
+		}
+		return true;
 	}
 
 	protected void buttonPressed(int buttonId) {
@@ -189,14 +241,39 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 	}
 
     protected boolean applyPressed() {
-    	return true;
+    	return !sitePropertiesWidget.isChanged() || sitePropertiesWidget.applyChanges();
     }
     
     public void setSelection(ISiteConnection selection) {
-    	this.selection = selection;
+    	this.initialSelection = selection;
     	if (sitesViewer != null) {
     		sitesViewer.setSelection(new StructuredSelection(selection), true);
     	}
+    }
+    
+    private static String createUniqueSiteName(String baseName) {
+    	Pattern pattern = Pattern.compile("^(.*) (\\d+)$");
+    	Matcher matcher = pattern.matcher(baseName);
+    	if (matcher.matches()) {
+    		baseName = matcher.group(1);
+    	}
+    	int lastIndex = Integer.MIN_VALUE;
+    	for (ISiteConnection i : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
+    		String siteName = i.getName();
+    		if (siteName.startsWith(baseName)) {
+    	    	matcher = pattern.matcher(siteName);
+    	    	if (matcher.matches()) {
+    	    		try {
+    	    			lastIndex = Math.max(lastIndex, Integer.parseInt(matcher.group(2)));
+					} catch (NumberFormatException e) {
+					}
+    	    	}
+    		}
+    	}
+    	if (lastIndex == Integer.MIN_VALUE) {
+    		return baseName;
+    	}
+    	return MessageFormat.format("{0} {1}", baseName, lastIndex + 1); //$NON-NLS-1
     }
     
     private class SitesLabelProvider extends LabelProvider {
