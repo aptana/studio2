@@ -187,6 +187,9 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         switch (event.getKind()) {
 		case SiteConnectionEvent.POST_ADD:
 		case SiteConnectionEvent.POST_DELETE:
+			if (fMain.isDisposed()) {
+				return;
+			}
             fMain.getDisplay().asyncExec(new Runnable() {
 
                 public void run() {
