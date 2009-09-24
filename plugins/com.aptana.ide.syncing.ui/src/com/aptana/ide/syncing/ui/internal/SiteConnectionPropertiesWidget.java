@@ -63,13 +63,12 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.internal.ide.dialogs.FileFolderSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -145,10 +144,23 @@ public class SiteConnectionPropertiesWidget extends Composite {
 	}
 
 	public void setSource(ISiteConnection source) {
-		if (this.source == source) {
+		if (this.source == source && source != null) {
 			return;
 		}
 		this.source = source;
+		if (source == null) {
+			((GridData) getLayoutData()).exclude = true;
+			setVisible(false);
+			getParent().layout();
+			validateAll();
+			changed = false;
+			return;
+		}
+		if (!isVisible()) {
+			((GridData) getLayoutData()).exclude = false;
+			setVisible(true);
+			getParent().layout();
+		}
 		nameText.setText(source.getName());
 		sourceEditor.setTarget(source.getSource());
 		destinationEditor.setTarget(source.getDestination());
@@ -190,22 +202,24 @@ public class SiteConnectionPropertiesWidget extends Composite {
 	
 	private boolean validateAll() {
 		String message = null;
-		String name = nameText.getText().trim();
-		if (name.length() == 0) {
-			message = "Please specify site name";
-		} else {
-	    	for (ISiteConnection i : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
-	    		if (i != source && name.equals(i.getName())) {
-	    			message = StringUtils.format("More than one connections have the name ''{0}''."
-	    					+" Please assign an unique name for each connection.", name);
-	    		}
-	    	}
-		}
-		if (message == null) {
-			message = sourceEditor.validate();
-		}
-		if (message == null) {
-			message = destinationEditor.validate();
+		if (source != null) {
+			String name = nameText.getText().trim();
+			if (name.length() == 0) {
+				message = "Please specify site name";
+			} else {
+		    	for (ISiteConnection i : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
+		    		if (i != source && name.equals(i.getName())) {
+		    			message = StringUtils.format("More than one connections have the name ''{0}''."
+		    					+" Please assign an unique name for each connection.", name);
+		    		}
+		    	}
+			}
+			if (message == null) {
+				message = sourceEditor.validate();
+			}
+			if (message == null) {
+				message = destinationEditor.validate();
+			}
 		}
 		dialog.setErrorMessage(message);
 		return (message == null);
@@ -261,11 +275,14 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		private String name;
 		private Button remoteRadio;
 		private ComboViewer remotesViewer;
+		private Button remoteNewButton;
 		private Button projectRadio;
 		private ComboViewer projectViewer;
 		private Text projectFolderText;
+		private Button projectBrowseButton;
 		private Button filesystemRadio;
 		private Text filesystemFolderText;
+		private Button filesystemBrowseButton;
 				
 		public TargetEditor(String name) {
 			this.name = name;
@@ -286,9 +303,9 @@ public class SiteConnectionPropertiesWidget extends Composite {
 			remotesViewer.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
 			remotesViewer.setInput(ConnectionPointUtils.getRemoteConnectionPoints());
 			
-			Button newRemoteButton = new Button(parent, SWT.PUSH);
-			newRemoteButton.setText(StringUtils.ellipsify(CoreStrings.NEW));
-			newRemoteButton.setLayoutData(GridDataFactory.swtDefaults().exclude(!showRemote).create());
+			remoteNewButton = new Button(parent, SWT.PUSH);
+			remoteNewButton.setText(StringUtils.ellipsify(CoreStrings.NEW));
+			remoteNewButton.setLayoutData(GridDataFactory.swtDefaults().exclude(!showRemote).create());
 					
 			/* row 2 */
 			projectRadio = new Button(parent, SWT.RADIO);
@@ -312,7 +329,7 @@ public class SiteConnectionPropertiesWidget extends Composite {
 			projectFolderText = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
 			projectFolderText.setLayoutData(GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).create());
 			
-			Button projectBrowseButton = new Button(parent, SWT.PUSH);
+			projectBrowseButton = new Button(parent, SWT.PUSH);
 			projectBrowseButton.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
 			projectBrowseButton.setLayoutData(GridDataFactory.swtDefaults().create());
 
@@ -325,7 +342,7 @@ public class SiteConnectionPropertiesWidget extends Composite {
 			filesystemFolderText.setLayoutData(GridDataFactory.swtDefaults()
 					.align(SWT.FILL, SWT.CENTER).span(2, 1).create());
 
-			Button filesystemBrowseButton = new Button(parent, SWT.PUSH);
+			filesystemBrowseButton = new Button(parent, SWT.PUSH);
 			filesystemBrowseButton.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
 			filesystemBrowseButton.setLayoutData(GridDataFactory.swtDefaults().create());
 
@@ -335,6 +352,7 @@ public class SiteConnectionPropertiesWidget extends Composite {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					changed = true;
+					setEnabled(getType());
 					validateAll();
 				}
 			};
@@ -345,15 +363,6 @@ public class SiteConnectionPropertiesWidget extends Composite {
 			remotesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 				public void selectionChanged(SelectionChangedEvent event) {
 					changed = true;
-					setType(REMOTE);
-					validateAll();
-				}
-			});
-			newRemoteButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					changed = true;
-					setType(REMOTE);
 					validateAll();
 				}
 			});
@@ -361,32 +370,12 @@ public class SiteConnectionPropertiesWidget extends Composite {
 			projectViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 				public void selectionChanged(SelectionChangedEvent event) {
 					changed = true;
-					setType(PROJECT);
 					projectFolderText.setText(Path.ROOT.toPortableString());
 					validateAll();
 				}
 			});
-			Listener listener = new Listener() {
-				public void handleEvent(Event event) {
-					changed = true;
-					setType(PROJECT);
-					validateAll();
-				}
-			};
-			projectFolderText.addListener(SWT.Activate, listener);
-			projectBrowseButton.addListener(SWT.Selection, listener);
 
-			listener = new Listener() {
-				public void handleEvent(Event event) {
-					changed = true;
-					setType(FILESYSTEM);
-					validateAll();
-				}
-			};
-			filesystemFolderText.addListener(SWT.Activate, listener);
-			filesystemBrowseButton.addListener(SWT.Selection, listener);
-
-			newRemoteButton.addSelectionListener(new SelectionAdapter() {
+			remoteNewButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					IConnectionPoint result = createNewRemoteConnection();
@@ -444,6 +433,59 @@ public class SiteConnectionPropertiesWidget extends Composite {
 				filesystemRadio.setSelection(true);
 				break;
 			}
+			setEnabled(type);
+		}
+		
+		private int getType() {
+			if (remoteRadio.getSelection()) {
+				return REMOTE;
+			} else if (projectRadio.getSelection()) {
+				return PROJECT;
+			} else if (filesystemRadio.getSelection()) {
+				return FILESYSTEM;
+			}
+			return -1;
+		}
+
+		private void setEnabled(int type) {
+			setEnabled(type, true);
+			switch (type) {
+			case REMOTE:
+				setEnabled(PROJECT, false);
+				setEnabled(FILESYSTEM, false);
+				break;
+			case PROJECT:
+				setEnabled(REMOTE, false);
+				setEnabled(FILESYSTEM, false);
+				break;
+			case FILESYSTEM:
+				setEnabled(REMOTE, false);
+				setEnabled(PROJECT, false);
+				break;
+			default:
+				setEnabled(REMOTE, false);
+				setEnabled(PROJECT, false);
+				setEnabled(FILESYSTEM, false);
+				break;
+			}			
+		}
+
+		private void setEnabled(int type, boolean enabled) {
+			switch (type) {
+			case REMOTE:
+				remotesViewer.getControl().setEnabled(enabled);
+				remoteNewButton.setEnabled(enabled);
+				break;
+			case PROJECT:
+				projectViewer.getControl().setEnabled(enabled);
+				projectFolderText.setEnabled(enabled);
+				projectBrowseButton.setEnabled(enabled);
+				break;
+			case FILESYSTEM:
+				filesystemFolderText.setEnabled(enabled);
+				filesystemBrowseButton.setEnabled(enabled);
+				break;
+			}			
 		}
 		
 		private void setTarget(IConnectionPoint connectionPoint) {

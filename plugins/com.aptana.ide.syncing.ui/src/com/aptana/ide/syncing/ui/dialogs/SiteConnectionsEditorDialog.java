@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -59,6 +60,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -114,6 +117,9 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 		siteConnection.setSource(sourceConnection);
 		siteConnection.setDestination(destinationConnection);
 		sites.add(siteConnection);
+		if (sitesViewer != null) {
+			sitesViewer.refresh();
+		}
 		setSelection(siteConnection);
 	}
 	
@@ -160,24 +166,80 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 		removeButton.setToolTipText(CoreStrings.REMOVE);
 		
 		/* column 2 */
-		sitePropertiesWidget = new SiteConnectionPropertiesWidget(sashForm, SWT.NONE, this);
+		Composite composite = new Composite(sashForm, SWT.NONE);
+		composite.setLayout(GridLayoutFactory.fillDefaults().create());
+		sitePropertiesWidget = new SiteConnectionPropertiesWidget(composite, SWT.NONE, this);
 		sitePropertiesWidget.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
+		sitePropertiesWidget.setSource(null);
 
 		sashForm.setWeights(new int[] { 30, 70 });
 				
 		/* -- */
 		sitesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				if (!event.getSelection().isEmpty() && doSelectionChange()) {
-					sitePropertiesWidget.setSource((ISiteConnection) ((IStructuredSelection) event.getSelection()).getFirstElement());
-				} else {
-					sitesViewer.setSelection(new StructuredSelection(sitePropertiesWidget.getSource()), true);
+				ISiteConnection selection = (ISiteConnection) ((IStructuredSelection) event.getSelection()).getFirstElement();
+				if (selection != sitePropertiesWidget.getSource()) {
+					if (doSelectionChange()) {
+						sitePropertiesWidget.setSource(selection);						
+					} else {
+						sitesViewer.setSelection(new StructuredSelection(sitePropertiesWidget.getSource()), true);
+					}
 				}
+				removeButton.setEnabled(!event.getSelection().isEmpty());
 			}
 		});
 		sitesViewer.setInput(sites);
 		
 		MenuManager menuManager = new MenuManager();
+		createActions(menuManager);
+		sitesViewer.getControl().setMenu(menuManager.createContextMenu(sitesViewer.getControl()));
+				
+		addButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (doSelectionChange()) {
+					setCreateNew("New Connection", null, null);
+				} else {
+					sitesViewer.setSelection(new StructuredSelection(sitePropertiesWidget.getSource()), true);
+				}
+			}
+		});
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (!sitesViewer.getSelection().isEmpty()) {
+					if (MessageDialog.openConfirm(getShell(), "Delete confirmition", "Delete selected connection ?")) {
+						ISiteConnection selection = (ISiteConnection) ((IStructuredSelection) sitesViewer.getSelection()).getFirstElement();
+						SyncingPlugin.getSiteConnectionManager().removeSiteConnection(selection);
+						sites.remove(selection);
+						sitePropertiesWidget.setSource(null);
+						sitesViewer.refresh();
+						if (!sites.isEmpty()) {
+							setSelection(sites.get(0));
+						}
+					}
+				}
+			}
+		});
+
+		return dialogArea;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.TitleAreaDialog#createContents(org.eclipse.swt.widgets.Composite)
+	 */
+	@Override
+	protected Control createContents(Composite parent) {
+		try {
+			return super.createContents(parent);
+		} finally {
+			if (initialSelection != null) {
+				sitesViewer.setSelection(new StructuredSelection(initialSelection), true);
+			}			
+		}
+	}
+
+	protected void createActions(IMenuManager menuManager) {
 		menuManager.add(new Action("Duplicate") {
 			@Override
 			public void run() {
@@ -191,14 +253,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 					}
 				}
 			}
-		});
-		sitesViewer.getControl().setMenu(menuManager.createContextMenu(sitesViewer.getControl()));
-		
-		if (initialSelection != null) {
-			sitesViewer.setSelection(new StructuredSelection(initialSelection), true);
-		}
-
-		return dialogArea;
+		});		
 	}
 
 	protected void createButtonsForButtonBar(Composite parent) {
@@ -225,6 +280,23 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
 			}
 		}
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.TitleAreaDialog#setErrorMessage(java.lang.String)
+	 */
+	@Override
+	public void setErrorMessage(String newErrorMessage) {
+		super.setErrorMessage(newErrorMessage);
+		boolean hasError = (newErrorMessage != null);
+		Button button = getButton(IDialogConstants.APPLY_ID);
+		if (button != null) {
+			button.setEnabled(!hasError);
+		}
+		button = getButton(IDialogConstants.OK_ID);
+		if (button != null) {
+			button.setEnabled(!hasError);
+		}
 	}
 
 	protected void buttonPressed(int buttonId) {
