@@ -35,66 +35,67 @@
 
 package com.aptana.ide.core.io;
 
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 
 /**
  * @author Max Stepanov
  *
  */
-/* package */ class ConnectionPointCategory implements IConnectionPointCategory {
+public final class ConnectionPointUtils {
 
-	private final String id;
-	private final String name;
-	private final int order;
-	private List<ConnectionPointType> types = new ArrayList<ConnectionPointType>();
-	
 	/**
 	 * 
 	 */
-	public ConnectionPointCategory(String id, String name, int order) {
-		this.id = id;
-		this.name = name;
-		this.order = order;
+	private ConnectionPointUtils() {
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Object o) {
-		if (order != ((ConnectionPointCategory) o).order) {
-			return order - ((ConnectionPointCategory) o).order;
+	public static IConnectionPoint findConnectionPoint(URI uri) {
+		for (IConnectionPoint i : CoreIOPlugin.getConnectionPointManager().getConnectionPoints()) {
+			if (i.getRootURI().equals(uri)) {
+				return i;
+			}
 		}
-		return name.compareTo(((ConnectionPointCategory) o).name);
+		return null;
 	}
-
-	/* package */ void addType(ConnectionPointType type) {
-		types.add(type);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.Identifiable#getId()
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.IConnectionPointCategory#getName()
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.IConnectionPointCategory#getConnectionPoints()
-	 */
-	public IConnectionPoint[] getConnectionPoints() {
+	
+	public static IConnectionPoint[] getRemoteConnectionPoints() {
 		List<IConnectionPoint> list = new ArrayList<IConnectionPoint>();
-		for (ConnectionPointType type : types) {
-			list.addAll(Arrays.asList(ConnectionPointManager.getInstance().getConnectionPointsForType(type.getType())));
+		for (IConnectionPoint i : CoreIOPlugin.getConnectionPointManager().getConnectionPoints()) {
+			if (isRemote(i)) {
+				list.add(i);
+			}
 		}
 		return list.toArray(new IConnectionPoint[list.size()]);
 	}
+	
+	public static boolean isLocal(IConnectionPoint connectionPoint) {
+		return connectionPoint instanceof LocalConnectionPoint;
+	}
+
+	public static boolean isWorkspace(IConnectionPoint connectionPoint) {
+		return connectionPoint instanceof WorkspaceConnectionPoint;
+	}
+
+	public static boolean isRemote(IConnectionPoint connectionPoint) {
+		return connectionPoint instanceof IBaseRemoteConnectionPoint;
+	}
+
+	public static IConnectionPoint createLocalConnectionPoint(IPath path) {
+		LocalConnectionPoint connectionPoint = new LocalConnectionPoint(path);
+		connectionPoint.setName(path.toPortableString());
+		return connectionPoint;
+	}
+	
+	public static IConnectionPoint createWorkspaceConnectionPoint(IContainer container) {
+		WorkspaceConnectionPoint connectionPoint = new WorkspaceConnectionPoint(container);
+		connectionPoint.setName((container instanceof IProject) ? container.getName() : container.getFullPath().toPortableString());
+		return connectionPoint;
+	}
+	
 }

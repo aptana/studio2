@@ -48,9 +48,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 
-import com.aptana.ide.syncing.core.connection.ResourceSynchronizationUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.ResourceSynchronizationUtils;
+import com.aptana.ide.syncing.core.SiteConnectionUtils;
 
 public class SynchronizationPropertyPage extends PreferencePage implements IWorkbenchPropertyPage {
 
@@ -76,8 +76,8 @@ public class SynchronizationPropertyPage extends PreferencePage implements IWork
         label.setText(Messages.SynchronizationPropertyPage_lastSyncConnection);
         fSitesCombo = new Combo(main, SWT.DROP_DOWN | SWT.READ_ONLY);
         // adds the sites that have the selected resource as the source
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(fResource);
-        for (SiteConnectionPoint site : sites) {
+        ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(fResource);
+        for (ISiteConnection site : sites) {
             fSitesCombo.add(site.getDestination().getName());
         }
         fSitesCombo.select(0);

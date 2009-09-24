@@ -32,38 +32,17 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.io.internal;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.aptana.ide.core.io.IConnectionPointEvent;
-import com.aptana.ide.core.io.IConnectionPointListener;
+package com.aptana.ide.syncing.ui.dialogs;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class NotificationManager {
+public interface IDialogConstants extends org.eclipse.jface.dialogs.IDialogConstants {
 
-    private List<IConnectionPointListener> fListeners;
+    public int APPLY_ID = 31;
+    
+    public String APPLY_LABEL = "Apply";
 
-    public NotificationManager() {
-        fListeners = new ArrayList<IConnectionPointListener>();
-    }
-
-    public void addListener(IConnectionPointListener listener) {
-        if (!fListeners.contains(listener)) {
-            fListeners.add(listener);
-        }
-    }
-
-    public void removeListener(IConnectionPointListener listener) {
-        fListeners.remove(listener);
-    }
-
-    public void broadcastChanges(IConnectionPointEvent event) {
-        for (IConnectionPointListener listener : fListeners) {
-            listener.connectionPointChanged(event);
-        }
-    }
 }

@@ -33,26 +33,63 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.core.io;
+package com.aptana.ide.syncing.ui.actions;
 
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IResource;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
+
+import com.aptana.ide.syncing.core.ISiteConnection;
 
 /**
  * @author Max Stepanov
  *
  */
-public final class EFSUtils {
+public abstract class SiteConnectionActionDelegate implements IObjectActionDelegate {
 
-	/**
-	 * 
-	 */
-	private EFSUtils() {
+	protected Object selectedObject;
+	protected IWorkbenchPart targetPart;
+	
+	private List<ISiteConnection> siteConnections;
+
+	public SiteConnectionActionDelegate() {
+	    siteConnections = new ArrayList<ISiteConnection>();
 	}
 
-	public static IFileStore getFileStore(IResource resource) {
-		return WorkspaceFileSystem.getInstance().getStore(resource.getFullPath());
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction, org.eclipse.ui.IWorkbenchPart)
+	 */
+	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		this.targetPart = targetPart;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+	 */
+	public void selectionChanged(IAction action, ISelection selection) {
+		siteConnections.clear();
+		selectedObject = null;
+		if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
+		    Object[] elements = ((IStructuredSelection) selection).toArray();
+		    for (Object element : elements) {
+		        if (element instanceof ISiteConnection) {
+		        	siteConnections.add((ISiteConnection) element);
+		        }
+		    }
+		    if (siteConnections.size() > 0) {
+		    	selectedObject = siteConnections.get(0);
+		    } else {
+		    	selectedObject = elements[0];
+		    }
+		}
+	}
+
+	protected ISiteConnection[] getSelectedSiteConnections() {
+	    return siteConnections.toArray(new ISiteConnection[siteConnections.size()]);
 	}
 }

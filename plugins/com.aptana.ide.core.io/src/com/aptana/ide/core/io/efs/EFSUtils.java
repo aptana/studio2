@@ -32,48 +32,33 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+package com.aptana.ide.core.io.efs;
 
-import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
+import java.io.File;
+
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
+
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class NewSiteAction implements IObjectActionDelegate {
+public final class EFSUtils {
 
-    private IWorkbenchPart fActivePart;
-    private ISelection fSelection;
+	/**
+	 * 
+	 */
+	private EFSUtils() {
+	}
 
-    public NewSiteAction() {
-    }
-
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        fActivePart = targetPart;
-    }
-
-    public void run(IAction action) {
-        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
-            return;
-        }
-        Object element = ((IStructuredSelection) fSelection).getFirstElement();
-        
-        IAdaptable source = null;
-        if (element instanceof IAdaptable) {
-            source = (IAdaptable) element;
-        }
-        SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fActivePart.getSite().getShell());
-        dlg.setCreateNew("New Connection", source, null);
-        dlg.open();
-    }
-
-    public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
-    }
+	public static IFileStore getFileStore(IResource resource) {
+		return WorkspaceFileSystem.getInstance().getStore(resource.getFullPath());
+	}
+	
+	public static IFileStore getFileStore(File file) {
+		return EFS.getLocalFileSystem().fromLocalFile(file);
+	}
 }

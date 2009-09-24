@@ -41,7 +41,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.ui.views.FTPManagerComposite;
 
 /**
@@ -108,7 +108,7 @@ public class ConnectionEditor extends EditorPart implements FTPManagerComposite.
         fConnectionComposite.getControl().setFocus();
     }
 
-    public void siteConnectionChanged(SiteConnectionPoint site) {
+    public void siteConnectionChanged(ISiteConnection site) {
         fInput.setConnection(site);
         setPartName(fInput.getName());
         setTitleToolTip(fInput.getToolTipText());

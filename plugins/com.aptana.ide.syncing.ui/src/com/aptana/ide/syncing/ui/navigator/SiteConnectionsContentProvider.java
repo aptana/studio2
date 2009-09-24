@@ -32,23 +32,39 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.internal;
+package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.ui.model.WorkbenchContentProvider;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
-import com.aptana.ide.ui.IPropertyDialog;
+import com.aptana.ide.syncing.core.ISiteConnectionManager;
+import com.aptana.ide.syncing.core.SyncingPlugin;
 
-public class SitePropertyDialog extends NewSiteDialog implements IPropertyDialog {
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
+public class SiteConnectionsContentProvider extends WorkbenchContentProvider {
 
-    public SitePropertyDialog(Shell parentShell) {
-        super(parentShell);
-    }
+    /* (non-Javadoc)
+	 * @see org.eclipse.ui.model.BaseWorkbenchContentProvider#getElements(java.lang.Object)
+	 */
+	@Override
+	public Object[] getElements(Object inputElement) {
+		if (inputElement instanceof IWorkspaceRoot) {
+			inputElement = SyncingPlugin.getSiteConnectionManager();
+		}
+		return super.getElements(inputElement);
+	}
 
-    public void setPropertySource(Object element) {
-        if (element instanceof SiteConnectionPoint) {
-            setSelectedSite(((SiteConnectionPoint) element).getName());
+	public Object[] getChildren(Object element) {
+        if (element instanceof IProject) {
+            Object[] children = new Object[1];
+            children[0] = new ProjectSiteConnections((IProject) element);
+            return children;
+        } else if (element instanceof ISiteConnectionManager) {
+        	return new Object[] { SiteConnections.getInstance() };
         }
+        return super.getChildren(element);
     }
-
 }

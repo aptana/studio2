@@ -32,48 +32,25 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+
+package com.aptana.ide.syncing.core;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.core.runtime.IPath;
 
-import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
+import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class NewSiteAction implements IObjectActionDelegate {
+public interface ISiteConnection extends IAdaptable {
 
-    private IWorkbenchPart fActivePart;
-    private ISelection fSelection;
+	public String getName();
 
-    public NewSiteAction() {
-    }
-
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        fActivePart = targetPart;
-    }
-
-    public void run(IAction action) {
-        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
-            return;
-        }
-        Object element = ((IStructuredSelection) fSelection).getFirstElement();
-        
-        IAdaptable source = null;
-        if (element instanceof IAdaptable) {
-            source = (IAdaptable) element;
-        }
-        SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fActivePart.getSite().getShell());
-        dlg.setCreateNew("New Connection", source, null);
-        dlg.open();
-    }
-
-    public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
-    }
+	public IConnectionPoint getSource();
+	public IConnectionPoint getDestination();
+	
+	public boolean excludes(IPath path);
+	
 }

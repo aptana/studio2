@@ -32,35 +32,68 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.io.internal;
+package com.aptana.ide.syncing.core.events;
 
 import java.util.EventObject;
 
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.IConnectionPointEvent;
+import com.aptana.ide.syncing.core.ISiteConnection;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Michael Xia
+ * @author Max Stepanov
  */
-public class ConnectionPointEvent extends EventObject implements IConnectionPointEvent {
+public final class SiteConnectionEvent extends EventObject {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private IConnectionPoint fConnectionPoint;
-    private int fType;
+    /**
+     * Event kind constant (bit mask) indicating an after-the-fact report of
+     * creation to a site connection
+     */
+    public static final int POST_ADD = 1;
 
-    public ConnectionPointEvent(Object source, int type, IConnectionPoint connectionPoint) {
-        super(source);
-        fConnectionPoint = connectionPoint;
-        fType = type;
+    /**
+     * Event kind constant (bit mask) indicating an after-the-fact report of
+     * deletion to a site connection
+     */
+    public static final int POST_DELETE = 2;
+
+    /**
+     * Event kind constant (bit mask) indicating an after-the-fact report of
+     * alteration to a site connection
+     */
+    public static final int POST_CHANGE = 4;
+
+    
+	private ISiteConnection fSiteConnection;
+	private int fKind;
+	
+	public SiteConnectionEvent(Object source, int kind, ISiteConnection siteConnection) {
+		super(source);
+		fSiteConnection = siteConnection;
+		fKind = kind;
+	}
+
+    /**
+     * Returns the site connection in question or <code>null</code> if not
+     * applicable to this type of event.
+     * 
+     * @return the site connection, or <code>null</code> if not applicable
+     */
+    public ISiteConnection getSiteConnection() {
+		return fSiteConnection;    	
     }
 
-    public IConnectionPoint getConnectionPoint() {
-        return fConnectionPoint;
+    /**
+     * Returns the kind of event being reported.
+     * 
+     * @return one of the event kind constants
+     * @see #POST_ADD
+     * @see #POST_DELETE
+     * @see #POST_CHANGE
+     */
+    public int getKind() {
+    	return fKind;
     }
-
-    public int getType() {
-        return fType;
-    }
-
+	
 }

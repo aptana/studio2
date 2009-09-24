@@ -32,22 +32,18 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.ui.model.WorkbenchContentProvider;
+package com.aptana.ide.core.io.events;
+
+import java.util.EventListener;
+
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class SiteConnectionContentProvider extends WorkbenchContentProvider {
+public interface IConnectionPointListener extends EventListener {
 
-    public Object[] getChildren(Object element) {
-        if (element instanceof IProject) {
-            Object[] children = new Object[1];
-            children[0] = new ProjectSiteConnections((IProject) element);
-            return children;
-        }
-        return super.getChildren(element);
-    }
+	public void connectionPointChanged(ConnectionPointEvent event);
+	
 }

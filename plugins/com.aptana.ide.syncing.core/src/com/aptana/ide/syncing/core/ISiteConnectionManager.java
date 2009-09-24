@@ -32,48 +32,29 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+package com.aptana.ide.syncing.core;
 
-import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
+import org.eclipse.core.runtime.CoreException;
+
+import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
+
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class NewSiteAction implements IObjectActionDelegate {
+public interface ISiteConnectionManager {
 
-    private IWorkbenchPart fActivePart;
-    private ISelection fSelection;
+	public void addSiteConnection(ISiteConnection siteConnection);
+	public void removeSiteConnection(ISiteConnection siteConnection);
 
-    public NewSiteAction() {
-    }
+	ISiteConnection createSiteConnection();
+	ISiteConnection cloneSiteConnection(ISiteConnection siteConnection) throws CoreException;
+	
+	public ISiteConnection[] getSiteConnections();
 
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        fActivePart = targetPart;
-    }
+	public void addListener(ISiteConnectionListener listener);
+	public void removeListener(ISiteConnectionListener listener);
 
-    public void run(IAction action) {
-        if (fSelection.isEmpty() || !(fSelection instanceof IStructuredSelection)) {
-            return;
-        }
-        Object element = ((IStructuredSelection) fSelection).getFirstElement();
-        
-        IAdaptable source = null;
-        if (element instanceof IAdaptable) {
-            source = (IAdaptable) element;
-        }
-        SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fActivePart.getSite().getShell());
-        dlg.setCreateNew("New Connection", source, null);
-        dlg.open();
-    }
-
-    public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
-    }
 }

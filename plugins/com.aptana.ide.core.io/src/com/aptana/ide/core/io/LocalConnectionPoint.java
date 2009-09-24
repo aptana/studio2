@@ -54,7 +54,6 @@ import com.aptana.ide.core.epl.IMemento;
 public final class LocalConnectionPoint extends ConnectionPoint {
 
 	public static final String TYPE = "local"; //$NON-NLS-1$
-	public static final String CATEGORY = "com.aptana.ide.core.io.localShortcuts"; //$NON-NLS-1$
 	
 	private static final String ELEMENT_PATH = "path"; //$NON-NLS-1$
 

@@ -47,6 +47,15 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
@@ -54,7 +63,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -63,30 +71,30 @@ import org.eclipse.ui.PlatformUI;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.IConnectionPointEvent;
-import com.aptana.ide.core.io.IConnectionPointListener;
 import com.aptana.ide.core.ui.CoreUIUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SiteConnection;
+import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
+import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
+import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
+import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FTPManagerComposite implements SelectionListener, IConnectionPointListener {
+public class FTPManagerComposite implements SelectionListener, ISiteConnectionListener {
 
     public static interface Listener {
-        public void siteConnectionChanged(SiteConnectionPoint site);
+        public void siteConnectionChanged(ISiteConnection site);
     }
 
     private Composite fMain;
-    private Combo fSitesCombo;
+    private ComboViewer fSitesViewer;
     private Button fEditButton;
     private Button fSaveAsButton;
     private ConnectionPointComposite fSource;
@@ -94,13 +102,13 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     private Button fTransferRightButton;
     private Button fTransferLeftButton;
 
-    private SiteConnectionPoint fSelectedSite;
+    private ISiteConnection fSelectedSite;
     private List<Listener> fListeners;
 
     public FTPManagerComposite(Composite parent) {
         fListeners = new ArrayList<Listener>();
         fMain = createControl(parent);
-        CoreIOPlugin.getConnectionPointManager().addConnectionPointListener(this);
+        SyncingPlugin.getSiteConnectionManager().addListener(this);
     }
 
     public void addListener(Listener listener) {
@@ -116,7 +124,7 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     public void dispose() {
         fSelectedSite = null;
         fListeners.clear();
-        CoreIOPlugin.getConnectionPointManager().removeConnectionPointListener(this);
+        SyncingPlugin.getSiteConnectionManager().removeListener(this);
     }
 
     public Control getControl() {
@@ -127,19 +135,19 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         fMain.setFocus();
     }
 
-    public void setSelectedSite(SiteConnectionPoint site) {
-        if (site == fSelectedSite) {
-            return;
-        }
-        fSelectedSite = site;
-        if (site == null) {
-            fSitesCombo.clearSelection();
+    public void setSelectedSite(ISiteConnection siteConnection) {
+	    if (siteConnection == fSelectedSite) {
+	        return;
+	    }
+	    fSelectedSite = siteConnection;
+	    if (siteConnection == null) {
+            fSitesViewer.setSelection(StructuredSelection.EMPTY);
             fSource.setConnectionPoint(null);
             fTarget.setConnectionPoint(null);
         } else {
-            fSitesCombo.setText(site.getName());
-            fSource.setConnectionPoint(site.getSource());
-            fTarget.setConnectionPoint(site.getDestination());
+            fSitesViewer.setSelection(new StructuredSelection(siteConnection));
+            fSource.setConnectionPoint(siteConnection.getSource());
+            fTarget.setConnectionPoint(siteConnection.getDestination());
         }
         fireSiteConnectionChanged(fSelectedSite);
     }
@@ -150,13 +158,11 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
     public void widgetSelected(SelectionEvent e) {
         Object source = e.getSource();
 
-        if (source == fSitesCombo) {
-            update();
-        } else if (source == fEditButton) {
+        if (source == fEditButton) {
             // opens the connection manager with the current connection selected
-            NewSiteDialog dialog = new NewSiteDialog(fMain.getShell(), false);
-            dialog.setSelectedSite(fSitesCombo.getText());
-            dialog.open();
+            SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fMain.getShell());
+            dlg.setSelection((ISiteConnection) ((IStructuredSelection) fSitesViewer.getSelection()).getFirstElement());
+            dlg.open();
         } else if (source == fSaveAsButton) {
             saveAs();
         } else if (source == fTransferRightButton) {
@@ -192,22 +198,27 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         }
     }
 
-    public void connectionPointChanged(IConnectionPointEvent event) {
-        final int type = event.getType();
-        final IConnectionPoint connection = event.getConnectionPoint();
-
-        if ((type == IConnectionPointEvent.POST_ADD || type == IConnectionPointEvent.POST_DELETE)
-                && (connection instanceof SiteConnectionPoint)) {
+    /* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.core.events.ISiteConnectionListener#siteConnectionChanged(com.aptana.ide.syncing.core.events.SiteConnectionEvent)
+	 */
+	public void siteConnectionChanged(final SiteConnectionEvent event) {        
+        switch (event.getKind()) {
+		case SiteConnectionEvent.POST_ADD:
+		case SiteConnectionEvent.POST_DELETE:
+			if (fMain.isDisposed()) {
+				return;
+			}
             fMain.getDisplay().asyncExec(new Runnable() {
 
                 public void run() {
                     // updates the drop-down list
-                    String text = fSitesCombo.getText();
-                    fSitesCombo.setItems(getExistingSiteNames());
-                    fSitesCombo.setText(text);
+                    ISelection selection = fSitesViewer.getSelection();
+                    fSitesViewer.setInput(SyncingPlugin.getSiteConnectionManager().getSiteConnections());
+                    fSitesViewer.setSelection(selection);
                 }
-            });
-        }
+            });			
+			break;
+		}
     }
 
     protected Composite createControl(Composite parent) {
@@ -223,8 +234,6 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         Composite middle = createSitePresentation(main);
         middle.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        update();
-
         return main;
     }
 
@@ -235,13 +244,16 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         Label label = new Label(main, SWT.NONE);
         label.setText(Messages.FTPManagerComposite_LBL_Sites);
 
-        fSitesCombo = new Combo(main, SWT.READ_ONLY);
-        fSitesCombo.setItems(getExistingSiteNames());
-        fSitesCombo.select(0);
-        GridData gridData = new GridData();
-        gridData.widthHint = 250;
-        fSitesCombo.setLayoutData(gridData);
-        fSitesCombo.addSelectionListener(this);
+        fSitesViewer = new ComboViewer(main, SWT.READ_ONLY);
+        fSitesViewer.setContentProvider(new ArrayContentProvider());
+        fSitesViewer.setLabelProvider(new SitesLabelProvider());
+        fSitesViewer.setInput(SyncingPlugin.getSiteConnectionManager().getSiteConnections());
+        fSitesViewer.getControl().setLayoutData(GridDataFactory.swtDefaults().hint(250, SWT.DEFAULT).create());
+        fSitesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				setSelectedSite((ISiteConnection) ((IStructuredSelection) event.getSelection()).getFirstElement());
+			}
+		});
 
         fEditButton = new Button(main, SWT.PUSH);
         fEditButton.setText(StringUtils.ellipsify(CoreStrings.EDIT));
@@ -301,9 +313,10 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
 
     private void saveAs() {
         // builds the initial value from the current selection
-        String initialValue = fSitesCombo.getText();
-        if (initialValue.length() > 0) {
-            initialValue = "Copy of " + initialValue; //$NON-NLS-1$
+    	ISiteConnection selection = (ISiteConnection) ((IStructuredSelection) fSitesViewer.getSelection()).getFirstElement();
+        String initialValue = StringUtils.EMPTY;
+        if (selection != null) {
+            initialValue = "Copy of " + selection.getName(); //$NON-NLS-1$
         }
         InputDialog dialog = new InputDialog(fMain.getShell(),
                 Messages.FTPManagerComposite_NameInput_Title,
@@ -314,41 +327,35 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
                         if (newText.trim().length() == 0) {
                             return Messages.FTPManagerComposite_ERR_EmptyName;
                         }
-                        if (fSitesCombo.indexOf(newText) > -1) {
-                            return MessageFormat.format(
-                                    Messages.FTPManagerComposite_ERR_NameExists, newText);
-                        }
+        		    	for (ISiteConnection i : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
+        		    		if (newText.equals(i.getName())) {
+                                return MessageFormat.format(
+                                        Messages.FTPManagerComposite_ERR_NameExists, newText);        		    			
+        		    		}
+        		    	}
                         return null;
                     }
 
                 });
-        dialog.open();
-
-        if (dialog.getReturnCode() != Window.OK) {
-            return;
+        if (dialog.open() != Window.OK) {
+        	return;
         }
+
         String name = dialog.getValue();
-        IConnectionPoint connection = null;
-        try {
-            connection = CoreIOPlugin.getConnectionPointManager().createConnectionPoint(
-                    SiteConnectionPoint.TYPE);
-        } catch (CoreException e) {
-            return;
-        }
-        if (!(connection instanceof SiteConnectionPoint)) {
-            // should not happen
-            return;
-        }
-        SiteConnectionPoint newSite = (SiteConnectionPoint) connection;
-        newSite.setName(name);
+        SiteConnection newSite = null;
         if (fSelectedSite != null) {
-            newSite.setSourceCategory(fSelectedSite.getSourceCategory());
-            newSite.setSource(fSelectedSite.getSource());
-            newSite.setDestinationCategory(fSelectedSite.getDestinationCategory());
-            newSite.setDestination(fSelectedSite.getDestination());
+        	try {
+				newSite = (SiteConnection) SyncingPlugin.getSiteConnectionManager().cloneSiteConnection(fSelectedSite);
+			} catch (CoreException e) {
+				UIUtils.showErrorMessage("Create new site connection failed", e);
+				return;
+			}
+        } else {
+        	newSite = (SiteConnection) SyncingPlugin.getSiteConnectionManager().createSiteConnection();
         }
-        CoreIOPlugin.getConnectionPointManager().addConnectionPoint(connection);
-
+        newSite.setName(name);
+        SyncingPlugin.getSiteConnectionManager().addSiteConnection(newSite);
+        
         // opens the connection in a new editor
         EditorUtils.openConnectionEditor(newSite);
     }
@@ -362,29 +369,24 @@ public class FTPManagerComposite implements SelectionListener, IConnectionPointL
         }
     }
 
-    private void update() {
-        String siteName = fSitesCombo.getText();
-        SiteConnectionPoint[] sites = SiteConnectionManager.getExistingSites();
-        for (SiteConnectionPoint site : sites) {
-            if (site.getName().equals(siteName)) {
-                setSelectedSite(site);
-                break;
-            }
-        }
-    }
-
-    private void fireSiteConnectionChanged(SiteConnectionPoint site) {
+    private void fireSiteConnectionChanged(ISiteConnection site) {
         for (Listener listener : fListeners) {
             listener.siteConnectionChanged(site);
         }
     }
+    
+    private class SitesLabelProvider extends LabelProvider {
 
-    private static String[] getExistingSiteNames() {
-        SiteConnectionPoint[] sites = SiteConnectionManager.getExistingSites();
-        String[] names = new String[sites.length];
-        for (int i = 0; i < names.length; ++i) {
-            names[i] = sites[i].getName();
-        }
-        return names;
+    	/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+		 */
+		@Override
+		public String getText(Object element) {
+			if (element instanceof ISiteConnection) {
+				return ((ISiteConnection) element).getName();
+			}
+			return super.getText(element);
+		}
     }
+
 }

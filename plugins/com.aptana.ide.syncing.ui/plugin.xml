@@ -9,28 +9,34 @@
    </extension>
    <extension
          point="com.aptana.ide.ui.imageAssociations">
-      <image
-            icon="icons/full/obj16/ftp.png"
-            id="com.aptana.ide.syncing.core.sitesCategory">
-      </image>
       <objectImage
             icon="icons/full/obj16/ftp.png"
-            objectClass="com.aptana.ide.syncing.core.connection.SiteConnectionPoint">
+            objectClass="com.aptana.ide.syncing.core.ISiteConnection">
       </objectImage>
    </extension>
    <extension
          point="org.eclipse.ui.navigator.navigatorContent">
       <navigatorContent
             activeByDefault="true"
-            contentProvider="com.aptana.ide.syncing.ui.navigator.SiteConnectionContentProvider"
+            contentProvider="com.aptana.ide.syncing.ui.navigator.SiteConnectionsContentProvider"
             icon="icons/full/obj16/ftp.png"
             id="com.aptana.ide.syncing.ui.navigatorContent"
             labelProvider="com.aptana.ide.ui.io.navigator.FileTreeLabelProvider"
-            name="Site Connection Contents">
+            name="Site Connections Contents"
+            priority="low">
          <triggerPoints>
             <or>
                <instanceof
+                     value="org.eclipse.core.resources.IWorkspaceRoot">
+               </instanceof>
+               <instanceof
                      value="org.eclipse.core.resources.IProject">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.ui.navigator.SiteConnections">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.core.ISiteConnection">
                </instanceof>
                <instanceof
                      value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
@@ -41,6 +47,12 @@
             </or>
          </triggerPoints>
          <possibleChildren>
+               <instanceof
+                     value="com.aptana.ide.syncing.ui.navigator.SiteConnections">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.core.ISiteConnection">
+               </instanceof>
             <instanceof
                   value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
             </instanceof>
@@ -63,17 +75,11 @@
             id="com.aptana.ide.syncing.ui.navigator.actions.ExtendedActions">
          <enablement>
             <or>
-               <and>
-                  <instanceof
-                        value="com.aptana.ide.core.io.IConnectionPointCategory">
-                  </instanceof>
-                  <test
-                        property="com.aptana.ide.core.io.connection.category.id"
-                        value="com.aptana.ide.syncing.core.sitesCategory">
-                  </test>
-               </and>
                <instanceof
-                     value="com.aptana.ide.syncing.core.connection.SiteConnectionPoint">
+                     value="com.aptana.ide.syncing.ui.navigator.SiteConnections">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.syncing.core.ISiteConnection">
                </instanceof>
                <instanceof
                      value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
@@ -135,8 +141,28 @@
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             adaptable="false"
-            id="com.aptana.ide.syncing.ui.sitesCategoryContribution"
-            objectClass="com.aptana.ide.core.io.IConnectionPointCategory">
+            id="com.aptana.ide.syncing.ui.siteConnectionContribution"
+            objectClass="com.aptana.ide.syncing.core.ISiteConnection">
+         <action
+               class="com.aptana.ide.syncing.ui.actions.SiteConnectionPropertiesAction"
+               enablesFor="1"
+               id="com.aptana.ide.ui.io.actions.connectionProperties"
+               label="%siteConnectionPropertiesAction.label"
+               menubarPath="group.properties">
+         </action>
+         <action
+               class="com.aptana.ide.syncing.ui.actions.DeleteSiteConnectionAction"
+               enablesFor="+"
+               icon="icons/full/etool16/delete.png"
+               id="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
+               label="%deleteAction.label"
+               menubarPath="group.edit">
+         </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="com.aptana.ide.syncing.ui.siteConnectionsContribution"
+            objectClass="com.aptana.ide.syncing.ui.navigator.SiteConnections">
          <action
                class="com.aptana.ide.syncing.ui.actions.NewSiteAction"
                enablesFor="1"
@@ -145,12 +171,13 @@
                menubarPath="group.new"
                tooltip="%Action.NewConnection.tooltip">
          </action>
-         <visibility>
-            <objectState
-                  name="isCategory"
-                  value="com.aptana.ide.syncing.core.sitesCategory">
-            </objectState>
-         </visibility>
+         <action
+               class="com.aptana.ide.syncing.ui.actions.SiteConnectionPropertiesAction"
+               enablesFor="1"
+               id="com.aptana.ide.ui.io.actions.connectionProperties"
+               label="%siteConnectionsEditorAction.label"
+               menubarPath="group.properties">
+         </action>
       </objectContribution>
       <objectContribution
             adaptable="true"
@@ -400,20 +427,20 @@
       </decorator>
       <decorator
             adaptable="true"
-            class="com.aptana.ide.syncing.ui.decorators.SiteCategoryDecorator"
+            class="com.aptana.ide.syncing.ui.decorators.SiteConnectionsDecorator"
             icon="icons/full/obj16/sync_decorator.gif"
-            id="com.aptana.ide.syncing.ui.decorators.SiteCategoryDecorator"
-            label="%Decorator.SiteCategory.name"
+            id="com.aptana.ide.syncing.ui.decorators.SiteConnectionsDecorator"
+            label="%Decorator.SiteConnections.name"
             lightweight="true"
             location="BOTTOM_RIGHT"
             state="true">
          <enablement>
             <or>
                <objectClass
-                     name="com.aptana.ide.core.io.IConnectionPointCategory">
+                     name="com.aptana.ide.syncing.ui.navigator.SiteConnections">
                </objectClass>
                <objectClass
-                     name="com.aptana.ide.syncing.core.connection.SiteConnectionPoint">
+                     name="com.aptana.ide.syncing.core.ISiteConnection">
                </objectClass>
             </or>
          </enablement>
@@ -424,7 +451,12 @@
       <dialog
             class="com.aptana.ide.syncing.ui.internal.SiteConnectionPropertyDialogProvider"
             id="com.aptana.ide.syncing.ui.dialogs.siteConnection"
-            objectClass="com.aptana.ide.syncing.core.connection.SiteConnectionPoint">
+            objectClass="com.aptana.ide.syncing.core.SiteConnection">
+      </dialog>
+      <dialog
+            class="com.aptana.ide.syncing.ui.internal.SiteConnectionPropertyDialogProvider"
+            id="com.aptana.ide.syncing.ui.dialogs.siteConnection"
+            objectClass="com.aptana.ide.syncing.ui.navigator.SiteConnections">
       </dialog>
    </extension>
    <extension
@@ -571,6 +603,16 @@
             id="com.aptana.ide.syncing.ui.editors.ConnectionEditor"
             name="Connection Explorer">
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="com.aptana.ide.syncing.core.ISiteConnection"
+            class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>

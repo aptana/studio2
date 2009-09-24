@@ -32,47 +32,41 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.io;
+
+package com.aptana.ide.syncing.ui.actions;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.Dialog;
+
+import com.aptana.ide.ui.IPropertyDialog;
+import com.aptana.ide.ui.PropertyDialogsRegistry;
+import com.aptana.ide.ui.UIUtils;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public interface IConnectionPointEvent {
+public class SiteConnectionPropertiesAction extends SiteConnectionActionDelegate {
 
-    /**
-     * Event type constant (bit mask) indicating an after-the-fact report of
-     * creation to an connection point
-     */
-    public static final int POST_ADD = 1;
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 */
+	public void run(IAction action) {
+		if (selectedObject == null) {
+			return;
+		}
+		try {
+			Dialog dlg = PropertyDialogsRegistry.getInstance().createPropertyDialog(selectedObject, targetPart.getSite());
+			if (dlg != null) {
+				if (dlg instanceof IPropertyDialog) {
+					((IPropertyDialog) dlg).setPropertySource(selectedObject);
+				}
+				dlg.open();
+			}
+		} catch (CoreException e) {
+			UIUtils.showErrorMessage("Create dialog failed", e);
+		}
+	}
 
-    /**
-     * Event type constant (bit mask) indicating an after-the-fact report of
-     * deletion to an connection point
-     */
-    public static final int POST_DELETE = 2;
-
-    /**
-     * Returns the connection point in question or <code>null</code> if not
-     * applicable to this type of event.
-     * 
-     * @return the connection point, or <code>null</code> if not applicable
-     */
-    public IConnectionPoint getConnectionPoint();
-
-    /**
-     * Returns an object identifying the source of this event.
-     * 
-     * @return an object identifying the source of this event
-     * @see java.util.EventObject
-     */
-    public Object getSource();
-
-    /**
-     * Returns the type of event being reported.
-     * 
-     * @return one of the event type constants
-     * @see #POST_ADD
-     * @see #POST_DELETE
-     */
-    public int getType();
 }

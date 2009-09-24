@@ -32,63 +32,18 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.navigator.ICommonContentExtensionSite;
-import org.eclipse.ui.navigator.ICommonLabelProvider;
+package com.aptana.ide.syncing.core.events;
 
-import com.aptana.ide.core.io.IConnectionPoint;
+import java.util.EventListener;
+
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class SiteConnectionLabelProvider implements ICommonLabelProvider {
+public interface ISiteConnectionListener extends EventListener {
 
-    public void init(ICommonContentExtensionSite aConfig) {
-    }
-
-    public Image getImage(Object element) {
-        return null;
-    }
-
-    public String getText(Object element) {
-        if (element instanceof ProjectSiteConnections) {
-            return ((ProjectSiteConnections) element).getLabel(element);
-        }
-        if (element instanceof ProjectSiteConnection) {
-            ProjectSiteConnection site = (ProjectSiteConnection) element;
-            IConnectionPoint connection = (IConnectionPoint) site
-                    .getAdapter(IConnectionPoint.class);
-            if (connection != null) {
-                return connection.getName();
-            }
-        }
-        return null;
-    }
-
-    public void addListener(ILabelProviderListener listener) {
-    }
-
-    public void dispose() {
-    }
-
-    public boolean isLabelProperty(Object element, String property) {
-        return false;
-    }
-
-    public void removeListener(ILabelProviderListener listener) {
-    }
-
-    public void restoreState(IMemento aMemento) {
-    }
-
-    public void saveState(IMemento aMemento) {
-    }
-
-    public String getDescription(Object anElement) {
-        return null;
-    }
+	public void siteConnectionChanged(SiteConnectionEvent event);
+	
 }

@@ -33,14 +33,46 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.core.io;
+package com.aptana.ide.syncing.ui.actions;
+
+import java.text.MessageFormat;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.action.IAction;
+
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SyncingPlugin;
 
 /**
  * @author Max Stepanov
  *
  */
-public interface IConnectionPointListener {
+public class DeleteSiteConnectionAction extends SiteConnectionActionDelegate {
 
-	public void connectionPointChanged(IConnectionPointEvent event);
-	
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 */
+	public void run(IAction action) {
+	    final ISiteConnection[] connections = getSelectedSiteConnections();
+		if (connections.length == 0) {
+			return;
+		}
+		Job job = new Job("Deleting connection(s)") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+                for (ISiteConnection connection : connections) {
+                    monitor.subTask(MessageFormat.format("Deleting {0}", connection));
+                    SyncingPlugin.getSiteConnectionManager().removeSiteConnection(connection);
+                }
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.setPriority(Job.INTERACTIVE);
+		job.schedule();
+	}
+
 }
