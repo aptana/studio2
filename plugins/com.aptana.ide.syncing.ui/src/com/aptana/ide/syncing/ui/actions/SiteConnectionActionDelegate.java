@@ -52,7 +52,7 @@ import com.aptana.ide.syncing.core.ISiteConnection;
  */
 public abstract class SiteConnectionActionDelegate implements IObjectActionDelegate {
 
-	protected ISiteConnection siteConnection;
+	protected Object selectedObject;
 	protected IWorkbenchPart targetPart;
 	
 	private List<ISiteConnection> siteConnections;
@@ -73,8 +73,8 @@ public abstract class SiteConnectionActionDelegate implements IObjectActionDeleg
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 		siteConnections.clear();
-		siteConnection = null;
-		if (selection instanceof IStructuredSelection) {
+		selectedObject = null;
+		if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
 		    Object[] elements = ((IStructuredSelection) selection).toArray();
 		    for (Object element : elements) {
 		        if (element instanceof ISiteConnection) {
@@ -82,7 +82,9 @@ public abstract class SiteConnectionActionDelegate implements IObjectActionDeleg
 		        }
 		    }
 		    if (siteConnections.size() > 0) {
-		    	siteConnection = siteConnections.get(0);
+		    	selectedObject = siteConnections.get(0);
+		    } else {
+		    	selectedObject = elements[0];
 		    }
 		}
 	}

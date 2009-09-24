@@ -171,6 +171,13 @@
                menubarPath="group.new"
                tooltip="%Action.NewConnection.tooltip">
          </action>
+         <action
+               class="com.aptana.ide.syncing.ui.actions.SiteConnectionPropertiesAction"
+               enablesFor="1"
+               id="com.aptana.ide.ui.io.actions.connectionProperties"
+               label="%siteConnectionsEditorAction.label"
+               menubarPath="group.properties">
+         </action>
       </objectContribution>
       <objectContribution
             adaptable="true"
@@ -445,6 +452,11 @@
             class="com.aptana.ide.syncing.ui.internal.SiteConnectionPropertyDialogProvider"
             id="com.aptana.ide.syncing.ui.dialogs.siteConnection"
             objectClass="com.aptana.ide.syncing.core.SiteConnection">
+      </dialog>
+      <dialog
+            class="com.aptana.ide.syncing.ui.internal.SiteConnectionPropertyDialogProvider"
+            id="com.aptana.ide.syncing.ui.dialogs.siteConnection"
+            objectClass="com.aptana.ide.syncing.ui.navigator.SiteConnections">
       </dialog>
    </extension>
    <extension

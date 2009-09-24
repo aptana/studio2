@@ -40,7 +40,6 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
 
@@ -73,7 +72,6 @@ public class DeleteSiteConnectionAction extends SiteConnectionActionDelegate {
 		};
 		job.setUser(true);
 		job.setPriority(Job.INTERACTIVE);
-		job.setRule((ISchedulingRule) siteConnection.getAdapter(ISchedulingRule.class));
 		job.schedule();
 	}
 

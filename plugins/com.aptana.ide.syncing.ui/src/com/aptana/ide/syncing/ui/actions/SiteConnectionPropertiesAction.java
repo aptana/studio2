@@ -53,14 +53,14 @@ public class SiteConnectionPropertiesAction extends SiteConnectionActionDelegate
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		if (siteConnection == null) {
+		if (selectedObject == null) {
 			return;
 		}
 		try {
-			Dialog dlg = PropertyDialogsRegistry.getInstance().createPropertyDialog(siteConnection, targetPart.getSite());
+			Dialog dlg = PropertyDialogsRegistry.getInstance().createPropertyDialog(selectedObject, targetPart.getSite());
 			if (dlg != null) {
 				if (dlg instanceof IPropertyDialog) {
-					((IPropertyDialog) dlg).setPropertySource(siteConnection);
+					((IPropertyDialog) dlg).setPropertySource(selectedObject);
 				}
 				dlg.open();
 			}
