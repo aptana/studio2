@@ -35,29 +35,33 @@
 
 package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 
-import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 /**
  * @author Max Stepanov
  *
  */
-public class SiteConnections extends PlatformObject implements IWorkbenchAdapter {
+public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter {
 
-	private static SiteConnections instance;
+	private static SiteConnectionWorkbenchAdapter instance;
+	private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
 
-    private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
-
-	private SiteConnections() {
+	private static final Object[] EMPTY = new Object[0];
+	
+	/**
+	 * 
+	 */
+	private SiteConnectionWorkbenchAdapter() {
 	}
 	
-	public static SiteConnections getInstance() {
+	/* package */static synchronized SiteConnectionWorkbenchAdapter getInstance() {
 		if (instance == null) {
-			instance = new SiteConnections();
+			instance = new SiteConnectionWorkbenchAdapter();
 		}
 		return instance;
 	}
@@ -65,29 +69,58 @@ public class SiteConnections extends PlatformObject implements IWorkbenchAdapter
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
-	public Object[] getChildren(Object o) {
-		return SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+	public Object[] getChildren(Object object) {
+		return EMPTY;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
 	 */
 	public ImageDescriptor getImageDescriptor(Object object) {
-		return IMAGE_DESCRIPTOR;
+		if (object instanceof ISiteConnection) {
+			return IMAGE_DESCRIPTOR;
+		}
+		return null;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
 	 */
-	public String getLabel(Object o) {
-		return "Connections";
+	public String getLabel(Object object) {
+		if (object instanceof ISiteConnection) {
+			return ((ISiteConnection) object).getName();
+		}
+		return String.valueOf(object);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
 	 */
-	public Object getParent(Object o) {
+	public Object getParent(Object object) {
 		return null;
+	}
+
+	public static class Factory implements IAdapterFactory {
+		
+		/* (non-Javadoc)
+		 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
+		 */
+		@SuppressWarnings("unchecked")
+		public Object getAdapter(Object adaptableObject, Class adapterType) {
+			if (IWorkbenchAdapter.class == adapterType) {
+				return getInstance();
+			}
+			return null;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
+		 */
+		@SuppressWarnings("unchecked")
+		public Class[] getAdapterList() {
+			return new Class[] { IWorkbenchAdapter.class };
+		}
+		
 	}
 
 }

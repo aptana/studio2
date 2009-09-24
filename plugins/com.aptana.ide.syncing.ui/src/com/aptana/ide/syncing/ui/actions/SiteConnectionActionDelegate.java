@@ -33,61 +33,61 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.syncing.ui.navigator;
+package com.aptana.ide.syncing.ui.actions;
 
-import org.eclipse.core.runtime.PlatformObject;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.model.IWorkbenchAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.aptana.ide.syncing.core.SyncingPlugin;
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
+
+import com.aptana.ide.syncing.core.ISiteConnection;
 
 /**
  * @author Max Stepanov
  *
  */
-public class SiteConnections extends PlatformObject implements IWorkbenchAdapter {
+public abstract class SiteConnectionActionDelegate implements IObjectActionDelegate {
 
-	private static SiteConnections instance;
-
-    private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
-
-	private SiteConnections() {
-	}
+	protected ISiteConnection siteConnection;
+	protected IWorkbenchPart targetPart;
 	
-	public static SiteConnections getInstance() {
-		if (instance == null) {
-			instance = new SiteConnections();
+	private List<ISiteConnection> siteConnections;
+
+	public SiteConnectionActionDelegate() {
+	    siteConnections = new ArrayList<ISiteConnection>();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction, org.eclipse.ui.IWorkbenchPart)
+	 */
+	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		this.targetPart = targetPart;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+	 */
+	public void selectionChanged(IAction action, ISelection selection) {
+		siteConnections.clear();
+		siteConnection = null;
+		if (selection instanceof IStructuredSelection) {
+		    Object[] elements = ((IStructuredSelection) selection).toArray();
+		    for (Object element : elements) {
+		        if (element instanceof ISiteConnection) {
+		        	siteConnections.add((ISiteConnection) element);
+		        }
+		    }
+		    if (siteConnections.size() > 0) {
+		    	siteConnection = siteConnections.get(0);
+		    }
 		}
-		return instance;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
-	 */
-	public Object[] getChildren(Object o) {
-		return SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+	protected ISiteConnection[] getSelectedSiteConnections() {
+	    return siteConnections.toArray(new ISiteConnection[siteConnections.size()]);
 	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
-	 */
-	public ImageDescriptor getImageDescriptor(Object object) {
-		return IMAGE_DESCRIPTOR;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
-	 */
-	public String getLabel(Object o) {
-		return "Connections";
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
-	 */
-	public Object getParent(Object o) {
-		return null;
-	}
-
 }

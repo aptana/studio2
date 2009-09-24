@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
+import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
@@ -83,7 +84,9 @@ public class DoubleClickAction extends BaseDoubleClickAction {
 
     private void openNewSiteDialog() {
         SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fShell);
-        dlg.setCreateNew("New Connection", null, null);
+        if (SyncingPlugin.getSiteConnectionManager().getSiteConnections().length == 0) {
+        	dlg.setCreateNew("New Connection", null, null);
+        }
         dlg.open();
     }
 

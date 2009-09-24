@@ -33,61 +33,40 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.syncing.ui.navigator;
+package com.aptana.ide.syncing.ui.actions;
 
-import org.eclipse.core.runtime.PlatformObject;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.Dialog;
 
-import com.aptana.ide.syncing.core.SyncingPlugin;
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.ui.IPropertyDialog;
+import com.aptana.ide.ui.PropertyDialogsRegistry;
+import com.aptana.ide.ui.UIUtils;
 
 /**
  * @author Max Stepanov
  *
  */
-public class SiteConnections extends PlatformObject implements IWorkbenchAdapter {
+public class SiteConnectionPropertiesAction extends SiteConnectionActionDelegate {
 
-	private static SiteConnections instance;
-
-    private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
-
-	private SiteConnections() {
-	}
-	
-	public static SiteConnections getInstance() {
-		if (instance == null) {
-			instance = new SiteConnections();
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 */
+	public void run(IAction action) {
+		if (siteConnection == null) {
+			return;
 		}
-		return instance;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
-	 */
-	public Object[] getChildren(Object o) {
-		return SyncingPlugin.getSiteConnectionManager().getSiteConnections();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
-	 */
-	public ImageDescriptor getImageDescriptor(Object object) {
-		return IMAGE_DESCRIPTOR;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
-	 */
-	public String getLabel(Object o) {
-		return "Connections";
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
-	 */
-	public Object getParent(Object o) {
-		return null;
+		try {
+			Dialog dlg = PropertyDialogsRegistry.getInstance().createPropertyDialog(siteConnection, targetPart.getSite());
+			if (dlg != null) {
+				if (dlg instanceof IPropertyDialog) {
+					((IPropertyDialog) dlg).setPropertySource(siteConnection);
+				}
+				dlg.open();
+			}
+		} catch (CoreException e) {
+			UIUtils.showErrorMessage("Create dialog failed", e);
+		}
 	}
 
 }

@@ -141,6 +141,26 @@
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             adaptable="false"
+            id="com.aptana.ide.syncing.ui.siteConnectionContribution"
+            objectClass="com.aptana.ide.syncing.core.ISiteConnection">
+         <action
+               class="com.aptana.ide.syncing.ui.actions.SiteConnectionPropertiesAction"
+               enablesFor="1"
+               id="com.aptana.ide.ui.io.actions.connectionProperties"
+               label="%siteConnectionPropertiesAction.label"
+               menubarPath="group.properties">
+         </action>
+         <action
+               class="com.aptana.ide.syncing.ui.actions.DeleteSiteConnectionAction"
+               enablesFor="+"
+               icon="icons/full/etool16/delete.png"
+               id="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
+               label="%deleteAction.label"
+               menubarPath="group.edit">
+         </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
             id="com.aptana.ide.syncing.ui.siteConnectionsContribution"
             objectClass="com.aptana.ide.syncing.ui.navigator.SiteConnections">
          <action
@@ -424,7 +444,7 @@
       <dialog
             class="com.aptana.ide.syncing.ui.internal.SiteConnectionPropertyDialogProvider"
             id="com.aptana.ide.syncing.ui.dialogs.siteConnection"
-            objectClass="com.aptana.ide.syncing.core.ISiteConnection">
+            objectClass="com.aptana.ide.syncing.core.SiteConnection">
       </dialog>
    </extension>
    <extension
@@ -571,6 +591,16 @@
             id="com.aptana.ide.syncing.ui.editors.ConnectionEditor"
             name="Connection Explorer">
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="com.aptana.ide.syncing.core.ISiteConnection"
+            class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>
