@@ -57,7 +57,6 @@ import com.aptana.ide.core.io.efs.WorkspaceFileSystem;
 public final class WorkspaceConnectionPoint extends ConnectionPoint {
 
 	public static final String TYPE = "workspace"; //$NON-NLS-1$
-    public static final String CATEGORY = "com.aptana.ide.core.io.projectShortcuts"; //$NON-NLS-1$
     
 	private static final String ELEMENT_PATH = "path"; //$NON-NLS-1$
 
@@ -130,6 +129,10 @@ public final class WorkspaceConnectionPoint extends ConnectionPoint {
 	 */
 	public void setResource(IContainer resource) {
 		this.path = resource.getFullPath();
+	}
+	
+	protected IPath getPath() {
+		return path;
 	}
 
 	/* (non-Javadoc)

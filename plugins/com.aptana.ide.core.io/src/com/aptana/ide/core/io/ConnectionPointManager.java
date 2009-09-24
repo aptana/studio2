@@ -47,14 +47,15 @@ import java.util.UUID;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.PlatformObject;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.epl.IMemento;
 import com.aptana.ide.core.epl.XMLMemento;
-import com.aptana.ide.core.io.internal.ConnectionPointEvent;
-import com.aptana.ide.core.io.internal.NotificationManager;
+import com.aptana.ide.core.io.events.ConnectionPointEvent;
+import com.aptana.ide.core.io.events.IConnectionPointListener;
 
 /**
  * @author Max Stepanov
@@ -75,6 +76,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 
 	private static final String ELEMENT_ROOT = "connections";
 	private static final String ELEMENT_CONNECTION = "connection";
+	private static final String ATTR_ID = "id";
 	private static final String ATTR_TYPE = "type";
 
 	private static ConnectionPointManager instance;
@@ -86,14 +88,13 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 	private List<IMemento> unresolvedConnections = new ArrayList<IMemento>();
 	private boolean dirty = false;
 	
-	private NotificationManager notificationManager;
+	private ListenerList listeners = new ListenerList();
 
 	/**
 	 * 
 	 */
 	private ConnectionPointManager() {
 		readExtensionRegistry();
-		notificationManager = new NotificationManager();
 	}
 	
 	/**
@@ -138,7 +139,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 	public void saveState(IPath path) {
 		XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
 		for (ConnectionPoint connectionPoint : connections) {
-			IMemento child = memento.createChild(ELEMENT_CONNECTION, connectionPoint.getId());
+			IMemento child = memento.createChild(ELEMENT_CONNECTION);
 			child.putMemento(storeConnectionPoint(connectionPoint));
 		}
 		for (IMemento child : unresolvedConnections) {
@@ -169,8 +170,11 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 		}		
 	}
 	
-	/* package */ void broadcastEvent(IConnectionPointEvent event) {
-	    notificationManager.broadcastChanges(event);
+	private void broadcastEvent(ConnectionPointEvent event) {
+		final Object[] list = listeners.getListeners();
+	    for (Object listener : list) {
+	        ((IConnectionPointListener) listener).connectionPointChanged(event);
+	    }
 	}
 
 	/* package */ IConnectionPoint[] getConnectionPointsForType(String type) {
@@ -193,7 +197,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 		if (!connections.contains(connectionPoint)) {
 			connections.add((ConnectionPoint) connectionPoint);
 			dirty = true;
-			broadcastEvent(new ConnectionPointEvent(this, IConnectionPointEvent.POST_ADD, connectionPoint));
+			broadcastEvent(new ConnectionPointEvent(this, ConnectionPointEvent.POST_ADD, connectionPoint));
 		}
 	}
 
@@ -204,7 +208,7 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 		if (connections.contains(connectionPoint)) {
 			connections.remove(connectionPoint);
 			dirty = true;
-			broadcastEvent(new ConnectionPointEvent(this, IConnectionPointEvent.POST_DELETE, connectionPoint));
+			broadcastEvent(new ConnectionPointEvent(this, ConnectionPointEvent.POST_DELETE, connectionPoint));
 		}
 	}
 
@@ -263,10 +267,18 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 	    return categories.get(categoryId);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IConnectionPointManager#getConnectionPoints()
+	 */
+	public IConnectionPoint[] getConnectionPoints() {
+		return connections.toArray(new IConnectionPoint[connections.size()]);
+	}
+
 	private IMemento storeConnectionPoint(ConnectionPoint connectionPoint) {
 		IMemento saveMemento = XMLMemento.createWriteRoot(ELEMENT_ROOT)
-									.createChild(ELEMENT_CONNECTION, connectionPoint.getId());
+									.createChild(ELEMENT_CONNECTION);
 		connectionPoint.saveState(saveMemento);
+		saveMemento.putString(ATTR_ID, connectionPoint.getId());
 		saveMemento.putString(ATTR_TYPE, connectionPoint.getType());
 		return saveMemento;
 	}
@@ -280,7 +292,8 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 				Object object = element.createExecutableExtension(ATT_CLASS);
 				if (object instanceof ConnectionPoint) {
 					connectionPoint = (ConnectionPoint) object;
-					connectionPoint.setId(memento.getID());
+					connectionPoint.setId(memento.getString(ATTR_ID) != null ? memento.getString(ATTR_ID) : memento.getID());
+					//TODO: remove memento.getID() before production
 					connectionPoint.loadState(memento);
 				}
 			}
@@ -317,14 +330,14 @@ import com.aptana.ide.core.io.internal.NotificationManager;
 	 * @see com.aptana.ide.core.io.IConnectionPointManager#addConectionPointListener(com.aptana.ide.core.io.IConnectionPointListener)
 	 */
     public void addConnectionPointListener(IConnectionPointListener listener) {
-        notificationManager.addListener(listener);
+        listeners.add(listener);
     }
 
     /* (non-Javadoc)
      * @see com.aptana.ide.core.io.IConnectionPointManager#removeConnectionPointListener(com.aptana.ide.core.io.IConnectionPointListener)
      */
     public void removeConnectionPointListener(IConnectionPointListener listener) {
-        notificationManager.removeListener(listener);
+        listeners.remove(listener);
     }
 
 	private void readExtensionRegistry() {

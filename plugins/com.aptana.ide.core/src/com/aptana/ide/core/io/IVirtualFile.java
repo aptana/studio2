@@ -37,9 +37,6 @@ package com.aptana.ide.core.io;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Shell;
-
 /**
  * @author Paul Colton
  */
@@ -51,13 +48,6 @@ public interface IVirtualFile extends Comparable
 		public void streamGot(InputStream input) throws ConnectionException, 
 				VirtualFileManagerException, IOException;
 	}
-
-	/**
-	 * editProperties
-	 * 
-	 * @param shell
-	 */
-	void editProperties(Shell shell);
 
 	/**
 	 * Get the creation time of this file in milliseconds
@@ -173,20 +163,6 @@ public interface IVirtualFile extends Comparable
 	 * @param group
 	 */
 	void setGroup(String group);
-
-	/**
-	 * getImage
-	 * 
-	 * @return Image
-	 */
-	Image getImage();
-
-	/**
-	 * setImage
-	 * 
-	 * @param image
-	 */
-	void setImage(Image image);
 
 	/**
 	 * Get the modification time of this file in milliseconds

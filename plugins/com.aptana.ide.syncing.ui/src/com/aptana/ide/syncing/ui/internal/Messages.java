@@ -46,26 +46,6 @@ public class Messages extends NLS {
     public static String ChooseSiteConnectionDialog_LBL_RememberMyDecision;
     public static String ChooseSiteConnectionDialog_Title;
 
-    public static String NewSiteDialog_DefaultMessage;
-    public static String NewSiteDialog_LBL_Apply;
-    public static String NewSiteDialog_Title;
-
-    public static String NewSiteWidget_ERR_DuplicateNames;
-    public static String NewSiteWidget_ERR_EmptyName;
-    public static String NewSiteWidget_ERR_InvalidFileSource;
-    public static String NewSiteWidget_ERR_InvalidFileTarget;
-    public static String NewSiteWidget_LBL_Destination;
-    public static String NewSiteWidget_LBL_Duplicate;
-    public static String NewSiteWidget_LBL_Filesystem;
-    public static String NewSiteWidget_LBL_Folder;
-    public static String NewSiteWidget_LBL_Project;
-    public static String NewSiteWidget_LBL_Remote;
-    public static String NewSiteWidget_LBL_SelectDestTarget;
-    public static String NewSiteWidget_LBL_SelectSrcLocation;
-    public static String NewSiteWidget_LBL_Sites;
-    public static String NewSiteWidget_LBL_Source;
-    public static String NewSiteWidget_TXT_NewSite;
-
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

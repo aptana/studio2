@@ -42,8 +42,8 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 
-import com.aptana.ide.core.io.EFSUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
@@ -58,13 +58,13 @@ public class SyncUtils {
      *            the array of sets
      * @return a result set that contains the intersection
      */
-    public static Set<SiteConnectionPoint> getIntersection(Set<SiteConnectionPoint>[] sets) {
-        Set<SiteConnectionPoint> intersectionSet = new HashSet<SiteConnectionPoint>();
+    public static Set<ISiteConnection> getIntersection(Set<ISiteConnection>[] sets) {
+        Set<ISiteConnection> intersectionSet = new HashSet<ISiteConnection>();
 
-        for (Set<SiteConnectionPoint> set : sets) {
+        for (Set<ISiteConnection> set : sets) {
             intersectionSet.addAll(set);
         }
-        for (Set<SiteConnectionPoint> set : sets) {
+        for (Set<ISiteConnection> set : sets) {
             intersectionSet.retainAll(set);
         }
 

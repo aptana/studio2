@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.aptana.ide.core; singleton:=true
-Bundle-Version: 1.6.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: com.aptana.ide.core.AptanaCorePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -12,8 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.security;bundle-version="1.0.0",
  com.aptana.ide.parsing;bundle-version="1.5.0",
  com.aptana.ide.parsing.eclipse;bundle-version="1.0.0",
- org.eclipse.jface,
- org.eclipse.ui
+ org.eclipse.jface
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Export-Package: com.aptana.ide.core,

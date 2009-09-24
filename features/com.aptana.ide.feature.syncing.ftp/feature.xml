@@ -3,8 +3,7 @@
       id="com.aptana.ide.feature.syncing.ftp"
       label="%featureName"
       version="1.6.0.qualifier"
-      provider-name="%providerName"
-      plugin="com.aptana.ide.syncing">
+      provider-name="%providerName">
 
    <description>
       %description

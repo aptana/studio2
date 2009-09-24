@@ -47,5 +47,4 @@ public interface IConnectionPointCategory extends Identifiable, Comparable<Objec
 	
 	public IConnectionPoint[] getConnectionPoints();
 	
-	public IConnectionPoint getConnectionPoint(String name);
 }

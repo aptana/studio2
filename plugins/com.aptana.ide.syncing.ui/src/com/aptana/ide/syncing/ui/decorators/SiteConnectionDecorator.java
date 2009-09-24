@@ -46,9 +46,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.INavigatorDecorator;
-import com.aptana.ide.syncing.core.connection.ResourceSynchronizationUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.ResourceSynchronizationUtils;
+import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 /**
@@ -90,7 +90,7 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                                 event.width += DECORATOR.getBounds().width + PADDING
                                         + stringExtent.x + PADDING;
                             }
-                        } else if (data instanceof SiteConnectionPoint) {
+                        } else if (data instanceof ISiteConnection) {
                             String text = data.toString();
                             Point stringExtent = event.gc.stringExtent(text);
                             event.width += stringExtent.x + PADDING;
@@ -132,7 +132,7 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                                 event.gc.drawString(lastConnection, x, y, true);
                                 event.x += stringExtent.x;
                             }
-                        } else if (data instanceof SiteConnectionPoint) {
+                        } else if (data instanceof ISiteConnection) {
                             String text = data.toString();
                             Point stringExtent = event.gc.stringExtent(text);
                             int x = event.x + event.width + PADDING;
@@ -181,9 +181,9 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
             return null;
         }
 
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(container, true);
+        ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(container, true);
         String target;
-        for (SiteConnectionPoint site : sites) {
+        for (ISiteConnection site : sites) {
             target = site.getDestination().getName();
             if (target.equals(lastConnection)) {
                 return target;

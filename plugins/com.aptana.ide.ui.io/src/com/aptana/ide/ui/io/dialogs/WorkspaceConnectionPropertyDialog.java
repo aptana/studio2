@@ -66,8 +66,8 @@ import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.EFSUtils;
 import com.aptana.ide.core.io.WorkspaceConnectionPoint;
+import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.ui.PixelConverter;
 import com.aptana.ide.ui.IPropertyDialog;
 import com.aptana.ide.ui.io.IOUIPlugin;
@@ -107,6 +107,13 @@ public class WorkspaceConnectionPropertyDialog extends TitleAreaDialog implement
 		if (element instanceof WorkspaceConnectionPoint) {
 			workspaceConnectionPoint = (WorkspaceConnectionPoint) element;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.ui.IPropertyDialog#getPropertySource()
+	 */
+	public Object getPropertySource() {
+		return workspaceConnectionPoint;
 	}
 
 	private String getConnectionPointType() {

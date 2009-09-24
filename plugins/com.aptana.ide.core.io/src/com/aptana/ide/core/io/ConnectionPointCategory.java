@@ -97,17 +97,4 @@ import java.util.List;
 		}
 		return list.toArray(new IConnectionPoint[list.size()]);
 	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.IConnectionPointCategory#getConnectionPoint(java.lang.String)
-	 */
-	public IConnectionPoint getConnectionPoint(String name) {
-	    IConnectionPoint[] connections = getConnectionPoints();
-	    for (IConnectionPoint connection : connections) {
-	        if (connection.getName().equals(name)) {
-	            return connection;
-	        }
-	    }
-	    return null;
-	}
 }

@@ -55,9 +55,9 @@ import org.osgi.framework.BundleContext;
 import com.aptana.ide.core.io.ConnectionPointType;
 import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.IConnectionPointEvent;
-import com.aptana.ide.core.io.IConnectionPointListener;
 import com.aptana.ide.core.io.IConnectionPointManager;
+import com.aptana.ide.core.io.events.ConnectionPointEvent;
+import com.aptana.ide.core.io.events.IConnectionPointListener;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.ui.io.navigator.WorkspaceProjects;
 import com.aptana.ide.ui.io.navigator.internal.NavigatorDecoratorLoader;
@@ -85,21 +85,23 @@ public class IOUIPlugin extends AbstractUIPlugin {
 
     private IConnectionPointListener connectionListener = new IConnectionPointListener() {
 
-        public void connectionPointChanged(IConnectionPointEvent event) {
-            IConnectionPoint connection = event.getConnectionPoint();
-            IConnectionPointManager manager = CoreIOPlugin.getConnectionPointManager();
-            ConnectionPointType type = manager.getType(connection);
-            if (type == null) {
-                return;
-            }
-
-            int eventType = event.getType();
-            if (eventType == IConnectionPointEvent.POST_ADD) {
-                refreshNavigatorViewAndSelect(manager.getConnectionPointCategory(type.getCategory()
-                        .getId()), connection);
-            } else if (eventType == IConnectionPointEvent.POST_DELETE) {
-                refreshNavigatorView(manager.getConnectionPointCategory(type.getCategory().getId()));
-            }
+        public void connectionPointChanged(ConnectionPointEvent event) {
+			IConnectionPoint connection = event.getConnectionPoint();
+			IConnectionPointManager manager = CoreIOPlugin.getConnectionPointManager();
+			ConnectionPointType type = manager.getType(connection);
+			if (type == null) {
+			    return;
+			}
+			
+			switch (event.getKind()) {
+			case ConnectionPointEvent.POST_ADD:
+			    refreshNavigatorViewAndSelect(
+			    		manager.getConnectionPointCategory(type.getCategory().getId()), connection);
+			    break;
+			case ConnectionPointEvent.POST_DELETE:
+			    refreshNavigatorView(manager.getConnectionPointCategory(type.getCategory().getId()));
+			    break;
+			}
         }
 
     };

@@ -38,24 +38,24 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
 public class ConnectionEditorInput implements IEditorInput {
 
-    private SiteConnectionPoint fSite;
+    private ISiteConnection fSite;
 
-    public ConnectionEditorInput(SiteConnectionPoint site) {
+    public ConnectionEditorInput(ISiteConnection site) {
         fSite = site;
     }
 
-    public SiteConnectionPoint getConnection() {
+    public ISiteConnection getConnection() {
         return fSite;
     }
 
-    public void setConnection(SiteConnectionPoint site) {
+    public void setConnection(ISiteConnection site) {
         fSite = site;
     }
 
@@ -79,7 +79,8 @@ public class ConnectionEditorInput implements IEditorInput {
         return fSite == null ? "" : fSite.toString(); //$NON-NLS-1$
     }
 
-    public Object getAdapter(Class adapter) {
+    @SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapter) {
         return null;
     }
 

@@ -700,7 +700,7 @@ public class SyncView extends ViewPart implements ISyncManagerChangeListener
 				IVirtualFileManager sync = (IVirtualFileManager) element;
 				if (columnIndex == 0)
 				{
-					return sync.getImage();
+					// return sync.getImage();
 				}
 			}
 

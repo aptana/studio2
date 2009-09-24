@@ -41,6 +41,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.progress.IElementCollector;
 
 import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
 
 /**
@@ -48,47 +49,47 @@ import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
  */
 public class ProjectSiteConnection extends FileSystemWorkbenchAdapter implements IAdaptable {
 
-    private IProject fProject;
-    private IConnectionPoint fTarget;
+    private IProject project;
+    private ISiteConnection siteConnection;
 
-    public ProjectSiteConnection(IProject project, IConnectionPoint target) {
-        fProject = project;
-        fTarget = target;
+    public ProjectSiteConnection(IProject project, ISiteConnection siteConnection) {
+        this.project = project;
+        this.siteConnection = siteConnection;
     }
 
     public IProject getProject() {
-        return fProject;
+        return project;
     }
 
     public IConnectionPoint getDestination() {
-        return fTarget;
+        return siteConnection.getDestination();
     }
 
     public Object[] getChildren(Object object) {
-        return super.getChildren(fTarget);
+        return super.getChildren(siteConnection.getDestination());
     }
 
     public ImageDescriptor getImageDescriptor(Object object) {
-        return super.getImageDescriptor(fTarget);
+        return super.getImageDescriptor(siteConnection.getDestination());
     }
 
     public String getLabel(Object object) {
-        return super.getLabel(fTarget);
+        return super.getLabel(siteConnection.getDestination());
     }
 
-    public void fetchDeferredChildren(Object object, IElementCollector collector,
-            IProgressMonitor monitor) {
-        super.fetchDeferredChildren(fTarget, collector, monitor);
+    public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
+        super.fetchDeferredChildren(siteConnection.getDestination(), collector, monitor);
     }
 
     @SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
         if (adapter == IProject.class) {
-            return fProject;
+            return project;
+        } else if (adapter == ISiteConnection.class) {
+        	return siteConnection;
+        } else if (adapter == IConnectionPoint.class) {
+            return siteConnection.getDestination();
         }
-        if (adapter == IConnectionPoint.class) {
-            return fTarget;
-        }
-        return fTarget.getAdapter(adapter);
+        return siteConnection.getAdapter(adapter);
     }
 }
