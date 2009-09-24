@@ -155,7 +155,11 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
             return fRemoteCombo.getText();
         }
         if (fProjectButton.getSelection()) {
-            return fProjectCombo.getText() + fFolderText.getText();
+            String folder = fFolderText.getText();
+            if (folder.equals("/")) { //$NON-NLS-1$
+                return fProjectCombo.getText();
+            }
+            return fProjectCombo.getText() + folder;
         }
         return fFileText.getText();
     }
@@ -181,6 +185,7 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
     public void setSourceName(String name) {
         if (fRemoteButton.getSelection()) {
             fRemoteCombo.setText(name);
+            fFolderText.setText("/"); //$NON-NLS-1$
             fFileText.setText(""); //$NON-NLS-1$
         } else if (fProjectButton.getSelection()) {
             int index = name.indexOf("/"); //$NON-NLS-1$
@@ -193,6 +198,7 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
             }
             fFileText.setText(""); //$NON-NLS-1$
         } else if (fFileButton.getSelection()) {
+            fFolderText.setText("/"); //$NON-NLS-1$
             fFileText.setText(name);
         }
 
@@ -220,6 +226,31 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
             fFolderText.setText(container.getProjectRelativePath().toString());
         }
         updateEnabledStates();
+    }
+
+    public String validate() {
+        if (fRemoteButton.getSelection()) {
+            if (fRemoteCombo.getItemCount() == 0) {
+                return "No remote site has been set up yet.  Please create one first.";
+            }
+        }
+        if (fProjectButton.getSelection()) {
+            if (fProjectCombo.getText().length() == 0) {
+                return "No project exists in the workspace.  Please create one first.";
+            }
+            IProject project = getProject(fProjectCombo.getText());
+            IResource resource = project.findMember(fFolderText.getText());
+            if (!(resource instanceof IContainer)) {
+                return "Please specifies a valid folder or '/' for the project root.";
+            }
+        }
+        if (fFileButton.getSelection()) {
+            String text = fFileText.getText();
+            if (!(new File(text)).exists()) {
+                return "Please specifies a valid filesystem location.";
+            }
+        }
+        return null;
     }
 
     public void widgetDefaultSelected(SelectionEvent e) {
@@ -453,23 +484,6 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
         fireValidationError(validate());
     }
 
-    private String validate() {
-        if (fProjectButton.getSelection()) {
-            IProject project = getProject(fProjectCombo.getText());
-            IResource resource = project.findMember(fFolderText.getText());
-            if (!(resource instanceof IContainer)) {
-                return "Please specifies a valid folder or '/' for the project root.";
-            }
-        }
-        if (fFileButton.getSelection()) {
-            String text = fFileText.getText();
-            if (!(new File(text)).exists()) {
-                return "Please specifies a valid filesystem location.";
-            }
-        }
-        return null;
-    }
-
     private void fireCategoryChanged(String category) {
         for (Listener listener : fListeners) {
             listener.categoryChanged(this, category);
@@ -535,6 +549,9 @@ public class SiteEndPointComposite implements SelectionListener, ModifyListener 
     }
 
     private static IProject getProject(String projectName) {
+        if (projectName == null || projectName.length() == 0) {
+            return null;
+        }
         return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
     }
 

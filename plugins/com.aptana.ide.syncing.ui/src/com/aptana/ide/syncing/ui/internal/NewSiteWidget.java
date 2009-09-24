@@ -80,6 +80,7 @@ import com.aptana.ide.core.io.IConnectionPointManager;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.core.ui.SWTUtils;
+import com.aptana.ide.syncing.core.connection.DefaultSiteConnectionPoint;
 import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
 
 /**
@@ -103,8 +104,16 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     private SiteEndPointComposite fSrcComposite;
     private SiteEndPointComposite fDestComposite;
 
+    private String fSrcError;
+    private String fDestError;
+
     private boolean fCreateNew;
+
+    // the default connection that can only be modified instead of deleted
+    private DefaultSiteConnectionPoint fDefaultSite;
+    // the current list of user-created connections
     private java.util.List<SiteConnectionPoint> fSites;
+    // the original list of user-created connections before the widget is opened
     private java.util.List<SiteConnectionPoint> fOriginalSites;
 
     private Client fClient;
@@ -131,6 +140,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     public NewSiteWidget(Composite parent, boolean createNew, Client client) {
         fCreateNew = createNew;
         fClient = client;
+        fDefaultSite = DefaultSiteConnectionPoint.getInstance();
         fSites = new ArrayList<SiteConnectionPoint>();
         fOriginalSites = new ArrayList<SiteConnectionPoint>();
         loadSites();
@@ -146,14 +156,19 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         if (siteName == null) {
             return;
         }
-        SiteConnectionPoint site;
-        int count = fSites.size();
-        for (int i = 0; i < count; ++i) {
-            site = fSites.get(i);
-            if (site.getName().equals(siteName)) {
-                fSitesTable.select(i);
-                updateSelection(site);
-                break;
+        if (siteName.equals(fDefaultSite.getName())) {
+            fSitesTable.select(0);
+            updateSelection(fDefaultSite);
+        } else {
+            SiteConnectionPoint site;
+            int count = fSites.size();
+            for (int i = 0; i < count; ++i) {
+                site = fSites.get(i);
+                if (site.getName().equals(siteName)) {
+                    fSitesTable.select(i + 1);
+                    updateSelection(site);
+                    break;
+                }
             }
         }
     }
@@ -201,29 +216,26 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
             createNewSite(Messages.NewSiteWidget_TXT_NewSite);
         } else if (source == fEditButton) {
             int index = fSitesTable.getSelectionIndex();
-            if (index > -1) {
-                editSiteName(fSitesTable.getSelection()[0], fSites.get(index));
+            // the name for default connection is not editable
+            if (index > 0) {
+                editSiteName(fSitesTable.getItem(index), getSelectedSite());
             }
         } else if (source == fRemoveButton) {
             int index = fSitesTable.getSelectionIndex();
-            if (index > -1) {
-                fSites.remove(index);
+            // the default connection is not removable
+            if (index > 0) {
+                fSites.remove(index - 1);
                 clearTableEditor();
                 fSitesTable.remove(index);
                 packSitesTable();
 
-                index = fSitesTable.getSelectionIndex();
-                if (index > -1) {
-                    updateSelection(fSites.get(index));
-                }
+                updateSelection(getSelectedSite());
             }
         } else if (source == fSitesTable) {
             clearTableEditor();
 
-            int index = fSitesTable.getSelectionIndex();
-            if (index > -1) {
-                updateSelection(fSites.get(index));
-            }
+            updateActions();
+            updateSelection(getSelectedSite());
         } else if (source == fDuplicateItem) {
             SiteConnectionPoint selectedSite = getSelectedSite();
             if (selectedSite == null) {
@@ -237,8 +249,12 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         Object source = e.getSource();
 
         if (source == fSitesTable) {
-            // edits the site name when the selection is double-clicked
-            editSiteName(fSitesTable.getSelection()[0], fSites.get(fSitesTable.getSelectionIndex()));
+            // edits the site name when the selection is double-clicked, except
+            // for the default connection which name cannot be modified
+            int index = fSitesTable.getSelectionIndex();
+            if (index > 0) {
+                editSiteName(fSitesTable.getItem(index), getSelectedSite());
+            }
         }
     }
 
@@ -273,9 +289,12 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     }
 
     public void validationError(SiteEndPointComposite source, String error) {
-        if (fClient != null) {
-            fClient.validationChanged(error);
+        if (source == fSrcComposite) {
+            fSrcError = error;
+        } else if (source == fDestComposite) {
+            fDestError = error;
         }
+        updateValidation();
     }
 
     protected Composite createControl(Composite parent) {
@@ -295,6 +314,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
 
         sash.setWeights(new int[] { 1, 2 });
         // adds the existing sites
+        createNewSiteItem(fDefaultSite);
         for (SiteConnectionPoint site : fOriginalSites) {
             createNewSiteItem(site);
         }
@@ -303,10 +323,14 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         } else {
             clearTableEditor();
             fSitesTable.select(0);
-            updateSelection(fOriginalSites.get(0));
+            updateSelection(fDefaultSite);
         }
 
         packSitesTable();
+
+        fSrcError = fSrcComposite.validate();
+        fDestError = fDestComposite.validate();
+        updateValidation();
 
         return sash;
     }
@@ -428,7 +452,9 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     private TableItem createNewSiteItem(SiteConnectionPoint newSite) {
         TableItem item = new TableItem(fSitesTable, SWT.NONE);
         item.setText(newSite.getName());
-        editSiteName(item, newSite);
+        if (newSite != fDefaultSite) {
+            editSiteName(item, newSite);
+        }
 
         return item;
     }
@@ -457,6 +483,9 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
                 if (e.keyCode == '\r') {
                     clearTableEditor();
                     packSitesTable();
+                    if (fClient != null) {
+                        fClient.validationChanged(verify());
+                    }
                 }
             }
 
@@ -480,6 +509,9 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
             public void focusLost(FocusEvent e) {
                 // re-adjusts the column width
                 packSitesTable();
+                if (fClient != null) {
+                    fClient.validationChanged(verify());
+                }
             }
         });
         newEditor.selectAll();
@@ -499,8 +531,7 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         IConnectionPoint[] connections = category.getConnectionPoints();
         for (IConnectionPoint connection : connections) {
             if (connection instanceof SiteConnectionPoint) {
-                SiteConnectionPoint site = (SiteConnectionPoint) connection;
-                fOriginalSites.add(site);
+                fOriginalSites.add((SiteConnectionPoint) connection);
             }
         }
         Collections.sort(fOriginalSites, new SitesComparator());
@@ -511,6 +542,9 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
     }
 
     private void updateSelection(SiteConnectionPoint connection) {
+        if (connection == null) {
+            return;
+        }
         // updates the source
         fSrcComposite.setCategory(connection.getSourceCategory());
         IConnectionPoint source = connection.getSource();
@@ -524,12 +558,25 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
         fDestComposite.setSourceName(name);
     }
 
+    private void updateValidation() {
+        if (fClient != null) {
+            if (fSrcError != null) {
+                fClient.validationChanged(fSrcError);
+            } else if (fDestError != null) {
+                fClient.validationChanged(fDestError);
+            } else {
+                fClient.validationChanged(null);
+            }
+        }
+    }
+
     /**
      * @return null if there is no error in the inputs, or a descriptive message
      *         if an error is detected
      */
     private String verify() {
         Set<String> siteNames = new HashSet<String>();
+        siteNames.add(fDefaultSite.getName());
         String name;
         for (SiteConnectionPoint site : fSites) {
             name = site.getName();
@@ -539,22 +586,38 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
             siteNames.add(name);
         }
 
-        String category;
-        LocalConnectionPoint connection;
+        String error = verifySiteConnection(fDefaultSite);
+        if (error != null) {
+            return error;
+        }
         for (SiteConnectionPoint site : fSites) {
-            category = site.getSourceCategory();
-            // only needs to worry about the filesytem case
-            if (category.equals(LocalConnectionPoint.CATEGORY)) {
-                connection = (LocalConnectionPoint) site.getSource();
-                if (connection == null) {
-                    return MessageFormat.format(Messages.NewSiteWidget_ERR_InvalidFileSource, site
-                            .getName());
-                }
+            error = verifySiteConnection(site);
+            if (error != null) {
+                return error;
             }
+        }
+        return null;
+    }
 
+    private String verifySiteConnection(SiteConnectionPoint site) {
+        String name = site.getName();
+        if (name.length() == 0) {
+            return Messages.NewSiteWidget_ERR_EmptyName;
+        }
+        String category = site.getSourceCategory();
+        // only needs to worry about the filesytem case
+        if (category.equals(LocalConnectionPoint.CATEGORY)) {
+            IConnectionPoint connection = site.getSource();
+            if (connection == null) {
+                return MessageFormat.format(Messages.NewSiteWidget_ERR_InvalidFileSource, site
+                        .getName());
+            }
+        }
+
+        if (site != fDefaultSite) {
             category = site.getDestinationCategory();
             if (category.equals(LocalConnectionPoint.CATEGORY)) {
-                connection = (LocalConnectionPoint) site.getDestination();
+                IConnectionPoint connection = site.getDestination();
                 if (connection == null) {
                     return MessageFormat.format(Messages.NewSiteWidget_ERR_InvalidFileTarget, site
                             .getName());
@@ -597,11 +660,26 @@ public class NewSiteWidget implements SelectionListener, MouseListener,
 
     private SiteConnectionPoint getSelectedSite() {
         int index = fSitesTable.getSelectionIndex();
-        return (index == -1) ? null : fSites.get(index);
+        if (index < 0) {
+            return null;
+        }
+        if (index == 0) {
+            return fDefaultSite;
+        }
+        return fSites.get(index - 1);
     }
 
     private void packSitesTable() {
-        fSitesTable.getColumn(0).pack();
+        TableColumn column = fSitesTable.getColumn(0);
+        column.pack();
+        // makes sure the width is not too narrow
+        column.setWidth(Math.max(column.getWidth(), 150));
+    }
+
+    private void updateActions() {
+        boolean defaultSelected = (getSelectedSite() == fDefaultSite);
+        fEditButton.setEnabled(!defaultSelected);
+        fRemoveButton.setEnabled(!defaultSelected);
     }
 
     private static IConnectionPointCategory getConnectionCategory(String categoryId) {

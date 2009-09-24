@@ -51,6 +51,7 @@ public class Messages extends NLS {
     public static String NewSiteDialog_Title;
 
     public static String NewSiteWidget_ERR_DuplicateNames;
+    public static String NewSiteWidget_ERR_EmptyName;
     public static String NewSiteWidget_ERR_InvalidFileSource;
     public static String NewSiteWidget_ERR_InvalidFileTarget;
     public static String NewSiteWidget_LBL_Destination;

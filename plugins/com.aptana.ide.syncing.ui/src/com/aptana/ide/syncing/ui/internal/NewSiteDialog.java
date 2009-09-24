@@ -58,6 +58,7 @@ public class NewSiteDialog extends TitleAreaDialog implements NewSiteWidget.Clie
     private String fSelectedSiteName;
     private IAdaptable fInitialSource;
     private IAdaptable fInitialTarget;
+    private String fErrorMsg;
 
     public NewSiteDialog(Shell parentShell) {
         this(parentShell, false);
@@ -104,6 +105,7 @@ public class NewSiteDialog extends TitleAreaDialog implements NewSiteWidget.Clie
     }
 
     public void validationChanged(String error) {
+        fErrorMsg = error;
         boolean noError = (error == null || error.length() == 0);
         if (noError) {
             setErrorMessage(null);
@@ -142,6 +144,10 @@ public class NewSiteDialog extends TitleAreaDialog implements NewSiteWidget.Clie
         createButton(parent, APPLY_ID, APPLY_LABEL, false);
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+
+        boolean noError = (fErrorMsg == null || fErrorMsg.length() == 0);
+        getButton(APPLY_ID).setEnabled(noError);
+        getButton(IDialogConstants.OK_ID).setEnabled(noError);
     }
 
     protected void buttonPressed(int buttonId) {
