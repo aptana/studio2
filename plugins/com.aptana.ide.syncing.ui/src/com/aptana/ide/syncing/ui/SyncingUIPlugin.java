@@ -53,6 +53,7 @@ import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
 import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
+import com.aptana.ide.syncing.ui.navigator.SiteConnections;
 import com.aptana.ide.syncing.ui.views.FTPManagerView;
 import com.aptana.ide.ui.io.IOUIPlugin;
 
@@ -85,12 +86,7 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
 
 	           }
 	            
-	            // if an associated site is created or deleted, and the source is a project, refreshes the source project
-                IConnectionPoint source = siteConnection.getSource();
-                IContainer container = (IContainer) source.getAdapter(IResource.class);
-                if (container != null) {
-                    IOUIPlugin.refreshNavigatorView(container.getProject());
-                }
+	           IOUIPlugin.refreshNavigatorView(SiteConnections.getInstance());
 		}
 	};
 

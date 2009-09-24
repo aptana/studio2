@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 
 /**
@@ -55,12 +56,9 @@ public final class ConnectionPointUtils {
 	}
 	
 	public static IConnectionPoint findConnectionPoint(URI uri) {
-		IConnectionPointManager connectionPointManager = CoreIOPlugin.getConnectionPointManager();
-		for (IConnectionPointCategory category : connectionPointManager.getConnectionPointCategories()) {
-			for (IConnectionPoint i : category.getConnectionPoints()) {
-				if (i.getRootURI().equals(uri)) {
-					return i;
-				}
+		for (IConnectionPoint i : CoreIOPlugin.getConnectionPointManager().getConnectionPoints()) {
+			if (i.getRootURI().equals(uri)) {
+				return i;
 			}
 		}
 		return null;
@@ -89,11 +87,15 @@ public final class ConnectionPointUtils {
 	}
 
 	public static IConnectionPoint createLocalConnectionPoint(IPath path) {
-		return new LocalConnectionPoint(path);
+		LocalConnectionPoint connectionPoint = new LocalConnectionPoint(path);
+		connectionPoint.setName(path.toPortableString());
+		return connectionPoint;
 	}
 	
-	public static IConnectionPoint createWorkspaceConnectionPoint(IContainer resource) {
-		return new WorkspaceConnectionPoint(resource);
+	public static IConnectionPoint createWorkspaceConnectionPoint(IContainer container) {
+		WorkspaceConnectionPoint connectionPoint = new WorkspaceConnectionPoint(container);
+		connectionPoint.setName((container instanceof IProject) ? container.getName() : container.getFullPath().toPortableString());
+		return connectionPoint;
 	}
 	
 }

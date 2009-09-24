@@ -261,6 +261,9 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog {
     	for (ISiteConnection i : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
     		String siteName = i.getName();
     		if (siteName.startsWith(baseName)) {
+    			if (siteName.equals(baseName) && lastIndex == Integer.MIN_VALUE) {
+    				lastIndex = 1;
+    			}
     	    	matcher = pattern.matcher(siteName);
     	    	if (matcher.matches()) {
     	    		try {

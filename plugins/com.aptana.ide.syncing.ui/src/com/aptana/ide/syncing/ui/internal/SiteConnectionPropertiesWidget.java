@@ -153,7 +153,7 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		sourceEditor.setTarget(source.getSource());
 		destinationEditor.setTarget(source.getDestination());
 		validateAll();
-		changed = false;
+		changed = source.getSource() == null || source.getDestination() == null;
 	}
 	
 	public ISiteConnection getSource() {
@@ -161,7 +161,7 @@ public class SiteConnectionPropertiesWidget extends Composite {
 	}
 	
 	public boolean isChanged() {
-		return changed;
+		return source != null && changed;
 	}
 	
 	public boolean applyChanges() {
