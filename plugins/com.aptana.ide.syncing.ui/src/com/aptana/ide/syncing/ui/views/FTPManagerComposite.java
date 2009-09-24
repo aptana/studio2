@@ -42,6 +42,15 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
@@ -49,7 +58,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -78,7 +86,7 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
     }
 
     private Composite fMain;
-    private Combo fSitesCombo;
+    private ComboViewer fSitesViewer;
     private Button fEditButton;
     private ConnectionPointComposite fSource;
     private ConnectionPointComposite fTarget;
@@ -124,11 +132,11 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 	    }
 	    fSelectedSite = siteConnection;
 	    if (siteConnection == null) {
-            fSitesCombo.clearSelection();
+            fSitesViewer.setSelection(StructuredSelection.EMPTY);
             fSource.setConnectionPoint(null);
             fTarget.setConnectionPoint(null);
         } else {
-            fSitesCombo.setText(siteConnection.getName());
+            fSitesViewer.setSelection(new StructuredSelection(siteConnection));
             fSource.setConnectionPoint(siteConnection.getSource());
             fTarget.setConnectionPoint(siteConnection.getDestination());
         }
@@ -141,11 +149,9 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
     public void widgetSelected(SelectionEvent e) {
         Object source = e.getSource();
 
-        if (source == fSitesCombo) {
-            update();
-        } else if (source == fEditButton) {
+        if (source == fEditButton) {
             SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fMain.getShell());
-            dlg.setSelection(null/*fSitesCombo.getText()*/); // TODO: site connection
+            dlg.setSelection((ISiteConnection) ((IStructuredSelection) fSitesViewer.getSelection()).getFirstElement());
             dlg.open();
         } else if (source == fTransferRightButton) {
             transferItems(fSource.getSelectedElements(), fTarget.getCurrentInput(),
@@ -194,9 +200,9 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 
                 public void run() {
                     // updates the drop-down list
-                    String text = fSitesCombo.getText();
-                    fSitesCombo.setItems(getExistingSiteNames());
-                    fSitesCombo.setText(text);
+                    ISelection selection = fSitesViewer.getSelection();
+                    fSitesViewer.setInput(SyncingPlugin.getSiteConnectionManager().getSiteConnections());
+                    fSitesViewer.setSelection(selection);
                 }
             });			
 			break;
@@ -216,8 +222,6 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         Composite middle = createSitePresentation(main);
         middle.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        update();
-
         return main;
     }
 
@@ -228,13 +232,16 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         Label label = new Label(main, SWT.NONE);
         label.setText(Messages.FTPManagerComposite_LBL_Sites);
 
-        fSitesCombo = new Combo(main, SWT.READ_ONLY);
-        fSitesCombo.setItems(getExistingSiteNames());
-        fSitesCombo.select(0);
-        GridData gridData = new GridData();
-        gridData.widthHint = 250;
-        fSitesCombo.setLayoutData(gridData);
-        fSitesCombo.addSelectionListener(this);
+        fSitesViewer = new ComboViewer(main, SWT.READ_ONLY);
+        fSitesViewer.setContentProvider(new ArrayContentProvider());
+        fSitesViewer.setLabelProvider(new SitesLabelProvider());
+        fSitesViewer.setInput(SyncingPlugin.getSiteConnectionManager().getSiteConnections());
+        fSitesViewer.getControl().setLayoutData(GridDataFactory.swtDefaults().hint(250, SWT.DEFAULT).create());
+        fSitesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				setSelectedSite((ISiteConnection) ((IStructuredSelection) event.getSelection()).getFirstElement());
+			}
+		});
 
         fEditButton = new Button(main, SWT.PUSH);
         fEditButton.setText(StringUtils.ellipsify(CoreStrings.EDIT));
@@ -295,28 +302,24 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         }
     }
 
-    private void update() {
-        String siteName = fSitesCombo.getText();
-        for (ISiteConnection siteConnection : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
-            if (siteConnection.getName().equals(siteName)) {
-                setSelectedSite(siteConnection);
-                break;
-            }
-        }
-    }
-
     private void fireSiteConnectionChanged(ISiteConnection site) {
         for (Listener listener : fListeners) {
             listener.siteConnectionChanged(site);
         }
     }
+    
+    private class SitesLabelProvider extends LabelProvider {
 
-    private static String[] getExistingSiteNames() {
-        ISiteConnection[] all = SyncingPlugin.getSiteConnectionManager().getSiteConnections();
-        String[] names = new String[all.length];
-        for (int i = 0; i < names.length; ++i) {
-            names[i] = all[i].getName();
-        }
-        return names;
+    	/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+		 */
+		@Override
+		public String getText(Object element) {
+			if (element instanceof ISiteConnection) {
+				return ((ISiteConnection) element).getName();
+			}
+			return super.getText(element);
+		}
     }
+
 }
