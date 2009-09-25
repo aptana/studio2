@@ -106,6 +106,9 @@ public class SyncUtils {
     }
     
     public static IConnectionPoint findOrCreateConnectionPointFor(IAdaptable adaptable) {
+        if (adaptable == null) {
+            return null;
+        }
     	IConnectionPoint connectionPoint = (IConnectionPoint) adaptable.getAdapter(IConnectionPoint.class);
     	if (connectionPoint != null) {
     		return connectionPoint;
