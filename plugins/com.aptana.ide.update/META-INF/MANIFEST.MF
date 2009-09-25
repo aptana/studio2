@@ -14,6 +14,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: com.aptana.ide.core.ui.update,
  com.aptana.ide.internal.update.manager,
  com.aptana.ide.update,
- com.aptana.ide.update.handler,
  com.aptana.ide.update.manager
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
