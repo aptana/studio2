@@ -436,7 +436,7 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
 			filesystemBrowseButton.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
 			filesystemBrowseButton.setLayoutData(GridDataFactory.swtDefaults().create());
 			filesystemBrowseButton.addSelectionListener(this);
-			
+
 			/* description text for the default connection */
 			defaultDescriptionLabel = new Label(parent, SWT.WRAP);
 			defaultDescriptionLabel.setText(Messages.SiteConnectionPropertiesWidget_LBL_DefaultDescription);
@@ -518,7 +518,7 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
                     }
                 }
                 projectFolderText.setEnabled(enabled && hasFolders);
-				projectBrowseButton.setEnabled(enabled);
+				projectBrowseButton.setEnabled(enabled && hasFolders);
 				break;
 			case FILESYSTEM:
 				filesystemFolderText.setEnabled(enabled);
@@ -542,7 +542,11 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
 				setType(PROJECT);
 				IResource resource = (IResource) connectionPoint.getAdapter(IResource.class);
 				projectViewer.setSelection(new StructuredSelection(resource.getProject()), true);
-				projectFolderText.setText(resource.getProjectRelativePath().toPortableString());
+				IPath path = resource.getProjectRelativePath();
+				if (path.isEmpty()) {
+				    path = Path.ROOT;
+				}
+				projectFolderText.setText(path.toPortableString());
 			} else if (ConnectionPointUtils.isLocal(connectionPoint)) {
 				setType(FILESYSTEM);
 				File file = (File) connectionPoint.getAdapter(File.class);

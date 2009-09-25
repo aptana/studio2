@@ -38,6 +38,7 @@ package com.aptana.ide.syncing.ui.dialogs;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -105,8 +106,15 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
         setHelpAvailable(false);
 
         sites.add(DefaultSiteConnection.getInstance());
-		sites.addAll(Arrays.asList(SyncingPlugin.getSiteConnectionManager().getSiteConnections()));
-	
+        ISiteConnection[] connections = SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+        Arrays.sort(connections, new Comparator<ISiteConnection>() {
+
+            public int compare(ISiteConnection o1, ISiteConnection o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+		sites.addAll(Arrays.asList(connections));
+
 		setSelection(DefaultSiteConnection.getInstance());
 	}
 
