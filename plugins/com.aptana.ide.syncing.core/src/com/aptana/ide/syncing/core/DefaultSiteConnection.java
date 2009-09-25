@@ -90,6 +90,8 @@ public class DefaultSiteConnection extends SiteConnection {
                 FileReader reader = new FileReader(file);
                 XMLMemento memento = XMLMemento.createReadRoot(reader);
                 loadState(memento.getChild(ELEMENT_SITE));
+                // the destination is context sensitive, so sets back to null
+                fInstance.setDestination(null);
             } catch (IOException e) {
             } catch (CoreException e) {
             }
