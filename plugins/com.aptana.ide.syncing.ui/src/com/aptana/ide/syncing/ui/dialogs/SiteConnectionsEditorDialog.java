@@ -112,6 +112,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 	public void setCreateNew(String name, IAdaptable source, IAdaptable destination) {
 		IConnectionPoint sourceConnection = null;
 		IConnectionPoint destinationConnection = null;
+		/* TODO */
 
 		SiteConnection siteConnection = (SiteConnection) SyncingPlugin.getSiteConnectionManager().createSiteConnection();
 		siteConnection.setName(createUniqueSiteName(name));

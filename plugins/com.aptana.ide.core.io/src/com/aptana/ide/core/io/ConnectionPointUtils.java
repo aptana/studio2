@@ -43,6 +43,8 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 
+import com.aptana.ide.core.io.efs.EFSUtils;
+
 /**
  * @author Max Stepanov
  *
@@ -96,6 +98,23 @@ public final class ConnectionPointUtils {
 		WorkspaceConnectionPoint connectionPoint = new WorkspaceConnectionPoint(container);
 		connectionPoint.setName((container instanceof IProject) ? container.getName() : container.getFullPath().toPortableString());
 		return connectionPoint;
+	}
+	
+	public static IConnectionPoint findOrCreateLocalConnectionPoint(IPath path) {
+		IConnectionPoint connectionPoint = findConnectionPoint(EFSUtils.getFileStore(path.toFile()).toURI());
+		if (connectionPoint == null) {
+			connectionPoint = ConnectionPointUtils.createLocalConnectionPoint(path);
+		}
+		return connectionPoint;
+	}
+	
+	public static IConnectionPoint findOrCreateWorkspaceConnectionPoint(IContainer container) {
+		IConnectionPoint connectionPoint = findConnectionPoint(EFSUtils.getFileStore(container).toURI());
+		if (connectionPoint == null) {
+			connectionPoint = ConnectionPointUtils.createWorkspaceConnectionPoint(container);
+		}
+		return connectionPoint;
+
 	}
 	
 }

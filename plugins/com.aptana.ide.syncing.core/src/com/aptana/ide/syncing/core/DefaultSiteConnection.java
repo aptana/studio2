@@ -45,7 +45,7 @@ import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.PlatformUtils;
 import com.aptana.ide.core.epl.XMLMemento;
-import com.aptana.ide.core.io.LocalConnectionPoint;
+import com.aptana.ide.core.io.ConnectionPointUtils;
 
 /**
  * A singleton for defining the default connection available to users.
@@ -66,13 +66,14 @@ public class DefaultSiteConnection extends SiteConnection {
 
     private static DefaultSiteConnection fInstance;
 
+    private DefaultSiteConnection() {
+    }
+
     public static DefaultSiteConnection getInstance() {
         if (fInstance == null) {
             fInstance = new DefaultSiteConnection();
             fInstance.setName(NAME);
-            LocalConnectionPoint source = new LocalConnectionPoint(new Path(HOME_DIR));
-            source.setName(HOME_DIR);
-            fInstance.setSource(source);
+            fInstance.setSource(ConnectionPointUtils.findOrCreateLocalConnectionPoint(Path.fromOSString(HOME_DIR)));
         }
         return fInstance;
     }
@@ -82,7 +83,7 @@ public class DefaultSiteConnection extends SiteConnection {
      * 
      * @param path
      */
-    public void loadState(IPath path) {
+    protected void loadState(IPath path) {
         File file = path.toFile();
         if (file.exists()) {
             try {
@@ -100,7 +101,7 @@ public class DefaultSiteConnection extends SiteConnection {
      * 
      * @param path
      */
-    public void saveState(IPath path) {
+    protected void saveState(IPath path) {
         XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
         saveState(memento.createChild(ELEMENT_SITE));
         try {
@@ -111,6 +112,4 @@ public class DefaultSiteConnection extends SiteConnection {
         }
     }
 
-    private DefaultSiteConnection() {
-    }
 }

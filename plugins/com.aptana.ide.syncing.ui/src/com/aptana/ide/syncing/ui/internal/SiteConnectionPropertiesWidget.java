@@ -562,18 +562,10 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
 				IProject project = (IProject) ((IStructuredSelection) projectViewer.getSelection()).getFirstElement();
 				IPath path = Path.fromPortableString(projectFolderText.getText());
 				IContainer container = (IContainer) project.findMember(path);
-				IConnectionPoint connectionPoint = ConnectionPointUtils.findConnectionPoint(EFSUtils.getFileStore(container).toURI());
-				if (connectionPoint == null) {
-					connectionPoint = ConnectionPointUtils.createWorkspaceConnectionPoint(container);
-				}
-				return connectionPoint;
+				return ConnectionPointUtils.findOrCreateWorkspaceConnectionPoint(container);
 			} else if (filesystemRadio.getSelection()) {
 				IPath path = Path.fromPortableString(filesystemFolderText.getText());
-				IConnectionPoint connectionPoint = ConnectionPointUtils.findConnectionPoint(EFSUtils.getFileStore(path.toFile()).toURI());
-				if (connectionPoint == null) {
-					connectionPoint = ConnectionPointUtils.createLocalConnectionPoint(path);
-				}
-				return connectionPoint;
+				return ConnectionPointUtils.findOrCreateLocalConnectionPoint(path);
 			}
 			return null;
 		}
