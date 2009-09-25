@@ -78,6 +78,7 @@ import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnection;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.ui.internal.SiteConnectionPropertiesWidget;
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.UIUtils;
 
 /**
@@ -110,9 +111,8 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 	}
 
 	public void setCreateNew(String name, IAdaptable source, IAdaptable destination) {
-		IConnectionPoint sourceConnection = null;
-		IConnectionPoint destinationConnection = null;
-		/* TODO */
+		IConnectionPoint sourceConnection = SyncUtils.findOrCreateConnectionPointFor(source);
+		IConnectionPoint destinationConnection = SyncUtils.findOrCreateConnectionPointFor(destination);
 
 		SiteConnection siteConnection = (SiteConnection) SyncingPlugin.getSiteConnectionManager().createSiteConnection();
 		siteConnection.setName(createUniqueSiteName(name));

@@ -76,13 +76,13 @@ public class DoubleClickAction extends BaseDoubleClickAction {
             if (selectionHasChildren()) {
                 super.run();
             } else {
-                // no connection point has been defined; opens the new site dialog
-                openNewSiteDialog();
+                // no connection point has been defined; opens the new site connection dialog
+            	openNewSiteConnectionDialog();
             }
         }
     }
 
-    private void openNewSiteDialog() {
+    private void openNewSiteConnectionDialog() {
         SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fShell);
         if (SyncingPlugin.getSiteConnectionManager().getSiteConnections().length == 0) {
         	dlg.setCreateNew("New Connection", null, null);

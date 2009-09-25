@@ -34,14 +34,19 @@
  */
 package com.aptana.ide.syncing.ui.internal;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Path;
 
+import com.aptana.ide.core.io.ConnectionPointUtils;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.ui.io.FileSystemUtils;
@@ -98,5 +103,22 @@ public class SyncUtils {
             }
         }
         return fileInfo;
+    }
+    
+    public static IConnectionPoint findOrCreateConnectionPointFor(IAdaptable adaptable) {
+    	IConnectionPoint connectionPoint = (IConnectionPoint) adaptable.getAdapter(IConnectionPoint.class);
+    	if (connectionPoint != null) {
+    		return connectionPoint;
+    	}
+		IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+		if (resource instanceof IContainer) {
+			 return ConnectionPointUtils.findOrCreateWorkspaceConnectionPoint((IContainer) resource);
+		} else {
+			File file = (File) adaptable.getAdapter(File.class);
+			if (file != null) {
+				return ConnectionPointUtils.findOrCreateLocalConnectionPoint(Path.fromOSString(file.getAbsolutePath()));
+			}
+		}
+		return null;
     }
 }
