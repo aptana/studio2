@@ -114,6 +114,9 @@ public class SyncUtils {
     		return connectionPoint;
     	}
 		IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+		if (resource == null) {
+		    resource = (IResource) adaptable.getAdapter(IContainer.class);
+		}
 		if (resource instanceof IContainer) {
 			 return ConnectionPointUtils.findOrCreateWorkspaceConnectionPoint((IContainer) resource);
 		} else {

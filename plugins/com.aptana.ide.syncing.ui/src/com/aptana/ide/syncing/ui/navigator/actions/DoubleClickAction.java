@@ -34,6 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.navigator.actions;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Shell;
@@ -41,7 +42,6 @@ import org.eclipse.swt.widgets.Shell;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
-import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
@@ -76,17 +76,20 @@ public class DoubleClickAction extends BaseDoubleClickAction {
             if (selectionHasChildren()) {
                 super.run();
             } else {
-                // no connection point has been defined; opens the new site connection dialog
-            	openNewSiteConnectionDialog();
+                // no connection point has been defined against the project;
+                // opens the new site connection dialog
+                IAdaptable source = null;
+                if (element instanceof IAdaptable) {
+                    source = (IAdaptable) element;
+                }
+            	openNewSiteConnectionDialog(source);
             }
         }
     }
 
-    private void openNewSiteConnectionDialog() {
+    private void openNewSiteConnectionDialog(IAdaptable source) {
         SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fShell);
-        if (SyncingPlugin.getSiteConnectionManager().getSiteConnections().length == 0) {
-        	dlg.setCreateNew("New Connection", null, null);
-        }
+        dlg.setCreateNew("New Connection", source, null);
         dlg.open();
     }
 

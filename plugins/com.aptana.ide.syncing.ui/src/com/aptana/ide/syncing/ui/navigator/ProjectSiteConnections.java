@@ -34,6 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.navigator;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -83,7 +84,7 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
 
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
-        if (adapter == IProject.class) {
+        if (adapter == IProject.class || adapter == IContainer.class) {
             return fProject;
         }
         return super.getAdapter(adapter);
