@@ -38,7 +38,6 @@ package com.aptana.ide.syncing.ui.dialogs;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,6 +58,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -106,14 +106,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
         setHelpAvailable(false);
 
         sites.add(DefaultSiteConnection.getInstance());
-        ISiteConnection[] connections = SyncingPlugin.getSiteConnectionManager().getSiteConnections();
-        Arrays.sort(connections, new Comparator<ISiteConnection>() {
-
-            public int compare(ISiteConnection o1, ISiteConnection o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
-		sites.addAll(Arrays.asList(connections));
+		sites.addAll(Arrays.asList(SyncingPlugin.getSiteConnectionManager().getSiteConnections()));
 
 		setSelection(DefaultSiteConnection.getInstance());
 	}
@@ -164,6 +157,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 		sitesViewer.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(2, 1).create());
 		sitesViewer.setContentProvider(new ArrayContentProvider());
 		sitesViewer.setLabelProvider(new SitesLabelProvider());
+		sitesViewer.setComparator(new SitesSorter());
         sitesViewer.setInput(sites);
 
 		addButton = new Button(group, SWT.PUSH);
@@ -381,5 +375,19 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 			}
 			return super.getText(element);
 		}
+    }
+    
+    private class SitesSorter extends ViewerComparator {
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
+		 */
+		@Override
+		public int category(Object element) {
+			if (element == DefaultSiteConnection.getInstance()) {
+				return 0;
+			}
+			return 1;
+		}
+    	
     }
 }
