@@ -44,7 +44,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.PlatformObject;
 
 import com.aptana.ide.core.epl.IMemento;
+import com.aptana.ide.core.io.ConnectionPointType;
 import com.aptana.ide.core.io.ConnectionPointUtils;
+import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
@@ -146,6 +148,38 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
 		if (!excludes.contains(wildcard)) {
 			excludes.add(wildcard);
 		}		
+	}
+
+	@Override
+	public String toString() {
+        StringBuilder text = new StringBuilder();
+        text.append("("); //$NON-NLS-1$
+        IConnectionPoint source = getSource();
+        if (source == null) {
+            text.append("source missing");
+        } else {
+            ConnectionPointType type = CoreIOPlugin.getConnectionPointManager().getType(source);
+            if (type != null) {
+                text.append(type.getName()).append(":"); //$NON-NLS-1$
+            }
+            text.append(source.getName());
+        }
+
+        text.append(" <-> "); //$NON-NLS-1$
+
+        IConnectionPoint target = getDestination();
+        if (target == null) {
+            text.append("destination missing");
+        } else {
+            ConnectionPointType type = CoreIOPlugin.getConnectionPointManager().getType(target);
+            if (type != null) {
+                text.append(type.getName()).append(":"); //$NON-NLS-1$
+            }
+            text.append(target.getName());
+        }
+        text.append(")"); //$NON-NLS-1$
+
+	    return text.toString();
 	}
 
 	protected void loadState(IMemento memento) {

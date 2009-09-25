@@ -32,14 +32,19 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.core.connection;
+package com.aptana.ide.syncing.core;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.PlatformUtils;
-import com.aptana.ide.core.epl.IMemento;
-import com.aptana.ide.core.io.ConnectionPointType;
-import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.IConnectionPointManager;
+import com.aptana.ide.core.epl.XMLMemento;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 
 /**
@@ -47,69 +52,65 @@ import com.aptana.ide.core.io.LocalConnectionPoint;
  * 
  * @author Michael Xia (mxia@aptana.com)
  */
-public class DefaultSiteConnectionPoint extends SiteConnectionPoint {
+public class DefaultSiteConnection extends SiteConnection {
 
     public static final String NAME = "default"; //$NON-NLS-1$
+
+    protected static final String STATE_FILENAME = "defaultConnection"; //$NON-NLS-1$
+
+    private static final String ELEMENT_ROOT = "connection"; //$NON-NLS-1$
+    private static final String ELEMENT_SITE = "connection"; //$NON-NLS-1$
 
     private static final String HOME_DIR = PlatformUtils
             .expandEnvironmentStrings(PlatformUtils.HOME_DIRECTORY);
 
-    private static DefaultSiteConnectionPoint fInstance;
+    private static DefaultSiteConnection fInstance;
 
-    public static DefaultSiteConnectionPoint getInstance() {
+    public static DefaultSiteConnection getInstance() {
         if (fInstance == null) {
-            fInstance = new DefaultSiteConnectionPoint();
+            fInstance = new DefaultSiteConnection();
             fInstance.setName(NAME);
-            fInstance.setSourceCategory(LocalConnectionPoint.CATEGORY);
-            fInstance.setSource(HOME_DIR);
+            LocalConnectionPoint source = new LocalConnectionPoint(new Path(HOME_DIR));
+            source.setName(HOME_DIR);
+            fInstance.setSource(source);
         }
         return fInstance;
     }
 
-    @Override
-    public String toString() {
-        IConnectionPoint source = getSource();
-        IConnectionPoint target = getDestination();
-        IConnectionPointManager manager = CoreIOPlugin.getConnectionPointManager();
-
-        StringBuilder text = new StringBuilder();
-        text.append("("); //$NON-NLS-1$
-        if (source == null) {
-            text.append("source missing");
-        } else {
-            ConnectionPointType type = manager.getType(source);
-            if (type != null) {
-                text.append(type.getName()).append(":"); //$NON-NLS-1$
+    /**
+     * loadState
+     * 
+     * @param path
+     */
+    public void loadState(IPath path) {
+        File file = path.toFile();
+        if (file.exists()) {
+            try {
+                FileReader reader = new FileReader(file);
+                XMLMemento memento = XMLMemento.createReadRoot(reader);
+                loadState(memento.getChild(ELEMENT_SITE));
+            } catch (IOException e) {
+            } catch (CoreException e) {
             }
-            text.append(source.getName());
         }
-        text.append(" <-> "); //$NON-NLS-1$
-        if (target == null) {
-            text.append("selected FTP site");
-        } else {
-            ConnectionPointType type = manager.getType(target);
-            if (type != null) {
-                text.append(type.getName()).append(":"); //$NON-NLS-1$
-            }
-            text.append(target.getName());
+    }
+
+    /**
+     * saveState
+     * 
+     * @param path
+     */
+    public void saveState(IPath path) {
+        XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
+        saveState(memento.createChild(ELEMENT_SITE));
+        try {
+            FileWriter writer = new FileWriter(path.toFile());
+            memento.save(writer);
+            isChanged();
+        } catch (IOException e) {
         }
-
-        text.append(")"); //$NON-NLS-1$
-
-        return text.toString();
     }
 
-    @Override
-    public void loadState(IMemento memento) {
-        super.loadState(memento);
-        fInstance = this;
-    }
-
-    @Override
-    public void saveState(IMemento memento) {
-        super.saveState(memento);
-    }
-
-    private DefaultSiteConnectionPoint() {
+    private DefaultSiteConnection() {
     }
 }

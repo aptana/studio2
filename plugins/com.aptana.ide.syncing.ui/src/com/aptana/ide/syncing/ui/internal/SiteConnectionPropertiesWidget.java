@@ -42,11 +42,11 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -60,7 +60,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -80,6 +79,7 @@ import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
+import com.aptana.ide.syncing.core.DefaultSiteConnection;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnection;
 import com.aptana.ide.syncing.core.SyncingPlugin;
@@ -88,59 +88,60 @@ import com.aptana.ide.ui.ftp.internal.FTPPropertyDialogProvider;
 
 /**
  * @author Max Stepanov
- *
+ * @author Michael Xia
  */
 @SuppressWarnings("restriction")
-public class SiteConnectionPropertiesWidget extends Composite {
+public class SiteConnectionPropertiesWidget extends Composite implements ModifyListener {
 
-	private TitleAreaDialog dialog;
+    public static interface Client {
+        public void setErrorMessage(String message);
+    }
+
+	private Client client;
 	private ISiteConnection source;
 	private Text nameText;
 	private TargetEditor sourceEditor;
 	private TargetEditor destinationEditor;
 	private boolean changed;
-	
-	/**
-	 * @param parent
-	 * @param style
-	 */
-	public SiteConnectionPropertiesWidget(Composite parent, int style, TitleAreaDialog dialog) {
+
+    /**
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            SWT style bits
+     * @param client
+     *            a callback client to receive necessary notifications
+     */
+	public SiteConnectionPropertiesWidget(Composite parent, int style, Client client) {
 		super(parent, style);
-		this.dialog = dialog;
+		this.client = client;
 		setLayout(GridLayoutFactory.swtDefaults().numColumns(2).create());
-		
-		/* row 1 */
+
+		/* row 1 - name */
 		Label label = new Label(this, SWT.NONE);
-		label.setText(StringUtils.makeFormLabel("Name"));		
+		label.setText(StringUtils.makeFormLabel(Messages.SiteConnectionPropertiesWidget_LBL_Name));		
 		label.setLayoutData(GridDataFactory.swtDefaults().create());
-		
+
 		nameText = new Text(this, SWT.SINGLE | SWT.BORDER);
 		nameText.setLayoutData(GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).create());
-		
-		/* row 2 */
+		nameText.addModifyListener(this);
+
+		/* row 2 - source */
 		Group group = new Group(this, SWT.NONE);
-		group.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
-		group.setText("Source");
-		
-		sourceEditor = new TargetEditor("Source");
+		group.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true).create());
+		group.setText(Messages.SiteConnectionPropertiesWidget_LBL_Source);
+
+		sourceEditor = new TargetEditor(Messages.SiteConnectionPropertiesWidget_LBL_Source);
+		// currently not allowing remote site to be a source
 		sourceEditor.createTargets(group, false);
 
-		/* row 2 */
+		/* row 3 - destination */
 		group = new Group(this, SWT.NONE);
-		group.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
-		group.setText("Destination");
-	
-		destinationEditor = new TargetEditor("Destination");
-		destinationEditor.createTargets(group, true);
-		
-		/* -- */
-		nameText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				changed = true;
-				validateAll();
-			}
-		});
+		group.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true).create());
+		group.setText(Messages.SiteConnectionPropertiesWidget_LBL_Destination);
 
+		destinationEditor = new TargetEditor(Messages.SiteConnectionPropertiesWidget_LBL_Destination);
+		destinationEditor.createTargets(group, true);
 	}
 
 	public void setSource(ISiteConnection source) {
@@ -162,27 +163,28 @@ public class SiteConnectionPropertiesWidget extends Composite {
 			getParent().layout();
 		}
 		nameText.setText(source.getName());
+		nameText.setEnabled(source != DefaultSiteConnection.getInstance());
 		sourceEditor.setTarget(source.getSource());
 		destinationEditor.setTarget(source.getDestination());
 		validateAll();
-		changed = source.getSource() == null || source.getDestination() == null;
+		changed = source.getSource() == null || (source != DefaultSiteConnection.getInstance() && source.getDestination() == null);
 	}
-	
+
 	public ISiteConnection getSource() {
 		return source;
 	}
-	
+
 	public boolean isChanged() {
 		return source != null && changed;
 	}
-	
+
 	public boolean applyChanges() {
 		if (!validateAll()) {
 			return false;
 		}
 		SiteConnection siteConnection = (SiteConnection) source;
 		siteConnection.setName(nameText.getText());
-		
+
 		IConnectionPoint connectionPoint = sourceEditor.getTarget();
 		if (connectionPoint != null) {
 			CoreIOPlugin.getConnectionPointManager().addConnectionPoint(connectionPoint);
@@ -194,23 +196,34 @@ public class SiteConnectionPropertiesWidget extends Composite {
 			CoreIOPlugin.getConnectionPointManager().addConnectionPoint(connectionPoint);
 		}
 		siteConnection.setDestination(connectionPoint);
-		
-		SyncingPlugin.getSiteConnectionManager().addSiteConnection(siteConnection);
+
+		if (siteConnection != DefaultSiteConnection.getInstance()) {
+		    SyncingPlugin.getSiteConnectionManager().addSiteConnection(siteConnection);
+		}
 		changed = false;
 		return true;
 	}
-	
+
+    public void modifyText(ModifyEvent e) {
+        if (validateAll()) {
+            changed = true;
+        }
+    }
+
 	private boolean validateAll() {
 		String message = null;
 		if (source != null) {
 			String name = nameText.getText().trim();
 			if (name.length() == 0) {
-				message = "Please specify site name";
+				message = Messages.SiteConnectionPropertiesWidget_ERR_EmptyName;
+			} else if (source != DefaultSiteConnection.getInstance() && name.equals(DefaultSiteConnection.NAME)) {
+			    message = StringUtils.format(Messages.SiteConnectionPropertiesWidget_ERR_DuplicateNames, name);
 			} else {
-		    	for (ISiteConnection i : SyncingPlugin.getSiteConnectionManager().getSiteConnections()) {
-		    		if (i != source && name.equals(i.getName())) {
-		    			message = StringUtils.format("More than one connections have the name ''{0}''."
-		    					+" Please assign an unique name for each connection.", name);
+			    ISiteConnection[] connections = SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+		    	for (ISiteConnection connection : connections) {
+		    		if (connection != source && name.equals(connection.getName())) {
+		    			message = StringUtils.format(Messages.SiteConnectionPropertiesWidget_ERR_DuplicateNames, name);
+		    			break;
 		    		}
 		    	}
 			}
@@ -221,10 +234,10 @@ public class SiteConnectionPropertiesWidget extends Composite {
 				message = destinationEditor.validate();
 			}
 		}
-		dialog.setErrorMessage(message);
+		client.setErrorMessage(message);
 		return (message == null);
 	}
-	
+
 	private IConnectionPoint createNewRemoteConnection() {
 		Dialog dlg = new FTPPropertyDialogProvider().createPropertyDialog(new SameShellProvider(this));
 		if (dlg instanceof IPropertyDialog) {
@@ -242,7 +255,7 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		}
 		return null;
 	}
-	
+
 	private IContainer browseWorkspace(IContainer container, IPath path) {
 		FileFolderSelectionDialog dlg = new FileFolderSelectionDialog(getShell(), false, IResource.FOLDER);
 		IFileStore input = EFSUtils.getFileStore(container);
@@ -266,13 +279,14 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		return null;
 	}
 		
-	private class TargetEditor {
+	private class TargetEditor implements SelectionListener, ISelectionChangedListener {
 		
 		private static final int REMOTE = 1;
 		private static final int PROJECT = 2;
 		private static final int FILESYSTEM = 3;
 		
 		private String name;
+		private Composite mainComp;
 		private Button remoteRadio;
 		private ComboViewer remotesViewer;
 		private Button remoteNewButton;
@@ -283,141 +297,152 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		private Button filesystemRadio;
 		private Text filesystemFolderText;
 		private Button filesystemBrowseButton;
-				
+
+		private Label defaultDescriptionLabel;
+		private boolean isDefault = false;
+
 		public TargetEditor(String name) {
 			this.name = name;
 		}
 
+	    public void widgetDefaultSelected(SelectionEvent e) {
+	    }
+
+	    public void widgetSelected(SelectionEvent e) {
+	        Object source = e.getSource();
+	        if (source == remoteNewButton) {
+	            IConnectionPoint result = createNewRemoteConnection();
+                if (result != null) {
+                    remotesViewer.setInput(ConnectionPointUtils.getRemoteConnectionPoints());
+                    remotesViewer.setSelection(new StructuredSelection(result), true);
+                    changed = true;
+                }
+                validateAll();
+	        } else if (source == projectBrowseButton) {
+	            IContainer container = (IContainer) ((IStructuredSelection) projectViewer.getSelection()).getFirstElement();
+                if (container == null) {
+                    container = ResourcesPlugin.getWorkspace().getRoot();
+                }
+                IContainer result = browseWorkspace(container, Path.fromPortableString(projectFolderText.getText()));
+                if (result != null) {
+                    projectViewer.setSelection(new StructuredSelection(result.getProject()), true);
+                    projectFolderText.setText(result.getProjectRelativePath().toPortableString());
+                    changed = true;
+                }
+                validateAll();
+	        } else if (source == filesystemBrowseButton) {
+	            IPath path = browseFilesystem(Path.fromPortableString(filesystemFolderText.getText()));
+                if (path != null) {
+                    filesystemFolderText.setText(path.toPortableString());
+                    changed = true;
+                }
+                validateAll();
+	        } else {
+                setEnabled(getType());
+                if (validateAll()) {
+                    changed = true;
+                }
+	        }
+	    }
+
+	    public void selectionChanged(SelectionChangedEvent event) {
+            Object source = event.getSource();
+            if (source == projectViewer) {
+                projectFolderText.setText(Path.ROOT.toPortableString());
+                setEnabled(getType());
+            }
+
+            if (validateAll()) {
+                changed = true;
+            }
+        }
+
 		private void createTargets(Composite parent, boolean showRemote) {
-			parent.setLayout(GridLayoutFactory.swtDefaults().numColumns(4).create());
-			
-			/* row 1 */
-			remoteRadio = new Button(parent, SWT.RADIO);
-			remoteRadio.setText("Remote");
+		    parent.setLayout(GridLayoutFactory.swtDefaults().create());
+		    mainComp = new Composite(parent, SWT.NONE);
+		    mainComp.setLayout(GridLayoutFactory.swtDefaults().margins(0, 0).numColumns(4).create());
+		    mainComp.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
+
+			/* row 1 - remote */
+			remoteRadio = new Button(mainComp, SWT.RADIO);
+			remoteRadio.setText(Messages.SiteConnectionPropertiesWidget_LBL_Remote);
 			remoteRadio.setLayoutData(GridDataFactory.swtDefaults().exclude(!showRemote).create());
-		
-			remotesViewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+			remoteRadio.addSelectionListener(this);
+
+			remotesViewer = new ComboViewer(mainComp, SWT.DROP_DOWN | SWT.READ_ONLY);
 			remotesViewer.getControl().setLayoutData(GridDataFactory.swtDefaults().exclude(!showRemote)
 					.align(SWT.FILL, SWT.CENTER).span(2, 1).grab(true, false).create());
 			remotesViewer.setContentProvider(new ArrayContentProvider());
 			remotesViewer.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
-			remotesViewer.setInput(ConnectionPointUtils.getRemoteConnectionPoints());
-			
-			remoteNewButton = new Button(parent, SWT.PUSH);
+			IConnectionPoint[] sites = ConnectionPointUtils.getRemoteConnectionPoints();
+			remotesViewer.setInput(sites);
+			if (sites.length > 0) {
+			    remotesViewer.setSelection(new StructuredSelection(sites[0]), true);
+			}
+            remotesViewer.addSelectionChangedListener(this);
+
+			remoteNewButton = new Button(mainComp, SWT.PUSH);
 			remoteNewButton.setText(StringUtils.ellipsify(CoreStrings.NEW));
 			remoteNewButton.setLayoutData(GridDataFactory.swtDefaults().exclude(!showRemote).create());
-					
-			/* row 2 */
-			projectRadio = new Button(parent, SWT.RADIO);
-			projectRadio.setText("Project");
+            remoteNewButton.addSelectionListener(this);
+
+			/* row 2 - project */
+			projectRadio = new Button(mainComp, SWT.RADIO);
+			projectRadio.setText(Messages.SiteConnectionPropertiesWidget_LBL_Project);
 			projectRadio.setLayoutData(GridDataFactory.swtDefaults().create());
-		
-			projectViewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+			projectRadio.addSelectionListener(this);
+
+			projectViewer = new ComboViewer(mainComp, SWT.DROP_DOWN | SWT.READ_ONLY);
 			projectViewer.getControl().setLayoutData(GridDataFactory.swtDefaults()
 					.align(SWT.FILL, SWT.CENTER).span(3, 1).grab(true, false).create());
 			projectViewer.setContentProvider(new ArrayContentProvider());
 			projectViewer.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
-			projectViewer.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			projectViewer.setInput(projects);
+			if (projects.length > 0) {
+			    projectViewer.setSelection(new StructuredSelection(projects[0]), true);
+			}
+            projectViewer.addSelectionChangedListener(this);
 
-			/* row 3 */
-			new Label(parent, SWT.NONE).setLayoutData(GridDataFactory.swtDefaults().create());
-			
-			Label label = new Label(parent, SWT.NONE);
-			label.setText(StringUtils.makeFormLabel("Folder"));
+			/* row 3 - project folder */
+			new Label(mainComp, SWT.NONE).setLayoutData(GridDataFactory.swtDefaults().create());
+
+			Label label = new Label(mainComp, SWT.NONE);
+			label.setText(StringUtils.makeFormLabel(Messages.SiteConnectionPropertiesWidget_LBL_Folder));
 			label.setLayoutData(GridDataFactory.swtDefaults().create());
-			
-			projectFolderText = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
+
+			projectFolderText = new Text(mainComp, SWT.BORDER);
+			projectFolderText.setText(Path.ROOT.toPortableString());
 			projectFolderText.setLayoutData(GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).create());
-			
-			projectBrowseButton = new Button(parent, SWT.PUSH);
+			projectFolderText.addModifyListener(SiteConnectionPropertiesWidget.this);
+
+			projectBrowseButton = new Button(mainComp, SWT.PUSH);
 			projectBrowseButton.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
 			projectBrowseButton.setLayoutData(GridDataFactory.swtDefaults().create());
+            projectBrowseButton.addSelectionListener(this);
 
-			/* row 4 */
-			filesystemRadio = new Button(parent, SWT.RADIO);
-			filesystemRadio.setText("Filesystem");
+			/* row 4 - filesystem */
+			filesystemRadio = new Button(mainComp, SWT.RADIO);
+			filesystemRadio.setText(Messages.SiteConnectionPropertiesWidget_LBL_Filesystem);
 			filesystemRadio.setLayoutData(GridDataFactory.swtDefaults().create());
+            filesystemRadio.addSelectionListener(this);
 
-			filesystemFolderText = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
+			filesystemFolderText = new Text(mainComp, SWT.BORDER);
 			filesystemFolderText.setLayoutData(GridDataFactory.swtDefaults()
 					.align(SWT.FILL, SWT.CENTER).span(2, 1).create());
+			filesystemFolderText.addModifyListener(SiteConnectionPropertiesWidget.this);
 
-			filesystemBrowseButton = new Button(parent, SWT.PUSH);
+			filesystemBrowseButton = new Button(mainComp, SWT.PUSH);
 			filesystemBrowseButton.setText(StringUtils.ellipsify(CoreStrings.BROWSE));
 			filesystemBrowseButton.setLayoutData(GridDataFactory.swtDefaults().create());
-
+			filesystemBrowseButton.addSelectionListener(this);
 			
-			/* -- */
-			SelectionListener selectionListener = new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					changed = true;
-					setEnabled(getType());
-					validateAll();
-				}
-			};
-			remoteRadio.addSelectionListener(selectionListener);
-			projectRadio.addSelectionListener(selectionListener);
-			filesystemRadio.addSelectionListener(selectionListener);
-			
-			remotesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-				public void selectionChanged(SelectionChangedEvent event) {
-					changed = true;
-					validateAll();
-				}
-			});
-
-			projectViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-				public void selectionChanged(SelectionChangedEvent event) {
-					changed = true;
-					projectFolderText.setText(Path.ROOT.toPortableString());
-					validateAll();
-				}
-			});
-
-			remoteNewButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					IConnectionPoint result = createNewRemoteConnection();
-					if (result != null) {
-						remotesViewer.setInput(ConnectionPointUtils.getRemoteConnectionPoints());
-						remotesViewer.setSelection(new StructuredSelection(result), true);
-						changed = true;
-					}
-					validateAll();
-				}
-			});
-			
-			projectBrowseButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					IContainer container = (IContainer) ((IStructuredSelection) projectViewer.getSelection()).getFirstElement();
-					if (container == null) {
-						container = ResourcesPlugin.getWorkspace().getRoot();
-					}
-					IContainer result = browseWorkspace(container, Path.fromPortableString(projectFolderText.getText()));
-					if (result != null) {
-						projectViewer.setSelection(new StructuredSelection(result.getProject()), true);
-						projectFolderText.setText(result.getProjectRelativePath().toPortableString());
-						changed = true;
-					}
-					validateAll();
-				}
-			});
-			
-			filesystemBrowseButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					IPath path = browseFilesystem(Path.fromPortableString(filesystemFolderText.getText()));
-					if (path != null) {
-						filesystemFolderText.setText(path.toPortableString());
-						changed = true;
-					}
-					validateAll();
-				}
-			});
+			/* description text for the default connection */
+			defaultDescriptionLabel = new Label(parent, SWT.WRAP);
+			defaultDescriptionLabel.setText(Messages.SiteConnectionPropertiesWidget_LBL_DefaultDescription);
+            defaultDescriptionLabel.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).exclude(true).create());
 		}
-		
+
 		private void setType(int type) {
 			remoteRadio.setSelection(false);
 			projectRadio.setSelection(false);
@@ -478,7 +503,21 @@ public class SiteConnectionPropertiesWidget extends Composite {
 				break;
 			case PROJECT:
 				projectViewer.getControl().setEnabled(enabled);
-				projectFolderText.setEnabled(enabled);
+				IProject project = (IProject) ((IStructuredSelection) projectViewer.getSelection()).getFirstElement();
+				boolean hasFolders = false;
+                if (project != null) {
+                    try {
+                        IResource[] resources = project.members();
+                        for (IResource resource : resources) {
+                            if (resource instanceof IContainer) {
+                                hasFolders = true;
+                                break;
+                            }
+                        }
+                    } catch (CoreException e) {
+                    }
+                }
+                projectFolderText.setEnabled(enabled && hasFolders);
 				projectBrowseButton.setEnabled(enabled);
 				break;
 			case FILESYSTEM:
@@ -489,6 +528,13 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		}
 		
 		private void setTarget(IConnectionPoint connectionPoint) {
+            isDefault = (source == DefaultSiteConnection.getInstance() && connectionPoint == null);
+            mainComp.setVisible(!isDefault);
+            ((GridData) mainComp.getLayoutData()).exclude = isDefault;
+            defaultDescriptionLabel.setVisible(isDefault);
+            ((GridData) defaultDescriptionLabel.getLayoutData()).exclude = !isDefault;
+            layout(true, true);
+
 			if (ConnectionPointUtils.isRemote(connectionPoint)) {
 				setType(REMOTE);
 				remotesViewer.setSelection(new StructuredSelection(connectionPoint), true);
@@ -507,6 +553,9 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		}
 		
 		private IConnectionPoint getTarget() {
+		    if (isDefault) {
+		        return null;
+		    }
 			if (remoteRadio.getSelection()) {
 				return (IConnectionPoint) ((IStructuredSelection) remotesViewer.getSelection()).getFirstElement();
 			} else if (projectRadio.getSelection()) {
@@ -530,31 +579,32 @@ public class SiteConnectionPropertiesWidget extends Composite {
 		}
 		
 		private String validate() {
+		    if (isDefault) {
+		        return null;
+		    }
 			if (remoteRadio.getSelection()) {
 				IConnectionPoint connectionPoint = (IConnectionPoint) ((IStructuredSelection) remotesViewer.getSelection()).getFirstElement();
 				if (connectionPoint == null) {
-					return "Please specify a remote connection";
+					return Messages.SiteConnectionPropertiesWidget_ERR_NoRemote;
 				}
 			} else if (projectRadio.getSelection()) {
 				IProject project = (IProject) ((IStructuredSelection) projectViewer.getSelection()).getFirstElement();
 				if (project == null) {
-					return "Please specify a project";
+					return Messages.SiteConnectionPropertiesWidget_ERR_NoProject;
 				}
 				IPath path = Path.fromPortableString(projectFolderText.getText());
 				if (!(project.findMember(path) instanceof IContainer)) {
-					return "Please specify a valid project folder";
+					return Messages.SiteConnectionPropertiesWidget_ERR_InvalidProjectFolder;
 				}
 			} else if (filesystemRadio.getSelection()) {
 				IPath path = Path.fromPortableString(filesystemFolderText.getText());
 				if (!path.toFile().isDirectory()) {
-					return "Please specify a valid local filesystem location";
+					return Messages.SiteConnectionPropertiesWidget_ERR_InvalidFilesystemFolder;
 				}
 			} else {
-				return StringUtils.format("Please specify {0} type", name.toLowerCase());
+				return StringUtils.format(Messages.SiteConnectionPropertiesWidget_ERR_NoType, name.toLowerCase());
 			}
 			return null;
 		}
-
 	}
-
 }

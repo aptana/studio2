@@ -75,6 +75,10 @@ public class SyncingPlugin extends Plugin {
 			if (location != null) {
 				SiteConnectionManager.getInstance().loadState(getStateLocation().append(location));
 			}
+            location = lastState.lookup(new Path(DefaultSiteConnection.STATE_FILENAME));
+            if (location != null) {
+                DefaultSiteConnection.getInstance().loadState(getStateLocation().append(location));
+            }
 		}
 	}
 
@@ -127,7 +131,13 @@ public class SyncingPlugin extends Plugin {
 							.addFileExtension(Integer.toString(context.getSaveNumber()));
 				SiteConnectionManager.getInstance().saveState(getStateLocation().append(savePath));
 				context.map(new Path(SiteConnectionManager.STATE_FILENAME), savePath);
-				context.needSaveNumber();
+
+                savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
+                        .toString(context.getSaveNumber()));
+                DefaultSiteConnection.getInstance().saveState(getStateLocation().append(savePath));
+                context.map(new Path(DefaultSiteConnection.STATE_FILENAME), savePath);
+
+                context.needSaveNumber();
 				break;
 			}
 		}
@@ -139,6 +149,10 @@ public class SyncingPlugin extends Plugin {
 			IPath prevSavePath = new Path(SiteConnectionManager.STATE_FILENAME)
 						.addFileExtension(Integer.toString(context.getPreviousSaveNumber()));
 			getStateLocation().append(prevSavePath).toFile().delete();
+
+            prevSavePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
+                    .toString(context.getPreviousSaveNumber()));
+            getStateLocation().append(prevSavePath).toFile().delete();
 		}
 
 		/* (non-Javadoc)
@@ -148,6 +162,10 @@ public class SyncingPlugin extends Plugin {
 			IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME)
 						.addFileExtension(Integer.toString(context.getSaveNumber()));
 			getStateLocation().append(savePath).toFile().delete();
+
+            savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
+                    .toString(context.getSaveNumber()));
+            getStateLocation().append(savePath).toFile().delete();
 		}
 
 	}

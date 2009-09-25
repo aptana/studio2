@@ -40,9 +40,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.core.connection.DefaultSiteConnectionPoint;
+import com.aptana.ide.syncing.core.DefaultSiteConnection;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
 
 /**
@@ -62,9 +61,7 @@ public class OpenDefaultConnectionAction implements IObjectActionDelegate {
     }
 
     public void run(IAction action) {
-        DefaultSiteConnectionPoint connection = DefaultSiteConnectionPoint.getInstance();
-        connection.setDestinationCategory(CoreIOPlugin.getConnectionPointManager().getType(
-                fDestination).getCategory().getId());
+        DefaultSiteConnection connection = DefaultSiteConnection.getInstance();
         connection.setDestination(fDestination);
 
         EditorUtils.openConnectionEditor(connection);

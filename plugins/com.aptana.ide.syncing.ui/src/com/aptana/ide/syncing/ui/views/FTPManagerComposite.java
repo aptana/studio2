@@ -72,6 +72,7 @@ import org.eclipse.ui.PlatformUI;
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.syncing.core.DefaultSiteConnection;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SiteConnection;
 import com.aptana.ide.syncing.core.SyncingPlugin;
@@ -145,6 +146,11 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
             fSource.setConnectionPoint(null);
             fTarget.setConnectionPoint(null);
         } else {
+            if (siteConnection == DefaultSiteConnection.getInstance()) {
+                fSitesViewer.setInput(new ISiteConnection[] { siteConnection });
+            } else {
+                fSitesViewer.setInput(SyncingPlugin.getSiteConnectionManager().getSiteConnections());
+            }
             fSitesViewer.setSelection(new StructuredSelection(siteConnection));
             fSource.setConnectionPoint(siteConnection.getSource());
             fTarget.setConnectionPoint(siteConnection.getDestination());
@@ -201,7 +207,7 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
     /* (non-Javadoc)
 	 * @see com.aptana.ide.syncing.core.events.ISiteConnectionListener#siteConnectionChanged(com.aptana.ide.syncing.core.events.SiteConnectionEvent)
 	 */
-	public void siteConnectionChanged(final SiteConnectionEvent event) {        
+	public void siteConnectionChanged(final SiteConnectionEvent event) {  
         switch (event.getKind()) {
 		case SiteConnectionEvent.POST_ADD:
 		case SiteConnectionEvent.POST_DELETE:
@@ -212,12 +218,19 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 
                 public void run() {
                     // updates the drop-down list
-                    ISelection selection = fSitesViewer.getSelection();
-                    fSitesViewer.setInput(SyncingPlugin.getSiteConnectionManager().getSiteConnections());
-                    fSitesViewer.setSelection(selection);
+                    if (fSelectedSite != DefaultSiteConnection.getInstance()) {
+                        ISelection selection = fSitesViewer.getSelection();
+                        fSitesViewer.setInput(SyncingPlugin.getSiteConnectionManager().getSiteConnections());
+                        fSitesViewer.setSelection(selection);
+                    }
                 }
             });			
 			break;
+		case SiteConnectionEvent.POST_CHANGE:
+		    ISiteConnection siteConnection = event.getSiteConnection();
+		    fSource.setConnectionPoint(siteConnection.getSource());
+            fTarget.setConnectionPoint(siteConnection.getDestination());
+            break;
 		}
     }
 

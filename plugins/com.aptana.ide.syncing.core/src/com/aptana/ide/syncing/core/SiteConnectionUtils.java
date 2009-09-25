@@ -99,7 +99,7 @@ public final class SiteConnectionUtils {
 					IContainer connectionRoot = (IContainer) sourceConnectionPoint.getAdapter(IResource.class);
 					if (connectionRoot != null) {
 						if (connectionRoot.equals(resource) || (!strict && contains(connectionRoot, resource))) {
-							
+							list.add(i);
 						}
 					}
 				}
@@ -114,7 +114,7 @@ public final class SiteConnectionUtils {
 							IFileStore root = sourceConnectionPoint.getRoot();
 							if (root != null) {
 								if (root.equals(fileStore) || (!strict && root.isParentOf(fileStore))) {
-									
+									list.add(i);
 								}
 							}
 						} catch (CoreException ignore) {

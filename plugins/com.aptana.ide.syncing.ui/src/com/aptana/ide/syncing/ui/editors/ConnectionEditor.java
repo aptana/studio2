@@ -60,7 +60,7 @@ public class ConnectionEditor extends EditorPart implements FTPManagerComposite.
     public ConnectionEditor() {
     }
 
-    public void setSelectedSite(SiteConnectionPoint site) {
+    public void setSelectedSite(ISiteConnection site) {
         fConnectionComposite.setSelectedSite(site);
     }
 

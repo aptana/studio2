@@ -114,6 +114,18 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 		return EFS.getLocalFileSystem().getStore(path);
 	}
 
+    /* (non-Javadoc)
+     * @see org.eclipse.core.runtime.PlatformObject#getAdapter(java.lang.Class)
+     */
+    @SuppressWarnings("unchecked")
+	@Override
+	public Object getAdapter(Class adapter) {
+	    if (adapter == File.class) {
+	        return getFile();
+	    }
+	    return super.getAdapter(adapter);
+	}
+
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.io.ConnectionPoint#loadState(com.aptana.ide.core.epl.IMemento)
 	 */
