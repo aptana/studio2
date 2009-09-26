@@ -54,12 +54,10 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.ui.editors.EditorUtils;
-import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.ResourceSynchronizationUtils;
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.internal.ChooseSiteConnectionDialog;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
 

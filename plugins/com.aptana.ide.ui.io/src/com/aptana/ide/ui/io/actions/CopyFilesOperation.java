@@ -312,6 +312,11 @@ public class CopyFilesOperation {
                 if (index > -1) {
                     String relativePath = sourcePath.substring(index + sourceRootPath.length());
                     targetStores[0] = destinationRoot.getFileStore(new Path(relativePath));
+                    // makes sure the parent folder is created on the destination side
+                    IFileStore parent = getFolderStore(targetStores[0]);
+                    if (parent != targetStores[0]) {
+                        parent.mkdir(EFS.NONE, monitor);
+                    }
                 }
             }
             if (sourceStores == null) {

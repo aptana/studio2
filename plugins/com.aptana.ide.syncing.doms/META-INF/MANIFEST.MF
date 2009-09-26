@@ -8,11 +8,10 @@ Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
+ org.eclipse.core.filesystem,
  org.eclipse.ui.ide,
- com.aptana.ide.core,
  com.aptana.ide.core.ui,
- com.aptana.ide.io.file,
- com.aptana.ide.syncing,
+ com.aptana.ide.syncing.ui,
  org.eclipse.eclipsemonkey
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
