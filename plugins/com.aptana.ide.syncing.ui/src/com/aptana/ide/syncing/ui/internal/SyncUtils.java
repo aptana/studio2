@@ -34,16 +34,21 @@
  */
 package com.aptana.ide.syncing.ui.internal;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Path;
 
-import com.aptana.ide.core.io.EFSUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.core.io.ConnectionPointUtils;
+import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
@@ -58,13 +63,13 @@ public class SyncUtils {
      *            the array of sets
      * @return a result set that contains the intersection
      */
-    public static Set<SiteConnectionPoint> getIntersection(Set<SiteConnectionPoint>[] sets) {
-        Set<SiteConnectionPoint> intersectionSet = new HashSet<SiteConnectionPoint>();
+    public static Set<ISiteConnection> getIntersection(Set<ISiteConnection>[] sets) {
+        Set<ISiteConnection> intersectionSet = new HashSet<ISiteConnection>();
 
-        for (Set<SiteConnectionPoint> set : sets) {
+        for (Set<ISiteConnection> set : sets) {
             intersectionSet.addAll(set);
         }
-        for (Set<SiteConnectionPoint> set : sets) {
+        for (Set<ISiteConnection> set : sets) {
             intersectionSet.retainAll(set);
         }
 
@@ -98,5 +103,28 @@ public class SyncUtils {
             }
         }
         return fileInfo;
+    }
+    
+    public static IConnectionPoint findOrCreateConnectionPointFor(IAdaptable adaptable) {
+        if (adaptable == null) {
+            return null;
+        }
+    	IConnectionPoint connectionPoint = (IConnectionPoint) adaptable.getAdapter(IConnectionPoint.class);
+    	if (connectionPoint != null) {
+    		return connectionPoint;
+    	}
+		IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+		if (resource == null) {
+		    resource = (IResource) adaptable.getAdapter(IContainer.class);
+		}
+		if (resource instanceof IContainer) {
+			 return ConnectionPointUtils.findOrCreateWorkspaceConnectionPoint((IContainer) resource);
+		} else {
+			File file = (File) adaptable.getAdapter(File.class);
+			if (file != null) {
+				return ConnectionPointUtils.findOrCreateLocalConnectionPoint(Path.fromOSString(file.getAbsolutePath()));
+			}
+		}
+		return null;
     }
 }

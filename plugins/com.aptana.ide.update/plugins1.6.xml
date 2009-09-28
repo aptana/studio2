@@ -53,7 +53,7 @@
 		  <month>7</month>
 		  <day>8</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/feature_cloud.png</icon>
+		<icon>images/feature_cloud.png</icon>
 		<installer_id>installer.hosting</installer_id>
 	</plugin>
 	<plugin>
@@ -104,25 +104,6 @@
 		</release>
 		<installer_id>installer.others.scm</installer_id>
 	</plugin>
-	<!-- 
-	<plugin>
-		<id>com.aptana.ide.feature.editor.php</id>
-		<name>Aptana PHP</name>
-		<category>Platforms</category>
-		<description>Edit, preview and debug PHP files.</description>
-		<url>http://update.aptana.com/install/php/</url>
-        <more>http://www.aptana.com/php</more>
-		<sortweight>0</sortweight>
-		<release>
-		    <version>1.1.0</version>
-			<year>2009</year>
-			<month>7</month>
-			<day>15</day>
-		</release>
-		<icon>http://ide.aptana.com/content_ide/images/feature_php.png</icon>
-		<installer_id>installer.platforms</installer_id>
-	</plugin>
-	-->
     <plugin>
         <id>org.radrails.rails_feature</id>
         <name>Aptana RadRails</name>
@@ -137,7 +118,7 @@
         	<month>7</month>
         	<day>8</day>
         </release>
-		<icon>http://ide.aptana.com/content_ide/images/feature_radrails.png</icon>
+		<icon>images/feature_radrails.png</icon>
 		<installer_id>installer.platforms</installer_id>
     </plugin>
     <plugin>
@@ -154,7 +135,7 @@
           <month>7</month>
           <day>8</day>
         </release>
-		<icon>http://ide.aptana.com/content_ide/images/feature_pydev.png</icon>
+		<icon>images/feature_pydev.png</icon>
 		<installer_id>installer.platforms</installer_id>
     </plugin>
     <plugin>
@@ -171,7 +152,7 @@
             <month>7</month>
             <day>8</day>
         </release>
-		<icon>http://ide.aptana.com/content_ide/images/feature_air.png</icon>
+		<icon>images/feature_air.png</icon>
 		<installer_id>installer.desktop</installer_id>
     </plugin>
     <plugin>
@@ -188,7 +169,7 @@
             <month>7</month>
             <day>8</day>
         </release>
-		<icon>http://ide.aptana.com/content_ide/images/feature_jaxer.png</icon>
+		<icon>images/feature_jaxer.png</icon>
 		<installer_id>installer.platforms</installer_id>
     </plugin>
     <plugin>      
@@ -205,7 +186,7 @@
           <month>07</month>
           <day>06</day>
         </release>
-        <icon>http://ide.aptana.com/content_ide/images/feature_nokia.png</icon>
+        <icon>images/feature_nokia.png</icon>
         <installer_id>installer.featured</installer_id>
      </plugin>   
 	<plugin>
@@ -254,7 +235,7 @@
 			<month>5</month>
 			<day>23</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/aflax.png</icon>
+		<icon>images/ajax/aflax.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -271,7 +252,7 @@
 			<month>5</month>
 			<day>23</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/rico.png</icon>
+		<icon>images/ajax/rico.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -288,7 +269,7 @@
 			<month>5</month>
 			<day>23</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/scriptaculous.png</icon>
+		<icon>images/ajax/scriptaculous.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -305,7 +286,7 @@
 			<month>5</month>
 			<day>23</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/spry.png</icon>
+		<icon>images/ajax/spry.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -322,7 +303,7 @@
 			<month>2</month>
 			<day>25</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/yui.png</icon>
+		<icon>images/ajax/yui.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -339,7 +320,7 @@
 			<month>5</month>
 			<day>23</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/prototype.png</icon>
+		<icon>images/ajax/prototype.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -356,7 +337,7 @@
 			<month>5</month>
 			<day>23</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/library.png</icon>
+		<icon>images/ajax/library.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -373,7 +354,7 @@
 			<month>12</month>
 			<day>31</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/mootools.png</icon>
+		<icon>images/ajax/mootools.png</icon>
 		<installer_id>installer.ajax</installer_id>
 	</plugin>
   <plugin>
@@ -390,7 +371,7 @@
 			<month>4</month>
 			<day>19</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/jquery.png</icon>
+		<icon>images/ajax/jquery.png</icon>
 		<installer_id>installer.ajax</installer_id>
   </plugin>
   <plugin>
@@ -407,7 +388,7 @@
 			<month>8</month>
 			<day>26</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/ext.gif</icon>
+		<icon>images/ajax/ext.gif</icon>
 		<installer_id>installer.ajax</installer_id>
   </plugin>
   <plugin>
@@ -424,7 +405,7 @@
 			<month>4</month>
 			<day>19</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/dojo.png</icon>
+		<icon>images/ajax/dojo.png</icon>
 		<installer_id>installer.ajax</installer_id>
   </plugin>
   <plugin>
@@ -441,7 +422,7 @@
 			<month>5</month>
 			<day>23</day>
 		</release>
-		<icon>http://ide.aptana.com/content_ide/images/ajax/mochikit.png</icon>
+		<icon>images/ajax/mochikit.png</icon>
 		<installer_id>installer.ajax</installer_id>
   </plugin>
   <plugin>
@@ -457,7 +438,7 @@
   		<day>13</day>
   		<month>08</month>
   		<year>2009</year></release>
-  	<icon>http://ide.aptana.com/content_ide/images/feature_quantum.png</icon>
+  	<icon>images/feature_quantum.png</icon>
   	<installer_id>installer.featured</installer_id>
   	</plugin>
   	<plugin>
@@ -473,7 +454,7 @@
   		<day>26</day>
   		<month>08</month>
   		<year>2009</year></release>
-  	<icon>http://ide.aptana.com/content_ide/images/feature_pdt.png</icon>
+  	<icon>images/feature_pdt.png</icon>
   	<installer_id>installer.featured</installer_id>
   	</plugin>
 </plugins>

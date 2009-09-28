@@ -54,9 +54,9 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.core.connection.ResourceSynchronizationUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.ResourceSynchronizationUtils;
+import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.internal.ChooseSiteConnectionDialog;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
@@ -83,7 +83,7 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         }
 
         // gets the site connection user wants to use
-        SiteConnectionPoint[] sites = getSiteConnections();
+        ISiteConnection[] sites = getSiteConnections();
         if (sites.length == 0) {
             // the selected elements do not belong to a common source location
             MessageDialog.openWarning(getShell(), getMessageTitle(),
@@ -91,7 +91,7 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
             return;
         }
 
-        SiteConnectionPoint site = null;
+        ISiteConnection site = null;
         if (sites.length == 1) {
             site = sites[0];
         } else {
@@ -157,7 +157,7 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         Object[] elements = ((IStructuredSelection) selection).toArray();
         for (Object element : elements) {
             if (element instanceof IAdaptable) {
-                SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(element);
+            	ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource((IAdaptable) element);
                 if (sites.length > 0) {
                     fSelectedElements.add((IAdaptable) element);
                 }
@@ -165,7 +165,7 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         }
     }
 
-    protected abstract void performAction(IAdaptable[] files, SiteConnectionPoint site)
+    protected abstract void performAction(IAdaptable[] files, ISiteConnection site)
             throws CoreException;
 
     protected String getMessageTitle() {
@@ -180,35 +180,36 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
      * @return an array of all sites that contains the selected elements in
      *         their source locations
      */
-    protected SiteConnectionPoint[] getSiteConnections() {
-        List<Set<SiteConnectionPoint>> sitesList = new ArrayList<Set<SiteConnectionPoint>>();
-        Set<SiteConnectionPoint> sitesSet;
-        SiteConnectionPoint[] sites;
+    @SuppressWarnings("unchecked")
+	protected ISiteConnection[] getSiteConnections() {
+        List<Set<ISiteConnection>> sitesList = new ArrayList<Set<ISiteConnection>>();
+        Set<ISiteConnection> sitesSet;
+        ISiteConnection[] sites;
         for (IAdaptable element : fSelectedElements) {
-            sites = SiteConnectionManager.getSitesWithSource(element);
-            sitesSet = new HashSet<SiteConnectionPoint>();
-            for (SiteConnectionPoint site : sites) {
+            sites = SiteConnectionUtils.findSitesForSource(element);
+            sitesSet = new HashSet<ISiteConnection>();
+            for (ISiteConnection site : sites) {
                 sitesSet.add(site);
             }
             sitesList.add(sitesSet);
         }
-        Set<SiteConnectionPoint> sitesSets = SyncUtils.getIntersection(sitesList
-                .toArray(new Set[sitesList.size()]));
+        Set<ISiteConnection> sitesSets = SyncUtils.getIntersection(
+        		sitesList.toArray(new Set[sitesList.size()]));
 
-        return sitesSets.toArray(new SiteConnectionPoint[sitesSets.size()]);
+        return sitesSets.toArray(new ISiteConnection[sitesSets.size()]);
     }
 
     /**
      * Opens the connection editor.
      */
     protected void openConnectionEditor() {
-        SiteConnectionPoint[] sites = getSiteConnections();
+        ISiteConnection[] sites = getSiteConnections();
         if (sites.length > 0) {
             EditorUtils.openConnectionEditor(sites[0]);
         }
     }
 
-    private static SiteConnectionPoint getLastSyncConnection(IContainer container) {
+    private static ISiteConnection getLastSyncConnection(IContainer container) {
         if (container == null) {
             return null;
         }
@@ -218,9 +219,9 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
             return null;
         }
 
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(container, true);
+        ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(container, true);
         String target;
-        for (SiteConnectionPoint site : sites) {
+        for (ISiteConnection site : sites) {
             target = site.getDestination().getName();
             if (target.equals(lastConnection)) {
                 return site;
@@ -229,7 +230,7 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         return null;
     }
 
-    private void setRememberMyDecision(SiteConnectionPoint site, boolean rememberMyDecision) {
+    private void setRememberMyDecision(ISiteConnection site, boolean rememberMyDecision) {
         IConnectionPoint source = site.getSource();
         IContainer container = (IContainer) source.getAdapter(IContainer.class);
         if (container == null) {

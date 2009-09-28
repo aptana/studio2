@@ -54,7 +54,6 @@ import com.aptana.ide.core.epl.IMemento;
 public final class LocalConnectionPoint extends ConnectionPoint {
 
 	public static final String TYPE = "local"; //$NON-NLS-1$
-	public static final String CATEGORY = "com.aptana.ide.core.io.localShortcuts"; //$NON-NLS-1$
 	
 	private static final String ELEMENT_PATH = "path"; //$NON-NLS-1$
 
@@ -113,6 +112,18 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	@Override
 	public IFileStore getRoot() throws CoreException {
 		return EFS.getLocalFileSystem().getStore(path);
+	}
+
+    /* (non-Javadoc)
+     * @see org.eclipse.core.runtime.PlatformObject#getAdapter(java.lang.Class)
+     */
+    @SuppressWarnings("unchecked")
+	@Override
+	public Object getAdapter(Class adapter) {
+	    if (adapter == File.class) {
+	        return getFile();
+	    }
+	    return super.getAdapter(adapter);
 	}
 
 	/* (non-Javadoc)

@@ -56,7 +56,7 @@ public abstract class AbstractPluginManager implements IPluginManager, IPreferen
 {
 	protected static final String FEATURE_IU_SUFFIX = ".feature.group"; //$NON-NLS-1$
 
-	private static final String CACHED_PLUGINS_XML_FILENAME = "cached_plugins.xml";
+	private static final String CACHED_PLUGINS_XML_FILENAME = "cached_plugins.xml"; //$NON-NLS-1$
 	private static final int DAY = 1000 * 60 * 60 * 24;
 
 	private final Set<PluginListener> listeners = new HashSet<PluginListener>();

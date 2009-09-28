@@ -168,9 +168,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
     }
 
     public void setConnectionPoint(IConnectionPoint connection) {
-        if (fConnectionPoint == connection) {
-            return;
-        }
         fConnectionPoint = connection;
 
         fEndPointData.clear();

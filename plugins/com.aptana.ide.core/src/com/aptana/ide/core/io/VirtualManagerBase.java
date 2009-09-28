@@ -42,19 +42,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.IPropertyChangeListener;
-
 import com.aptana.ide.core.AptanaCorePlugin;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.sync.ISerializableSyncItem;
-import com.aptana.ide.core.preferences.IPreferenceConstants;
 
 /**
  * @author Kevin Lindsey
  */
-public abstract class VirtualManagerBase implements IVirtualFileManager, IPropertyChangeListener
+public abstract class VirtualManagerBase implements IVirtualFileManager
 {
 	ProtocolManager _protocolManager;
 	private String _nickName = StringUtils.EMPTY;
@@ -91,11 +87,6 @@ public abstract class VirtualManagerBase implements IVirtualFileManager, IProper
 
 		try
 		{
-			IPreferenceStore store = getPreferenceStore();
-			if (store != null)
-			{
-				store.addPropertyChangeListener(this);
-			}
 			updateCloakExpressions();
 		}
 		catch (Exception ex)
@@ -635,19 +626,6 @@ public abstract class VirtualManagerBase implements IVirtualFileManager, IProper
 	}
 
 	/**
-	 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-	 */
-	public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event)
-	{
-		String property = event.getProperty();
-
-		if (IPreferenceConstants.PREF_GLOBAL_SYNC_CLOAKING_EXTENSIONS.equals(property))
-		{
-			updateCloakExpressions();
-		}
-	}
-
-	/**
 	 * Updating the cloaking expressions
 	 */
 	private void updateCloakExpressions()
@@ -656,27 +634,22 @@ public abstract class VirtualManagerBase implements IVirtualFileManager, IProper
 		this.removeAllCloakExpressions();
 		
 		// grab the preference store
-		IPreferenceStore store = getPreferenceStore();
-		
-		if (store != null)
-		{
-			// grab the list of cloaking expressions
-			String expressions = store.getString(IPreferenceConstants.PREF_GLOBAL_SYNC_CLOAKING_EXTENSIONS);
+
+		// grab the list of cloaking expressions
+		String expressions = "";
 			
-			if (expressions != null && expressions.length() > 0)
-			{
-				String[] array = expressions.split(";"); //$NON-NLS-1$
+		if (expressions != null && expressions.length() > 0)
+		{
+		    String[] array = expressions.split(";"); //$NON-NLS-1$
 				
-				for (String expression : array)
-				{
-					String regexString = this.cloakExpressionToRegex(expression);
-					
-					this.addCloakExpression(regexString);
-				}
-			}
+		    for (String expression : array)
+		    {
+		        String regexString = this.cloakExpressionToRegex(expression);
+		        this.addCloakExpression(regexString);
+		    }
 		}
 	}
-	
+
 	/**
 	 * cloakExpressionToRegex
 	 *
@@ -733,13 +706,6 @@ public abstract class VirtualManagerBase implements IVirtualFileManager, IProper
 		
 		return result;
 	}
-
-	/**
-	 * Returns the local preference store
-	 * 
-	 * @return IPreferenceStore
-	 */
-	protected abstract IPreferenceStore getPreferenceStore();
 
 	/**
 	 * Returns the expression used to cloak items of this type

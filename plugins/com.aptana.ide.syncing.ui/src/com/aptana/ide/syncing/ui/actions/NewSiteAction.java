@@ -41,7 +41,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.aptana.ide.syncing.ui.internal.NewSiteDialog;
+import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -68,8 +68,9 @@ public class NewSiteAction implements IObjectActionDelegate {
         if (element instanceof IAdaptable) {
             source = (IAdaptable) element;
         }
-        NewSiteDialog dialog = new NewSiteDialog(fActivePart.getSite().getShell(), true, source, null);
-        dialog.open();
+        SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fActivePart.getSite().getShell());
+        dlg.setCreateNew("New Connection", source, null);
+        dlg.open();
     }
 
     public void selectionChanged(IAction action, ISelection selection) {

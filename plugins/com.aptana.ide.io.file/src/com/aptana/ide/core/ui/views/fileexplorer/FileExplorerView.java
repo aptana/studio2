@@ -189,7 +189,6 @@ import com.aptana.ide.core.ui.io.file.ProjectProtocolManager;
 import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
 import com.aptana.ide.core.ui.views.IRefreshableView;
 import com.aptana.ide.io.file.FilePlugin;
-import com.aptana.ide.io.file.epl.OpenWithMenuExternal;
 
 /**
  * The view to navigator file system.
@@ -371,12 +370,12 @@ public class FileExplorerView extends ViewPart implements ISyncManagerChangeList
 			else if (element instanceof IVirtualFileManager)
 			{
 				IVirtualFileManager fm = (IVirtualFileManager) element;
-				image = fm.getImage();
+				// image = fm.getImage();
 			}
 			else if (element instanceof IVirtualFile)
 			{
 				IVirtualFile f = (IVirtualFile) element;
-				image = f.getImage();
+				// image = f.getImage();
 				if (image == null)
 				{
 					IEditorDescriptor desc = registry.getDefaultEditor(f.getName());
@@ -1706,7 +1705,7 @@ public class FileExplorerView extends ViewPart implements ISyncManagerChangeList
 
 				for (IVirtualFile file : files)
 				{
-					file.setImage(ImageUtils.getDriveIcon());
+					// file.setImage(ImageUtils.getDriveIcon());
 					transientShortcuts.add(file);
 				}
 			}
@@ -1726,7 +1725,7 @@ public class FileExplorerView extends ViewPart implements ISyncManagerChangeList
 			{
 				ivfm = lpm.createFileManager();
 				ivfm.setNickName(localizedDesktop);
-				ivfm.setImage(desktopIcon);
+				// ivfm.setImage(desktopIcon);
 				ivfm.setBasePath(basePath);
 				ivfm.setTransient(true);
 				ivfm.setHidden(true);
@@ -1835,16 +1834,11 @@ public class FileExplorerView extends ViewPart implements ISyncManagerChangeList
 
 		if (obj instanceof IVirtualFile)
 		{
-			MenuManager submenu = new MenuManager(ResourceNavigatorMessages.ResourceNavigator_openWith, CoreUIPlugin
-					.getPluginId()
-					+ ".OpenWithSubMenu"); //$NON-NLS-1$
 			IVirtualFile vFile = (IVirtualFile) obj;
 
 			if (vFile.isFile())
 			{
 				manager.add(openAction);
-				submenu.add(new OpenWithMenuExternal(this, (IVirtualFile) obj));
-				manager.add(submenu);
 			}
 
 			if (vFile.isDirectory() && !(vFile instanceof LocalFile))
@@ -2398,8 +2392,7 @@ public class FileExplorerView extends ViewPart implements ISyncManagerChangeList
 				if (obj instanceof IVirtualFile)
 				{
 					IVirtualFile item = (IVirtualFile) obj;
-
-					item.editProperties(viewer.getTree().getShell());
+					// item.editProperties(viewer.getTree().getShell());
 				}
 			}
 		};

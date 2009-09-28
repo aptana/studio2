@@ -34,159 +34,134 @@
  */
 package com.aptana.ide.syncing.doms;
 
-import java.io.File;
-
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
-import com.aptana.ide.core.io.IVirtualFile;
 import com.aptana.ide.core.ui.CoreUIUtils;
-import com.aptana.ide.core.ui.io.file.LocalFile;
-import com.aptana.ide.core.ui.io.file.ProjectFileManager;
-import com.aptana.ide.syncing.FileDownloadAction;
-import com.aptana.ide.syncing.FileUploadAction;
+import com.aptana.ide.syncing.ui.actions.DownloadAction;
+import com.aptana.ide.syncing.ui.actions.UploadAction;
 
 /**
  * @author Ingo Muschenetz
+ * @author Michael Xia
  */
-public final class Sync
-{
-	/**
-	 * uploadCurrentEditor
-	 */
-	public static void uploadCurrentEditor()
-	{
-		IEditorPart editor = CoreUIUtils.getActiveEditor();
-		if(editor == null)
-		{
-			MessageDialog.openError(Display.getDefault().getActiveShell(), Messages.Sync_TTL_UnableToUpload, Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToUpload);
-			return;
-		}
-		
-		IEditorInput input = editor.getEditorInput();
+public final class Sync {
 
-		if (input instanceof FileEditorInput)
-		{
-			IFile file = ((FileEditorInput) input).getFile();
-			upload(file);
-		}
-		else if (input instanceof IPathEditorInput)
-		{
-			IPathEditorInput pin = (IPathEditorInput) input;
-			upload(pin);
-		}
-		
-	}
-	
-	/**
-	 * upload
-	 * @param file
-	 */
-	public static void upload(IFile file)
-	{
-		FileUploadAction action = new FileUploadAction();
-		IVirtualFile[] selectedFiles = null;
+    /**
+     * Uploads the file in the current editor.
+     */
+    public static void uploadCurrentEditor() {
+        IEditorPart editor = CoreUIUtils.getActiveEditor();
+        if (editor == null) {
+            MessageDialog.openError(Display.getDefault().getActiveShell(),
+                    Messages.Sync_TTL_UnableToUpload,
+                    Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToUpload);
+            return;
+        }
+        IEditorInput input = editor.getEditorInput();
 
-		Object[] selectedObjects = new Object[] { file };
-		IVirtualFile[] convertedResources = ProjectFileManager.convertResourcesToFiles(selectedObjects);
-		selectedFiles = action.extractIVirtualFilesFromSelection(convertedResources);
+        if (input instanceof FileEditorInput) {
+            upload(((FileEditorInput) input).getFile());
+        } else if (input instanceof IPathEditorInput) {
+            upload(((IPathEditorInput) input).getPath());
+        } else if (input instanceof FileStoreEditorInput) {
+            FileStoreEditorInput editorInput = (FileStoreEditorInput) input;
+            try {
+                upload(EFS.getStore(editorInput.getURI()));
+            } catch (CoreException e) {
+            }
+        }
+    }
 
-		if(selectedFiles != null && selectedFiles.length > 0)
-		{
-			action.setSelectedObjects(selectedObjects);
-			action.setSelectedFiles(selectedFiles);
-			action.run(null);
-		}
-	}
-	
-	/**
-	 * upload
-	 * @param file
-	 */
-	public static void upload(IPathEditorInput file)
-	{
-		FileUploadAction action = new FileUploadAction();		
-		IVirtualFile vFile = new LocalFile(null, new File(file.getPath().toOSString()));
-		
-		IVirtualFile[] convertedResources = new IVirtualFile[]{vFile};
+    /**
+     * Uploads an IAdaptable that represents a file.
+     * 
+     * @param file
+     *            the IAdaptable object
+     */
+    public static void upload(IAdaptable file) {
+        UploadAction action = new UploadAction();
+        action.setActivePart(null, PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                .getActivePage().getActivePart());
+        action.setSelection(new StructuredSelection(file));
+        action.run(null);
+    }
 
-		if(convertedResources != null && convertedResources.length > 0)
-		{
-			action.setSelectedObjects(new Object[] { file.getPath() });
-			action.setSelectedFiles(convertedResources);
-			action.run(null);
-		}
-	}
-	
-	/**
-	 * downloadCurrentEditor
-	 */
-	public static void downloadCurrentEditor()
-	{
-		IEditorPart editor = CoreUIUtils.getActiveEditor();
-		if(editor == null)
-		{
-			MessageDialog.openError(Display.getDefault().getActiveShell(), Messages.Sync_TTL_UnableToDownload, Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToDownload);
-			return;
-		}
-		IEditorInput input = editor.getEditorInput();
+    /**
+     * Uploads an IPath.
+     * 
+     * @param path
+     *            the IPath object
+     */
+    public static void upload(IPath path) {
+        try {
+            upload(EFS.getStore(URIUtil.toURI(path)));
+        } catch (CoreException e) {
+        }
+    }
 
-		if (input instanceof FileEditorInput)
-		{
-			IFile file = ((FileEditorInput) input).getFile();
-			download(file);
-		}
-		else if (input instanceof IPathEditorInput)
-		{
-			IPathEditorInput pin = (IPathEditorInput) input;
-			download(pin);
-		}
-		
-	}
+    /**
+     * Downloads the file in the current editor.
+     */
+    public static void downloadCurrentEditor() {
+        IEditorPart editor = CoreUIUtils.getActiveEditor();
+        if (editor == null) {
+            MessageDialog.openError(Display.getDefault().getActiveShell(),
+                    Messages.Sync_TTL_UnableToDownload,
+                    Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToDownload);
+            return;
+        }
+        IEditorInput input = editor.getEditorInput();
 
-	/**
-	 * download
-	 * @param file
-	 */
-	public static void download(IFile file)
-	{
-		FileDownloadAction action = new FileDownloadAction();
-		IVirtualFile[] selectedFiles = null;
+        if (input instanceof FileEditorInput) {
+            download(((FileEditorInput) input).getFile());
+        } else if (input instanceof IPathEditorInput) {
+            download(((IPathEditorInput) input).getPath());
+        } else if (input instanceof FileStoreEditorInput) {
+            FileStoreEditorInput editorInput = (FileStoreEditorInput) input;
+            try {
+                download(EFS.getStore(editorInput.getURI()));
+            } catch (CoreException e) {
+            }
+        }
+    }
 
-		Object[] selectedObjects = new Object[] { file };
-		IVirtualFile[] convertedResources = ProjectFileManager.convertResourcesToFiles(selectedObjects);
-		selectedFiles = action.extractIVirtualFilesFromSelection(convertedResources);
+    /**
+     * Downloads an IAdaptable that represents a file.
+     * 
+     * @param file
+     *            the IAdaptable object
+     */
+    public static void download(IAdaptable file) {
+        DownloadAction action = new DownloadAction();
+        action.setActivePart(null, PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                .getActivePage().getActivePart());
+        action.setSelection(new StructuredSelection(file));
+        action.run(null);
+    }
 
-		if(selectedFiles != null && selectedFiles.length > 0)
-		{
-			action.setSelectedObjects(selectedObjects);
-			action.setSelectedFiles(selectedFiles);
-			action.run(null);
-		}
-	}
-	
-	/**
-	 * download
-	 * @param file
-	 */
-	public static void download(IPathEditorInput file)
-	{
-		FileDownloadAction action = new FileDownloadAction();		
-		IVirtualFile vFile = new LocalFile(null, new File(file.getPath().toOSString()));
-		
-		IVirtualFile[] convertedResources = new IVirtualFile[]{vFile};
-
-		if(convertedResources != null && convertedResources.length > 0)
-		{
-			action.setSelectedObjects(new Object[] { file.getPath() });
-			action.setSelectedFiles(convertedResources);
-			action.run(null);
-		}
-	}
-
+    /**
+     * Downloads an IPath.
+     * 
+     * @param path
+     *            the IPath object
+     */
+    public static void download(IPath path) {
+        try {
+            download(EFS.getStore(URIUtil.toURI(path)));
+        } catch (CoreException e) {
+        }
+    }
 }

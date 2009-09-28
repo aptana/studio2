@@ -46,24 +46,21 @@ public class Messages extends NLS {
     public static String ChooseSiteConnectionDialog_LBL_RememberMyDecision;
     public static String ChooseSiteConnectionDialog_Title;
 
-    public static String NewSiteDialog_DefaultMessage;
-    public static String NewSiteDialog_LBL_Apply;
-    public static String NewSiteDialog_Title;
-
-    public static String NewSiteWidget_ERR_DuplicateNames;
-    public static String NewSiteWidget_ERR_InvalidFileSource;
-    public static String NewSiteWidget_ERR_InvalidFileTarget;
-    public static String NewSiteWidget_LBL_Destination;
-    public static String NewSiteWidget_LBL_Duplicate;
-    public static String NewSiteWidget_LBL_Filesystem;
-    public static String NewSiteWidget_LBL_Folder;
-    public static String NewSiteWidget_LBL_Project;
-    public static String NewSiteWidget_LBL_Remote;
-    public static String NewSiteWidget_LBL_SelectDestTarget;
-    public static String NewSiteWidget_LBL_SelectSrcLocation;
-    public static String NewSiteWidget_LBL_Sites;
-    public static String NewSiteWidget_LBL_Source;
-    public static String NewSiteWidget_TXT_NewSite;
+    public static String SiteConnectionPropertiesWidget_ERR_DuplicateNames;
+    public static String SiteConnectionPropertiesWidget_ERR_EmptyName;
+    public static String SiteConnectionPropertiesWidget_ERR_InvalidFilesystemFolder;
+    public static String SiteConnectionPropertiesWidget_ERR_InvalidProjectFolder;
+    public static String SiteConnectionPropertiesWidget_ERR_NoProject;
+    public static String SiteConnectionPropertiesWidget_ERR_NoRemote;
+    public static String SiteConnectionPropertiesWidget_ERR_NoType;
+    public static String SiteConnectionPropertiesWidget_LBL_DefaultDescription;
+    public static String SiteConnectionPropertiesWidget_LBL_Destination;
+    public static String SiteConnectionPropertiesWidget_LBL_Filesystem;
+    public static String SiteConnectionPropertiesWidget_LBL_Folder;
+    public static String SiteConnectionPropertiesWidget_LBL_Name;
+    public static String SiteConnectionPropertiesWidget_LBL_Project;
+    public static String SiteConnectionPropertiesWidget_LBL_Remote;
+    public static String SiteConnectionPropertiesWidget_LBL_Source;
 
     static {
         // initialize resource bundle

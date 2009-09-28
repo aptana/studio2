@@ -38,8 +38,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.swt.graphics.Image;
-
 import com.aptana.ide.core.io.sync.ISerializableSyncItem;
 
 /**
@@ -263,34 +261,6 @@ public interface IVirtualFileManager extends Comparable, ISerializableSyncItem
 	 * @param id
 	 */
 	void setId(long id);
-
-	/**
-	 * getIcon
-	 * 
-	 * @return Icon
-	 */
-	Image getImage();
-
-	/**
-	 * getIcon
-	 * 
-	 * @return Icon
-	 */
-	Image getDisabledImage();
-
-	/**
-	 * setImage
-	 * 
-	 * @param image
-	 */
-	void setImage(Image image);
-
-	/**
-	 * setImage
-	 * 
-	 * @param image
-	 */
-	void setDisabledImage(Image image);
 
 	/**
 	 * Retrieve the name to use when displaying this file manager. For example "www.myCoolWebSite.com"

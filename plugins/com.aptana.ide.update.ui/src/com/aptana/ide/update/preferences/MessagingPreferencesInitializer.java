@@ -19,9 +19,7 @@ public class MessagingPreferencesInitializer extends
 
 	@Override
 	public void initializeDefaultPreferences() {
-		
-
-		final IPreferenceStore prefs = UpdateUIActivator.getDefault().getPreferenceStore();
+		IPreferenceStore prefs = UpdateUIActivator.getDefault().getPreferenceStore();
         prefs.setDefault(IPreferenceConstants.RELEASE_MESSAGE_URL_PREFIX,
                 DEFAULT_RELEASE_MESSAGE_URL_PREFIX);
         prefs.setDefault(IPreferenceConstants.NEWS_MESSAGE_URL_PREFIX,
@@ -30,7 +28,6 @@ public class MessagingPreferencesInitializer extends
                 DEFAULT_ANNOUNCEMENT_URL_PREFIX);
         prefs.setDefault(IPreferenceConstants.NEVER_SHOW_THIS_ANNOUNCEMENT, DEFAULT_NEVER_SHOW_THIS_ANNOUNCEMENT);
 		prefs.setDefault(IPreferenceConstants.NEVER_SHOW_ANNOUNCEMENTS, DEFAULT_NEVER_SHOW_ANNOUNCEMENTS);
-
 	}
 
 }

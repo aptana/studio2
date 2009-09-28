@@ -74,7 +74,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.aptana.ide.core.IdeLog;
-import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.server.jetty.JettyPlugin;
 import com.aptana.ide.update.Activator;

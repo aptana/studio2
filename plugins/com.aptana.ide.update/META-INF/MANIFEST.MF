@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.aptana.ide.update;singleton:=true
-Bundle-Version: 1.6.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: com.aptana.ide.update.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -14,6 +14,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: com.aptana.ide.core.ui.update,
  com.aptana.ide.internal.update.manager,
  com.aptana.ide.update,
- com.aptana.ide.update.handler,
  com.aptana.ide.update.manager
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

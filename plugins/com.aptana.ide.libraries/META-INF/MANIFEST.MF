@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.aptana.ide.libraries
-Bundle-Version: 1.6.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-ClassPath: Tidy.jar,
  css-validator.jar,
  jaxen-1.1.1.jar,

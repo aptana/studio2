@@ -119,12 +119,12 @@ public class FileLabelProvider extends LabelProvider
 		else if (element instanceof IVirtualFileManager)
 		{
 			IVirtualFileManager fm = (IVirtualFileManager) element;
-			image = fm.getImage();
+			// image = fm.getImage();
 		}
 		else if (element instanceof IVirtualFile)
 		{
 			IVirtualFile f = (IVirtualFile) element;
-			image = f.getImage();
+			// image = f.getImage();
 			if (image == null)
 			{
 				IEditorDescriptor desc = EclipseUIUtils.getWorkbenchEditorRegistry().getDefaultEditor(f.getName());

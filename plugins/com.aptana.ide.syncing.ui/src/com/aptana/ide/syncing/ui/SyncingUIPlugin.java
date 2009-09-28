@@ -37,7 +37,6 @@ package com.aptana.ide.syncing.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -45,12 +44,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.IConnectionPointEvent;
-import com.aptana.ide.core.io.IConnectionPointListener;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
+import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
+import com.aptana.ide.syncing.ui.navigator.SiteConnections;
 import com.aptana.ide.ui.io.IOUIPlugin;
 
 /**
@@ -66,33 +65,25 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
 
     private static Map<String, Image> images = new HashMap<String, Image>();
 
-    private IConnectionPointListener connectionListener = new IConnectionPointListener() {
+    private ISiteConnectionListener connectionListener = new ISiteConnectionListener() {
+		public void siteConnectionChanged(SiteConnectionEvent event) {
+	           final ISiteConnection siteConnection = event.getSiteConnection();
+	           switch (event.getKind()) {
+	           case SiteConnectionEvent.POST_ADD:
+	                // closes the corresponding connection editor
+	                EditorUtils.closeConnectionEditor(siteConnection);
+	                break;
 
-        public void connectionPointChanged(IConnectionPointEvent event) {
-            final IConnectionPoint connection = event.getConnectionPoint();
-            if (!(connection instanceof SiteConnectionPoint)) {
-                return;
-            }
+	           case SiteConnectionEvent.POST_DELETE:
+	                // closes the corresponding connection editor
+	                EditorUtils.closeConnectionEditor(siteConnection);
+	                break;
 
-            SiteConnectionPoint site = (SiteConnectionPoint) connection;
-            int eventType = event.getType();
-            if (eventType == IConnectionPointEvent.POST_ADD) {
-                // opens the connection editor for the new connection
-                EditorUtils.openConnectionEditor(site);
-            } else if (eventType == IConnectionPointEvent.POST_DELETE) {
-                // closes the corresponding connection editor
-                EditorUtils.closeConnectionEditor(site);
-            }
-
-            // if an associated site is created or deleted, and the source is a
-            // project, refreshes the source project
-            IConnectionPoint source = site.getSource();
-            IResource resource = (IResource) source.getAdapter(IResource.class);
-            if (resource != null) {
-                IOUIPlugin.refreshNavigatorView(resource.getProject());
-            }
-        }
-    };
+	           }
+	            
+	           IOUIPlugin.refreshNavigatorView(SiteConnections.getInstance());
+		}
+	};
 
     /**
      * The constructor
@@ -106,14 +97,14 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        CoreIOPlugin.getConnectionPointManager().addConnectionPointListener(connectionListener);
+        SyncingPlugin.getSiteConnectionManager().addListener(connectionListener);
     }
 
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     public void stop(BundleContext context) throws Exception {
-        CoreIOPlugin.getConnectionPointManager().removeConnectionPointListener(connectionListener);
+    	SyncingPlugin.getSiteConnectionManager().removeListener(connectionListener);
         plugin = null;
         super.stop(context);
     }

@@ -443,7 +443,7 @@ public class SyncInfoDialog extends Dialog implements SelectionListener {
                     && !StringUtils.EMPTY.equals(fm.getNickName())) {
                 if (!fm.isHidden() || fm instanceof ProjectFileManager) {
                     virtualFileManagers.put(fm.getNickName(), fm);
-                    target.add(fm.getNickName(), fm.getImage(), fm);
+                    target.add(fm.getNickName(), null, fm);
                 }
             }
         }

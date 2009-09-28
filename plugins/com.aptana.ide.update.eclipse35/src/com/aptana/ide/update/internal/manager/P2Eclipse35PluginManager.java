@@ -95,6 +95,7 @@ import com.aptana.ide.update.manager.IPlugin;
 import com.aptana.ide.update.manager.Plugin;
 import com.aptana.ide.update.manager.PluginManagerException;
 
+@SuppressWarnings("restriction")
 public class P2Eclipse35PluginManager extends AbstractPluginManager
 {
 	public P2Eclipse35PluginManager()
@@ -104,7 +105,7 @@ public class P2Eclipse35PluginManager extends AbstractPluginManager
 	/**
 	 * @see com.aptana.ide.update.manager.IPluginManager#addUpdateSite(java.net.URL)
 	 */
-	public boolean addUpdateSite(URL siteURL)
+    public boolean addUpdateSite(URL siteURL)
 	{
 		try
 		{
@@ -539,7 +540,7 @@ public class P2Eclipse35PluginManager extends AbstractPluginManager
 		}
 		if (profile == null)
 			return Collections.emptyList();
-		Collector roots = profile.available(new InstallableUnitQuery("FakeId")
+		Collector roots = profile.available(new InstallableUnitQuery("FakeId") //$NON-NLS-1$
 		{
 			public boolean isMatch(Object object)
 			{
@@ -578,13 +579,14 @@ public class P2Eclipse35PluginManager extends AbstractPluginManager
 
 	private Plugin toPlugin(IInstallableUnit iu) throws MalformedURLException
 	{
-		String name = iu.getProperty("df_LT.featureName");
+		String name = iu.getProperty("df_LT.featureName"); //$NON-NLS-1$
 		if (name == null)
 			name = iu.getProperty(IInstallableUnit.PROP_NAME);
 		if (name == null)
 			name = iu.getId();
-		return new Plugin(stripFeatureGroup(iu.getId()), name, iu.getVersion().toString(), null, iu
-				.getProperty("df_LT.description"), new URL("file:/fake/" + iu.getId()), "", "", 0, null, "", null);
+        return new Plugin(stripFeatureGroup(iu.getId()), name, iu.getVersion().toString(), null, iu
+                .getProperty("df_LT.description"), new URL("file:/fake/" + iu.getId()), "", "", 0, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                null, "", null); //$NON-NLS-1$
 	}
 
 	private String stripFeatureGroup(String id)

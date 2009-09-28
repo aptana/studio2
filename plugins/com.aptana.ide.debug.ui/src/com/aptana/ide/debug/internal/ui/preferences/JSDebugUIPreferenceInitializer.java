@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.IInternalDebugUIConstants;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 
 import com.aptana.ide.debug.internal.ui.IDebugUIConstants;
 import com.aptana.ide.debug.ui.DebugUiPlugin;
@@ -47,6 +48,7 @@ import com.aptana.ide.debug.ui.DebugUiPlugin;
 /**
  * @author Max Stepanov
  */
+@SuppressWarnings("restriction")
 public class JSDebugUIPreferenceInitializer extends AbstractPreferenceInitializer
 {
 	/**
@@ -63,6 +65,8 @@ public class JSDebugUIPreferenceInitializer extends AbstractPreferenceInitialize
 
 		// override default org.eclipse.debug.ui options
 		node = new DefaultScope().getNode(DebugUIPlugin.getDefault().getBundle().getSymbolicName());
-		node.put(IInternalDebugUIConstants.PREF_SWITCH_TO_PERSPECTIVE, "prompt"); //$NON-NLS-1$
+		if (MessageDialogWithToggle.NEVER.equals(node.get(IInternalDebugUIConstants.PREF_SWITCH_TO_PERSPECTIVE, ""))) {
+			node.put(IInternalDebugUIConstants.PREF_SWITCH_TO_PERSPECTIVE, "prompt"); //$NON-NLS-1$
+		}
 	}
 }

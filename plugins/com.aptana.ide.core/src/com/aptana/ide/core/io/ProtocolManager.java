@@ -41,11 +41,6 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.activities.IActivityManager;
-import org.eclipse.ui.activities.IIdentifier;
-import org.eclipse.ui.activities.IIdentifierListener;
-import org.eclipse.ui.activities.IdentifierEvent;
 
 import com.aptana.ide.core.AptanaCorePlugin;
 import com.aptana.ide.core.IdeLog;
@@ -59,8 +54,7 @@ import com.aptana.ide.core.io.sync.VirtualFileManagerSyncPair;
 public abstract class ProtocolManager implements Comparable
 {
 	private static ProtocolManager[] protocolManagers;
-	private static final IActivityManager activityManager  = PlatformUI.getWorkbench().getActivitySupport().getActivityManager();
-	
+
 	private String _fileManagerName = StringUtils.EMPTY;
 	private String _displayName = StringUtils.EMPTY;
 	private int _sortPriority;
@@ -68,23 +62,9 @@ public abstract class ProtocolManager implements Comparable
 	private boolean _hidden = false;
 	private boolean _remote = false;
 	private boolean _allowNew = true;
-	
 
 	private String decoratorId;
 
-	private static IIdentifierListener identifierListener = new IIdentifierListener()
-	{
-		public void identifierChanged(IdentifierEvent identifierEvent)
-		{
-			IIdentifier identifier = identifierEvent.getIdentifier();
-			if (identifier.isEnabled())
-			{
-				// reset the manager. It will be reloaded next time the managers are requested.
-				protocolManagers = null;
-			}
-		}
-	};
-	
 	/**
 	 * ProtocolManager
 	 */
@@ -421,18 +401,13 @@ public abstract class ProtocolManager implements Comparable
 			{
 				try
 				{
-					
 					IConfigurationElement element = configElements[j];
-					if (!isActivityEnabled(element)) {
-						continue;
-					}
 					ProtocolManager pm = (ProtocolManager) configElements[j].createExecutableExtension("class"); //$NON-NLS-1$
-
 					if (pm != null)
 					{
 						pm = pm.getStaticInstance();
 						String displayName = element.getAttribute("displayName"); //$NON-NLS-1$
-						pm.setDisplayName(displayName); //$NON-NLS-1$
+						pm.setDisplayName(displayName);
 						pm.setFileManagerName(element.getAttribute("fileManagerName")); //$NON-NLS-1$
 						String hidden = element.getAttribute("hidden"); //$NON-NLS-1$
 						String allowNew = element.getAttribute("allowNew"); //$NON-NLS-1$
@@ -506,41 +481,6 @@ public abstract class ProtocolManager implements Comparable
 		return protocolManagers;
 	}
 
-	/**
-	 * Returns true if the element is enabled in the activities; False, otherwise.
-	 * @param element an {@link IConfigurationElement}
-	 * @return true if the element is enabled in the activities; False, otherwise.
-	 */
-	public static final boolean isActivityEnabled(IConfigurationElement element)
-	{
-		String extensionId = element.getAttribute("id"); //$NON-NLS-1$
-		String extensionPluginId = element.getNamespaceIdentifier();
-		String extensionString = null;
-		if (extensionPluginId != null && extensionId != null && extensionPluginId.length() > 0
-				&& extensionId.length() > 0)
-		{
-			extensionString = extensionPluginId + "/" + extensionId; //$NON-NLS-1$
-		}
-		else if (extensionPluginId != null && extensionPluginId.length() > 0)
-		{
-			extensionString = extensionPluginId + "/.*"; //$NON-NLS-1$
-		}
-
-		if (extensionString != null)
-		{
-			final IIdentifier id = activityManager.getIdentifier(extensionString);
-			if (id != null)
-			{
-				boolean enabled = id.isEnabled();
-				if( !id.isEnabled()){
-					id.addIdentifierListener(identifierListener);
-				}
-				return enabled;
-			}
-		}
-		return true;
-	}
-	
 	private void setDecoratorId(String decoratorId) {
 		this.decoratorId = decoratorId;
 	}

@@ -51,8 +51,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
+import com.aptana.ide.core.io.preferences.IPreferenceConstants;
+import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
 import com.aptana.ide.ui.UIUtils;
-import com.aptana.ide.ui.io.FileSystemUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
 
@@ -67,8 +68,8 @@ public class NewFolderAction extends BaseSelectionListenerAction {
     public NewFolderAction(IWorkbenchWindow window) {
         super(Messages.NewFolderAction_Text);
         fWindow = window;
-        setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER));
+        setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
+                ISharedImages.IMG_OBJ_FOLDER));
         setToolTipText(Messages.NewFolderAction_ToolTip);
     }
 
@@ -80,8 +81,8 @@ public class NewFolderAction extends BaseSelectionListenerAction {
         final IFileInfo fileInfo = Utils.getFileInfo(fSelectedElement);
 
         InputDialog input = new InputDialog(fWindow.getShell(),
-                Messages.NewFolderAction_InputTitle,
-                Messages.NewFolderAction_InputMessage, "", null); //$NON-NLS-1$
+                Messages.NewFolderAction_InputTitle, Messages.NewFolderAction_InputMessage,
+                "", null); //$NON-NLS-1$
         if (input.open() == Window.OK) {
             final String name = input.getValue();
             // run the folder creation in a job
@@ -100,6 +101,18 @@ public class NewFolderAction extends BaseSelectionListenerAction {
                         }
                         IFileStore newFolder = parentStore.getChild(name);
                         newFolder.mkdir(EFS.NONE, monitor);
+
+                        // sets the permissions
+                        IFileInfo newInfo = newFolder.fetchInfo(EFS.NONE, monitor);
+                        if (newInfo instanceof IExtendedFileInfo) {
+                            IExtendedFileInfo extendedInfo = (IExtendedFileInfo) newInfo;
+                            extendedInfo.setPermissions(IOUIPlugin.getDefault()
+                                    .getPreferenceStore().getLong(
+                                            IPreferenceConstants.DIRECTORY_PERMISSION));
+                            newFolder.putInfo(extendedInfo, IExtendedFileInfo.SET_PERMISSIONS,
+                                    monitor);
+                        }
+
                         IOUIPlugin.refreshNavigatorView(element);
                     } catch (CoreException e) {
                         showError(e);

@@ -34,13 +34,14 @@
  */
 package com.aptana.ide.syncing.ui.decorators;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 public class SiteSourceDecorator implements ILightweightLabelDecorator {
@@ -53,10 +54,12 @@ public class SiteSourceDecorator implements ILightweightLabelDecorator {
      *      org.eclipse.jface.viewers.IDecoration)
      */
     public void decorate(Object element, IDecoration decoration) {
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(element, true);
-        if (sites.length > 0) {
-            addDecoration(decoration);
-        }
+    	if (element instanceof IAdaptable) {
+			ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource((IAdaptable) element, true);
+			if (sites.length > 0) {
+				addDecoration(decoration);
+			}
+    	}
     }
 
     /**

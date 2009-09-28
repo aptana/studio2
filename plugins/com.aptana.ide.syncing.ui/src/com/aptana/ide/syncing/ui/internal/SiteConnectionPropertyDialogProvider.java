@@ -37,6 +37,7 @@ package com.aptana.ide.syncing.ui.internal;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.IShellProvider;
 
+import com.aptana.ide.syncing.ui.dialogs.SitePropertyDialog;
 import com.aptana.ide.ui.IPropertyDialogProvider;
 
 public class SiteConnectionPropertyDialogProvider implements IPropertyDialogProvider {

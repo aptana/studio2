@@ -38,7 +38,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 
 public class SynchronizeAction extends BaseSyncAction {
 
@@ -46,6 +46,6 @@ public class SynchronizeAction extends BaseSyncAction {
         openConnectionEditor();
     }
 
-    protected void performAction(IAdaptable[] files, SiteConnectionPoint site) throws CoreException {
+    protected void performAction(IAdaptable[] files, ISiteConnection site) throws CoreException {
     }
 }

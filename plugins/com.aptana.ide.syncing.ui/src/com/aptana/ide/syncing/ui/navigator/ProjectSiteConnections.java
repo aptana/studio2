@@ -34,19 +34,14 @@
  */
 package com.aptana.ide.syncing.ui.navigator;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.core.connection.SiteConnectionManager;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 
 /**
@@ -67,24 +62,10 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
     }
 
     public Object[] getChildren(Object o) {
-        SiteConnectionPoint[] sites = SiteConnectionManager.getSitesWithSource(fProject, true);
-        // uses Set to not store duplicate destinations
-        Set<IConnectionPoint> destinationSet = new HashSet<IConnectionPoint>();
-        for (SiteConnectionPoint site : sites) {
-            destinationSet.add(site.getDestination());
-        }
-        IConnectionPoint[] destinations = destinationSet
-                .toArray(new IConnectionPoint[destinationSet.size()]);
-        // sorts the list alphabetically
-        Arrays.sort(destinations, new Comparator<IConnectionPoint>() {
-
-            public int compare(IConnectionPoint o1, IConnectionPoint o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
-        ProjectSiteConnection[] targets = new ProjectSiteConnection[destinations.length];
-        for (int i = 0; i < targets.length; ++i) {
-            targets[i] = new ProjectSiteConnection(fProject, destinations[i]);
+        ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(fProject, true);
+        ProjectSiteConnection[] targets = new ProjectSiteConnection[sites.length];
+        for (int i = 0; i < sites.length; ++i) {
+            targets[i] = new ProjectSiteConnection(fProject, sites[i]);
         }
         return targets;
     }
@@ -103,7 +84,7 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
 
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
-        if (adapter == IProject.class) {
+        if (adapter == IProject.class || adapter == IContainer.class) {
             return fProject;
         }
         return super.getAdapter(adapter);

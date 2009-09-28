@@ -21,18 +21,12 @@
             class="com.aptana.ide.update.preferences.AutomaticUpdatesPreferencePage"
             id="com.aptana.ide.core.ui.AutomaticUpdatesPreferencePage"
             name="%automaticUpdatesPrefPage">
-         <keywordReference
-               id="com.aptana.ide.core.ui.update.general">
-         </keywordReference>
       </page>
       <page
             category="com.aptana.ide.core.ui.preferences.GeneralPreferencePage"
             class="com.aptana.ide.update.preferences.MessagingPreferencesPage"
             id="com.aptana.ide.core.ui.MessagingPreferencesPage"
-            name="Messaging">
-         <keywordReference
-               id="com.aptana.ide.core.ui.update.general">
-         </keywordReference>
+            name="%PreferencesPage.messaging.name">
       </page>
    </extension>
    <extension

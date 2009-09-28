@@ -53,7 +53,7 @@ import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.core.ui.SWTUtils;
-import com.aptana.ide.syncing.core.connection.SiteConnectionPoint;
+import com.aptana.ide.syncing.core.ISiteConnection;
 
 /**
  * @author Ingo Muschenetz
@@ -65,8 +65,8 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
     private Label fSiteDescriptionLabel;
     private Button fRememberMyDecisionButton;
 
-    private SiteConnectionPoint[] fSites;
-    private SiteConnectionPoint fSelectedSite;
+    private ISiteConnection[] fSites;
+    private ISiteConnection fSelectedSite;
 
     // Show the remember my decision check box
     private boolean fShowRememberMyDecision;
@@ -78,7 +78,7 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
      * @param sites
      *            the array of available sites
      */
-    public ChooseSiteConnectionDialog(Shell parent, SiteConnectionPoint[] sites) {
+    public ChooseSiteConnectionDialog(Shell parent, ISiteConnection[] sites) {
         this(parent, sites, false);
     }
 
@@ -91,7 +91,7 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
      *            true if to display the "remember my decision" checkbox, false
      *            otherwise
      */
-    public ChooseSiteConnectionDialog(Shell parent, SiteConnectionPoint[] sites,
+    public ChooseSiteConnectionDialog(Shell parent, ISiteConnection[] sites,
             boolean showRememberMyDecision) {
         super(parent);
         fSites = sites;
@@ -104,7 +104,7 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
     /**
      * @return the selected site
      */
-    public SiteConnectionPoint getSelectedSite() {
+    public ISiteConnection getSelectedSite() {
         return fSelectedSite;
     }
 
@@ -124,7 +124,7 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
      * @param site
      *            the site connection to be selected
      */
-    public void setSelectedSite(SiteConnectionPoint site) {
+    public void setSelectedSite(ISiteConnection site) {
         fSelectedSite = site;
     }
 
@@ -283,7 +283,7 @@ public class ChooseSiteConnectionDialog extends TrayDialog implements SelectionL
     private void initializeDefaultValues() {
         int currentIndex = 0;
         int selectIndex = 0;
-        for (SiteConnectionPoint site : fSites) {
+        for (ISiteConnection site : fSites) {
             fSiteCombo.add(site.getName() + ": " + site.getDestination().getName()); //$NON-NLS-1$
             if (site == fSelectedSite) {
                 selectIndex = currentIndex;
