@@ -57,7 +57,7 @@ public class ShowViewAction extends AbstractWorkbenchWindowPulldownDelegate
 {
 
 	private static final String[] VIEW_IDS =
-		{ "com.aptana.ide", "zigen.plugin.db", "org.eclipse.eclipsemonkey", "org.tigris.subversion.subclipse", "org.eclipse.ui.views.ContentOutline" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		{ "com.aptana.ide", "org.eclipse.eclipsemonkey", "org.eclipse.ui.views.ContentOutline" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	private Menu toolbarMenu = null;
 

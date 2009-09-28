@@ -3,18 +3,6 @@
 <plugin>
 
    <extension-point id="sftpVirtualFileManagers" name="SFTP Virtual File Managers" schema="schema/sftpVirtualFileManagers.exsd"/>
-   <extension
-         point="com.aptana.ide.core.protocols">
-      <protocol
-            allowNew="true"
-            class="com.aptana.ide.io.ftp.FtpProtocolManager"
-            displayName="%FTP.name"
-            fileManagerName="%FTP.protocol.fileManagerName"
-            id="com.aptana.ide.syncing.ftp"
-            name="com.aptana.ide.syncing.ftp"
-            priority="2"
-            remote="true"/>
-   </extension>
    <extension point="org.eclipse.ui.editors">
       <editor
          class="com.aptana.ide.syncing.views.SyncExplorerEditor"
@@ -58,171 +46,6 @@
                tooltip="%Action.ShowHelp.tooltip"/>     
    		</viewContribution>
    </extension>    
-   <extension
-         point="org.eclipse.ui.popupMenus">
-        
-      <objectContribution
-            adaptable="true"
-            id="com.aptana.ide.syncing.createSyncConnection"
-            objectClass="com.aptana.ide.core.ui.io.file.LocalFile">
-         <menu
-               label="%Menu.Synchronize.name"
-               path="additions"
-               id="synchronize">
-            <groupMarker name="syncingGroup"/>
-            <separator
-                  name="line">
-            </separator>
-            <groupMarker name="cloakingGroup"/>
-         </menu>
-         <action
-               class="com.aptana.ide.syncing.FileTypeCloakAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.FileTypeCloakAction"
-               label="%Action.Cloak.name"
-               menubarPath="synchronize/cloakingGroup"
-               style="push"
-               tooltip="%Action.Cloak.tooltip"/>
-         <action
-               class="com.aptana.ide.syncing.FileTypeUncloakAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.FileTypeUncloakAction"
-               label="%Action.Uncloak.name"
-               menubarPath="synchronize/cloakingGroup"
-               style="push"
-               tooltip="%Action.Uncloak.tooltip"/>
-         <action
-               class="com.aptana.ide.syncing.FileCreateSyncConnectionAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.FileCreateSyncConnectionAction"
-               label="%Action.NewConnection.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.NewConnection.tooltip">
-         </action>
-         <action
-               class="com.aptana.ide.syncing.FileDownloadAction"
-               enablesFor="1"
-               icon="icons/get.gif"
-               id="com.aptana.ide.syncing.FileDownloadAction"
-               label="%Action.Download.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.Download.tooltip"/>
-         <action
-               class="com.aptana.ide.syncing.FileUploadAction"
-               enablesFor="1"
-               icon="icons/put.gif"
-               id="com.aptana.ide.syncing.FileUploadAction"
-               label="%Action.Upload.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.Upload.tooltip"/>
-         <action
-               class="com.aptana.ide.syncing.FileSynchronizeAction"
-               enablesFor="1"
-               icon="icons/direction_both.gif"
-               id="com.aptana.ide.syncing.FileSynchronizeAction"
-               label="%Action.Synchronize.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.Synchronize.tooltip"/>
-          <action
-               class="com.aptana.ide.syncing.CloakPreferencesAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.CloakPreferencesAction"
-               label="%Action.CloakingPrefs.name"
-               menubarPath="synchronize/cloakingGroup"
-               style="push"
-               tooltip="%Action.CloakingPrefs.tooltip"/>
-      </objectContribution>      
-      <objectContribution
-            adaptable="true"
-            id="com.aptana.ide.syncing.createSyncProjectFileManagerConnection"
-            objectClass="com.aptana.ide.core.ui.io.file.ProjectFileManager">
-         <menu
-               id="synchronize"
-               label="%Menu.Synchronize.name"
-               path="additions">
-            <groupMarker
-                  name="syncingGroup">
-            </groupMarker>
-            <separator
-                  name="line">
-            </separator>
-            <groupMarker
-                  name="cloakingGroup">
-            </groupMarker>
-         </menu>
-         <action
-               class="com.aptana.ide.syncing.FileTypeCloakAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.FileTypeCloakAction"
-               label="%Action.Cloak.name"
-               menubarPath="synchronize/cloakingGroup"
-               style="push"
-               tooltip="%Action.Cloak.tooltip">
-         </action>
-         <action
-               class="com.aptana.ide.syncing.FileTypeUncloakAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.FileTypeUncloakAction"
-               label="%Action.Uncloak.name"
-               menubarPath="synchronize/cloakingGroup"
-               style="push"
-               tooltip="%Action.Uncloak.tooltip">
-         </action>
-         <action
-               class="com.aptana.ide.syncing.FileCreateSyncConnectionAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.FileCreateSyncConnectionAction"
-               label="%Action.NewConnection.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.NewConnection.tooltip">
-         </action>
-         <action
-               class="com.aptana.ide.syncing.FileDownloadAction"
-               enablesFor="1"
-               icon="icons/get.gif"
-               id="com.aptana.ide.syncing.FileDownloadAction"
-               label="%Action.Download.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.Download.tooltip">
-         </action>
-         <action
-               class="com.aptana.ide.syncing.FileUploadAction"
-               enablesFor="1"
-               icon="icons/put.gif"
-               id="com.aptana.ide.syncing.FileUploadAction"
-               label="%Action.Upload.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.Upload.tooltip">
-         </action>
-         <action
-               class="com.aptana.ide.syncing.FileSynchronizeAction"
-               enablesFor="1"
-               icon="icons/direction_both.gif"
-               id="com.aptana.ide.syncing.FileSynchronizeAction"
-               label="%Action.Synchronize.name"
-               menubarPath="synchronize/syncingGroup"
-               style="push"
-               tooltip="%Action.Synchronize.tooltip">
-         </action>
-         <action
-               class="com.aptana.ide.syncing.CloakPreferencesAction"
-               enablesFor="1"
-               id="com.aptana.ide.syncing.CloakPreferencesAction"
-               label="%Action.CloakingPrefs.name"
-               menubarPath="synchronize/cloakingGroup"
-               style="push"
-               tooltip="%Action.CloakingPrefs.tooltip">
-         </action>
-      </objectContribution>
-     
-   </extension>
    
     <extension
           point="org.eclipse.core.expressions.propertyTesters">
@@ -235,48 +58,6 @@
          </propertyTester>
     </extension>
     
-   <extension
-         point="org.eclipse.ui.decorators">
-      <decorator
-            adaptable="true"
-            class="com.aptana.ide.syncing.VirtualFileSyncDecorator"
-            icon="icons/sync_overlay.gif"
-            id="com.aptana.ide.syncing.SyncConnectionDecorator"
-            label="%Decorator.LocalFileTarget.name"
-            lightweight="true"
-            location="BOTTOM_RIGHT"
-            state="true">
-         <enablement>
-            <objectClass name="com.aptana.ide.core.ui.io.file.LocalFile"/>
-         </enablement>
-      </decorator>
-     <decorator
-            adaptable="true"
-            class="com.aptana.ide.syncing.VirtualFileCloakedDecorator"
-            icon="icons/cloaked_overlay.gif"
-            id="com.aptana.ide.syncing.VirtualFileCloakedDecorator"
-            label="%Decorator.CloakedFile.name"
-            lightweight="true"
-            location="TOP_RIGHT"
-            state="true">
-         <enablement>
-            <objectClass name="com.aptana.ide.core.io.IVirtualFile"/>
-         </enablement>
-      </decorator>
-      <decorator
-            adaptable="true"
-            class="com.aptana.ide.syncing.VirtualFileManagerSyncDecorator"
-            icon="icons/sync_overlay.gif"
-            id="com.aptana.ide.syncing.VirtualFileManagerSyncDecorator"
-            label="%Decorator.FileTarget.name"
-            lightweight="true"
-            location="BOTTOM_RIGHT"
-            state="true">
-         <enablement>
-            <objectClass name="com.aptana.ide.core.io.IVirtualFileManager"/>
-         </enablement>
-      </decorator>      
-   </extension>
 	<extension point="org.eclipse.ui.viewActions"> 
 		<viewContribution 
 		      id="com.aptana.ide.syncing.project.viewContribution" 
@@ -428,13 +209,6 @@
        </wizard>
     </extension>
    
-	   <extension
-	         point="org.eclipse.eclipsemonkey.scriptpath">
-	      <scriptpath directory="scripts"/>
-	   </extension>
-	   <extension point="org.eclipse.help.contexts"> 
-			<contexts file="contexts.xml" /> 
-	   </extension>
 	  
    
 </plugin>

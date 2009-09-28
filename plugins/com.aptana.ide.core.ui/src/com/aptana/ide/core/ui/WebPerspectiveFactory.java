@@ -157,8 +157,6 @@ public class WebPerspectiveFactory implements IPerspectiveFactory {
         bottom.addPlaceholder("com.aptana.ide.documentation.jquery.visualjquery"); //$NON-NLS-1$
         bottom.addPlaceholder("com.aptana.ide.js.ui.views.GenericScriptableView:*"); //$NON-NLS-1$
         bottom.addPlaceholder("com.aptana.ide.logging.LogView"); //$NON-NLS-1$
-        bottom.addPlaceholder("com.aptana.ide.syncing.ui.views.FTPManagerView"); //$NON-NLS-1$
-        bottom.addPlaceholder("com.aptana.ide.syncing.views.SyncManagerView"); //$NON-NLS-1$
     }
 
     /**
@@ -264,8 +262,6 @@ public class WebPerspectiveFactory implements IPerspectiveFactory {
         layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
         layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
         layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
-        layout.addShowViewShortcut("om.aptana.ide.syncing.ui.views.FTPManagerView"); //$NON-NLS-1$
-        layout.addShowViewShortcut("com.aptana.ide.syncing.views.SyncManagerView"); //$NON-NLS-1$
         layout.addShowViewShortcut("com.aptana.ide.js.docgen.views.visualscriptdoc"); //$NON-NLS-1$
         layout.addShowViewShortcut("com.aptana.ide.logging.LogView"); //$NON-NLS-1$
         layout.addShowViewShortcut("com.aptana.ide.server.ui.serversView"); //$NON-NLS-1$
