@@ -101,15 +101,6 @@
              menubarPath="help/aptanahelp/aptanaidmenu/signin"
              style="push">
          </action>
-	     <action
-             class="com.aptana.ide.intro.actions.ShowMyAptanaAction"
-             icon="icons/aptana_home.png"
-             id="com.aptana.ide.intro.actions.MyAptanaAction"
-             label="%Action.home.label"
-             menubarPath="help/aptanahelp/top"
-             style="push"
-             tooltip="%Action.home.tooltip">
-         </action>
 	    </actionSet>
 	  <!-- The funcky a. prefix in the actionSet id controls the order of the button in the toolbar -->
       <actionSet
@@ -176,15 +167,6 @@
                style="push">
          </action>
          <action
-               class="com.aptana.ide.intro.actions.ShowMyAptanaAction"
-               icon="icons/aptana_home.png"
-               id="com.aptana.ide.intro.actions.MyAptanaAction"
-               label="%Action.home.label"
-               menubarPath="myaptana/portal"
-               style="push"
-               tooltip="%Action.home.tooltip">
-         </action>
-         <action
                class="com.aptana.ide.intro.actions.AptanaURLAction"
                icon="icons/window1616.png"
                id="com.aptana.ide.intro.actions.AptanaURLAction"
@@ -225,32 +207,15 @@
          <actionSet
                id="com.aptana.ide.intro.menuActionSet">
          </actionSet>
-         <actionSet
-               id="com.aptana.ide.intro.licenseActionSet">
-         </actionSet>
-      </perspectiveExtension>
-      <perspectiveExtension targetID="com.aptana.ide.db.PerspectiveFactory">
-         <actionSet
-               id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-         <actionSet
-               id="com.aptana.ide.intro.licenseActionSet">
-         </actionSet>
       </perspectiveExtension>
       <perspectiveExtension targetID="org.radrails.rails.ui.PerspectiveRails">
          <actionSet
                id="com.aptana.ide.intro.menuActionSet">
          </actionSet>
-         <actionSet
-               id="com.aptana.ide.intro.licenseActionSet">
-         </actionSet>
       </perspectiveExtension>
       <perspectiveExtension targetID="org.rubypeople.rdt.ui.PerspectiveRuby">
          <actionSet
                id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-         <actionSet
-               id="com.aptana.ide.intro.licenseActionSet">
          </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
@@ -258,26 +223,17 @@
          <actionSet
                id="com.aptana.ide.intro.menuActionSet">
          </actionSet>
-         <actionSet
-               id="com.aptana.ide.intro.licenseActionSet">
-         </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaPerspective">
          <actionSet
                id="com.aptana.ide.intro.menuActionSet">
          </actionSet>
-         <actionSet
-               id="com.aptana.ide.intro.licenseActionSet">
-         </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.eclipse.wst.web.ui.webDevPerspective">
          <actionSet
                id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-         <actionSet
-               id="com.aptana.ide.intro.licenseActionSet">
          </actionSet>
       </perspectiveExtension>
      </extension>
