@@ -102,8 +102,12 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 	public Object[] getChildren(Object object) {
 		if (object instanceof IConnectionPoint) {
 			if (object instanceof WorkspaceConnectionPoint) {
+			    IContainer container = ((WorkspaceConnectionPoint) object).getResource();
+			    if (container == null) {
+			        return EMPTY;
+			    }
 				try {
-					return ((WorkspaceConnectionPoint) object).getResource().members();
+					return container.members();
 				} catch (CoreException e) {
 					IdeLog.logImportant(IOUIPlugin.getDefault(), "Failed to get members", e);
 				}
