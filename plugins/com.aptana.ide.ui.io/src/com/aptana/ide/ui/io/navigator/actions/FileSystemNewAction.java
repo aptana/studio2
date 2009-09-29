@@ -34,6 +34,8 @@
  */
 package com.aptana.ide.ui.io.navigator.actions;
 
+import java.util.List;
+
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IAdaptable;
@@ -46,12 +48,16 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.actions.BaseNewWizardMenu;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
+import org.eclipse.ui.internal.navigator.wizards.WizardShortcutAction;
+import org.eclipse.ui.internal.wizards.NewWizardRegistry;
+import org.eclipse.ui.wizards.IWizardDescriptor;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIPlugin;
+import com.aptana.ide.core.ui.WebPerspectiveFactory;
 import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
 import com.aptana.ide.ui.io.FileSystemUtils;
 import com.aptana.ide.ui.io.internal.Utils;
@@ -59,6 +65,7 @@ import com.aptana.ide.ui.io.internal.Utils;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
+@SuppressWarnings("restriction")
 public class FileSystemNewAction extends BaseSelectionListenerAction {
 
     private class MenuCreator implements IMenuCreator {
@@ -89,8 +96,7 @@ public class FileSystemNewAction extends BaseSelectionListenerAction {
             IContributionItem[] items = dropDownMenuMgr.getItems();
             for (IContributionItem item : items) {
                 if (item instanceof ActionContributionItem) {
-                    item = new ActionContributionItem(
-                            ((ActionContributionItem) item).getAction());
+                    item = new ActionContributionItem(((ActionContributionItem) item).getAction());
                 }
                 item.fill(menu, -1);
             }
@@ -106,14 +112,14 @@ public class FileSystemNewAction extends BaseSelectionListenerAction {
                     IFileStore fileStore = Utils.getFileStore((IAdaptable) element);
                     IFileInfo fileInfo = getFileInfo((IAdaptable) element);
                     if (fileStore != null && fileInfo != null) {
-                    	String path = StringUtils.EMPTY;
-                    	if (fileInfo.isDirectory()) {
-                    		path = fileStore.toString();
-                    	} else if (fileStore.getParent() != null) {
-                    		path = fileStore.getParent().toString();
-                    	}
-                        CoreUIPlugin.getDefault().getPreferenceStore()
-                        	.setValue(IPreferenceConstants.PREF_CURRENT_DIRECTORY, path);
+                        String path = StringUtils.EMPTY;
+                        if (fileInfo.isDirectory()) {
+                            path = fileStore.toString();
+                        } else if (fileStore.getParent() != null) {
+                            path = fileStore.getParent().toString();
+                        }
+                        CoreUIPlugin.getDefault().getPreferenceStore().setValue(
+                                IPreferenceConstants.PREF_CURRENT_DIRECTORY, path);
                     }
                 }
             }
@@ -124,18 +130,29 @@ public class FileSystemNewAction extends BaseSelectionListenerAction {
                 dropDownMenuMgr = new MenuManager();
                 dropDownMenuMgr.add(fNewFolderAction);
                 dropDownMenuMgr.add(new Separator());
-                dropDownMenuMgr.add(new BaseNewWizardMenu(fWindow, null));
+                // adds actions related to creating new filesystem files
+                List<String> wizardIds = WebPerspectiveFactory.getFileWizardShortcuts();
+                IWizardDescriptor descriptor;
+                for (String id : wizardIds) {
+                    descriptor = NewWizardRegistry.getInstance().findWizard(id);
+                    if (descriptor != null) {
+                        dropDownMenuMgr.add(new WizardShortcutAction(fWindow, descriptor));
+                    }
+                }
+                dropDownMenuMgr.add(new Separator());
+                // adds the "Other..." action
+                dropDownMenuMgr.add(ActionFactory.NEW.create(fWindow));
             }
         }
 
         private IFileInfo getFileInfo(IAdaptable adaptable) {
             IFileInfo fileInfo = (IFileInfo) adaptable.getAdapter(IFileInfo.class);
-        	if (fileInfo == null && !(adaptable instanceof IConnectionPoint)) {
-        		IFileStore fileStore = Utils.getFileStore(adaptable);
-        		if (fileStore != null) {
-        			fileInfo = FileSystemUtils.fetchFileInfo(fileStore);
-        		}
-        	}
+            if (fileInfo == null && !(adaptable instanceof IConnectionPoint)) {
+                IFileStore fileStore = Utils.getFileStore(adaptable);
+                if (fileStore != null) {
+                    fileInfo = FileSystemUtils.fetchFileInfo(fileStore);
+                }
+            }
             return fileInfo;
         }
 
