@@ -13,8 +13,8 @@ import com.aptana.ide.update.IPreferenceConstants;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer
 {
-	private static final String DEFAULT_LOCAL_PLUGIN_LISTING_PATH = "plugins1.6.xml"; //$NON-NLS-1$
-	private static final String DEFAULT_PLUGINS_XML_URL = "http://ide.aptana.com/content_ide/plugins1.6.xml"; //$NON-NLS-1$
+	private static final String DEFAULT_LOCAL_PLUGIN_LISTING_PATH = "plugins2.0.xml"; //$NON-NLS-1$
+	private static final String DEFAULT_PLUGINS_XML_URL = "http://ide.aptana.com/content_ide/plugins2.0.xml"; //$NON-NLS-1$
 
 	@Override
 	public void initializeDefaultPreferences()
