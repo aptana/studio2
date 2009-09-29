@@ -200,19 +200,6 @@
          </propertyTester>
       </extension>
       <extension
-            point="org.eclipse.core.runtime.adapters">
-         <factory
-               adaptableType="com.aptana.ide.core.BaseFileEditorInput"
-               class="com.aptana.ide.core.ui.editors.JavaFileEditorInputAdapterFactory">
-            <adapter type="com.aptana.ide.core.resources.IUniformResource"/>
-         </factory>
-         <factory
-               adaptableType="org.eclipse.ui.internal.editors.text.JavaFileEditorInput"
-               class="com.aptana.ide.core.ui.editors.LegacyJavaFileEditorInputAdapterFactory">
-            <adapter type="com.aptana.ide.core.resources.IUniformResource" />
-         </factory>
-      </extension>
-      <extension
          point="org.eclipse.ui.editors.documentProviders">
          	 <provider
             class="org.eclipse.ui.editors.text.TextFileDocumentProvider"
@@ -246,11 +233,6 @@
        <extension
              point="com.aptana.ide.core.ui.diagnosis">
           <diagnosis
-                class="com.aptana.ide.core.ui.CloudManagerTrafficDiagnosticLog"
-                ordinal="900"
-                submit-bug="false">
-          </diagnosis>
-          <diagnosis
                 class="com.aptana.ide.core.ui.NetworkDiagnosticLog"
                 ordinal="1000">
           </diagnosis>
@@ -272,9 +254,6 @@
              <actionSet
                    id="s.com.aptana.ide.core.ui.actionSet.ShowAptanaView">
              </actionSet>
-             <showInPart
-                   id="com.aptana.ide.core.ui.AptanaNavigator">
-             </showInPart>
           </perspectiveExtension>
           <perspectiveExtension
                 targetID="org.radrails.rails.ui.PerspectiveRails">
