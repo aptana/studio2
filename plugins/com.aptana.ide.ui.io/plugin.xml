@@ -86,6 +86,25 @@
       </objectContribution>
       <objectContribution
             adaptable="false"
+            id="com.aptana.ide.ui.io.genericCategoryContribution"
+            objectClass="com.aptana.ide.core.io.IConnectionPointCategory">
+         <action
+               class="com.aptana.ide.ui.io.actions.NewGenericConnectionAction"
+               enablesFor="1"
+               icon="icons/full/etool16/add.png"
+               id="com.aptana.ide.ui.io.actions.newGenericConnection"
+               label="%newGenericConnectionAction.label"
+               menubarPath="group.new">
+         </action>
+         <visibility>
+            <objectState
+                  name="isCategory"
+                  value="com.aptana.ide.core.io.generic">
+            </objectState>
+         </visibility>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
             id="com.aptana.ide.ui.io.filesystemObjectContribution"
             objectClass="com.aptana.ide.ui.io.navigator.FileSystemObject">
          <action
@@ -184,6 +203,9 @@
             </contentExtension>
             <contentExtension
                   pattern="com.aptana.ide.ui.io.navigatorContent">
+            </contentExtension>
+            <contentExtension
+                  pattern="com.aptana.ide.ui.io.navigator.filters.*">
             </contentExtension>
          </includes>
       </viewerContentBinding>
@@ -562,6 +584,23 @@
             </and>
          </enablement>
       </actionProvider>
+      <commonFilter
+            activeByDefault="true"
+            description="Show other connections"
+            id="com.aptana.ide.ui.io.navigator.filters.generic"
+            name="Other Connections Filter">
+         <filterExpression>
+            <and>
+               <instanceof
+                     value="com.aptana.ide.core.io.IConnectionPointCategory">
+               </instanceof>
+               <test
+                     property="com.aptana.ide.core.io.connection.category.id"
+                     value="com.aptana.ide.core.io.generic">
+               </test>
+            </and>
+         </filterExpression>
+      </commonFilter>
    </extension>
    <!-- extension
          point="org.eclipse.ui.navigator.viewer">
@@ -664,6 +703,11 @@
             id="com.aptana.ide.ui.io.dialogs.workspaceConnection"
             objectClass="com.aptana.ide.core.io.WorkspaceConnectionPoint">
       </dialog>
+      <dialog
+            class="com.aptana.ide.ui.io.internal.GenericConnectionPropertyDialogProvider"
+            id="com.aptana.ide.ui.io.dialogs.genericConnection"
+            objectClass="com.aptana.ide.core.io.GenericConnectionPoint">
+      </dialog>
    </extension>
    <extension
          point="com.aptana.ide.ui.imageAssociations">
@@ -674,6 +718,10 @@
       <image
             icon="icons/full/obj16/projects.png"
             id="com.aptana.ide.core.io.projectShortcuts">
+      </image>
+      <image
+            icon="icons/full/obj16/connection.png"
+            id="com.aptana.ide.core.io.generic">
       </image>
    </extension>
    <extension

@@ -14,6 +14,11 @@
             name="Project Shortcuts"
             order="10">
       </connectionPointCategory>
+      <connectionPointCategory
+            id="com.aptana.ide.core.io.generic"
+            name="Other"
+            order="100">
+      </connectionPointCategory>
       <connectionPointType
             category="com.aptana.ide.core.io.localShortcuts"
             class="com.aptana.ide.core.io.LocalConnectionPoint"
@@ -25,6 +30,12 @@
             class="com.aptana.ide.core.io.WorkspaceConnectionPoint"
             id="workspace"
             name="Project">
+      </connectionPointType>
+      <connectionPointType
+            category="com.aptana.ide.core.io.generic"
+            class="com.aptana.ide.core.io.GenericConnectionPoint"
+            id="generic"
+            name="Generic">
       </connectionPointType>
    </extension>
    <extension
