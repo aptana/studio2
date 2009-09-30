@@ -64,8 +64,6 @@ public final class IntroPreferencePage extends PreferencePage implements IWorkbe
 						{ Messages.IntroPreferencePage_AlwaysDisplayAtStart, IPreferenceConstants.ALWAYS_SHOW },
 						{ Messages.IntroPreferencePage_AlwaysDisplayAfterAnyUpdates,
 								IPreferenceConstants.SHOW_ALL_UPDATES },
-						{ Messages.IntroPreferencePage_AlwaysDisplayAfterAptanaUpdates,
-								IPreferenceConstants.SHOW_APTANA_UPDATES },
 						{ Messages.IntroPreferencePage_NeverDisplayAfterStartup, IPreferenceConstants.NEVER_SHOW } },
 				colorComposite, true);
 		showStartPageEditor.setPage(this);
