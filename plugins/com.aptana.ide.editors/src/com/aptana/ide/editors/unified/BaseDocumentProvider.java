@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -34,18 +34,6 @@
  */
 package com.aptana.ide.editors.unified;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CodingErrorAction;
-import java.nio.charset.UnmappableCharacterException;
-
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
@@ -53,22 +41,14 @@ import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IEncodedStorage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput;
 
-import com.aptana.ide.core.BaseFileEditorInput;
-import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StreamUtils;
-import com.aptana.ide.editors.UnifiedEditorsPlugin;
 
 /**
  * Overrides the base implementation for saving for saving. Used by UntitledTextFileEditor. non-project-based files
@@ -77,114 +57,6 @@ import com.aptana.ide.editors.UnifiedEditorsPlugin;
  */
 public class BaseDocumentProvider extends TextFileDocumentProvider
 {
-
-	/**
-	 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider#createSaveOperation(java.lang.Object,
-	 *      org.eclipse.jface.text.IDocument, boolean)
-	 */
-	protected DocumentProviderOperation createSaveOperation(final Object element, final IDocument document,
-			final boolean overwrite) throws CoreException
-	{
-		final FileInfo info = getFileInfo(element);
-
-		if (info != null)
-		{
-			return super.createSaveOperation(element, document, overwrite);
-		}
-
-		if (element instanceof BaseFileEditorInput)
-		{
-			final BaseFileEditorInput editorInput = (BaseFileEditorInput) element;
-
-			return new DocumentProviderOperation()
-			{
-				/*
-				 * @see
-				 * org.eclipse.ui.editors.text.TextFileDocumentProvider.DocumentProviderOperation#execute(org.eclipse
-				 * .core.runtime.IProgressMonitor)
-				 */
-				public void execute(IProgressMonitor monitor) throws CoreException
-				{
-
-					String charset = ResourcesPlugin.getEncoding();
-					Charset cs;
-					try
-					{
-						cs = Charset.forName(charset);
-						CharsetEncoder encoder = cs.newEncoder();
-						encoder.onMalformedInput(CodingErrorAction.REPLACE);
-						encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
-						encoder.encode(CharBuffer.wrap(document.get()));
-					}
-					catch (UnmappableCharacterException ex)
-					{
-						IStatus status = new Status(IStatus.ERROR, UnifiedEditorsPlugin.ID, IStatus.OK,
-								Messages.BaseDocumentProvider_ERR_FileCouldNotBeSaved + charset
-										+ Messages.BaseDocumentProvider_MSG_HelpChangeFileEncoding, ex);
-						throw new CoreException(status);
-					}
-					catch (Exception e)
-					{
-						IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.BaseDocumentProvider_Error, e);
-					}
-
-					IPath fullPath = editorInput.getPath();
-					File f = fullPath.toFile();
-					FileOutputStream out = null;
-					OutputStreamWriter osw = null;
-					try
-					{
-						out = new FileOutputStream(f);
-						osw = new OutputStreamWriter(out, charset);
-						osw.write(document.get());
-					}
-					catch (FileNotFoundException e)
-					{
-						IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.BaseDocumentProvider_Error, e);
-					}
-					catch (UnsupportedEncodingException e)
-					{
-						IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.BaseDocumentProvider_Error, e);
-					}
-					catch (IOException e)
-					{
-						IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.BaseDocumentProvider_Error, e);
-					}
-					finally
-					{
-						if (osw != null)
-						{
-							try
-							{
-								osw.close();
-							}
-							catch (IOException e)
-							{
-								IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.BaseDocumentProvider_Error,
-										e);
-							}
-						}
-						if (out != null)
-						{
-							try
-							{
-								out.close();
-							}
-							catch (IOException e)
-							{
-								IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.BaseDocumentProvider_Error,
-										e);
-							}
-						}
-					}
-				}
-			};
-		}
-		else
-		{
-			return super.createSaveOperation(element, document, overwrite);
-		}
-	}
 
 	/**
 	 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider#createFileInfo(java.lang.Object)
@@ -226,7 +98,7 @@ public class BaseDocumentProvider extends TextFileDocumentProvider
 		{
 			IPath path = ((IStorageEditorInput) element).getStorage().getFullPath();
 			String segment = path.lastSegment();
-			path = path.removeLastSegments(1).append(segment + ".tmp." + System.currentTimeMillis());
+			path = path.removeLastSegments(1).append(segment + ".tmp." + System.currentTimeMillis()); //$NON-NLS-1$
 			try
 			{
 				ITextFileBufferManager manager = FileBuffers.getTextFileBufferManager();

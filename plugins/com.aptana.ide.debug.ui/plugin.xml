@@ -556,7 +556,6 @@
          <actionSet id="org.eclipse.debug.ui.launchActionSet"/>
          <actionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
          <actionSet id="com.aptana.ide.debug.ui.JSDebugActionSet"/>
-         <viewShortcut id="com.aptana.ide.debug.ui.AJAXMonitorView"/>
       </perspectiveExtension>
       <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
          <actionSet id="com.aptana.ide.debug.ui.JSDebugActionSet"/>

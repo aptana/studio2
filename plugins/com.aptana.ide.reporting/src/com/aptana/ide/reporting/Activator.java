@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.aptana.ide.reporting";
+	public static final String PLUGIN_ID = "com.aptana.ide.reporting"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -60,29 +60,21 @@ public class Activator extends AbstractUIPlugin {
 	 * @param path
 	 * @return Image
 	 */
-	public static Image getImage(String path)
-	{
-		if (images.get(path) == null)
-		{
-			ImageDescriptor id = getImageDescriptor(path);
+    public static Image getImage(String path) {
+        if (images.get(path) == null) {
+            ImageDescriptor id = getImageDescriptor(path);
+            if (id == null) {
+                return null;
+            }
 
-			if (id == null)
-			{
-				return null;
-			}
+            Image i = id.createImage();
+            images.put(path, i);
 
-			Image i = id.createImage();
+            return i;
+        }
+        return images.get(path);
+    }
 
-			images.put(path, i);
-
-			return i;
-		}
-		else
-		{
-			return images.get(path);
-		}
-	}
-	
 	/**
 	 * Returns an image descriptor for the image file at the given
 	 * plug-in relative path.
@@ -91,9 +83,6 @@ public class Activator extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path); //$NON-NLS-1$
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
-
-
-
 }

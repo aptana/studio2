@@ -55,7 +55,7 @@ import com.aptana.ide.core.io.efs.VirtualFileSystem;
  */
 public class VirtualConnectionManager {
 
-	private static final String ROOT_STRING = "/";
+	private static final String ROOT_STRING = "/"; //$NON-NLS-1$
 	
 	private static VirtualConnectionManager instance;
 	
@@ -111,7 +111,6 @@ public class VirtualConnectionManager {
 				uris.remove(uri);
 			}
 		}
-		Assert.isTrue(connectionPoint != null, "No matching connection found for the URI "+uri.toASCIIString());
 		return connectionPoint;
 	}
 	

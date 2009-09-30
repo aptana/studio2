@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.filesystem.filesystems">
+      <filesystem
+            scheme="s3">
+         <run
+               class="com.aptana.ide.filesystem.s3.S3FileSystem">
+         </run>
+      </filesystem>
+   </extension>	
+</plugin>
