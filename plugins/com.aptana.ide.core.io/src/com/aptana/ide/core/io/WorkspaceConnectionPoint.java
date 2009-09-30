@@ -68,7 +68,7 @@ public final class WorkspaceConnectionPoint extends ConnectionPoint {
 	 * Default constructor
 	 */
 	public WorkspaceConnectionPoint() {
-		super();
+		super(TYPE);
 	}
 
 	/**

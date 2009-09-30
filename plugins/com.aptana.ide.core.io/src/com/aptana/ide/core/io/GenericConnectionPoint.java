@@ -35,15 +35,9 @@
 
 package com.aptana.ide.core.io;
 
-import java.io.File;
 import java.net.URI;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.epl.IMemento;
 
@@ -51,52 +45,39 @@ import com.aptana.ide.core.epl.IMemento;
  * @author Max Stepanov
  *
  */
-public final class LocalConnectionPoint extends ConnectionPoint {
+public class GenericConnectionPoint extends ConnectionPoint {
 
-	public static final String TYPE = "local"; //$NON-NLS-1$
-	
-	private static final String ELEMENT_PATH = "path"; //$NON-NLS-1$
+	public static final String TYPE = "generic"; //$NON-NLS-1$
 
-	private IPath path; /* absolute local path */
+	private static final String ELEMENT_URI = "uri"; //$NON-NLS-1$
+
+	private URI uri;
 	
-	/**
-	 * Default constructor
-	 */
-	public LocalConnectionPoint() {
+	public GenericConnectionPoint() {
 		super(TYPE);
 	}
 
 	/**
 	 * 
-	 * @param path
+	 * @param uri
 	 */
-	public LocalConnectionPoint(IPath path) {
+	public GenericConnectionPoint(URI uri) {
 		super(TYPE);
-		Assert.isTrue(path.isAbsolute());
-		this.path = path;
+		this.uri = uri;
 	}
 
 	/**
-	 * @return the path
+	 * @return the URI
 	 */
-	public IPath getPath() {
-		return path;
+	public URI getURI() {
+		return uri;
 	}
 
 	/**
-	 * @param path the path to set
+	 * @param uri the URI to set
 	 */
-	public void setPath(IPath path) {
-		Assert.isTrue(path.isAbsolute());
-		this.path = path;
-	}
-	
-	/**
-	 * 
-	 * @return file
-	 */
-	public File getFile() {
-		return path.toFile();
+	public void setURI(URI uri) {
+		this.uri = uri;
 	}
 
 	/* (non-Javadoc)
@@ -104,27 +85,7 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	 */
 	@Override
 	public URI getRootURI() {
-		return EFS.getLocalFileSystem().getStore(path).toURI();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.ConnectionPoint#getRoot()
-	 */
-	@Override
-	public IFileStore getRoot() throws CoreException {
-		return EFS.getLocalFileSystem().getStore(path);
-	}
-
-    /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.PlatformObject#getAdapter(java.lang.Class)
-     */
-    @SuppressWarnings("unchecked")
-	@Override
-	public Object getAdapter(Class adapter) {
-	    if (adapter == File.class) {
-	        return getFile();
-	    }
-	    return super.getAdapter(adapter);
+		return getURI();
 	}
 
 	/* (non-Javadoc)
@@ -133,10 +94,10 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	@Override
 	protected void loadState(IMemento memento) {
 		super.loadState(memento);
-		IMemento child = memento.getChild(ELEMENT_PATH);
+		IMemento child = memento.getChild(ELEMENT_URI);
 		if (child != null) {
-			path = Path.fromPortableString(child.getTextData());
-			Assert.isTrue(path.isAbsolute());
+			uri = URI.create(child.getTextData());
+			Assert.isTrue(uri.isAbsolute());
 		}
 	}
 
@@ -146,7 +107,7 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	@Override
 	protected void saveState(IMemento memento) {
 		super.saveState(memento);
-		memento.createChild(ELEMENT_PATH).putTextData(path.toPortableString());
+		memento.createChild(ELEMENT_URI).putTextData(uri.toString());
 	}
 
 }
