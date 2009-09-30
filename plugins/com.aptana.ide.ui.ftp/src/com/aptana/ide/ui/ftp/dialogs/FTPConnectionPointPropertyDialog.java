@@ -107,7 +107,7 @@ import com.aptana.ide.ui.io.dialogs.IDialogConstants;
  */
 public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements IPropertyDialog, IConnectionDialog {
 
-	private static final String DEFAULT_NAME = "New Site Connection";
+	private static final String DEFAULT_NAME = Messages.FTPConnectionPointPropertyDialog_Title;
 	private static final Pattern HOST_PATTERN = Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|([-\\w]+(\\.[-\\w]+)*)$"); //$NON-NLS-1$
 
 	protected IBaseRemoteConnectionPoint ftpConnectionPoint;
@@ -170,7 +170,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		label.setLayoutData(GridDataFactory.swtDefaults().hint(
 				new PixelConverter(label).convertHorizontalDLUsToPixels(IDialogConstants.LABEL_WIDTH),
 				SWT.DEFAULT).create());
-		label.setText(StringUtils.makeFormLabel("Site Name"));
+		label.setText(StringUtils.makeFormLabel(Messages.FTPConnectionPointPropertyDialog_LBL_SiteName));
 		
 		nameText = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		nameText.setLayoutData(GridDataFactory.fillDefaults()
@@ -183,7 +183,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		passwordLabel.setLayoutData(GridDataFactory.swtDefaults().hint(
 				new PixelConverter(passwordLabel).convertHorizontalDLUsToPixels(IDialogConstants.LABEL_WIDTH),
 				SWT.DEFAULT).create());
-		passwordLabel.setText(StringUtils.makeFormLabel("Password"));
+		passwordLabel.setText(StringUtils.makeFormLabel(Messages.FTPConnectionPointPropertyDialog_LBL_Password));
 
 		passwordText = new Text(parent, SWT.SINGLE | SWT.PASSWORD | SWT.BORDER);
 		passwordText.setLayoutData(GridDataFactory.fillDefaults()
@@ -192,7 +192,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		
 		savePasswordButton = new Button(parent, SWT.CHECK);
 		savePasswordButton.setLayoutData(GridDataFactory.fillDefaults().create());
-		savePasswordButton.setText("&Save");		
+		savePasswordButton.setText(Messages.FTPConnectionPointPropertyDialog_LBL_Save);		
 	}
 
 	protected void createAdvancedOptions(Composite parent) {
@@ -207,7 +207,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	protected Control createDialogArea(Composite parent) {
 		Composite dialogArea = (Composite) super.createDialogArea(parent);
 
-		titleImage = Activator.getImageDescriptor("/icons/full/wizban/ftp.png").createImage();
+		titleImage = Activator.getImageDescriptor("/icons/full/wizban/ftp.png").createImage(); //$NON-NLS-1$
 		smallFont = JFaceResources.getTextFontDescriptor().increaseHeight(-2).createFont(dialogArea.getDisplay());
 		dialogArea.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
@@ -217,11 +217,11 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		
 		setTitleImage(titleImage);
 		if (ftpConnectionPoint != null) {
-			setTitle(StringUtils.format("Edit the {0} connection", getConnectionPointType().getName()));
-			getShell().setText("Edit Connection");
+			setTitle(StringUtils.format(Messages.FTPConnectionPointPropertyDialog_MessageTitle_Edit, getConnectionPointType().getName()));
+			getShell().setText(Messages.FTPConnectionPointPropertyDialog_Title_Edit);
 		} else {
-			setTitle(StringUtils.format("Create a {0} connection", getConnectionPointType().getName()));
-			getShell().setText("New Connection");
+			setTitle(StringUtils.format(Messages.FTPConnectionPointPropertyDialog_MessageTitle_New, getConnectionPointType().getName()));
+			getShell().setText(Messages.FTPConnectionPointPropertyDialog_Title_New);
 		}
 		
 		Composite container = new Composite(dialogArea, SWT.NONE);
@@ -237,14 +237,14 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		Group group = new Group(container, SWT.NONE);
 		group.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
 		group.setLayout(GridLayoutFactory.swtDefaults().numColumns(3).create());
-		group.setText("Remote Info");
+		group.setText(Messages.FTPConnectionPointPropertyDialog_LBL_GroupInfo);
 		
 		/* row 2 */
 		Label label = new Label(group, SWT.NONE);
 		label.setLayoutData(GridDataFactory.swtDefaults().hint(
 				new PixelConverter(label).convertHorizontalDLUsToPixels(IDialogConstants.LABEL_WIDTH),
 				SWT.DEFAULT).create());
-		label.setText(StringUtils.makeFormLabel("Server"));
+		label.setText(StringUtils.makeFormLabel(Messages.FTPConnectionPointPropertyDialog_LBL_Server));
 
 		hostText = new Text(group, SWT.SINGLE | SWT.BORDER);
 		hostText.setLayoutData(GridDataFactory.swtDefaults()
@@ -258,14 +258,14 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		label = new Label(group, SWT.NONE);
 		label.setLayoutData(GridDataFactory.swtDefaults().span(2, 1).create());
 		label.setFont(smallFont);
-		label.setText("Example: ftp.domain.com -or- IP address");
+		label.setText(Messages.FTPConnectionPointPropertyDialog_LBL_Example);
 		
 		/* row 4 */
 		label = new Label(group, SWT.NONE);
 		label.setLayoutData(GridDataFactory.swtDefaults().hint(
 				new PixelConverter(label).convertHorizontalDLUsToPixels(IDialogConstants.LABEL_WIDTH),
 				SWT.DEFAULT).create());
-		label.setText(StringUtils.makeFormLabel("User Name"));
+		label.setText(StringUtils.makeFormLabel(Messages.FTPConnectionPointPropertyDialog_LBL_Username));
 
 		loginCombo = new Combo(group, SWT.DROP_DOWN | SWT.BORDER);
 		loginCombo.setLayoutData(GridDataFactory.swtDefaults()
@@ -274,7 +274,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		loginCombo.add(IFTPConstants.LOGIN_ANONYMOUS);
 		
 		testButton = new Button(group, SWT.PUSH);
-		testButton.setText("&Test");
+		testButton.setText(Messages.FTPConnectionPointPropertyDialog_LBL_Test);
 		testButton.setLayoutData(GridDataFactory.fillDefaults().hint(
 				Math.max(
 					new PixelConverter(testButton).convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH),
@@ -289,7 +289,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		label.setLayoutData(GridDataFactory.swtDefaults().hint(
 				new PixelConverter(label).convertHorizontalDLUsToPixels(IDialogConstants.LABEL_WIDTH),
 				SWT.DEFAULT).create());
-		label.setText(StringUtils.makeFormLabel("Remote Path"));
+		label.setText(StringUtils.makeFormLabel(Messages.FTPConnectionPointPropertyDialog_LBL_RemotePath));
 
 		remotePathText = new Text(group, SWT.SINGLE | SWT.BORDER);
 		remotePathText.setLayoutData(GridDataFactory.swtDefaults()
@@ -306,7 +306,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		
 		/* row 7 */
 		optionsExpandable = new ExpandableComposite(container, SWT.NONE, ExpandableComposite.TWISTIE | ExpandableComposite.FOCUS_TITLE);
-		optionsExpandable.setText("More Options");
+		optionsExpandable.setText(Messages.FTPConnectionPointPropertyDialog_LBL_Options);
 		optionsExpandable.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true).create());
 		Group optionsGroup = new Group(optionsExpandable, SWT.NONE);
 		optionsGroup.setLayout(GridLayoutFactory.fillDefaults().create());
@@ -338,7 +338,13 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		testButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				testConnection();
+				if (testConnection()) {
+                    MessageDialog.openInformation(getShell(),
+                            Messages.FTPConnectionPointPropertyDialog_Succeed_Title,
+                            StringUtils.format(
+                                    Messages.FTPConnectionPointPropertyDialog_Succeed_Message,
+                                    hostText.getText()));
+				}
 			}
 		});
 		
@@ -372,7 +378,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 			return (IBaseRemoteConnectionPoint) CoreIOPlugin.getConnectionPointManager()
 							.createConnectionPoint(connectionPointType);
 		} catch (CoreException e) {
-			IdeLog.logError(Activator.getDefault(), "Create new connection failed", e);
+			IdeLog.logError(Activator.getDefault(), Messages.FTPConnectionPointPropertyDialog_ERR_FailedCreate, e);
 			close();
 			throw new SWTException();
 		}
@@ -446,11 +452,11 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		if (!connectionTested) {
 			if (!testConnection()) {
 				MessageDialog dlg = new MessageDialog(getShell(),
-						"",
+						Messages.FTPConnectionPointPropertyDialog_ConfirmTitle,
 						null,
-						"Connection check failed. Keep location anyway ?",
+						Messages.FTPConnectionPointPropertyDialog_ConfirmMessage,
 						MessageDialog.QUESTION,
-						new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, "Edit" },
+						new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, Messages.FTPConnectionPointPropertyDialog_LBL_Edit },
 						2);
 				int code = dlg.open();
 				switch (code) {
@@ -575,28 +581,22 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		browseButton.setEnabled(valid);
 		advancedOptions.setValid(valid);
 	}
-	
+
 	public boolean isValid() {
 		String message = null;
 		if (nameText.getText().length() == 0) {
-			message = "Please specify site name";
+			message = Messages.FTPConnectionPointPropertyDialog_ERR_NameEmpty;
 		} else if (!HOST_PATTERN.matcher(hostText.getText()).matches()) {
-			message = "Please specify valid server host name or IP";
+			message = Messages.FTPConnectionPointPropertyDialog_ERR_InvalidHost;
 		} else if (loginCombo.getText().length() == 0) {
-			message = "Please specify username";
+			message = Messages.FTPConnectionPointPropertyDialog_ERR_NoUsername;
 		} else {
 			message = advancedOptions.isValid();
 		}
-		if (message != null) {
-			setErrorMessage(message);
-		} else {
-			setErrorMessage(null);
-			setMessage(null);
-			return true;
-		}
-		return false;
+		setErrorMessage(message);
+		return (message == null);
 	}
-	
+
 	private boolean testConnection() {
 		return testConnection(null, null);
 	}
@@ -664,8 +664,8 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	private void browseConnection() {
 		testConnection(null, new IConnectionRunnable() {
 			public void afterConnect(final IConnectionPoint connectionPoint, IProgressMonitor monitor) throws CoreException, InterruptedException {
-				monitor.beginTask("Browsing server folder structure", IProgressMonitor.UNKNOWN);
-				monitor.subTask("");
+				monitor.beginTask(Messages.FTPConnectionPointPropertyDialog_Task_Browse, IProgressMonitor.UNKNOWN);
+				monitor.subTask(""); //$NON-NLS-1$
 				getShell().getDisplay().syncExec(new Runnable() {
 					public void run() {
 						showBrowseDialog(connectionPoint);
@@ -682,8 +682,8 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	
 	private void showBrowseDialog(IConnectionPoint connectionPoint) {
 		FileTreeSelectionDialog dlg = new FileTreeSelectionDialog(getShell(), false);
-		dlg.setTitle(StringUtils.format("Browse {0}", ((IBaseRemoteConnectionPoint) connectionPoint).getHost()));
-		dlg.setMessage(StringUtils.makeFormLabel("Select connection base folder"));
+		dlg.setTitle(StringUtils.format(Messages.FTPConnectionPointPropertyDialog_Title_Browse, ((IBaseRemoteConnectionPoint) connectionPoint).getHost()));
+		dlg.setMessage(StringUtils.makeFormLabel(Messages.FTPConnectionPointPropertyDialog_Message_Browse));
 		dlg.setInput(connectionPoint);
 		String pathString = remotePathText.getText();
 		try {
@@ -703,15 +703,15 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 			}
 		}
 	}
-	
+
 	private void showErrorDialog(Throwable e) {
-		String message = "Internal error";
+		String message = Messages.FTPConnectionPointPropertyDialog_DefaultErrorMsg;
 		if (e instanceof CoreException) {
 			message = ((CoreException) e).getStatus().getMessage();
 		}
-		MessageDialog.openError(getShell(), "Connection check error", message);
+		MessageDialog.openError(getShell(), Messages.FTPConnectionPointPropertyDialog_ErrorTitle, message);
 	}
-	
+
 	protected void lockUI(boolean lock) {
 		lockedUI = lock;
 		getButton(OK).setEnabled(!lock);
@@ -726,9 +726,8 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		browseButton.setEnabled(!lock);
 		
 		advancedOptions.lockUI(lock);
-
 	}
-		
+
 	private static String valueOrEmpty(String value) {
 		if (value != null) {
 			return value;

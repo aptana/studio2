@@ -32,55 +32,26 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.ui.io.navigator.actions;
 
-import java.util.ArrayList;
-import java.util.List;
+package com.aptana.ide.ui.io.internal;
 
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.actions.BaseSelectionListenerAction;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.IShellProvider;
 
-import com.aptana.ide.ui.io.internal.Utils;
+import com.aptana.ide.ui.IPropertyDialogProvider;
+import com.aptana.ide.ui.io.dialogs.GenericConnectionPropertyDialog;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class OpenFileAction extends BaseSelectionListenerAction {
+public class GenericConnectionPropertyDialogProvider implements IPropertyDialogProvider {
 
-    private IWorkbenchPage fPage;
-    private List<IFileStore> fFileStores;
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.ui.io.IPropertyDialogProvider#createPropertyDialog(org.eclipse.jface.window.IShellProvider)
+	 */
+	public Dialog createPropertyDialog(IShellProvider shellProvider) {
+		return new GenericConnectionPropertyDialog(shellProvider.getShell());
+	}
 
-    public OpenFileAction(IWorkbenchPage page) {
-        super(Messages.OpenFileAction_Text);
-        fPage = page;
-        fFileStores = new ArrayList<IFileStore>();
-    }
-
-    public void run() {
-        for (IFileStore fileStore : fFileStores) {
-            EditorUtils.openFileInEditor(fPage, fileStore);
-        }
-    }
-
-    public boolean updateSelection(IStructuredSelection selection) {
-        fFileStores.clear();
-
-        if (selection != null && !selection.isEmpty()) {
-            Object[] elements = selection.toArray();
-            IFileStore fileStore;
-            for (Object element : elements) {
-                if (element instanceof IAdaptable) {
-                    fileStore = Utils.getFileStore((IAdaptable) element);
-                    if (fileStore != null) {
-                        fFileStores.add(fileStore);
-                    }
-                }
-            }
-        }
-
-        return super.updateSelection(selection) && fFileStores.size() > 0;
-    }
 }

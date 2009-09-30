@@ -43,245 +43,182 @@ import com.aptana.ide.update.manager.IPlugin;
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public class IntroStartup extends BaseTimingStartup
-{
+public class IntroStartup extends BaseTimingStartup {
 
-	/**
-	 * IGNORE
-	 */
-	public static final String IGNORE = "ignore.initial.my.aptana"; //$NON-NLS-1$
+    /**
+     * IGNORE
+     */
+    public static final String IGNORE = "ignore.initial.my.aptana"; //$NON-NLS-1$
 
-	@Override
-	public String getStartupName()
-	{
-		return Messages.IntroStartup_Name;
-	}
+    @Override
+    public String getStartupName() {
+        return Messages.IntroStartup_Name;
+    }
 
-	/**
-	 * @see org.eclipse.ui.IStartup#earlyStartup()
-	 */
-	public void startup()
-	{
-		showMyAptana();
-		installFeatures();
-		startupDone();
-	}
+    /**
+     * @see org.eclipse.ui.IStartup#earlyStartup()
+     */
+    public void startup() {
+        showMyAptana();
+        installFeatures();
+        startupDone();
+    }
 
-	/**
-	 * Show the My Aptana start page.
-	 */
-	protected void showMyAptana()
-	{
-		final IPreferenceStore store = IntroPlugin.getDefault().getPreferenceStore();
+    /**
+     * Show the My Aptana start page.
+     */
+    protected void showMyAptana() {
+        IPreferenceStore store = IntroPlugin.getDefault().getPreferenceStore();
 
-		String showStartPage = store.getString(IPreferenceConstants.SHOW_STARTPAGE_ON_STARTUP);
-		if (!store.getBoolean(IPreferenceConstants.SHOW_STARTPAGE_FORCED))
-		{
-			// forces the My Aptana page to show during the very first launch
-			showStartPage = IPreferenceConstants.ALWAYS_SHOW;
-			store.setValue(IPreferenceConstants.SHOW_STARTPAGE_ON_STARTUP, showStartPage);
-			store.setValue(IPreferenceConstants.SHOW_STARTPAGE_FORCED, true);
-		}
-		final boolean shownPreviously = store.getBoolean(IPreferenceConstants.SHOWN_PREVIOUSLY)
-				|| "true".equals(System.getProperty(IGNORE)); //$NON-NLS-1$
-		boolean portalPreviouslyOpened = PortalPlugin.getDefault().getPreferenceStore().getBoolean(
-				com.aptana.ide.server.portal.preferences.IPreferenceConstants.MY_APTANA_PREVIOUSLY_OPENED);
+        boolean shownPreviously = store.getBoolean(IPreferenceConstants.SHOWN_PREVIOUSLY)
+                || "true".equals(System.getProperty(IGNORE)); //$NON-NLS-1$
+        if (!shownPreviously) {
+            store.setValue(IPreferenceConstants.SHOWN_PREVIOUSLY, true);
+            showStartupPage();
+            return;
+        }
 
-		// this has a side effect of updating the feature change list store
-		boolean changed = FeatureChangeManager.getManager().areFeaturesChanged();
-		List<FeatureChange> changeList = null;
-		try
-		{
-			if (changed)
-			{
-				IdeLog.logInfo(IntroPlugin.getDefault(), "Features Changed"); //$NON-NLS-1$
-				changeList = FeatureChangeManager.getManager().getFeatureChangeList();
-				if (showStartPage.equals(IPreferenceConstants.SHOW_APTANA_UPDATES))
-				{
-					List<FeatureChange> aptanaList = new ArrayList<FeatureChange>();
-					FeatureChange change;
-					for (int i = 0; i < changeList.size(); i++)
-					{
-						change = changeList.get(i);
-						IdeLog.logInfo(IntroPlugin.getDefault(), "Feature ID: " + change.getId() + " Feature Label: " //$NON-NLS-1$ //$NON-NLS-2$
-								+ change.getLabel() + " From version " + change.getOldVersion() + " to " //$NON-NLS-1$ //$NON-NLS-2$
-								+ change.getNewVersion());
-						if (change.getProvider() != null && change.getProvider().indexOf("Aptana") != -1) //$NON-NLS-1$
-						{
-							aptanaList.add(change);
-						}
-					}
-					changeList = aptanaList;
-				}
+        String showStartPage = store.getString(IPreferenceConstants.SHOW_STARTPAGE_ON_STARTUP);
+        boolean portalPreviouslyOpened = PortalPlugin
+                .getDefault()
+                .getPreferenceStore()
+                .getBoolean(
+                        com.aptana.ide.server.portal.preferences.IPreferenceConstants.MY_APTANA_PREVIOUSLY_OPENED);
+        if (showStartPage.equals(IPreferenceConstants.ALWAYS_SHOW) || portalPreviouslyOpened) {
+            showStartupPage();
+            return;
+        }
+        if (showStartPage.equals(IPreferenceConstants.NEVER_SHOW)) {
+            return;
+        }
+        // this has a side effect of updating the feature change list store
+        boolean changed = FeatureChangeManager.getManager().areFeaturesChanged();
+        if (changed) {
+            IdeLog.logInfo(IntroPlugin.getDefault(), "Features Changed"); //$NON-NLS-1$
+            List<FeatureChange> changeList = FeatureChangeManager.getManager()
+                    .getFeatureChangeList();
+            if (changeList != null && changeList.size() > 0) {
+                showStartupPage();
+            }
+        } else {
+            IdeLog.logInfo(IntroPlugin.getDefault(), "Unchanged feature store"); //$NON-NLS-1$
+        }
+    }
 
-				if (showStartPage.equals(IPreferenceConstants.NEVER_SHOW))
-				{
-					changeList = null;
-				}
+    private void showStartupPage() {
+        UIJob job = new UIJob("Showing Startup Page") { //$NON-NLS-1$
 
-			}
-			else
-			{
-				IdeLog.logInfo(IntroPlugin.getDefault(), "Unchanged feature store"); //$NON-NLS-1$
-			}
-		}
-		catch (Exception e)
-		{
-		}
-		finally
-		{
-			if (!shownPreviously)
-			{
-				try
-				{
-					store.setValue(IPreferenceConstants.SHOWN_PREVIOUSLY, true);
-					IntroPlugin.getDefault().savePluginPreferences();
-				}
-				catch (Exception e)
-				{
-					IdeLog.logError(IntroPlugin.getDefault(), "Error saving shown previously preference", e); //$NON-NLS-1$
-				}
-			}
-			if (((changeList != null && changeList.size() > 0)
-                    || showStartPage.equals(IPreferenceConstants.ALWAYS_SHOW)
-                    || !shownPreviously || portalPreviouslyOpened))
-			{
-				UIJob job = new UIJob("Showing My Aptana") //$NON-NLS-1$
-				{
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+                IWorkbenchPart activePart = null;
+                IWorkbenchPage page = null;
+                IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+                if (window != null) {
+                    page = window.getActivePage();
+                    activePart = page.getActivePart();
+                }
+                IPreferenceStore prefs = IntroPlugin.getDefault().getPreferenceStore();
+                String editorId = prefs.getString(IPreferenceConstants.INTRO_EDITOR_ID);
+                IEditorPart editorPart = CoreUIUtils.openEditor(editorId, false);
+                if (editorPart == null) {
+                    // falls back to the default
+                    editorId = prefs.getDefaultString(IPreferenceConstants.INTRO_EDITOR_ID);
+                    prefs.setValue(IPreferenceConstants.INTRO_EDITOR_ID, editorId);
+                    CoreUIUtils.openEditor(editorId, false);
+                }
+                // makes the active part re-grab the focus
+                if (activePart != null) {
+                    page.activate(activePart);
+                }
+                return Status.OK_STATUS;
+            }
 
-					public IStatus runInUIThread(IProgressMonitor monitor)
-					{
-						IWorkbenchPart activePart = null;
-						IWorkbenchPage page = null;
-						IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-						if (window != null)
-						{
-							page = window.getActivePage();
-							activePart = page.getActivePart();
-						}
-						IPreferenceStore prefs = IntroPlugin.getDefault()
-                                .getPreferenceStore();
-						String editorId = prefs.getString(
-                                        IPreferenceConstants.INTRO_EDITOR_ID);
-						IEditorPart editorPart = CoreUIUtils.openEditor(editorId, false);
-						if (editorPart == null)
-						{
-						    // falls back to the default
-						    editorId = prefs.getDefaultString(IPreferenceConstants.INTRO_EDITOR_ID);
-						    prefs.setValue(IPreferenceConstants.INTRO_EDITOR_ID, editorId);
-						    CoreUIUtils.openEditor(editorId, false);
-						}
-						// makes the active part re-grab the focus
-						if (activePart != null)
-						{
-							page.activate(activePart);
-						}
-						return Status.OK_STATUS;
-					}
+        };
+        job.schedule(1000);
+    }
 
-				};
-				job.schedule(1000);
-			}
-		}
-	}
+    /**
+     * Install any missing features
+     */
+    protected void installFeatures() {
+        final IPreferenceStore store = IntroPlugin.getDefault().getPreferenceStore();
+        boolean check = store.getBoolean(IPreferenceConstants.INSTALL_PRO_AND_REQUIRED_FEATURES);
+        if (!check) {
+            return;
+        }
 
-	/**
-	 * Install any missing features
-	 */
-	protected void installFeatures()
-	{
-		final IPreferenceStore store = IntroPlugin.getDefault().getPreferenceStore();
-		boolean check = store.getBoolean(IPreferenceConstants.INSTALL_PRO_AND_REQUIRED_FEATURES);
-		if (!check)
-			return;
+        List<FeatureDescriptor> features = new ArrayList<FeatureDescriptor>();
+        List<IPlugin> installedFeatures = FeatureUtil.getInstalledFeatures();
+        String[] installedFeatureIds = new String[installedFeatures.size()];
+        int index = 0;
+        for (IPlugin feature : installedFeatures) {
+            installedFeatureIds[index++] = feature.getId();
+        }
 
-		List<FeatureDescriptor> features = new ArrayList<FeatureDescriptor>();
-		List<IPlugin> installedFeatures = FeatureUtil.getInstalledFeatures();
-		String[] installedFeatureIds = new String[installedFeatures.size()];
-		int index = 0;
-		for (IPlugin feature : installedFeatures) {
-		    installedFeatureIds[index++] = feature.getId();
-		}
+        // Using the list of installed and ignored features, filter out
+        // possible install items that were previously ignored, or would
+        // conflict with currently installed items.
+        String[] ignored = store.getString(IPreferenceConstants.IGNORE_INSTALL_FEATURES).split(","); //$NON-NLS-1$
+        final List<FeatureDescriptor> featuresToInstall = new ArrayList<FeatureDescriptor>();
+        for (Iterator<FeatureDescriptor> iterator = features.iterator(); iterator.hasNext();) {
+            FeatureDescriptor featureDescriptor = iterator.next();
+            if (!FeatureRegistry.isFeatureIgnored(featureDescriptor.getId(), ignored)
+                    && !FeatureRegistry.doesFeatureConflict(featureDescriptor, installedFeatureIds)) {
+                featuresToInstall.add(featureDescriptor);
+            }
+        }
 
+        // Don't show dialog if user has previously opted not to see if
+        // again
+        if (featuresToInstall.size() > 0
+                && !store.getString(IPreferenceConstants.HIDE_DIALOG_INSTALL_PROMPT).equals(
+                        MessageDialogWithToggle.NEVER)) {
+            String tmp_str = ""; //$NON-NLS-1$
+            for (FeatureDescriptor featureDesc : featuresToInstall) {
+                tmp_str += "\n\t" + featureDesc.getName(); //$NON-NLS-1$
+            }
+            final String str_features = tmp_str;
+            UIJob job = new UIJob(Messages.IntroStartup_Job_InstallFeatures) {
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    int returnCode = DialogUtils.openIgnoreMessageDialogConfirm(Display
+                            .getCurrent().getActiveShell(), Messages.IntroStartup_InstallTitle,
+                            MessageFormat
+                                    .format(Messages.IntroStartup_InstallMessage, str_features),
+                            store, IPreferenceConstants.HIDE_DIALOG_INSTALL_PROMPT);
 
-		// Using the list of installed and ignored features, filter out
-		// possible install items that
-		// were previously ignored, or would conflict with currently
-		// installed items.
-		String[] ignored = store.getString(IPreferenceConstants.IGNORE_INSTALL_FEATURES).split(","); //$NON-NLS-1$
-		final List<FeatureDescriptor> featuresToInstall = new ArrayList<FeatureDescriptor>();
-		for (Iterator<FeatureDescriptor> iterator = features.iterator(); iterator.hasNext();)
-		{
-			FeatureDescriptor featureDescriptor = iterator.next();
-			if (!FeatureRegistry.isFeatureIgnored(featureDescriptor.getId(), ignored)
-					&& !FeatureRegistry.doesFeatureConflict(featureDescriptor, installedFeatureIds))
-			{
-				featuresToInstall.add(featureDescriptor);
-			}
-		}
+                    if (returnCode == MessageDialog.CANCEL) {
+                        return Status.OK_STATUS;
+                    }
+                    new FeatureInstallJob(featuresToInstall).schedule(0);
+                    return Status.OK_STATUS;
+                }
+            };
+            job.setRule(MutexJobRule.getInstance());
+            job.schedule(20000);
+        }
 
-		// Don't show dialog if user has previously opted not to see if
-		// again
-		if (featuresToInstall.size() > 0
-				&& !store.getString(IPreferenceConstants.HIDE_DIALOG_INSTALL_PROMPT).equals(
-						MessageDialogWithToggle.NEVER))
-		{
-			String tmp_str = ""; //$NON-NLS-1$
-			for (FeatureDescriptor featureDesc : featuresToInstall)
-			{
-				tmp_str += "\n\t" + featureDesc.getName(); //$NON-NLS-1$
-			}
-			final String str_features = tmp_str;
-			UIJob job = new UIJob(Messages.IntroStartup_Job_InstallFeatures)
-			{
-				public IStatus runInUIThread(IProgressMonitor monitor)
-				{
-					int returnCode = DialogUtils.openIgnoreMessageDialogConfirm(Display.getCurrent().getActiveShell(),
-							Messages.IntroStartup_InstallTitle, MessageFormat.format(
-									Messages.IntroStartup_InstallMessage, str_features), store,
-							IPreferenceConstants.HIDE_DIALOG_INSTALL_PROMPT);
+        final List<FeatureDescriptor> featuresToUpdate = FeatureRegistry
+                .gatherInstalledRequiredFeatures();
+        if (featuresToUpdate.size() > 0) {
+            final StringBuilder featureToUpdateStr = new StringBuilder();
+            for (FeatureDescriptor featureDesc : featuresToUpdate) {
+                featureToUpdateStr.append("\n\t" + featureDesc.getName()); //$NON-NLS-1$
+            }
+            UIJob job = new UIJob(Messages.IntroStartup_Job_UpdateFeatures) {
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    boolean returnCode = MessageDialog.openConfirm(Display.getCurrent()
+                            .getActiveShell(), Messages.IntroStartup_UpdateTitle, MessageFormat
+                            .format(Messages.IntroStartup_UpdateMessage, featureToUpdateStr
+                                    .toString()));
+                    if (!returnCode) {
+                        return Status.OK_STATUS;
+                    }
 
-					IntroPlugin.getDefault().savePluginPreferences();
-					if (returnCode == MessageDialog.CANCEL)
-					{
-						return Status.OK_STATUS;
-					}
-					new FeatureInstallJob(featuresToInstall).schedule(0);
-					return Status.OK_STATUS;
-				}
-			};
-			job.setRule(MutexJobRule.getInstance());
-			job.schedule(20000);
-		}
-
-		final List<FeatureDescriptor> featuresToUpdate = FeatureRegistry.gatherInstalledRequiredFeatures();
-		if (featuresToUpdate.size() > 0)
-		{
-			final StringBuilder featureToUpdateStr = new StringBuilder();
-			for (FeatureDescriptor featureDesc : featuresToUpdate)
-			{
-				featureToUpdateStr.append("\n\t" + featureDesc.getName()); //$NON-NLS-1$
-			}
-			UIJob job = new UIJob(Messages.IntroStartup_Job_UpdateFeatures)
-			{
-				public IStatus runInUIThread(IProgressMonitor monitor)
-				{
-					boolean returnCode = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
-							Messages.IntroStartup_UpdateTitle, MessageFormat.format(
-									Messages.IntroStartup_UpdateMessage, featureToUpdateStr.toString()));
-					IntroPlugin.getDefault().savePluginPreferences();
-					if (!returnCode)
-					{
-						return Status.OK_STATUS;
-					}
-
-					new FeatureInstallJob(featuresToUpdate).schedule(0);
-					return Status.OK_STATUS;
-				}
-			};
-			job.setRule(MutexJobRule.getInstance());
-			job.schedule(20000);
-		}
-
-	}
+                    new FeatureInstallJob(featuresToUpdate).schedule(0);
+                    return Status.OK_STATUS;
+                }
+            };
+            job.setRule(MutexJobRule.getInstance());
+            job.schedule(20000);
+        }
+    }
 }

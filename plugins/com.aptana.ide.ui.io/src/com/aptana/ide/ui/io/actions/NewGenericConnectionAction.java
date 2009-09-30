@@ -32,55 +32,42 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.ui.io.navigator.actions;
 
-import java.util.ArrayList;
-import java.util.List;
+package com.aptana.ide.ui.io.actions;
 
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.actions.BaseSelectionListenerAction;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
 
-import com.aptana.ide.ui.io.internal.Utils;
+import com.aptana.ide.ui.io.dialogs.GenericConnectionPropertyDialog;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class OpenFileAction extends BaseSelectionListenerAction {
+public class NewGenericConnectionAction implements IObjectActionDelegate {
 
-    private IWorkbenchPage fPage;
-    private List<IFileStore> fFileStores;
+	private IWorkbenchPart targetPart;
 
-    public OpenFileAction(IWorkbenchPage page) {
-        super(Messages.OpenFileAction_Text);
-        fPage = page;
-        fFileStores = new ArrayList<IFileStore>();
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction, org.eclipse.ui.IWorkbenchPart)
+	 */
+	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		this.targetPart = targetPart;
+	}
 
-    public void run() {
-        for (IFileStore fileStore : fFileStores) {
-            EditorUtils.openFileInEditor(fPage, fileStore);
-        }
-    }
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 */
+	public void run(IAction action) {
+		new GenericConnectionPropertyDialog(targetPart.getSite().getShell()).open();
+	}
 
-    public boolean updateSelection(IStructuredSelection selection) {
-        fFileStores.clear();
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+	 */
+	public void selectionChanged(IAction action, ISelection selection) {
+	}
 
-        if (selection != null && !selection.isEmpty()) {
-            Object[] elements = selection.toArray();
-            IFileStore fileStore;
-            for (Object element : elements) {
-                if (element instanceof IAdaptable) {
-                    fileStore = Utils.getFileStore((IAdaptable) element);
-                    if (fileStore != null) {
-                        fFileStores.add(fileStore);
-                    }
-                }
-            }
-        }
-
-        return super.updateSelection(selection) && fFileStores.size() > 0;
-    }
 }
