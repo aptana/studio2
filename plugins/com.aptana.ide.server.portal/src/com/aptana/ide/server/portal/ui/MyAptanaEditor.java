@@ -144,7 +144,7 @@ public class MyAptanaEditor extends EditorPart {
             }
         } catch (Exception e) {
         }
-        Job job = new Job("Restart My Aptana server") { //$NON-NLS-1$
+        Job job = new Job("Restart the server for My Studio") { //$NON-NLS-1$
 
             protected IStatus run(IProgressMonitor monitor) {
                 MyAptanaServer.getServer().restart();

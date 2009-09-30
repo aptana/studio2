@@ -34,6 +34,9 @@
  */
 package com.aptana.ide.ui.io.navigator.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -48,31 +51,36 @@ import com.aptana.ide.ui.io.internal.Utils;
 public class OpenFileAction extends BaseSelectionListenerAction {
 
     private IWorkbenchPage fPage;
-    private IFileStore fFileStore;
+    private List<IFileStore> fFileStores;
 
     public OpenFileAction(IWorkbenchPage page) {
         super(Messages.OpenFileAction_Text);
         fPage = page;
+        fFileStores = new ArrayList<IFileStore>();
     }
 
     public void run() {
-        if (fFileStore == null) {
-            return;
+        for (IFileStore fileStore : fFileStores) {
+            EditorUtils.openFileInEditor(fPage, fileStore);
         }
-
-        EditorUtils.openFileInEditor(fPage, fFileStore);
     }
 
     public boolean updateSelection(IStructuredSelection selection) {
-        fFileStore = null;
+        fFileStores.clear();
 
         if (selection != null && !selection.isEmpty()) {
-            Object element = selection.getFirstElement();
-            if (element instanceof IAdaptable) {
-                fFileStore = Utils.getFileStore((IAdaptable) element);
+            Object[] elements = selection.toArray();
+            IFileStore fileStore;
+            for (Object element : elements) {
+                if (element instanceof IAdaptable) {
+                    fileStore = Utils.getFileStore((IAdaptable) element);
+                    if (fileStore != null) {
+                        fFileStores.add(fileStore);
+                    }
+                }
             }
         }
 
-        return super.updateSelection(selection) && fFileStore != null;
+        return super.updateSelection(selection) && fFileStores.size() > 0;
     }
 }
