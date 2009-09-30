@@ -57,8 +57,7 @@ public class InstalledPluginsViewerFilter extends ViewerFilter
 			"com.aptana.ide.feature.desktop.integration", //$NON-NLS-1$
 			"com.aptana.ide.feature.doc", //$NON-NLS-1$
 			"com.aptana.ide.feature.editors", //$NON-NLS-1$
-			"com.aptana.ide.feature.syncing.ftp", //$NON-NLS-1$
-			"com.aptana.ide.feature.xul" }; //$NON-NLS-1$
+			"com.aptana.ide.feature.syncing.ftp" }; //$NON-NLS-1$
 
 	private static final String[] CORE_PLUGIN_PREFIXES = { "org.eclipse.rcp", //$NON-NLS-1$
 			"org.eclipse.platform", "org.eclipse.pde", //$NON-NLS-1$ //$NON-NLS-2$
