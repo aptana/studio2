@@ -322,6 +322,14 @@ public class S3FileStore extends FileStore
 	{
 		try
 		{
+			// TODO There's got to be a faster way to delete the subdirectory structure using listEntries and filtering down to just children (not peers starting with same prefix)
+			// Delete depth first
+			IFileStore[] children = childStores(options, monitor);
+			for (IFileStore child : children)
+			{
+				child.delete(options, monitor);
+			}
+			
 			Response resp = getAWSConnection().delete(getBucket(), getKey(), null);
 			resp.connection.getResponseCode(); // force connection to finish
 
