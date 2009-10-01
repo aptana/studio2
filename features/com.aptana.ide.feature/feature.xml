@@ -31,11 +31,6 @@
          version="0.0.0"/>
 
    <includes
-         id="com.aptana.ide.feature.xul"
-         version="0.0.0"
-         os="macosx,win32"/>
-
-   <includes
          id="com.aptana.ide.feature.syncing.ftp"
          version="0.0.0"/>
 

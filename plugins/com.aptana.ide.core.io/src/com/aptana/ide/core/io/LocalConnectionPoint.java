@@ -63,11 +63,12 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	 * Default constructor
 	 */
 	public LocalConnectionPoint() {
-		super();
+		super(TYPE);
 	}
 
 	/**
-	 * Default constructor
+	 * 
+	 * @param path
 	 */
 	public LocalConnectionPoint(IPath path) {
 		super(TYPE);

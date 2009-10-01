@@ -97,7 +97,7 @@ public class JSCodeFormatter extends BaseFormatter
 	private LexemeList lexemes;
 	private SourceWriter writer;
 	private Lexeme currentLexeme;
-	private List commentNodes = new ArrayList();
+	private List<CommentNode> commentNodes = new ArrayList<CommentNode>();
 	private boolean shouldPrint = true;
 
 	Pattern newLinePattern = Pattern.compile(".*(\r|\n|\r\n)*.*"); //$NON-NLS-1$
@@ -121,7 +121,7 @@ public class JSCodeFormatter extends BaseFormatter
 	 * Builds a list of comment nodes found in this lexeme list. This function finds the indent level of comments and
 	 * whether they are multiline or single line
 	 */
-	private List buildCommentNodes(String source, IParseNode[] nodes, LexemeList lexemes)
+	private List<CommentNode> buildCommentNodes(String source, IParseNode[] nodes, LexemeList lexemes)
 	{
 		List<CommentNode> cNodes = new ArrayList<CommentNode>();
 
@@ -353,7 +353,7 @@ public class JSCodeFormatter extends BaseFormatter
 		// Print all remaining comments no matter what
 		for (int i = 0; i < commentNodes.size(); i++)
 		{
-			CommentNode cn = (CommentNode) commentNodes.get(i);
+			CommentNode cn = commentNodes.get(i);
 			if (!cn.printed)
 			{
 				if (!shouldPrint)
@@ -763,7 +763,7 @@ public class JSCodeFormatter extends BaseFormatter
 		this.noFormatEnd = lexemes.get(lexemes.size() - 1);
 		for (int j = 0; j < commentNodes.size(); j++)
 		{
-			CommentNode format = (CommentNode) commentNodes.get(j);
+			CommentNode format = commentNodes.get(j);
 			if (format.isFormat && format.node.getStartingOffset() > cn.node.getStartingOffset())
 			{
 				endingOffset = format.node.getEndingOffset();
@@ -774,7 +774,7 @@ public class JSCodeFormatter extends BaseFormatter
 		String unformatted = source.substring(cn.node.getStartingOffset(), endingOffset);
 		for (int j = 0; j < commentNodes.size(); j++)
 		{
-			CommentNode format = (CommentNode) commentNodes.get(j);
+			CommentNode format = commentNodes.get(j);
 			if (format.node.getStartingOffset() >= cn.node.getStartingOffset()
 					&& format.node.getEndingOffset() <= endingOffset)
 			{
@@ -876,7 +876,7 @@ public class JSCodeFormatter extends BaseFormatter
 			// Look before the current lexeme
 			for (int i = 0; i < commentNodes.size(); i++)
 			{
-				CommentNode cn = (CommentNode) commentNodes.get(i);
+				CommentNode cn = commentNodes.get(i);
 				GenericCommentNode comment = cn.node;
 				if (cn.isMultiline && !cn.printed)
 				{
@@ -927,7 +927,7 @@ public class JSCodeFormatter extends BaseFormatter
 			// Look after the current lexeme and print any non-multiline comments
 			for (int i = 0; i < commentNodes.size(); i++)
 			{
-				CommentNode cn = (CommentNode) commentNodes.get(i);
+				CommentNode cn = commentNodes.get(i);
 				if (!cn.isMultiline)
 				{
 					GenericCommentNode comment = cn.node;

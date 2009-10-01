@@ -50,11 +50,6 @@ public class Messages extends NLS {
      */
     public static String MyAptanaEditor_TitleTooltip;
 
-    /**
-     * PortalEditor_Loading
-     */
-    public static String MyAptanaEditor_Loading;
-
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

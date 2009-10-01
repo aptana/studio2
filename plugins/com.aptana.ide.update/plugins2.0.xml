@@ -57,6 +57,19 @@
 		<installer_id>installer.hosting</installer_id>
 	</plugin>
 	<plugin>
+		<id>com.aptana.ide.feature.xul</id>
+		<name>Aptana XULRunner</name>
+		<category>Utilities</category> 
+		<description>Adds XULRunner support</description>
+		<url>http://update.aptana.com/install/xul/</url>
+        <more>http://www.aptana.org/</more>
+		<sortweight>0</sortweight>
+		<release>
+		  <version>2.0.0</version>
+		</release>
+		<installer_id>installer.others</installer_id>
+	</plugin>
+	<plugin>
 		<id>org.eclipse.team.svn</id>
 		<name>Subversive</name>
 		<category>Utilities</category> 
