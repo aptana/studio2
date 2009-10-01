@@ -58,24 +58,14 @@ public class S3FileStore extends FileStore
 	{
 		try
 		{
-			List<String> keys = new ArrayList<String>();
-			if (getBucket() == null)
+			if (isRoot())
 			{
-				// We're outside any buckets. List the buckets!
-				ListAllMyBucketsResponse resp = getAWSConnection().listAllMyBuckets(null);
-				if (resp == null || resp.entries == null)
-					return keys.toArray(new String[0]);
-				List<Bucket> buckets = resp.entries;
-				for (Bucket bucket : buckets)
-				{
-					keys.add(bucket.name);
-				}
-				return keys.toArray(new String[keys.size()]);
+				return getBuckets();
 			}
 			// Inside a bucket
 			String prefix = getPrefix();
 			List<ListEntry> entries = listEntries();
-
+			List<String> keys = new ArrayList<String>();
 			if (entries == null)
 				return keys.toArray(new String[0]);
 			for (ListEntry entry : entries)
@@ -130,6 +120,26 @@ public class S3FileStore extends FileStore
 		{
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e));
 		}
+	}
+
+	String[] getBuckets() throws MalformedURLException, IOException
+	{
+		// We're outside any buckets. List the buckets!
+		List<String> keys = new ArrayList<String>();
+		ListAllMyBucketsResponse resp = getAWSConnection().listAllMyBuckets(null);
+		if (resp == null || resp.entries == null)
+			return keys.toArray(new String[0]);
+		List<Bucket> buckets = resp.entries;
+		for (Bucket bucket : buckets)
+		{
+			keys.add(bucket.name);
+		}
+		return keys.toArray(new String[keys.size()]);
+	}
+
+	boolean isRoot()
+	{
+		return getBucket() == null;
 	}
 
 	private String getPrefix()
