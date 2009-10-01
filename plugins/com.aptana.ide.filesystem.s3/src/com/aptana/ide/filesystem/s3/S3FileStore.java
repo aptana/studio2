@@ -28,6 +28,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 
 import com.amazon.s3.AWSAuthConnection;
+import com.amazon.s3.Bucket;
+import com.amazon.s3.ListAllMyBucketsResponse;
 import com.amazon.s3.ListBucketResponse;
 import com.amazon.s3.ListEntry;
 import com.amazon.s3.Response;
@@ -56,10 +58,26 @@ public class S3FileStore extends FileStore
 	{
 		try
 		{
+			List<String> keys = new ArrayList<String>();
+			if (getBucket() == null)
+			{
+				// We're outside any buckets. List the buckets!
+				ListAllMyBucketsResponse resp = getAWSConnection().listAllMyBuckets(null);
+				if (resp == null || resp.entries == null)
+					return keys.toArray(new String[0]);
+				List<Bucket> buckets = resp.entries;
+				for (Bucket bucket : buckets)
+				{
+					keys.add(bucket.name);
+				}
+				return keys.toArray(new String[keys.size()]);
+			}
+			// Inside a bucket
 			String prefix = getPrefix();
 			List<ListEntry> entries = listEntries();
-			List<String> keys = new ArrayList<String>();
 
+			if (entries == null)
+				return keys.toArray(new String[0]);
 			for (ListEntry entry : entries)
 			{
 				if (prefix.length() >= entry.key.length())
@@ -116,7 +134,7 @@ public class S3FileStore extends FileStore
 
 	private String getPrefix()
 	{
-		String prefix = path.toPortableString();
+		String prefix = path.removeFirstSegments(1).toPortableString();
 		if (prefix.startsWith("/"))
 		{
 			prefix = prefix.substring(1);
@@ -128,49 +146,59 @@ public class S3FileStore extends FileStore
 	public IFileInfo fetchInfo(int options, IProgressMonitor monitor) throws CoreException
 	{
 		FileInfo info = new FileInfo(getName());
-		try
+		if (getKey() == null || getKey().length() == 0)
 		{
-			HttpURLConnection connection = getAWSConnection().head(getBucket(), getKey(), null);
-			if (connection.getResponseCode() < 400)
+			// we're a bucket
+			info.setExists(true);
+			info.setDirectory(true);
+		}
+		else
+		{
+			try
 			{
-				info.setExists(true);
-				info.setDirectory(false);
-				String length = connection.getHeaderField("Content-Length");
-				if (length != null)
-					info.setLength(Long.parseLong(length));
-				try
+				HttpURLConnection connection = getAWSConnection().head(getBucket(), getKey(), null);
+				if (connection.getResponseCode() < 400)
 				{
-					String lastModified = connection.getHeaderField("Last-Modified");
-					if (lastModified != null)
+					info.setExists(true);
+					info.setDirectory(false);
+					String length = connection.getHeaderField("Content-Length");
+					if (length != null)
+						info.setLength(Long.parseLong(length));
+					try
 					{
-						Date date = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z").parse(lastModified);
-						info.setLastModified(date.getTime());
+						String lastModified = connection.getHeaderField("Last-Modified");
+						if (lastModified != null)
+						{
+							Date date = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z").parse(lastModified);
+							info.setLastModified(date.getTime());
+						}
+					}
+					catch (ParseException e)
+					{
+						// ignore
 					}
 				}
-				catch (ParseException e)
+				else
 				{
-					// ignore
+					// Only "exists" if there's any children! There are no "directories" in S3. Make sure not to filter
+					// out
+					// the _$folder$ hacks for this
+					String[] children = childNames(options, true, monitor);
+					if (children != null && children.length > 0)
+					{
+						info.setDirectory(true);
+						info.setExists(true);
+					}
 				}
 			}
-			else
+			catch (MalformedURLException e)
 			{
-				// Only "exists" if there's any children! There are no "directories" in S3. Make sure not to filter out
-				// the _$folder$ hacks for this
-				String[] children = childNames(options, true, monitor);
-				if (children != null && children.length > 0)
-				{
-					info.setDirectory(true);
-					info.setExists(true);
-				}
+				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e));
 			}
-		}
-		catch (MalformedURLException e)
-		{
-			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e));
-		}
-		catch (IOException e)
-		{
-			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e));
+			catch (IOException e)
+			{
+				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e));
+			}
 		}
 		return info;
 	}
@@ -181,6 +209,8 @@ public class S3FileStore extends FileStore
 		try
 		{
 			IPath childPath = path.append(name);
+			if (!childPath.isAbsolute())
+				childPath = childPath.makeAbsolute();
 			return new S3FileStore(getURI(childPath));
 		}
 		catch (URISyntaxException e)
@@ -241,7 +271,7 @@ public class S3FileStore extends FileStore
 
 	private AWSAuthConnection getAWSConnection()
 	{
-		if (getBucket().indexOf(".") != -1)
+		if (getBucket() != null && getBucket().indexOf(".") != -1)
 			return new AWSAuthConnection(getAccessKey(), getSecretAccessKey(), false);
 		return new AWSAuthConnection(getAccessKey(), getSecretAccessKey());
 	}
@@ -258,7 +288,7 @@ public class S3FileStore extends FileStore
 
 	String getKey()
 	{
-		String key = path.toPortableString();
+		String key = path.removeFirstSegments(1).toPortableString();
 		if (key.startsWith("/") && key.length() > 1)
 			return key.substring(1);
 		return key;
@@ -266,7 +296,9 @@ public class S3FileStore extends FileStore
 
 	private String getBucket()
 	{
-		return uri.getHost();
+		if (path.segmentCount() == 0)
+			return null;
+		return path.segment(0);
 	}
 
 	@Override
@@ -468,7 +500,11 @@ public class S3FileStore extends FileStore
 	@SuppressWarnings("unchecked")
 	List<ListEntry> listEntries() throws MalformedURLException, IOException
 	{
-		ListBucketResponse resp = getAWSConnection().listBucket(getBucket(), getPrefix(), null, null, null);
+		String prefix = getPrefix();
+		if (prefix != null && prefix.trim().length() == 0)
+			prefix = null;
+		// TODO If the list is truncated we need to grab the last entry as a marker and continually iterate and combine responses!
+		ListBucketResponse resp = getAWSConnection().listBucket(getBucket(), prefix, null, null, null);
 		return resp.entries;
 	}
 }
