@@ -61,7 +61,7 @@
 		<name>Aptana XULRunner</name>
 		<category>Utilities</category> 
 		<description>Adds XULRunner support</description>
-		<url>http://update.aptana.com/install/xul/</url>
+		<url>http://download.aptana.org/tools/studio/plugin/install/xul/</url>
         <more>http://www.aptana.org/</more>
 		<sortweight>0</sortweight>
 		<release>
