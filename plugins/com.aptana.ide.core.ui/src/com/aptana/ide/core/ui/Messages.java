@@ -492,6 +492,11 @@ public final class Messages extends NLS
 	 */
 	public static String NetworkDiagnosticLog_Unknown;
 
+	/**
+	 * IODiagnosticLog_MacAddress
+	 */
+	public static String IODiagnosticLog_MacAddress;
+
 	static
 	{
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

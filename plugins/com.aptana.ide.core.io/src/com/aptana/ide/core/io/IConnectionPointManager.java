@@ -37,6 +37,7 @@ package com.aptana.ide.core.io;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 
 import com.aptana.ide.core.io.events.IConnectionPointListener;
 
@@ -65,4 +66,7 @@ public interface IConnectionPointManager extends IAdaptable {
 	
 	public void addConnectionPointListener(IConnectionPointListener listener);
 	public void removeConnectionPointListener(IConnectionPointListener listener);
+	
+	public void loadState(IPath path);
+	public void saveState(IPath path);
 }

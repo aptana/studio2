@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -39,109 +39,22 @@ import org.eclipse.osgi.util.NLS;
 /**
  * @author Pavel Petrochenko
  */
-public class Messages extends NLS
-{
-	private static final String BUNDLE_NAME = "com.aptana.ide.syncing.wizards.messages"; //$NON-NLS-1$
-	/**
-	 * SyncExportPage_BROWSE
-	 */
-	public static String SyncExportPage_BROWSE;
-	/**
-	 * SyncExportPage_Complete
-	 */
-	public static String SyncExportPage_Complete;
-	/**
-	 * SyncExportPage_Confirm_Overwrite
-	 */
-	public static String SyncExportPage_Confirm_Overwrite;
-	/**
-	 * SyncExportPage_DESCRIPTION
-	 */
-	public static String SyncExportPage_DESCRIPTION;
-	/**
-	 * SyncExportPage_Error
-	 */
-	public static String SyncExportPage_Error;
-	/**
-	 * SyncExportPage_FileLocation
-	 */
-	public static String SyncExportPage_FileLocation;
-	/**
-	 * SyncExportPage_NO_WARNING
-	 */
-	public static String SyncExportPage_NO_WARNING;
-	/**
-	 * SyncExportPage_NOT_WRITABLE
-	 */
-	public static String SyncExportPage_NOT_WRITABLE;
-	/**
-	 * SyncExportPage_Overwrite
-	 */
-	public static String SyncExportPage_OPTIONS;
-	/**
-	 * SyncExportPage_Overwrite
-	 */
-	public static String SyncExportPage_Overwrite;
-	/**
-	 * SyncExportPage_SYNC_SETTINGS
-	 */
-	public static String SyncExportPage_SYNC_SETTINGS;
-	/**
-	 * SyncExportPage_TITLE
-	 */
-	public static String SyncExportPage_TITLE;
-	/**
-	 * SyncExportPage_TO_FILE
-	 */
-	public static String SyncExportPage_TO_FILE;
-	/**
-	 * SyncImportPage_DESCRIPTION
-	 */
-	public static String SyncImportPage_DESCRIPTION;
-	/**
-	 * SyncImportPage_FILE_NOT_EXIST
-	 */
-	public static String SyncImportPage_FILE_NOT_EXIST;
-	/**
-	 * SyncImportPage_FILE_NOT_EXIST_DESC
-	 */
-	public static String SyncImportPage_FILE_NOT_EXIST_DESC;
-	/**
-	 * SyncImportPage_FILE_NOT_READABLE
-	 */
-	public static String SyncImportPage_FILE_NOT_READABLE;
-	/**
-	 * SyncImportPage_FILE_NOT_READABLE_DESC
-	 */
-	public static String SyncImportPage_FILE_NOT_READABLE_DESC;
-	/**
-	 * SyncImportPage_FROM_FILE
-	 */
-	public static String SyncImportPage_FROM_FILE;
-	/**
-	 * SyncImportPage_SYNC_SETTINGS
-	 */
-	public static String SyncImportPage_SYNC_SETTINGS;
-	/**
-	 * SyncImportPage_TITLE
-	 */
-	public static String SyncImportPage_TITLE;
+public class Messages extends NLS {
 
-	public static String RemoteProjectWizard_LBL_CreateNameAndLocationForLocalProject;
+    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.wizards.messages"; //$NON-NLS-1$
+
+    public static String RemoteProjectWizard_LBL_CreateNameAndLocationForLocalProject;
     public static String RemoteProjectWizard_MSG_CreatingRemoteProject;
     public static String RemoteProjectWizard_TTL_ConnectHostedSiteWizard;
     public static String RemoteProjectWizard_TTL_CreateNewExistingHostedSiteProject;
     public static String RemoteProjectWizard_TTL_SelectRemoteConnection;
     public static String RemoteProjectWizard_UIJOB_Synchronizing;
 
-	static
-	{
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-	private Messages()
-	{
-
-	}
+    private Messages() {
+    }
 }

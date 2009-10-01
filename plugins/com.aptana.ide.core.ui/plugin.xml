@@ -217,24 +217,16 @@
                    %Theme.Aptana.Description
                 </description>
           </themeElementCategory>
-          <colorDefinition
-                categoryId="com.aptana.ide.core.ui.apearance"
-                colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
-                id="com.aptana.ide.core.ui.background.color.navigator"
-                isEditable="true"
-                label="%Theme.Project.background"/>
-		<colorDefinition
-                categoryId="com.aptana.ide.core.ui.apearance"
-                colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
-                id="com.aptana.ide.core.ui.foreground.color.navigator"
-                isEditable="true"
-                label="%Theme.Project.foreground"/>                           
        </extension>
        <extension
              point="com.aptana.ide.core.ui.diagnosis">
           <diagnosis
                 class="com.aptana.ide.core.ui.NetworkDiagnosticLog"
                 ordinal="1000">
+          </diagnosis>
+          <diagnosis
+                class="com.aptana.ide.core.ui.IODiagnosticLog"
+                ordinal="1050">
           </diagnosis>
           <diagnosis
                 class="com.aptana.ide.core.ui.EclipseDiagnosticLog"

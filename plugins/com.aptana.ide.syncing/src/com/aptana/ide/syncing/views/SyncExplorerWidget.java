@@ -127,11 +127,6 @@ public class SyncExplorerWidget
 		Messages.SyncExplorerWidget_ColumnSize, Messages.SyncExplorerWidget_ColumnLastModified };
 
 	/**
-	 * ID
-	 */
-	public static final String ID = "com.aptana.ide.syncing.views.SyncManagerView"; //$NON-NLS-1$
-
-	/**
 	 * REMOTE
 	 */
 	private static final String REMOTE = " (remote)"; //$NON-NLS-1$
