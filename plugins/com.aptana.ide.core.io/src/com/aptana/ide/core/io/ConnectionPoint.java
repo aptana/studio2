@@ -89,6 +89,10 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
 			String propertyName, Object data) throws CoreException {
 		setType(config.getAttribute(ConnectionPointManager.ATT_ID));
 	}
+	
+	protected boolean isPersistent() {
+		return true;
+	}
 
 	protected void loadState(IMemento memento) {
 		IMemento child = memento.getChild(ELEMENT_NAME);
