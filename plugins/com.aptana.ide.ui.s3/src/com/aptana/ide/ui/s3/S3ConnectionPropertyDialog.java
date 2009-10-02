@@ -316,6 +316,13 @@ public class S3ConnectionPropertyDialog extends TitleAreaDialog implements IProp
 			nameText.setText(valueOrEmpty(connectionPoint.getName()));
 			accessKeyText.setText(valueOrEmpty(connectionPoint.getAccessKey()));
 			remotePathText.setText(valueOrEmpty(connectionPoint.getPath().toPortableString()));
+			char[] password = connectionPoint.getPassword();
+			if (password == null) {
+				password = CoreIOPlugin.getAuthenticationManager().getPassword(connectionPoint.getAccessKey());				
+			}
+			if (password != null) {
+				passwordText.setText(String.copyValueOf(password));
+			}
 		}
 		finally
 		{

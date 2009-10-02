@@ -11,5 +11,14 @@
             name="%Validation.view.name">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+            class="com.aptana.ide.editors.internal.ui.preferences.TodoPreferencePage"
+            id="com.aptana.ide.editors.ui.tasks"
+            name="Tasks">
+      </page>
+   </extension>
 
 </plugin>
