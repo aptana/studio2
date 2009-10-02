@@ -36,22 +36,25 @@
 package com.aptana.ide.syncing.ui.navigator;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
+import org.eclipse.ui.progress.IElementCollector;
 
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
 
 /**
  * @author Max Stepanov
  *
  */
-public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter {
+public class SiteConnectionWorkbenchAdapter extends FileSystemWorkbenchAdapter {
 
 	private static SiteConnectionWorkbenchAdapter instance;
+	
 	private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
-
-	private static final Object[] EMPTY = new Object[0];
 	
 	/**
 	 * 
@@ -67,20 +70,15 @@ public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
-	 */
-	public Object[] getChildren(Object object) {
-		return EMPTY;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
 	 */
 	public ImageDescriptor getImageDescriptor(Object object) {
 		if (object instanceof ISiteConnection) {
 			return IMAGE_DESCRIPTOR;
+		} else if (object instanceof ProjectSiteConnection) {
+			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
 		}
-		return null;
+		return super.getImageDescriptor(object);
 	}
 
 	/* (non-Javadoc)
@@ -89,15 +87,21 @@ public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter {
 	public String getLabel(Object object) {
 		if (object instanceof ISiteConnection) {
 			return ((ISiteConnection) object).getName();
+		} else if (object instanceof ProjectSiteConnection) {
+			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
 		}
-		return String.valueOf(object);
+		return super.getLabel(object);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
+	 * @see com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter#fetchDeferredChildren(java.lang.Object, org.eclipse.ui.progress.IElementCollector, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public Object getParent(Object object) {
-		return null;
+	@Override
+	public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
+		if (object instanceof ProjectSiteConnection) {
+			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
+		}
+		super.fetchDeferredChildren(object, collector, monitor);
 	}
 
 	public static class Factory implements IAdapterFactory {
@@ -107,7 +111,8 @@ public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter {
 		 */
 		@SuppressWarnings("unchecked")
 		public Object getAdapter(Object adaptableObject, Class adapterType) {
-			if (IWorkbenchAdapter.class == adapterType) {
+			if (IWorkbenchAdapter.class == adapterType
+					|| IDeferredWorkbenchAdapter.class == adapterType) {
 				return getInstance();
 			}
 			return null;
@@ -118,7 +123,10 @@ public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter {
 		 */
 		@SuppressWarnings("unchecked")
 		public Class[] getAdapterList() {
-			return new Class[] { IWorkbenchAdapter.class };
+			return new Class[] {
+					IWorkbenchAdapter.class,
+					IDeferredWorkbenchAdapter.class
+				};
 		}
 		
 	}

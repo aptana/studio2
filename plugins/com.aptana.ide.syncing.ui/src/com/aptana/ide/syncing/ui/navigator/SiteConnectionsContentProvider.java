@@ -36,15 +36,15 @@ package com.aptana.ide.syncing.ui.navigator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.ui.model.WorkbenchContentProvider;
 
 import com.aptana.ide.syncing.core.ISiteConnectionManager;
 import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class SiteConnectionsContentProvider extends WorkbenchContentProvider {
+public class SiteConnectionsContentProvider extends FileTreeContentProvider {
 
     /* (non-Javadoc)
 	 * @see org.eclipse.ui.model.BaseWorkbenchContentProvider#getElements(java.lang.Object)

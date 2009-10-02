@@ -43,7 +43,6 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterFactory;
@@ -247,8 +246,6 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 						fetchFileSystemChildren((IFileStore) object, monitor),
 						monitor);
 				
-			} else {
-				Assert.isTrue(false);
 			}
 		} catch (CoreException e) {
 			IdeLog.logImportant(IOUIPlugin.getDefault(), "Fetch deferred children failed", e);
