@@ -25,19 +25,6 @@
                menubarPath="group.properties">
          </action>
          <action
-               class="com.aptana.ide.ui.io.actions.DisconnectAction"
-               icon="icons/full/etool16/disconnect.png"
-               id="com.aptana.ide.ui.io.actions.DisconnectAction"
-               label="%disconnectAction.label"
-               menubarPath="group.edit">
-         <enablement>
-            <objectState
-                  name="canDisconnect"
-                  value="true">
-            </objectState>
-         </enablement>
-         </action>
-         <action
                class="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
                enablesFor="+"
                icon="icons/full/etool16/delete.png"
@@ -119,6 +106,25 @@
          <visibility>
             <objectState
                   name="isLocal"
+                  value="true">
+            </objectState>
+         </visibility>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="com.aptana.ide.ui.io.disconnectableConnectionPointContribution"
+            objectClass="com.aptana.ide.core.io.IConnectionPoint">
+         <action
+               class="com.aptana.ide.ui.io.actions.DisconnectAction"
+               enablesFor="1"
+               icon="icons/full/etool16/disconnect.png"
+               id="com.aptana.ide.ui.io.actions.DisconnectAction"
+               label="%disconnectAction.label"
+               menubarPath="group.edit">
+         </action>
+         <visibility>
+            <objectState
+                  name="canDisconnect"
                   value="true">
             </objectState>
          </visibility>

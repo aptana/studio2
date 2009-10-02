@@ -1,14 +1,3 @@
-package com.aptana.ide.ui.io.actions;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.action.IAction;
-
-import com.aptana.ide.core.StringUtils;
-
 /**
  * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
@@ -43,6 +32,22 @@ import com.aptana.ide.core.StringUtils;
  * 
  * Any modifications to this file must keep this entire header intact.
  */
+package com.aptana.ide.ui.io.actions;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.navigator.CommonNavigator;
+import org.eclipse.ui.navigator.CommonViewer;
+
+import com.aptana.ide.core.StringUtils;
+
 
 /**
  * @author Max Stepanov
@@ -60,6 +65,14 @@ public class DisconnectAction extends ConnectionActionDelegate {
 		Job job = new Job(StringUtils.format("Disconnect {0}", connectionPoint.getName())) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				if (targetPart instanceof CommonNavigator) {
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							CommonViewer viewer = ((CommonNavigator) targetPart).getCommonViewer();
+							viewer.collapseToLevel(connectionPoint, AbstractTreeViewer.ALL_LEVELS);
+						}
+					});
+				}
 				if (connectionPoint.canDisconnect()) {
 					try {
 						connectionPoint.disconnect(monitor);
