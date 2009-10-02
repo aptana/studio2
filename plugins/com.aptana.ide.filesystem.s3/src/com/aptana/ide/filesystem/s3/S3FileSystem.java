@@ -40,6 +40,7 @@ public class S3FileSystem extends FileSystem
 			S3FileStore s3Store = (S3FileStore) root;
 			if (monitor != null && monitor.isCanceled())
 				return null;
+			// FIXME What about when s3Store is the absolute root (not in a bucket)?!
 			return new S3FileTree(root, s3Store.listEntries());
 		}
 		catch (MalformedURLException e)

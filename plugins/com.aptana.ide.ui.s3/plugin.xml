@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.ui.propertyDialogs">
+      <dialog
+            class="com.aptana.ide.ui.s3.S3ConnectionPropertyDialogProvider"
+            id="com.aptana.ide.ui.s3.dialogs.s3Connection"
+            objectClass="com.aptana.ide.filesystem.s3.S3ConnectionPoint">
+      </dialog>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="com.aptana.ide.ui.s3.s3CategoryContribution"
+            objectClass="com.aptana.ide.core.io.IConnectionPointCategory">
+         <action
+               class="com.aptana.ide.ui.s3.actions.NewS3ConnectionAction"
+               enablesFor="1"
+               icon="icons/full/etool16/s3.png"
+               id="com.aptana.ide.ui.s3.actions.newS3Connection"
+               label="%newS3ConnectionAction.label"
+               menubarPath="group.new">
+         </action>
+         <visibility>
+            <objectState
+                  name="isCategory"
+                  value="com.aptana.ide.filesystem.s3.s3Category">
+            </objectState>
+         </visibility>
+      </objectContribution>
+   </extension>
+</plugin>
