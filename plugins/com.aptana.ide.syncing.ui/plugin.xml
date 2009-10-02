@@ -631,6 +631,16 @@
                type="org.eclipse.ui.model.IWorkbenchAdapter">
          </adapter>
       </factory>
+      <factory
+            adaptableType="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection"
+            class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.progress.IDeferredWorkbenchAdapter">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>

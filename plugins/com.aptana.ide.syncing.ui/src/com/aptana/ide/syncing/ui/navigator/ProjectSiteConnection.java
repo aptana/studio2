@@ -35,19 +35,15 @@
 package com.aptana.ide.syncing.ui.navigator;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.progress.IElementCollector;
+import org.eclipse.core.runtime.PlatformObject;
 
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.syncing.core.ISiteConnection;
-import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ProjectSiteConnection extends FileSystemWorkbenchAdapter implements IAdaptable {
+public class ProjectSiteConnection extends PlatformObject {
 
     private IProject project;
     private ISiteConnection siteConnection;
@@ -61,24 +57,8 @@ public class ProjectSiteConnection extends FileSystemWorkbenchAdapter implements
         return project;
     }
 
-    public IConnectionPoint getDestination() {
-        return siteConnection.getDestination();
-    }
-
-    public Object[] getChildren(Object object) {
-        return super.getChildren(siteConnection.getDestination());
-    }
-
-    public ImageDescriptor getImageDescriptor(Object object) {
-        return super.getImageDescriptor(siteConnection.getDestination());
-    }
-
-    public String getLabel(Object object) {
-        return super.getLabel(siteConnection.getDestination());
-    }
-
-    public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
-        super.fetchDeferredChildren(siteConnection.getDestination(), collector, monitor);
+    public ISiteConnection getSiteConnection() {
+        return siteConnection;
     }
 
     @SuppressWarnings("unchecked")
@@ -90,6 +70,6 @@ public class ProjectSiteConnection extends FileSystemWorkbenchAdapter implements
         } else if (adapter == IConnectionPoint.class) {
             return siteConnection.getDestination();
         }
-        return siteConnection.getAdapter(adapter);
+        return super.getAdapter(adapter);
     }
 }
