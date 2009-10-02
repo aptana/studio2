@@ -312,8 +312,8 @@ public class PingStartup implements IStartup
 			output.close();
 			input.close();
 
-			String resultText = sb.toString();
-			System.out.println(resultText);
+//			String resultText = sb.toString();
+//			System.out.println(resultText);
 			
 			result = true;
 		}
@@ -382,12 +382,12 @@ public class PingStartup implements IStartup
 		addKeyPair(keyValues, "os_name", System.getProperty("os.name")); //$NON-NLS-1$ //$NON-NLS-2$
 		addKeyPair(keyValues, "os_version", System.getProperty("os.version")); //$NON-NLS-1$ //$NON-NLS-2$
 		addKeyPair(keyValues, LogEventTypes.STUDIO_KEY, MACAddress.getMACAddress());
-		
-		// add date/time stamp
-		EventLogger.getInstance().logEvent(LogEventTypes.DATE_TIME);
 
 		// add plugins
 		addFeatureList();
+		
+		// add date/time stamp
+		EventLogger.getInstance().logEvent(LogEventTypes.DATE_TIME);
 
 		// add any custom key/value pairs
 		EventInfo[] events = EventLogger.getInstance().getEvents();
@@ -410,7 +410,7 @@ public class PingStartup implements IStartup
 
 		// create POST query string
 		queryString = StringUtils.join("&", keyValues.toArray(new String[keyValues.size()])); //$NON-NLS-1$
-		System.out.println(queryString);
+//		System.out.println(queryString);
 
 		// send ping and clear log events based on the result
 		if (sendUpdate(preferences, queryString))
