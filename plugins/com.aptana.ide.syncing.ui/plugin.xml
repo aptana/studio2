@@ -21,9 +21,9 @@
             contentProvider="com.aptana.ide.syncing.ui.navigator.SiteConnectionsContentProvider"
             icon="icons/full/obj16/ftp.png"
             id="com.aptana.ide.syncing.ui.navigatorContent"
-            labelProvider="com.aptana.ide.ui.io.navigator.FileTreeLabelProvider"
-            name="%navigatorContent.site.name">
-            priority="low">
+            labelProvider="com.aptana.ide.syncing.ui.navigator.SitesLabelProvider"
+            name="%navigatorContent.site.name"
+            priority="lowest">
          <triggerPoints>
             <or>
                <instanceof
@@ -629,6 +629,16 @@
             class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
          <adapter
                type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection"
+            class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.progress.IDeferredWorkbenchAdapter">
          </adapter>
       </factory>
    </extension>

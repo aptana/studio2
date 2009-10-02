@@ -274,6 +274,8 @@ public class S3ConnectionPropertyDialog extends TitleAreaDialog implements IProp
 		{
 			return;
 		}
+		CoreIOPlugin.getAuthenticationManager().setPassword(accessKeyText.getText(),
+				passwordText.getText().toCharArray(), true);
 		if (savePropertiesTo(genericConnectionPoint))
 		{
 			/* TODO: notify */

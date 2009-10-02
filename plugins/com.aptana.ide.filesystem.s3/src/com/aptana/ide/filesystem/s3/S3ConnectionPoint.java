@@ -45,22 +45,27 @@ import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.epl.IMemento;
 import com.aptana.ide.core.io.ConnectionPoint;
 import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.IBaseRemoteConnectionPoint;
 
 /**
  * @author Max Stepanov
  * @author cwilliams
  */
-public class S3ConnectionPoint extends ConnectionPoint
+public class S3ConnectionPoint extends ConnectionPoint implements IBaseRemoteConnectionPoint
 {
+
+	private static final String DEFAULT_HOST = "s3.amazonaws.com";
 
 	public static final String TYPE = "s3"; //$NON-NLS-1$
 
+	private static final String ELEMENT_HOST = "host"; //$NON-NLS-1$
 	private static final String ELEMENT_PATH = "path"; //$NON-NLS-1$
 	private static final String ELEMENT_ACCESS_KEY = "accessKey"; //$NON-NLS-1$
 
 	private IPath path = Path.ROOT;
 	private String accessKey = StringUtils.EMPTY;
 	private char[] password;
+	private String host = DEFAULT_HOST;
 
 	/**
 	 * Default constructor
@@ -78,7 +83,13 @@ public class S3ConnectionPoint extends ConnectionPoint
 	protected void loadState(IMemento memento)
 	{
 		super.loadState(memento);
-		IMemento child = memento.getChild(ELEMENT_PATH);
+		IMemento child = memento.getChild(ELEMENT_HOST);
+		if (child != null)
+			host = child.getTextData();
+		else
+			host = DEFAULT_HOST;
+
+		child = memento.getChild(ELEMENT_PATH);
 		if (child != null)
 		{
 			if (child.getTextData() == null)
@@ -103,13 +114,14 @@ public class S3ConnectionPoint extends ConnectionPoint
 	protected void saveState(IMemento memento)
 	{
 		super.saveState(memento);
+		memento.createChild(ELEMENT_HOST).putTextData(getHost());
 		if (!Path.ROOT.equals(path))
 		{
 			memento.createChild(ELEMENT_PATH).putTextData(path.toPortableString());
 		}
-		if (accessKey.length() != 0)
+		if (getAccessKey().length() != 0)
 		{
-			memento.createChild(ELEMENT_ACCESS_KEY).putTextData(accessKey);
+			memento.createChild(ELEMENT_ACCESS_KEY).putTextData(getAccessKey());
 		}
 		CoreIOPlugin.getAuthenticationManager().setPassword(getAccessKey(), password, true);
 	}
@@ -123,6 +135,24 @@ public class S3ConnectionPoint extends ConnectionPoint
 	{
 		this.accessKey = accessKey;
 		notifyChanged();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IBaseRemoteConnectionPoint#getLogin()
+	 */
+	public String getLogin()
+	{
+		return getAccessKey();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IBaseRemoteConnectionPoint#setLogin(java.lang.String)
+	 */
+	public void setLogin(String login)
+	{
+		setAccessKey(login);
 	}
 
 	/*
@@ -168,7 +198,7 @@ public class S3ConnectionPoint extends ConnectionPoint
 	{
 		try
 		{
-			return new URI("s3", (getAccessKey() + ":" + new String(getOrPromptForPassword())), "s3.amazonaws.com", -1,
+			return new URI("s3", (getAccessKey() + ":" + new String(getOrPromptForPassword())), getHost(), getPort(),
 					getPath().toString(), (String) null, (String) null);
 		}
 		catch (URISyntaxException e)
@@ -186,6 +216,43 @@ public class S3ConnectionPoint extends ConnectionPoint
 		setPassword(CoreIOPlugin.getAuthenticationManager().promptPassword(getAccessKey(), getAccessKey(),
 				"Gimme yer Secret Access Key!", "I wants it now!"));
 		return getPassword();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IBaseRemoteConnectionPoint#getHost()
+	 */
+	public String getHost()
+	{
+		return host;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IBaseRemoteConnectionPoint#getPort()
+	 */
+	public int getPort()
+	{
+		return -1;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IBaseRemoteConnectionPoint#setHost(java.lang.String)
+	 */
+	public void setHost(String host)
+	{
+		this.host = host;
+		notifyChanged();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IBaseRemoteConnectionPoint#setPort(int)
+	 */
+	public void setPort(int port)
+	{
+		// do nothing, no port
 	}
 
 }

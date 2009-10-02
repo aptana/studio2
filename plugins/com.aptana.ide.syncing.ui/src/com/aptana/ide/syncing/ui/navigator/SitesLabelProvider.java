@@ -32,44 +32,15 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
+
 package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.PlatformObject;
-
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.ui.io.navigator.FileTreeLabelProvider;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Max Stepanov
+ *
  */
-public class ProjectSiteConnection extends PlatformObject {
+public class SitesLabelProvider extends FileTreeLabelProvider {
 
-    private IProject project;
-    private ISiteConnection siteConnection;
-
-    public ProjectSiteConnection(IProject project, ISiteConnection siteConnection) {
-        this.project = project;
-        this.siteConnection = siteConnection;
-    }
-
-    public IProject getProject() {
-        return project;
-    }
-
-    public ISiteConnection getSiteConnection() {
-        return siteConnection;
-    }
-
-    @SuppressWarnings("unchecked")
-	public Object getAdapter(Class adapter) {
-        if (adapter == IProject.class) {
-            return project;
-        } else if (adapter == ISiteConnection.class) {
-        	return siteConnection;
-        } else if (adapter == IConnectionPoint.class) {
-            return siteConnection.getDestination();
-        }
-        return super.getAdapter(adapter);
-    }
 }

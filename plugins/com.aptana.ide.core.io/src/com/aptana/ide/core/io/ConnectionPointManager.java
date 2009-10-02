@@ -47,9 +47,11 @@ import java.util.UUID;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.core.runtime.Status;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.epl.IMemento;
@@ -141,8 +143,10 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 	public void saveState(IPath path) {
 		XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
 		for (ConnectionPoint connectionPoint : connections) {
-			IMemento child = memento.createChild(ELEMENT_CONNECTION);
-			child.putMemento(storeConnectionPoint(connectionPoint));
+			if (connectionPoint.isPersistent()) {
+				IMemento child = memento.createChild(ELEMENT_CONNECTION);
+				child.putMemento(storeConnectionPoint(connectionPoint));
+			}
 		}
 		for (IMemento child : unresolvedConnections) {
 			memento.copyChild(child);
@@ -221,7 +225,13 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 		if (!(connectionPoint instanceof ConnectionPoint)) {
 			throw new IllegalArgumentException();
 		}
-		ConnectionPoint clonedConnectionPoint = restoreConnectionPoint(storeConnectionPoint((ConnectionPoint) connectionPoint));
+		IMemento memento;
+		try {
+			memento = storeConnectionPoint((ConnectionPoint) connectionPoint);
+		} catch (Exception e) {
+			throw new CoreException(new Status(IStatus.ERROR, CoreIOPlugin.PLUGIN_ID, "Store connection properties failed", e));
+		}
+		ConnectionPoint clonedConnectionPoint = restoreConnectionPoint(memento);
 		clonedConnectionPoint.setId(UUID.randomUUID().toString());
 		return clonedConnectionPoint;
 	}
