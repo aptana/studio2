@@ -231,8 +231,7 @@
             id="com.aptana.ide.ui.io.navigatorContent"
             labelProvider="com.aptana.ide.ui.io.navigator.FileTreeLabelProvider"
             name="Navigator Content"
-            priority="high"
-            providesSaveables="true">
+            priority="high">
          <enablement>
             <or>
                <instanceof

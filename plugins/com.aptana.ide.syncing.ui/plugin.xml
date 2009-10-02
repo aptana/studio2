@@ -22,8 +22,8 @@
             icon="icons/full/obj16/ftp.png"
             id="com.aptana.ide.syncing.ui.navigatorContent"
             labelProvider="com.aptana.ide.syncing.ui.navigator.SitesLabelProvider"
-            name="%navigatorContent.site.name">
-            priority="low">
+            name="%navigatorContent.site.name"
+            priority="lowest">
          <triggerPoints>
             <or>
                <instanceof
