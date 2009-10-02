@@ -599,8 +599,8 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			// Apply the folding background and forground colors
 			setFoldingColors(colorizer);
 
-			// Removing caret support on mac since it causes lag
-			if (!Platform.getOS().equals(Platform.OS_MACOSX))
+			// Removing caret support on Carbon since it causes lag
+			if (!Platform.getWS().equals(Platform.WS_CARBON))
 			{
 				if (this.getViewer().getTextWidget() != null)
 				{

@@ -25,19 +25,6 @@
                menubarPath="group.properties">
          </action>
          <action
-               class="com.aptana.ide.ui.io.actions.DisconnectAction"
-               icon="icons/full/etool16/disconnect.png"
-               id="com.aptana.ide.ui.io.actions.DisconnectAction"
-               label="%disconnectAction.label"
-               menubarPath="group.edit">
-         <enablement>
-            <objectState
-                  name="canDisconnect"
-                  value="true">
-            </objectState>
-         </enablement>
-         </action>
-         <action
                class="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
                enablesFor="+"
                icon="icons/full/etool16/delete.png"
@@ -123,13 +110,32 @@
             </objectState>
          </visibility>
       </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="com.aptana.ide.ui.io.disconnectableConnectionPointContribution"
+            objectClass="com.aptana.ide.core.io.IConnectionPoint">
+         <action
+               class="com.aptana.ide.ui.io.actions.DisconnectAction"
+               enablesFor="1"
+               icon="icons/full/etool16/disconnect.png"
+               id="com.aptana.ide.ui.io.actions.DisconnectAction"
+               label="%disconnectAction.label"
+               menubarPath="group.edit">
+         </action>
+         <visibility>
+            <objectState
+                  name="canDisconnect"
+                  value="true">
+            </objectState>
+         </visibility>
+      </objectContribution>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
             category="com.aptana.ide.js.ui"
-            class="org.eclipse.ui.navigator.CommonNavigator"
+            class="com.aptana.ide.ui.io.navigator.FileNavigatorView"
             icon="icons/full/eview16/file_explorer.png"
             id="com.aptana.ide.ui.io.fileExplorerView"
             name="%fileExplorerView.name">
@@ -231,8 +237,7 @@
             id="com.aptana.ide.ui.io.navigatorContent"
             labelProvider="com.aptana.ide.ui.io.navigator.FileTreeLabelProvider"
             name="Navigator Content"
-            priority="high"
-            providesSaveables="true">
+            priority="high">
          <enablement>
             <or>
                <instanceof
@@ -756,6 +761,23 @@
       <initializer
             class="com.aptana.ide.ui.io.preferences.PreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.themes">
+      <colorDefinition
+            categoryId="com.aptana.ide.core.ui.apearance"
+            colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
+            id="com.aptana.ide.ui.io.background.color.fileView"
+            isEditable="true"
+            label="%filesViewBackroundColor.name">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="com.aptana.ide.core.ui.apearance"
+            colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
+            id="com.aptana.ide.ui.io.foreground.color.fileView"
+            isEditable="true"
+            label="%filesViewforeroundColor.name">
+      </colorDefinition>
    </extension>
 
 </plugin>

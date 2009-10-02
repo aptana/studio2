@@ -64,9 +64,4 @@ public final class Messages extends NLS
 	 * PasswordDialog_RememberOnlyThisSession
 	 */
 	public static String PasswordDialog_RememberOnlyThisSession;
-
-	/**
-	 * IODiagnosticLog_MacAddress
-	 */
-	public static String IODiagnosticLog_MacAddress;
 }

@@ -34,6 +34,9 @@
  */
 package com.aptana.ide.syncing.ui.preferences;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public interface IPreferenceConstants {
 
     /**
@@ -51,4 +54,15 @@ public interface IPreferenceConstants {
      * completed
      */
     public static final String IGNORE_DIALOG_FILE_DOWNLOAD = "IGNORE_DIALOG_FILE_DOWNLOAD"; //$NON-NLS-1$
+
+    /**
+     * Stores the initial path the sync export/import wizard should use
+     */
+    public static final String EXPORT_INITIAL_PATH = "EXPORT_INITIAL_PATH"; //$NON-NLS-1$
+
+    /**
+     * Preference for the default behavior of overwriting the file when
+     * exporting the sync settings
+     */
+    public static final String EXPORT_OVEWRITE_FILE_WITHOUT_WARNING = "OVEWRITE_FILE_WITHOUT_WARNING"; //$NON-NLS-1$
 }

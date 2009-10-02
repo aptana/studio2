@@ -41,8 +41,6 @@ public class Messages extends NLS
 
 	private static final String BUNDLE_NAME = "com.aptana.ide.server.jetty.portal.messages"; //$NON-NLS-1$
 
-	public static String CloudPlugin_ERR_GetExtensions;
-
     /**
 	 * PortalDiagnosticLog_PORTAL_JAR_LOCATION
 	 */

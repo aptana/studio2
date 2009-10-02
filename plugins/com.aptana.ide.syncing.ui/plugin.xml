@@ -21,9 +21,9 @@
             contentProvider="com.aptana.ide.syncing.ui.navigator.SiteConnectionsContentProvider"
             icon="icons/full/obj16/ftp.png"
             id="com.aptana.ide.syncing.ui.navigatorContent"
-            labelProvider="com.aptana.ide.ui.io.navigator.FileTreeLabelProvider"
-            name="%navigatorContent.site.name">
-            priority="low">
+            labelProvider="com.aptana.ide.syncing.ui.navigator.SitesLabelProvider"
+            name="%navigatorContent.site.name"
+            priority="lowest">
          <triggerPoints>
             <or>
                <instanceof
@@ -631,6 +631,46 @@
                type="org.eclipse.ui.model.IWorkbenchAdapter">
          </adapter>
       </factory>
+      <factory
+            adaptableType="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection"
+            class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.progress.IDeferredWorkbenchAdapter">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <wizard
+            category="com.aptana.ide.aptana"
+            class="com.aptana.ide.syncing.ui.wizards.SyncImportWizard"
+            icon="icons/full/obj16/sync_connection.gif"
+            id="com.aptana.ide.syncing.ui.wizards.import"
+            name="%SyncingWizard.name">
+         <description>
+            Imports the synchronization settings from a file.
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <category
+            id="com.aptana.ide.ui.exportWizards.category"
+            name="%ImportExportWizards.Category.Aptana">
+      </category>
+      <wizard
+            category="com.aptana.ide.ui.exportWizards.category"
+            class="com.aptana.ide.syncing.ui.wizards.SyncExportWizard"
+            icon="icons/full/obj16/sync_connection.gif"
+            id="com.aptana.ide.syncing.ui.wizards.export"
+            name="%SyncingWizard.name">
+         <description>
+            Exports the synchronization settings to a file.
+         </description>
+      </wizard>
    </extension>
 
 </plugin>

@@ -39,9 +39,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Shell;
 
-import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.syncing.core.ISiteConnection;
-import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection;
@@ -71,7 +69,7 @@ public class DoubleClickAction extends BaseDoubleClickAction {
             // double-clicked on a site inside a project; both expands the node
             // and opens the FTP Manager view
             super.run();
-            EditorUtils.openConnectionEditor(findSite((ProjectSiteConnection) element));
+            EditorUtils.openConnectionEditor(((ProjectSiteConnection) element).getSiteConnection());
         } else {
             if (selectionHasChildren()) {
                 super.run();
@@ -91,17 +89,5 @@ public class DoubleClickAction extends BaseDoubleClickAction {
         SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fShell);
         dlg.setCreateNew("New Connection", source, null);
         dlg.open();
-    }
-
-    private static ISiteConnection findSite(ProjectSiteConnection connection) {
-    	ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(
-    			connection.getProject(), true);
-        IConnectionPoint target = connection.getDestination();
-        for (ISiteConnection site : sites) {
-            if (site.getDestination() == target) {
-                return site;
-            }
-        }
-        return null;
     }
 }

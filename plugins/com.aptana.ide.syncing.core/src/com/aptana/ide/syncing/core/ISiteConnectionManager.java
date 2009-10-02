@@ -36,9 +36,9 @@
 package com.aptana.ide.syncing.core;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 
 import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
-
 
 /**
  * @author Max Stepanov
@@ -57,4 +57,6 @@ public interface ISiteConnectionManager {
 	public void addListener(ISiteConnectionListener listener);
 	public void removeListener(ISiteConnectionListener listener);
 
+	public void loadState(IPath path);
+	public void saveState(IPath path);
 }

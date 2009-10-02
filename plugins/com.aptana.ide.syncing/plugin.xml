@@ -14,38 +14,6 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer class="com.aptana.ide.syncing.preferences.PreferenceInitializer"/>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            allowMultiple="false"
-            category="com.aptana.ide.js.ui"
-            class="com.aptana.ide.syncing.views.SyncView"
-            icon="icons/sync.gif"
-            id="com.aptana.ide.syncing.SyncView"
-            name="%SyncManager.name"/>
-      <view
-            allowMultiple="false"
-            category="com.aptana.ide.js.ui"
-            class="com.aptana.ide.syncing.views.SyncManagerView"
-            icon="icons/sync_explorer.png"
-            id="com.aptana.ide.syncing.views.SyncManagerView"
-            name="%SyncExplorer.name"/>
-   </extension>
-   <extension
-         point="org.eclipse.ui.viewActions">
-      <viewContribution
-            id="SyncViewActions"
-            targetID="com.aptana.ide.syncing.SyncView">
-         <action
-               class="com.aptana.ide.core.ui.actions.HelpAction"
-               icon="icons/help.png"
-               id="com.aptana.ide.syncing.sync_view_context"
-               label="%Action.ShowHelp.name"
-               style="push"
-               toolbarPath="additions"
-               tooltip="%Action.ShowHelp.tooltip"/>     
-   		</viewContribution>
-   </extension>    
    
     <extension
           point="org.eclipse.core.expressions.propertyTesters">
@@ -58,92 +26,6 @@
          </propertyTester>
     </extension>
     
-	<extension point="org.eclipse.ui.viewActions"> 
-		<viewContribution 
-		      id="com.aptana.ide.syncing.project.viewContribution" 
-		   targetID="com.aptana.ide.core.ui.AptanaNavigator">
-		   <action
-		         id="com.aptana.ide.syncing.ProjectDownloadAction" 
-		         label="%Action.Download.name" 
-		         icon="icons/get.gif"
-		         tooltip="%Action.Download.View.tooltip"
-		      	 toolbarPath="additions"
-		         class="com.aptana.ide.syncing.ProjectDownloadAction"
-		         enablesFor="*">
-		      	 <selection
-		            class="org.eclipse.core.resources.IResource">
-		         </selection>
-		      </action> 
-		   <action
-		         id="com.aptana.ide.syncing.ProjectUploadAction" 
-		         label="%Action.Upload.name" 
-		         icon="icons/put.gif"
-		         tooltip="%Action.Upload.View.tooltip"
-		         toolbarPath="additions"
-		         class="com.aptana.ide.syncing.ProjectUploadAction"
-		         enablesFor="*">
-		      	 <selection
-		            class="org.eclipse.core.resources.IResource">
-		         </selection>
-		      </action>
-     <action
-           class="com.aptana.ide.syncing.ProjectSynchronizeAction"
-           enablesFor="*"
-           icon="icons/direction_both.gif"
-           id="com.aptana.ide.syncing.ProjectSynchronizeAction"
-           label="%Action.SmartSync.name"
-           toolbarPath="additions"
-           tooltip="%Action.SmartSync.View.tooltip">
-        <selection
-              class="org.eclipse.core.resources.IResource">
-        </selection>
-     </action> 
-		   </viewContribution> 
-		<viewContribution 
-		      id="com.aptana.ide.syncing.file.viewContribution" 
-		   targetID="com.aptana.ide.js.ui.views.FileExplorerView">
-		   <action
-		         id="com.aptana.ide.syncing.FileDownloadAction" 
-		         label="%Action.Download.name" 
-		         icon="icons/get.gif"
-		         tooltip="%Action.Download.View.tooltip"
-		      	 toolbarPath="additions"
-		         class="com.aptana.ide.syncing.FileDownloadAction"
-		         enablesFor="*">
-		      	 <selection
-		            class="com.aptana.ide.core.ui.io.file.LocalFile">
-		         </selection>
-		      </action> 
-		   <action
-		         id="com.aptana.ide.syncing.FileUploadAction" 
-		         label="%Action.Upload.name" 
-		         icon="icons/put.gif"
-		         tooltip="%Action.Upload.View.tooltip"
-		         toolbarPath="additions"
-		         class="com.aptana.ide.syncing.FileUploadAction"
-		         enablesFor="*">
-		      	 <selection
-		            class="com.aptana.ide.core.ui.io.file.LocalFile">
-		         </selection>
-		      </action>
-     <action
-           class="com.aptana.ide.syncing.FileSynchronizeAction"
-           enablesFor="*"
-           icon="icons/direction_both.gif"
-           id="com.aptana.ide.syncing.FileSynchronizeAction"
-           label="%Action.SmartSync.name"
-           toolbarPath="additions"
-           tooltip="%Action.SmartSync.View.tooltip">
-        <selection
-              class="com.aptana.ide.core.ui.io.file.LocalFile">
-        </selection>
-     </action> 
-		   </viewContribution> 
-		   
-		</extension>
-	   <extension point="org.eclipse.help.contexts"> 
-			<contexts file="contexts.xml" /> 
-	   </extension>
     <extension
           point="org.eclipse.ui.contexts">
        <context
@@ -152,45 +34,6 @@
              name="%Context.Sync.name">
        </context>
     </extension>		   
-    <extension
-             point="org.eclipse.ui.themes">          
-          <colorDefinition
-                categoryId="com.aptana.ide.core.ui.apearance"
-                colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
-                id="com.aptana.ide.core.ui.background.color.syncingView"
-                isEditable="true"
-                label="%syncingView.bcolor.name"/>
-		  <colorDefinition
-                categoryId="com.aptana.ide.core.ui.apearance"
-                colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
-                id="com.aptana.ide.core.ui.foreground.color.syncingView"
-                isEditable="true"
-                label="%syncingView.fcolor.name"/>                               
-   </extension>
-   <extension
-          point="org.eclipse.ui.exportWizards">
-      <category
-            name="%ImportExportWizards.Category.Aptana"
-            id="com.aptana.ide.importexport">
-      </category>
-       <wizard
-             category="com.aptana.ide.importexport"
-             class="com.aptana.ide.syncing.wizards.SyncExportWizard"
-             icon="icons/sync_connection.gif"
-             id="com.aptana.ide.syncing.wizard1"
-             name="%SyncingWizard">             
-       </wizard>
-    </extension>
-    <extension
-          point="org.eclipse.ui.importWizards">
-       <wizard
-             category="com.aptana.ide.aptana"
-             class="com.aptana.ide.syncing.wizards.SyncImportWizard"
-             icon="icons/sync_connection.gif"
-             id="com.aptana.ide.syncing.wizard2"
-             name="%SyncingWizard">             
-       </wizard>   
-    </extension>
     <extension
           point="org.eclipse.ui.newWizards">
        <wizard
@@ -208,7 +51,4 @@
           </description>
        </wizard>
     </extension>
-   
-	  
-   
 </plugin>

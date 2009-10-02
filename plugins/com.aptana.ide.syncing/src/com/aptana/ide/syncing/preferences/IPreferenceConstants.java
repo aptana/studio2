@@ -56,11 +56,6 @@ public interface IPreferenceConstants
 	String IGNORE_DIALOG_FILE_SYNC_PROMPT = "com.aptana.ide.syncing.IGNORE_DIALOG_FILE_SYNC_PROMPT"; //$NON-NLS-1$
 
 	/**
-	 * EXPORT_OVEWRITE_FILES_WITHOUT_WARNING
-	 */
-	String EXPORT_OVEWRITE_FILES_WITHOUT_WARNING = "com.aptana.ide.syncing.OVEWRITE_FILES_WITHOUT_WARNING"; //$NON-NLS-1$
-
-	/**
 	 * SHOW_SYNC_EXPLORER_TABLE
 	 */
 	String SHOW_SYNC_EXPLORER_TABLE = "com.aptana.ide.syncing.SHOW_SYNC_EXPLORER_TABLE"; //$NON-NLS-1$
@@ -74,11 +69,6 @@ public interface IPreferenceConstants
 	 * SHOW_SIZE
 	 */
 	String SHOW_SIZE = "com.aptana.ide.syncing.SHOW_SIZE"; //$NON-NLS-1$
-
-	/**
-	 * EXPORT_INITIAL_PATH
-	 */
-	String EXPORT_INITIAL_PATH = "com.aptana.ide.syncing.EXPORT_INITIAL_PATH"; //$NON-NLS-1$
 
     /**
      * VIEW_MODE

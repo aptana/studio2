@@ -2,7 +2,7 @@
 <?NLS TYPE="org.eclipse.help.contexts"?>
 <contexts>
 	<context id="file_view_context">
-		<description>The File View gives you access to the entire file system on your local hard drive.</description>
+		<description>The File View gives access to the workspace projects, entire file system on your local hard drive, and remote sites user defined.</description>
 		<topic
 			href="/com.aptana.ide.documentation/html/gettingstarted/Displaying_the_File_View.html"
 			label="Displaying the File View" />

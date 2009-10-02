@@ -528,7 +528,7 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
 		}
 		
 		private void setTarget(IConnectionPoint connectionPoint) {
-            isDefault = (source == DefaultSiteConnection.getInstance() && connectionPoint == null);
+            isDefault = (source == DefaultSiteConnection.getInstance() && connectionPoint == source.getDestination());
             mainComp.setVisible(!isDefault);
             ((GridData) mainComp.getLayoutData()).exclude = isDefault;
             defaultDescriptionLabel.setVisible(isDefault);

@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -32,54 +32,15 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.wizards;
 
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.IImportWizard;
-import org.eclipse.ui.IWorkbench;
+package com.aptana.ide.syncing.ui.navigator;
+
+import com.aptana.ide.ui.io.navigator.FileTreeLabelProvider;
 
 /**
- * @author Pavel Petrochenko
- * 
+ * @author Max Stepanov
+ *
  */
-public class SyncImportWizard extends Wizard implements IImportWizard
-{
+public class SitesLabelProvider extends FileTreeLabelProvider {
 
-	/**
-	 * SyncImportWizard
-	 */
-	public SyncImportWizard()
-	{
-
-	}
-
-	/**
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
-	 */
-	@Override
-	public void addPages()
-	{
-		addPage(new SyncImportPage("import")); //$NON-NLS-1$
-		super.addPages();
-	}
-
-	/**
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	public boolean performFinish()
-	{
-		SyncImportPage pa = (SyncImportPage) getPage("import"); //$NON-NLS-1$		
-		return pa.performFinish();
-	}
-
-	/**
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-	 *      org.eclipse.jface.viewers.IStructuredSelection)
-	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection)
-	{
-
-	}
 }

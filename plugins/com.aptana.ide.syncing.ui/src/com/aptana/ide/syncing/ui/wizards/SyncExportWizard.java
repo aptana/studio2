@@ -32,44 +32,42 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.navigator;
+package com.aptana.ide.syncing.ui.wizards;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.PlatformObject;
-
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.core.ISiteConnection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.IExportWizard;
+import org.eclipse.ui.IWorkbench;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Pavel Petrochenko
  */
-public class ProjectSiteConnection extends PlatformObject {
+public class SyncExportWizard extends Wizard implements IExportWizard {
 
-    private IProject project;
-    private ISiteConnection siteConnection;
+    private SyncExportPage fPage;
 
-    public ProjectSiteConnection(IProject project, ISiteConnection siteConnection) {
-        this.project = project;
-        this.siteConnection = siteConnection;
+    public SyncExportWizard() {
     }
 
-    public IProject getProject() {
-        return project;
+    /**
+     * @see org.eclipse.jface.wizard.Wizard#addPages()
+     */
+    @Override
+    public void addPages() {
+        addPage(fPage = new SyncExportPage());
     }
 
-    public ISiteConnection getSiteConnection() {
-        return siteConnection;
+    /**
+     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+     */
+    public boolean performFinish() {
+        return fPage.performFinish();
     }
 
-    @SuppressWarnings("unchecked")
-	public Object getAdapter(Class adapter) {
-        if (adapter == IProject.class) {
-            return project;
-        } else if (adapter == ISiteConnection.class) {
-        	return siteConnection;
-        } else if (adapter == IConnectionPoint.class) {
-            return siteConnection.getDestination();
-        }
-        return super.getAdapter(adapter);
+    /**
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+     *      org.eclipse.jface.viewers.IStructuredSelection)
+     */
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
     }
 }
