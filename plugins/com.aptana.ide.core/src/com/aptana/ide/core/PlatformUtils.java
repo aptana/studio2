@@ -97,7 +97,7 @@ public final class PlatformUtils
 	/**
 	 * HOME_DIRECTORY
 	 */
-	public static final String HOME_DIRECTORY = "%USERPROFILE%"; //$NON-NLS-1$	
+	public static final String HOME_DIRECTORY = Platform.OS_WIN32.equals(Platform.getOS()) ? "%USERPROFILE%" : "~"; //$NON-NLS-1$	
 	
 	private PlatformUtils()
 	{
