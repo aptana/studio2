@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -17,7 +17,7 @@
  * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  * 
  * Aptana provides a special exception to allow redistribution of this file
- * with certain other free and open source software ("FOSS") code and certain additional terms
+ * with certain Eclipse Public Licensed code and certain additional terms
  * pursuant to Section 7 of the GPL. You may view the exception and these
  * terms on the web at http://www.aptana.com/legal/gpl/.
  * 
@@ -32,40 +32,22 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.ui.views.fileexplorer;
+package com.aptana.ide.core.ui;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import com.aptana.ide.core.ui.IDiagnosticLog;
+import com.eaio.uuid.MACAddress;
 
 /**
- * WorkbenchMessages
+ * @author Michael Xia (mxia@aptana.com)
  */
-public final class WorkbenchMessages
-{
-	private static final String BUNDLE_NAME = "com.aptana.ide.core.ui.views.fileexplorer.messages"; //$NON-NLS-1$
+public class IODiagnosticLog implements IDiagnosticLog {
 
-	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+    public String getLog() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(Messages.IODiagnosticLog_MacAddress);
+        sb.append(MACAddress.getMACAddress());
+        sb.append("\n"); //$NON-NLS-1$
 
-	private WorkbenchMessages()
-	{
-	}
-
-	/**
-	 * getString
-	 *
-	 * @param key
-	 * @return String
-	 */
-	public static String getString(String key)
-	{
-		// TODO Auto-generated method stub
-		try
-		{
-			return RESOURCE_BUNDLE.getString(key);
-		}
-		catch (MissingResourceException e)
-		{
-			return '!' + key + '!';
-		}
-	}
+        return sb.toString();
+    }
 }

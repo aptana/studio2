@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -32,56 +32,22 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.wizards;
+package com.aptana.ide.ui.io.navigator;
 
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.IExportWizard;
-import org.eclipse.ui.IWorkbench;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.navigator.CommonNavigator;
 
-/**
- * 
- * @author Pavel Petrochenko
- * 
- */
-public class SyncExportWizard extends Wizard implements IExportWizard
-{
+import com.aptana.ide.core.ui.PreferenceUtils;
 
-	/**
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
-	 */
-	@Override
-	public void addPages()
-	{
-		addPage(new SyncExportPage("export")); //$NON-NLS-1$
-		super.addPages();
-	}
+public class FileNavigatorView extends CommonNavigator {
 
-	/**
-	 * 
-	 */
-	public SyncExportWizard()
-	{
-	}
+    @Override
+    public void createPartControl(Composite aParent) {
+        super.createPartControl(aParent);
 
-	/**
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	public boolean performFinish()
-	{
-		SyncExportPage pa = (SyncExportPage) getPage("export"); //$NON-NLS-1$
-
-		return pa.performFinish();
-	}
-
-	/**
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-	 *      org.eclipse.jface.viewers.IStructuredSelection)
-	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection)
-	{
-
-	}
-
+        PreferenceUtils.registerBackgroundColorPreference(getCommonViewer().getControl(),
+                "com.aptana.ide.ui.io.background.color.fileView"); //$NON-NLS-1$
+        PreferenceUtils.registerForegroundColorPreference(getCommonViewer().getControl(),
+                "com.aptana.ide.ui.io.foreground.color.fileView"); //$NON-NLS-1$
+    }
 }

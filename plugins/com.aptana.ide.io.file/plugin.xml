@@ -36,20 +36,6 @@
 		           style="push"
 		           tooltip="%Action.duplicate.tooltip"/>
 		  </objectContribution>
-    <objectContribution
-          adaptable="false"
-          id="com.aptana.ide.io.file.fileObjectContribution"
-          objectClass="com.aptana.ide.core.ui.io.file.LocalFile">
-       <action
-             class="com.aptana.ide.core.ui.views.fileexplorer.PromoteToProjectAction"
-             icon="icons/folder_project.gif"
-             id="com.aptana.ide.core.ui.views.fileexplorer.PromoteToProjectAction"
-             label="%action.label.PromoteToProject"
-             menubarPath="group.project"
-             style="push"
-             tooltip="%action.tooltip.PromoteToProject">
-       </action>
-    </objectContribution>
 	</extension>
     <extension
          id="virtualFileDrop"
@@ -81,29 +67,4 @@
       </protocol>
    </extension>
    
-   <extension point="org.eclipse.help.contexts"> 
-		<contexts file="contexts.xml" /> 
-   </extension>
-   <extension
-             point="org.eclipse.ui.themes">                    
-          <colorDefinition
-                categoryId="com.aptana.ide.core.ui.apearance"
-                colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
-                id="com.aptana.ide.core.ui.background.color.filesView"
-                isEditable="true"
-                label="%filesViewBackroundColor.name"/>
-			<colorDefinition
-                categoryId="com.aptana.ide.core.ui.apearance"
-                colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
-                id="com.aptana.ide.core.ui.foreground.color.filesView"
-                isEditable="true"
-                label="%filesViewforeroundColor.name"/>                                   
-    </extension>
-   <extension
-         point="com.aptana.ide.core.ui.diagnosis">
-      <diagnosis
-            class="com.aptana.ide.core.ui.io.IODiagnosticLog"
-            ordinal="1050">
-      </diagnosis>
-   </extension>	   
 </plugin>

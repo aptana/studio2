@@ -117,6 +117,8 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 	public void loadState(IPath path) {
 		File file = path.toFile();
 		if (file.exists()) {
+		    connections.clear();
+		    unresolvedConnections.clear();
 			try {
 				FileReader reader = new FileReader(file);
 				XMLMemento memento = XMLMemento.createReadRoot(reader);

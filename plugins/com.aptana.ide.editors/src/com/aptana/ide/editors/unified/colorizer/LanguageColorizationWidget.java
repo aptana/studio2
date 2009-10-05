@@ -958,8 +958,8 @@ public class LanguageColorizationWidget
 
 		});
 
-		// Hide caret color option on Mac OS X since it causes cursor lag
-		if (Platform.getOS().equals(Platform.OS_MACOSX))
+		// Hide caret color option on Mac OS X Carbon since it causes cursor lag
+		if (Platform.getWS().equals(Platform.WS_CARBON))
 		{
 			cComp.setVisible(false);
 		}

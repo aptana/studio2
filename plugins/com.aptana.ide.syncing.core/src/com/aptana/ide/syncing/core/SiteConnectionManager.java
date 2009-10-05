@@ -89,6 +89,7 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 	public void loadState(IPath path) {
 		File file = path.toFile();
 		if (file.exists()) {
+		    connections.clear();
 			try {
 				FileReader reader = new FileReader(file);
 				XMLMemento memento = XMLMemento.createReadRoot(reader);

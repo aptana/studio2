@@ -32,37 +32,42 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.preferences;
+package com.aptana.ide.syncing.ui.wizards;
+
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.IExportWizard;
+import org.eclipse.ui.IWorkbench;
 
 /**
- * @author Michael Xia (mxia@aptana.com)
+ * @author Pavel Petrochenko
  */
-public interface IPreferenceConstants {
+public class SyncExportWizard extends Wizard implements IExportWizard {
+
+    private SyncExportPage fPage;
+
+    public SyncExportWizard() {
+    }
 
     /**
-     * Preference for which files to cloak by default during syncing operations
+     * @see org.eclipse.jface.wizard.Wizard#addPages()
      */
-    public static final String GLOBAL_CLOAKING_EXTENSIONS = "GLOBAL_CLOAKING_EXTENSIONS"; //$NON-NLS-1$
+    @Override
+    public void addPages() {
+        addPage(fPage = new SyncExportPage());
+    }
 
     /**
-     * Preference to not show the confirmation dialog after upload is completed
+     * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
-    public static final String IGNORE_DIALOG_FILE_UPLOAD = "IGNORE_DIALOG_FILE_UPLOAD"; //$NON-NLS-1$
+    public boolean performFinish() {
+        return fPage.performFinish();
+    }
 
     /**
-     * Preference to not show the confirmation dialog after download is
-     * completed
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+     *      org.eclipse.jface.viewers.IStructuredSelection)
      */
-    public static final String IGNORE_DIALOG_FILE_DOWNLOAD = "IGNORE_DIALOG_FILE_DOWNLOAD"; //$NON-NLS-1$
-
-    /**
-     * Stores the initial path the sync export/import wizard should use
-     */
-    public static final String EXPORT_INITIAL_PATH = "EXPORT_INITIAL_PATH"; //$NON-NLS-1$
-
-    /**
-     * Preference for the default behavior of overwriting the file when
-     * exporting the sync settings
-     */
-    public static final String EXPORT_OVEWRITE_FILE_WITHOUT_WARNING = "OVEWRITE_FILE_WITHOUT_WARNING"; //$NON-NLS-1$
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+    }
 }

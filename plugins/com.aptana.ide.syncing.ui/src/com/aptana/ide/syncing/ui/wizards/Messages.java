@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.wizards;
+package com.aptana.ide.syncing.ui.wizards;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -41,7 +41,72 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.wizards.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.wizards.messages"; //$NON-NLS-1$
+
+    /**
+     * SyncExportPage_Confirm_Overwrite
+     */
+    public static String SyncExportPage_Confirm_Overwrite;
+    /**
+     * SyncExportPage_DESCRIPTION
+     */
+    public static String SyncExportPage_DESCRIPTION;
+    /**
+     * SyncExportPage_Error
+     */
+    public static String SyncExportPage_Error;
+    /**
+     * SyncExportPage_NO_WARNING
+     */
+    public static String SyncExportPage_NO_WARNING;
+    /**
+     * SyncExportPage_NOT_WRITABLE
+     */
+    public static String SyncExportPage_NOT_WRITABLE;
+    /**
+     * SyncExportPage_Overwrite
+     */
+    public static String SyncExportPage_OPTIONS;
+    /**
+     * SyncExportPage_Overwrite
+     */
+    public static String SyncExportPage_Overwrite;
+    /**
+     * SyncExportPage_TITLE
+     */
+    public static String SyncExportPage_TITLE;
+    /**
+     * SyncExportPage_TO_FILE
+     */
+    public static String SyncExportPage_TO_FILE;
+    /**
+     * SyncImportPage_DESCRIPTION
+     */
+    public static String SyncImportPage_DESCRIPTION;
+    /**
+     * SyncImportPage_FILE_NOT_EXIST
+     */
+    public static String SyncImportPage_FILE_NOT_EXIST;
+    /**
+     * SyncImportPage_FILE_NOT_EXIST_DESC
+     */
+    public static String SyncImportPage_FILE_NOT_EXIST_DESC;
+    /**
+     * SyncImportPage_FILE_NOT_READABLE
+     */
+    public static String SyncImportPage_FILE_NOT_READABLE;
+    /**
+     * SyncImportPage_FILE_NOT_READABLE_DESC
+     */
+    public static String SyncImportPage_FILE_NOT_READABLE_DESC;
+    /**
+     * SyncImportPage_FROM_FILE
+     */
+    public static String SyncImportPage_FROM_FILE;
+    /**
+     * SyncImportPage_TITLE
+     */
+    public static String SyncImportPage_TITLE;
 
     public static String RemoteProjectWizard_LBL_CreateNameAndLocationForLocalProject;
     public static String RemoteProjectWizard_MSG_CreatingRemoteProject;

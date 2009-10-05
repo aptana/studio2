@@ -642,5 +642,35 @@
          </adapter>
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <wizard
+            category="com.aptana.ide.aptana"
+            class="com.aptana.ide.syncing.ui.wizards.SyncImportWizard"
+            icon="icons/full/obj16/sync_connection.gif"
+            id="com.aptana.ide.syncing.ui.wizards.import"
+            name="%SyncingWizard.name">
+         <description>
+            Imports the synchronization settings from a file.
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <category
+            id="com.aptana.ide.ui.exportWizards.category"
+            name="%ImportExportWizards.Category.Aptana">
+      </category>
+      <wizard
+            category="com.aptana.ide.ui.exportWizards.category"
+            class="com.aptana.ide.syncing.ui.wizards.SyncExportWizard"
+            icon="icons/full/obj16/sync_connection.gif"
+            id="com.aptana.ide.syncing.ui.wizards.export"
+            name="%SyncingWizard.name">
+         <description>
+            Exports the synchronization settings to a file.
+         </description>
+      </wizard>
+   </extension>
 
 </plugin>

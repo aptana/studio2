@@ -135,7 +135,7 @@
       <view
             allowMultiple="true"
             category="com.aptana.ide.js.ui"
-            class="org.eclipse.ui.navigator.CommonNavigator"
+            class="com.aptana.ide.ui.io.navigator.FileNavigatorView"
             icon="icons/full/eview16/file_explorer.png"
             id="com.aptana.ide.ui.io.fileExplorerView"
             name="%fileExplorerView.name">
@@ -761,6 +761,23 @@
       <initializer
             class="com.aptana.ide.ui.io.preferences.PreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.themes">
+      <colorDefinition
+            categoryId="com.aptana.ide.core.ui.apearance"
+            colorFactory="com.aptana.ide.core.ui.ListBackgroundColorFactory"
+            id="com.aptana.ide.ui.io.background.color.fileView"
+            isEditable="true"
+            label="%filesViewBackroundColor.name">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="com.aptana.ide.core.ui.apearance"
+            colorFactory="com.aptana.ide.core.ui.DefaultForegroundFactory"
+            id="com.aptana.ide.ui.io.foreground.color.fileView"
+            isEditable="true"
+            label="%filesViewforeroundColor.name">
+      </colorDefinition>
    </extension>
 
 </plugin>

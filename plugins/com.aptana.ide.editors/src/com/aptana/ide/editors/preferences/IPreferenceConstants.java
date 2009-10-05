@@ -259,6 +259,8 @@ public interface IPreferenceConstants
 	String COMPILER_TASK_PRIORITIES = UnifiedEditorsPlugin.ID + ".tasks.priorities"; //$NON-NLS-1$
 
 	String COMPILER_TASK_PRIORITY_LOW = "LOW"; //$NON-NLS-1$
+	
+	String COMPILER_TASK_PRIORITY_NORMAL = "NORMAL"; //$NON-NLS-1$
 
 	String COMPILER_TASK_PRIORITY_HIGH = "HIGH"; //$NON-NLS-1$
 }

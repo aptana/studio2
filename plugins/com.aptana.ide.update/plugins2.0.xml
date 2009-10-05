@@ -44,14 +44,14 @@
 		<name>Aptana Cloud</name>
 		<category>Platforms</category> 
 		<description>Easy Hosting and Development Services</description>
-		<url>http://update.aptana.com/install/cloud/</url>
+		<url>http://download.aptana.com/tools/studio/plugin/install/cloud/</url>
         <more>http://www.aptana.com/cloud/</more>
 		<sortweight>0</sortweight>
 		<release>
-		  <version>1.5.0</version>
+		  <version>2.0.0</version>
 		  <year>2009</year>
-		  <month>7</month>
-		  <day>8</day>
+		  <month>10</month>
+		  <day>28</day>
 		</release>
 		<icon>images/feature_cloud.png</icon>
 		<installer_id>installer.hosting</installer_id>
@@ -61,7 +61,7 @@
 		<name>Aptana XULRunner</name>
 		<category>Utilities</category> 
 		<description>Adds XULRunner support</description>
-		<url>http://update.aptana.com/install/xul/</url>
+		<url>http://download.aptana.org/tools/studio/plugin/install/xul/</url>
         <more>http://www.aptana.org/</more>
 		<sortweight>0</sortweight>
 		<release>
@@ -78,36 +78,26 @@
         <more>http://www.eclipse.org/subversive/</more>
 		<sortweight>0</sortweight>
 		<release>
-		  <version>0.7.8.I20090506-1500</version>
+		  <version>0.7.8.I20090904-1300</version>
 		  <year>2009</year>
-		  <month>5</month>
-		  <day>6</day>
+		  <month>9</month>
+		  <day>4</day>
 		</release>
 		<installer_id>installer.others.scm</installer_id>
 	</plugin>
 	<plugin>
-		<id>org.eclipse.team.svn</id>
-		<name>Subversive</name>
-		<category>Utilities</category> 
-		<description>Subclipse Team integration</description>
-		<url>http://subclipse.tigris.org/update_1.6.x</url>
-        <more>http://subclipse.tigris.org/</more>
-		<sortweight>0</sortweight>
-		<installer_id>installer.others.scm</installer_id>
-	</plugin>
-	<plugin>
-		<id>com.aptana.ide.feature.svn</id>
+		<id>org.tigris.subversion.subclipse</id>
 		<name>Subclipse</name>
 		<category>Utilities</category> 
 		<description>Subversion SCM integration</description>
-		<url>http://update.aptana.com/install/svn/</url>
+		<url>http://subclipse.tigris.org/update_1.6.x/</url>
         <more>http://subclipse.tigris.org/</more>
 		<sortweight>0</sortweight>
 		<release>
-		  <version>1.4.2</version>
+		  <version>1.6.5</version>
 		  <year>2009</year>
-		  <month>2</month>
-		  <day>17</day>
+		  <month>8</month>
+		  <day>11</day>
 		</release>
 		<installer_id>installer.others.scm</installer_id>
 	</plugin>
@@ -120,10 +110,10 @@
         <more>http://www.perforce.com/perforce/products/p4wsad.html</more>
 		<sortweight>1</sortweight>
 		<release>
-		  <version>2008.2.188245</version>
-		  <year>2008</year>
-		  <month>4</month>
-		  <day>12</day>
+		  <version>2009.1.211156</version>
+		  <year>2009</year>
+		  <month>1</month>
+		  <day>21</day>
 		</release>
 		<installer_id>installer.others.scm</installer_id>
 	</plugin>
@@ -132,14 +122,14 @@
         <name>Aptana RadRails</name>
         <category>Platforms</category> 
         <description>Ruby on Rails support</description>
-        <url>http://update.aptana.com/install/rails/</url>
-        <more>http://www.aptana.com/rails</more>
-        <sortweight>1</sortweight>
+        <url>http://download.aptana.com/tools/radrails/plugin/install/radrails-studio/</url>
+        <more>http://www.aptana.com/radrails</more>
+        <sortweight>0</sortweight>
         <release>
-        	<version>1.3.0.25649</version>
-        	<year>2009</year>
-        	<month>7</month>
-        	<day>8</day>
+          <version>1.5.0</version>
+          <year>2009</year>
+          <month>10</month>
+          <day>2</day>
         </release>
 		<icon>images/feature_radrails.png</icon>
 		<installer_id>installer.platforms</installer_id>
@@ -149,14 +139,14 @@
         <name>Aptana PyDev</name>
         <category>Platforms</category> 
         <description>Python support</description>
-        <url>http://update.aptana.com/install/pydev/</url>
-        <more>http://www.aptana.com/pydev</more>
+        <url>http://www.pydev.org/updates/</url>
+        <more>http://www.pydev.org/</more>
         <sortweight>3</sortweight>
         <release>
-          <version>1.4.6</version>
+          <version>1.5.0</version>
           <year>2009</year>
-          <month>7</month>
-          <day>8</day>
+          <month>9</month>
+          <day>3</day>
         </release>
 		<icon>images/feature_pydev.png</icon>
 		<installer_id>installer.platforms</installer_id>
@@ -166,7 +156,7 @@
         <name>Aptana Adobe AIR 1.5 Development</name>
         <category>Platforms</category>
         <description>Tools for creating desktop Ajax apps with Adobe AIR</description>
-        <url>http://update.aptana.com/install/air/</url>
+        <url>http://download.aptana.org/tools/studio/plugin/install/air/</url>
         <more>http://www.aptana.com/air</more>
         <sortweight>1</sortweight>
         <release>
@@ -177,48 +167,37 @@
         </release>
 		<icon>images/feature_air.png</icon>
 		<installer_id>installer.desktop</installer_id>
-    </plugin>
+    </plugin>   
     <plugin>
-        <id>com.aptana.ide.feature.framework.jaxer</id>
-        <name>Aptana Jaxer</name>
-        <category>Platforms</category>
-        <description>Server side Ajax</description>
-        <url>http://update.aptana.com/install/jaxer/</url>
-        <more>http://www.aptana.com/jaxer</more>
-        <sortweight>2</sortweight>
-        <release>
-            <version>1.5.0</version>
-            <year>2009</year>
-            <month>7</month>
-            <day>8</day>
-        </release>
-		<icon>images/feature_jaxer.png</icon>
-		<installer_id>installer.platforms</installer_id>
-    </plugin>
-    <plugin>      
         <id>com.nokia.wrt.feature</id>
         <name>Nokia WRT Plug-in for Aptana Studio</name>
-        <category>Featured</category>
+        <category>Featured</category> 
         <description>Build, preview, and debug Web and Ajax apps for S60 phones</description>
         <url>http://tools.ext.nokia.com/wrt/prod/aptana/v2.1/</url>
-	<more>http://www.forum.nokia.com/Resources_and_Information/Tools/Runtimes/Web_Runtime/Aptana_Plugin/</more>
-        <sortweight>1</sortweight>
-        <icon>images/feature_nokia.png</icon>
-        <installer_id>installer.featured</installer_id>
-     </plugin>   
+        <more>http://www.forum.nokia.com/Resources_and_Information/Tools/Runtimes/Web_Runtime/Aptana_Plugin/</more>
+        <sortweight>2</sortweight>
+        <release>
+          <version>2.2</version>
+          <year>2009</year>
+          <month>9</month>
+          <day>29</day>
+        </release>
+		<icon>images/feature_nokia.png</icon>
+		<installer_id>installer.featured</installer_id>
+    </plugin>
 	<plugin>
 		<id>org.eclipse.cvs</id>
 		<name>CVS</name>
 		<category>Utilities</category> 
 		<description>CVS version control support</description>
 		<url>http://download.eclipse.org/releases/ganymede/</url>
-        <more>http://www.aptana.com/plugins#cvs</more>
+        <more>http://www.aptana.org/#cvs</more>
 		<sortweight>1</sortweight>
 		<release>
-            <version>1.1.2</version>
-			<year>2009</year>
-			<month>1</month>
-			<day>22</day>
+            <version>1.1.1.r34x_20080902-7C79E8N9nJD4oAW9V1938</version>
+			<year>2008</year>
+			<month>9</month>
+			<day>2</day>
 		</release>
 		<installer_id>installer.others.scm</installer_id>
 	</plugin>
@@ -233,7 +212,7 @@
 		<release>
             <version>0.5.0</version>
 			<year>2009</year>
-			<month>7</month>
+			<month>9</month>
 			<day>8</day>
 		</release>
 		<installer_id>installer.others.scm</installer_id>
@@ -243,8 +222,8 @@
 		<name>Aflax</name>
 		<category>Ajax</category> 
 		<description>Adds support for the Aflax Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#aflax</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#aflax</more>
 		<sortweight>3</sortweight>
 		<release>
             <version>1.0.0</version>
@@ -260,8 +239,8 @@
 		<name>OpenRico</name>
 		<category>Ajax</category> 
 		<description>Adds support for the OpenRico Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#rico</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#rico</more>
 		<sortweight>2</sortweight>
 		<release>
             <version>2.0.0</version>
@@ -277,8 +256,8 @@
 		<name>Scriptaculous</name>
 		<category>Ajax</category> 
 		<description>Adds support for the Scriptaculous Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#scriptaculous</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#scriptaculous</more>
 		<sortweight>1</sortweight>
 		<release>
             <version>1.8.0</version>
@@ -294,8 +273,8 @@
 		<name>Adobe Spry</name>
 		<category>Ajax</category>
 		<description>Adds support for the Adobe Spry Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#spry</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#spry</more>
 		<sortweight>2</sortweight>
 		<release>
             <version>1.6.0</version>
@@ -311,8 +290,8 @@
 		<name>Yahoo! User Interface (YUI) Support</name>
 		<category>Ajax</category>
 		<description>Adds support for the YUI Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#yui</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#yui</more>
 		<sortweight>0</sortweight>
 		<release>
             <version>2.7.0</version>
@@ -328,8 +307,8 @@
 		<name>Prototype</name>
 		<category>Ajax</category>
 		<description>Adds support for the Prototype Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#prototype</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#prototype</more>
 		<sortweight>1</sortweight>
 		<release>
             <version>1.6.0</version>
@@ -345,8 +324,8 @@
 		<name>Microsoft ASP.NET Ajax Controls</name>
 		<category>Ajax</category>
 		<description>Adds support for the Microsoft Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#msajax</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#msajax</more>
 		<sortweight>2</sortweight>
 		<release>
             <version>3.5.0</version>
@@ -362,8 +341,8 @@
 		<name>Mootools</name>
 		<category>Ajax</category>
 		<description>Adds support for the Mootools Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#mootools</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#mootools</more>
 		<sortweight>1</sortweight>
 		<release>
             <version>1.2.1</version>
@@ -379,14 +358,14 @@
 		<name>jQuery Support</name>
 		<category>Ajax</category>
 		<description>Adds support for the jQuery Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#jquery</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#jquery</more>
 		<sortweight>-1</sortweight>
 		<release>
             <version>1.3.2</version>
 			<year>2009</year>
-			<month>4</month>
-			<day>19</day>
+			<month>3</month>
+			<day>9</day>
 		</release>
 		<icon>images/ajax/jquery.png</icon>
 		<installer_id>installer.ajax</installer_id>
@@ -396,8 +375,8 @@
 		<name>Ext JS</name>
 		<category>Ajax</category>
 		<description>Adds support for the Ext JS Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#ext</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#ext</more>
 		<sortweight>1</sortweight>
 		<release>
             <version>2.2.0</version>
@@ -413,8 +392,8 @@
 		<name>Dojo</name>
 		<category>Ajax</category>
 		<description>Adds support for the Dojo Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#dojo</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#dojo</more>
 		<sortweight>0</sortweight>
 		<release>
             <version>1.3.0</version>
@@ -430,8 +409,8 @@
 		<name>MochiKit</name>
 		<category>Ajax</category>
 		<description>Adds support for the MochiKit Ajax library</description>
-		<url>http://update.aptana.com/install/frameworks/</url>
-        <more>http://www.aptana.com/plugins#mochikit</more>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#mochikit</more>
 		<sortweight>2</sortweight>
 		<release>
             <version>1.4.0</version>
@@ -452,12 +431,13 @@
   	<sortweight>3</sortweight>
   	<release>
   		<version>3.3.1</version>
+		<year>2009</year>
+		<month>8</month>
   		<day>13</day>
-  		<month>08</month>
-  		<year>2009</year></release>
+	</release>
   	<icon>images/feature_quantum.png</icon>
   	<installer_id>installer.featured</installer_id>
-  </plugin>
+  	</plugin>
   <plugin>
   	<id>org.eclipse.php</id>
   	<name>PHP Development Tools (PDT)</name>
@@ -467,10 +447,11 @@
   	<more>http://www.eclipse.org/pdt/</more>
   	<sortweight>1</sortweight>
   	<release>
-  		<version>2.1.1</version>
+  		<version>2.1.2</version>
+		<year>2009</year>
+		<month>8</month>
   		<day>26</day>
-  		<month>08</month>
-  		<year>2009</year></release>
+	</release>
   	<icon>images/feature_pdt.png</icon>
   	<installer_id>installer.featured</installer_id>
   </plugin>
