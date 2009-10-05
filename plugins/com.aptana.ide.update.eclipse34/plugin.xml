@@ -7,5 +7,10 @@
             class="com.aptana.ide.update.internal.manager.P2PluginManager">
       </manager>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.aptana.ide.update.AddRepositoryStartup">
+      </startup>
+   </extension>
 </plugin>
