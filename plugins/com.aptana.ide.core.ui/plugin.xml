@@ -100,7 +100,6 @@
            icon="icons/showaptanaview.gif"
            id="com.aptana.ide.core.ui.actionSet.ShowView"
            label="%Action.Label.ShowView"
-           menubarPath="window/showView"
            style="pulldown"
            toolbarPath="aptanatoolbar">
      </action>
