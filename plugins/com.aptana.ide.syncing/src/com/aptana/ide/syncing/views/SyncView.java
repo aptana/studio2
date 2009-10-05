@@ -93,6 +93,7 @@ import com.aptana.ide.core.ui.PreferenceUtils;
 import com.aptana.ide.core.ui.actions.CheckBoxAction;
 import com.aptana.ide.syncing.SyncInfoDialog;
 import com.aptana.ide.syncing.SyncingPlugin;
+import com.aptana.ide.syncing.ui.actions.SyncUIUtils;
 
 /**
  * @author Paul Colton
@@ -446,7 +447,7 @@ public class SyncView extends ViewPart implements ISyncManagerChangeListener
 				if (item != null)
 				{
 					SyncManager.getSyncManager().addItem(item);
-					SyncUIUtils.updateSyncLabels();
+					SyncUIUtils.updateDecorator();
 				}
 			}
 		};
@@ -513,7 +514,7 @@ public class SyncView extends ViewPart implements ISyncManagerChangeListener
 						nld.open();
 						SyncManager.getSyncManager().fireSyncManagerChangeEvent(conf, ISyncManagerChangeListener.EDIT);
 					}
-					SyncUIUtils.updateSyncLabels();
+					SyncUIUtils.updateDecorator();
 				}
 			}
 		};
@@ -558,7 +559,7 @@ public class SyncView extends ViewPart implements ISyncManagerChangeListener
 
 				SyncManager.getSyncManager().removeItem(conf);
 				getConnectionTable().getTable().select(0);
-				SyncUIUtils.updateSyncLabels();
+				SyncUIUtils.updateDecorator();
 			}
 		}
 		else if (obj != null && obj instanceof IVirtualFileManager)

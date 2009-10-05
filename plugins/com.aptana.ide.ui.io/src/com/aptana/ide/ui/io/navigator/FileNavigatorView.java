@@ -41,6 +41,8 @@ import com.aptana.ide.core.ui.PreferenceUtils;
 
 public class FileNavigatorView extends CommonNavigator {
 
+    public static final String ID = "com.aptana.ide.ui.io.fileExplorerView"; //$NON-NLS-1$
+
     @Override
     public void createPartControl(Composite aParent) {
         super.createPartControl(aParent);

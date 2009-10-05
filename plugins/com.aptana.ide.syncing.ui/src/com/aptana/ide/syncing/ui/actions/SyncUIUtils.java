@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2007 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -32,41 +32,35 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.views;
+package com.aptana.ide.syncing.ui.actions;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IDecoratorManager;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
-
-import com.aptana.ide.syncing.SyncingPlugin;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public final class SyncUIUtils
-{
+public final class SyncUIUtils {
 
-	/**
-	 * Update the sync labels
-	 */
-	public static void updateSyncLabels()
-	{
-		UIJob job = new UIJob("Updating sync labels") //$NON-NLS-1$
-		{
+    /**
+     * Update the sync labels
+     */
+    public static void updateDecorator() {
+        UIJob job = new UIJob("Updating sync labels") { //$NON-NLS-1$
 
-			public IStatus runInUIThread(IProgressMonitor monitor)
-			{
-				IDecoratorManager dm = SyncingPlugin.getDefault().getWorkbench().getDecoratorManager();
-				dm.update("com.aptana.ide.syncing.SyncConnectionDecorator"); //$NON-NLS-1$
-				dm.update("com.aptana.ide.syncing.SyncProjectConnectionDecorator"); //$NON-NLS-1$
-				dm.update("com.aptana.ide.syncing.VirtualFileManagerSyncDecorator"); //$NON-NLS-1$
-				return Status.OK_STATUS;
-			}
-
-		};
-		job.setSystem(true);
-		job.schedule();
-	}
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+                IDecoratorManager dm = PlatformUI.getWorkbench().getDecoratorManager();
+                dm.update("com.aptana.ide.syncing.ui.decorators.SiteConnectionsDecorator"); //$NON-NLS-1$
+                dm.update("com.aptana.ide.syncing.ui.decorators.ResourceSiteDecorator"); //$NON-NLS-1$
+                dm.update("com.aptana.ide.syncing.ui.decorators.FileSiteDecorator"); //$NON-NLS-1$
+                return Status.OK_STATUS;
+            }
+        };
+        job.setSystem(true);
+        job.schedule();
+    }
 }

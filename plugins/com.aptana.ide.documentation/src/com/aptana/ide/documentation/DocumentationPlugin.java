@@ -30,6 +30,8 @@ public class DocumentationPlugin extends AbstractUIPlugin
 	public static final String PLUGIN_ID = "com.aptana.ide.documentation"; //$NON-NLS-1$
 
 	public static final String GETTING_STARTED_CONTENT_URL = PLUGIN_ID + ".getting_started_url"; //$NON-NLS-1$
+    
+    public static final String RELEASE_NOTES_URL_SYSTEM_PROPERTY = PLUGIN_ID + ".release_notes_url"; //$NON-NLS-1$
 
 	// The shared instance.
 	private static DocumentationPlugin plugin;
