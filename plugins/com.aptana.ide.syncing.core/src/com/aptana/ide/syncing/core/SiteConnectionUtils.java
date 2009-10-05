@@ -60,6 +60,27 @@ public final class SiteConnectionUtils {
 	}
 
     /**
+     * Creates a new site connection with specific source and destination.
+     * 
+     * @param name
+     *            the name of the site connection
+     * @param source
+     *            the source connection point
+     * @param destination
+     *            the destination connection point
+     * @return the site connection
+     */
+    public static ISiteConnection createSite(String name, IConnectionPoint source,
+            IConnectionPoint destination) {
+        SiteConnection site = new SiteConnection();
+        site.setName(name);
+        site.setSource(source);
+        site.setDestination(destination);
+
+        return site;
+    }
+
+    /**
      * Retrieves a list of all available sites that have the object as the
      * source (i.e. an IContainer or FilesystemObject).
      * 
@@ -125,7 +146,47 @@ public final class SiteConnectionUtils {
 		}
 		return list.toArray(new ISiteConnection[list.size()]);
 	}
-	
+
+    /**
+     * Retrieves a list of all available sites that have the connection point as
+     * the destination.
+     * 
+     * @param destination
+     *            the connection point
+     * @return the list as an array
+     */
+    public static ISiteConnection[] findSitesWithDestination(IConnectionPoint destination) {
+        List<ISiteConnection> list = new ArrayList<ISiteConnection>();
+        ISiteConnection[] allsites = SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+        for (ISiteConnection i : allsites) {
+            if (destination.equals(i.getDestination())) {
+                list.add(i);
+            }
+        }
+        return list.toArray(new ISiteConnection[list.size()]);
+    }
+
+    /**
+     * Retrieves a list of all available sites that have the specific source and
+     * destination.
+     * 
+     * @param source
+     *            the source object
+     * @param destination
+     *            the connection point as destination
+     * @return the list as an array
+     */
+    public static ISiteConnection[] findSites(IAdaptable source, IConnectionPoint destination) {
+        List<ISiteConnection> list = new ArrayList<ISiteConnection>();
+        ISiteConnection[] sites = findSitesForSource(source, true);
+        for (ISiteConnection site : sites) {
+            if (site.getDestination() == destination) {
+                list.add(site);
+            }
+        }
+        return list.toArray(new ISiteConnection[list.size()]);
+    }
+
 	private static boolean contains(IContainer container, IResource resource) {
 		return container.getFullPath().isPrefixOf(resource.getFullPath());
 	}
