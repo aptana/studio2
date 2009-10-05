@@ -10,16 +10,23 @@ import org.eclipse.equinox.internal.provisional.p2.ui.operations.ProvisioningUti
 import org.eclipse.ui.IStartup;
 
 import com.aptana.ide.core.IdeLog;
+import com.aptana.ide.update.internal.manager.P2Eclipse35PluginManager;
+import com.aptana.ide.update.manager.IPluginManager;
 
 public class AddRepositoryStartup implements IStartup {
 	public void earlyStartup() {
+		
 		// Add the db-tools update site. It is required to present when installing
 		// Cloud plugin.
 		try {
-			URI siteURL = new URI("http://download.aptana.org/tools/studio/plugin/install/db-tools"); //$NON-NLS-1$
-			URI[] existingMetaRepos = ProvisioningUtil.getMetadataRepositories(IRepositoryManager.REPOSITORIES_ALL);
-			if (!contains(existingMetaRepos, siteURL)) {
-				Activator.getDefault().getPluginManager().addUpdateSite(siteURL.toURL());
+			IPluginManager pluginManager = Activator.getDefault().getPluginManager();
+			
+			if (pluginManager instanceof P2Eclipse35PluginManager) {
+				URI siteURL = new URI("http://download.aptana.org/tools/studio/plugin/install/db-tools"); //$NON-NLS-1$
+				URI[] existingMetaRepos = ProvisioningUtil.getMetadataRepositories(IRepositoryManager.REPOSITORIES_ALL);
+				if (!contains(existingMetaRepos, siteURL)) {
+					pluginManager.addUpdateSite(siteURL.toURL());
+				}
 			}
 		} catch (MalformedURLException e) {
 			IdeLog.logError(P2Eclipse35Activator.getDefault(), e.getMessage(), e);
