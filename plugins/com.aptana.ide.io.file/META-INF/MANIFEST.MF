@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.ui,
  com.aptana.ide.core.ui
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
-Export-Package: com.aptana.ide.core.ui.io,
- com.aptana.ide.core.ui.io.file,
+Export-Package: com.aptana.ide.core.ui.io.file,
  com.aptana.ide.core.ui.views.fileexplorer,
  com.aptana.ide.io.file

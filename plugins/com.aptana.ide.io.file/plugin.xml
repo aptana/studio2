@@ -37,14 +37,6 @@
 		           tooltip="%Action.duplicate.tooltip"/>
 		  </objectContribution>
 	</extension>
-    <extension
-         id="virtualFileDrop"
-         name="IVirtualFile Drop"
-         point="org.eclipse.ui.dropActions">
-      <action
-            class="com.aptana.ide.core.ui.io.VirtualFileDropActionDelegate"
-            id="com.aptana.ide.core.ui.io.VirtualFileDrop"/>
-   </extension>
    
    <extension
          point="com.aptana.ide.core.protocols">
