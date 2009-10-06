@@ -65,4 +65,9 @@ public interface IPreferenceConstants {
      * INTRO_TOOLBAR_IMAGE_LOCATION
      */
     String INTRO_TOOLBAR_IMAGE_LOCATION = "com.aptana.ide.intro.INTRO_TOOLBAR_IMAGE_LOCATION"; //$NON-NLS-1$
+
+    /**
+     * INTRO_TOOLBAR_DEFAULT_IMAGE
+     */
+    String INTRO_TOOLBAR_DEFAULT_IMAGE = "com.aptana.ide.intro.INTRO_TOOLBAR_DEFAULT_IMAGE"; //$NON-NLS-1$
 }

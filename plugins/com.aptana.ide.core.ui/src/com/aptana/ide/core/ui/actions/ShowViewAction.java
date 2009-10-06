@@ -34,8 +34,12 @@
  */
 package com.aptana.ide.core.ui.actions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -45,8 +49,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.intro.IIntroConstants;
 import org.eclipse.ui.views.IViewDescriptor;
 import org.eclipse.ui.views.IViewRegistry;
 
@@ -56,14 +62,17 @@ import org.eclipse.ui.views.IViewRegistry;
 public class ShowViewAction extends AbstractWorkbenchWindowPulldownDelegate
 {
 
-	private static final String[] VIEW_IDS =
-		{ "com.aptana.ide", "org.eclipse.eclipsemonkey", "org.eclipse.ui.views.ContentOutline" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
 	private Menu toolbarMenu = null;
+	private IWorkbenchWindow window;
+
+	@Override
+	public void init(IWorkbenchWindow window)
+	{
+		this.window = window;
+	}
 
 	/**
-	 * org.eclipse.ui.IWorkbenchWindowPulldownDelegate#getMenu(org.eclipse.swt.
-	 * widgets.Control)
+	 * org.eclipse.ui.IWorkbenchWindowPulldownDelegate#getMenu(org.eclipse.swt. widgets.Control)
 	 */
 	public Menu getMenu(Control parent)
 	{
@@ -90,9 +99,44 @@ public class ShowViewAction extends AbstractWorkbenchWindowPulldownDelegate
 
 	private void buildMenu(Menu menu)
 	{
+		// If no page disable all.
+		IWorkbenchPage page = window.getActivePage();
+		if (page == null)
+		{
+			return;
+		}
+
+		// If no active perspective disable all
+		if (page.getPerspective() == null)
+		{
+			return;
+		}
+
+		// Get visible actions.
+		List<String> viewIds = Arrays.asList(page.getShowViewShortcuts());
+
+		// add all open views
+		viewIds = addOpenedViews(page, viewIds);
+
+		// Remove INTRO_VIEW_ID
+		viewIds.remove(IIntroConstants.INTRO_VIEW_ID);
+
 		final IViewRegistry viewsRegistry = PlatformUI.getWorkbench().getViewRegistry();
+		List<IViewDescriptor> viewDescriptorsList = new ArrayList<IViewDescriptor>();
+
 		// gets all views
 		IViewDescriptor[] viewDescriptors = viewsRegistry.getViews();
+
+		// Filter for views of interest
+		for (int i = 0; i < viewDescriptors.length; i++)
+		{
+			if (viewIds.contains(viewDescriptors[i].getId()))
+			{
+				viewDescriptorsList.add(viewDescriptors[i]);
+			}
+		}
+
+		viewDescriptors = viewDescriptorsList.toArray(new IViewDescriptor[viewDescriptorsList.size()]);
 
 		// sorts alphabetically by label
 		Arrays.sort(viewDescriptors, new Comparator<IViewDescriptor>()
@@ -131,32 +175,50 @@ public class ShowViewAction extends AbstractWorkbenchWindowPulldownDelegate
 		for (IViewDescriptor viewDescriptor : viewDescriptors)
 		{
 			viewId = viewDescriptor.getId();
-			if (isAptanaView(viewId))
-			{
-				menuItem = new MenuItem(menu, SWT.PUSH);
-				menuItem.setText(viewDescriptor.getLabel());
-				menuItem.setImage(viewDescriptor.getImageDescriptor().createImage());
-				menuItem.setData(viewId);
-				// handles selection
-				menuItem.addSelectionListener(selAdapter);
-			}
+			menuItem = new MenuItem(menu, SWT.PUSH);
+			menuItem.setText(viewDescriptor.getLabel());
+			menuItem.setImage(viewDescriptor.getImageDescriptor().createImage());
+			menuItem.setData(viewId);
+			// handles selection
+			menuItem.addSelectionListener(selAdapter);
 		}
-	}
-	
-	private static boolean isAptanaView(String viewId)
-	{
-		if (viewId == null)
-		{
-			return false;
-		}
-		for (String id : VIEW_IDS)
-		{
-			if (viewId.startsWith(id))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
+	// Maps pages to a list of opened views
+	private Map<IWorkbenchPage, List<String>> openedViews = new HashMap<IWorkbenchPage, List<String>>();
+
+	private List<String> addOpenedViews(IWorkbenchPage page, List<String> actions)
+	{
+		List<String> views = getParts(page);
+		List<String> result = new ArrayList<String>(views.size() + actions.size());
+
+		for (int i = 0; i < actions.size(); i++)
+		{
+			String element = actions.get(i);
+			if (result.indexOf(element) < 0)
+			{
+				result.add(element);
+			}
+		}
+		for (int i = 0; i < views.size(); i++)
+		{
+			String element = views.get(i);
+			if (result.indexOf(element) < 0)
+			{
+				result.add(element);
+			}
+		}
+		return result;
+	}
+
+	private List<String> getParts(IWorkbenchPage page)
+	{
+		List<String> parts = openedViews.get(page);
+		if (parts == null)
+		{
+			parts = new ArrayList<String>();
+			openedViews.put(page, parts);
+		}
+		return parts;
+	}
 }
