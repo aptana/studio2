@@ -53,6 +53,7 @@ public class UnifiedProjectBuilder extends IncrementalProjectBuilder
 		}
 		for (BuildContext context : contexts)
 		{
+			cleanProblemMarkers(context);
 			List<IProblem> problems = context.getRecordedProblems();
 			if (problems.isEmpty())
 				continue;
@@ -63,6 +64,12 @@ public class UnifiedProjectBuilder extends IncrementalProjectBuilder
 			}
 		}
 		return new IProject[0];
+	}
+
+	private void cleanProblemMarkers(BuildContext context) throws CoreException
+	{
+		if (context != null && context.getFile() != null)
+			context.getFile().deleteMarkers(IAptanaModelMarker.PROBLEM_MARKER, false, IResource.DEPTH_ONE);
 	}
 
 	private String getContainerRelativePath(BuildContext context)

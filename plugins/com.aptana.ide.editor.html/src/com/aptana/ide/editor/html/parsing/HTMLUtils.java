@@ -421,6 +421,80 @@ public final class HTMLUtils
 	}
 
 	/**
+	 * Is the current end tag "balanced" by an earlier start tag?
+	 * 
+	 * @param tag
+	 *            - lexeme of the end tag to check
+	 * @param lexemeList
+	 *            - list of lexemes
+	 * @param parseState
+	 *            - parse state
+	 */
+	public static boolean isEndTagBalanced(Lexeme tag, LexemeList lexemeList, HTMLParseState parseState)
+	{
+		// If we are the last lexeme in the list, there is no way we can be balanced.
+		int index = lexemeList.getLexemeIndex(tag);
+		if (index == 0)
+		{
+			return false;
+		}
+
+		if (tag == null || lexemeList == null || parseState == null)
+		{
+			throw new IllegalArgumentException("null arguments are not accepted"); //$NON-NLS-1$
+		}
+
+		if (!isEndTag(tag))
+		{
+			// maybe IllegalArgumentException would be better @Denis
+			return false;
+		}
+
+		// treating self-closed tags as always balanced
+		if (isTagSelfClosed(tag, lexemeList))
+		{
+			return true;
+		}
+
+		String originalTagName = stripTagEndings(tag.getText());
+
+		// tags that are able closing themselves are always balanced
+		if (parseState.getCloseTagType(originalTagName) == HTMLTagInfo.END_FORBIDDEN)
+		{
+			return true;
+		}
+
+		int balance = 1; // number of start tags that need to match
+		for (int i = index - 1; i >= 0; i--)
+		{
+			Lexeme currentLexeme = lexemeList.get(i);
+
+			if (isEndTag(currentLexeme))
+			{
+				String currenTagName = stripTagEndings(currentLexeme.getText());
+				if (originalTagName.equals(currenTagName))
+				{
+					// match, so we now need to track the start tag +1 times
+					balance++;
+				}
+			}
+			else if (isStartTag(currentLexeme))
+			{
+				// we matched a start tag, should need to match start tag -1 times now
+				String currenTagName = stripTagEndings(currentLexeme.getText());
+				if (originalTagName.equals(currenTagName))
+				{
+					balance--;
+					if (balance <= 0)
+						return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Checks whether tag is self-closed
 	 * 
 	 * @param tag
