@@ -1,0 +1,177 @@
+#foundation-header {
+	background-image:url(../img/foundation-bg.png);
+	background-repeat:repeat-x;
+	height:21px;
+	position:relative;
+	width:100%;
+}
+
+#foundation-header #header-links {
+}
+
+#foundation-header #header-links ul {
+	height:21px;
+	list-style-type:none;
+	margin:.12pt;
+	overflow:visible;
+	padding:+.0pt;
+	position:absolute;
+	right:0px;
+	top:0px;
+	width:auto;
+}
+
+#foundation-header #header-links ul li {
+	background-repeat:no-repeat;
+	float:left;
+	height:100%;
+	list-style-image:none;
+	list-style-type:none;
+	margin:+2.20pt 20px 0pt 0pt;
+	padding:0pt;
+	text-indent:-5000px;
+}
+
+#foundation-header #header-links ul li a {
+	display:block;
+}
+
+#foundation-header #header-links ul li a:hover {
+	border-bottom:3px solid #999999;
+}
+
+#header-index {
+	background-image:url(../img/header-home.gif);
+	width:27px;
+}
+
+#header-developers {
+	background-image:url(../img/header-developers.gif);
+	width:50px;
+}
+
+#header-bugtracking {
+	background-image:url(../img/header-bugtracking.gif);
+	width:60px;
+}
+
+#header-wiki {
+	background-image:url(../img/header-wiki.gif);
+	width:20px;
+}
+
+#header-blog {
+	background-image:url(../img/header-blog.gif);
+	width:22px;
+}
+
+#header-about {
+	background-image:url(../img/header-about.gif);
+	width:137px;
+}
+
+#footer {
+	border-top:1px solid #6290D2;
+	clear:both;
+	height:28px;
+	position:relative;
+	width:100%;
+}
+
+#footer div.links {
+	display:block;
+	margin:0pt auto;
+	text-align:center;
+}
+
+#footer div.links span {
+	font-size:1em;
+	padding:0pt 6px;
+	text-transform:lowercase;
+}
+
+#copyright {
+	background-image:url(../img/foundation-copyright.png);
+	background-repeat:no-repeat;
+	bottom:2px;
+	height:10px;
+	position:absolute;
+	right:12px;
+	text-indent:-5000px;
+	width:194px;
+}
+
+#header {
+	background-image:url(../img/idx-header-bg.jpg);
+	background-position:left bottom;
+	background-repeat:repeat-x;
+	height:70px;
+	position:relative;
+	width:100%;
+}
+
+/**
+test comment
+*/
+#header #logo {
+	background-image:url(../img/logo.gif);
+	background-repeat:no-repeat;
+	height:65px;
+	left:12px;
+	margin:0pt;
+	position:absolute;
+	text-indent:-5000px;
+	top:3px;
+	width:169px;
+	z-index:50;
+}
+
+#header #blog-title {
+	background-image:url(../img/blog-title.gif);
+	background-repeat:no-repeat;
+	height:65px;
+	position:absolute;
+	right:12px;
+	text-indent:-5000px;
+	top:3px;
+	width:192px;
+	z-index:49;
+}
+
+.body {
+	background:transparent url(../img/summer-small.gif) repeat-x scroll left top;
+	min-height:450px;
+	padding-top:6px;
+	position:relative;
+	width:100%;
+}
+
+html {
+}
+
+* html .body {
+	height:100%;
+	overflow:visible;
+}
+
+.content {
+	margin:30px 340px 50px 50px;
+	padding:0pt 1.5em;
+	unicode-range:U+0FF-0FE30A;
+	width:auto();
+}
+
+.sidebar {
+	background-color:#EEEEEE;
+	position:absolute;
+	right:50px;
+	top:36px;
+	width:248px;
+}
+
+.sidebar h2 {
+	border-bottom:1px solid #CCCCCC;
+	font-family:sans-serif;
+	font-size:1em;
+} 
+

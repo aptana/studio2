@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/regex">
+
+	<token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace/>
+			</one-or-more>
+		</category-group>
+		<category-group category="OPERATOR">
+			<character type="CARET">^</character>
+			<character type="DOLLAR">$</character>
+			<character type="PIPE">|</character>
+			<character type="STAR">*</character>
+			<character type="PLUS">+</character>
+			<character type="MINUS">-</character>
+			<character type="QUESTION">?</character>
+		</category-group>
+		<category-group category="PUNCTUATOR">
+			<character type="LPAREN">(</character>
+			<character type="RPAREN">)</character>
+			<character type="LBRACKET">[</character>
+			<character type="RBRACKET">]</character>
+		</category-group>
+		<category-group category="IDENTIFIER">
+			<or type="CHARACTER">
+				<character-class negate="true">\r\n.^$|+*?()</character-class>
+				<and>
+					<character>\</character>
+					<character-class>\r\n.^$|+*?()</character-class>
+				</and>
+			</or>
+		</category-group>
+    </token-group>
+
+	<token-group group="error">
+		<one-or-more category="ERROR" type="ERROR" switch-to="default">
+			<character-class negate="true">\r\n</character-class>
+		</one-or-more>
+    </token-group>
+
+</lexer>

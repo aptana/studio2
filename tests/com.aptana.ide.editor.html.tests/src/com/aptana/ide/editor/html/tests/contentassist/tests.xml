@@ -1,0 +1,149 @@
+<testSuite>
+  <testCases>
+  	<!--
+    <testCase>
+		<description>First completion proposal after an unclosed HTML tag should be /tagName</description>    
+	  	<documentSource><![CDATA[
+	  		<html>
+	  			<head></head>
+	  			<body>
+	  				</%%
+	  		</html>]]></documentSource>
+		  <fileExtension>html</fileExtension>
+	      <completionProposals>
+	        <HTMLCompletionProposal>
+	          <defaultSelection>true</defaultSelection>
+	          <displayString>/body</displayString>
+	          <replacementString>&lt;/body&gt;</replacementString>
+	          <replacementLength>2</replacementLength>
+	        </HTMLCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />
+	</testCase>
+	-->
+    <testCase>
+	  <description>Don't show proposals outside a tag, unless the next tag is a start tag</description>
+	  <documentSource><![CDATA[<html><head></head><body dup="1" dup="2" id="test" onload="open()"><p align=left></p><div scroll='yes' style=></div></body></html>]]></documentSource>
+	  <fileExtension>html</fileExtension>
+      <offset>0</offset>
+      <completionProposals>
+        <HTMLCompletionProposal>
+          <displayString>html</displayString>
+          <replacementString>&lt;html</replacementString>
+          <replacementLength>5</replacementLength>
+          <defaultSelection>true</defaultSelection>
+        </HTMLCompletionProposal>
+      </completionProposals>      
+      <invalidCompletionProposals />
+    </testCase>
+    <testCase>
+	  <description>Ctrl + space at offset 1 after stag start will have tag names as entries</description>    
+  	  <documentSource><![CDATA[<html><head></head><body dup="1" dup="2" id="test" onload="open()"><p align=left></p><div scroll='yes' style=></div></body></html>]]></documentSource>
+	  <fileExtension>html</fileExtension>
+	  <offset>1</offset>
+      <completionProposals>
+        <HTMLCompletionProposal>
+          <displayString>html</displayString>
+          <replacementString>&lt;html</replacementString>
+          <replacementLength>5</replacementLength>
+          <defaultSelection>true</defaultSelection>
+        </HTMLCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+    </testCase>
+    <testCase>
+		<description>Replacement length of an attribute should be of proper length to not overwrite following text</description>    
+	  	<documentSource><![CDATA[
+	  		<html>
+	  			<head></head>
+	  			<body>
+	  				<script type="%%"
+	  			</body>
+	  		</html>]]></documentSource>
+		  <fileExtension>html</fileExtension>
+	      <completionProposals>
+	        <HTMLCompletionProposal>
+	          <displayString>text/javascript</displayString>
+	          <replacementString>text/javascript</replacementString>
+	          <replacementLength>0</replacementLength>
+	          <defaultSelection>false</defaultSelection>
+	        </HTMLCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />
+    </testCase>
+	<testCase>
+		<ignoreTest>true</ignoreTest>
+		<description>Tags (e.g. head, body) that are already part of the HTML template should not have closing tags (e.g. /head, /body) show up in code assist.</description>    
+	  	<documentSource><![CDATA[
+	  		<html>
+			    <head>
+			        <title>MochiKit Sorted table example</title>
+					<%%
+			        
+			    </head>
+			    <body>
+			        
+			    </body>
+			</html>]]></documentSource>
+		  <fileExtension>html</fileExtension>
+	      <completionProposals />
+	      <invalidCompletionProposals>
+	        <HTMLCompletionProposal>
+	      		<displayString>/head</displayString>
+				<replacementString>/head</replacementString>
+				<defaultSelection>false</defaultSelection>
+	        </HTMLCompletionProposal>
+	      </invalidCompletionProposals>
+    </testCase>
+	<testCase>
+        <ignoreTest>true</ignoreTest>
+		<description>"src" or "href" attributes should pop up a "browse" window when selected.</description>    
+	  	<documentSource><![CDATA[		
+		<html>
+		    <head>
+		        <title>MochiKit Sorted table example</title>
+				<link type="text/css" rel="stylesheet" href="style.css" />
+				<script type="text/javascript" src=%%></script>
+		        
+		    </head>
+		    <body>
+		        
+		    </body>
+		</html>		
+	  		]]></documentSource>
+		  <fileExtension>html</fileExtension>
+	      <completionProposals>
+	        <HTMLCompletionProposal>
+	          <displayString>...</displayString>
+	          <replacementString></replacementString>
+	          <replacementLength>0</replacementLength>
+	          <defaultSelection>false</defaultSelection>
+	        </HTMLCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />
+    </testCase>
+	<testCase>
+		<description>CA should scroll to entries starting with first letter of typed tag.</description>    
+	  	<documentSource><![CDATA[		
+		<html>
+    		<head></head>
+		    <body>
+				<p>View Source: [
+					<a href="mochikit_sample.htm" c%%></a></p>
+				
+		    </body>
+		</html>
+	  		]]></documentSource>
+		  <fileExtension>html</fileExtension>
+	      <completionProposals>
+	        <HTMLCompletionProposal>
+	          <displayString>charset</displayString>
+	          <replacementString>charset=</replacementString>
+	          <replacementLength>1</replacementLength>
+	          <defaultSelection>true</defaultSelection>
+	        </HTMLCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />
+    </testCase>
+  </testCases>
+</testSuite>

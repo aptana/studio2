@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<javascript>
+	<class type="superClass">
+		<properties>
+			<property name="superClassInstanceProperty" type="String" scope="instance"/>
+			<property name="superClassStaticProperty" type="String" scope="static"/>
+		</properties>
+	</class>
+	<class type="superClass2">
+		<properties>
+			<property name="superClass2InstanceProperty" type="String" scope="instance"/>
+			<property name="superClass2StaticProperty" type="String" scope="static"/>
+		</properties>
+	</class>
+	<class type="subClass" superclass="superClass superClass2">
+		<properties>
+			<property name="subClassInstanceProperty" type="String" scope="instance"/>
+			<property name="subClassStaticProperty" type="String" scope="static"/>
+		</properties>
+	</class>
+</javascript>

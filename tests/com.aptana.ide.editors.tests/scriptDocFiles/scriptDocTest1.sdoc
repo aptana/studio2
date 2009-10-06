@@ -1,0 +1,22 @@
+/**
+ * The Description. @see D.E.F
+ * @class ClassName
+ * @static
+ * @id NS.foo
+ * @alias NS.foo
+ * @param {String} aa The aa param.
+ * @param {Number} bb The bb param.
+ * @param {A.B.C} cc The cc param.
+ * @userTag test test test
+ * @author Joe Blow
+ * @constructor
+ * @deprecated
+ * @exception {FooException}
+ * @memberOf BaseClass
+ * @method
+ * @return {String}
+ * @sdoc docs/info.sdoc
+ * @see A.B.C
+ * @since 3.0.1
+ * @version 3.0.2
+ */

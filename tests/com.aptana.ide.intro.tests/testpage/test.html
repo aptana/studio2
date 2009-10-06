@@ -1,0 +1,32 @@
+<html>
+	<body>
+		<h1>Testing Custom Aptana Browser Action</h1><br/>
+		<h2>Wizard Action Tests</h2>
+			<h3>New</h3>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenWizardAction&amp;wizardType=new&amp;wizardId=com.aptana.ide.apollo.AIRProject&amp;errorMessage=Error%20This%20Should%20Not%20Show!">
+				Testing AIR New Project Wizard</a><br/>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenWizardAction&amp;wizardType=new&amp;wizardId=com.aptana.ide.wizards.LibraryProjectWizard&amp;errorMessage=Error%20This%20Should%20Not%20Show!">
+				Testing New AJAX Library Project Wizard</a><br/>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenWizardAction&amp;wizardType=new&amp;wizardId=this.is.a.bad.id&amp;errorMessage=Wizard%20Not%20Found!">
+				Testing New bad Wizard ID with error message</a><br/>
+			<h3>Export</h3>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenWizardAction&amp;wizardType=export&amp;wizardId=com.aptana.ide.apollo.exportWizard&amp;errorMessage=Error%20This%20Should%20Not%20Show!">
+				Testing Export AIR wizard</a><br/>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenWizardAction&amp;wizardType=export&amp;wizardId=this.is.a.bad.id&amp;errorMessage=Wizard%20Not%20Found!">
+				Testing Export bad Wizard ID with error message</a><br/>
+			<h3>Import</h3>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenWizardAction&amp;wizardType=import&amp;wizardId=com.aptana.ide.wizards.LibraryImportWizard&amp;errorMessage=Error%20This%20Should%20Not%20Show!">
+				Testing Import AJAX wizard</a><br/>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenWizardAction&amp;wizardType=import&amp;wizardId=this.is.a.bad.id&amp;errorMessage=Wizard%20Not%20Found!">
+				Testing Import bad Wizard ID with error message</a><br/>
+		<h2>View Action Tests</h2>
+			<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenViewAction&amp;viewId=com.aptana.ide.documentation.jquery.visualjquery&amp;errorMessage=Error%20This%20Should%20Not%20Show!">
+				Testing Show Visual JQeury view</a><br/>
+				<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenViewAction&amp;viewId=this.is.a.bad.id&amp;errorMessage=View%20Not%20Found!">
+				Testing bad View ID with error message</a><br/>
+		<h2>Preference Action</h2>
+			<a href="http://org.eclipse.ui.intro/runAction?pluginId=com.aptana.ide.intro&amp;class=com.aptana.ide.intro.actions.OpenPreferenceAction&amp;preferenceId=com.aptana.ide.apollo.preferences.FlexSDKsPreferencePage&amp;pluginPreferenceId=com.aptana.ide.asdfframework.apollo&amp;errorMessage=Adobe%20AIR%20plugin%20not%20installed">
+				Testing Show AIR pref page</a>
+				
+	</body>
+</html>

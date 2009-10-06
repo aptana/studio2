@@ -1,0 +1,351 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.aptana.ide.editors">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.aptana.ide.editors" id="languageServices" name="Language Services"/>
+      </appInfo>
+      <documentation>
+         Specification of all high-level aspects of a given language.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="language"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="language">
+      <complexType>
+         <sequence>
+            <element ref="parser"/>
+            <element ref="nestedLanguage" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Unique id for the language for which the extension is being defined. Other language extension definition can refer to this id for nesting.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Descriptive name for the language, suitable for displaying in UI
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="contentType" type="string" use="required">
+            <annotation>
+               <documentation>
+                  MIME type
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="isHierarchical" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  true for XML based languages such as HTML, false otherwise.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parser">
+      <annotation>
+         <documentation>
+            Defines parser that will be used the language
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="lexer"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Unique id for this parser
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Descriptive name for the parser,  translatable and can be used during presentation in the UI.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A fully qualified Java class name that implements the &lt;samp&gt;com.aptana.ide.parsing.IParser&lt;/samp&gt; interface.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="runsIn" use="required">
+            <annotation>
+               <documentation>
+                  Specifies whether the parser being defined will run in UI thread or non-UI (worker) thread. 
+Value must be either UI_THREAD or WORKER_THREAD.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="UI_THREAD">
+                  </enumeration>
+                  <enumeration value="WORKER_THREAD">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="nestedLanguage">
+      <annotation>
+         <documentation>
+            Specify language that can be embedded inside the containing language.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="element-language"/>
+            <element ref="pi-language"/>
+         </choice>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Reference to another language definition being embedded in the language for which  that can be embedded. 
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="eofDetection" use="required">
+            <annotation>
+               <documentation>
+                  Speicifies whether the parent or child parseris responsible for detecting virtual EOF while parsing. Possible values are eithr PARENT or CHILD.
+
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="PARENT">
+                  </enumeration>
+                  <enumeration value="CHILD">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="lexer">
+      <annotation>
+         <documentation>
+            Defines Lexer that will be used by parser referring to this element
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A unique name used to reference this lexer
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Descriptive name for the lexer ,  translatable and can be used during presentation in the UI.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A fully qualified Java class name that implements the &lt;samp&gt;com.aptana.ide.lexer.ILexer&lt;/samp&gt; interface.
+
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="isConfigurable" type="boolean">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="pi-language">
+      <annotation>
+         <documentation>
+            Defines an embedded language associated with a given HTML processing instruction name
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  A unique name used to reference this language
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  A translatable name used during presentation in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="pi-name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the processing instruction that activates this language. Note that this value does not include the leading &apos;&lt;?&apos;. For example, a PHP processing instruction like &lt;?php would require the value &quot;php&quot; in this attribute.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="element-language">
+      <annotation>
+         <documentation>
+            Defines an embedded language associated with a given XML element, attribute, and one or more attribute values
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="value" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  A unique name used to reference this language
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  A translatable name that can be used in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="element-name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the HTML element where this language may possibly exist.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="attribute-name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the attribute that determines when this language is active for the given element.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="value">
+      <annotation>
+         <documentation>
+            Defines an attribute value for a given element and attribute that triggers a language transition.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string">
+            <annotation>
+               <documentation>
+                  The attribute value for the given element and attribute that triggers this language transition.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript>
+<class type="myType" superclass="mySuperClass">
+<methods>
+<method name="myMethod" scope="instance"/>
+</methods>
+</class>
+</javascript>

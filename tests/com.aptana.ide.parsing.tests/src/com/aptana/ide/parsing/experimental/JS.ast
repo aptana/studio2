@@ -1,0 +1,1117 @@
+import com.aptana.ide.editor.js.parsing.nodes.JSParseNode;
+import com.aptana.ide.lexer.Lexeme;
+import com.aptana.ide.parsing.nodes.ParseFragment;
+
+/**
+ * AddArgument
+ */
+AddArgument(result:ParseFragment, :Lexeme, argument:JSParseNode) : ParseFragment
+{
+	result += argument;
+}
+
+/**
+ * AddCaseClause
+ */
+AddCaseClause(result:ParseFragment, clause:JSParseNode) : ParseFragment
+{
+	result += clause;
+}
+
+/**
+ * AddElement
+ */
+AddElement(result:ParseFragment, :Lexeme, element:JSParseNode) : ParseFragment
+{
+	result += element;
+}
+
+/**
+ * AddElidedElement
+ */
+AddElidedElement(result:ParseFragment, :Lexeme, elisions:ParseFragment, element:JSParseNode) : ParseFragment
+{
+	result += elisions;
+	result += element;
+}
+
+/**
+ * AddElision
+ */
+AddElision(result:ParseFragment, :Lexeme) : ParseFragment
+{
+	result += NULL(null);
+}
+
+/**
+ * AddParameter
+ */
+AddParameter(result:JSParseNode, :Lexeme, name:Lexeme) : JSParseNode
+{
+	result += IDENTIFIER(name);
+}
+
+/**
+ * AddProperty
+ */
+AddProperty(result:ParseFragment, :Lexeme, identifier:Lexeme, :Lexeme, value:JSParseNode) : ParseFragment
+{
+	property := NAME_VALUE_PAIR(null);
+	property += IDENTIFIER(identifier);
+	property += value;
+	
+	result += property;
+}
+
+/**
+ * AddSourceElement
+ */
+AddSourceElement(result:ParseFragment, element:JSParseNode) : ParseFragment
+{
+	result += element;
+}
+
+/**
+ * AddStatement
+ */
+AddStatement(result:JSParseNode, statement:JSParseNode) : JSParseNode
+{
+	result += statement;
+}
+
+/**
+ * AddVarDeclaration
+ */
+AddVarDeclaration(result:ParseFragment, :Lexeme, declaration:JSParseNode) : ParseFragment
+{
+	result += declaration;
+}
+
+/**
+ * Arguments
+ */
+Arguments(lparen:Lexeme, arguments:ParseFragment, rparen:Lexeme) : JSParseNode
+{
+	result := ARGUMENTS(lparen, rparen);
+	result += arguments;
+}
+
+/**
+ * ArrayLiteral
+ */
+ArrayLiteral(lbracket:Lexeme, elements:ParseFragment, rbracket:Lexeme) : JSParseNode
+{
+	result := ARRAY_LITERAL(lbracket, rbracket);
+	result += elements;
+}
+
+/**
+ * ArrayLiteralTrailingComma
+ */
+ArrayLiteralTrailingComma(lbracket:Lexeme, elements:ParseFragment, :Lexeme, rbracket:Lexeme) : JSParseNode
+{
+	result := ARRAY_LITERAL(lbracket, rbracket);
+	result += elements;
+	result += NULL(null);
+}
+
+/**
+ * ArrayLiteralTrailingElision
+ */
+ArrayLiteralTrailingElision(lbracket:Lexeme, elements:ParseFragment, :Lexeme, elision:ParseFragment, rbracket:Lexeme) : JSParseNode
+{
+	result := ARRAY_LITERAL(lbracket, rbracket);
+	result += elements;
+	result += elision;
+}
+
+/**
+ * AssignmentExpression
+ */
+AssignmentExpression(lhs:JSParseNode, operator:Lexeme, rhs:JSParseNode) : JSParseNode
+{
+	result := switch(operator)
+	{
+		case EQUAL:							ASSIGN(operator);
+		case STAR_EQUAL:					MULTIPLY_AND_ASSIGN(operator);
+		case FORWARD_SLASH_EQUAL:			DIVIDE_AND_ASSIGN(operator);
+		case PERCENT_EQUAL:					MOD_AND_ASSIGN(operator);
+		case PLUS_EQUAL:					ADD_AND_ASSIGN(operator);
+		case MINUS_EQUAL:					SUBTRACT_AND_ASSIGN(operator);
+		case LESS_LESS_EQUAL:				SHIFT_LEFT_AND_ASSIGN(operator);
+		case GREATER_GREATER_EQUAL:			SHIFT_RIGHT_AND_ASSIGN(operator);
+		case GREATER_GREATER_GREATER_EQUAL:	ARITHMETIC_SHIFT_RIGHT_AND_ASSIGN(operator);
+		case AMPERSAND_EQUAL:				BITWISE_AND_AND_ASSIGN(operator);
+		case CARET_EQUAL:					BITWISE_XOR_AND_ASSIGN(operator);
+		case PIPE_EQUAL:					BITWISE_OR_AND_ASSIGN(operator);
+	}
+	result += lhs;
+	result += rhs;
+}
+
+/**
+ * BinaryExpression
+ */
+BinaryExpression(lhs:JSParseNode, operator:Lexeme, rhs:JSParseNode) : JSParseNode
+{
+	result := switch(operator)
+	{
+		case STAR:						MULTIPLY(operator);
+		case FORWARD_SLASH:				DIVIDE(operator);
+		case PERCENT:					MOD(operator);
+		case MINUS:						SUBTRACT(operator);
+		case PLUS:						ADD(operator);
+		case LESS_LESS:					SHIFT_LEFT(operator);
+		case GREATER_GREATER:			SHIFT_RIGHT(operator);
+		case GREATER_GREATER_GREATER:	ARITHMETIC_SHIFT_RIGHT(operator);
+		case LESS:						LESS_THAN(operator);
+		case GREATER:					GREATER_THAN(operator);
+		case LESS_EQUAL:				LESS_THAN_OR_EQUAL(operator);
+		case GREATER_EQUAL:				GREATER_THAN_OR_EQUAL(operator);
+		case INSTANCEOF:				INSTANCE_OF(operator);
+		case IN:						IN(operator);
+		case EQUAL_EQUAL:				EQUAL(operator);
+		case EXCLAMATION_EQUAL:			NOT_EQUAL(operator);
+		case EQUAL_EQUAL_EQUAL:			IDENTITY(operator);
+		case EXCLAMATION_EQUAL_EQUAL:	NOT_IDENTITY(operator);
+		case AMPERSAND:					BITWISE_AND(operator);
+		case CARET:						BITWISE_XOR(operator);
+		case PIPE:						BITWISE_OR(operator);
+		case AMPERSAND_AMPERSAND:		LOGICAL_AND(operator);
+		case PIPE_PIPE:					LOGICAL_OR(operator);
+	}
+	result += lhs;
+	result += rhs;
+}
+
+/**
+ * Block
+ */
+Block(lcurly:Lexeme, result:JSParseNode, rcurly:Lexeme) : JSParseNode
+{
+	result += lcurly;
+	result += rcurly;
+}
+
+/**
+ * Break
+ */
+Break(keyword:Lexeme, semicolon:Lexeme) : JSParseNode
+{
+	result := BREAK(keyword, semicolon);
+	result += NULL(null);
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * BreakLabel
+ */
+BreakLabel(keyword:Lexeme, identifier:Lexeme, semicolon:Lexeme) : JSParseNode
+{
+	result := BREAK(keyword, semicolon);
+	result += IDENTIFIER(identifier);
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * CallExpression
+ */
+CallExpression(expression:JSParseNode, arguments:JSParseNode) : JSParseNode
+{
+	result := INVOKE(null);
+	result += expression;
+	result += arguments;
+}
+
+/**
+ * CaseClause
+ */
+CaseClause(keyword:Lexeme, expression:JSParseNode, :Lexeme, statements:JSParseNode) : JSParseNode
+{
+	result := CASE(keyword);
+	result += expression;
+	
+	// NOTE: statements needs to be a ParseFragment since the original handler
+	// the following
+	
+	//for (int i = 0; i < statements.getChildCount(); i++)
+	//{
+	//	result.appendChild(statements.getChild(i));
+	//}
+}
+
+/**
+ * CasesBlock
+ */
+CasesBlock(lcurly:Lexeme, cases:ParseFragment, curly:Lexeme) : ParseFragment
+{
+	result := ParseFragment(lcurly, rcurly);
+	result += cases;
+}
+
+/**
+ * CasesAndDefaultBlock
+ */
+CasesAndDefaultBlock(lcurly:Lexeme, cases:ParseFragment, defaultClause:JSParseNode) : ParseFragment
+{
+	result := ParseFragment(lcurly, rcurly);
+	result += cases;
+	result += defaultClause;
+}
+
+/**
+ * CasesDefaultCasesBlock
+ */
+CasesDefaultCasesBlock(lcurly:Lexeme, cases1:ParseFragment, defaultClause:JSParseNode, cases2:ParseFragment) : ParseFragment
+{
+	result := ParseFragment(lcurly, rcurly);
+	result += cases1;
+	result += defaultClause;
+	result += cases2;
+}
+
+/**
+ * Catch
+ */
+Catch(keyword:Lexeme, :Lexeme, identifier:Lexeme, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := CATCH(keyword);
+	result += IDENTIFIER(identifier);
+	result += body;
+}
+
+/**
+ * CommaExpression
+ */
+CommaExpression(lhs:JSParseNode, :Lexeme, rhs:JSParseNode) : JSParseNode
+{
+	result := COMMA(null);
+	result += lhs;
+	result += rhs;
+}
+
+/**
+ * ConditionalExpression
+ */
+ConditionalExpression(condition:JSParseNode, :Lexeme, trueCase:JSParseNode, :Lexeme, falseCase:JSParseNode) : JSParseNode
+{
+	result := CONDITIONAL(null);
+	result += condition;
+	result += trueCase;
+	result += falseCase;
+}
+
+/**
+ * Continue
+ */
+Continue(keyword:Lexeme, semicolon:Lexeme) : JSParseNode
+{
+	result := CONTINUE(keyword, semicolon);
+	result += EMPTY(null);
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * ContinueLabel
+ */
+ContinueLabel(keyword:Lexeme, identifier:Lexeme, semicolon:Lexeme) : JSParseNode
+{
+	result := CONTINUE(keyword, semicolon);
+	result += IDENTIFIER(identifier);
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * DefaultBlock
+ */
+DefaultBlock(lcurly:Lexeme, defaultClause:JSParseNode, rcurly:Lexeme) : ParseFragment
+{
+	result := ParseFragment(lcurly, rcurly);
+	result += defaultClause;
+}
+
+/**
+ * DefaultAndCasesBlock
+ */
+DefaultAndCasesBlock(lcurly:Lexeme, defaultClause:JSParseNode, cases:ParseFragment, rcurly:Lexeme) : ParseFragment
+{
+	result := ParseFragment(lcurly, rcurly);
+	result += defaultClause;
+	result += cases;
+}
+
+/**
+ * DefaultClause
+ */
+DefaultClause(keyword:Lexeme, :Lexeme, statements:JSParseNode) : JSParseNode
+{
+	result := DEFAULT(keyword);
+
+	// NOTE: statements needs to be a ParseFragment since the original handler
+	// the following
+		
+	//for (int i = 0; i < statements.getChildCount(); i++)
+	//{
+	//	result.appendChild(statements.getChild(i));
+	//}
+}
+
+/**
+ * DoStatement
+ */
+DoStatement(keyword:Lexeme, body:JSParseNode, :Lexeme, :Lexeme, condition:JSParseNode, :Lexeme, semicolon:Lexeme) : JSParseNode
+{
+	result := DO(keyword, semicolon);
+	result += body;
+	result += condition;
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * ElidedArray
+ */
+ElidedArray(lbracket:Lexeme, elision:ParseFragment, rbracket:Lexeme) : JSParseNode
+{
+	result := ARRAY_LITERAL(lbracket, rbracket);
+	result += elision;
+}
+
+/**
+ * EmptyArguments
+ */
+EmptyArguments(lparen:Lexeme, rparen:Lexeme) : JSParseNode
+{
+	result := ARGUMENTS(lparen, rparen);
+}
+
+/**
+ * EmptyArray
+ */
+EmptyArray(lbracket:Lexeme, rbracket:Lexeme) : JSParseNode
+{
+	result := ARRAY_LITERAL(lbracket, rbracket);
+}
+
+/**
+ * EmptyBlock
+ */
+EmptyBlock(lcurly:Lexeme, rcurly:Lexeme) : JSParseNode
+{
+	result := STATEMENTS(lcurly, rcurly);
+}
+
+/**
+ * EmptyCaseBlock
+ */
+EmptyCaseBlock(lcurly:Lexeme, rcurly:Lexeme) : ParseFragment
+{
+	result := ParseFragment(lcurly, rcurly);
+}
+
+/**
+ * EmptyCaseClause
+ */
+EmptyCaseClause(keyword:Lexeme, expression:JSParseNode, colon:Lexeme) : JSParseNode
+{
+	result := CASE(keyword, colon);
+	result += expression;
+}
+
+/**
+ * EmptyDefaultClause
+ */
+EmptyDefaultClause(keyword:Lexeme, expression:JSParseNode, colon:Lexeme) : JSParseNode
+{
+	result := DEFAULT(keyword, colon);
+}
+
+/**
+ * EmptyFunctionBody
+ */
+EmptyFunctionBody(lcurly:Lexeme, rcurly:Lexeme) : JSParseNode
+{
+	result := STATEMEMTS(lcurly, rcurly);
+}
+
+/**
+ * EmptyObject
+ */
+EmptyObject(lcurly:Lexeme, rcurly:Lexeme) : JSParseNode
+{
+	result := OBJECT_LITERAL(lcurly, rcurly);
+}
+
+/**
+ * EmptyParameterList
+ */
+EmptyParameterList(lparen:Lexeme, rparen:Lexeme) : JSParseNode
+{
+	result := EMPTY(lparen, rparen);
+}
+
+/**
+ * EmptyStatement
+ */
+EmptyStatement(semicolon:Lexeme) : JSParseNode
+{
+	result := EMPTY(semicolon);
+}
+
+/**
+ * ExpressionStatement
+ */
+ExpressionStatement(result:JSParseNode, semicolon:Lexeme) : JSParseNode
+{
+	result += semicolon;
+	
+	// not sure how to express these
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * False
+ */
+False(keyword:Lexeme) : JSParseNode
+{
+	result := FALSE(keyword);
+}
+
+/**
+ * Finally
+ */
+Finally(keyword:Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FINALLY(keyword);
+	result += body;
+}
+
+/**
+ * FirstArgument
+ */
+FirstArgument(argument:JSParseNode) : ParseFragment
+{
+	result := ParseFragment();
+	result += argument;
+}
+
+/**
+ * FirstCaseClause
+ */
+FirstCaseClause(clause:JSParseNode) : ParseFragment
+{
+	result := ParseFragment();
+	result += clause;
+}
+
+/**
+ * FirstElement
+ */
+FirstElement(element:JSParseNode) : ParseFragment
+{
+	result := ParseFragment();
+	result += element;
+}
+
+/**
+ * FirstElidedElement
+ */
+FirstElidedElement(elision:ParseFragment, element:JSParseNode) : ParseFragment
+{
+	result := ParseFragment();
+	result += elision;
+	result += element;
+}
+
+/**
+ * FirstElision
+ */
+FirstElision(:Lexeme) : ParseFragment
+{
+	result := ParseFragment(NULL(null));
+}
+
+/**
+ * FirstParameter
+ */
+FirstParameter(identifier:Lexeme) : JSParseNode
+{
+	result := PARAMETERS(IDENTIFIER(identifier));
+}
+
+/**
+ * FirstProperty
+ */
+FirstProperty(identifier:Lexeme, :Lexeme, value:JSParseNode) : ParseFragment
+{
+	property := NAME_VALUE_PAIR(null);
+	property += IDENTIFIER(identifier);
+	property += value;
+	
+	result := ParseFragment();
+	result += property;
+}
+
+/**
+ * FirstSourceElement
+ */
+FirstSourceElement(element:JSParseNode) : ParseFragment
+{
+	result := ParseFragment();
+	result += element;
+}
+
+/**
+ * FirstStatement
+ */
+FirstStatement(statement:JSParseNode) : JSParseNode
+{
+	result := STATEMENTS(null);
+	result += statement;
+}
+
+/**
+ * FirstVarDeclaration
+ */
+FirstVarDeclaration(declaration:JSParseNode) : ParseFragment
+{
+	result := ParseFragment();
+	result += declaration;
+}
+
+/**
+ * ForAdvanceOnlyStatement
+ */
+ForAdvanceOnlyStatement(keyword:Lexeme, :Lexeme, :Lexeme, :Lexeme, advance:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += EMPTY(null);
+	result += EMPTY(null);
+	result += advance;
+	result += body;
+}
+
+/**
+ * ForBodyOnlyStatement
+ */
+ForBodyOnlyStatement(keyword:Lexeme, :Lexeme, :Lexeme, :Lexeme, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += EMPTY(null);
+	result += EMPTY(null);
+	result += EMPTY(null);
+	result += body;
+}
+
+/**
+ * ForConditionOnlyStatement
+ */
+ForConditionOnlyStatement(keyword:Lexeme, :Lexeme, :Lexeme, condition:JSParseNode, :Lexeme, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += EMPTY(null);
+	result += condition;
+	result += EMPTY(null);
+	result += body;
+}
+
+/**
+ * ForInStatement
+ */
+ForInStatement(keyword:Lexeme, :Lexeme, initialize:JSParseNode, :Lexeme, object:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR_IN(keyword);
+	result += initialize;
+	result += object;
+	result += body;
+}
+
+/**
+ * ForInitializeOnlyStatement
+ */
+ForInitializeOnlyStatement(keyword:Lexeme, :Lexeme, initialize:JSParseNode, :Lexeme, :Lexeme, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += initialize;
+	result += EMPTY(null);
+	result += EMPTY(null);
+	result += body;
+}
+
+/**
+ * ForNoAdvanceStatement
+ */
+ForNoAdvanceStatement(keyword:Lexeme, :Lexeme, initialize:JSParseNode, :Lexeme, condition:JSParseNode, :Lexeme, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += initialize;
+	result += condition;
+	result += EMPTY(null);
+	result += body;
+}
+
+/**
+ * ForNoConditionStatement
+ */
+ForNoConditionStatement(keyword:Lexeme, :Lexeme, initialize:JSParseNode, :Lexeme, :Lexeme, advance:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += initialize;
+	result += EMPTY(null);
+	result += advance;
+	result += body;
+}
+
+/**
+ * ForNoInitializeStatement
+ */
+ForNoInitializeStatement(keyword:Lexeme, :Lexeme, :Lexeme, condition:JSParseNode, :Lexeme, advance:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += EMPTY(null);
+	result += condition;
+	result += advance;
+	result += body;
+}
+
+/**
+ * ForStatement
+ */
+ForStatement(keyword:Lexeme, :Lexeme, initialize:JSParseNode, :Lexeme, condition:JSParseNode, :Lexeme, advance:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := FOR(keyword);
+	result += initialize;
+	result += condition;
+	result += advance;
+	result += body;
+}
+
+/**
+ * ForVarInStatement
+ */
+ForVarInStatement(keyword:Lexeme, :Lexeme, :Lexeme, declarations:ParseFragment, :Lexeme, object:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	initialize := VAR(null);
+	initialize += declarations;
+	
+	result := FOR_IN(keyword);
+	result += initialize;
+	result += object;
+	result += body;
+}
+
+/**
+ * ForVarInitializeOnlyStatement
+ */
+ForVarInitializeOnlyStatement(keyword:Lexeme, :Lexeme, :Lexeme, declarations:ParseFragment, :Lexeme, :Lexeme, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	initialize := VAR(null);
+	initialize += declarations;
+	
+	result := FOR(keyword);
+	result += initialize;
+	result += EMPTY(null);
+	result += EMPTY(null);
+	result += body;
+}
+
+/**
+ * ForVarNoAdvanceStatement
+ */
+ForVarNoAdvanceStatement(keyword:Lexeme, :Lexeme, :Lexeme, declarations:ParseFragment, :Lexeme, condition:JSParseNode, :Lexeme, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	initialize := VAR(null);
+	initialize += declarations;
+	
+	result := FOR(keyword);
+	result += initialize;
+	result += condition;
+	result += EMPTY(null);
+	result += body;
+}
+
+/**
+ * ForVarNoConditionStatement
+ */
+ForVarNoConditionStatement(keyword:lexeme, :Lexeme, :Lexeme, declarations:ParseFragment, :Lexeme, :Lexeme, advance:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	initialize := VAR(null);
+	initialize += declarations;
+	
+	result := FOR(keyword);
+	result += initialize;
+	result += EMPTY(null);
+	result += advance;
+	result += body;
+}
+
+/**
+ * ForVarStatement
+ */
+ForVarStatement(keyword:Lexeme, :Lexeme, :Lexeme, declarations:ParseFragment, :Lexeme, condition:JSParseNode, :Lexeme, advance:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	initialize := VAR(null);
+	initialize += declarations;
+	
+	result := FOR(keyword);
+	result += initialize;
+	result += condition;
+	result += advance;
+	result += body;
+}
+
+/**
+ * FunctionBody
+ */
+FunctionBody(lcurly:Lexeme, statements:JSParseNode, rcurly:Lexeme) : JSParseNode
+{
+	result := STATEMENTS(lcurly, rcurly);
+	result += statements;
+}
+
+/**
+ * FunctionDeclaration
+ */
+FunctionDeclaration(keyword:Lexeme, identifier:Lexeme, params:JSParseNode, body:JSParseNode) : JSParseNode
+{
+	result := FUNCTION(keyword);
+	result.name := identifier; // use ATTRIBUTE version for attributes?
+	//result.@name := identifier;
+	result += params;
+	result += body;
+}
+
+/**
+ * FunctionExpression
+ */
+FunctionExpression(keyword:Lexeme, params:JSParseNode, body:JSparseNode) : JSParseNode
+{
+	result := FUNCTION(keyword);
+	result += params;
+	result += body;
+}
+
+/**
+ * GetElement
+ */
+GetElement(expression:JSParseNode, lbracket:Lexeme, indexExpression:JSParseNode, rbracket:Lexeme) : JSParseNode
+{
+	result := GET_ELEMENT(lbracket, rbracket);
+	result += expression;
+	result += indexExpression;
+}
+
+/**
+ * GetProperty
+ */
+GetProperty(expression:JSParseNode, dot:Lexeme, identifier:Lexeme) : JSParseNode
+{
+	result := GET_PROPERTY(dot);
+	result += expression;
+	result += IDENTIFIER(identifier);
+}
+
+/**
+ * GroupExpression
+ */
+GroupExpression(lparen:Lexeme, expression:JSParseNode, rparen:Lexeme) : JSParseNode
+{
+	result := GROUP(lparen, rparen);
+	result += expression;
+}
+
+/**
+ * Identifier
+ */
+Identifier(identifier:Lexeme) : JSParseNode
+{
+	result := IDENTIFIER(identifier);
+}
+
+/**
+ * IfElseStatement
+ */
+IfElseStatement(keyword:Lexeme, :Lexeme, condition:JSParseNode, :Lexeme, trueCase:JSParseNode, :Lexeme, falseCase:JSParseNode) : JSParseNode
+{
+	result := IF(keyword);
+	result += condition;
+	result += trueCase;
+	result += falseCase;
+}
+
+/**
+ * IfStatement
+ */
+IfStatement(keyword:Lexeme, :Lexeme, condition:JSParseNode, :Lexeme, trueCase:JSParseNode) : JSParseNode
+{
+	result := IF(keyword);
+	result += condition;
+	result += trueCase;
+	result += EMPTY(null);
+}
+
+/**
+ * LabelledStatement
+ */
+LabelledStatement(identifier:Lexeme, :Lexeme, statement:JSParseNode) : JSParseNode
+{
+	result := LABELLED(null);
+	result += IDENTIFIER(identifier);
+	result += statement;
+}
+
+/**
+ * NewExpression
+ */
+NewExpression(keyword:Lexeme, expression:JSParseNode, arguments:JSParseNode) : JSParseNode
+{
+	result := CONSTRUCT(keyword);
+	result += expression;
+	result += arguments;
+}
+
+/**
+ * NewExpressionWithoutArguments
+ */
+NewExpressionWithoutArguments(keyword:Lexeme, expression:JSParseNode) : JSParseNode
+{
+	result := CONSTRUCT(keyword);
+	result += expression;
+	result += EMPTY(null);
+}
+
+/**
+ * Null
+ */
+Null(keyword:Lexeme) : JSParseNode
+{
+	result := NULL(keyword);
+}
+
+/**
+ * Number
+ */
+Number(number:Lexeme) : JSParseNode
+{
+	result := NUMBER(number);
+}
+
+/**
+ * ObjectLiteral
+ */
+ObjectLiteral(lcurly:Lexeme, properties:ParseFragment, rcurly:Lexeme) : JSParseNode
+{
+	result := OBJECT_LITERAL(lcurly, rcurly);
+	result += properties;
+}
+
+/**
+ * ParameterList
+ */
+ParameterList(lparen:Lexeme, result:JSParseNode, rparen:Lexeme) : JSParseNode
+{
+	result += lparen;
+	result += rparen;
+}
+
+/**
+ * PostfixExpression
+ */
+PostfixExpression(expression:JSParseNode, operator:Lexeme) : JSParseNode
+{
+	result := switch(operator)
+	{
+		case PLUS_PLUS:		POST_INCREMENT(operator);
+		case MINUS_MINUS:	POST_DECREMENT(operator);
+	}
+	result += expression;
+}
+
+/**
+ * Regex
+ */
+Regex(regex:Lexeme) : JSParseNode
+{
+	result := REGULAR_EXPRESSION(regex);
+}
+
+/**
+ * Return
+ */
+Return(keyword:Lexeme, semicolon:Lexeme) : JSParseNode
+{
+	result := RETURN(keyword, semicolon);
+	result += EMPTY(null);
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * ReturnValue
+ */
+ReturnValue(keyword:Lexeme, expression:JSParseNode, semicolon:Lexeme) : JSParseNode
+{
+	result := RETURN(keyword, semicolon);
+	result += expression;
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * String
+ */
+String(string:Lexeme) : JSParseNode
+{
+	result := STRING(string);
+}
+
+/**
+ * SwitchStatement
+ */
+SwitchStatement(keyword:Lexeme, :Lexeme, expression:JSParseNode, :Lexeme, clauses:ParseFragment) : JSParseNode
+{
+	result := SWITCH(keyword);
+	result += expression;
+	result += clauses;
+}
+
+/**
+ * This
+ */
+This(keyword:Lexeme) : JSParseNode
+{
+	result := THIS(keyword);
+}
+
+/**
+ * ThrowStatement
+ */
+ThrowStatement(keyword:Lexeme, expression:JSParseNode, semicolon:Lexeme) : JSParseNode
+{
+	result := THROW(keyword, semicolon);
+	result += expression;
+}
+
+/**
+ * True
+ */
+True(keyword:Lexeme) : JSParseNode
+{
+	result := TRUE(keyword);
+}
+
+/**
+ * TryCatchStatement
+ */
+TryCatchStatement(keyword:Lexeme, body:JSParseNode, catchNode:JSParseNode) : JSParseNode
+{
+	result := TRY(keyword);
+	result += body;
+	result += catchNode;
+	result += EMPTY(null);
+}
+
+/**
+ * TryFinallyStatement
+ */
+TryFinallyStatement(keyword:Lexeme, body:JSParseNode, finallyNode:JSParseNode) : JSParseNode
+{
+	result := TRY(keyword);
+	result += body;
+	result += EMPTY(null);
+	result += finallyNode;
+}
+
+/**
+ * TryCatchFinallyStatement
+ */
+TryCatchFinallyStatement(keyword:Lexeme, body:JSParseNode, catchNode:JSParseNode, finallyNode:JSParseNode) : JSParseNode
+{
+	result := TRY(keyword);
+	result += body;
+	result += catchNode;
+	result += finallyNode;
+}
+
+/**
+ * UnaryExpression
+ */
+UnaryExpression(operator:Lexeme, expression:JSParseNode) : JSParseNode
+{
+	result := switch(operator)
+	{
+		case DELETE:		DELETE(operator);
+		case EXCLAMATION:	LOGICAL_NOT(operator);
+		case MINUS:			NEGATE(operator);
+		case MINUS_MINUS:	PRE_DECREMENT(operator);
+		case PLUS:			POSITIVE(operator);
+		case PLUS_PLUS:		PRE_INCREMENT(operator);
+		case TILDE:			BITWISE_NOT(operator);
+		case TYPEOF:		TYPEOF(operator);
+		case VOID:			VOID(operator);
+	}
+	result += expression;
+}
+
+/**
+ * VarDeclaration
+ */
+VarDeclaration(identifier:Lexeme) : JSParseNode
+{
+	result := DECLARATION(null);
+	result += IDENTIFIER(identifier);
+	result += EMPTY(null);
+}
+
+/**
+ * VarDeclarationAssignment
+ */
+VarDeclarationAssignment(identifier:Lexeme, :Lexeme, assignment:JSParseNode) : JSParseNode
+{
+	result := DECLARATION(null);
+	result += IDENTIFIER(identifier);
+	result += assignment;
+}
+
+/**
+ * VarStatement
+ */
+VarStatement(keyword:Lexeme, declarations:ParseFragment, semicolon:Lexeme) : JSParseNode
+{
+	result := VAR(keyword, semicolon);
+	result += declarations;
+	
+	// not sure how to express this
+	result.setIncludesSemicolon(true);
+}
+
+/**
+ * WhileStatement
+ */
+WhileStatement(keyword:Lexeme, :Lexeme, condition:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := WHILE(keyword);
+	result += condition;
+	result += body;
+}
+
+/**
+ * WithStatement
+ */
+WithStatement(keyword:Lexeme, :Lexeme, expression:JSParseNode, :Lexeme, body:JSParseNode) : JSParseNode
+{
+	result := WITH(keyword);
+	result += expression;
+	result += body;
+}

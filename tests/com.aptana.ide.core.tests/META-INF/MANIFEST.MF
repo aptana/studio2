@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Aptana Core IDE Tests Plug-in
+Bundle-SymbolicName: com.aptana.ide.core.tests
+Bundle-Version: 1.2.0.qualifier
+Bundle-Activator: com.aptana.ide.core.tests.TestingPlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ com.aptana.ide.core,
+ org.eclipse.ui,
+ org.junit
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Export-Package: com.aptana.ide.core.tests,
+ com.aptana.ide.core.tests.util

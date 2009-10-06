@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.server.serverTypes">
+      <serverType
+            class="com.aptana.ide.server.tests.ServerTypeDelegate"
+            id="com.aptana.ide.server.tests.testType"
+            launchModes="run"
+            name="Test Server Type"
+            supportsPublish="true"
+            supportsRestart="true">
+      </serverType>
+   </extension>
+   <extension
+         point="com.aptana.ide.server.moduleTypes">
+      <moduleType
+            class="com.aptana.ide.server.tests.TestModuleType"
+            id="com.aptana.ide.server.tests.testModuleType">
+      </moduleType>
+   </extension>
+
+</plugin>

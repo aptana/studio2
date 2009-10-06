@@ -1,0 +1,66 @@
+/** comment */
+BODY, P, TABLE, TD, TH, BR, DIV, SPAN
+{
+	font-family : Verdana, Arial, Helvetica;
+	font-size : 12px;
+	color: #000000;
+}
+
+H1 
+{
+	font-family : Verdana, Arial, Helvetica;
+	font-size : 22px;
+	font-weight: bold;/** comment */
+	text-decoration: none;
+	color: #3333cc;
+	text-align: left;
+}
+
+LI /** comment */
+{
+	font-family : Verdana, Arial, Helvetica;
+	font-size : 14px;
+	font-weight: none;
+	text-decoration: none;
+	color: brown;
+	text-align: left;
+}
+
+.TableText
+{
+	font-family : Verdana, Arial, Helvetica;
+	font-size : 12px;
+	color: #000000;
+}
+/** comment */
+.sideBarLink
+{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #ffff99;
+}
+
+.sideBarLink:Hover 
+{
+      text-decoration: none;
+	color: #ff3333;
+}
+
+.bodyText /** comment */
+{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 11px;/** comment */
+	font-weight: normal;/** comment */
+	color: #000000;
+}
+
+.copyright 
+{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	font-weight: normal;
+	color: #000000;
+}
+/** comment */

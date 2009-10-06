@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript>
+<class type="myType" superclass="mySuperClass">
+<deprecated>This is a deprecated class</deprecated>
+</class>
+</javascript>

@@ -1,0 +1,413 @@
+<testSuite>
+  <testCases>
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            var foo4 = {
+                foo4fun:function() {}
+            };
+
+            var foo4test = new foo4.%%
+            /* can't new foo4 as it's an object literal */
+		  ]]></documentSource>
+		  <description>foo4 should have "foo4fun" attached (during a "new" statement)</description>
+	      <completionProposals>
+	        <JSCompletionProposal><suggestedSelection>true</suggestedSelection><defaultSelection>false</defaultSelection><displayString>foo4fun</displayString><replacementString>foo4fun</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>   
+    <testCase>   
+      <ignoreTest>true</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+    		event.%%;
+		  ]]></documentSource>
+		  <description>global event object should have "x" attached</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>false</defaultSelection><displayString>x</displayString><replacementString>x</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>  
+    <testCase>   
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+       		var e = window.event;
+    		e.%%;
+		  ]]></documentSource>
+		  <description>e should have "x" attached (a is assigned to window.event)</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>false</defaultSelection><displayString>x</displayString><replacementString>x</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>  
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+       			var arr = new Array();
+				function go()
+				{
+					arr.%%
+				}
+		  ]]></documentSource>
+		  <description>arr should have "index" attached</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>false</defaultSelection><displayString>index</displayString><replacementString>index</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>  
+
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            var a = document.body;
+            a.%%;
+		  ]]></documentSource>
+		  <description>a should have "all" attached (a is assigned to document.body)</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>false</defaultSelection><displayString>all</displayString><replacementString>all</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>  
+	    
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            function foo() {}
+            foo.prototype.bar = function() {};
+            var a = new foo();
+            a.%%
+		  ]]></documentSource>
+		  <description>a should have "bar" attached</description>
+	      <completionProposals>
+	        <JSCompletionProposal><suggestedSelection>true</suggestedSelection><defaultSelection>false</defaultSelection><displayString>bar</displayString><replacementString>bar</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            var foo2 = function() {};
+            foo2.prototype.bar2 = function() {};
+            var a = new foo2();
+            a.b%%
+		  ]]></documentSource>
+		  <description>a should have "bar2" attached</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>true</defaultSelection><displayString>bar2</displayString><replacementString>bar2</replacementString><replacementLength>1</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            var foo3 = new Function();
+            foo3.prototype.bar3 = function() {};
+            var foo3test = new foo3();
+            foo3test.%%;
+		  ]]></documentSource>
+		  <description>a should have "bar3" attached</description>
+	      <completionProposals>
+	        <JSCompletionProposal><suggestedSelection>true</suggestedSelection><defaultSelection>false</defaultSelection><displayString>bar3</displayString><replacementString>bar3</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>    
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            function foo6() {
+                this.foo5 = {
+                    foo4fun:function() {}
+                }; 
+            }
+            var foo6test = new foo6();
+            var xyz = new foo6test.foo5.%%
+		  ]]></documentSource>
+		  <description>foo6test.foo5 should have "foo4fun" attached (during a "new" statement)</description>
+	      <completionProposals>
+	        <JSCompletionProposal><suggestedSelection>true</suggestedSelection><defaultSelection>false</defaultSelection><displayString>foo4fun</displayString><replacementString>foo4fun</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>  
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            MyBase.ClassA = function() {this.initialize.apply(this, arguments);};
+create(MyBase.ClassA);
+
+Object.extend(MyBase.ClassA.prototype, { 
+  /**
+   * Initializes things
+   * @alias MyBase.ClassA.prototype.doSpecialThingA
+   */
+  doSpecialThingA : function() { 
+  }
+  /* more functions */ 
+});
+
+/**
+ * @extends {MyBase.ClassA}
+ */
+MyBase.ClassB = function() {};
+
+// inherit from MyBase.SuperClass
+Object.extend( MyBase.SubclassB.prototype, MyBase.Superclass.prototype );
+
+// define our own functionality
+Object.extend( MyBase.SubclassB.prototype, {
+  /**
+   * Initializes things
+   * @alias MyBase.ClassB.prototype.doSpecialThingB
+   */
+   doSpecialThingB: function() {
+      /* something special in that "B" way */
+   }
+}); 
+
+var y = new MyBase.ClassB();
+y.%%
+		  ]]></documentSource>
+		  <description>y should have doSpecialThingA and doSpecialThingB in code assist</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>false</defaultSelection><displayString>doSpecialThingA</displayString><replacementString>doSpecialThingA</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	        <JSCompletionProposal><defaultSelection>false</defaultSelection><displayString>doSpecialThingB</displayString><replacementString>doSpecialThingB</replacementString><replacementLength>0</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>      
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+            function MyBase() {};
+            MyBase.ClassA = function() {};     
+            MyBase.ClassA.prototype.initialize = function() {};
+            var y = new MyBase();
+            var x = new MyBase.ClassA();
+            x.in%%
+		  ]]></documentSource>
+		  <description>x should have initialize attached</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>true</defaultSelection><displayString>initialize</displayString><replacementString>initialize</replacementString><replacementLength>2</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>      
+      <testCase>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+	  	  
+	   /** 
+		Shows a message box
+		@param {String} message 
+		*/ 
+		function showAlert(message) 
+		
+		{ 
+		
+		alert(message.%%); 
+		
+		}
+	  ]]></documentSource>
+
+	  <description>Should parse scriptdoc tags for code assist</description>
+      <completionProposals>
+        <JSCompletionProposal>
+          <displayString>length</displayString>
+          <replacementString>length</replacementString>
+        </JSCompletionProposal>
+        <JSCompletionProposal>
+          <displayString>substring</displayString>
+          <replacementString>substring</replacementString>
+        </JSCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+    </testCase>
+    <testCase>
+      <ignoreTest>false</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+        /**
+         * @alias MyBase
+         */
+        var MyBase = new Object(); 
+        
+        /**
+         * @alias MyBase.ClassA
+         */
+        MyBase.ClassA = Class.create(); 
+        
+        Object.extend(MyBase.ClassA.prototype, { 
+        
+          /**
+           * The initialize function
+           * @alias MyBase.ClassA.prototype.initialize
+           */
+          initialize : function() { 
+          } 
+          /* more functions */ 
+        });
+        
+        /**
+         * @return {String}
+         */
+        function foo()
+        {
+            return new MyBase.ClassA();
+        }
+        
+        /**
+         * @type MyBase.ClassA
+         */       
+        var a = foo();
+        a.ini%%
+		  ]]></documentSource>
+		  <description>Should show "initialize" as a content assist proposal</description>
+	      <completionProposals>
+	        <JSCompletionProposal><defaultSelection>true</defaultSelection><displayString>initialize</displayString><replacementString>initialize</replacementString><replacementLength>3</replacementLength></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />    
+	</testCase>
+    <testCase>
+	<!-- need to add in MochiKit library items -->
+	<ignoreTest>true</ignoreTest>
+		  <fileExtension>js</fileExtension>
+		  <documentSource><![CDATA[
+		    "drawSortedRows": function (key, forward, clicked)
+			{
+				log('drawSortedRows', key, forward);
+				this.sortkey = key;
+				var cmp = (forward ? keyComparator : reverseK%% )
+			}
+		  ]]></documentSource>
+		  <description>Non-browser-doc'd items should not show having browser support</description>
+	      <completionProposals>
+	        <JSCompletionProposal><displayString>reverseKeyComparator</displayString></JSCompletionProposal>
+	      </completionProposals>
+	      <invalidCompletionProposals />
+	      <profile>
+	      	<ProfileFile>
+	      		<fileName></fileName>
+	      		<documentSource>
+	      		<![CDATA[
+	      		]]>
+	      		</documentSource>
+	      	</ProfileFile>
+	      </profile>      
+	</testCase>
+    <testCase>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[document.%%]]></documentSource>
+	  <description>Should have correct code assist proposals for document.</description>
+      <completionProposals>
+        <JSCompletionProposal><displayString>body</displayString><replacementString>body</replacementString></JSCompletionProposal>
+        <JSCompletionProposal><displayString>getElementById</displayString><replacementString>getElementById</replacementString></JSCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+    </testCase>  
+    <testCase>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+	   /** 
+		* @method Prints a card */ 
+		function PrintCard() { 
+		Greet(&quot;test&quot;); 
+		line1 = &quot;&lt;b&gt;&quot; + &quot;Name: &lt;/b&gt;&quot; + this.name + &quot;&lt;br&gt;\n&quot;; 
+		document.write(line1); 
+		} 
+		
+	   /** 
+		* 
+		* @param {String} name */ 
+		function Card(name) { 
+		this.name = name;
+		this.%%
+		}
+	  ]]></documentSource>
+
+	  <description>Intelliguess should offer previously-used properties</description>
+      <completionProposals>
+        <JSCompletionProposal>
+          <displayString>name</displayString>
+          <replacementString>name</replacementString>
+        </JSCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+    </testCase>
+    <testCase>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+	   document.body.%%
+	  ]]></documentSource>
+
+	  <description>Should have correct code assist proposals for document.body</description>
+      <completionProposals>
+        <JSCompletionProposal><displayString>getElementsByTagNameNS</displayString><replacementString>getElementsByTagNameNS</replacementString></JSCompletionProposal>
+        <JSCompletionProposal><displayString>firstChild</displayString><replacementString>firstChild</replacementString></JSCompletionProposal>
+        <JSCompletionProposal><displayString>isPrototypeOf</displayString><replacementString>isPrototypeOf</replacementString></JSCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+    </testCase>
+    <testCase>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+	   document.createElement().%%
+	  ]]></documentSource>
+	  <description>Should have correct code assist proposals</description>
+      <completionProposals>
+        <JSCompletionProposal><displayString>applyElement</displayString><replacementString>applyElement</replacementString></JSCompletionProposal>
+        <JSCompletionProposal><displayString>getElementsByTagNameNS</displayString><replacementString>getElementsByTagNameNS</replacementString></JSCompletionProposal>
+        <JSCompletionProposal><displayString>firstChild</displayString><replacementString>firstChild</replacementString></JSCompletionProposal>
+        <JSCompletionProposal><displayString>isPrototypeOf</displayString><replacementString>isPrototypeOf</replacementString></JSCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+    </testCase>
+    <testCase>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+	   win%%
+	  ]]></documentSource>
+	  <description>Should suggest window, not window()</description>
+      <completionProposals>
+        <JSCompletionProposal><defaultSelection>true</defaultSelection><displayString>window</displayString><replacementString>window</replacementString><replacementLength>3</replacementLength></JSCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+      </testCase>
+    <testCase>
+      <!-- this one needs a little work. The idea is that just-typed items should not appear in the environment -->
+      <ignoreTest>true</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+	   document.getElem%%
+	  ]]></documentSource>
+	  <description>Should not have getElem in code assist</description>
+      <completionProposals />
+      <invalidCompletionProposals>
+        <JSCompletionProposal><displayString>getElem</displayString></JSCompletionProposal>
+      </invalidCompletionProposals>
+    </testCase>
+    <testCase>
+      <ignoreTest>true</ignoreTest>
+	  <fileExtension>js</fileExtension>
+	  <documentSource><![CDATA[
+	  	var xhr = getXMLHttpRequest()
+		var d = sendXMLHttpRequest(xhr);
+		d.%%
+	  ]]></documentSource>
+	  <description>Should have correct code assist proposals based on sdoc</description>
+      <completionProposals>
+        <JSCompletionProposal><displayString>callback</displayString></JSCompletionProposal>
+      </completionProposals>
+      <invalidCompletionProposals />
+    </testCase>
+    <!-- JS keywords in code assist -->
+    <!-- JS keywords only present in global scope -->
+    
+  </testCases>
+</testSuite>
