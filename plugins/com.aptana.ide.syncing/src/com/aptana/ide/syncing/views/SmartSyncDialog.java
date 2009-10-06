@@ -117,7 +117,6 @@ import com.aptana.ide.core.ui.views.fileexplorer.FileExplorerView;
 import com.aptana.ide.io.file.FilePlugin;
 import com.aptana.ide.syncing.FileDownloadAction;
 import com.aptana.ide.syncing.FileUploadAction;
-import com.aptana.ide.syncing.ProjectSynchronizationUtils;
 import com.aptana.ide.syncing.Synchronizer;
 import com.aptana.ide.syncing.SyncingPlugin;
 import com.aptana.ide.ui.io.navigator.FileNavigatorView;
@@ -1614,9 +1613,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
     }
 
     private boolean isCloudSync() {
-        String property = ProjectSynchronizationUtils.COM_APTANA_IDE_SERVER_CLOUD_SYNCING_CLOUD_VIRTUAL_FILE_MANAGER;
-        return file1.getFileManager().getClass().getName().equals(property)
-                || file2.getFileManager().getClass().getName().equals(property);
+        return false;
     }
 
     private static String getFilename(VirtualFileSyncPair item) {

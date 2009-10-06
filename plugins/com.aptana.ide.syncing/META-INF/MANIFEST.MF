@@ -20,6 +20,7 @@ Require-Bundle: org.eclipse.ui,
  com.aptana.ide.io.file,
  com.aptana.ide.epl,
  com.aptana.ide.ui.io,
+ com.aptana.ide.syncing.core,
  com.aptana.ide.syncing.ui
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
