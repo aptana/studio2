@@ -43,7 +43,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
-import com.aptana.ide.core.PlatformUtils;
 import com.aptana.ide.core.epl.XMLMemento;
 import com.aptana.ide.core.io.ConnectionPointUtils;
 
@@ -61,8 +60,7 @@ public class DefaultSiteConnection extends SiteConnection {
     private static final String ELEMENT_ROOT = "connection"; //$NON-NLS-1$
     private static final String ELEMENT_SITE = "connection"; //$NON-NLS-1$
 
-    private static final String HOME_DIR = PlatformUtils
-            .expandEnvironmentStrings(PlatformUtils.HOME_DIRECTORY);
+    private static final String HOME_DIR = System.getProperty("user.home"); //$NON-NLS-1$
 
     private static DefaultSiteConnection fInstance;
 

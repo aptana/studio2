@@ -36,14 +36,11 @@ package com.aptana.ide.io.file;
 
 import java.util.Hashtable;
 
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import com.aptana.ide.core.ui.io.file.DeleteResourceShortcutListener;
 import com.aptana.ide.core.ui.io.file.IPreferenceConstants;
 
 /**
@@ -78,9 +75,6 @@ public class FilePlugin extends AbstractUIPlugin
 	public void start(BundleContext context) throws Exception
 	{
 		super.start(context);
-		
-		DeleteResourceShortcutListener listener = new DeleteResourceShortcutListener();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
 		
 		getPreferenceStore().setDefault(IPreferenceConstants.FILE_PERMISSION, DEFAULT_FILE_PERMISSIONS);
 		getPreferenceStore().setDefault(IPreferenceConstants.DIRECTORY_PERMISSION, DEFAULT_DIRECTORY_PERMISSIONS);

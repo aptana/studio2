@@ -51,107 +51,142 @@ import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
  * @author Max Stepanov
- *
+ * 
  */
 public class SiteConnection extends PlatformObject implements ISiteConnection {
 
-	private static final String ELEMENT_NAME = "name";
-	private static final String ELEMENT_SOURCE = "source"; //$NON-NLS-1$
-	private static final String ELEMENT_DESTINATION = "destination"; //$NON-NLS-1$
-	private static final String ELEMENT_EXCLUDES = "excludes"; //$NON-NLS-1$
-	private static final String ELEMENT_PATH = "path"; //$NON-NLS-1$
-	private static final String ELEMENT_WILDCARD = "wildcard"; //$NON-NLS-1$
+    private static final String ELEMENT_NAME = "name";
+    private static final String ELEMENT_SOURCE = "source"; //$NON-NLS-1$
+    private static final String ELEMENT_DESTINATION = "destination"; //$NON-NLS-1$
+    private static final String ELEMENT_EXCLUDES = "excludes"; //$NON-NLS-1$
+    private static final String ELEMENT_PATH = "path"; //$NON-NLS-1$
+    private static final String ELEMENT_WILDCARD = "wildcard"; //$NON-NLS-1$
 
-	private String name;
-	private IConnectionPoint sourceConnectionPoint;
-	private IConnectionPoint destinationConnectionPoint;
-	private List<Object> excludes = new ArrayList<Object>();
+    private String name;
+    private IConnectionPoint sourceConnectionPoint;
+    private IConnectionPoint destinationConnectionPoint;
+    private List<Object> excludes = new ArrayList<Object>();
 
-	private boolean dirty;
+    private boolean dirty;
 
-	/**
+    /**
 	 * 
 	 */
-	/* package */ SiteConnection() {
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.syncing.core.ISiteConnection#getName()
-	 */
-	public String getName() {
-		return name;
-	}
+    /* package */SiteConnection() {
+    }
 
-	/**
-	 * set site connection name
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-		notifyChanged();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.aptana.ide.syncing.core.ISiteConnection#getName()
+     */
+    public String getName() {
+        return name;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.syncing.core.ISiteConnection#getSource()
-	 */
-	public IConnectionPoint getSource() {
-		return sourceConnectionPoint;
-	}
+    /**
+     * set site connection name
+     * 
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+        notifyChanged();
+    }
 
-	/**
-	 * set source connection point
-	 * @param source
-	 */
-	public void setSource(IConnectionPoint source) {
-		this.sourceConnectionPoint = source;
-		notifyChanged();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.aptana.ide.syncing.core.ISiteConnection#getSource()
+     */
+    public IConnectionPoint getSource() {
+        return sourceConnectionPoint;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.syncing.core.ISiteConnection#getDestination()
-	 */
-	public IConnectionPoint getDestination() {
-		return destinationConnectionPoint;
-	}
+    /**
+     * set source connection point
+     * 
+     * @param source
+     */
+    public void setSource(IConnectionPoint source) {
+        this.sourceConnectionPoint = source;
+        notifyChanged();
+    }
 
-	/**
-	 * set destination connection point
-	 * @param destination
-	 */
-	public void setDestination(IConnectionPoint destination) {
-		this.destinationConnectionPoint = destination;
-		notifyChanged();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.aptana.ide.syncing.core.ISiteConnection#getDestination()
+     */
+    public IConnectionPoint getDestination() {
+        return destinationConnectionPoint;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.syncing.core.ISiteConnection#excludes(org.eclipse.core.runtime.IPath)
-	 */
-	public boolean excludes(IPath path) {
-		for (Object i : excludes) {
-			if (i instanceof IPath) {
-				if (path.equals(i)) {
-					return true;
-				}
-			}
-		}
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public void addExcludePath(IPath path) {
-		if (!excludes.contains(path)) {
-			excludes.add(path);
-		}
-	}
-	
-	public void addExcludeWildcard(String wildcard) {
-		if (!excludes.contains(wildcard)) {
-			excludes.add(wildcard);
-		}		
-	}
+    /**
+     * set destination connection point
+     * 
+     * @param destination
+     */
+    public void setDestination(IConnectionPoint destination) {
+        this.destinationConnectionPoint = destination;
+        notifyChanged();
+    }
 
-	@Override
-	public String toString() {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.aptana.ide.syncing.core.ISiteConnection#excludes(org.eclipse.core
+     * .runtime.IPath)
+     */
+    public boolean excludes(IPath path) {
+        for (Object i : excludes) {
+            if (i instanceof IPath) {
+                if (path.equals(i)) {
+                    return true;
+                }
+            }
+        }
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public void addExcludePath(IPath path) {
+        if (!excludes.contains(path)) {
+            excludes.add(path);
+        }
+    }
+
+    public void addExcludeWildcard(String wildcard) {
+        if (!excludes.contains(wildcard)) {
+            excludes.add(wildcard);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof SiteConnection)) {
+            return false;
+        }
+        SiteConnection otherSite = (SiteConnection) o;
+        return sourceConnectionPoint == otherSite.sourceConnectionPoint
+                && destinationConnectionPoint == otherSite.destinationConnectionPoint;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 13;
+        if (sourceConnectionPoint != null) {
+            hashCode += sourceConnectionPoint.hashCode() * 31;
+        }
+        if (destinationConnectionPoint != null) {
+            hashCode += destinationConnectionPoint.hashCode() * 31;
+        }
+        return hashCode;
+    }
+
+    @Override
+    public String toString() {
         StringBuilder text = new StringBuilder();
         text.append("("); //$NON-NLS-1$
         IConnectionPoint source = getSource();
@@ -179,65 +214,68 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
         }
         text.append(")"); //$NON-NLS-1$
 
-	    return text.toString();
-	}
+        return text.toString();
+    }
 
-	protected void loadState(IMemento memento) {
-		IMemento child = memento.getChild(ELEMENT_NAME);
-		if (child != null) {
-			name = child.getTextData();
-		}		
-		child = memento.getChild(ELEMENT_SOURCE);
-		if (child != null) {
-			URI uri = URI.create(child.getTextData());
-			sourceConnectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
-		}
-		child = memento.getChild(ELEMENT_DESTINATION);
-		if (child != null) {
-			URI uri = URI.create(child.getTextData());
-			destinationConnectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
-		}
-		child = memento.getChild(ELEMENT_EXCLUDES);
-		if (child != null) {
-			for (IMemento i : child.getChildren(ELEMENT_PATH)) {
-				excludes.add(Path.fromPortableString(i.getTextData()));
-			}
-			for (IMemento i : child.getChildren(ELEMENT_WILDCARD)) {
-				excludes.add(i.getTextData());
-			}
-		}
-	}
-	
-	protected void saveState(IMemento memento) {
-		memento.createChild(ELEMENT_NAME).putTextData(name);
-		if (sourceConnectionPoint != null) {
-			memento.createChild(ELEMENT_SOURCE).putTextData(sourceConnectionPoint.getRootURI().toString());
-		}
-		if (destinationConnectionPoint != null) {
-			memento.createChild(ELEMENT_DESTINATION).putTextData(destinationConnectionPoint.getRootURI().toString());
-		}
-		if (!excludes.isEmpty()) {
-			IMemento excludesMemento = memento.createChild(ELEMENT_EXCLUDES);
-			for (Object i : excludes) {
-				if (i instanceof IPath) {
-					excludesMemento.createChild(ELEMENT_PATH).putTextData(((IPath) i).toPortableString());
-				} else if (i instanceof String) {
-					excludesMemento.createChild(ELEMENT_PATH).putTextData((String) i);					
-				}
-			}
-		}
-	}
+    protected void loadState(IMemento memento) {
+        IMemento child = memento.getChild(ELEMENT_NAME);
+        if (child != null) {
+            name = child.getTextData();
+        }
+        child = memento.getChild(ELEMENT_SOURCE);
+        if (child != null) {
+            URI uri = URI.create(child.getTextData());
+            sourceConnectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
+        }
+        child = memento.getChild(ELEMENT_DESTINATION);
+        if (child != null) {
+            URI uri = URI.create(child.getTextData());
+            destinationConnectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
+        }
+        child = memento.getChild(ELEMENT_EXCLUDES);
+        if (child != null) {
+            for (IMemento i : child.getChildren(ELEMENT_PATH)) {
+                excludes.add(Path.fromPortableString(i.getTextData()));
+            }
+            for (IMemento i : child.getChildren(ELEMENT_WILDCARD)) {
+                excludes.add(i.getTextData());
+            }
+        }
+    }
 
-	protected final void notifyChanged() {
-		dirty = true;
-	}
-	
-	/* package */ final boolean isChanged() {
-		try {
-			return dirty;
-		} finally {
-			dirty = false;
-		}		
-	}
+    protected void saveState(IMemento memento) {
+        memento.createChild(ELEMENT_NAME).putTextData(name);
+        if (sourceConnectionPoint != null) {
+            memento.createChild(ELEMENT_SOURCE).putTextData(
+                    sourceConnectionPoint.getRootURI().toString());
+        }
+        if (destinationConnectionPoint != null) {
+            memento.createChild(ELEMENT_DESTINATION).putTextData(
+                    destinationConnectionPoint.getRootURI().toString());
+        }
+        if (!excludes.isEmpty()) {
+            IMemento excludesMemento = memento.createChild(ELEMENT_EXCLUDES);
+            for (Object i : excludes) {
+                if (i instanceof IPath) {
+                    excludesMemento.createChild(ELEMENT_PATH).putTextData(
+                            ((IPath) i).toPortableString());
+                } else if (i instanceof String) {
+                    excludesMemento.createChild(ELEMENT_PATH).putTextData((String) i);
+                }
+            }
+        }
+    }
+
+    protected final void notifyChanged() {
+        dirty = true;
+    }
+
+    /* package */final boolean isChanged() {
+        try {
+            return dirty;
+        } finally {
+            dirty = false;
+        }
+    }
 
 }

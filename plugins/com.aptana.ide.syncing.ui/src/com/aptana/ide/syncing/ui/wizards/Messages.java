@@ -108,6 +108,13 @@ public class Messages extends NLS {
      */
     public static String SyncImportPage_TITLE;
 
+    public static String RemoteConnectionSelectionPage_Connections;
+    public static String RemoteConnectionSelectionPage_ERR_SelectSiteOrCreateNewOne;
+    public static String RemoteConnectionSelectionPage_LBL_DownloadOnFinish;
+    public static String RemoteConnectionSelectionPage_LBL_NewConnection;
+    public static String RemoteConnectionSelectionPage_LBL_Options;
+    public static String RemoteConnectionSelectionPage_LBL_SelectRemoteLocationOfThisProject;
+
     public static String RemoteProjectWizard_LBL_CreateNameAndLocationForLocalProject;
     public static String RemoteProjectWizard_MSG_CreatingRemoteProject;
     public static String RemoteProjectWizard_TTL_ConnectHostedSiteWizard;

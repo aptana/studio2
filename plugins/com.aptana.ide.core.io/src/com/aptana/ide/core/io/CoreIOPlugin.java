@@ -37,6 +37,7 @@ package com.aptana.ide.core.io;
 
 import java.util.WeakHashMap;
 
+import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ISaveContext;
 import org.eclipse.core.resources.ISaveParticipant;
 import org.eclipse.core.resources.ISavedState;
@@ -51,6 +52,7 @@ import org.osgi.framework.BundleContext;
 
 import com.aptana.ide.core.io.auth.AuthenticationManager;
 import com.aptana.ide.core.io.auth.IAuthenticationManager;
+import com.aptana.ide.core.io.internal.DeleteResourceShortcutListener;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -58,7 +60,7 @@ import com.aptana.ide.core.io.auth.IAuthenticationManager;
 public class CoreIOPlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.aptana.ide.core.io";
+	public static final String PLUGIN_ID = "com.aptana.ide.core.io"; //$NON-NLS-1$
 	
 	// The shared instance
 	private static CoreIOPlugin plugin;
@@ -86,6 +88,9 @@ public class CoreIOPlugin extends Plugin {
 				ConnectionPointManager.getInstance().loadState(getStateLocation().append(location));
 			}
 		}
+
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(
+                new DeleteResourceShortcutListener(), IResourceChangeEvent.POST_CHANGE);
 	}
 
 	/*

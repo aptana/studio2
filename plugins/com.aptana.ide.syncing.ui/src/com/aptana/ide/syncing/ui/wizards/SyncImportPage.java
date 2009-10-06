@@ -55,7 +55,6 @@ import org.eclipse.swt.widgets.Text;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.preferences.IPreferenceConstants;
