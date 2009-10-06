@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<javascript>
+	<class type="myClass">
+		<properties>
+			<property name="myStaticProperty" type="String" scope="static">
+			</property>
+		</properties>
+	</class>
+</javascript>

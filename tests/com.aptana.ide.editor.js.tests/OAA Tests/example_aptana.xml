@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript>
+<class type="myType" superclass="mySuperClass">
+<examples>
+<example>This is a class example</example>
+</examples>
+</class>
+</javascript>

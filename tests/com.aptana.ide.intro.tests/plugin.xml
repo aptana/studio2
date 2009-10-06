@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+         point="org.eclipse.ui.actionSets">
+         <actionSet
+			id="com.aptana.ide.intro.test.actionSet"
+			label="Aptana Tests"
+			visible="true">
+		     <action
+				         class="com.aptana.ide.intro.tests.OpenTestPageAction"
+				         id="TestPage.Action"
+				         label="Aptana Test Page..."
+				         menubarPath="help/testPageGroup" 
+				         style="push"/>
+	    </actionSet>
+    </extension>
+ <extension
+       point="com.aptana.ide.intro.requiredFeatures">
+    <feature
+          id="com.aptana.ide.intro.tests.feature1"
+          label="label"
+          url="url">
+       <conflictsWith
+             featureId="com.aptana.ide.intro.tests.conflictsWith1">
+       </conflictsWith>
+    </feature>
+ </extension>
+</plugin>

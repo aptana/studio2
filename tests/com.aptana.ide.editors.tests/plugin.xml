@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.actionSets">
+			  <actionSet
+			id="com.aptana.ide.test.actionSet"
+			label="Test Action Set"
+			visible="true">
+			<action
+			   class="com.aptana.ide.editors.junit.TestCopyPasteAction"
+			   id="com.aptana.ide.junit.TestCopyPasteAction"
+			   label="Test Copy/Paste"
+			   state="true"
+			   style="push"
+			   toolbarPath="testGroup"
+			   tooltip="Run Copy/Paste Test"/>
+			   <action
+			   class="com.aptana.ide.editors.junit.TestSelectionFormattingAction"
+			   id="com.aptana.ide.junit.TestSelectionFormattingAction"
+			   label="Test Selection Formating"
+			   state="true"
+			   style="push"
+			   toolbarPath="testGroup"
+			   tooltip="TestSelectionFormattingAction"/>
+			  </actionSet>
+     </extension>
+</plugin>

@@ -131,7 +131,7 @@ public final class WorkspaceConnectionPoint extends ConnectionPoint {
 		this.path = resource.getFullPath();
 	}
 	
-	protected IPath getPath() {
+	public IPath getPath() {
 		return path;
 	}
 

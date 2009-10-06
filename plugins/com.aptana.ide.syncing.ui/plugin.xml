@@ -679,5 +679,22 @@
          </description>
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            canFinishEarly="false"
+            category="com.aptana.ide.aptana.projects"
+            class="com.aptana.ide.syncing.ui.wizards.RemoteProjectWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="true"
+            icon="icons/full/obj16/remote_project.png"
+            id="com.aptana.ide.syncing.ui.wizards.RemoteProjectWizard"
+            name="%ExistingHostedSite.wizard.name"
+            project="true">
+         <description>
+            %ExistingHostedSite.wizard.description
+         </description>
+      </wizard>
+   </extension>
 
 </plugin>

@@ -1225,7 +1225,11 @@ public class JSCodeFormatter extends BaseFormatter
 		int ti = right.getTypeIndex();
 		if (ti == JSParseNodeTypes.FUNCTION || ti == JSParseNodeTypes.OBJECT_LITERAL)
 		{
-			isNewLine = true;
+			// FIXME If empty object literal and user has formatting set to keep braces on same line, don't force a newline!
+			if (ti == JSParseNodeTypes.OBJECT_LITERAL && codeoptions.keepEmptyArrayInitializerOnOneLine && right.getChildCount() == 0)
+				isNewLine = false;
+			else
+				isNewLine = true;
 		}
 		else
 		{

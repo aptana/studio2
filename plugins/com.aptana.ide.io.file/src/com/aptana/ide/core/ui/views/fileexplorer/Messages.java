@@ -584,16 +584,4 @@ public final class Messages extends NLS
 	public static String FtpBrowserContentProvider_UIJOB_RefreshingTree;
 
 	public static String FtpBrowserContentProvider_WRN_UnableToConnect;
-
-	public static String RemoteConnectionSelectionPage_Connections;
-
-	public static String RemoteConnectionSelectionPage_ERR_SelectSiteOrCreateNewOne;
-
-	public static String RemoteConnectionSelectionPage_LBL_DownloadOnFinish;
-
-	public static String RemoteConnectionSelectionPage_LBL_NewConnection;
-
-	public static String RemoteConnectionSelectionPage_LBL_Options;
-
-	public static String RemoteConnectionSelectionPage_LBL_SelectRemoteLocationOfThisProject;
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript>
+<class type="myType" superclass="mySuperClass">
+<remarks>This is a class remark</remarks>
+</class>
+</javascript>

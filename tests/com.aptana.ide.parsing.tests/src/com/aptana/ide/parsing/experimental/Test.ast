@@ -1,0 +1,55 @@
+// import tests
+import MyClass;
+import MyPackage.MyClass;
+import com.aptana.ide.editor.js.parsing.nodes.JSParseNode;
+
+// parameter tests (and empty body)
+NoParams() : Node {}
+OneNamedParam(keyword:Lexeme) : Node {}
+OneParam(Lexeme) : Node {}
+TwoNamedParams(keyword:Lexeme, semicolon:Lexeme) : Node {}
+TwoParams(Lexeme, Lexeme) : Node {}
+TwoNamedAndUnamedParams1(Lexeme, semicolon:Lexeme) : Node {}
+TwoNamedAndUnamedParams2(keyword:Lexeme, Lexeme) : Node {}
+ReturnParam(result:Lexeme) : Node {}
+
+// assign "new" node (and non-empty body)
+AssignCreateResultNoParams() : Node
+{
+	result := TEST();
+}
+AssignCreateResultOneParam(one:Lexeme) : Node
+{
+	result := TEST(one);
+}
+AssignCreateResultTwoParams(one:Lexeme, two:Lexeme) : Node
+{
+	result := TEST(one, two);
+}
+
+// assign from switch
+AssignSingleCase(operator:Lexeme) : Node
+{
+	result := switch(operator)
+	{
+		case TEST: NODE();
+	}
+}
+AssignTwoCase(operator:Lexeme) : Node
+{
+	result := switch(operator)
+	{
+		case TEST: NODE(operator);
+		case FOO: BAR(operator);
+	}
+}
+
+AssignCreateResultToLocal() : Node
+{
+	property := TEST();
+}
+
+Invocation(statements:Node) : Node
+{
+	statements.setListName("statements");
+}

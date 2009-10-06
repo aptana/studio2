@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Server Core Tests Plug-in
+Bundle-SymbolicName: com.aptana.ide.server.tests;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Aptana, Inc
+Require-Bundle: org.junit,
+ com.aptana.ide.server,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core
+Export-Package: com.aptana.ide.server.tests

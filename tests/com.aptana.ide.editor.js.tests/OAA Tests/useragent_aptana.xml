@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript>
+<class type="myType" superclass="mySuperClass">
+<browsers>
+<browser platform="IE" version="3.0+"/>
+</browsers>
+</class>
+</javascript>

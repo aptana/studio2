@@ -1,0 +1,5 @@
+<svg>
+	<g transform="rotate(30)">
+		<circle cx="100" cy="100" r="10" fill="blue"/>
+	</g>
+</svg>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://openajax.org/metadata">
+<oaa:class xmlns:oaa="http://openajax.org/metadata" name="myType" superclass="mySuperClass">
+<oaa:deprecated>This is a deprecated class</oaa:deprecated>
+</oaa:class>
+</api>

@@ -1,0 +1,55 @@
+Pattern
+	:	Expression
+	;
+
+Expression
+	:	CARET OrExpr {StartOrExpression}
+	|	CARET OrExpr DOLLAR {StartAndEndOrExpression}
+	|	OrExpr {OrExpression}
+	|	OrExpr DOLLAR {EndOrExpression}
+	;
+
+OrExpr
+	:	OrExpr PIPE AndExpr {AddAndExpression}
+	|	AndExpr {FirstAndExpression}
+	;
+
+AndExpr
+	:	AndExpr Factor {AddFactor}
+	|	Factor {FirstFactor}
+	;
+
+Factor
+	:	Term STAR {TermStar}
+	|	Term PLUS {TermPlus}
+	|	Term QUESTION {TermQuestion}
+	|	Term {Term}
+	;
+
+Term
+	:	LPAREN OrExpr RPAREN {OrExprGroup}
+	|	CHARACTER {Character}
+	|	DOT {Dot}
+	|	CharacterClass {CharacterClass}
+	;
+
+CharacterClass
+	:	LBRACKET RBRACKET {EmptyCC}
+	|	LBRACKET CARET RBRACKET {NegatedEmptyCC}
+	|	LBRACKET MINUS RBRACKET {MinusOnlyCC}
+	|	LBRACKET CARET MINUS RBRACKET {NegatedMinusOnlyCC}
+	|	LBRACKET CharacterClassExpressions RBRACKET {CC}
+	|	LBRACKET CARET CharacterClassExpressions RBRACKET {NegatedCC}
+	|	LBRACKET MINUS CharacterClassExpressions RBRACKET {MinusCC}
+	|	LBRACKET CARET MINUS CharacterClassExpressions RBRACKET {NegatedMinusCC}
+	;
+
+CharacterClassExpressions
+	:	CharacterClassExpressions CharacterClassExpression {AddCCExpression}
+	|	CharacterClassExpression {FirstCCExpression}
+	;
+
+CharacterClassExpression
+	:	CHARACTER {CharacterExpression}
+	|	CHARACTER MINUS CHARACTER {CharacterRangeExpression}
+	;

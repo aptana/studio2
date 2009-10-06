@@ -1,7 +1,6 @@
 package com.aptana.ide.io.ftp;
 
 import com.aptana.ide.core.io.IVirtualFileManager;
-import com.aptana.ide.syncing.ftp.FtpDialogFactory;
 
 /**
  * An interface for all the FTP virtual file managers.
@@ -35,9 +34,7 @@ public interface IFtpVirtualFileManager extends IVirtualFileManager
 	public void setPort(int intValue);
 
 	public void setPassiveMode(boolean selection);
-	
-	public FtpDialogFactory getDialogFactory();
-	
+
 	public boolean supportsPublicKeyAuthentication();
 	
 	public void setPrivateKeyFile(String keyFile);

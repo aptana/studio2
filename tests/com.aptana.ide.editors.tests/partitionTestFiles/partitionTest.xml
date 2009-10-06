@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="com.aptana.ide.core.ui"
+            name="Untitled Files"/>
+      <category
+            id="com.aptana.ide.core.ui.projects"
+            name="Project Files"/>
+      <wizard
+            category="com.aptana.ide.core.ui.projects"
+            class="com.aptana.ide.editor.php.wizards.PHPNewWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            icon="icons/php_file_new.png"
+            id="com.aptana.ide.editors.wizards.PhpNewWizard"
+            name="PHP File"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective"/>
+      <wizard
+            canFinishEarly="true"
+            category="com.aptana.ide.core.ui"
+            class="com.aptana.ide.editor.php.wizards.PHPUntitledTextFileWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="false"
+            icon="icons/php_file_new.png"
+            id="com.aptana.ide.editors.wizards.file.phpUntitledWizard"
+            name="Untitled PHP File"
+            preferredPerspectives="com.aptana.ide.js.ui.WebPerspective"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.aptana.ide.editor.php.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.aptana.ide.editors.preferences.GeneralPreferencePage"
+            class="com.aptana.ide.editor.php.preferences.GeneralPreferencePage"
+            id="com.aptana.ide.editor.php.preferences.GeneralPreferencePage"
+            name="%generalPreferencePage"/>
+      <page
+            category="com.aptana.ide.editor.php.preferences.GeneralPreferencePage"
+            class="com.aptana.ide.editor.php.preferences.ColorPreferencePage"
+            id="com.aptana.ide.editor.php.preferences.ColorPreferencePage"
+            name="%colorPreferencePage"/>
+   </extension>
+
+</plugin>
