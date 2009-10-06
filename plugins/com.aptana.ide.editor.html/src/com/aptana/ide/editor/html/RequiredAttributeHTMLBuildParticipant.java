@@ -1,7 +1,13 @@
 package com.aptana.ide.editor.html;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -14,6 +20,25 @@ import com.aptana.ide.parsing.nodes.IParseNodeAttribute;
 
 public class RequiredAttributeHTMLBuildParticipant extends HTMLBuildParticipant
 {
+
+	// TODO This varies by HTML version. I pulled this from HTML 4.01. From http://www.w3.org/TR/html4/index/attributes.html
+	private static Map<String, String[]> REQUIRED_ATTRIBUTES = new HashMap<String, String[]>();
+	static
+	{
+		REQUIRED_ATTRIBUTES.put("img", new String[] { "alt", "src" });
+		REQUIRED_ATTRIBUTES.put("basefont", new String[] { "size" });
+		REQUIRED_ATTRIBUTES.put("applet", new String[] { "width", "height" });
+		REQUIRED_ATTRIBUTES.put("style", new String[] { "type" });
+		REQUIRED_ATTRIBUTES.put("script", new String[] { "type" });
+		REQUIRED_ATTRIBUTES.put("textarea", new String[] { "rows", "cols" });
+		REQUIRED_ATTRIBUTES.put("area", new String[] { "alt" });
+		REQUIRED_ATTRIBUTES.put("param", new String[] { "name" });
+		REQUIRED_ATTRIBUTES.put("map", new String[] { "name" });
+		REQUIRED_ATTRIBUTES.put("bdo", new String[] { "dir" });
+		REQUIRED_ATTRIBUTES.put("meta", new String[] { "content" });
+		REQUIRED_ATTRIBUTES.put("optgroup", new String[] { "label" });
+		REQUIRED_ATTRIBUTES.put("form", new String[] { "action" });
+	}
 
 	@Override
 	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
@@ -38,19 +63,31 @@ public class RequiredAttributeHTMLBuildParticipant extends HTMLBuildParticipant
 			if (node instanceof HTMLElementNode)
 			{
 				HTMLElementNode elementNode = (HTMLElementNode) node;
-				String tagName = elementNode.getName();
-				if (tagName.equalsIgnoreCase("img"))
+				Collection<String> missingAttributes = getMissingAttributes(elementNode);
+				for (String attributeName : missingAttributes)
 				{
-					if (!containsAttribute(elementNode, "alt"))
-						problems
-								.add(new Warning(2, context.getFile().getFullPath().toPortableString(), -1, elementNode
-										.getStartingOffset(), elementNode.getEndingOffset(),
-										"Missing required attribute 'alt'"));
+					problems.add(new Warning(2, context.getFile().getFullPath().toPortableString(), -1, elementNode
+							.getStartingOffset(), elementNode.getEndingOffset(), "Missing required attribute '"
+							+ attributeName + "'"));
 				}
 			}
 			problems.addAll(walk(context, node));
 		}
 		return problems;
+	}
+
+	private Set<String> getMissingAttributes(HTMLElementNode elementNode)
+	{
+		String tagName = elementNode.getName();
+		if (!REQUIRED_ATTRIBUTES.containsKey(tagName))
+			return Collections.emptySet();
+		Set<String> missingAttributes = new HashSet<String>();
+		for (String attribute : REQUIRED_ATTRIBUTES.get(tagName))
+		{
+			if (!containsAttribute(elementNode, attribute))
+				missingAttributes.add(attribute);
+		}
+		return missingAttributes;
 	}
 
 	private boolean containsAttribute(HTMLElementNode elementNode, String attrName)
