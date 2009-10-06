@@ -1,6 +1,7 @@
 package com.aptana.ide.editor.html;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,8 +28,26 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 			// ok we have an html file
 			IParseNode root = context.getRootNode();
 			List<IProblem> problems = walk(context, root);
+			problems.addAll(findUnopenedLexemes(context));
 			context.recordNewProblems(problems);
 		}
+	}
+
+	private Collection<? extends IProblem> findUnopenedLexemes(BuildContext context)
+	{
+		List<IProblem> problems = new ArrayList<IProblem>();
+		for (Lexeme lex : context.getLexemeList().toArray())
+		{
+			if (HTMLUtils.isEndTag(lex))
+			{
+				if (isUnopened(context, lex))
+				{
+					problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, lex
+							.getStartingOffset(), lex.getEndingOffset(), "Unopened tag '" + lex.getText() + "'"));
+				}
+			}
+		}
+		return problems;
 	}
 
 	private List<IProblem> walk(BuildContext context, IParseNode root)
@@ -40,21 +59,31 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 			if (node instanceof HTMLElementNode)
 			{
 				HTMLElementNode elementNode = (HTMLElementNode) node;
-				if (!isClosed(context, elementNode))
-					problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, elementNode
-							.getStartingOffset(), elementNode.getEndingOffset(), "Unclosed tag '"
-							+ elementNode.getName() + "'"));
-
+				if (HTMLUtils.isStartTag(elementNode.getStartingLexeme()))
+				{
+					if (!isClosed(context, elementNode))
+					{
+						problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, elementNode
+								.getStartingOffset(), elementNode.getEndingOffset(), "Unclosed tag '"
+								+ elementNode.getName() + "'"));
+					}
+				}
 			}
 			problems.addAll(walk(context, node));
 		}
 		return problems;
 	}
 
+	private boolean isUnopened(BuildContext context, Lexeme lexeme)
+	{
+		return !HTMLUtils.isEndTagBalanced(lexeme, context.getLexemeList(), (HTMLParseState) context.getParseState());
+	}
+
 	private boolean isClosed(BuildContext context, HTMLElementNode elementNode)
 	{
 		if (elementNode.isClosed())
 			return true;
-		return HTMLUtils.isStartTagBalanced(elementNode.getStartingLexeme(), context.getLexemeList(), (HTMLParseState) context.getParseState());
+		return HTMLUtils.isStartTagBalanced(elementNode.getStartingLexeme(), context.getLexemeList(),
+				(HTMLParseState) context.getParseState());
 	}
 }
