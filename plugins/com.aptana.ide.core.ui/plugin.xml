@@ -4,7 +4,6 @@
    <extension-point id="file_wizards" name="File Wizards" schema="schema/file_wizards.exsd"/>
    <extension-point id="configuration" name="Runtime/Debug Configuration" schema="schema/configuration.exsd"/>
    <extension-point id="wizard" name="Wizard" schema="schema/wizard.exsd"/>
-   <extension-point id="decorator" name="Aptana Navigator Decorator" schema="schema/decorator.exsd"/>
    <extension-point id="perspectives" name="Perspectives" schema="schema/perspectives.exsd"/>
    <extension-point id="browser" name="Browser" schema="schema/browser.exsd"/>
    <extension-point id="diagnosis" name="Diagnosis" schema="schema/diagnosis.exsd"/>

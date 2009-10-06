@@ -57,10 +57,10 @@ import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
  */
 public class SiteConnectionManager implements ISiteConnectionManager {
 
-	protected static final String STATE_FILENAME = "sites";
+	protected static final String STATE_FILENAME = "sites"; //$NON-NLS-1$
 
-	private static final String ELEMENT_ROOT = "sites";
-	private static final String ELEMENT_SITE = "site";
+	private static final String ELEMENT_ROOT = "sites"; //$NON-NLS-1$
+	private static final String ELEMENT_SITE = "site"; //$NON-NLS-1$
 
 	private static SiteConnectionManager instance;
 	
@@ -95,16 +95,17 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 				XMLMemento memento = XMLMemento.createReadRoot(reader);
 				for (IMemento child : memento.getChildren(ELEMENT_SITE)) {
 					SiteConnection siteConnection = restoreConnection(child);
-					if (siteConnection != null) {
-						connections.add(siteConnection);
-					}
+                    if (siteConnection != null && siteConnection.getSource() != null
+                            && siteConnection.getDestination() != null) {
+                        connections.add(siteConnection);
+                    }
 				}
 			} catch (IOException e) {
 			} catch (CoreException e) {
 			}
 		}
 	}
-	
+
 	/**
 	 * saveState
 	 * @param path

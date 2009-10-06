@@ -11,16 +11,16 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
 
-import com.aptana.ide.core.ui.CoreUIPlugin;
-import com.aptana.ide.core.ui.INavigatorDecorator;
 import com.aptana.ide.core.ui.PartListenerAdapter;
+import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.ui.io.navigator.INavigatorDecorator;
 
 public class NavigatorDecoratorLoader {
 
     private static final String NAVIGATOR_ID = "com.aptana.ide.ui.io.fileExplorerView"; //$NON-NLS-1$
 
     private static final String EXTENSION_NAME = "decorator"; //$NON-NLS-1$
-    private static final String EXTENSION_POINT = CoreUIPlugin.ID
+    private static final String EXTENSION_POINT = IOUIPlugin.PLUGIN_ID
             + "." + EXTENSION_NAME; //$NON-NLS-1$
     private static final String CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
 

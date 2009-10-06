@@ -76,329 +76,210 @@ import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.views.navigator.ResourceNavigator;
 
 /**
- * The Aptana Navigator is a direct subclass of ResourceNavigator, used so that we can add items to it directly
+ * The Aptana Navigator is a direct subclass of ResourceNavigator, used so that
+ * we can add items to it directly
  * 
  * @author Ingo Muschenetz
  */
-public class AptanaNavigator extends ResourceNavigator implements IShowInTarget
-{
-	/**
-	 * ID
-	 */
-	public static final String ID = "com.aptana.ide.core.ui.AptanaNavigator"; //$NON-NLS-1$
+public class AptanaNavigator extends ResourceNavigator implements IShowInTarget {
+    /**
+     * ID
+     */
+    public static final String ID = "com.aptana.ide.core.ui.AptanaNavigator"; //$NON-NLS-1$
 
-	/**
-	 * EXTENSION_NAME
-	 */
-	public static final String EXTENSION_NAME = "decorator"; //$NON-NLS-1$
+    /**
+     * EXTENSION_NAME
+     */
+    public static final String EXTENSION_NAME = "decorator"; //$NON-NLS-1$
 
-	/**
-	 * EXTENSION_POINT
-	 */
-	public static final String EXTENSION_POINT = CoreUIPlugin.ID + "." + EXTENSION_NAME; //$NON-NLS-1$
+    /**
+     * EXTENSION_POINT
+     */
+    public static final String EXTENSION_POINT = CoreUIPlugin.ID + "." + EXTENSION_NAME; //$NON-NLS-1$
 
-	/**
-	 * CLASS_ATTRIBUTE
-	 */
-	public static final String CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
+    /**
+     * CLASS_ATTRIBUTE
+     */
+    public static final String CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
 
-	private Map<String, List<IResourceChangeListener>> naturesToListenerLists = null;
-	private Map<IProject, String[]> projectsToNatureArrays = new HashMap<IProject, String[]>();
-	private List<IResourceChangeListener> globalListeners = null;
+    private Map<String, List<IResourceChangeListener>> naturesToListenerLists = null;
+    private Map<IProject, String[]> projectsToNatureArrays = new HashMap<IProject, String[]>();
+    private List<IResourceChangeListener> globalListeners = null;
 
-	private IHandlerActivation searchHandlerActivation;
+    /**
+     * AptanaNavigator
+     */
+    public AptanaNavigator() {
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(
+                new org.eclipse.core.resources.IResourceChangeListener() {
 
-	private static final IPartListener partListener = new PartListenerAdapter()
-    {
-        @Override
-        public void partOpened(IWorkbenchPart part)
-        {
-            if (part instanceof IViewPart)
-            {
-                IViewPart viewPart = (IViewPart) part;
-                if (AptanaNavigator.ID.equals(viewPart.getSite().getId()))
-                {
-                    IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT);
-                    for (IConfigurationElement element : elements)
-                    {
-                        if (!EXTENSION_NAME.equals(element.getName()))
-                            continue;
-                        
-                        String className = element.getAttribute(CLASS_ATTRIBUTE);
-                        if (className != null)
-                        {
-                            try
-                            {
-                                Object client = element.createExecutableExtension(CLASS_ATTRIBUTE);
-                                if (client instanceof INavigatorDecorator)
-                                {
-                                    ((INavigatorDecorator) client).addDecorator(((AptanaNavigator) viewPart).getTreeViewer().getTree());
-                                }
-                            }
-                            catch (CoreException e)
-                            {
-                            }
-                        }
+                    public void resourceChanged(IResourceChangeEvent event) {
+                        notifyListeners(event);
                     }
-                    viewPart.getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
+
+                });
+    }
+
+    private void notifyListeners(IResourceChangeEvent event) {
+        if (naturesToListenerLists == null) {
+            loadConfigurationExtensionPoints();
+        }
+        IResourceDelta delta = event.getDelta();
+        if (delta != null) {
+            IResourceDelta[] deltas = delta.getAffectedChildren();
+            for (int i = 0; i < deltas.length; i++) {
+                if (deltas[i].getKind() == IResourceDelta.REMOVED
+                        && deltas[i].getMovedToPath() == null
+                        && deltas[i].getResource() instanceof IProject) {
+                    fireCollectDeletions((IProject) deltas[i].getResource(), event);
+                } else {
+                    IProject project = deltas[i].getResource().getProject();
+                    if (project != null) {
+                        fireResourceEvent(project, event);
+                        projectsToNatureArrays.remove(project);
+                    }
+                }
+            }
+        } else {
+            if (event.getType() == IResourceChangeEvent.PRE_DELETE
+                    && event.getResource() instanceof IProject) {
+                IProject project = (IProject) event.getResource();
+                String[] natures;
+                try {
+                    natures = project.getDescription().getNatureIds();
+                    projectsToNatureArrays.put(project, natures);
+                } catch (CoreException e) {
                 }
             }
         }
-    };
+    }
 
-	/**
-	 * AptanaNavigator
-	 */
-	public AptanaNavigator()
-	{
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(
-				new org.eclipse.core.resources.IResourceChangeListener()
-				{
+    private void fireCollectDeletions(IProject project, IResourceChangeEvent event) {
+        final List<ILaunchConfiguration> configurations = new ArrayList<ILaunchConfiguration>();
+        String[] natures = new String[0];
+        try {
+            natures = project.getDescription().getNatureIds();
+        } catch (CoreException e) {
+            if (projectsToNatureArrays.containsKey(project)) {
+                natures = projectsToNatureArrays.remove(project);
+            }
+        }
+        for (int i = 0; i < natures.length; i++) {
+            if (naturesToListenerLists.containsKey(natures[i])) {
+                List<IResourceChangeListener> natureListeners = naturesToListenerLists
+                        .get(natures[i]);
+                for (int j = 0; j < natureListeners.size(); j++) {
+                    configurations.addAll(Arrays.asList(natureListeners.get(j).getDeleteCandidates(
+                            project, event)));
+                }
+            }
+            for (int j = 0; j < globalListeners.size(); j++) {
+                configurations.addAll(Arrays.asList(globalListeners.get(j).getDeleteCandidates(
+                        project, event)));
+            }
+        }
+        if (configurations.size() > 0) {
+            UIJob dialogJob = new UIJob("Open delete candidates") //$NON-NLS-1$
+            {
 
-					public void resourceChanged(IResourceChangeEvent event)
-					{
-						notifyListeners(event);
-					}
+                public IStatus runInUIThread(IProgressMonitor monitor) {
+                    DeleteConfigurationsDialog dialog = new DeleteConfigurationsDialog(
+                            AptanaNavigator.this.getViewSite().getShell(), configurations);
+                    dialog.open();
+                    return Status.OK_STATUS;
+                }
 
-				});
-	}
+            };
+            dialogJob.schedule();
+        }
 
-	private void notifyListeners(IResourceChangeEvent event)
-	{
-		if (naturesToListenerLists == null)
-		{
-			loadConfigurationExtensionPoints();
-		}
-		IResourceDelta delta = event.getDelta();
-		if (delta != null)
-		{
-			IResourceDelta[] deltas = delta.getAffectedChildren();
-			for (int i = 0; i < deltas.length; i++)
-			{
-				if (deltas[i].getKind() == IResourceDelta.REMOVED && deltas[i].getMovedToPath() == null
-						&& deltas[i].getResource() instanceof IProject)
-				{
-					fireCollectDeletions((IProject) deltas[i].getResource(), event);
-				}
-				else
-				{
-					IProject project = deltas[i].getResource().getProject();
-					if (project != null)
-					{
-						fireResourceEvent(project, event);
-						projectsToNatureArrays.remove(project);
-					}
-				}
-			}
-		}
-		else
-		{
-			if (event.getType() == IResourceChangeEvent.PRE_DELETE && event.getResource() instanceof IProject)
-			{
-				IProject project = (IProject) event.getResource();
-				String[] natures;
-				try
-				{
-					natures = project.getDescription().getNatureIds();
-					projectsToNatureArrays.put(project, natures);
-				}
-				catch (CoreException e)
-				{
-				}
-			}
-		}
-	}
+    }
 
-	/**
-	 * @see IWorkbenchPart#setFocus()
-	 */
-	public void setFocus()
-	{
-		super.setFocus();
-		//WORKAROUND Bug in handlers in Eclipse 3.2 (Related issue STU-1570)
-		IHandlerService serv = (IHandlerService) getViewSite().getService(IHandlerService.class);
-		if (searchHandlerActivation != null)
-		{
-			serv.deactivateHandler(searchHandlerActivation);
-		}
-		ActionHandler searchHandler = new ActionHandler(new org.eclipse.search.internal.ui.OpenSearchDialogAction());
-		searchHandlerActivation = serv.activateHandler("org.eclipse.search.ui.openSearchDialog", searchHandler); //$NON-NLS-1$   
-	}
+    private void fireResourceEvent(IProject project, IResourceChangeEvent event) {
+        try {
+            String[] natures = project.getDescription().getNatureIds();
+            for (int i = 0; i < natures.length; i++) {
+                if (naturesToListenerLists.containsKey(natures[i])) {
+                    List<IResourceChangeListener> natureListeners = naturesToListenerLists
+                            .get(natures[i]);
+                    for (int j = 0; j < natureListeners.size(); j++) {
+                        natureListeners.get(j).resourceChanged(event);
+                    }
+                }
+                for (int j = 0; j < globalListeners.size(); j++) {
+                    globalListeners.get(j).resourceChanged(event);
+                }
+            }
+        } catch (CoreException e) {
+        }
+    }
 
-	public void dispose()
-	{
-		//WORKAROUND Bug in handlers in Eclipse 3.2 (Related issue STU-1570)
-		if (searchHandlerActivation != null)
-		{
-			IHandlerService serv = (IHandlerService) getViewSite().getService(IHandlerService.class);
-			serv.deactivateHandler(searchHandlerActivation);
-		}
-		super.dispose();
-	}
+    private void loadConfigurationExtensionPoints() {
+        naturesToListenerLists = new HashMap<String, List<IResourceChangeListener>>();
+        globalListeners = new ArrayList<IResourceChangeListener>();
+        IExtensionRegistry reg = Platform.getExtensionRegistry();
+        IExtensionPoint ep = reg.getExtensionPoint(CoreUIPlugin.ID + ".configuration"); //$NON-NLS-1$
+        IExtension[] extensions = ep.getExtensions();
+        for (int i = 0; i < extensions.length; i++) {
+            IConfigurationElement[] ce = extensions[i].getConfigurationElements();
+            for (int j = 0; j < ce.length; j++) {
+                String nature = ce[j].getAttribute("nature"); //$NON-NLS-1$
+                String listenerClass = ce[j].getAttribute("handler"); //$NON-NLS-1$
+                if (listenerClass != null) {
+                    try {
+                        Object listener = ce[j].createExecutableExtension("handler"); //$NON-NLS-1$
+                        if (listener instanceof IResourceChangeListener) {
+                            if (nature != null) {
+                                List<IResourceChangeListener> natureListenerList = null;
+                                if (naturesToListenerLists.containsKey(nature)) {
+                                    natureListenerList = naturesToListenerLists.get(nature);
+                                } else {
+                                    natureListenerList = new ArrayList<IResourceChangeListener>();
+                                    naturesToListenerLists.put(nature, natureListenerList);
+                                }
+                                natureListenerList.add((IResourceChangeListener) listener);
+                            } else {
+                                globalListeners.add((IResourceChangeListener) listener);
+                            }
+                        }
+                    } catch (CoreException e) {
+                    }
+                }
+            }
+        }
+    }
 
-	private void fireCollectDeletions(IProject project, IResourceChangeEvent event)
-	{
-		final List<ILaunchConfiguration> configurations = new ArrayList<ILaunchConfiguration>();
-		String[] natures = new String[0];
-		try
-		{
-			natures = project.getDescription().getNatureIds();
-		}
-		catch (CoreException e)
-		{
-			if (projectsToNatureArrays.containsKey(project))
-			{
-				natures = projectsToNatureArrays.remove(project);
-			}
-		}
-		for (int i = 0; i < natures.length; i++)
-		{
-			if (naturesToListenerLists.containsKey(natures[i]))
-			{
-				List<IResourceChangeListener> natureListeners = naturesToListenerLists.get(natures[i]);
-				for (int j = 0; j < natureListeners.size(); j++)
-				{
-					configurations.addAll(Arrays.asList(natureListeners.get(j).getDeleteCandidates(project, event)));
-				}
-			}
-			for (int j = 0; j < globalListeners.size(); j++)
-			{
-				configurations.addAll(Arrays.asList(globalListeners.get(j).getDeleteCandidates(project, event)));
-			}
-		}
-		if (configurations.size() > 0)
-		{
-			UIJob dialogJob = new UIJob("Open delete candidates") //$NON-NLS-1$
-			{
+    /**
+     * createPartControl
+     * 
+     * @param parent
+     */
+    public void createPartControl(Composite parent) {
+        super.createPartControl(parent);
 
-				public IStatus runInUIThread(IProgressMonitor monitor)
-				{
-					DeleteConfigurationsDialog dialog = new DeleteConfigurationsDialog(AptanaNavigator.this
-							.getViewSite().getShell(), configurations);
-					dialog.open();
-					return Status.OK_STATUS;
-				}
+        IActionBars bars = getViewSite().getActionBars();
+        IToolBarManager manager = bars.getToolBarManager();
 
-			};
-			dialogJob.schedule();
-		}
+        // Other plug-ins can contribute there actions here
+        Separator sep = new Separator(IWorkbenchActionConstants.MB_ADDITIONS);
+        manager.add(sep);
 
-	}
+        // Other plug-ins can contribute there actions here
+        sep = new Separator(IWorkbenchActionConstants.HELP_END);
+        manager.add(sep);
 
-	private void fireResourceEvent(IProject project, IResourceChangeEvent event)
-	{
-		try
-		{
-			String[] natures = project.getDescription().getNatureIds();
-			for (int i = 0; i < natures.length; i++)
-			{
-				if (naturesToListenerLists.containsKey(natures[i]))
-				{
-					List<IResourceChangeListener> natureListeners = naturesToListenerLists.get(natures[i]);
-					for (int j = 0; j < natureListeners.size(); j++)
-					{
-						natureListeners.get(j).resourceChanged(event);
-					}
-				}
-				for (int j = 0; j < globalListeners.size(); j++)
-				{
-					globalListeners.get(j).resourceChanged(event);
-				}
-			}
-		}
-		catch (CoreException e)
-		{
-		}
-	}
+        updateActionBars((IStructuredSelection) getViewer().getSelection());
+    }
 
-	private void loadConfigurationExtensionPoints()
-	{
-		naturesToListenerLists = new HashMap<String, List<IResourceChangeListener>>();
-		globalListeners = new ArrayList<IResourceChangeListener>();
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		IExtensionPoint ep = reg.getExtensionPoint(CoreUIPlugin.ID + ".configuration"); //$NON-NLS-1$
-		IExtension[] extensions = ep.getExtensions();
-		for (int i = 0; i < extensions.length; i++)
-		{
-			IConfigurationElement[] ce = extensions[i].getConfigurationElements();
-			for (int j = 0; j < ce.length; j++)
-			{
-				String nature = ce[j].getAttribute("nature"); //$NON-NLS-1$
-				String listenerClass = ce[j].getAttribute("handler"); //$NON-NLS-1$
-				if (listenerClass != null)
-				{
-					try
-					{
-						Object listener = ce[j].createExecutableExtension("handler"); //$NON-NLS-1$
-						if (listener instanceof IResourceChangeListener)
-						{
-							if (nature != null)
-							{
-								List<IResourceChangeListener> natureListenerList = null;
-								if (naturesToListenerLists.containsKey(nature))
-								{
-									natureListenerList = naturesToListenerLists.get(nature);
-								}
-								else
-								{
-									natureListenerList = new ArrayList<IResourceChangeListener>();
-									naturesToListenerLists.put(nature, natureListenerList);
-								}
-								natureListenerList.add((IResourceChangeListener) listener);
-							}
-							else
-							{
-								globalListeners.add((IResourceChangeListener) listener);
-							}
-						}
-					}
-					catch (CoreException e)
-					{
-					}
-				}
-			}
-		}
-	}
+    /**
+     * @see org.eclipse.ui.views.navigator.ResourceNavigator#restoreState(org.eclipse.ui.IMemento)
+     */
+    protected void restoreState(IMemento memento) {
+    }
 
-	/**
-	 * createPartControl
-	 * 
-	 * @param parent
-	 */
-	public void createPartControl(Composite parent)
-	{
-		super.createPartControl(parent);
-
-		IActionBars bars = getViewSite().getActionBars();
-		IToolBarManager manager = bars.getToolBarManager();
-
-		// Other plug-ins can contribute there actions here
-		Separator sep = new Separator(IWorkbenchActionConstants.MB_ADDITIONS);
-		manager.add(sep);
-
-		// Other plug-ins can contribute there actions here
-		sep = new Separator(IWorkbenchActionConstants.HELP_END);
-		manager.add(sep);
-
-		updateActionBars((IStructuredSelection) getViewer().getSelection());
-
-		final Tree tree = getTreeViewer().getTree();
-		PreferenceUtils.registerBackgroundColorPreference(tree, "com.aptana.ide.core.ui.background.color.navigator"); //$NON-NLS-1$
-		PreferenceUtils.registerForegroundColorPreference(tree, "com.aptana.ide.core.ui.foreground.color.navigator"); //$NON-NLS-1$
-		
-		getSite().getWorkbenchWindow().getPartService().addPartListener(partListener);
-	}
-
-	/**
-	 * @see org.eclipse.ui.views.navigator.ResourceNavigator#restoreState(org.eclipse.ui.IMemento)
-	 */
-	protected void restoreState(IMemento memento)
-	{
-	}
-
-	/**
-	 * @see org.eclipse.ui.part.IShowInTarget#show(org.eclipse.ui.part.ShowInContext)
-	 */
+    /**
+     * @see org.eclipse.ui.part.IShowInTarget#show(org.eclipse.ui.part.ShowInContext)
+     */
     public boolean show(ShowInContext context) {
         if (getViewer() == null || context == null) {
             return false;

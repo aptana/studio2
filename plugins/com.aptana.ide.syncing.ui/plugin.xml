@@ -607,12 +607,6 @@
       </handler>
    </extension>
    <extension
-         point="com.aptana.ide.core.ui.decorator">
-      <decorator
-            class="com.aptana.ide.syncing.ui.decorators.SiteConnectionDecorator">
-      </decorator>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="com.aptana.ide.syncing.ui.editors.ConnectionEditor"
@@ -695,6 +689,12 @@
             %ExistingHostedSite.wizard.description
          </description>
       </wizard>
+   </extension>
+   <extension
+         point="com.aptana.ide.ui.io.decorator">
+      <decorator
+            class="com.aptana.ide.syncing.ui.decorators.SiteConnectionDecorator">
+      </decorator>
    </extension>
 
 </plugin>

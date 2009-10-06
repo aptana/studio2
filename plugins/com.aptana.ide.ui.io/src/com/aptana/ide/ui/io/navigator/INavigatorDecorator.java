@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2007 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -32,21 +32,20 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.ui;
+package com.aptana.ide.ui.io.navigator;
 
 import org.eclipse.swt.widgets.Tree;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public interface INavigatorDecorator
-{
+public interface INavigatorDecorator {
 
-	/**
-	 * Called when the aptana navigator loads to add any decoration to the trees
-	 * 
-	 * @param tree
-	 */
-	public void addDecorator(Tree tree);
+    /**
+     * Called when the Aptana navigator loads to add any decoration to the underlying tree widget.
+     * 
+     * @param tree
+     */
+    public void addDecorator(Tree tree);
 
 }
