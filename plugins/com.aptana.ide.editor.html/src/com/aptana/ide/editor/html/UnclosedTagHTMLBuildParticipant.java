@@ -8,9 +8,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.aptana.ide.core.builder.BuildContext;
 import com.aptana.ide.core.builder.IProblem;
 import com.aptana.ide.core.builder.Warning;
+import com.aptana.ide.editor.html.parsing.HTMLUtils;
 import com.aptana.ide.editor.html.parsing.nodes.HTMLElementNode;
+import com.aptana.ide.lexer.Lexeme;
 import com.aptana.ide.parsing.nodes.IParseNode;
-import com.aptana.ide.parsing.nodes.IParseNodeAttribute;
 
 public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 {
@@ -38,13 +39,21 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 			if (node instanceof HTMLElementNode)
 			{
 				HTMLElementNode elementNode = (HTMLElementNode) node;
-				if (!elementNode.isClosed())
-					problems.add(new Warning(2, context.getFile().getFullPath().toPortableString(), -1, elementNode
-							.getStartingOffset(), elementNode.getEndingOffset(), "Missing required attribute 'alt'"));
+				if (!isClosed(context, elementNode))
+					problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, elementNode
+							.getStartingOffset(), elementNode.getEndingOffset(), "Unclosed tag '"
+							+ elementNode.getName() + "'"));
 
 			}
 			problems.addAll(walk(context, node));
 		}
 		return problems;
+	}
+
+	private boolean isClosed(BuildContext context, HTMLElementNode elementNode)
+	{
+		if (elementNode.isClosed())
+			return true;
+		return HTMLUtils.isTagClosed(elementNode.getStartingLexeme(), context.getLexemeList()) != HTMLUtils.TAG_OPEN;
 	}
 }
