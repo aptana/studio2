@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.aptana.ide.core.builder.BuildContext;
 import com.aptana.ide.core.builder.IProblem;
 import com.aptana.ide.core.builder.Warning;
+import com.aptana.ide.editor.html.parsing.HTMLParseState;
 import com.aptana.ide.editor.html.parsing.HTMLUtils;
 import com.aptana.ide.editor.html.parsing.nodes.HTMLElementNode;
 import com.aptana.ide.lexer.Lexeme;
@@ -54,6 +55,6 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 	{
 		if (elementNode.isClosed())
 			return true;
-		return HTMLUtils.isTagClosed(elementNode.getStartingLexeme(), context.getLexemeList()) != HTMLUtils.TAG_OPEN;
+		return HTMLUtils.isStartTagBalanced(elementNode.getStartingLexeme(), context.getLexemeList(), (HTMLParseState) context.getParseState());
 	}
 }
