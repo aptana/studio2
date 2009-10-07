@@ -72,12 +72,6 @@ public class UnifiedProjectBuilder extends IncrementalProjectBuilder
 			context.getFile().deleteMarkers(IAptanaModelMarker.PROBLEM_MARKER, false, IResource.DEPTH_ONE);
 	}
 
-	private String getContainerRelativePath(BuildContext context)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private void addMarker(BuildContext context, IProblem problem) throws CoreException
 	{
 		IMarker marker = context.getFile().createMarker(IAptanaModelMarker.PROBLEM_MARKER);
