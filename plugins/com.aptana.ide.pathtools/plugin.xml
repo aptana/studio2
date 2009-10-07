@@ -34,35 +34,6 @@
       </objectContribution>
       <objectContribution
             adaptable="true"
-            id="com.aptana.ide.pathtools.fileSystemObjectContribution"
-            objectClass="com.aptana.ide.core.ui.io.file.LocalFile">
-         <action
-               class="com.aptana.ide.pathtools.CopyPathAction"
-               enablesFor="+"
-               icon="icons/copypaths.gif"
-               id="com.aptana.ide.PathTools.CopyPath"
-               label="%CopyPath"
-               menubarPath="additions">
-     	</action>
-         <action
-               class="com.aptana.ide.pathtools.ExploreAction"
-               enablesFor="1"
-               icon="icons/explore.gif"
-               id="com.aptana.ide.PathTools.Explore"
-               label="%FileExplorer"
-               menubarPath="additions">
-         </action>
-         <action
-               class="com.aptana.ide.pathtools.LocaShellAction"
-               enablesFor="1"
-               icon="icons/shell.png"
-               id="com.aptana.ide.PathTools.Edit"
-               label="%Shell"
-               menubarPath="additions">
-         </action>
-      </objectContribution>
-      <objectContribution
-            adaptable="true"
             id="com.aptana.ide.pathtools.localRootObjectContribution"
             objectClass="com.aptana.ide.core.io.LocalRoot">
          <action
@@ -253,12 +224,6 @@
              </actionSet>
           </perspectiveExtension>
           <perspectiveExtension
-                targetID="com.aptana.ide.db.PerspectiveFactory">
-             <actionSet
-                   id="com.aptana.ide.pathtools.actionSet">
-             </actionSet>
-          </perspectiveExtension>
-          <perspectiveExtension
                 targetID="org.radrails.rails.ui.PerspectiveRails">
              <actionSet
                    id="com.aptana.ide.pathtools.actionSet">
@@ -339,25 +304,9 @@
                      value="1">
                </count>
                <iterate>
-                  <or>
-                     <instanceof
-                           value="com.aptana.ide.core.ui.io.file.LocalFile">
-                     </instanceof>
-                     <and>
-                        <instanceof
-                              value="org.eclipse.core.runtime.IAdaptable">
-                        </instanceof>
-                        <not>
-                           <or>
-                              <instanceof
-                                    value="com.aptana.ide.core.io.LocalFileSystem">
-                              </instanceof>
-                              <instanceof
-                                    value="com.aptana.ide.core.io.WorkspaceProjects">
-                              </instanceof>
-                           </or>
-                        </not>
-                     </and></or>
+                  <instanceof
+                        value="org.eclipse.core.runtime.IAdaptable">
+                  </instanceof>
                </iterate>
             </and>
          </enabledWhen>

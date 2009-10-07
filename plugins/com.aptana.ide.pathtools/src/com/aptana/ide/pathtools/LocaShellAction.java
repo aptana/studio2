@@ -21,7 +21,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.ui.io.file.LocalFile;
 import com.aptana.ide.pathtools.handlers.Utilities;
 import com.aptana.ide.pathtools.preferences.PathtoolsPreferences;
 
@@ -29,7 +28,6 @@ import com.aptana.ide.pathtools.preferences.PathtoolsPreferences;
  * This launches the shell on selected folder or file.
  * 
  * @author Sandip V. Chitale
- * 
  */
 public class LocaShellAction implements IViewActionDelegate, IObjectActionDelegate {
 	private File fileObject;
@@ -104,9 +102,6 @@ public class LocaShellAction implements IViewActionDelegate, IObjectActionDelega
 								location = resource.getLocation();
 							}
 						}
-					} else if (firstElement instanceof LocalFile) {
-					    LocalFile file = (LocalFile) firstElement;
-					    fileObject = file.getFile();
 					}
 				}
 			}

@@ -19,7 +19,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.aptana.ide.core.ui.io.file.LocalFile;
 import com.aptana.ide.pathtools.Activator;
 import com.aptana.ide.pathtools.CommandLauncher;
 import com.aptana.ide.pathtools.preferences.PathtoolsPreferences;
@@ -83,9 +82,6 @@ public class OpenShellHandler extends AbstractHandler {
 	                        location = resource.getLocation();
 	                    }
                     }
-                } else if (firstElement instanceof LocalFile) {
-                    LocalFile file = (LocalFile) firstElement;
-                    fileObject = file.getFile();
                 }
             }
         }
@@ -118,5 +114,4 @@ public class OpenShellHandler extends AbstractHandler {
             }
         }
     }
-
 }
