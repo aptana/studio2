@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-
-   <extension-point id="sftpVirtualFileManagers" name="SFTP Virtual File Managers" schema="schema/sftpVirtualFileManagers.exsd"/>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer class="com.aptana.ide.syncing.preferences.PreferenceInitializer"/>

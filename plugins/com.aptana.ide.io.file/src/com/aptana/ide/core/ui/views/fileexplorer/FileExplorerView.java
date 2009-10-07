@@ -173,7 +173,6 @@ import com.aptana.ide.core.io.VirtualFileManagerException;
 import com.aptana.ide.core.io.VirtualFileManagerGroup;
 import com.aptana.ide.core.io.sync.ISyncManagerChangeListener;
 import com.aptana.ide.core.io.sync.SyncManager;
-import com.aptana.ide.core.io.sync.VirtualFileManagerSyncPair;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.EclipseUIUtils;
@@ -2153,33 +2152,7 @@ public class FileExplorerView extends ViewPart implements ISyncManagerChangeList
                         }
                         deleteList.add(object);
                     } else if (object instanceof IVirtualFileManager) {
-                        IVirtualFileManager manager = (IVirtualFileManager) object;
-                        VirtualFileManagerSyncPair[] pairs = SyncManager.getSyncPairs(manager);
-                        if (pairs.length > 0) {
-                            List<String> pairNames = new ArrayList<String>();
-                            for (VirtualFileManagerSyncPair object2 : pairs) {
-                                pairNames.add(object2.getNickName());
-                            }
-
-                            if (MessageDialog
-                                    .openQuestion(
-                                            viewer.getControl().getShell(),
-                                            Messages.FileExplorerView_ConfirmDelete,
-                                            StringUtils
-                                                    .format(
-                                                            Messages.FileExplorerView_AreYouSureYouWantToDeleteThisFileManager,
-                                                            new String[] {
-                                                                    manager.getNickName(),
-                                                                    StringUtils
-                                                                            .join(
-                                                                                    ", ", //$NON-NLS-1$
-                                                                                    (String[]) pairNames
-                                                                                            .toArray(new String[0])) }))) {
-                                deleteList.add(object);
-                            }
-                        } else {
-                            deleteList.add(object);
-                        }
+                        deleteList.add(object);
                     }
                 }
 

@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -34,103 +34,54 @@
  */
 package com.aptana.ide.core;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 import com.aptana.ide.core.db.AptanaDB;
-import com.aptana.ide.core.io.sync.SyncManager;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class AptanaCorePlugin extends Plugin
-{
-	/**
-	 * ID
-	 */
-	public static final String ID = "com.aptana.ide.core"; //$NON-NLS-1$
-	
-	// The shared instance.
-	private static AptanaCorePlugin plugin;
+public class AptanaCorePlugin extends Plugin {
 
-	/**
-	 * This method is called upon plug-in activation
-	 * 
-	 * @param context
-	 * @throws Exception
-	 */
-	public void start(BundleContext context) throws Exception
-	{
-		plugin = this;
-		super.start(context);
-	}
+    /**
+     * ID
+     */
+    public static final String ID = "com.aptana.ide.core"; //$NON-NLS-1$
 
-	/**
-	 * This method is called when the plug-in is stopped
-	 * 
-	 * @param context
-	 * @throws Exception
-	 */
-	public void stop(BundleContext context) throws Exception
-	{
-		AptanaDB.getInstance().shutdown();
-		
-		super.stop(context);
-		
-		plugin = null;
-	}
+    // The shared instance.
+    private static AptanaCorePlugin plugin;
 
-	/**
-	 * Returns the shared instance.
-	 * 
-	 * @return Plugin
-	 */
-	public static AptanaCorePlugin getDefault()
-	{
-		return plugin;
-	}
+    /**
+     * This method is called upon plug-in activation
+     * 
+     * @param context
+     * @throws Exception
+     */
+    public void start(BundleContext context) throws Exception {
+        plugin = this;
+        super.start(context);
+    }
 
+    /**
+     * This method is called when the plug-in is stopped
+     * 
+     * @param context
+     * @throws Exception
+     */
+    public void stop(BundleContext context) throws Exception {
+        AptanaDB.getInstance().shutdown();
 
-	/**
-	 * Writes and state info that needs to be persisted.
-	 * 
-	 * @param file
-	 */
-	public void writeState(File file)
-	{
-		String state = SyncManager.getSyncManager().toSerializableString();
+        super.stop(context);
+        plugin = null;
+    }
 
-		Writer output = null;
-		try
-		{
-			file.createNewFile();
-			output = new BufferedWriter(new FileWriter(file));
-			output.write(state);
-		}
-		catch (IOException e)
-		{
-			IdeLog.logError(this, StringUtils.format(Messages.AptanaCorePlugin_Serialization_CreateFailed, file.getAbsolutePath()));
-		}
-		finally
-		{
-			if (output != null)
-			{
-				try
-				{
-					output.close();
-				}
-				catch (IOException e)
-				{
-					IdeLog.logError(this, StringUtils.format(Messages.AptanaCorePlugin_Serialization_CloseFailed, file.getAbsolutePath()));
-				}
-			}
-		}
-	}
-
+    /**
+     * Returns the shared instance.
+     * 
+     * @return Plugin
+     */
+    public static AptanaCorePlugin getDefault() {
+        return plugin;
+    }
 }
