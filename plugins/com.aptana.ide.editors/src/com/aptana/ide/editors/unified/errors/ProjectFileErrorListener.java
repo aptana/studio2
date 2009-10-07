@@ -34,9 +34,8 @@
  */
 package com.aptana.ide.editors.unified.errors;
 
-import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -56,120 +55,124 @@ import com.aptana.ide.editors.UnifiedEditorsPlugin;
 
 /**
  * A listener for files that are part of a project
+ * 
  * @author Ingo Muschenetz
- *
  */
-public class ProjectFileErrorListener extends FileErrorListener {
+public class ProjectFileErrorListener extends FileErrorListener
+{
 	IFile file;
-	
+
 	/**
 	 * Creates a new listener
+	 * 
 	 * @param file
 	 */
 	public ProjectFileErrorListener(IFile file)
 	{
 		this.file = file;
 	}
-	
+
 	/**
 	 * Activated when errors change in the document
-	 * @param errors The list of errors to run through
+	 * 
+	 * @param errors
+	 *            The list of errors to run through
 	 */
-	public void onErrorsChanged(final IFileError[] errors) {
-		try {
-			//Performance fix: schedule the error handling as a single workspace update so that we don't trigger a
-			//bunch of resource updated events while problem markers are being added to the file.
-			IWorkspaceRunnable runnable = new IWorkspaceRunnable(){
-				public void run(IProgressMonitor monitor){
-					//notifyProblemsView(errors);
+	public void onErrorsChanged(final IFileError[] errors)
+	{
+		try
+		{
+			// Performance fix: schedule the error handling as a single workspace update so that we don't trigger a
+			// bunch of resource updated events while problem markers are being added to the file.
+			IWorkspaceRunnable runnable = new IWorkspaceRunnable()
+			{
+				public void run(IProgressMonitor monitor)
+				{
 					doHandleErrorsJob(errors);
-				}				
+				}
 			};
-			ResourcesPlugin.getWorkspace().run(runnable, getMarkerRule(file), IWorkspace.AVOID_UPDATE, new NullProgressMonitor());
+			ResourcesPlugin.getWorkspace().run(runnable, getMarkerRule(file), IWorkspace.AVOID_UPDATE,
+					new NullProgressMonitor());
 		}
-		catch (CoreException e) {
-			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.ProjectFileErrorListener_ErrorUpdatingMarkers, e); //
+		catch (CoreException e)
+		{
+			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.ProjectFileErrorListener_ErrorUpdatingMarkers,
+					e); //
 		}
 	}
 
-
 	private void doHandleErrorsJob(IFileError[] errors)
 	{
-		synchronized(this) //prevent simultaneous error updates on the same file
+		synchronized (this) // prevent simultaneous error updates on the same file
 		{
-			if(ResourcesPlugin.getWorkspace().isTreeLocked())
+			if (ResourcesPlugin.getWorkspace().isTreeLocked())
 			{
-				//Note from Spike (1/26/2005): if this occurs, we will have problems getting the problem markers updated in the file.
-				//Robin had put in a fix to try alleviate this that we no longer think is necessary now that errors are handled as
-				//an atomic update via a IWorkspaceRunnable.  If we see this error, we should consider putting that fix back in.
-				//If this exception is never seen again, we can remove this check.
-				IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.ProjectFileErrorListener_ErrorUpdatingErrors, new IllegalStateException(Messages.ProjectFileErrorListener_TreeLocked)); //
+				// Note from Spike (1/26/2005): if this occurs, we will have problems getting the problem markers
+				// updated in the file.
+				// Robin had put in a fix to try alleviate this that we no longer think is necessary now that errors are
+				// handled as
+				// an atomic update via a IWorkspaceRunnable. If we see this error, we should consider putting that fix
+				// back in.
+				// If this exception is never seen again, we can remove this check.
+				IdeLog.logError(UnifiedEditorsPlugin.getDefault(),
+						Messages.ProjectFileErrorListener_ErrorUpdatingErrors, new IllegalStateException(
+								Messages.ProjectFileErrorListener_TreeLocked)); //
 			}
-			
-			if(file == null || file.exists() == false)
+
+			if (file == null || !file.exists())
 			{
 				return;
 			}
-			
-			int depth = IResource.DEPTH_INFINITE;
-			try 
-			{
-				Hashtable h = new Hashtable();
 
-				//get the list of existing problem markers 
-				IMarker[] problemMarkers = file.findMarkers(IMarker.PROBLEM, true, depth);
-				
-				// remove the old annotations
-				// TODO: may not want to delete ALL annotations like Bookmarks, Tasks, etc.
-				for (int i = 0; i < problemMarkers.length; i++) {
-					
-					IMarker m = problemMarkers[i];
+			try
+			{
+				Map<String, IMarker> h = new Hashtable<String, IMarker>();
+				// get the list of existing problem markers
+				IMarker[] problemMarkers = file.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
+				for (IMarker m : problemMarkers)
+				{
 					String key = createAnnotationKey(m);
-					if(!h.containsKey(key))
+					if (!h.containsKey(key))
 					{
 						h.put(key, m);
 					}
 				}
-				
-				for(int errorNodeIndex = 0; errorNodeIndex < errors.length; errorNodeIndex++)
+
+				for (IFileError errorNode : errors)
 				{
-					IFileError errorNode = errors[errorNodeIndex];
-					errorNode.getMessage();
-					
-					String key = createAnnotationKey(errorNode.getMessage(), errorNode.getOffset(), errorNode.getLength());		
-					if(!h.containsKey(key))
+					String key = createAnnotationKey(errorNode.getMessage(), errorNode.getOffset(), errorNode
+							.getLength());
+					if (!h.containsKey(key))
 					{
-						applyErrorToProblemMarker(
-								errorNode, 
-								file);
+						applyErrorToProblemMarker(errorNode, file);
 					}
 					else
 					{
 						h.remove(key);
 					}
 				}
-				
+
 				// remove the old annotations
-				// TODO: may not want to delete ALL annotations like Bookmarks, Tasks, etc.
-				Collection vals = h.values();
-				Iterator iter = vals.iterator();
-				while (iter.hasNext())
+				for (IMarker marker : h.values())
 				{
-					IMarker marker = (IMarker)iter.next();
-					marker.delete();
+					if (marker == null)
+						continue;
+					if (marker.getType().equals(IMarker.PROBLEM)) // Only remove generic problems (which is what we
+																	// apply here)
+						marker.delete();
 				}
-				
-				
+
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.ProjectFileErrorListener_ErrorHere, e);
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates a new "key" from an annotation
+	 * 
 	 * @param annotation
 	 * @param offset
 	 * @param length
@@ -179,33 +182,35 @@ public class ProjectFileErrorListener extends FileErrorListener {
 	{
 		return offset + ":" + length + ":" + annotationText; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	/**
 	 * Creates a new "key" from an annotation
+	 * 
 	 * @param marker
 	 * @return Returns a hashtable key for the annotation
 	 */
 	private String createAnnotationKey(IMarker marker)
 	{
 		String markerText;
-		try {
-			markerText = (String)marker.getAttribute(IMarker.MESSAGE);			
+		try
+		{
+			markerText = (String) marker.getAttribute(IMarker.MESSAGE);
 			int markerStart = marker.getAttribute(IMarker.CHAR_START, 0);
 			int markerEnd = marker.getAttribute(IMarker.CHAR_END, 0);
 			return markerStart + ":" + (markerEnd - markerStart) + ":" + markerText; //$NON-NLS-1$ //$NON-NLS-2$
-			
-		} catch (CoreException e) {
+
+		}
+		catch (CoreException e)
+		{
 			return StringUtils.EMPTY;
 		}
 
 	}
-	
-	private static void applyErrorToProblemMarker(
-			IFileError errorNode, 
-			IFile file
-	)
+
+	private static void applyErrorToProblemMarker(IFileError errorNode, IFile file)
 	{
-		try{
+		try
+		{
 			IMarker problemMarker = file.createMarker(IMarker.PROBLEM);
 			problemMarker.setAttribute(IMarker.TRANSIENT, true);
 			problemMarker.setAttribute(IMarker.SEVERITY, errorNode.getSeverity());
@@ -219,13 +224,15 @@ public class ProjectFileErrorListener extends FileErrorListener {
 			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.ProjectFileErrorListener_Error, e1);
 		}
 	}
-	
-	private static ISchedulingRule getMarkerRule(IResource resource) {
-        ISchedulingRule rule = null;
-        if (resource != null) {
-            IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
-            rule = ruleFactory.markerRule(resource);
-        }
-        return rule;
-    }
+
+	private static ISchedulingRule getMarkerRule(IResource resource)
+	{
+		ISchedulingRule rule = null;
+		if (resource != null)
+		{
+			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+			rule = ruleFactory.markerRule(resource);
+		}
+		return rule;
+	}
 }
