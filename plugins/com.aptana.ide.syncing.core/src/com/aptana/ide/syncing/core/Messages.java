@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2007 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -17,7 +17,7 @@
  * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  * 
  * Aptana provides a special exception to allow redistribution of this file
- * with certain Eclipse Public Licensed code and certain additional terms
+ * with certain other free and open source software ("FOSS") code and certain additional terms
  * pursuant to Section 7 of the GPL. You may view the exception and these
  * terms on the web at http://www.aptana.com/legal/gpl/.
  * 
@@ -32,21 +32,24 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.views;
+package com.aptana.ide.syncing.core;
+
+import org.eclipse.osgi.util.NLS;
 
 /**
- * Smart sync listener
- * 
- * @author Kevin Sawicki (ksawicki@aptana.com)
+ * Messages
  */
-public interface ISmartSyncListener
-{
+public final class Messages extends NLS {
 
-	/**
-	 * A smart sync has been completed for the virtual file managers available in the smart sync event
-	 * 
-	 * @param event
-	 */
-	public void smartSyncComplete(SmartSyncEvent event);
+    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.core.messages"; //$NON-NLS-1$
 
+    public static String NaturePropertyTester_ERR_WhileTestingProjectNature;
+
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    private Messages() {
+    }
 }
