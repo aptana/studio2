@@ -46,7 +46,14 @@ public class UnifiedProjectBuilder extends IncrementalProjectBuilder
 		for (BuildParticipant buildParticipant : participants)
 		{
 			long start = System.currentTimeMillis();
-			buildParticipant.buildStarting(contexts, isBatch, monitor);
+			try
+			{
+				buildParticipant.buildStarting(contexts, isBatch, monitor);
+			}
+			catch (Exception e)
+			{
+				IdeLog.logError(AptanaCorePlugin.getDefault(), e.getMessage(), e);
+			}
 			if (DEBUG)
 				System.out.println("Took " + (System.currentTimeMillis() - start) + "ms for build participant: "
 						+ buildParticipant.getClass().getSimpleName());

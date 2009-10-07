@@ -116,6 +116,8 @@ public class BuildContext
 			return "text/css";
 		if (fileExtension.equals("js"))
 			return "text/javascript";
+		if (fFile.getName().endsWith(".html.erb"))
+			return "text/html+rb";
 		return null;
 	}
 
