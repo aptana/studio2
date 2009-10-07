@@ -489,6 +489,15 @@
                <instanceof
                      value="com.aptana.ide.core.io.IConnectionPoint">
                </instanceof>
+               <instanceof
+                     value="com.aptana.ide.core.io.IConnectionPointCategory">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.WorkspaceProjects">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.LocalFileSystems">
+               </instanceof>
             </or>
          </enablement>
       </actionProvider>
