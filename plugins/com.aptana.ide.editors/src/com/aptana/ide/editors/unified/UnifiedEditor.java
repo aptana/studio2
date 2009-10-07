@@ -37,7 +37,9 @@ package com.aptana.ide.editors.unified;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -72,6 +74,7 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISharedTextColors;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -2945,7 +2948,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	{
 		String selectedText = selectedLexeme.getText();
 		IAnnotationModel model = getDocumentProvider().getAnnotationModel(getEditorInput());
-		removeOccurrenceAnnotations();
+		Map<Annotation, Position> toAdd = new HashMap<Annotation, Position>();
 		for (int i = 0; i < lexemeList.size(); i++)
 		{
 			Lexeme lexeme = lexemeList.get(i);
@@ -2964,9 +2967,28 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 						Position pos = new Position(lexeme.offset, lexeme.length);
 						Annotation occurence = new Annotation("com.aptana.ide.annotation.occurence", false, lexeme //$NON-NLS-1$
 								.getText());
-						model.addAnnotation(occurence, pos);
+						toAdd.put(occurence, pos);
 					}
 				}
+			}
+		}
+		// Batch removal and addition all together which helps performance wise
+		if (model instanceof IAnnotationModelExtension)
+		{
+			IAnnotationModelExtension ext = (IAnnotationModelExtension) model;
+			List<Annotation> annotationsToRemove = new LinkedList<Annotation>();
+			Iterator<Annotation> existing = model.getAnnotationIterator();
+			while (existing.hasNext())
+				annotationsToRemove.add(existing.next());
+			ext.replaceAnnotations(annotationsToRemove.toArray(new Annotation[annotationsToRemove.size()]), toAdd);
+		}
+		else
+		{
+			// Doesn't support batch removal + add. Use old fashioned way :(
+			removeOccurrenceAnnotations();
+			for (Map.Entry<Annotation, Position> entry : toAdd.entrySet())
+			{
+				model.addAnnotation(entry.getKey(), entry.getValue());
 			}
 		}
 	}
@@ -3031,7 +3053,12 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 		{
 			return;
 		}
-		Iterator iter = model.getAnnotationIterator();
+//		if (model instanceof IAnnotationModelExtension)
+//		{
+//			IAnnotationModelExtension extension = (IAnnotationModelExtension) model;
+//			extension.removeAllAnnotations();
+//		}
+		Iterator<Annotation> iter = model.getAnnotationIterator();
 		if (iter == null)
 		{
 			return;
@@ -3039,7 +3066,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 		Annotation annotation;
 		while (iter.hasNext())
 		{
-			annotation = (Annotation) iter.next();
+			annotation = iter.next();
 			if ("com.aptana.ide.annotation.occurence".equals(annotation.getType())) //$NON-NLS-1$
 			{
 				model.removeAnnotation(annotation);
