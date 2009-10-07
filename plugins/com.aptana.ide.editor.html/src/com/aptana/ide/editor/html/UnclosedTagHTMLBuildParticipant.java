@@ -42,7 +42,8 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 			{
 				if (isUnopened(context, lex))
 				{
-					problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, lex
+					
+					problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), getLineNumber(context, lex), lex
 							.getStartingOffset(), lex.getEndingOffset(), "Unopened tag '" + lex.getText() + "'"));
 				}
 			}
@@ -63,7 +64,7 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 				{
 					if (!isClosed(context, elementNode))
 					{
-						problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, elementNode
+						problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), getLineNumber(context, elementNode), elementNode
 								.getStartingOffset(), elementNode.getEndingOffset(), "Unclosed tag '"
 								+ elementNode.getName() + "'"));
 					}

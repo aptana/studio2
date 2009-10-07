@@ -66,7 +66,7 @@ public class RequiredAttributeHTMLBuildParticipant extends HTMLBuildParticipant
 				Collection<String> missingAttributes = getMissingAttributes(elementNode);
 				for (String attributeName : missingAttributes)
 				{
-					problems.add(new Warning(2, context.getFile().getFullPath().toPortableString(), -1, elementNode
+					problems.add(new Warning(2, context.getFile().getFullPath().toPortableString(), getLineNumber(context, elementNode), elementNode
 							.getStartingOffset(), elementNode.getEndingOffset(), "Missing required attribute '"
 							+ attributeName + "'"));
 				}

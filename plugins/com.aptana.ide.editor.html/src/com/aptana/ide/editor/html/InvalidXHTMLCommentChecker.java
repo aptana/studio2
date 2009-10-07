@@ -45,7 +45,7 @@ public class InvalidXHTMLCommentChecker extends HTMLBuildParticipant
 					text = text.substring(0, text.length() - 3); // drop '-->'
 					if (text.contains("--"))
 						problems
-								.add(new Warning(1, context.getFile().getFullPath().toPortableString(), 0, lexeme
+								.add(new Warning(1, context.getFile().getFullPath().toPortableString(), getLineNumber(context, lexeme), lexeme
 										.getStartingOffset(), lexeme.getEndingOffset(),
 										"Comments should not contain '--' in the text. Many browsers mishandle comments not ending in this exact pattern."));
 				}
