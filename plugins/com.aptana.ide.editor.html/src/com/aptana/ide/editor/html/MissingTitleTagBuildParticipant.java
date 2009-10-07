@@ -36,7 +36,11 @@ public class MissingTitleTagBuildParticipant extends HTMLBuildParticipant
 
 	private boolean containsTitleTag(BuildContext context, IParseNode root)
 	{
+		if (root == null)
+			return false;
 		IParseNode[] children = root.getChildren();
+		if (children == null)
+			return false;
 		for (IParseNode node : children)
 		{
 			if (node instanceof HTMLElementNode)

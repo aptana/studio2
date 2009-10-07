@@ -10,6 +10,7 @@ import com.aptana.ide.core.builder.IProblem;
 import com.aptana.ide.core.builder.Warning;
 import com.aptana.ide.editor.html.lexing.HTMLTokenTypes;
 import com.aptana.ide.editor.html.parsing.HTMLDocumentType;
+import com.aptana.ide.editor.html.parsing.HTMLMimeType;
 import com.aptana.ide.editor.html.parsing.HTMLParseState;
 import com.aptana.ide.lexer.Lexeme;
 import com.aptana.ide.lexer.LexemeList;
@@ -38,7 +39,7 @@ public class InvalidXHTMLCommentChecker extends HTMLBuildParticipant
 			LexemeList ll = context.getLexemeList();
 			for (Lexeme lexeme : ll.toArray())
 			{
-				if (lexeme.typeIndex == HTMLTokenTypes.COMMENT)
+				if (lexeme != null && lexeme.getLanguage().equals(HTMLMimeType.MimeType) && lexeme.typeIndex == HTMLTokenTypes.COMMENT)
 				{
 					String text = lexeme.getText();
 					text = text.substring(4); // drop '<!--'

@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.aptana.ide.core.builder.BuildContext;
 import com.aptana.ide.core.builder.IProblem;
 import com.aptana.ide.core.builder.Warning;
+import com.aptana.ide.editor.html.parsing.HTMLMimeType;
 import com.aptana.ide.editor.html.parsing.HTMLParseState;
 import com.aptana.ide.editor.html.parsing.HTMLUtils;
 import com.aptana.ide.editor.html.parsing.nodes.HTMLElementNode;
@@ -38,6 +39,8 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 		List<IProblem> problems = new ArrayList<IProblem>();
 		for (Lexeme lex : context.getLexemeList().toArray())
 		{
+			if (lex == null || !lex.getLanguage().equals(HTMLMimeType.MimeType))
+				continue;
 			if (HTMLUtils.isEndTag(lex))
 			{
 				if (isUnopened(context, lex))
@@ -54,7 +57,11 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 	private List<IProblem> walk(BuildContext context, IParseNode root)
 	{
 		List<IProblem> problems = new ArrayList<IProblem>();
+		if (root == null)
+			return problems;
 		IParseNode[] children = root.getChildren();
+		if (children == null)
+			return problems;
 		for (IParseNode node : children)
 		{
 			if (node instanceof HTMLElementNode)
