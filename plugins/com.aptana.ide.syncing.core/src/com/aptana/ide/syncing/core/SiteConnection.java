@@ -164,28 +164,6 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof SiteConnection)) {
-            return false;
-        }
-        SiteConnection otherSite = (SiteConnection) o;
-        return sourceConnectionPoint == otherSite.sourceConnectionPoint
-                && destinationConnectionPoint == otherSite.destinationConnectionPoint;
-    }
-
-    @Override
-    public int hashCode() {
-        int hashCode = 13;
-        if (sourceConnectionPoint != null) {
-            hashCode += sourceConnectionPoint.hashCode() * 31;
-        }
-        if (destinationConnectionPoint != null) {
-            hashCode += destinationConnectionPoint.hashCode() * 31;
-        }
-        return hashCode;
-    }
-
-    @Override
     public String toString() {
         StringBuilder text = new StringBuilder();
         text.append("("); //$NON-NLS-1$
