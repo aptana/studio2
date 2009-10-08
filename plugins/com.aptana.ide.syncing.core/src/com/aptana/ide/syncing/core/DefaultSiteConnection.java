@@ -54,7 +54,7 @@ import com.aptana.ide.core.io.IConnectionPoint;
  */
 public class DefaultSiteConnection extends SiteConnection {
 
-    public static final String NAME = "default"; //$NON-NLS-1$
+    public static final String NAME = "Default"; //$NON-NLS-1$
 
     protected static final String STATE_FILENAME = "defaultConnection"; //$NON-NLS-1$
 
@@ -90,6 +90,7 @@ public class DefaultSiteConnection extends SiteConnection {
                 XMLMemento memento = XMLMemento.createReadRoot(reader);
                 loadState(memento.getChild(ELEMENT_SITE));
 
+                fInstance.setName(NAME);
                 if (fInstance.getSource() == null) {
                     fInstance.setSource(getDefaultSource());
                 }
