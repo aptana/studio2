@@ -963,6 +963,9 @@ public class LanguageColorizationWidget
 		{
 			cComp.setVisible(false);
 		}
+		
+		createEmptyTable(buttons, 2);
+			
 
 		loadEditorOptions();
 		if (provider != null)
@@ -972,6 +975,21 @@ public class LanguageColorizationWidget
 			loadColorizer();
 		}
 	}
+	
+	public Table createEmptyTable(Composite composite, int horizontalSpan)
+    {
+        Table table = new Table(composite, SWT.None);
+
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = horizontalSpan;
+        gridData.verticalSpan = 1;
+        gridData.widthHint = 1;
+        gridData.heightHint = 1;
+        table.setLayoutData(gridData);
+        table.setBackground (composite.getBackground());
+
+        return table;
+    }
 
 	private void styleCells()
 	{
