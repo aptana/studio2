@@ -257,22 +257,6 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="toolbar:com.aptana.ide.core.ui.AptanaNavigator?after=additions">
-         <command
-               commandId="com.aptana.ide.pathtools.commands.openShell"
-               icon="icons/shell.png"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="toolbar:com.aptana.ide.js.ui.views.FileExplorerView?after=additions">
-         <command
-               commandId="com.aptana.ide.pathtools.commands.openShell"
-               icon="icons/shell.png"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
             locationURI="toolbar:com.aptana.ide.ui.io.fileExplorerView?after=additions">
          <command
                commandId="com.aptana.ide.pathtools.commands.openShell"

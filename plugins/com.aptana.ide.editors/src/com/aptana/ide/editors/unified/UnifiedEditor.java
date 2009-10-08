@@ -148,6 +148,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput;
+import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
@@ -167,7 +168,6 @@ import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.editors.ISaveAsEvent;
 import com.aptana.ide.core.ui.editors.ISaveEvent;
-import com.aptana.ide.core.ui.views.IRefreshableView;
 import com.aptana.ide.editors.UnifiedEditorsPlugin;
 import com.aptana.ide.editors.actions.OpenDeclarationAction;
 import com.aptana.ide.editors.formatting.UnifiedBracketInserterManager;
@@ -241,7 +241,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	// private UnifiedBracketMatcher bracketMatcher;
 	private ArrayList<ISaveAsEvent> _saveAsListeners;
 	private ArrayList<ISaveEvent> _saveListeners;
-	private IRefreshableView _fileExplorerView;
+	private CommonViewer _fileExplorerView;
 	// private TextColorer textColorer;
 	private IPreferenceStore _prefStore;
 	private IPartListener _partListener;
@@ -2699,8 +2699,8 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	{
 		if (this._fileExplorerView == null)
 		{
-			this._fileExplorerView = (IRefreshableView) CoreUIUtils.getViewInternal(
-					"com.aptana.ide.js.ui.views.FileExplorerView", null); //$NON-NLS-1$
+			this._fileExplorerView = (CommonViewer) CoreUIUtils.getViewInternal(
+					"com.aptana.ide.ui.io.fileExplorerView", null); //$NON-NLS-1$
 		}
 
 		if (this._fileExplorerView == null)
@@ -2708,15 +2708,12 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			return;
 		}
 
-		final IRefreshableView view = this._fileExplorerView;
-
-		Display display = Display.getDefault();
-		display.asyncExec(new Runnable()
+		Display.getDefault().asyncExec(new Runnable()
 		{
 
 			public void run()
 			{
-				view.refresh();
+				_fileExplorerView.refresh();
 			}
 
 		});

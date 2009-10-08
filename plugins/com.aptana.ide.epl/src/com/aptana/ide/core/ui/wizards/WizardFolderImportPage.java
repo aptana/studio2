@@ -461,7 +461,7 @@ public class WizardFolderImportPage extends WizardPage implements IOverwriteQuer
 
 		try
 		{
-			showView("com.aptana.ide.core.ui.AptanaNavigator", PlatformUI.getWorkbench().getActiveWorkbenchWindow()); //$NON-NLS-1$
+			showView("com.aptana.ide.ui.io.fileExplorerView", PlatformUI.getWorkbench().getActiveWorkbenchWindow()); //$NON-NLS-1$
 		}
 		catch (PartInitException e)
 		{
