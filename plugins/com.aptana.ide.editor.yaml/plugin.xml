@@ -143,12 +143,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
-      <category
-            id="com.aptana.ide.core.ui"
-            name="%category.name.1"/>
-      <category
-            id="com.aptana.ide.core.ui.projects"
-            name="%category.name.2"/>
       <wizard
             category="com.aptana.ide.core.ui.projects"
             class="com.aptana.ide.editor.yml.wizards.YMLNewFileWizard"
