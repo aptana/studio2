@@ -65,7 +65,7 @@ public class SiteConnectionPropertiesAction extends SiteConnectionActionDelegate
 				dlg.open();
 			}
 		} catch (CoreException e) {
-			UIUtils.showErrorMessage("Create dialog failed", e);
+			UIUtils.showErrorMessage(Messages.SiteConnectionPropertiesAction_ERR_CreateDialogFailed, e);
 		}
 	}
 

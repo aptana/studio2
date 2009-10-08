@@ -48,6 +48,7 @@ public class Messages extends NLS {
     public static String ConnectionPointComposite_TTP_Refresh;
     public static String ConnectionPointComposite_TTP_Up;
 
+    public static String FTPManagerComposite_ERR_CreateNewSiteFailed;
     public static String FTPManagerComposite_ERR_EmptyName;
     public static String FTPManagerComposite_ERR_NameExists;
     public static String FTPManagerComposite_LBL_SaveAs;

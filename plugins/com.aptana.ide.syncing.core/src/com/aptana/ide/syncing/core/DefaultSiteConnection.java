@@ -45,6 +45,7 @@ import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.epl.XMLMemento;
 import com.aptana.ide.core.io.ConnectionPointUtils;
+import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
  * A singleton for defining the default connection available to users.
@@ -71,7 +72,7 @@ public class DefaultSiteConnection extends SiteConnection {
         if (fInstance == null) {
             fInstance = new DefaultSiteConnection();
             fInstance.setName(NAME);
-            fInstance.setSource(ConnectionPointUtils.findOrCreateLocalConnectionPoint(Path.fromOSString(HOME_DIR)));
+            fInstance.setSource(getDefaultSource());
         }
         return fInstance;
     }
@@ -88,6 +89,10 @@ public class DefaultSiteConnection extends SiteConnection {
                 FileReader reader = new FileReader(file);
                 XMLMemento memento = XMLMemento.createReadRoot(reader);
                 loadState(memento.getChild(ELEMENT_SITE));
+
+                if (fInstance.getSource() == null) {
+                    fInstance.setSource(getDefaultSource());
+                }
                 // the destination is context sensitive, so sets back to null
                 fInstance.setDestination(null);
             } catch (IOException e) {
@@ -112,4 +117,7 @@ public class DefaultSiteConnection extends SiteConnection {
         }
     }
 
+    private static IConnectionPoint getDefaultSource() {
+        return ConnectionPointUtils.findOrCreateLocalConnectionPoint(Path.fromOSString(HOME_DIR));
+    }
 }

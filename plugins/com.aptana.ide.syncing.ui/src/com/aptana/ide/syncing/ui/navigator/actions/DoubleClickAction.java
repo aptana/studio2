@@ -63,11 +63,11 @@ public class DoubleClickAction extends BaseDoubleClickAction {
         IStructuredSelection selection = (IStructuredSelection) fTreeViewer.getSelection();
         Object element = selection.getFirstElement();
         if (element instanceof ISiteConnection) {
-            // double-clicked on a site; opens it in the FTP Manager view
+            // double-clicked on a site; opens it in the connection editor
             EditorUtils.openConnectionEditor((ISiteConnection) element);
         } else if (element instanceof ProjectSiteConnection) {
             // double-clicked on a site inside a project; both expands the node
-            // and opens the FTP Manager view
+            // and opens the connection editor
             super.run();
             EditorUtils.openConnectionEditor(((ProjectSiteConnection) element).getSiteConnection());
         } else {
@@ -87,7 +87,7 @@ public class DoubleClickAction extends BaseDoubleClickAction {
 
     private void openNewSiteConnectionDialog(IAdaptable source) {
         SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fShell);
-        dlg.setCreateNew("New Connection", source, null);
+        dlg.setCreateNew(Messages.DoubleClickAction_NewConnection, source, null);
         dlg.open();
     }
 }

@@ -43,9 +43,16 @@ public class Messages extends NLS {
     public static String BaseSyncAction_MessageTitle;
     public static String BaseSyncAction_Warning_NoCommonParent;
 
+    public static String DeleteSiteConnectionAction_JobName;
+    public static String DeleteSiteConnectionAction_SubtaskName;
+
     public static String DownloadAction_MainTask;
     public static String DownloadAction_MessageTitle;
     public static String DownloadAction_PostMessage;
+
+    public static String NewSiteAction_LBL_New;
+
+    public static String SiteConnectionPropertiesAction_ERR_CreateDialogFailed;
 
     public static String UploadAction_MainTask;
     public static String UploadAction_MessageTitle;

@@ -55,7 +55,7 @@ import com.aptana.ide.core.io.IConnectionPoint;
  */
 public class SiteConnection extends PlatformObject implements ISiteConnection {
 
-    private static final String ELEMENT_NAME = "name";
+    private static final String ELEMENT_NAME = "name"; //$NON-NLS-1$
     private static final String ELEMENT_SOURCE = "source"; //$NON-NLS-1$
     private static final String ELEMENT_DESTINATION = "destination"; //$NON-NLS-1$
     private static final String ELEMENT_EXCLUDES = "excludes"; //$NON-NLS-1$
@@ -75,9 +75,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
     /* package */SiteConnection() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see com.aptana.ide.syncing.core.ISiteConnection#getName()
      */
     public String getName() {
@@ -94,9 +92,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
         notifyChanged();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see com.aptana.ide.syncing.core.ISiteConnection#getSource()
      */
     public IConnectionPoint getSource() {
@@ -104,7 +100,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
     }
 
     /**
-     * set source connection point
+     * Sets the source connection point.
      * 
      * @param source
      */
@@ -113,9 +109,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
         notifyChanged();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see com.aptana.ide.syncing.core.ISiteConnection#getDestination()
      */
     public IConnectionPoint getDestination() {
@@ -123,7 +117,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
     }
 
     /**
-     * set destination connection point
+     * Sets the destination connection point.
      * 
      * @param destination
      */
@@ -132,12 +126,8 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
         notifyChanged();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.aptana.ide.syncing.core.ISiteConnection#excludes(org.eclipse.core
-     * .runtime.IPath)
+    /**
+     * @see com.aptana.ide.syncing.core.ISiteConnection#excludes(org.eclipse.core.runtime.IPath)
      */
     public boolean excludes(IPath path) {
         for (Object i : excludes) {
@@ -147,7 +137,6 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
                 }
             }
         }
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -169,7 +158,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
         text.append("("); //$NON-NLS-1$
         IConnectionPoint source = getSource();
         if (source == null) {
-            text.append("source missing");
+            text.append(Messages.SiteConnection_LBL_NoSource);
         } else {
             ConnectionPointType type = CoreIOPlugin.getConnectionPointManager().getType(source);
             if (type != null) {
@@ -182,7 +171,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
 
         IConnectionPoint target = getDestination();
         if (target == null) {
-            text.append("destination missing");
+            text.append(Messages.SiteConnection_LBL_NoDestination);
         } else {
             ConnectionPointType type = CoreIOPlugin.getConnectionPointManager().getType(target);
             if (type != null) {

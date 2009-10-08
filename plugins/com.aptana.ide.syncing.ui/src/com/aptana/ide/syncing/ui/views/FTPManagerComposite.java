@@ -361,7 +361,7 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         	try {
 				newSite = (SiteConnection) SyncingPlugin.getSiteConnectionManager().cloneSiteConnection(fSelectedSite);
 			} catch (CoreException e) {
-				UIUtils.showErrorMessage("Create new site connection failed", e);
+				UIUtils.showErrorMessage(Messages.FTPManagerComposite_ERR_CreateNewSiteFailed, e);
 				return;
 			}
         } else {

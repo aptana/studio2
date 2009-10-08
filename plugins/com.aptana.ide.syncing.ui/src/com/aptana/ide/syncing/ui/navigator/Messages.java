@@ -8,6 +8,8 @@ public class Messages extends NLS {
 
     public static String ProjectSiteConnections_Name;
 
+    public static String SiteConnections_LBL;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

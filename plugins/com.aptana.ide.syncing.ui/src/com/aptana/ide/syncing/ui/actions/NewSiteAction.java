@@ -69,7 +69,7 @@ public class NewSiteAction implements IObjectActionDelegate {
             source = (IAdaptable) element;
         }
         SiteConnectionsEditorDialog dlg = new SiteConnectionsEditorDialog(fActivePart.getSite().getShell());
-        dlg.setCreateNew("New Connection", source, null);
+        dlg.setCreateNew(Messages.NewSiteAction_LBL_New, source, null);
         dlg.open();
     }
 

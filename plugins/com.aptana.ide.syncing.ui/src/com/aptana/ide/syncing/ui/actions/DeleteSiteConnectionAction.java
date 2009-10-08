@@ -60,11 +60,11 @@ public class DeleteSiteConnectionAction extends SiteConnectionActionDelegate {
 		if (connections.length == 0) {
 			return;
 		}
-		Job job = new Job("Deleting connection(s)") {
+		Job job = new Job(Messages.DeleteSiteConnectionAction_JobName) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
                 for (ISiteConnection connection : connections) {
-                    monitor.subTask(MessageFormat.format("Deleting {0}", connection));
+                    monitor.subTask(MessageFormat.format(Messages.DeleteSiteConnectionAction_SubtaskName, connection));
                     SyncingPlugin.getSiteConnectionManager().removeSiteConnection(connection);
                 }
 				return Status.OK_STATUS;

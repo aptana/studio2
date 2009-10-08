@@ -45,6 +45,9 @@ public final class Messages extends NLS {
 
     public static String NaturePropertyTester_ERR_WhileTestingProjectNature;
 
+    public static String SiteConnection_LBL_NoDestination;
+    public static String SiteConnection_LBL_NoSource;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
