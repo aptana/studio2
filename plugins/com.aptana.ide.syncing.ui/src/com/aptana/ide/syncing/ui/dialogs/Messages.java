@@ -35,13 +35,31 @@
 
 package com.aptana.ide.syncing.ui.dialogs;
 
-/**
- * @author Max Stepanov
- *
- */
-public interface IDialogConstants extends org.eclipse.jface.dialogs.IDialogConstants {
+import org.eclipse.osgi.util.NLS;
 
-    public static final int APPLY_ID = 31;
-    
-    public static final String APPLY_LABEL = Messages.IDialogConstants_LBL_Apply;
+public class Messages extends NLS {
+
+    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.dialogs.messages"; //$NON-NLS-1$
+
+    public static String IDialogConstants_LBL_Apply;
+
+    public static String SiteConnectionsEditorDialog_DeleteConfirm_Message;
+    public static String SiteConnectionsEditorDialog_DeleteConfirm_Title;
+    public static String SiteConnectionsEditorDialog_DialogTitle;
+    public static String SiteConnectionsEditorDialog_ERR_Duplicate;
+    public static String SiteConnectionsEditorDialog_LBL_ConnectionGroup;
+    public static String SiteConnectionsEditorDialog_LBL_Duplicate;
+    public static String SiteConnectionsEditorDialog_LBL_NewConnection;
+    public static String SiteConnectionsEditorDialog_Message;
+    public static String SiteConnectionsEditorDialog_SaveConfirm_Message;
+    public static String SiteConnectionsEditorDialog_SaveConfirm_Title;
+    public static String SiteConnectionsEditorDialog_Title;
+
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    private Messages() {
+    }
 }
