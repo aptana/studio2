@@ -58,8 +58,7 @@ import com.aptana.ide.installer.preferences.IPreferenceConstants;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class InstallerWizardDialog extends WizardDialog implements
-        PluginsTreeViewer.Listener {
+public class InstallerWizardDialog extends WizardDialog implements PluginsTreeViewer.Listener {
 
     private static final String INSTALL_LABEL = Messages.InstallerWizardDialog_InstallLabel;
     private static final String CLOSE_LABEL = Messages.InstallerWizardDialog_CloseLabel;
@@ -129,15 +128,12 @@ public class InstallerWizardDialog extends WizardDialog implements
         boolean donotshow;
         IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
         if (prefs.contains(IPreferenceConstants.WIZARD_DO_NOT_SHOW_AGAIN)) {
-            donotshow = prefs
-                    .getBoolean(IPreferenceConstants.WIZARD_DO_NOT_SHOW_AGAIN);
+            donotshow = prefs.getBoolean(IPreferenceConstants.WIZARD_DO_NOT_SHOW_AGAIN);
         } else {
-            donotshow = prefs
-                    .getBoolean(IPreferenceConstants.WIZARD_DO_NOT_SHOW_AGAIN_DEFAULT);
+            donotshow = prefs.getBoolean(IPreferenceConstants.WIZARD_DO_NOT_SHOW_AGAIN_DEFAULT);
         }
         fDoNotShowButton.setSelection(donotshow);
-        fDoNotShowButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.FILL,
-                true, true));
+        fDoNotShowButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.FILL, true, true));
         fDoNotShowButton.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent e) {
@@ -150,24 +146,21 @@ public class InstallerWizardDialog extends WizardDialog implements
         managePluginsButton.setText(Messages.InstallerWizardDialog_Manage_Plugins);
         managePluginsButton.addSelectionListener(new SelectionListener() {
 
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
+            public void widgetDefaultSelected(SelectionEvent e) {
+                widgetSelected(e);
+            }
 
-			public void widgetSelected(SelectionEvent e) {
-				try
-				{
-					close();
-					CoreUIUtils.showView("com.aptana.ide.ui.ViewPlugins"); //$NON-NLS-1$
-				}
-				catch (PartInitException e1)
-				{
-					// Do nothing, view didn't open
-				}
-			}
-        	
+            public void widgetSelected(SelectionEvent e) {
+                try {
+                    close();
+                    CoreUIUtils.showView("com.aptana.ide.ui.ViewPlugins"); //$NON-NLS-1$
+                } catch (PartInitException e1) {
+                    // Do nothing, view didn't open
+                }
+            }
+
         });
-        
+
         super.createButtonsForButtonBar(parent);
         // changes the "Finish" text to "Install" and disables it by default
         getFinishButton().setText(INSTALL_LABEL);
@@ -190,14 +183,12 @@ public class InstallerWizardDialog extends WizardDialog implements
     }
 
     private PluginsTreeViewer getPluginsTree() {
-        return ((PluginsWizardPage) fWizard.getPage(PluginsWizardPage.NAME))
-                .getTreeViewer();
+        return ((PluginsWizardPage) fWizard.getPage(PluginsWizardPage.NAME)).getTreeViewer();
     }
 
     private void updateDoNotShowLayout() {
         if (fDoNotShowButton.getSelection()) {
-            setMessage(Messages.InstallerWizardDialog_DoNotShowNote,
-                    IMessageProvider.INFORMATION);
+            setMessage(Messages.InstallerWizardDialog_DoNotShowNote, IMessageProvider.INFORMATION);
         } else {
             setMessage(Messages.PluginsWizardPage_Description);
 
@@ -207,9 +198,7 @@ public class InstallerWizardDialog extends WizardDialog implements
     private void saveStates() {
         // stores the state of "Do not show again" checkbox
         IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
-        prefs.setValue(IPreferenceConstants.WIZARD_DO_NOT_SHOW_AGAIN,
-                fDoNotShowButton.getSelection());
-        Activator.getDefault().savePluginPreferences();
+        prefs.setValue(IPreferenceConstants.WIZARD_DO_NOT_SHOW_AGAIN, fDoNotShowButton
+                .getSelection());
     }
-
 }

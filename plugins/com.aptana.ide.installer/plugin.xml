@@ -55,12 +55,6 @@
                menubarPath="help/aptanaUpdate"
                style="push">
          </action>
-       </actionSet>
-       <!-- The funcky p. prefix in the actionSet id controls the order of the button in the toolbar -->
-       <actionSet
-            id="p.com.aptana.ide.installer.toolbar.actionSet"
-            label="%ActionSet.installer.label"
-            visible="false">
          <action
                class="com.aptana.ide.installer.actions.InstallerAction"
                icon="icons/plugin.png"
@@ -69,7 +63,8 @@
                style="pulldown"
                toolbarPath="s.com.aptana.ide.core.ui.actionSet.ShowAptanaView/aptanatoolbar">
          </action>
-      </actionSet>
+       </actionSet>
+       <!-- The funcky p. prefix in the actionSet id controls the order of the button in the toolbar -->
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -78,26 +73,11 @@
          <actionSet
                id="com.aptana.ide.installer.actionSet">
          </actionSet>
-         <actionSet
-               id="p.com.aptana.ide.installer.toolbar.actionSet">
-         </actionSet>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="com.aptana.ide.db.PerspectiveFactory">
-         <actionSet
-               id="com.aptana.ide.installer.actionSet">
-         </actionSet>
-         <actionSet
-               id="p.com.aptana.ide.installer.toolbar.actionSet">
-         </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.radrails.rails.ui.PerspectiveRails">
          <actionSet
                id="com.aptana.ide.installer.actionSet">
-         </actionSet>
-         <actionSet
-               id="p.com.aptana.ide.installer.toolbar.actionSet">
          </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
@@ -105,17 +85,11 @@
          <actionSet
                id="com.aptana.ide.installer.actionSet">
          </actionSet>
-         <actionSet
-               id="p.com.aptana.ide.installer.toolbar.actionSet">
-         </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.eclipse.jst.j2ee.J2EEPerspective">
          <actionSet
                id="com.aptana.ide.installer.actionSet">
-         </actionSet>
-         <actionSet
-               id="p.com.aptana.ide.installer.toolbar.actionSet">
          </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
@@ -123,17 +97,11 @@
          <actionSet
                id="com.aptana.ide.installer.actionSet">
          </actionSet>
-         <actionSet
-               id="p.com.aptana.ide.installer.toolbar.actionSet">
-         </actionSet>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.eclipse.wst.web.ui.webDevPerspective">
          <actionSet
                id="com.aptana.ide.installer.actionSet">
-         </actionSet>
-         <actionSet
-               id="p.com.aptana.ide.installer.toolbar.actionSet">
          </actionSet>
       </perspectiveExtension>
    </extension>
@@ -217,6 +185,18 @@
             isEditable="true"
             label="%pluginsViewForeroundColor.name">
       </colorDefinition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.aptana.ide.installer.InstallerStartup">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.aptana.ide.installer.preferences.PreferenceInitializer">
+      </initializer>
    </extension>
 
 </plugin>

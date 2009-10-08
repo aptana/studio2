@@ -40,7 +40,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.installer.wizard.InstallerWizard;
@@ -50,8 +49,7 @@ import com.aptana.ide.update.manager.IPluginManager;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin
-{
+public class Activator extends AbstractUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "com.aptana.ide.installer"; //$NON-NLS-1$
@@ -62,15 +60,13 @@ public class Activator extends AbstractUIPlugin
     /**
      * The constructor
      */
-    public Activator()
-    {
+    public Activator() {
     }
 
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
      */
-    public void start(BundleContext context) throws Exception
-    {
+    public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
     }
@@ -78,8 +74,7 @@ public class Activator extends AbstractUIPlugin
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
-    public void stop(BundleContext context) throws Exception
-    {
+    public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
     }
@@ -89,8 +84,7 @@ public class Activator extends AbstractUIPlugin
      * 
      * @return the shared instance
      */
-    public static Activator getDefault()
-    {
+    public static Activator getDefault() {
         return plugin;
     }
 
@@ -102,8 +96,7 @@ public class Activator extends AbstractUIPlugin
      *            the path
      * @return the image descriptor
      */
-    public static ImageDescriptor getImageDescriptor(String path)
-    {
+    public static ImageDescriptor getImageDescriptor(String path) {
         return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 
@@ -114,8 +107,7 @@ public class Activator extends AbstractUIPlugin
      *            true if the initial welcome page should be shown, false
      *            otherwise
      */
-    public static void launchWizard(boolean showWelcome)
-    {
+    public static void launchWizard(boolean showWelcome) {
         launchWizard(showWelcome, new String[0]);
     }
 
@@ -129,8 +121,7 @@ public class Activator extends AbstractUIPlugin
      * @param expandedCategoryIDs
      *            the array of expanded category ids
      */
-    public static void launchWizard(boolean showWelcome, String[] expandedCategoryIDs)
-    {
+    public static void launchWizard(boolean showWelcome, String[] expandedCategoryIDs) {
         IWorkbench workbench = PlatformUI.getWorkbench();
         InstallerWizard wizard = new InstallerWizard(showWelcome);
         wizard.init(workbench, null);
@@ -140,9 +131,7 @@ public class Activator extends AbstractUIPlugin
         dialog.open();
     }
 
-	public IPluginManager getPluginManager()
-	{
-		return com.aptana.ide.update.Activator.getDefault().getPluginManager();
-	}
-
+    public IPluginManager getPluginManager() {
+        return com.aptana.ide.update.Activator.getDefault().getPluginManager();
+    }
 }

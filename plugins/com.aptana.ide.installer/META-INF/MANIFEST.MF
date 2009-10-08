@@ -7,7 +7,6 @@ Bundle-Activator: com.aptana.ide.installer.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.update.core,
  org.eclipse.help,
  org.eclipse.ui,
  com.aptana.ide.core,

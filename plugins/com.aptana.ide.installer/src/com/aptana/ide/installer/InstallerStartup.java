@@ -37,7 +37,6 @@ package com.aptana.ide.installer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.progress.UIJob;
@@ -66,7 +65,6 @@ public class InstallerStartup implements IStartup {
 
             };
             job.setRule(MutexJobRule.getInstance());
-            job.setPriority(Job.INTERACTIVE);
             job.setSystem(true);
             job.schedule(2000); // gives it a 2-second delay
         }
