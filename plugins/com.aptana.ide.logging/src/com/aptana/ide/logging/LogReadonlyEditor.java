@@ -185,13 +185,6 @@ public class LogReadonlyEditor extends TextEditor
 	}
 
 	/**
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#firePropertyChange(int)
-	 */
-	protected void firePropertyChange(int property)
-	{
-	}
-
-	/**
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
 	 */
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException
