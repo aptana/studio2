@@ -46,6 +46,7 @@ import com.aptana.ide.intro.preferences.IPreferenceConstants;
  * 
  * @author Shalom Gibly
  */
+@SuppressWarnings("restriction")
 public class ShowMyAptanaAction implements IWorkbenchWindowPulldownDelegate2
 {
 
@@ -150,7 +151,6 @@ public class ShowMyAptanaAction implements IWorkbenchWindowPulldownDelegate2
 		}
 		if (toolItem == null)
 		{
-			WWinPluginPulldown pulldown = (WWinPluginPulldown) action;
 			CoolBarManager manager = ((WorkbenchWindow) this.window).getCoolBarManager();
 			// this returns the list of actionSets groups
 			IContributionItem[] items = manager.getItems();
@@ -259,7 +259,7 @@ public class ShowMyAptanaAction implements IWorkbenchWindowPulldownDelegate2
 		}
 		catch (Exception e)
 		{
-			IdeLog.logError(IntroPlugin.getDefault(), e.getLocalizedMessage(), e);
+			IdeLog.logImportant(IntroPlugin.getDefault(), e.getLocalizedMessage(), e);
 		}
 	}
 
