@@ -37,6 +37,7 @@ package com.aptana.ide.syncing.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -44,11 +45,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
 import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
+import com.aptana.ide.syncing.ui.navigator.ProjectSitesManager;
 import com.aptana.ide.syncing.ui.navigator.SiteConnections;
 import com.aptana.ide.ui.io.IOUIPlugin;
 
@@ -66,24 +69,29 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
     private static Map<String, Image> images = new HashMap<String, Image>();
 
     private ISiteConnectionListener connectionListener = new ISiteConnectionListener() {
-		public void siteConnectionChanged(SiteConnectionEvent event) {
-	           final ISiteConnection siteConnection = event.getSiteConnection();
-	           switch (event.getKind()) {
-	           case SiteConnectionEvent.POST_ADD:
-	                // closes the corresponding connection editor
-	                EditorUtils.closeConnectionEditor(siteConnection);
-	                break;
 
-	           case SiteConnectionEvent.POST_DELETE:
-	                // closes the corresponding connection editor
-	                EditorUtils.closeConnectionEditor(siteConnection);
-	                break;
+        public void siteConnectionChanged(SiteConnectionEvent event) {
+            ISiteConnection siteConnection = event.getSiteConnection();
+            switch (event.getKind()) {
+            case SiteConnectionEvent.POST_ADD:
+                // opens the corresponding connection editor
+                EditorUtils.openConnectionEditor(siteConnection);
+                break;
+            case SiteConnectionEvent.POST_DELETE:
+                // closes the corresponding connection editor
+                EditorUtils.closeConnectionEditor(siteConnection);
+                break;
+            }
 
-	           }
-	            
-	           IOUIPlugin.refreshNavigatorView(SiteConnections.getInstance());
-		}
-	};
+            IOUIPlugin.refreshNavigatorView(SiteConnections.getInstance());
+            IConnectionPoint source = siteConnection.getSource();
+            IContainer container = (IContainer) source.getAdapter(IContainer.class);
+            if (container != null) {
+                IOUIPlugin.refreshNavigatorView(ProjectSitesManager.getInstance().getProjectSites(
+                        container.getProject()));
+            }
+        }
+    };
 
     /**
      * The constructor
@@ -104,7 +112,7 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     public void stop(BundleContext context) throws Exception {
-    	SyncingPlugin.getSiteConnectionManager().removeListener(connectionListener);
+        SyncingPlugin.getSiteConnectionManager().removeListener(connectionListener);
         plugin = null;
         super.stop(context);
     }

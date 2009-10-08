@@ -34,35 +34,37 @@
  */
 package com.aptana.ide.syncing.ui.navigator;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.ui.model.BaseWorkbenchContentProvider;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.aptana.ide.syncing.core.ISiteConnectionManager;
-import com.aptana.ide.syncing.core.SyncingPlugin;
+import org.eclipse.core.resources.IProject;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class SiteConnectionsContentProvider extends BaseWorkbenchContentProvider {
+public class ProjectSitesManager {
 
-    @Override
-    public Object[] getElements(Object inputElement) {
-        if (inputElement instanceof IWorkspaceRoot) {
-            inputElement = SyncingPlugin.getSiteConnectionManager();
+    private static ProjectSitesManager fInstance;
+
+    private Map<IProject, ProjectSiteConnections> fProjects;
+
+    public static ProjectSitesManager getInstance() {
+        if (fInstance == null) {
+            fInstance = new ProjectSitesManager();
         }
-        return super.getElements(inputElement);
+        return fInstance;
     }
 
-    @Override
-    public Object[] getChildren(Object element) {
-        if (element instanceof IProject) {
-            Object[] children = new Object[1];
-            children[0] = ProjectSitesManager.getInstance().getProjectSites((IProject) element);
-            return children;
-        } else if (element instanceof ISiteConnectionManager) {
-            return new Object[] { SiteConnections.getInstance() };
+    public ProjectSiteConnections getProjectSites(IProject project) {
+        ProjectSiteConnections sites = fProjects.get(project);
+        if (sites == null) {
+            sites = new ProjectSiteConnections(project);
+            fProjects.put(project, sites);
         }
-        return super.getChildren(element);
+        return sites;
+    }
+
+    private ProjectSitesManager() {
+        fProjects = new HashMap<IProject, ProjectSiteConnections>();
     }
 }
