@@ -45,7 +45,9 @@ import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.Assert;
 
+import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.io.ConnectionPoint;
+import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.VirtualFileSystem;
 
@@ -77,10 +79,17 @@ public class VirtualConnectionManager {
 	
 	public void register(ConnectionPoint connectionPoint) {
 		Assert.isNotNull(connectionPoint);
-		// do not assign URI until it is asked
-		connections.put(connectionPoint, null);
+		if (connections.containsKey(connectionPoint)) {
+			URI uri = getConnectionVirtualURI(connectionPoint);
+			if (uri != null) {
+				uris.remove(uri);
+			}
+			connections.put(connectionPoint, null);
+		}
+		// assign connection URI 
+		getConnectionVirtualURI(connectionPoint);
 	}
-		
+			
 	public URI getConnectionVirtualURI(ConnectionPoint connectionPoint) {
 		URI uri = connections.get(connectionPoint);
 		if (uri == null) {
@@ -110,6 +119,9 @@ public class VirtualConnectionManager {
 			if (connectionPoint == null && !connections.containsValue(uri)) {
 				uris.remove(uri);
 			}
+		}
+		if (connectionPoint == null) {
+			IdeLog.logImportant(CoreIOPlugin.getDefault(), "No matching connection found for the URI "+uri.toASCIIString());
 		}
 		return connectionPoint;
 	}
