@@ -122,7 +122,7 @@
         <name>Aptana RadRails</name>
         <category>Platforms</category> 
         <description>Ruby on Rails support</description>
-        <url>http://download.aptana.com/tools/radrails/plugin/install/radrails-studio/</url>
+        <url>http://download.aptana.com/tools/radrails/plugin/install/rails/</url>
         <more>http://www.aptana.com/radrails</more>
         <sortweight>0</sortweight>
         <release>
@@ -462,7 +462,7 @@
   	<description>This project provides PDT debugging support for your PHP projects</description>
   	<url>http://downloads.zend.com/pdt/</url>
   	<more>http://www.eclipse.org/pdt/</more>
-  	<sortweight>1</sortweight>
+  	<sortweight>2</sortweight>
   	<release>
   		<version>5.2</version>
 		<year>2009</year>
