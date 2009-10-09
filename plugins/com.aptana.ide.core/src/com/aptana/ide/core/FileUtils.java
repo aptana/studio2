@@ -901,7 +901,7 @@ public class FileUtils
 	}
 
 	/**
-	 * Removes the "middle" from a path to make it short enough to fit within the specified length, i.e. c:/Documents
+	 * Removes the "middle" part from a path to make it short enough to fit within the specified length, i.e. c:/Documents
 	 * and Settings/username/My Documents/workspace/whatever.txt would become c:/Documents and
 	 * Settings/.../workspace/whatever.txt.
 	 * 
@@ -944,6 +944,33 @@ public class FileUtils
 			return path;
 		}
 	}
+
+    /**
+     * Removes the "leading" part from a path to make it short enough to fit
+     * within the specified length, i.e. "c:/Documents and Settings/username/My
+     * Documents/workspace/whatever.txt" would become ".../My
+     * Documents/workspace/whatever.txt".
+     * 
+     * @param path
+     *            the path to compress
+     * @param pathLength
+     *            the length to shorten it to. This is more of a guideline
+     * @return a compressed path
+     */
+    public static String compressLeadingPath(String path, int pathLength) {
+        path = path.replace('\\', '/');
+
+        if (path.length() <= pathLength) {
+            return path;
+        }
+
+        int endSearch = path.length() - pathLength;
+        int lastSlash = path.indexOf('/', endSearch);
+        if (lastSlash < 0) {
+            return path;
+        }
+        return "..." + path.substring(lastSlash); //$NON-NLS-1$
+    }
 
 	/**
 	 * Creates a file name with a random integer number inserted between the prefix and suffix
