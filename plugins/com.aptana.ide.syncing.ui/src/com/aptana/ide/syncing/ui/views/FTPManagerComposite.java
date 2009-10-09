@@ -88,7 +88,7 @@ import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FTPManagerComposite implements SelectionListener, ISiteConnectionListener {
+public class FTPManagerComposite implements SelectionListener, ISiteConnectionListener, ConnectionPointComposite.Client {
 
     public static interface Listener {
         public void siteConnectionChanged(ISiteConnection site);
@@ -172,35 +172,9 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         } else if (source == fSaveAsButton) {
             saveAs();
         } else if (source == fTransferRightButton) {
-            transferItems(fSource.getSelectedElements(), fTarget.getCurrentInput(),
-                    new JobChangeAdapter() {
-
-                        @Override
-                        public void done(IJobChangeEvent event) {
-                            IOUIPlugin.refreshNavigatorView(fTarget.getCurrentInput());
-                            CoreUIUtils.getDisplay().asyncExec(new Runnable() {
-
-                                public void run() {
-                                    fTarget.refresh();
-                                }
-                            });
-                        }
-                    });
+            transferSourceToDestination();
         } else if (source == fTransferLeftButton) {
-            transferItems(fTarget.getSelectedElements(), fSource.getCurrentInput(),
-                    new JobChangeAdapter() {
-
-                        @Override
-                        public void done(IJobChangeEvent event) {
-                            IOUIPlugin.refreshNavigatorView(fSource.getCurrentInput());
-                            CoreUIUtils.getDisplay().asyncExec(new Runnable() {
-
-                                public void run() {
-                                    fSource.refresh();
-                                }
-                            });
-                        }
-                    });
+            transferDestinationToSource();
         }
     }
 
@@ -232,6 +206,17 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
             fTarget.setConnectionPoint(siteConnection.getDestination());
             break;
 		}
+    }
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.ui.views.ConnectionPointComposite.Client#transfer(com.aptana.ide.syncing.ui.views.ConnectionPointComposite)
+	 */
+    public void transfer(ConnectionPointComposite source) {
+        if (source == fSource) {
+            transferSourceToDestination();
+        } else if (source == fTarget) {
+            transferDestinationToSource();
+        }
     }
 
     protected Composite createControl(Composite parent) {
@@ -289,7 +274,7 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         sash.setLayout(layout);
 
         // source end point
-        fSource = new ConnectionPointComposite(sash, Messages.FTPManagerComposite_LBL_Source);
+        fSource = new ConnectionPointComposite(sash, Messages.FTPManagerComposite_LBL_Source, this);
         fSource.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         Composite right = new Composite(sash, SWT.NONE);
@@ -318,7 +303,7 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         fTransferLeftButton.addSelectionListener(this);
 
         // destination end point
-        fTarget = new ConnectionPointComposite(right, Messages.FTPManagerComposite_LBL_Target);
+        fTarget = new ConnectionPointComposite(right, Messages.FTPManagerComposite_LBL_Target, this);
         fTarget.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         return sash;
@@ -374,6 +359,40 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         EditorUtils.openConnectionEditor(newSite);
     }
 
+    private void transferSourceToDestination() {
+        transferItems(fSource.getSelectedElements(), fTarget.getCurrentInput(),
+                new JobChangeAdapter() {
+
+                    @Override
+                    public void done(IJobChangeEvent event) {
+                        IOUIPlugin.refreshNavigatorView(fTarget.getCurrentInput());
+                        CoreUIUtils.getDisplay().asyncExec(new Runnable() {
+
+                            public void run() {
+                                fTarget.refresh();
+                            }
+                        });
+                    }
+                });
+    }
+
+    private void transferDestinationToSource() {
+        transferItems(fTarget.getSelectedElements(), fSource.getCurrentInput(),
+                new JobChangeAdapter() {
+
+                    @Override
+                    public void done(IJobChangeEvent event) {
+                        IOUIPlugin.refreshNavigatorView(fSource.getCurrentInput());
+                        CoreUIUtils.getDisplay().asyncExec(new Runnable() {
+
+                            public void run() {
+                                fSource.refresh();
+                            }
+                        });
+                    }
+                });
+    }
+
     private void transferItems(IAdaptable[] sourceItems, IAdaptable targetRoot,
             IJobChangeListener listener) {
         IFileStore targetStore = SyncUtils.getFileStore(targetRoot);
@@ -402,5 +421,4 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 			return super.getText(element);
 		}
     }
-
 }

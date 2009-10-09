@@ -108,6 +108,10 @@ import com.aptana.ide.ui.io.navigator.actions.OpenFileAction;
 public class ConnectionPointComposite implements SelectionListener, ISelectionChangedListener,
         IDoubleClickListener, TransferDragSourceListener, DropTargetListener {
 
+    public static interface Client {
+        public void transfer(ConnectionPointComposite source);
+    }
+
     private static final String[] COLUMN_NAMES = {
             Messages.ConnectionPointComposite_Column_Filename,
             Messages.ConnectionPointComposite_Column_Size,
@@ -122,6 +126,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private TreeViewer fTreeViewer;
     private MenuItem fOpenItem;
+    private MenuItem fTransferItem;
     private MenuItem fDeleteItem;
     private MenuItem fRenameItem;
     private MenuItem fRefreshMenuItem;
@@ -130,9 +135,11 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
     private String fName;
     private IConnectionPoint fConnectionPoint;
     private List<IAdaptable> fEndPointData;
+    private Client fClient;
 
-    public ConnectionPointComposite(Composite parent, String name) {
+    public ConnectionPointComposite(Composite parent, String name, Client client) {
         fName = name;
+        fClient = client;
         fEndPointData = new ArrayList<IAdaptable>();
 
         fMain = createControl(parent);
@@ -212,6 +219,10 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             gotoHome();
         } else if (source == fOpenItem) {
             open(fTreeViewer.getSelection());
+        } else if (source == fTransferItem) {
+            if (fClient != null) {
+                fClient.transfer(this);
+            }
         } else if (source == fDeleteItem) {
             delete(fTreeViewer.getSelection());
         } else if (source == fRenameItem) {
@@ -232,7 +243,21 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
     }
 
     public void doubleClick(DoubleClickEvent event) {
-        open(event.getSelection());
+        if (fClient == null) {
+            open(event.getSelection());
+        } else {
+            Object object = ((IStructuredSelection) event.getSelection()).getFirstElement();
+            if (object instanceof IAdaptable) {
+                IAdaptable adaptable = (IAdaptable) object;
+                IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) object);
+                if (fileInfo.isDirectory()) {
+                    // goes into the folder
+                    updateContent(adaptable);
+                } else {
+                    fClient.transfer(this);
+                }
+            }
+        }
     }
 
     public Transfer getTransfer() {
@@ -439,6 +464,10 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         fOpenItem.setText(CoreStrings.OPEN);
         fOpenItem.setAccelerator(SWT.F3);
         fOpenItem.addSelectionListener(this);
+
+        fTransferItem = new MenuItem(menu, SWT.PUSH);
+        fTransferItem.setText(Messages.ConnectionPointComposite_LBL_Transfer);
+        fTransferItem.addSelectionListener(this);
 
         new MenuItem(menu, SWT.SEPARATOR);
         fDeleteItem = new MenuItem(menu, SWT.PUSH);
@@ -658,6 +687,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         ISelection selection = fTreeViewer.getSelection();
         boolean hasSelection = !selection.isEmpty();
         fOpenItem.setEnabled(hasSelection);
+        fTransferItem.setEnabled(hasSelection);
         fDeleteItem.setEnabled(hasSelection);
         fRenameItem.setEnabled(hasSelection);
         fPropertiesItem.setEnabled(hasSelection);
