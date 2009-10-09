@@ -119,7 +119,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private Composite fMain;
     private Label fEndPointLabel;
-    private ToolItem fUpItem;
     private ToolItem fRefreshItem;
     private ToolItem fHomeItem;
     private Link fPathLink;
@@ -187,7 +186,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         setPath(""); //$NON-NLS-1$
 
         fTreeViewer.setInput(connection);
-        updateActionStates();
     }
 
     public void refresh() {
@@ -211,9 +209,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
     public void widgetSelected(SelectionEvent e) {
         Object source = e.getSource();
 
-        if (source == fUpItem) {
-            goUp();
-        } else if (source == fRefreshItem) {
+        if (source == fRefreshItem) {
             refresh();
         } else if (source == fHomeItem) {
             gotoHome();
@@ -365,8 +361,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         TreeViewer treeViewer = createTreeViewer(main);
         treeViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        updateActionStates();
-
         return main;
     }
 
@@ -405,11 +399,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private ToolBar createActionsBar(Composite parent) {
         ToolBar toolbar = new ToolBar(parent, SWT.FLAT);
-
-        fUpItem = new ToolItem(toolbar, SWT.PUSH);
-        fUpItem.setImage(SyncingUIPlugin.getImage("icons/full/obj16/up.png")); //$NON-NLS-1$
-        fUpItem.setToolTipText(Messages.ConnectionPointComposite_TTP_Up);
-        fUpItem.addSelectionListener(this);
 
         fRefreshItem = new ToolItem(toolbar, SWT.PUSH);
         fRefreshItem.setImage(SyncingUIPlugin.getImage("icons/full/obj16/refresh.gif")); //$NON-NLS-1$
@@ -496,15 +485,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         fPropertiesItem.addSelectionListener(this);
 
         return menu;
-    }
-
-    private void goUp() {
-        if (fEndPointData.size() > 1) {
-            updateContent(fEndPointData.get(fEndPointData.size() - 2));
-        } else {
-            // already at root
-            updateContent(fConnectionPoint);
-        }
     }
 
     private void gotoHome() {
@@ -674,13 +654,6 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             }
         }
         fTreeViewer.setInput(rootElement);
-
-        updateActionStates();
-    }
-
-    private void updateActionStates() {
-        // disables the up button when it is at the root
-        fUpItem.setEnabled(fEndPointData.size() > 1);
     }
 
     private void updateMenuStates() {
