@@ -36,15 +36,9 @@
 package com.aptana.ide.ui.io.auth;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.UIJob;
 
-import com.aptana.ide.core.MutexJobRule;
 import com.aptana.ide.core.io.auth.IAuthenticationManager;
 import com.aptana.ide.core.io.auth.IAuthenticationPrompt;
 
@@ -58,29 +52,21 @@ public class AuthenticationPrompt implements IAuthenticationPrompt {
 	 * @see com.aptana.ide.core.io.auth.IAuthenticationPrompt#promptPassword(com.aptana.ide.core.io.auth.IAuthenticationManager, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public boolean promptPassword(final IAuthenticationManager authManager, final String authId, final String login, final String title, final String message) {
-		UIJob job = new UIJob("Prompt password") {
-			@Override
-			public IStatus runInUIThread(IProgressMonitor monitor) {
+		final boolean[] result = new boolean[] { false };
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			public void run() {
 				PasswordPromptDialog dlg = new PasswordPromptDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title, message);
 				dlg.setLogin(login);
 				dlg.setPassword(authManager.getPassword(authId));
 				dlg.setSavePassword(authManager.hasPersistent(authId));
 				if (dlg.open() == Window.OK) {
 					authManager.setPassword(authId, dlg.getPassword(), dlg.getSavePassword());
-					return Status.OK_STATUS;
+					result[0] = true;
 				}
-				return Status.CANCEL_STATUS;
 			}
-		};
-		job.setPriority(Job.INTERACTIVE);
-		job.setSystem(true);
-		job.setRule(MutexJobRule.getInstance());
-		job.schedule();
-		try {
-			job.join();
-		} catch (InterruptedException e) {
-		}
-		return Status.OK_STATUS.equals(job.getResult());
+		});
+		
+		return result[0];
 	}
 
 	public static class Factory implements IAdapterFactory {

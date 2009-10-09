@@ -37,7 +37,6 @@ package com.aptana.ide.syncing.ui.navigator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 
-import com.aptana.ide.syncing.core.ISiteConnectionManager;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 
