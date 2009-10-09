@@ -614,7 +614,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         }
 
         StringBuilder linkPath = new StringBuilder(separator);
-        String displayedPath = FileUtils.compressPath(path, 50);
+        String displayedPath = FileUtils.compressLeadingPath(path, 50);
         if (displayedPath.equals(path)) {
             String[] folders = path.split(separator);
             for (int i = 1; i < folders.length; ++i) {
@@ -623,18 +623,11 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             }
         } else {
             // deals with the compression
-            String[] paths = displayedPath.split("/.../"); //$NON-NLS-1$
-            String beginPath = paths[0];
-            String[] beginFolders = beginPath.split(separator);
-            for (int i = 1; i < beginFolders.length; ++i) {
-                linkPath.append(MessageFormat.format(
-                        "<a href=\"{0}\">{1}</a>", i - 1, beginFolders[i])); //$NON-NLS-1$
-                linkPath.append(separator);
-            }
             linkPath.append("...").append(separator); //$NON-NLS-1$
-            String endPath = paths[1];
+            // strips out the leading '.../'
+            String endPath = displayedPath.substring(4);
             String[] endFolders = endPath.split(separator);
-            int startIndex = path.split(separator).length - 1 - endFolders.length;
+            int startIndex = path.split(separator).length - endFolders.length - 1;
             for (int i = 0; i < endFolders.length; ++i) {
                 linkPath.append(MessageFormat.format(
                         "<a href=\"{0}\">{1}</a>", startIndex + i, endFolders[i])); //$NON-NLS-1$
