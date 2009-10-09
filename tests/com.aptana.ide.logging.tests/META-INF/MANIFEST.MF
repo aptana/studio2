@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests Plug-in
+Bundle-SymbolicName: com.aptana.ide.logging.tests
+Bundle-Version: 1.0.0
+Bundle-Activator: com.aptana.ide.logging.tests.LoggingTestsPlugin
+Bundle-Vendor: APTANA
+Require-Bundle: org.eclipse.core.runtime,
+ com.aptana.ide.logging,
+ com.aptana.ide.parsing,
+ org.junit,
+ org.eclipse.core.resources
+Eclipse-LazyStart: true
+Export-Package: com.aptana.ide.logging.tests

@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.ui,
  com.aptana.ide.core,
  com.aptana.ide.core.ui,
  org.eclipse.ui.workbench.texteditor,
- com.aptana.ide.io.file,
  org.eclipse.core.expressions;bundle-version="3.4.0",
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring

@@ -45,11 +45,11 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.aptana.ide.core.ui.CoreUIUtils;
-import com.aptana.ide.core.ui.INavigatorDecorator;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.ResourceSynchronizationUtils;
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.ui.io.navigator.INavigatorDecorator;
 
 /**
  * @author Michael Xia (mxia@aptana.com)

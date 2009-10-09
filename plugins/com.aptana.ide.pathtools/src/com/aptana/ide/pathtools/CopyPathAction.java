@@ -28,7 +28,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.ui.io.file.LocalFile;
 import com.aptana.ide.pathtools.handlers.Utilities;
 import com.aptana.ide.pathtools.preferences.PathtoolsPreferences;
 
@@ -104,10 +103,7 @@ public class CopyPathAction implements IViewActionDelegate, IObjectActionDelegat
 							fullPath = resource.getFullPath();
 						}
                 	}
- 				} else if (firstElement instanceof LocalFile) {
-				    LocalFile file = (LocalFile) firstElement;
-				    files.add(file.getFile());
-				}
+ 				}
 				if (location != null) {
 					// Get the file for the location
 					File file = location.toFile();

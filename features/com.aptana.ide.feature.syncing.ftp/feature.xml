@@ -26,21 +26,18 @@
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.filesystem"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.compare"/>
-      <import plugin="com.aptana.ide.core"/>
-      <import plugin="com.aptana.ide.core.ui"/>
-      <import plugin="com.aptana.ide.io.file"/>
-      <import plugin="com.aptana.ide.epl"/>
-      <import plugin="org.eclipse.eclipsemonkey"/>
       <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.navigator"/>
+      <import plugin="org.eclipse.ui.navigator.resources"/>
+      <import plugin="org.eclipse.eclipsemonkey"/>
+      <import plugin="com.aptana.ide.core.ui"/>
+      <import plugin="com.aptana.ide.core.io"/>
+      <import plugin="com.aptana.ide.filesystem.ftp"/>
+      <import plugin="com.aptana.ide.ui"/>
+      <import plugin="com.aptana.ide.ui.ftp"/>
+      <import plugin="com.aptana.ide.ui.io"/>
    </requires>
-
-   <plugin
-         id="com.aptana.ide.syncing"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
    <plugin
          id="com.aptana.ide.syncing.doms"

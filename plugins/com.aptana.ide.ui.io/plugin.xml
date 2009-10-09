@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="decorator" name="Aptana Navigator Decorator" schema="schema/decorator.exsd"/>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
@@ -487,6 +488,15 @@
                </instanceof>
                <instanceof
                      value="com.aptana.ide.core.io.IConnectionPoint">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.core.io.IConnectionPointCategory">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.WorkspaceProjects">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.LocalFileSystems">
                </instanceof>
             </or>
          </enablement>

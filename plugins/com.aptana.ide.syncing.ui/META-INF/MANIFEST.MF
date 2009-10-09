@@ -28,4 +28,5 @@ Export-Package: com.aptana.ide.syncing.ui,
  com.aptana.ide.syncing.ui.navigator.actions,
  com.aptana.ide.syncing.ui.preferences,
  com.aptana.ide.syncing.ui.properties,
- com.aptana.ide.syncing.ui.views
+ com.aptana.ide.syncing.ui.views,
+ com.aptana.ide.syncing.ui.wizards

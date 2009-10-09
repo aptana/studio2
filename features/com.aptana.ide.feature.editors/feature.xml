@@ -118,13 +118,6 @@
          unpack="false"/>
 
    <plugin
-         id="com.aptana.ide.io.file"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.aptana.ide.jface.text.source"
          download-size="0"
          install-size="0"

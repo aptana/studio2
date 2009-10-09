@@ -1,0 +1,10 @@
+/**
+ * @namespace Aptana.Tests
+ */
+
+/**
+ * Unbound test1 description.
+ * @id test1
+ * @param {String} arg0 Description for arg0.
+ * @return {String}
+ */

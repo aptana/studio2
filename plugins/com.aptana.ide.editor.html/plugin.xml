@@ -477,5 +477,13 @@
        <buildParticipant
              class="com.aptana.ide.editor.html.UnclosedTagHTMLBuildParticipant">
        </buildParticipant>
+       <buildParticipant
+             class="com.aptana.ide.editor.html.MissingTitleTagBuildParticipant"
+             priority="50">
+       </buildParticipant>
+       <buildParticipant
+             class="com.aptana.ide.editor.html.LowerCaseTagAndAttributeNamesChecker"
+             priority="50">
+       </buildParticipant>
     </extension>
 </plugin>

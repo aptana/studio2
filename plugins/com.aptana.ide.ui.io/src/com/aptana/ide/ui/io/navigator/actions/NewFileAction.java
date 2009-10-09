@@ -60,6 +60,9 @@ import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
 
+/**
+ * @author Michael Xia (mxia@aptana.com)
+ */
 public class NewFileAction extends BaseSelectionListenerAction {
 
     private IAdaptable fSelectedElement;

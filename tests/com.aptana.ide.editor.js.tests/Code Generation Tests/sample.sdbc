@@ -1,0 +1,31 @@
+/**
+ * This is a sample of ScriptDoc Byte Code which runs in the
+ * ScriptDoc Virtual Machine
+ */
+ 
+// item duplicate => item item
+duplicate
+
+// object string get => <named property value on object>
+get
+
+// get_global => <global scope>
+get_global
+
+// function instantiate => <return type of function invovation>
+instantiate
+
+// - no_operation => -
+no_operation
+
+// item pop => -
+pop
+
+// object string object put => -
+put
+
+// - push => item
+push
+
+// item1 item2 swap => item2 item1
+swap

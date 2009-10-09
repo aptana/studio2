@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests Plug-in
+Bundle-SymbolicName: com.aptana.ide.core.spellcheck.tests
+Bundle-Version: 1.0.0
+Bundle-Vendor: APTANA
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: com.aptana.ide.core.spellcheck,
+ org.junit,
+ org.eclipse.jface.text,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.swt,
+ com.aptana.ide.editors.tests
+Export-Package: com.aptana.commons.spelling.engine

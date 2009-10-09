@@ -128,14 +128,14 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 	
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Connection Manager");
+		newShell.setText(Messages.SiteConnectionsEditorDialog_DialogTitle);
 	}
 
 	protected Control createDialogArea(Composite parent) {
 		Composite dialogArea = (Composite) super.createDialogArea(parent);
 
-        setTitle("Connection Manager");
-        setMessage("Configures connections between a local container and a remote site or another local container.");
+        setTitle(Messages.SiteConnectionsEditorDialog_Title);
+        setMessage(Messages.SiteConnectionsEditorDialog_Message);
 
 		Composite container = new Composite(dialogArea, SWT.NONE);
 		container.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
@@ -149,7 +149,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 
 		/* column 1 - the list of connections */
 		Group group = new Group(sashForm, SWT.NONE);
-		group.setText("Connections");
+		group.setText(Messages.SiteConnectionsEditorDialog_LBL_ConnectionGroup);
 		group.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		group.setLayout(GridLayoutFactory.swtDefaults().numColumns(2).create());
 
@@ -202,7 +202,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (doSelectionChange()) {
-					setCreateNew("New Connection", null, null);
+					setCreateNew(Messages.SiteConnectionsEditorDialog_LBL_NewConnection, null, null);
 				} else {
 					sitesViewer.setSelection(new StructuredSelection(sitePropertiesWidget.getSource()), true);
 				}
@@ -212,7 +212,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (!sitesViewer.getSelection().isEmpty()) {
-					if (MessageDialog.openConfirm(getShell(), "Confirm Deletion", "Are you sure to delete the selected connection?")) {
+					if (MessageDialog.openConfirm(getShell(), Messages.SiteConnectionsEditorDialog_DeleteConfirm_Title, Messages.SiteConnectionsEditorDialog_DeleteConfirm_Message)) {
 						ISiteConnection selection = (ISiteConnection) ((IStructuredSelection) sitesViewer.getSelection()).getFirstElement();
 						int newSelectionIndex = sitesViewer.getList().getSelectionIndex() - 1;
 
@@ -246,18 +246,19 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 	}
 
 	protected void createActions(IMenuManager menuManager) {
-		menuManager.add(new Action("Duplicate") {
+		menuManager.add(new Action(Messages.SiteConnectionsEditorDialog_LBL_Duplicate) {
 			@Override
 			public void run() {
 				ISiteConnection siteConnection = (ISiteConnection) ((IStructuredSelection) sitesViewer.getSelection()).getFirstElement();
 				if (siteConnection != null && doSelectionChange()) {
 					try {
-						siteConnection = SyncingPlugin.getSiteConnectionManager().cloneSiteConnection(siteConnection);
-						sites.add(siteConnection);
+						SiteConnection newSite = (SiteConnection) SyncingPlugin.getSiteConnectionManager().cloneSiteConnection(siteConnection);
+						newSite.setName(StringUtils.format("Copy of {0}", siteConnection.getName())); //$NON-NLS-1$
+						sites.add(newSite);
 						sitesViewer.refresh();
-						sitesViewer.setSelection(new StructuredSelection(siteConnection), true);
+						sitesViewer.setSelection(new StructuredSelection(newSite), true);
 					} catch (CoreException e) {
-						UIUtils.showErrorMessage("Duplicate error", e);
+						UIUtils.showErrorMessage(Messages.SiteConnectionsEditorDialog_ERR_Duplicate, e);
 					}
 				}
 			}
@@ -272,9 +273,9 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 
 	protected boolean doSelectionChange() {
 		if (sitePropertiesWidget.isChanged()) {
-			MessageDialog dlg = new MessageDialog(getShell(), "Confirmation",
+			MessageDialog dlg = new MessageDialog(getShell(), Messages.SiteConnectionsEditorDialog_SaveConfirm_Title,
 				null,
-				StringUtils.format("The connection \"{0}\" has been modified. Would you like to save the changes?", sitePropertiesWidget.getSource().getName()),
+				StringUtils.format(Messages.SiteConnectionsEditorDialog_SaveConfirm_Message, sitePropertiesWidget.getSource().getName()),
 				MessageDialog.QUESTION,
 				new String[] { IDialogConstants.NO_LABEL, IDialogConstants.YES_LABEL, IDialogConstants.CANCEL_LABEL },
 				1);
@@ -336,7 +337,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
     }
     
     private static String createUniqueSiteName(String baseName) {
-    	Pattern pattern = Pattern.compile("^(.*) (\\d+)$");
+    	Pattern pattern = Pattern.compile("^(.*) (\\d+)$"); //$NON-NLS-1$
     	Matcher matcher = pattern.matcher(baseName);
     	if (matcher.matches()) {
     		baseName = matcher.group(1);
@@ -360,7 +361,7 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
     	if (lastIndex == Integer.MIN_VALUE) {
     		return baseName;
     	}
-    	return MessageFormat.format("{0} {1}", baseName, lastIndex + 1); //$NON-NLS-1
+    	return MessageFormat.format("{0} {1}", baseName, lastIndex + 1); //$NON-NLS-1$
     }
 
     private class SitesLabelProvider extends LabelProvider {
@@ -388,6 +389,5 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
 			}
 			return 1;
 		}
-    	
     }
 }

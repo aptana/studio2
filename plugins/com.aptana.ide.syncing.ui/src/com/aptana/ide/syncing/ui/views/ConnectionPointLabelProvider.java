@@ -50,6 +50,7 @@ import com.aptana.ide.ui.io.navigator.FileTreeLabelProvider;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
+@SuppressWarnings("restriction")
 public class ConnectionPointLabelProvider extends LabelProvider implements ITableLabelProvider {
 
     private FileTreeLabelProvider wrapper = new FileTreeLabelProvider();

@@ -21,7 +21,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.ui.io.file.LocalFile;
 import com.aptana.ide.pathtools.handlers.Utilities;
 import com.aptana.ide.pathtools.preferences.PathtoolsPreferences;
 
@@ -101,9 +100,6 @@ public class ExploreAction implements IViewActionDelegate, IObjectActionDelegate
 								location = resource.getLocation();
 							}
 						}
-					} else if (firstElement instanceof LocalFile) {
-					    LocalFile file = (LocalFile) firstElement;
-					    fileObject = file.getFile();
 					}
 				}
 			}

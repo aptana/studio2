@@ -41,8 +41,7 @@ package com.aptana.ide.syncing.ui.dialogs;
  */
 public interface IDialogConstants extends org.eclipse.jface.dialogs.IDialogConstants {
 
-    public int APPLY_ID = 31;
+    public static final int APPLY_ID = 31;
     
-    public String APPLY_LABEL = "Apply";
-
+    public static final String APPLY_LABEL = Messages.IDialogConstants_LBL_Apply;
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE note [
+  <!ELEMENT note    (to+,from?,heading,img,body*)>
+  <!ELEMENT to      (#PCDATA)>
+  <!ELEMENT from    (#PCDATA)>
+  <!ELEMENT img     (EMPTY)>
+  <!ELEMENT heading (#PCDATA)>
+  <!ELEMENT body    (ANY)>
+]>
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <img src="me.jpg"/>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend</body>
+</note>

@@ -607,12 +607,6 @@
       </handler>
    </extension>
    <extension
-         point="com.aptana.ide.core.ui.decorator">
-      <decorator
-            class="com.aptana.ide.syncing.ui.decorators.SiteConnectionDecorator">
-      </decorator>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="com.aptana.ide.syncing.ui.editors.ConnectionEditor"
@@ -624,6 +618,13 @@
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="com.aptana.ide.syncing.core.ISiteConnectionManager"
+            class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
       <factory
             adaptableType="com.aptana.ide.syncing.core.ISiteConnection"
             class="com.aptana.ide.syncing.ui.navigator.SiteConnectionWorkbenchAdapter$Factory">
@@ -671,6 +672,29 @@
             Exports the synchronization settings to a file.
          </description>
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            canFinishEarly="false"
+            category="com.aptana.ide.aptana.projects"
+            class="com.aptana.ide.syncing.ui.wizards.RemoteProjectWizard"
+            finalPerspective="com.aptana.ide.js.ui.WebPerspective"
+            hasPages="true"
+            icon="icons/full/obj16/remote_project.png"
+            id="com.aptana.ide.syncing.ui.wizards.RemoteProjectWizard"
+            name="%ExistingHostedSite.wizard.name"
+            project="true">
+         <description>
+            %ExistingHostedSite.wizard.description
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="com.aptana.ide.ui.io.decorator">
+      <decorator
+            class="com.aptana.ide.syncing.ui.decorators.SiteConnectionDecorator">
+      </decorator>
    </extension>
 
 </plugin>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://openajax.org/metadata">
+<oaa:class xmlns:oaa="http://openajax.org/metadata" name="myType" superclass="mySuperClass">
+<oaa:useragent platform="IE" version="3.0+"/>
+</oaa:class>
+</api>

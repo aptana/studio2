@@ -1,0 +1,1 @@
+MochiKit.DOM.__new__(((typeof(window) == "undefined") ? this : window));

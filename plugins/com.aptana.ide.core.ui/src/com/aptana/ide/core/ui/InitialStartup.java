@@ -83,37 +83,55 @@ public class InitialStartup
 	private static IPerspectiveListener perpListener;
 
 	private static Image editorAreaImage;
+	private static Image editorAreaImage_studio;
+	private static Image editorAreaImage_radrails;
 
-	private static PaintListener paintListener = new PaintListener() {
-		public void paintControl(PaintEvent e) {
+	private static PaintListener paintListener = new PaintListener()
+	{
+		public void paintControl(PaintEvent e)
+		{
 			Rectangle rect = ((Composite) e.widget).getClientArea();
 			Rectangle imageSize = editorAreaImage.getBounds();
 			int drawWidth;
 			int drawHeight;
-			if (rect.width > imageSize.width && rect.height > imageSize.height) {
+			if (rect.width > imageSize.width && rect.height > imageSize.height)
+			{
 				drawWidth = imageSize.width;
 				drawHeight = imageSize.height;
-			} else if (rect.width*imageSize.height > rect.height*imageSize.width) {
-				drawHeight = rect.height;					
-				drawWidth = (drawHeight*imageSize.width)/imageSize.height;
-			} else {
-				drawWidth = rect.width;					
-				drawHeight = (drawWidth*imageSize.height)/imageSize.width;
 			}
-			e.gc.drawImage(editorAreaImage, 0, 0, imageSize.width, imageSize.height, (rect.width-drawWidth)/2, (rect.height-drawHeight)/2, drawWidth, drawHeight);
+			else if (rect.width * imageSize.height > rect.height * imageSize.width)
+			{
+				drawHeight = rect.height;
+				drawWidth = (drawHeight * imageSize.width) / imageSize.height;
+			}
+			else
+			{
+				drawWidth = rect.width;
+				drawHeight = (drawWidth * imageSize.height) / imageSize.width;
+			}
+			e.gc.drawImage(editorAreaImage, 0, 0, imageSize.width, imageSize.height, (rect.width - drawWidth) / 2,
+					(rect.height - drawHeight) / 2, drawWidth, drawHeight);
 		}
 	};
 
 	/**
 	 * windows
 	 */
-	private static Map<IWorkbenchWindow,IPerspectiveListener> windows = new HashMap<IWorkbenchWindow,IPerspectiveListener>();
+	private static Map<IWorkbenchWindow, IPerspectiveListener> windows = new HashMap<IWorkbenchWindow, IPerspectiveListener>();
 
 	public static void start()
-	{		
-		ImageDescriptor imageDescriptor = CoreUIPlugin.getImageDescriptor("icons/editorarea.png"); //$NON-NLS-1$
-		if (imageDescriptor != null) {
-			editorAreaImage = imageDescriptor.createImage();
+	{
+		ImageDescriptor imageDescriptor = CoreUIPlugin.getImageDescriptor("icons/editorarea.gif"); //$NON-NLS-1$
+		if (imageDescriptor != null)
+		{
+			editorAreaImage_studio = imageDescriptor.createImage();
+			editorAreaImage = editorAreaImage_studio;
+		}
+
+		ImageDescriptor imageDescriptor_radrails = CoreUIPlugin.getImageDescriptor("icons/editorarea_radrails.gif"); //$NON-NLS-1$
+		if (imageDescriptor_radrails != null)
+		{
+			editorAreaImage_radrails = imageDescriptor_radrails.createImage();
 		}
 
 		IPreferenceStore prefs = CoreUIPlugin.getDefault().getPreferenceStore();
@@ -167,7 +185,7 @@ public class InitialStartup
 			}
 		});
 	}
-	
+
 	protected static void recordPerspectiveActivation(IPerspectiveDescriptor perspective)
 	{
 		String keyName = "perspective.activated";
@@ -182,12 +200,12 @@ public class InitialStartup
 					return;
 			}
 		}
-		EventLogger.getInstance().logEvent(keyName, perspectiveId);		
+		EventLogger.getInstance().logEvent(keyName, perspectiveId);
 	}
 
 	/**
-	 * Creates a new window listener to the workbench, and adds a new perspective listener on window
-	 * activation (if not already added, and removes it on deactivation
+	 * Creates a new window listener to the workbench, and adds a new perspective listener on window activation (if not
+	 * already added, and removes it on deactivation
 	 * 
 	 * @param workbench
 	 */
@@ -256,13 +274,13 @@ public class InitialStartup
 									if (fileWizards.contains(existing[i]))
 										continue;
 									ids.add(existing[i]);
-								}								
-								List<String> projectWizards = WebPerspectiveFactory.getProjectWizardShortcuts();				
+								}
+								List<String> projectWizards = WebPerspectiveFactory.getProjectWizardShortcuts();
 								for (String id : projectWizards)
 								{
 									if (!ids.contains(id))
 										ids.add(id);
-								}		
+								}
 								persp.setNewWizardActionIds(ids);
 							}
 						}
@@ -270,7 +288,8 @@ public class InitialStartup
 				}
 				catch (Exception ex)
 				{
-					IdeLog.logError(CoreUIPlugin.getDefault(), Messages.InitialStartup_UnableToSwitchNewFileWizardListing, ex); 
+					IdeLog.logError(CoreUIPlugin.getDefault(),
+							Messages.InitialStartup_UnableToSwitchNewFileWizardListing, ex);
 				}
 			}
 
@@ -294,21 +313,22 @@ public class InitialStartup
 								if (projectWizards.contains(existing[i]))
 									continue;
 								ids.add(existing[i]);
-							}															
-							List<String> fileWizards = WebPerspectiveFactory.getFileWizardShortcuts();				
+							}
+							List<String> fileWizards = WebPerspectiveFactory.getFileWizardShortcuts();
 							for (String id : fileWizards)
 							{
 								if (!ids.contains(id))
 									ids.add(id);
-							}		
-							
+							}
+
 							persp.setNewWizardActionIds(ids);
 						}
 					}
 				}
 				catch (Exception ex)
 				{
-					IdeLog.logError(CoreUIPlugin.getDefault(), Messages.InitialStartup_UnableToSwitchNewFileWizardListing, ex); 
+					IdeLog.logError(CoreUIPlugin.getDefault(),
+							Messages.InitialStartup_UnableToSwitchNewFileWizardListing, ex);
 				}
 			}
 
@@ -345,26 +365,33 @@ public class InitialStartup
 		{
 			checkPerspective(page, page.getPerspective());
 			w.addPerspectiveListener(perpListener);
-			w.getPartService().addPartListener(new IPartListener() {
-				public void partActivated(IWorkbenchPart part) {
+			w.getPartService().addPartListener(new IPartListener()
+			{
+				public void partActivated(IWorkbenchPart part)
+				{
 				}
 
-				public void partBroughtToTop(IWorkbenchPart part) {
+				public void partBroughtToTop(IWorkbenchPart part)
+				{
 				}
 
-				public void partClosed(IWorkbenchPart part) {
+				public void partClosed(IWorkbenchPart part)
+				{
 					IWorkbenchPage page = w.getActivePage();
-					if (part instanceof IEditorPart && page != null && page.getEditorReferences().length == 0) {
+					if (part instanceof IEditorPart && page != null && page.getEditorReferences().length == 0)
+					{
 						setEditorAreaPaintListener(page);
 					}
 				}
 
-				public void partDeactivated(IWorkbenchPart part) {
+				public void partDeactivated(IWorkbenchPart part)
+				{
 				}
 
-				public void partOpened(IWorkbenchPart part) {
+				public void partOpened(IWorkbenchPart part)
+				{
 				}
-				
+
 			});
 			setEditorAreaPaintListener(page);
 		}
@@ -396,18 +423,14 @@ public class InitialStartup
 	private static void onWebPerspectiveActivated(IWorkbenchPage page)
 	{
 		IPreferenceStore prefs = CoreUIPlugin.getDefault().getPreferenceStore();
-		int lastWorkspace = prefs
-				.getInt(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION);
+		int lastWorkspace = prefs.getInt(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION);
 
 		if (WebPerspectiveFactory.VERSION > lastWorkspace)
 		{
-			prefs.setValue(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION,
-                    WebPerspectiveFactory.VERSION);
+			prefs.setValue(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION, WebPerspectiveFactory.VERSION);
 
-            prefs.setValue(
-                    IPreferenceConstants.WEB_PERSPECTIVE_RESET_PERSPECTIVE,
-                    false);
-            WebPerspectiveFactory.resetPerspective(page);
+			prefs.setValue(IPreferenceConstants.WEB_PERSPECTIVE_RESET_PERSPECTIVE, false);
+			WebPerspectiveFactory.resetPerspective(page);
 		}
 	}
 
@@ -419,43 +442,65 @@ public class InitialStartup
 		IPreferenceStore prefs = CoreUIPlugin.getDefault().getPreferenceStore();
 
 		// Set here so that a new user does not immediately get a "perspective has changed" warning
-        prefs.setValue(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION,
-                WebPerspectiveFactory.VERSION);
+		prefs.setValue(IPreferenceConstants.WEB_PERSPECTIVE_LAST_VERSION, WebPerspectiveFactory.VERSION);
 	}
 
-	private static void setEditorAreaPaintListener(IWorkbenchPage page) {
-		if (editorAreaImage == null) {
+	private static void setEditorAreaPaintListener(IWorkbenchPage page)
+	{
+		if (editorAreaImage_studio == null && editorAreaImage_radrails == null)
+		{
 			return;
 		}
 		ViewForm control = null;
 		EditorAreaHelper editorAreaHelper = ((WorkbenchPage) page).getEditorPresentation();
-		if (editorAreaHelper == null) {
+		if (editorAreaHelper == null)
+		{
 			return;
 		}
 		LayoutPart layoutPart = editorAreaHelper.getWorkbookFromID("DefaultEditorWorkbook");
-		if (layoutPart == null) {
+		if (layoutPart == null)
+		{
 			return;
 		}
 		Control[] list = ((Composite) layoutPart.getControl()).getChildren(); //$NON-NLS-1$
-		for (int i = 0; i < list.length; ++i) {
-			if (list[i] instanceof ViewForm) {
+		for (int i = 0; i < list.length; ++i)
+		{
+			if (list[i] instanceof ViewForm)
+			{
 				control = (ViewForm) list[i];
 				break;
 			}
 		}
-		if (control == null) {
+		if (control == null)
+		{
 			return;
 		}
 		IPerspectiveDescriptor perspective = page.getPerspective();
-		if (WebPerspectiveFactory.isSameOrDescendantPerspective(perspective)) {
-			if (control.getData(EDITORAREA_CUSTOM_PAINT) != null) {
+		if (WebPerspectiveFactory.isSameOrDescendantPerspective(perspective)
+				|| perspective.getId().equals(WebPerspectiveFactory.RAILS_PERSPECTIVE_ID)
+				|| perspective.getId().equals(WebPerspectiveFactory.RUBY_PERSPECTIVE_ID))
+		{
+			if (perspective.getId().equals(WebPerspectiveFactory.RAILS_PERSPECTIVE_ID)
+					|| perspective.getId().equals(WebPerspectiveFactory.RUBY_PERSPECTIVE_ID))
+			{
+				editorAreaImage = editorAreaImage_radrails;
+			}
+			else if (WebPerspectiveFactory.isSameOrDescendantPerspective(perspective))
+			{
+				editorAreaImage = editorAreaImage_studio;
+			}
+			if (control.getData(EDITORAREA_CUSTOM_PAINT) != null)
+			{
 				return;
 			}
 			control.addPaintListener(paintListener);
 			control.setData(EDITORAREA_CUSTOM_PAINT, Boolean.TRUE);
 			control.redraw();
-		} else {
-			if (control.getData(EDITORAREA_CUSTOM_PAINT) == null) {
+		}
+		else
+		{
+			if (control.getData(EDITORAREA_CUSTOM_PAINT) == null)
+			{
 				return;
 			}
 			control.removePaintListener(paintListener);

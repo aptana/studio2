@@ -23,7 +23,7 @@ public abstract class HTMLBuildParticipant extends BuildParticipant
 		if (extension == null)
 			return false;
 		return extension.equalsIgnoreCase("html") || extension.equalsIgnoreCase("htm")
-				|| extension.equalsIgnoreCase("xhtml") || extension.equalsIgnoreCase("shtml");
+				|| extension.equalsIgnoreCase("xhtml") || extension.equalsIgnoreCase("shtml") || file.getName().endsWith(".html.erb");
 	}
 
 	@Override

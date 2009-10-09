@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -34,11 +34,6 @@
  */
 package com.aptana.ide.core.io.sync;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,21 +42,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.ISavedState;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.aptana.ide.core.AptanaCorePlugin;
 import com.aptana.ide.core.IdeLog;
-import com.aptana.ide.core.Messages;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.WorkspaceSaveParticipant;
 import com.aptana.ide.core.io.IVirtualFile;
 import com.aptana.ide.core.io.IVirtualFileManager;
 import com.aptana.ide.core.io.ProtocolManager;
@@ -69,734 +58,547 @@ import com.aptana.ide.core.io.ProtocolManager;
 /**
  * @author Paul Colton
  */
-public final class SyncManager implements ISerializableSyncItem
-{
-	/**
-	 * Singleton class
-	 */
-	static SyncManager _syncManager = null;
+public final class SyncManager implements ISerializableSyncItem {
 
-	private static SyncDataWriter syncDataWriter;
+    /**
+     * Singleton class
+     */
+    private static SyncManager _syncManager = null;
 
-	private ArrayList<Object> items = new ArrayList<Object>();
-	private ArrayList<String> unknownItems = new ArrayList<String>();
-	private ArrayList<ISyncManagerChangeListener> listeners = new ArrayList<ISyncManagerChangeListener>();
-	private boolean isBusy; // indicate loading/saving states
-	private Object lock = new Object();
-	private Job saveJob;
+    private static SyncDataWriter syncDataWriter;
 
-	/**
-	 * SyncManager constructor
-	 */
-	private SyncManager()
-	{
-		saveJob = new SaveJob();
-	}
+    private List<Object> items = new ArrayList<Object>();
+    private List<String> unknownItems = new ArrayList<String>();
+    private List<ISyncManagerChangeListener> listeners = new ArrayList<ISyncManagerChangeListener>();
+    private boolean isBusy; // indicate loading/saving states
+    private Object lock = new Object();
+    private Job saveJob;
 
-	/**
-	 * Reads any persisted state info.
-	 * 
-	 * @param file
-	 */
-	private void readState(File file)
-	{
-		synchronized (lock)
-		{
-			isBusy = true;
-		}
-		StringBuffer contents = new StringBuffer();
+    /**
+     * SyncManager constructor
+     */
+    private SyncManager() {
+        saveJob = new SaveJob();
+    }
 
-		BufferedReader input = null;
-		try
-		{
-			input = new BufferedReader(new FileReader(file));
-			String line = null;
-			while ((line = input.readLine()) != null)
-			{
-				contents.append(line);
-				// contents.append(System.getProperty("line.separator"));
-			}
-		}
-		catch (FileNotFoundException ex)
-		{
-			IdeLog.logError(AptanaCorePlugin.getDefault(), StringUtils.format(Messages.InitialStartup_CannotFindFile,
-					file.getAbsolutePath()));
-		}
-		catch (IOException ex)
-		{
-			IdeLog.logError(AptanaCorePlugin.getDefault(), StringUtils.format(Messages.InitialStartup_IOError, file
-					.getAbsolutePath()));
-		}
-		finally
-		{
-			try
-			{
-				if (input != null)
-				{
-					input.close();
-				}
-			}
-			catch (IOException ex)
-			{
-				IdeLog.logError(AptanaCorePlugin.getDefault(), StringUtils.format(Messages.InitialStartup_ErrorClosing,
-						file.getAbsolutePath()));
-			}
-		}
-		try
-		{
-			SyncManager.getSyncManager().fromSerializableString(contents.toString());
-		}
-		finally
-		{
-			synchronized (lock)
-			{
-				isBusy = false;
-			}
-		}
-	}
+    /**
+     * getSyncManager
+     * 
+     * @return SyncManager
+     */
+    public synchronized static SyncManager getSyncManager() {
+        if (_syncManager == null) {
+            _syncManager = new SyncManager();
+            syncDataWriter = new SyncDataWriter();
+        }
+        return _syncManager;
+    }
 
-	/**
-	 * getSyncManager
-	 * 
-	 * @return SyncManager
-	 */
-	public synchronized static SyncManager getSyncManager()
-	{
-		if (_syncManager == null)
-		{
-			_syncManager = new SyncManager();
-			syncDataWriter = new SyncDataWriter();
-			ISavedState lastState;
+    /**
+     * Save the current workspace state. The method forces a save for all the
+     * items that registered to the sync manager.
+     * 
+     * @throws CoreException
+     */
+    public void saveNow() {
+        synchronized (lock) {
+            isBusy = true;
+            if (syncDataWriter != null) {
+                try {
+                    syncDataWriter.saving();
+                    syncDataWriter.doneSaving();
+                } catch (CoreException ce) {
+                    try {
+                        syncDataWriter.rollback();
+                    } catch (Exception e) {
+                        IdeLog.logError(AptanaCorePlugin.getDefault(),
+                                "Error while saving the sync data", e); //$NON-NLS-1$
+                    }
+                }
+            }
+            isBusy = false;
+        }
+    }
 
-			try
-			{
-				lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(AptanaCorePlugin.getDefault(),
-						new WorkspaceSaveParticipant());
+    /**
+     * @param item
+     */
+    public void addItem(Object item) {
+        synchronized (items) {
+            items.add(item);
+        }
 
-				if (lastState != null)
-				{
-					IPath location = lastState.lookup(new Path("save")); //$NON-NLS-1$
-					if (location != null)
-					{
-						// the plugin instance should read any important state from the file.
-						File f = AptanaCorePlugin.getDefault().getStateLocation().append(location).toFile();
-						_syncManager.readState(f);
-					}
-				}
-			}
-			catch (CoreException e)
-			{
-				IdeLog.logInfo(AptanaCorePlugin.getDefault(), Messages.InitialStartup_ErrorReadingData, e);
-			}
+        fireSyncManagerChangeEvent(item, ISyncManagerChangeListener.ADD);
+    }
 
-		}
-		return _syncManager;
-	}
+    /**
+     * @param item
+     */
+    public void removeItem(Object item) {
+        boolean removed = false;
+        synchronized (items) {
+            removed = items.remove(item);
+        }
+        if (removed) {
+            fireSyncManagerChangeEvent(item, ISyncManagerChangeListener.DELETE);
+        }
+    }
 
-	/**
-	 * Save the current workspace state.
-	 * The method forces a save for all the items that registered to the sync manager.
-	 * 
-	 * @throws CoreException
-	 */
-	public void saveNow()
-	{
-		synchronized (lock)
-		{
-			isBusy = true;
-			if (syncDataWriter != null)
-			{
-				try
-				{
-					syncDataWriter.saving();
-					syncDataWriter.doneSaving();
-				}
-				catch (CoreException ce)
-				{
-					try
-					{
-						syncDataWriter.rollback();
-					}
-					catch (Exception e)
-					{
-						IdeLog.logError(AptanaCorePlugin.getDefault(), "Error while saving the sync data", e); //$NON-NLS-1$
-					}
-				}
-			}
-			isBusy = false;
-		}
-	}
-	
-	/**
-	 * @param item
-	 */
-	public void addItem(Object item)
-	{
-		synchronized (items)
-		{
-			items.add(item);
-		}
+    /**
+     * Return all items
+     * 
+     * @return Object[]
+     */
+    public Object[] getItems() {
+        synchronized (items) {
+            return items.toArray();
+        }
+    }
 
-		fireSyncManagerChangeEvent(item, ISyncManagerChangeListener.ADD);
-	}
+    /**
+     * Return only items that of of the specified type
+     * 
+     * @param type
+     * @return Object[]
+     */
+    public Object[] getItems(Class<?> type) {
+        Object[] allItems = getItems();
 
-	/**
-	 * @param item
-	 */
-	public void removeItem(Object item)
-	{
-		boolean removed = false;
-		synchronized (items)
-		{
-			removed = items.remove(item);
-		}
-		if (removed)
-		{
-			fireSyncManagerChangeEvent(item, ISyncManagerChangeListener.DELETE);
-		}
-	}
+        List<Object> finalList = new ArrayList<Object>();
+        for (Object o : allItems) {
+            if (o.getClass() == type) {
+                finalList.add(o);
+            }
+        }
 
-	/**
-	 * Return all items
-	 * 
-	 * @return Object[]
-	 */
-	public Object[] getItems()
-	{
-		synchronized (items)
-		{
-			return items.toArray();
-		}
-	}
+        // Return an array of the type of object passed in
+        return finalList.toArray((Object[]) Array.newInstance(type, finalList.size()));
+    }
 
-	/**
-	 * Return only items that of of the specified type
-	 * 
-	 * @param type
-	 * @return Object[]
-	 */
-	public Object[] getItems(Class<?> type)
-	{
-		Object[] allItems = getItems();
+    /**
+     * fireSyncManagerChangeEvent
+     * 
+     * @param o
+     * @param action
+     */
+    public void fireSyncManagerChangeEvent(Object o, int action) {
+        for (int i = 0; i < listeners.size(); i++) {
+            ISyncManagerChangeListener listener = listeners.get(i);
+            listener.syncManagerEvent(o, action);
+        }
+        // Schedule a save job
+        if (!isBusy) {
+            saveJob.schedule();
+        }
+    }
 
-		ArrayList<Object> finalList = new ArrayList<Object>();
+    /**
+     * addProfileChangeListener
+     * 
+     * @param l
+     */
+    public void addSyncManagerChangeEvent(ISyncManagerChangeListener l) {
+        listeners.add(l);
+    }
 
-		for (int i = 0; i < allItems.length; i++)
-		{
-			Object o = allItems[i];
+    /**
+     * removeProfileChangeListener
+     * 
+     * @param l
+     */
+    public void removeSyncManagerChangeEvent(ISyncManagerChangeListener l) {
+        listeners.remove(l);
+    }
 
-			if (o.getClass() == type)
-			{
-				finalList.add(o);
-			}
-		}
+    /**
+     * toSerializableString
+     * 
+     * @return String
+     */
+    public String toSerializableString() {
+        Object[] allItems = getItems();
 
-		// Return an array of the type of object passed in
-		return finalList.toArray((Object[]) Array.newInstance(type, finalList.size()));
-	}
+        StringBuilder sb = new StringBuilder();
 
-	/**
-	 * fireSyncManagerChangeEvent
-	 * 
-	 * @param o
-	 * @param action
-	 */
-	public void fireSyncManagerChangeEvent(Object o, int action)
-	{
-		for (int i = 0; i < listeners.size(); i++)
-		{
-			ISyncManagerChangeListener listener = listeners.get(i);
-			listener.syncManagerEvent(o, action);
-		}
-		// Schedule a save job
-		if (!isBusy)
-		{
-			saveJob.schedule();
-		}
-	}
+        // First serialize IVirtualFileManager's
+        for (Object o : allItems) {
+            if (o instanceof IVirtualFileManager && o instanceof ISerializableSyncItem) {
+                if (((IVirtualFileManager) o).isTransient() == false) {
+                    String data = ((ISerializableSyncItem) o).toSerializableString();
+                    if (data != null) {
+                        sb.append(((ISerializableSyncItem) o).getType());
+                        sb.append(ISerializableSyncItem.TYPE_DELIMITER);
+                        sb.append(data);
+                        sb.append(ISerializableSyncItem.OBJ_DELIMITER);
+                    }
+                }
+            }
+        }
 
-	/**
-	 * addProfileChangeListener
-	 * 
-	 * @param l
-	 */
-	public void addSyncManagerChangeEvent(ISyncManagerChangeListener l)
-	{
-		listeners.add(l);
-	}
+        for (Iterator<String> iter = unknownItems.iterator(); iter.hasNext();) {
+            String element = iter.next();
+            sb.append(element);
+        }
 
-	/**
-	 * removeProfileChangeListener
-	 * 
-	 * @param l
-	 */
-	public void removeSyncManagerChangeEvent(ISyncManagerChangeListener l)
-	{
-		listeners.remove(l);
-	}
+        sb.append(ISerializableSyncItem.SECTION_DELIMITER);
 
-	/**
-	 * toSerializableString
-	 * 
-	 * @return String
-	 */
-	public String toSerializableString()
-	{
-		Object[] allItems = getItems();
+        // Then serialize VirtualFileManagerSyncItem's
+        for (Object o : allItems) {
+            if (o instanceof VirtualFileManagerSyncPair && o instanceof ISerializableSyncItem) {
+                String data = ((ISerializableSyncItem) o).toSerializableString();
 
-		StringBuilder sb = new StringBuilder();
+                if (data != null) {
+                    sb.append(((ISerializableSyncItem) o).getType());
+                    sb.append(ISerializableSyncItem.TYPE_DELIMITER);
+                    sb.append(data);
+                    sb.append(ISerializableSyncItem.OBJ_DELIMITER);
+                }
+            }
+        }
 
-		// First serialize IVirtualFileManager's
-		for (int i = 0; i < allItems.length; i++)
-		{
-			Object o = allItems[i];
+        return sb.toString();
+    }
 
-			if (o instanceof IVirtualFileManager && o instanceof ISerializableSyncItem)
-			{
-				if (((IVirtualFileManager) o).isTransient() == false)
-				{
-					String data = ((ISerializableSyncItem) o).toSerializableString();
-					if (data != null)
-					{
-						sb.append(((ISerializableSyncItem) o).getType());
-						sb.append(ISerializableSyncItem.TYPE_DELIMITER);
-						sb.append(data);
-						sb.append(ISerializableSyncItem.OBJ_DELIMITER);
-					}
-				}
-			}
-		}
+    /**
+     * fromSerializableString
+     * 
+     * @param s
+     */
+    public void fromSerializableString(String s) {
+        // for migration purposes
+        if (s.indexOf(ISerializableSyncItem.DELIMITER) < 0) {
+            s = StringUtils.replace(s, "%%%%", ISerializableSyncItem.DELIMITER); //$NON-NLS-1$
+            s = StringUtils.replace(s, "@@@@", ISerializableSyncItem.OBJ_DELIMITER); //$NON-NLS-1$
+            s = StringUtils.replace(s, "~~~~", ISerializableSyncItem.SECTION_DELIMITER); //$NON-NLS-1$
+            s = StringUtils.replace(s, "!!!!", ISerializableSyncItem.TYPE_DELIMITER); //$NON-NLS-1$
+            s = StringUtils.replace(s, "}}}}", ISerializableSyncItem.FILE_DELIMITER); //$NON-NLS-1$
+        }
+        String[] sections = s.split(ISerializableSyncItem.SECTION_DELIMITER);
 
-		for (Iterator<String> iter = unknownItems.iterator(); iter.hasNext();)
-		{
-			String element = iter.next();
-			sb.append(element);
-		}
+        if (sections.length > 0) {
+            parseIVirtualFileManagers(sections[0]);
+        }
 
-		sb.append(ISerializableSyncItem.SECTION_DELIMITER);
+        if (sections.length > 1) {
+            parseVirtualFileManagerSyncItems(sections[1]);
+        }
+    }
 
-		// Then serialize VirtualFileManagerSyncItem's
-		for (int i = 0; i < allItems.length; i++)
-		{
-			Object o = allItems[i];
+    /**
+     * parseIVirtualFileManagers
+     * 
+     * @param s
+     */
+    private void parseIVirtualFileManagers(String s) {
+        Map<String, List<String>> dataTypes = new HashMap<String, List<String>>();
 
-			if (o instanceof VirtualFileManagerSyncPair && o instanceof ISerializableSyncItem)
-			{
-				String data = ((ISerializableSyncItem) o).toSerializableString();
+        String[] parts = s.split(ISerializableSyncItem.OBJ_DELIMITER);
 
-				if (data != null)
-				{
-					sb.append(((ISerializableSyncItem) o).getType());
-					sb.append(ISerializableSyncItem.TYPE_DELIMITER);
-					sb.append(data);
-					sb.append(ISerializableSyncItem.OBJ_DELIMITER);
-				}
-			}
-		}
+        // Place each different type into a dataType 'bucket' for post
+        // processing
+        for (String item : parts) {
+            String[] itemParts = item.split(ISerializableSyncItem.TYPE_DELIMITER);
 
-		return sb.toString();
-	}
+            if (itemParts.length == 2) {
+                String type = itemParts[0];
+                String data = itemParts[1];
 
-	/**
-	 * fromSerializableString
-	 * 
-	 * @param s
-	 */
-	public void fromSerializableString(String s)
-	{
-		// for migration purposes
-		if (s.indexOf(ISerializableSyncItem.DELIMITER) < 0)
-		{
-			s = StringUtils.replace(s, "%%%%", ISerializableSyncItem.DELIMITER); //$NON-NLS-1$
-			s = StringUtils.replace(s, "@@@@", ISerializableSyncItem.OBJ_DELIMITER); //$NON-NLS-1$
-			s = StringUtils.replace(s, "~~~~", ISerializableSyncItem.SECTION_DELIMITER); //$NON-NLS-1$
-			s = StringUtils.replace(s, "!!!!", ISerializableSyncItem.TYPE_DELIMITER); //$NON-NLS-1$
-			s = StringUtils.replace(s, "}}}}", ISerializableSyncItem.FILE_DELIMITER); //$NON-NLS-1$
-		}
-		String[] sections = s.split(ISerializableSyncItem.SECTION_DELIMITER);
+                if ("null".equals(type)) { //$NON-NLS-1$
+                    continue;
+                }
 
-		if (sections.length > 0)
-		{
-			parseIVirtualFileManagers(sections[0]);
-		}
+                List<String> list = dataTypes.get(type);
+                if (list == null) {
+                    list = new ArrayList<String>();
+                    dataTypes.put(type, list);
+                }
+                list.add(data);
+            }
+        }
 
-		if (sections.length > 1)
-		{
-			parseVirtualFileManagerSyncItems(sections[1]);
-		}
-	}
+        // Now go through each bucket and tell the responsible ProtocolManager
+        // to instantiate it
+        for (Iterator<String> iter = dataTypes.keySet().iterator(); iter.hasNext();) {
+            String type = iter.next();
 
-	/**
-	 * parseIVirtualFileManagers
-	 * 
-	 * @param s
-	 */
-	private void parseIVirtualFileManagers(String s)
-	{
-		Map<String, List<String>> dataTypes = new HashMap<String, List<String>>();
+            ProtocolManager manager = ProtocolManager.getProtocolManagerByType(type);
 
-		String[] parts = s.split(ISerializableSyncItem.OBJ_DELIMITER);
+            List<String> dataTypeList = dataTypes.get(type);
+            if (manager != null) {
+                for (Iterator<String> iterator = dataTypeList.iterator(); iterator.hasNext();) {
+                    String data = iterator.next();
 
-		// Place each different type into a dataType 'bucket' for post processing
-		for (int i = 0; i < parts.length; i++)
-		{
-			String item = parts[i];
-
-			String[] itemParts = item.split(ISerializableSyncItem.TYPE_DELIMITER);
-
-			if (itemParts.length == 2)
-			{
-				String type = itemParts[0];
-				String data = itemParts[1];
-
-				if ("null".equals(type)) //$NON-NLS-1$
-				{
-					continue;
-				}
-
-				List<String> list = dataTypes.get(type);
-				if (list == null)
-				{
-					list = new ArrayList<String>();
-					dataTypes.put(type, list);
-				}
-				list.add(data);
-			}
-		}
-
-		// Now go through each bucket and tell the responsible ProtocolManager to instantiate it
-		for (Iterator<String> iter = dataTypes.keySet().iterator(); iter.hasNext();)
-		{
-			String type = iter.next();
-
-			ProtocolManager manager = ProtocolManager.getProtocolManagerByType(type);
-
-			List<String> dataTypeList = dataTypes.get(type);
-			if (manager != null)
-			{
-				for (Iterator<String> iterator = dataTypeList.iterator(); iterator.hasNext();)
-				{
-					String data = iterator.next();
-
-					// This will automatically add itself to the SyncManager
-					IVirtualFileManager fileManager = manager.getStaticInstance().createFileManager();
-					fileManager.fromSerializableString(data);
-					IdeLog.logInfo(AptanaCorePlugin.getDefault(),
+                    // This will automatically add itself to the SyncManager
+                    IVirtualFileManager fileManager = manager.getStaticInstance()
+                            .createFileManager();
+                    fileManager.fromSerializableString(data);
+                    IdeLog.logInfo(AptanaCorePlugin.getDefault(),
                             "Loaded virtual file manager node with type " //$NON-NLS-1$
                                     + fileManager.getType() + " and base path " //$NON-NLS-1$
                                     + fileManager.getBasePath());
-				}
-			}
-			else
-			{
-				String vfm = ""; //$NON-NLS-1$
-				for (Iterator<String> iterator = dataTypeList.iterator(); iterator.hasNext();)
-				{
-					String data = iterator.next();
-					vfm += type;
-					vfm += ISerializableSyncItem.TYPE_DELIMITER;
-					vfm += data;
-					vfm += ISerializableSyncItem.OBJ_DELIMITER;
-				}
+                }
+            } else {
+                String vfm = ""; //$NON-NLS-1$
+                for (Iterator<String> iterator = dataTypeList.iterator(); iterator.hasNext();) {
+                    String data = iterator.next();
+                    vfm += type;
+                    vfm += ISerializableSyncItem.TYPE_DELIMITER;
+                    vfm += data;
+                    vfm += ISerializableSyncItem.OBJ_DELIMITER;
+                }
 
-				// save these for later
-				unknownItems.add(vfm);
-				IdeLog
-                        .logInfo(
-                                AptanaCorePlugin.getDefault(),
-                                "Encountered unknown virtual file manager with type " + type //$NON-NLS-1$
-                                        + " when loading"); //$NON-NLS-1$
-			}
-		}
-	}
+                // save these for later
+                unknownItems.add(vfm);
+                IdeLog.logInfo(AptanaCorePlugin.getDefault(),
+                        "Encountered unknown virtual file manager with type " + type //$NON-NLS-1$
+                                + " when loading"); //$NON-NLS-1$
+            }
+        }
+    }
 
-	/**
-	 * @param s
-	 */
-	private void parseVirtualFileManagerSyncItems(String s)
-	{
-		String[] parts = s.split(ISerializableSyncItem.OBJ_DELIMITER);
+    /**
+     * @param s
+     */
+    private void parseVirtualFileManagerSyncItems(String s) {
+        String[] parts = s.split(ISerializableSyncItem.OBJ_DELIMITER);
 
-		// Place each different type into a dataType 'bucket' for post processing
-		for (int i = 0; i < parts.length; i++)
-		{
-			String item = parts[i];
+        // Place each different type into a dataType 'bucket' for post
+        // processing
+        for (String item : parts) {
+            String[] itemParts = item.split(ISerializableSyncItem.TYPE_DELIMITER);
 
-			String[] itemParts = item.split(ISerializableSyncItem.TYPE_DELIMITER);
+            if (itemParts.length == 2) {
+                String type = itemParts[0];
+                String data = itemParts[1];
 
-			if (itemParts.length == 2)
-			{
-				String type = itemParts[0];
-				String data = itemParts[1];
+                if ("null".equals(type)) { //$NON-NLS-1$
+                    continue;
+                }
 
-				if ("null".equals(type)) //$NON-NLS-1$
-				{
-					continue;
-				}
-
-				try
-				{
-					VirtualFileManagerSyncPair vfm = new VirtualFileManagerSyncPair();
-					vfm.fromSerializableString(data);
-					items.add(vfm);
-					IdeLog.logInfo(AptanaCorePlugin.getDefault(),
+                try {
+                    VirtualFileManagerSyncPair vfm = new VirtualFileManagerSyncPair();
+                    vfm.fromSerializableString(data);
+                    items.add(vfm);
+                    IdeLog.logInfo(AptanaCorePlugin.getDefault(),
                             "Loaded virtual file manager node with type " //$NON-NLS-1$
                                     + vfm.getType() + " and nickname " //$NON-NLS-1$
                                     + vfm.getNickName());
-					_syncManager.fireSyncManagerChangeEvent(vfm, ISyncManagerChangeListener.ADD);
-				}
-				catch (Exception ex)
-				{
-					IdeLog.logError(AptanaCorePlugin.getDefault(), "Unable to deserialize virtaul file manager", ex); //$NON-NLS-1$
-				}
+                    _syncManager.fireSyncManagerChangeEvent(vfm, ISyncManagerChangeListener.ADD);
+                } catch (Exception ex) {
+                    IdeLog.logError(AptanaCorePlugin.getDefault(),
+                            "Unable to deserialize virtaul file manager", ex); //$NON-NLS-1$
+                }
+            }
+        }
+    }
 
-			}
-		}
+    /**
+     * getType
+     * 
+     * @return String
+     */
+    public String getType() {
+        return "com.aptana.ide.core.io.sync.SyncManager"; //$NON-NLS-1$
+    }
 
-	}
+    /**
+     * getVirtualFileManagerById
+     * 
+     * @param id
+     * @return IVirtualFileManager
+     */
+    public IVirtualFileManager getVirtualFileManagerById(long id) {
+        Object[] allItems = getItems();
 
-	/**
-	 * getType
-	 * 
-	 * @return String
-	 */
-	public String getType()
-	{
-		return "com.aptana.ide.core.io.sync.SyncManager"; //$NON-NLS-1$
-	}
+        for (Object o : allItems) {
+            if (o instanceof IVirtualFileManager) {
+                IVirtualFileManager vfm = (IVirtualFileManager) o;
 
-	/**
-	 * getVirtualFileManagerById
-	 * 
-	 * @param id
-	 * @return IVirtualFileManager
-	 */
-	public IVirtualFileManager getVirtualFileManagerById(long id)
-	{
-		Object[] allItems = getItems();
+                if (vfm.getId() == id) {
+                    return vfm;
+                }
+            }
+        }
+        return null;
+    }
 
-		for (int i = 0; i < allItems.length; i++)
-		{
-			Object o = allItems[i];
+    /**
+     * Returns all sync pairs relevant to this file (i.e. they contain a virtual
+     * file manager as an endpoint that contains this file)
+     * 
+     * @param file
+     * @return VirtualFileManagerSyncPair[]
+     */
+    public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IVirtualFile file) {
+        List<VirtualFileManagerSyncPair> mySyncConfigurations = new ArrayList<VirtualFileManagerSyncPair>();
+        List<IVirtualFileManager> relevantManagers = new ArrayList<IVirtualFileManager>();
 
-			if (o instanceof IVirtualFileManager)
-			{
-				IVirtualFileManager vfm = (IVirtualFileManager) o;
+        // Add project protocol managers
+        IVirtualFileManager[] fms = getContainingFileManagers(file);
+        relevantManagers.addAll(Arrays.asList(fms));
 
-				if (vfm.getId() == id)
-				{
-					return vfm;
-				}
+        Object[] scs = SyncManager.getSyncManager().getItems(VirtualFileManagerSyncPair.class);
 
-			}
-		}
+        for (int i = 0; i < scs.length; i++) {
+            VirtualFileManagerSyncPair configuration = (VirtualFileManagerSyncPair) scs[i];
 
-		return null;
-	}
+            if (relevantManagers.contains(configuration.getSourceFileManager())) {
+                mySyncConfigurations.add(configuration);
+            }
+        }
 
-	/**
-	 * Returns all sync pairs relevant to this file (i.e. they contain a virtual file manager as an endpoint that
-	 * contains this file)
-	 * 
-	 * @param file
-	 * @return VirtualFileManagerSyncPair[]
-	 */
-	public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IVirtualFile file)
-	{
-		List<VirtualFileManagerSyncPair> mySyncConfigurations = new ArrayList<VirtualFileManagerSyncPair>();
-		List<IVirtualFileManager> relevantManagers = new ArrayList<IVirtualFileManager>();
+        return mySyncConfigurations.toArray(new VirtualFileManagerSyncPair[mySyncConfigurations
+                .size()]);
+    }
 
-		// Add project protocol managers
-		IVirtualFileManager[] fms = getContainingFileManagers(file);
-		relevantManagers.addAll(Arrays.asList(fms));
+    /**
+     * Returns all sync pairs relevant to this file (i.e. they contain a virtual
+     * file manager as an endpoint that contains this file)
+     * 
+     * @param file
+     *            The file to search for
+     * @param valid
+     *            Only return valid sync pairs
+     * @return VirtualFileManagerSyncPair[]
+     */
+    public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IVirtualFile file,
+            boolean valid) {
+        VirtualFileManagerSyncPair[] confs = getContainingSyncPairs(file);
 
-		Object[] scs = SyncManager.getSyncManager().getItems(VirtualFileManagerSyncPair.class);
+        if (valid) {
+            List<VirtualFileManagerSyncPair> validPairs = new ArrayList<VirtualFileManagerSyncPair>();
+            for (VirtualFileManagerSyncPair pair : validPairs) {
+                if (pair.isValid()) {
+                    validPairs.add(pair);
+                }
+            }
 
-		for (int i = 0; i < scs.length; i++)
-		{
-			VirtualFileManagerSyncPair configuration = (VirtualFileManagerSyncPair) scs[i];
+            return validPairs.toArray(new VirtualFileManagerSyncPair[validPairs.size()]);
+        }
+        return confs;
+    }
 
-			if (relevantManagers.contains(configuration.getSourceFileManager()))
-			{
-				mySyncConfigurations.add(configuration);
-			}
-		}
+    /**
+     * Is this file manager connected to Sync Configuration?
+     * 
+     * @param fileManager
+     * @return boolean
+     */
+    public static boolean isSyncPairEndpoint(IVirtualFileManager fileManager) {
+        return getSyncPairs(fileManager).length > 0;
+    }
 
-		return mySyncConfigurations.toArray(new VirtualFileManagerSyncPair[mySyncConfigurations.size()]);
-	}
-	
-	/**
-	 * Returns all sync pairs relevant to this file (i.e. they contain a virtual file manager as an endpoint that
-	 * contains this file)
-	 * 
-	 * @param file The file to search for
-	 * @param valid Only return valid sync pairs
-	 * @return VirtualFileManagerSyncPair[]
-	 */
-	public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IVirtualFile file, boolean valid)
-	{
-		VirtualFileManagerSyncPair[] confs = getContainingSyncPairs(file);
+    /**
+     * Return all sync configurations where this file manager is an endpoint
+     * 
+     * @param fileManager
+     * @return boolean
+     */
+    public static VirtualFileManagerSyncPair[] getSyncPairs(IVirtualFileManager fileManager) {
+        Object[] scs = SyncManager.getSyncManager().getItems(VirtualFileManagerSyncPair.class);
+        List<VirtualFileManagerSyncPair> syncPairs = new ArrayList<VirtualFileManagerSyncPair>();
+        VirtualFileManagerSyncPair pair;
+        for (Object o : scs) {
+            pair = (VirtualFileManagerSyncPair) o;
+            if ((pair.getDestinationFileManager() != null && pair.getDestinationFileManager()
+                    .equals(fileManager))
+                    || (pair.getSourceFileManager() != null && pair.getSourceFileManager().equals(
+                            fileManager))) {
+                syncPairs.add(pair);
+            }
+        }
 
-		if(valid)
-		{
-			List<VirtualFileManagerSyncPair> validPairs = new ArrayList<VirtualFileManagerSyncPair>();
-			for (int i = 0; i < confs.length; i++)
-			{
-				VirtualFileManagerSyncPair virtualFileManagerSyncPair = confs[i];
-				if(virtualFileManagerSyncPair.isValid())
-				{
-					validPairs.add(virtualFileManagerSyncPair);
-				}
-			}
-			
-			return (VirtualFileManagerSyncPair[])validPairs
-			.toArray(new VirtualFileManagerSyncPair[0]);
-		}
-		else
-		{
-			return confs;
-		}
-	}
+        return syncPairs.toArray(new VirtualFileManagerSyncPair[syncPairs.size()]);
+    }
 
-	/**
-	 * Is this file manager connected to Sync Configuration?
-	 * 
-	 * @param fileManager
-	 * @return boolean
-	 */
-	public static boolean isSyncPairEndpoint(IVirtualFileManager fileManager)
-	{
-		return getSyncPairs(fileManager).length > 0;
-	}
+    /**
+     * Is this file encapsulated by a Sync Configuration?
+     * 
+     * @param file
+     * @return boolean
+     */
+    public static boolean hasContainingSyncPair(IVirtualFile file) {
+        return getContainingSyncPairs(file).length > 0;
+    }
 
-	/**
-	 * Return all sync configurations where this file manager is an endpoint
-	 * 
-	 * @param fileManager
-	 * @return boolean
-	 */
-	public static VirtualFileManagerSyncPair[] getSyncPairs(IVirtualFileManager fileManager)
-	{
-		Object[] scs = SyncManager.getSyncManager().getItems(VirtualFileManagerSyncPair.class);
-		List<VirtualFileManagerSyncPair> syncPairs = new ArrayList<VirtualFileManagerSyncPair>();
-		for (int i = 0; i < scs.length; i++)
-		{
-			VirtualFileManagerSyncPair object = (VirtualFileManagerSyncPair) scs[i];
-			if ((object.getDestinationFileManager() != null && object.getDestinationFileManager().equals(fileManager))
-					|| object.getSourceFileManager() != null && object.getSourceFileManager().equals(fileManager))
-			{
-				syncPairs.add(object);
-			}
-		}
+    /**
+     * Returns all File Managers that encapsulate this file
+     * 
+     * @param file
+     * @return IVirtualFileManager[]
+     */
+    public static IVirtualFileManager[] getContainingFileManagers(IVirtualFile file) {
+        List<Object> relevantManagers = new ArrayList<Object>();
 
-		return syncPairs.toArray(new VirtualFileManagerSyncPair[0]);
-	}
+        Object[] objs = SyncManager.getSyncManager().getItems();
+        for (Object object : objs) {
+            if (object instanceof IVirtualFileManager) {
+                if (((IVirtualFileManager) object).containsFile(file)) {
+                    relevantManagers.add(object);
+                }
+            }
+        }
 
-	/**
-	 * Is this file encapsulated by a Sync Configuration?
-	 * 
-	 * @param file
-	 * @return boolean
-	 */
-	public static boolean hasContainingSyncPair(IVirtualFile file)
-	{
-		VirtualFileManagerSyncPair[] confs = getContainingSyncPairs(file);
-		return confs.length > 0;
-	}
+        return relevantManagers.toArray(new IVirtualFileManager[relevantManagers.size()]);
+    }
 
-	/**
-	 * Returns all File Managers that encapsulate this file
-	 * 
-	 * @param file
-	 * @return IVirtualFileManager[]
-	 */
-	public static IVirtualFileManager[] getContainingFileManagers(IVirtualFile file)
-	{
-		List<Object> relevantManagers = new ArrayList<Object>();
+    /**
+     * Returns true if this item is the same as the base file of some virtual
+     * file manager
+     * 
+     * @param file
+     * @return boolean
+     */
+    public static boolean isVirtualFileManager(IVirtualFile file) {
+        Object[] objs = SyncManager.getSyncManager().getItems();
+        for (Object object : objs) {
+            if (object instanceof IVirtualFileManager) {
+                IVirtualFileManager fileManager = ((IVirtualFileManager) object);
+                if (fileManager.getBasePath() != null && fileManager.getBaseFile().equals(file)) {
+                    return true;
+                }
+            }
+        }
 
-		Object[] objs = SyncManager.getSyncManager().getItems();
-		for (int i = 0; i < objs.length; i++)
-		{
-			Object object = objs[i];
-			if (object instanceof IVirtualFileManager)
-			{
-				if (((IVirtualFileManager) object).containsFile(file))
-				{
-					relevantManagers.add(object);
-				}
-			}
-		}
+        return false;
+    }
 
-		return relevantManagers.toArray(new IVirtualFileManager[0]);
-	}
+    /**
+     * Returns all File Managers that encapsulate this file
+     * 
+     * @param protocolManager
+     * @param file
+     * @return IVirtualFileManager[]
+     */
+    public static IVirtualFileManager[] getContainingFileManagers(ProtocolManager protocolManager,
+            IVirtualFile file) {
+        List<IVirtualFileManager> relevantManagers = new ArrayList<IVirtualFileManager>();
+        IVirtualFileManager[] fms = protocolManager.getFileManagers();
+        for (IVirtualFileManager manager : fms) {
+            if (manager.containsFile(file)) {
+                relevantManagers.add(manager);
+            }
+        }
+        return relevantManagers.toArray(new IVirtualFileManager[relevantManagers.size()]);
+    }
 
-	/**
-	 * Returns true if this item is the same as the base file of some virtual file manager
-	 * 
-	 * @param file
-	 * @return boolean
-	 */
-	public static boolean isVirtualFileManager(IVirtualFile file)
-	{
-		Object[] objs = SyncManager.getSyncManager().getItems();
-		for (int i = 0; i < objs.length; i++)
-		{
-			Object object = objs[i];
-			if (object instanceof IVirtualFileManager)
-			{
-				IVirtualFileManager fileManager = ((IVirtualFileManager) object);
-				if (fileManager.getBasePath() != null && fileManager.getBaseFile().equals(file))
-				{
-					return true;
-				}
-			}
-		}
+    /**
+     * A sync data saving job. In case that the sync manager is busy loading or
+     * saving other settings at the moment, ignore that save request.
+     */
+    private static class SaveJob extends Job {
 
-		return false;
-	}
+        SaveJob() {
+            super("Save sync data job");//$NON-NLS-1$
+        }
 
-	/**
-	 * Returns all File Managers that encapsulate this file
-	 * 
-	 * @param protocolManager
-	 * @param file
-	 * @return IVirtualFileManager[]
-	 */
-	public static IVirtualFileManager[] getContainingFileManagers(ProtocolManager protocolManager, IVirtualFile file)
-	{
-		List<IVirtualFileManager> relevantManagers = new ArrayList<IVirtualFileManager>();
-		IVirtualFileManager[] fms = protocolManager.getFileManagers();
-		for (int i = 0; i < fms.length; i++)
-		{
-			IVirtualFileManager manager = fms[i];
-			if (manager.containsFile(file))
-			{
-				relevantManagers.add(manager);
-			}
-		}
-		return relevantManagers.toArray(new IVirtualFileManager[0]);
-	}
-	
-	/**
-	 * A sync data saving job. In case that the sync manager is busy loading or saving other settings at the moment,
-	 * ignore that save request.
-	 */
-	private static class SaveJob extends Job
-	{
-		SaveJob()
-		{
-			super("Save sync data job");//$NON-NLS-1$
-		}
-
-		protected IStatus run(IProgressMonitor monitor)
-		{
-			SyncManager syncManager = SyncManager.getSyncManager();
-			if (!syncManager.isBusy)
-			{
-				syncManager.saveNow();
-				return Status.OK_STATUS;
-			}
-			return Status.CANCEL_STATUS;
-		}
-	}
+        protected IStatus run(IProgressMonitor monitor) {
+            SyncManager syncManager = SyncManager.getSyncManager();
+            if (syncManager.isBusy) {
+                return Status.CANCEL_STATUS;
+            }
+            syncManager.saveNow();
+            return Status.OK_STATUS;
+        }
+    }
 }

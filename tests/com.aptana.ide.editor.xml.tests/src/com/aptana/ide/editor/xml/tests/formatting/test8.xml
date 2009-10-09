@@ -1,0 +1,4 @@
+<!DOCTYPE note [
+	<!ELEMENT note (to,from,headings,body) >
+ ]>
+<x/>

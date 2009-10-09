@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lexer
+	xmlns="http://www.aptana.com/2007/lexer/1.2"
+	language="text/xml"
+	category-enumeration="com.aptana.ide.lexer.TokenCategories"
+	type-enumeration="com.aptana.ide.editor.xml.lexing.XMLTokenTypes">
+
+	<bundle>com.aptana.ide.editor.xml</bundle>
+	
+    <token-group group="default">
+		<category-group category="WHITESPACE">
+			<one-or-more type="WHITESPACE">
+				<whitespace />
+			</one-or-more>
+			<comment type="COMMENT" start="&lt;!--" end="-->"/>
+			<string type="START_COMMENT">&lt;!--</string>
+		</category-group>
+		
+		<category-group category="LITERAL">
+			<quoted-string type="STRING">'"</quoted-string>
+			<and type="ENTITY_REF">
+				<character>&amp;</character>
+				<identifier start-characters="_:" part-characters="_:-."/>
+				<character>;</character>
+			</and>
+			<and type="CHAR_REF">
+				<string>&amp;#</string>
+				<or>
+					<one-or-more>
+						<digit/>
+					</one-or-more>
+					<and>
+						<character>x</character>
+						<one-or-more>
+							<hex/>
+						</one-or-more>
+					</and>
+				</or>
+				<character>;</character>
+			</and>
+			<and type="PE_REF">
+				<character>%</character>
+				<identifier start-characters="_:" part-characters="_:-."/>
+				<character>;</character>
+			</and>
+		</category-group>
+		
+		<category-group category="KEYWORD">
+			<and>
+				<or>
+					<string type="ANY">ANY</string>
+					<string type="CDATA">CDATA</string>
+					<string type="EMPTY">EMPTY</string>
+					<string type="ENTITY">ENTITY</string>
+					<string type="ENTITIES">ENTITIES</string>
+					<string type="FIXED">#FIXED</string>
+					<string type="IDREFS">IDREFS</string>
+					<string type="IDREF">IDREF</string>
+					<string type="ID">ID</string>
+					<string type="IMPLIED">#IMPLIED</string>
+					<string type="NDATA">NDATA</string>
+					<string type="NMTOKENS">NMTOKENS</string>
+					<string type="NMTOKEN">NMTOKEN</string>
+					<string type="NOTATION">NOTATION</string>
+					<string type="PCDATA">#PCDATA</string>
+					<string type="PUBLIC">PUBLIC</string>
+					<string type="REQUIRED">#REQUIRED</string>
+					<string type="SYSTEM">SYSTEM</string>
+				</or>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+		</category-group>
+		
+		<category-group category="PUNCTUATOR">
+			<and>
+				<or>
+					<string type="ATTLIST_DECL">&lt;!ATTLIST</string>
+					<string type="CDATA_START">&lt;![CDATA[</string>
+					<string type="DOCTYPE_DECL">&lt;!DOCTYPE</string>
+					<string type="ELEMENT_DECL">&lt;!ELEMENT</string>
+					<string type="ENTITY_DECL">&lt;!ENTITY</string>
+					<string type="NOTATION_DECL">&lt;!NOTATION</string>
+				</or>
+				<lookahead negate="true">
+					<letter/>
+				</lookahead>
+			</and>
+			
+			<string type="CDATA_END">]]&gt;</string>
+			<character type="EQUAL">=</character>
+			<character type="GREATER_THAN">></character>
+			<character type="LBRACKET">[</character>
+			<character type="PLUS">+</character>
+			<string type="QUESTION_GREATER_THAN">?></string>
+			<character type="QUESTION">?</character>
+			<character type="RBRACKET">]</character>
+			<string type="SLASH_GREATER_THAN">/></string>
+			<character type="STAR">*</character>
+			
+			<and>
+				<character>&lt;</character>
+				<or>
+					<and type="XML_DECL">
+						<string>?xml</string>
+						<lookahead negate="true">
+							<letter/>
+						</lookahead>
+					</and>
+					<and type="END_TAG">
+						<character>/</character>
+						<identifier start-characters="_:" part-characters="_:-."/>
+					</and>
+					<and type="PI_OPEN">
+						<character>?</character>
+						<optional>
+							<identifier start-characters="_:" part-characters="_:-."/>
+						</optional>
+					</and>
+					<identifier type="START_TAG" start-characters="_:" part-characters="_:-."/>
+				</or>
+			</and>
+		</category-group>
+		
+		<identifier category="LITERAL" type="NAME" start-characters="_:" part-characters="_:-."/>
+	</token-group>
+	
+	<token-group group="cdata-section">
+		<to-delimiter category="LITERAL" type="CDATA_TEXT" switch-to="default">]]&gt;</to-delimiter>
+	</token-group>
+	
+	<token-group group="error">
+		<category-group category="ERROR">
+			<and type="ERROR" switch-to="default">
+				<character-class negate="true">'"</character-class>
+				<zero-or-more>
+					<character-class negate="true"> \t\r\n\g&lt;></character-class>
+				</zero-or-more>
+			</and>
+		</category-group>
+	</token-group>
+	
+	<token-group group="processing-instruction">
+		<to-delimiter
+			category="LITERAL" type="PI_TEXT" switch-to="default"
+			include-delimiter="false" match-end-of-file="true">?></to-delimiter>
+	</token-group>
+	
+	<token-group group="text">
+		<one-or-more category="LITERAL" type="TEXT">
+			<character-class negate="true">&lt;</character-class>
+		</one-or-more>
+	</token-group>
+	
+	<token-group group="unclosed-comment">
+		<and category="WHITESPACE" type="COMMENT" switch-to="default">
+			<string>&lt;--</string>
+			<zero-or-more>
+				<or>
+					<character negate="true">\r\n</character>
+					<character>\r\n</character>
+				</or>
+			</zero-or-more>
+		</and>
+	</token-group>
+	
+	<token-group group="xml-declaration">
+		<one-or-more category="WHITESPACE" type="WHITESPACE">
+			<whitespace />
+		</one-or-more>
+		
+		<category-group category="KEYWORD">
+			<and type="ENCODING">
+				<string>encoding=</string>
+				<quoted-string>'"</quoted-string>
+			</and>
+			<and type="STANDALONE">
+				<string>standalone=</string>
+				<quoted-string>'"</quoted-string>
+			</and>
+			<and type="VERSION">
+				<string>version=</string>
+				<quoted-string>'"</quoted-string>
+			</and>
+		</category-group>
+		
+		<string category="PUNCTUATOR" type="QUESTION_GREATER_THAN" switch-to="default">?></string>
+	</token-group>
+</lexer>

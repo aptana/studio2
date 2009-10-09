@@ -44,10 +44,12 @@ public class Messages extends NLS {
     public static String ConnectionPointComposite_Column_LastModified;
     public static String ConnectionPointComposite_Column_Size;
     public static String ConnectionPointComposite_LBL_Path;
+    public static String ConnectionPointComposite_LBL_Transfer;
     public static String ConnectionPointComposite_TTP_Home;
     public static String ConnectionPointComposite_TTP_Refresh;
     public static String ConnectionPointComposite_TTP_Up;
 
+    public static String FTPManagerComposite_ERR_CreateNewSiteFailed;
     public static String FTPManagerComposite_ERR_EmptyName;
     public static String FTPManagerComposite_ERR_NameExists;
     public static String FTPManagerComposite_LBL_SaveAs;

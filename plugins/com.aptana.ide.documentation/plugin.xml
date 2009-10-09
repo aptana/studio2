@@ -45,12 +45,6 @@
               id="com.aptana.ide.core.ui.actionSet.documentation">
         </actionSet>
      </perspectiveExtension>
-     <perspectiveExtension
-                targetID="com.aptana.ide.db.PerspectiveFactory">
-        <actionSet
-              id="com.aptana.ide.core.ui.actionSet.documentation">
-        </actionSet>
-          </perspectiveExtension>
           <perspectiveExtension
                 targetID="org.radrails.rails.ui.PerspectiveRails">
              <actionSet

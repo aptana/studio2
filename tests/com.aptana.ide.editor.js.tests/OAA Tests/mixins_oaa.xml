@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://openajax.org/metadata">
+<oaa:class xmlns:oaa="http://openajax.org/metadata" name="myType" superclass="mySuperClass">
+<oaa:mix fromScope="instance" toScope="static" datatype="myMixinClass"/>
+</oaa:class>
+</api>

@@ -36,34 +36,32 @@ package com.aptana.ide.syncing.ui.navigator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 
 import com.aptana.ide.syncing.core.ISiteConnectionManager;
 import com.aptana.ide.syncing.core.SyncingPlugin;
-import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class SiteConnectionsContentProvider extends FileTreeContentProvider {
+public class SiteConnectionsContentProvider extends BaseWorkbenchContentProvider {
 
-    /* (non-Javadoc)
-	 * @see org.eclipse.ui.model.BaseWorkbenchContentProvider#getElements(java.lang.Object)
-	 */
-	@Override
-	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof IWorkspaceRoot) {
-			inputElement = SyncingPlugin.getSiteConnectionManager();
-		}
-		return super.getElements(inputElement);
-	}
+    @Override
+    public Object[] getElements(Object inputElement) {
+        if (inputElement instanceof IWorkspaceRoot) {
+            inputElement = SyncingPlugin.getSiteConnectionManager();
+        }
+        return super.getElements(inputElement);
+    }
 
-	public Object[] getChildren(Object element) {
+    @Override
+    public Object[] getChildren(Object element) {
         if (element instanceof IProject) {
             Object[] children = new Object[1];
-            children[0] = new ProjectSiteConnections((IProject) element);
+            children[0] = ProjectSitesManager.getInstance().getProjectSites((IProject) element);
             return children;
         } else if (element instanceof ISiteConnectionManager) {
-        	return new Object[] { SiteConnections.getInstance() };
+            return new Object[] { SiteConnections.getInstance() };
         }
         return super.getChildren(element);
     }

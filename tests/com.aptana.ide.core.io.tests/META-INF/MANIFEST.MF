@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: com.aptana.ide.core.io.tests
+Bundle-Version: 1.0.0
+Bundle-Vendor: %providerName
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.core.runtime,
+ com.aptana.ide.core.io,
+ com.aptana.ide.filesystem.ftp;visibility:=reexport,
+ org.junit4
+Export-Package: com.aptana.ide.core.io.tests

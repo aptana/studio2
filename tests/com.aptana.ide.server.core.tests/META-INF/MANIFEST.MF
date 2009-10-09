@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests Plug-in
+Bundle-SymbolicName: com.aptana.ide.server.core.tests
+Bundle-Version: 1.0.0
+Bundle-Vendor: APTANA
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: com.aptana.ide.server.core,
+ org.junit,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ com.aptana.ide.core
+Export-Package: com.aptana.ide.server;x-friends:="com.aptana.ide.tests"

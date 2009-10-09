@@ -169,6 +169,8 @@ public class CoreUIPlugin extends AbstractUIPlugin
 
 		addPartListener();
 		RESTServiceProvider.addListener(serviceListener);
+
+		ConfigExtensionLoader.init();
 	}
 
 	/**

@@ -37,6 +37,7 @@ package com.aptana.ide.editors.unified;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +45,12 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
@@ -59,6 +62,7 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextViewerExtension2;
 import org.eclipse.jface.text.ITextViewerExtension5;
@@ -72,6 +76,7 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISharedTextColors;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -143,7 +148,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput;
+import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.AnnotationPreference;
@@ -161,7 +168,6 @@ import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.editors.ISaveAsEvent;
 import com.aptana.ide.core.ui.editors.ISaveEvent;
-import com.aptana.ide.core.ui.views.IRefreshableView;
 import com.aptana.ide.editors.UnifiedEditorsPlugin;
 import com.aptana.ide.editors.actions.OpenDeclarationAction;
 import com.aptana.ide.editors.formatting.UnifiedBracketInserterManager;
@@ -235,7 +241,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	// private UnifiedBracketMatcher bracketMatcher;
 	private ArrayList<ISaveAsEvent> _saveAsListeners;
 	private ArrayList<ISaveEvent> _saveListeners;
-	private IRefreshableView _fileExplorerView;
+	private CommonViewer _fileExplorerView;
 	// private TextColorer textColorer;
 	private IPreferenceStore _prefStore;
 	private IPartListener _partListener;
@@ -890,6 +896,8 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	}
 
 	private IRange underLine;
+
+	private Annotation[] fOccurrenceAnnotations;
 
 	/**
 	 * removing given range from underlined state
@@ -2524,12 +2532,12 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 				display = Display.getDefault();
 			display.syncExec(new Runnable()
 			{
-				
+
 				public void run()
 				{
 					setEditorOptions();
 				}
-			});			
+			});
 		}
 	}
 
@@ -2691,8 +2699,8 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	{
 		if (this._fileExplorerView == null)
 		{
-			this._fileExplorerView = (IRefreshableView) CoreUIUtils.getViewInternal(
-					"com.aptana.ide.js.ui.views.FileExplorerView", null); //$NON-NLS-1$
+			this._fileExplorerView = (CommonViewer) CoreUIUtils.getViewInternal(
+					"com.aptana.ide.ui.io.fileExplorerView", null); //$NON-NLS-1$
 		}
 
 		if (this._fileExplorerView == null)
@@ -2700,15 +2708,12 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			return;
 		}
 
-		final IRefreshableView view = this._fileExplorerView;
-
-		Display display = Display.getDefault();
-		display.asyncExec(new Runnable()
+		Display.getDefault().asyncExec(new Runnable()
 		{
 
 			public void run()
 			{
-				view.refresh();
+				_fileExplorerView.refresh();
 			}
 
 		});
@@ -2929,10 +2934,20 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 
 		markOccurences(lexemeList, selectedLexeme);
 
-		// TODO: Measure time to see if a precisely calculated redraw area
-		// yields
-		// significant savings
-		styledText.redraw();
+		Job job = new UIJob("Redraw")
+		{
+			
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor)
+			{
+				// TODO: Measure time to see if a precisely calculated redraw area yields significant savings
+				getSourceViewer().getTextWidget().redraw();
+				return Status.OK_STATUS;
+			}
+		};
+		job.setPriority(Job.INTERACTIVE);
+		job.setSystem(true);
+		job.schedule();
 	}
 
 	/**
@@ -2945,7 +2960,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	{
 		String selectedText = selectedLexeme.getText();
 		IAnnotationModel model = getDocumentProvider().getAnnotationModel(getEditorInput());
-		removeOccurrenceAnnotations();
+		Map<Annotation, Position> toAdd = new HashMap<Annotation, Position>();
 		for (int i = 0; i < lexemeList.size(); i++)
 		{
 			Lexeme lexeme = lexemeList.get(i);
@@ -2964,10 +2979,24 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 						Position pos = new Position(lexeme.offset, lexeme.length);
 						Annotation occurence = new Annotation("com.aptana.ide.annotation.occurence", false, lexeme //$NON-NLS-1$
 								.getText());
-						model.addAnnotation(occurence, pos);
+						toAdd.put(occurence, pos);
 					}
 				}
 			}
+		}
+		
+		synchronized (getLockObject(model)) {
+			if (model instanceof IAnnotationModelExtension) {
+				((IAnnotationModelExtension)model).replaceAnnotations(fOccurrenceAnnotations, toAdd);
+			} else {
+				removeOccurrenceAnnotations();
+				Iterator iter= toAdd.entrySet().iterator();
+				while (iter.hasNext()) {
+					Map.Entry mapEntry= (Map.Entry)iter.next();
+					model.addAnnotation((Annotation)mapEntry.getKey(), (Position)mapEntry.getValue());
+				}
+			}
+			fOccurrenceAnnotations= (Annotation[])toAdd.keySet().toArray(new Annotation[toAdd.keySet().size()]);
 		}
 	}
 
@@ -3022,29 +3051,40 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 
 	private void removeOccurrenceAnnotations()
 	{
-		if (getDocumentProvider() == null)
-		{
+		
+		IDocumentProvider documentProvider= getDocumentProvider();
+		if (documentProvider == null)
 			return;
-		}
-		IAnnotationModel model = getDocumentProvider().getAnnotationModel(getEditorInput());
-		if (model == null)
-		{
+
+		IAnnotationModel annotationModel= documentProvider.getAnnotationModel(getEditorInput());
+		if (annotationModel == null || fOccurrenceAnnotations == null)
 			return;
-		}
-		Iterator iter = model.getAnnotationIterator();
-		if (iter == null)
-		{
-			return;
-		}
-		Annotation annotation;
-		while (iter.hasNext())
-		{
-			annotation = (Annotation) iter.next();
-			if ("com.aptana.ide.annotation.occurence".equals(annotation.getType())) //$NON-NLS-1$
-			{
-				model.removeAnnotation(annotation);
+
+		synchronized (getLockObject(annotationModel)) {
+			if (annotationModel instanceof IAnnotationModelExtension) {
+				((IAnnotationModelExtension)annotationModel).replaceAnnotations(fOccurrenceAnnotations, null);
+			} else {
+				for (int i= 0, length= fOccurrenceAnnotations.length; i < length; i++)
+					annotationModel.removeAnnotation(fOccurrenceAnnotations[i]);
 			}
+			fOccurrenceAnnotations= null;
 		}
+	}
+	
+	/**
+	 * Returns the lock object for the given annotation model.
+	 *
+	 * @param annotationModel the annotation model
+	 * @return the annotation model's lock object
+	 * @since 3.0
+	 */
+	private Object getLockObject(IAnnotationModel annotationModel) {
+		if (annotationModel instanceof ISynchronizable) {
+			Object lock= ((ISynchronizable)annotationModel).getLockObject();
+			if (lock != null)
+				return lock;
+		}
+		return annotationModel;
 	}
 
 	/**
@@ -3133,7 +3173,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			sourceViewer.getTextWidget().getDisplay().beep();
 			return;
 		}
-		
+
 		int start = 0;
 		int end = 0;
 		if (sourceCaretOffset <= pair.beginEnd && sourceCaretOffset >= pair.beginStart)

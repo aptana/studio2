@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://openajax.org/metadata">
+	<class name="myType" superclass="mySuperClass">
+		<method name="myMethod" scope="instance"/>
+	</class>
+</api>
