@@ -79,7 +79,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 	protected static final int CHECK_CONNECTION_TIMEOUT = 30000;
 	protected static final int CACHE_TTL = 60000; /* 1min */
 	protected static final String TMP_UPLOAD_PREFIX = ".tmp_upload."; //$NON-NLS-1$
-	protected static final Pattern PASS_COMMAND_PATTERN = Pattern.compile("^(.*PASS ).+$");
+	protected static final Pattern PASS_COMMAND_PATTERN = Pattern.compile("^(.*PASS ).+$"); //$NON-NLS-1$
 
 	protected String host;
 	protected int port;

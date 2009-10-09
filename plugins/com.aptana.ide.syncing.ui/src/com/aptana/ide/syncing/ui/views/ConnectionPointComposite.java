@@ -44,6 +44,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
@@ -89,6 +90,8 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.FileUtils;
+import com.aptana.ide.core.StringUtils;
+import com.aptana.ide.core.io.IBaseRemoteConnectionPoint;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
@@ -118,7 +121,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             Messages.ConnectionPointComposite_Column_LastModified };
 
     private Composite fMain;
-    private Label fEndPointLabel;
+    private Link fEndPointLink;
     private ToolItem fRefreshItem;
     private ToolItem fHomeItem;
     private Link fPathLink;
@@ -178,12 +181,23 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
         fEndPointData.clear();
         if (fConnectionPoint == null) {
-            fEndPointLabel.setText(""); //$NON-NLS-1$
+            fEndPointLink.setText(""); //$NON-NLS-1$
         } else {
-            fEndPointLabel.setText(fConnectionPoint.getName());
+            String label = connection.getName();
+            String tooltip = label;
+            if (connection instanceof IBaseRemoteConnectionPoint) {
+                IPath path = ((IBaseRemoteConnectionPoint) connection).getPath();
+                if (path.segmentCount() > 0) {
+                    tooltip = StringUtils.format("{0} ({1})", new String[] { connection.getName(), //$NON-NLS-1$
+                            path.toPortableString() });
+                }
+            }
+            fEndPointLink.setText(StringUtils.format("<a>{0}</a>", label)); //$NON-NLS-1$
+            fEndPointLink.setToolTipText(tooltip);
             fEndPointData.add(fConnectionPoint);
         }
         setPath(""); //$NON-NLS-1$
+        fMain.layout(true, true);
 
         fTreeViewer.setInput(connection);
     }
@@ -231,6 +245,8 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             // e.text has the index; needs to increment by 1 since 0 for
             // fEndPointData is the root
             updateContent(fEndPointData.get(Integer.parseInt(e.text) + 1));
+        } else if (source == fEndPointLink) {
+            gotoHome();
         }
     }
 
@@ -366,12 +382,19 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private Composite createTopComposite(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
-        main.setLayout(new GridLayout(2, false));
+        main.setLayout(new GridLayout(3, false));
 
         Label label = new Label(main, SWT.NONE);
         label.setText(fName + ":"); //$NON-NLS-1$
-        fEndPointLabel = new Label(main, SWT.NONE);
-        fEndPointLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        fEndPointLink = new Link(main, SWT.NONE);
+        fEndPointLink.addSelectionListener(this);
+
+        ToolBar toolbar = new ToolBar(main, SWT.FLAT);
+        fHomeItem = new ToolItem(toolbar, SWT.PUSH);
+        fHomeItem.setImage(SyncingUIPlugin.getImage("icons/full/obj16/home.png")); //$NON-NLS-1$
+        fHomeItem.setToolTipText(Messages.ConnectionPointComposite_TTP_Home);
+        fHomeItem.addSelectionListener(this);
 
         return main;
     }
@@ -392,25 +415,14 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             }
         });
         fPathLink.addSelectionListener(this);
-        createActionsBar(main);
 
-        return main;
-    }
-
-    private ToolBar createActionsBar(Composite parent) {
-        ToolBar toolbar = new ToolBar(parent, SWT.FLAT);
-
+        ToolBar toolbar = new ToolBar(main, SWT.FLAT);
         fRefreshItem = new ToolItem(toolbar, SWT.PUSH);
         fRefreshItem.setImage(SyncingUIPlugin.getImage("icons/full/obj16/refresh.gif")); //$NON-NLS-1$
         fRefreshItem.setToolTipText(Messages.ConnectionPointComposite_TTP_Refresh);
         fRefreshItem.addSelectionListener(this);
 
-        fHomeItem = new ToolItem(toolbar, SWT.PUSH);
-        fHomeItem.setImage(SyncingUIPlugin.getImage("icons/full/obj16/home.png")); //$NON-NLS-1$
-        fHomeItem.setToolTipText(Messages.ConnectionPointComposite_TTP_Home);
-        fHomeItem.addSelectionListener(this);
-
-        return toolbar;
+        return main;
     }
 
     private TreeViewer createTreeViewer(Composite parent) {
