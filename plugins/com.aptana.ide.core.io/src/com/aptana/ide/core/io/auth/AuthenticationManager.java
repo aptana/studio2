@@ -113,6 +113,9 @@ public final class AuthenticationManager implements IAuthenticationManager {
 	public char[] promptPassword(String authId, String login, String title, String message) {
 		IAuthenticationPrompt authPrompt = (IAuthenticationPrompt) Platform.getAdapterManager()
 					.getAdapter(this, IAuthenticationPrompt.class);
+		if (authPrompt == null && Platform.getAdapterManager().hasAdapter(this, IAuthenticationPrompt.class.getName())) {
+			authPrompt = (IAuthenticationPrompt) Platform.getAdapterManager().loadAdapter(this, IAuthenticationPrompt.class.getName());
+		}
 		if (authPrompt != null) {
 			if (authPrompt.promptPassword(this, authId, login, title, message)) {
 				return sessionPasswords.get(authId);
