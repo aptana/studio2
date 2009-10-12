@@ -87,15 +87,16 @@ public class CopyFilesOperation {
             }
 
             final String returnCode[] = { CANCEL };
-            final String msg = MessageFormat.format(
-                    "{0} already exists. Do you wish to overwrite?", pathString);
+            final String msg = MessageFormat.format(Messages.CopyFilesOperation_OverwriteWarning,
+                    pathString);
             final String[] options = { IDialogConstants.YES_LABEL,
                     IDialogConstants.YES_TO_ALL_LABEL, IDialogConstants.NO_LABEL,
                     IDialogConstants.CANCEL_LABEL };
             fShell.getDisplay().syncExec(new Runnable() {
 
                 public void run() {
-                    MessageDialog dialog = new MessageDialog(fShell, "Question", null, msg,
+                    MessageDialog dialog = new MessageDialog(fShell,
+                            Messages.CopyFilesOperation_QuestionTitle, null, msg,
                             MessageDialog.QUESTION, options, 0) {
 
                         protected int getShellStyle() {
@@ -185,9 +186,9 @@ public class CopyFilesOperation {
             if (fCancelled || monitor.isCanceled()) {
                 return Status.CANCEL_STATUS;
             }
-            monitor.worked(1);
         }
-        return new Status(IStatus.OK, IOUIPlugin.PLUGIN_ID, successCount, "OK", null);
+        return new Status(IStatus.OK, IOUIPlugin.PLUGIN_ID, successCount,
+                Messages.CopyFilesOperation_Status_OK, null);
     }
 
     /**
@@ -215,11 +216,22 @@ public class CopyFilesOperation {
             if (fCancelled || monitor.isCanceled()) {
                 return Status.CANCEL_STATUS;
             }
-            monitor.worked(1);
         }
-        return new Status(IStatus.OK, IOUIPlugin.PLUGIN_ID, successCount, "OK", null);
+        return new Status(IStatus.OK, IOUIPlugin.PLUGIN_ID, successCount,
+                Messages.CopyFilesOperation_Status_OK, null);
     }
 
+    /**
+     * Checks if there is structural conflict for transferring the sources to
+     * the destination.
+     * 
+     * @param destination
+     *            the destination adaptable
+     * @param sources
+     *            the array of source adaptables
+     * @return a descriptive error message if the validation fails, and null
+     *         otherwise
+     */
     public static String validateDestination(IAdaptable destination, IAdaptable[] sources) {
         IFileStore[] sourceStores = new IFileStore[sources.length];
         for (int i = 0; i < sourceStores.length; ++i) {
@@ -228,6 +240,17 @@ public class CopyFilesOperation {
         return validateDestination(destination, sourceStores);
     }
 
+    /**
+     * Checks if there is structural conflict for transferring the sources to
+     * the destination.
+     * 
+     * @param destination
+     *            the destination adaptable
+     * @param sourceNames
+     *            the array of source filenames
+     * @return a descriptive error message if the validation fails, and null
+     *         otherwise
+     */
     public static String validateDestination(IAdaptable destination, String[] sourceNames) {
         return validateDestination(destination, getFileStores(sourceNames));
     }
@@ -249,8 +272,8 @@ public class CopyFilesOperation {
         }
 
         boolean success = true;
-        monitor.subTask(MessageFormat.format("Copying {0} to {1}", sourceStore.getName(),
-                destinationStore.getName()));
+        monitor.subTask(MessageFormat.format(Messages.CopyFilesOperation_Copy_Subtask, sourceStore
+                .getName(), destinationStore.getName()));
         try {
             if (fAlwaysOverwrite) {
                 sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
@@ -312,7 +335,8 @@ public class CopyFilesOperation {
                 if (index > -1) {
                     String relativePath = sourcePath.substring(index + sourceRootPath.length());
                     targetStores[0] = destinationRoot.getFileStore(new Path(relativePath));
-                    // makes sure the parent folder is created on the destination side
+                    // makes sure the parent folder is created on the
+                    // destination side
                     IFileStore parent = getFolderStore(targetStores[0]);
                     if (parent != targetStores[0]) {
                         parent.mkdir(EFS.NONE, monitor);
@@ -347,19 +371,15 @@ public class CopyFilesOperation {
 
     private void copyFiles(final IFileStore[] sources, final IFileStore destination,
             IJobChangeListener listener) {
-        Job job = new Job("Copying files") {
+        Job job = new Job(Messages.CopyFilesOperation_CopyJob_Title) {
 
             @Override
             protected IStatus run(IProgressMonitor monitor) {
-                monitor.beginTask("Copying files", sources.length);
-                IStatus status = copyFiles(sources, destination, monitor);
-                monitor.done();
-
-                return status;
+                return copyFiles(sources, destination, monitor);
             }
 
             public boolean belongsTo(Object family) {
-                if ("Copying files".equals(family)) {
+                if (Messages.CopyFilesOperation_CopyJob_Title.equals(family)) {
                     return true;
                 }
                 return super.belongsTo(family);
@@ -368,9 +388,21 @@ public class CopyFilesOperation {
         if (listener != null) {
             job.addJobChangeListener(listener);
         }
+        job.setUser(true);
         job.schedule();
     }
 
+    /**
+     * Checks if there is structural conflict for transferring the sources to
+     * the destination.
+     * 
+     * @param destination
+     *            the destination adaptable
+     * @param sourceStores
+     *            the array of source stores
+     * @return a descriptive error message if the validation fails, and null
+     *         otherwise
+     */
     private static String validateDestination(IAdaptable destination, IFileStore[] sourceStores) {
         IFileStore destinationStore = getFolderStore(destination);
         IFileStore sourceParentStore;
@@ -378,16 +410,21 @@ public class CopyFilesOperation {
             sourceParentStore = sourceStore.getParent();
             if (destinationStore.equals(sourceStore)
                     || (sourceParentStore != null && destinationStore.equals(sourceParentStore))) {
-                return "The source is already contained in the destination";
+                return Messages.CopyFilesOperation_ERR_SourceInDestination;
             }
 
             if (sourceStore.isParentOf(destinationStore)) {
-                return "Destination cannot be a descendent of the source";
+                return Messages.CopyFilesOperation_ERR_DestinationInSource;
             }
         }
         return null;
     }
 
+    /**
+     * @param filename
+     *            the filename
+     * @return the corresponding file store, or null if it could not be found
+     */
     private static IFileStore getFileStore(String filename) {
         try {
             return EFS.getStore((new Path(filename).toFile().toURI()));
@@ -396,6 +433,11 @@ public class CopyFilesOperation {
         return null;
     }
 
+    /**
+     * @param filenames
+     *            an array of filenames
+     * @return the array of corresponding file stores
+     */
     private static IFileStore[] getFileStores(String[] filenames) {
         IFileStore[] fileStores = new IFileStore[filenames.length];
         for (int i = 0; i < fileStores.length; ++i) {
@@ -404,9 +446,17 @@ public class CopyFilesOperation {
         return fileStores;
     }
 
-    private static IFileStore getFolderStore(IAdaptable destination) {
-        IFileStore store = Utils.getFileStore(destination);
-        IFileInfo info = Utils.getFileInfo(destination);
+    /**
+     * Gets the folder the file belongs in. If the file is a directory, returns
+     * itself.
+     * 
+     * @param adaptable
+     *            an IAdaptable that could adapt to an IFileStore
+     * @return the folder file store
+     */
+    private static IFileStore getFolderStore(IAdaptable adaptable) {
+        IFileStore store = Utils.getFileStore(adaptable);
+        IFileInfo info = Utils.getFileInfo(adaptable);
         if (store != null && info != null && !info.isDirectory()) {
             store = store.getParent();
         }

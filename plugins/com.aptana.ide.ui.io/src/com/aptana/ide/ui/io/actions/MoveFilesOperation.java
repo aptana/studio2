@@ -60,7 +60,7 @@ public class MoveFilesOperation extends CopyFilesOperation {
         }
 
         boolean success = true;
-        monitor.subTask(MessageFormat.format("Moving {0} to {1}", sourceStore.getName(),
+        monitor.subTask(MessageFormat.format(Messages.MoveFilesOperation_Subtask_Moving, sourceStore.getName(),
                 destinationStore.getName()));
         try {
             if (getAlwaysOverwrite()) {

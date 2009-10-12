@@ -104,7 +104,6 @@ public class DownloadAction extends BaseSyncAction {
                     fileStores[i] = fileStore;
                 }
 
-                monitor.beginTask(Messages.DownloadAction_MainTask, fileStores.length);
                 CopyFilesOperation operation = new CopyFilesOperation(getShell());
                 IStatus status = operation.copyFiles(fileStores, targetRoot, sourceRoot, monitor);
 
@@ -119,11 +118,11 @@ public class DownloadAction extends BaseSyncAction {
                         }
                     }
                 }
-                monitor.done();
 
                 return status;
             }
         };
+        job.setUser(true);
         job.schedule();
     }
 
