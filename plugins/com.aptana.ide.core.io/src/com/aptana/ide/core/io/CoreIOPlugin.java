@@ -52,6 +52,8 @@ import org.osgi.framework.BundleContext;
 
 import com.aptana.ide.core.io.auth.AuthenticationManager;
 import com.aptana.ide.core.io.auth.IAuthenticationManager;
+import com.aptana.ide.core.io.events.ConnectionPointEvent;
+import com.aptana.ide.core.io.events.IConnectionPointListener;
 import com.aptana.ide.core.io.internal.DeleteResourceShortcutListener;
 
 /**
@@ -66,7 +68,21 @@ public class CoreIOPlugin extends Plugin {
 	private static CoreIOPlugin plugin;
 	
 	private WeakHashMap<Object, ConnectionContext> connectionContexts = new WeakHashMap<Object, ConnectionContext>();
-	
+
+    private IPath savedLocation;
+    private IConnectionPointListener listener = new IConnectionPointListener() {
+
+        public void connectionPointChanged(ConnectionPointEvent event) {
+            // saves the connections on any change
+            if (savedLocation == null) {
+                savedLocation = new Path(ConnectionPointManager.STATE_FILENAME)
+                        .addFileExtension("1"); //$NON-NLS-1$
+            }
+            ConnectionPointManager.getInstance()
+                    .saveState(getStateLocation().append(savedLocation));
+        }
+    };
+
 	/**
 	 * The constructor
 	 */
@@ -83,14 +99,15 @@ public class CoreIOPlugin extends Plugin {
 		ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(this,
 				new WorkspaceSaveParticipant());
 		if (lastState != null) {
-			IPath location = lastState.lookup(new Path(ConnectionPointManager.STATE_FILENAME));
-			if (location != null) {
-				ConnectionPointManager.getInstance().loadState(getStateLocation().append(location));
+			savedLocation = lastState.lookup(new Path(ConnectionPointManager.STATE_FILENAME));
+			if (savedLocation != null) {
+				ConnectionPointManager.getInstance().loadState(getStateLocation().append(savedLocation));
 			}
 		}
 
         ResourcesPlugin.getWorkspace().addResourceChangeListener(
                 new DeleteResourceShortcutListener(), IResourceChangeEvent.POST_CHANGE);
+        getConnectionPointManager().addConnectionPointListener(listener);
 	}
 
 	/*
@@ -99,6 +116,7 @@ public class CoreIOPlugin extends Plugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
+		getConnectionPointManager().removeConnectionPointListener(listener);
 		plugin = null;
 		super.stop(context);
 	}
