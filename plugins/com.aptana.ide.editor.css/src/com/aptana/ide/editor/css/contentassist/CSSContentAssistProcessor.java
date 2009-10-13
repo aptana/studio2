@@ -180,22 +180,13 @@ public class CSSContentAssistProcessor extends UnifiedContentAssistProcessor imp
 	}
 
 	/**
-	 * The characters that triggers competion proposals (dot for completion, and space for "new XX" in our case)
+	 * The characters that triggers completion proposals
 	 * 
 	 * @return Returns the trigger characters for code completion.
 	 */
 	public char[] getCompletionProposalAutoActivationCharacters()
 	{
-
-		// For right now, we only activate on ':', which shows arg assist for the
-		// current
-		// property. Future work would do a VS-like insertion of \n\t on '{' to
-		// immediately allow people to easily type properties.
-		// Additionally ';', should trigger \n insertion, where they can close
-		// the rule, or \t and type more properties.
-
-		// Remove '}' since it is not really necessary.
-		return new char[] { ':', ' ', '\t', '{', ';' };
+		return new char[] { ':', '\t', '{', ';' };
 	}
 
 	/**
