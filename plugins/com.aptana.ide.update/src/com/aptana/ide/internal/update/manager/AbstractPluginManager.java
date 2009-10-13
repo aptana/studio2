@@ -214,6 +214,9 @@ public abstract class AbstractPluginManager implements IPluginManager, IPreferen
 					}
 					loader.data = new ImageData[1];
 					loader.data[0] = image.getImageData();
+					if (loader.data[0] == null) {
+					    continue;
+					}
 
 					// caches the image locally
 					id = plugin.getId();
