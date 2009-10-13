@@ -623,6 +623,23 @@
             </and>
          </filterExpression>
       </commonFilter>
+      <commonFilter
+            activeByDefault="true"
+            description="%commonFilter.projectShortcuts.description"
+            id="com.aptana.ide.ui.io.navigator.filters.projectShortcuts"
+            name="%commonFilter.projectShortcuts.name">
+         <filterExpression>
+            <and>
+               <instanceof
+                     value="com.aptana.ide.core.io.IConnectionPointCategory">
+               </instanceof>
+               <test
+                     property="com.aptana.ide.core.io.connection.category.id"
+                     value="com.aptana.ide.core.io.projectShortcuts">
+               </test>
+            </and>
+         </filterExpression>
+      </commonFilter>
    </extension>
    <!-- extension
          point="org.eclipse.ui.navigator.viewer">
