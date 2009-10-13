@@ -37,6 +37,9 @@ package com.aptana.ide.core.io;
 
 import java.util.WeakHashMap;
 
+import org.eclipse.core.internal.resources.DelayedSnapshotJob;
+import org.eclipse.core.internal.resources.SaveManager;
+import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ISaveContext;
 import org.eclipse.core.resources.ISaveParticipant;
@@ -59,6 +62,7 @@ import com.aptana.ide.core.io.internal.DeleteResourceShortcutListener;
 /**
  * The activator class controls the plug-in life cycle
  */
+@SuppressWarnings("restriction")
 public class CoreIOPlugin extends Plugin {
 
 	// The plug-in ID
@@ -69,17 +73,13 @@ public class CoreIOPlugin extends Plugin {
 	
 	private WeakHashMap<Object, ConnectionContext> connectionContexts = new WeakHashMap<Object, ConnectionContext>();
 
-    private IPath savedLocation;
     private IConnectionPointListener listener = new IConnectionPointListener() {
 
         public void connectionPointChanged(ConnectionPointEvent event) {
-            // saves the connections on any change
-            if (savedLocation == null) {
-                savedLocation = new Path(ConnectionPointManager.STATE_FILENAME)
-                        .addFileExtension("1"); //$NON-NLS-1$
-            }
-            ConnectionPointManager.getInstance()
-                    .saveState(getStateLocation().append(savedLocation));
+            // saves the connections on any change instead of waiting for the
+            // shutdown in case of workbench crash
+            SaveManager saveManager = ((Workspace) ResourcesPlugin.getWorkspace()).getSaveManager();
+            (new DelayedSnapshotJob(saveManager)).schedule();
         }
     };
 
@@ -99,9 +99,9 @@ public class CoreIOPlugin extends Plugin {
 		ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(this,
 				new WorkspaceSaveParticipant());
 		if (lastState != null) {
-			savedLocation = lastState.lookup(new Path(ConnectionPointManager.STATE_FILENAME));
-			if (savedLocation != null) {
-				ConnectionPointManager.getInstance().loadState(getStateLocation().append(savedLocation));
+			IPath location = lastState.lookup(new Path(ConnectionPointManager.STATE_FILENAME));
+			if (location != null) {
+				ConnectionPointManager.getInstance().loadState(getStateLocation().append(location));
 			}
 		}
 
