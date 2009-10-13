@@ -36,6 +36,7 @@ package com.aptana.ide.editors.unified.errors;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -72,25 +73,25 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 	protected FileService fileService;
 
 	String mimeType;
-	
+
 	ValidatorRef[] validators;
-	
+
 	/**
 	 * The constructor.
 	 * 
 	 * @param fileService
-	 * @param mimeType 
+	 * @param mimeType
 	 */
 	public UnifiedErrorManager(FileService fileService, String mimeType)
 	{
 		this.fileService = fileService;
 		this.mimeType = mimeType;
-		
-		if(getPreferenceStore() != null)
+
+		if (getPreferenceStore() != null)
 		{
 			getPreferenceStore().addPropertyChangeListener(this);
 		}
-		
+
 		initializeValidators();
 	}
 
@@ -133,7 +134,7 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 	{
 		return ShowInfos.isInstanceChecked();
 	}
-	
+
 	/**
 	 * @return boolean
 	 */
@@ -150,7 +151,6 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 		return ShowErrors.isInstanceChecked();
 	}
 
-
 	/**
 	 * parseForErrors
 	 * 
@@ -162,52 +162,44 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 	public IFileError[] parseForErrors(String path, String source, IFileSourceProvider sourceProvider)
 	{
 		loadErrorDescriptors();
-		IFileError[] errors = new IFileError[0];
-		
-		UnifiedErrorReporter reporter = new UnifiedErrorReporter(sourceProvider);
-		reporter.addErrors(errors);
 
-		if(validators != null)
+		UnifiedErrorReporter reporter = new UnifiedErrorReporter(sourceProvider);
+		if (validators != null)
 		{
-			for(int i = 0; i < validators.length; i++)
+			for (ValidatorRef validatorRef : validators)
 			{
-				ValidatorRef validatorRef = validators[i];
-				
 				try
 				{
-					errors = validatorRef.parseForErrors(path, source, sourceProvider, showErrors(), showWarnings(), showInfos());
-
+					IFileError[] errors = validatorRef.parseForErrors(path, source, sourceProvider, showErrors(),
+							showWarnings(), showInfos());
+					if (errors != null & errors.length > 0)
+					{
+						reporter.addErrors(errors);
+					}
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
-					IdeLog.logError(UnifiedEditorsPlugin.getDefault(), Messages.UnifiedErrorManager_ValidatorRefParseDelegationError, ex);
+					IdeLog.logError(UnifiedEditorsPlugin.getDefault(),
+							Messages.UnifiedErrorManager_ValidatorRefParseDelegationError, ex);
 				}
-				
-				if( errors != null & errors.length > 0)
-				{
-					reporter.addErrors(errors);
-				}
-
 			}
 		}
-		errors = filterMessages(reporter.getErrors());
-		return errors;
+		return filterMessages(reporter.getErrors());
 	}
 
 	private IFileError[] filterMessages(IFileError[] errors)
 	{
-		ArrayList newErrors = new ArrayList();
-		for (int i = 0; i < errors.length; i++)
+		if (errors == null)
+			return new IFileError[0];
+		List<IFileError> newErrors = new ArrayList<IFileError>();
+		for (IFileError error : errors)
 		{
-			IFileError error = errors[i];
 			if (filterMessage(error.getMessage()) != null)
 			{
 				newErrors.add(error);
 			}
 		}
-
-		return (IFileError[]) newErrors.toArray(new IFileError[0]);
-		
+		return (IFileError[]) newErrors.toArray(new IFileError[newErrors.size()]);
 	}
 
 	/**
@@ -219,61 +211,62 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 	 */
 	public String filterMessage(String msg)
 	{
-		if(isFiltered(IMarker.SEVERITY_INFO, msg))
+		if (isFiltered(IMarker.SEVERITY_INFO, msg))
 		{
 			return null;
 		}
 		else
 		{
-			return msg;			
+			return msg;
 		}
 	}
 
-	
 	/**
 	 * 
 	 */
 	private void loadErrorDescriptors()
 	{
 		IPreferenceStore store = getPreferenceStore();
-		if(store != null)
+		if (store != null)
 		{
 			String editors = store.getString(IPreferenceConstants.IGNORE_PROBLEMS);
 			_errorDescriptors = ErrorDescriptor.deserializeErrorDescriptors(editors);
 		}
 	}
-	
+
 	/**
 	 * Is the current file error filtered?
+	 * 
 	 * @param severity
 	 * @param message
 	 * @return boolean
 	 */
 	protected boolean isFiltered(int severity, String message)
 	{
-		if(_errorDescriptors == null)
+		if (_errorDescriptors == null)
 		{
 			return false;
 		}
-		
+
 		FileError fe = new FileError();
-		//fe.setSeverity(severity);
+		// fe.setSeverity(severity);
 		fe.setMessage(message);
-		
+
 		for (int i = 0; i < _errorDescriptors.length; i++)
 		{
 			ErrorDescriptor ed = _errorDescriptors[i];
-			if(ed.matchesError(fe))
+			if (ed.matchesError(fe))
 			{
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Returns the preference store
+	 * 
 	 * @return IPreferenceStore
 	 */
 	protected IPreferenceStore getPreferenceStore()
@@ -298,40 +291,38 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 			fileService.forceContentChangedEvent();
 		}
 	}
-	
-	
+
 	/**
 	 * Retrieve registered validators, and apply selections made via preference settings
-	 *  
 	 */
 	private void initializeValidators()
 	{
-		ValidatorRef [] registeredValidators = ValidatorManager.getInstance().getValidators(mimeType);
-		
+		ValidatorRef[] registeredValidators = ValidatorManager.getInstance().getValidators(mimeType);
+
 		IPreferenceStore preferenceStore = getPreferenceStore();
-		if( preferenceStore != null)
+		if (preferenceStore != null)
 		{
 			String property = preferenceStore.getString(IPreferenceConstants.VALIDATORS_LIST);
-			if(property != null && property.length() > 0)
+			if (property != null && property.length() > 0)
 			{
 				String[] preferredValidators = property.split(","); //$NON-NLS-1$
 				ArrayList newValidators = new ArrayList();
-				for(int i = 0; i < preferredValidators.length; i++)
+				for (int i = 0; i < preferredValidators.length; i++)
 				{
-					for(int j = 0; j < registeredValidators.length; j++)
+					for (int j = 0; j < registeredValidators.length; j++)
 					{
-						if( preferredValidators[i].equals(registeredValidators[j].getName()))
+						if (preferredValidators[i].equals(registeredValidators[j].getName()))
 						{
 							newValidators.add(registeredValidators[j]);
 							continue;
 						}
 					}
 				}
-				validators = (ValidatorRef []) newValidators.toArray(new ValidatorRef[0]);
+				validators = (ValidatorRef[]) newValidators.toArray(new ValidatorRef[0]);
 			}
 			else
 			{
-				//Default is to use all the registered validators
+				// Default is to use all the registered validators
 				validators = registeredValidators;
 			}
 		}
@@ -339,23 +330,22 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 		{
 			// Why should preference store be null ?
 			IdeLog.logInfo(UnifiedEditorsPlugin.getDefault(), Messages.UnifiedErrorManager_PreferenceRetrievalError);
-			
+
 			validators = registeredValidators;
 		}
-		
-	}	
-	
+
+	}
+
 	/**
-	 * 
 	 * @param partition
 	 * @return
 	 */
-	public String processLanguagePartition(ITypedRegion partition, String source) {
+	public String processLanguagePartition(ITypedRegion partition, String source)
+	{
 		return source;
 	}
-	
+
 	/**
-	 * 
 	 * @param source
 	 * @param start
 	 * @param length
@@ -383,5 +373,5 @@ public class UnifiedErrorManager implements IErrorManager, IPropertyChangeListen
 
 		return new String(c);
 	}
-	
+
 }

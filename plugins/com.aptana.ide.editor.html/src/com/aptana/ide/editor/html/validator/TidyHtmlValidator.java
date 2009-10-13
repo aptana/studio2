@@ -37,6 +37,7 @@ package com.aptana.ide.editor.html.validator;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.regex.Matcher;
@@ -59,7 +60,6 @@ import com.aptana.ide.editors.validator.ValidatorBase;
 /**
  * @author Robin Debreuil
  * @author Samir Joshi (Refactored from HTMLErrorManager)
- *
  */
 public class TidyHtmlValidator extends ValidatorBase
 {
@@ -72,7 +72,6 @@ public class TidyHtmlValidator extends ValidatorBase
 
 	/**
 	 * HTMLErrorManager
-	 * 
 	 */
 	public TidyHtmlValidator()
 	{
@@ -80,51 +79,30 @@ public class TidyHtmlValidator extends ValidatorBase
 	}
 
 	/**
-	 * @param path 
-	 * @param source 
-	 * @param sourceProvider 
-	 * @param collectErrors 
-	 * @param collectWarnings 
-	 * @param collectInfos - ignored for now
+	 * @param path
+	 * @param source
+	 * @param sourceProvider
+	 * @param collectErrors
+	 * @param collectWarnings
+	 * @param collectInfos
+	 *            - ignored for now
 	 * @return errors
-	 * @see com.aptana.ide.editors.validator.ValidatorBase#parseForErrors(String, String, IFileSourceProvider, boolean, boolean, boolean)
+	 * @see com.aptana.ide.editors.validator.ValidatorBase#parseForErrors(String, String, IFileSourceProvider, boolean,
+	 *      boolean, boolean)
 	 */
-	public IFileError[] parseForErrors(String path, String source, IFileSourceProvider sourceProvider, 
-							boolean collectErrors, boolean collectWarnings, boolean collectInfos)
+	public IFileError[] parseForErrors(String path, String source, IFileSourceProvider sourceProvider,
+			boolean collectErrors, boolean collectWarnings, boolean collectInfos)
 	{
+		String input = runThroughTidy(source);
+		if (input == null || input.trim().length() == 0)
+			return new IFileError[0];
 
-		Tidy tidy;
-		// Configuration configuration;
-
-		tidy = new Tidy();
-		// configuration = tidy.getConfiguration();
-		
 		UnifiedErrorReporter reporter = new UnifiedErrorReporter(sourceProvider);
-		
+		BufferedReader br = null;
 		try
 		{
-			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			PrintWriter out = new PrintWriter(bout);
-			tidy.setErrout(out);
-
-			try
-			{
-				String patchedSource = patchSource(source);
-				tidy.parse(new ByteArrayInputStream(patchedSource.getBytes()), null);
-			}
-			catch (NullPointerException e)
-			{
-				IdeLog.logError(HTMLPlugin.getDefault(), Messages.TidyHtmlValidator_Null_Pointer, e);
-			}
-
-			out.flush();
-
-			String input = bout.toString();
-
-			BufferedReader br = new BufferedReader(new StringReader(input));
-
+			br = new BufferedReader(new StringReader(input));
 			String line;
-
 			while ((line = br.readLine()) != null)
 			{
 				if (line.startsWith("line")) //$NON-NLS-1$
@@ -137,12 +115,50 @@ public class TidyHtmlValidator extends ValidatorBase
 		{
 			IdeLog.logError(HTMLPlugin.getDefault(), Messages.HTMLErrorManager_ErrorParsingForErrors, e);
 		}
-		IFileError[] err = reporter.getErrors();
-
-		return err;
+		finally
+		{
+			if (br != null)
+				try
+				{
+					br.close();
+				}
+				catch (IOException e)
+				{
+					// ignore
+				}
+		}
+		return reporter.getErrors();
 	}
 
-	private void parseTidyOutput(UnifiedErrorReporter err, String filename, String source, boolean showErrors, boolean showWarnings)
+	private String runThroughTidy(String source)
+	{
+		try
+		{
+			Tidy tidy = new Tidy();
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			PrintWriter out = new PrintWriter(bout);
+			tidy.setErrout(out);
+			try
+			{
+				String patchedSource = patchSource(source);
+				tidy.parse(new ByteArrayInputStream(patchedSource.getBytes()), null);
+			}
+			catch (NullPointerException e)
+			{
+				IdeLog.logError(HTMLPlugin.getDefault(), Messages.TidyHtmlValidator_Null_Pointer, e);
+			}
+			out.flush();
+
+			return bout.toString();
+		}
+		catch (Throwable t)
+		{
+			return "";
+		}
+	}
+
+	private void parseTidyOutput(UnifiedErrorReporter err, String filename, String source, boolean showErrors,
+			boolean showWarnings)
 	{
 		Matcher matcher = pattern.matcher(source);
 
@@ -180,8 +196,6 @@ public class TidyHtmlValidator extends ValidatorBase
 		message = message.replaceFirst("discarding", "should discard"); //$NON-NLS-1$ //$NON-NLS-2$
 		message = message.replaceFirst("inserting", "should insert"); //$NON-NLS-1$ //$NON-NLS-2$
 		message = message.replaceFirst("trimming", "should trim"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		//return super.filterMessage(message);
 		return message;
 	}
 
@@ -192,7 +206,7 @@ public class TidyHtmlValidator extends ValidatorBase
 	 */
 	protected IPreferenceStore getPreferenceStore()
 	{
-		if(PluginUtils.isPluginLoaded(HTMLPlugin.getDefault()))
+		if (PluginUtils.isPluginLoaded(HTMLPlugin.getDefault()))
 		{
 			return HTMLPlugin.getDefault().getPreferenceStore();
 		}
@@ -201,47 +215,49 @@ public class TidyHtmlValidator extends ValidatorBase
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Patches source.
-	 * @param source - source to patch.
+	 * 
+	 * @param source
+	 *            - source to patch.
 	 * @return patched source.
 	 */
-	private String patchSource(String source) {
+	private String patchSource(String source)
+	{
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < source.length(); i++)
 		{
 			char ch = source.charAt(i);
 			boolean patchNeeded = false;
-			
+
 			if (ch == '<' && i + 1 < source.length() && Character.isLetter(source.charAt(i + 1)))
 			{
-				//checking for the wrong tag start case
+				// checking for the wrong tag start case
 				for (int j = i + 1; j < source.length(); j++)
 				{
 					char ch2 = source.charAt(j);
-					if (Character.isLetterOrDigit(ch2)
-							|| ch2 == '_' || ch == ':' || ch == '-' || ch == '.')
+					if (Character.isLetterOrDigit(ch2) || ch2 == '_' || ch == ':' || ch == '-' || ch == '.')
 					{
-						//valid part of tag start, doing nothing
+						// valid part of tag start, doing nothing
 					}
 					else if (Character.isWhitespace(ch2) || ch2 == '>' || ch2 == '/')
 					{
-						//valid end of tag start, breaking the check
+						// valid end of tag start, breaking the check
 						break;
 					}
 					else
 					{
-						//invalid end of tag start, so we have to replace the starting '<'
-						//character with some "safe" character for W3C validator.
+						// invalid end of tag start, so we have to replace the starting '<'
+						// character with some "safe" character for W3C validator.
 						patchNeeded = true;
 					}
 				}
 			}
-			
+
 			if (patchNeeded)
 			{
-				//patching the start '<' character with 'L' character.
+				// patching the start '<' character with 'L' character.
 				builder.append('L');
 			}
 			else
@@ -249,7 +265,7 @@ public class TidyHtmlValidator extends ValidatorBase
 				builder.append(ch);
 			}
 		}
-		
+
 		return builder.toString();
 	}
 }
