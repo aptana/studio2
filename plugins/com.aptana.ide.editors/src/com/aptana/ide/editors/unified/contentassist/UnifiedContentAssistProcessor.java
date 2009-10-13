@@ -884,13 +884,8 @@ public abstract class UnifiedContentAssistProcessor implements
 		
 		char[] newArray = new char[array1.length
 				+ array2.length];
-		for (int i = 0; i < array1.length; i++) {
-			newArray[i] = array1[i];
-		}
-		for (int i = 0; i < array2.length; i++) {
-			newArray[i + array2.length] = array2[i];
-		}
-		
+		System.arraycopy(array1, 0, newArray, 0, array1.length);
+		System.arraycopy(array2, 0, newArray, array1.length, array2.length);	
 		return newArray;
 	}
 	

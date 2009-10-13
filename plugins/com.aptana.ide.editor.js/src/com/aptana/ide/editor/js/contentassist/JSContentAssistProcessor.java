@@ -500,7 +500,7 @@ public class JSContentAssistProcessor implements IContentAssistProcessor, IUnifi
 	 */
 	public char[] getCompletionProposalAutoActivationCharacters()
 	{
-		return new char[] { '.', ' ' };
+		return new char[] { '.' };
 	}
 
 	/**
