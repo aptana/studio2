@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="decorator" name="Aptana Navigator Decorator" schema="schema/decorator.exsd"/>
+   <extension-point id="decorator" name="%extensions.decorator.name" schema="schema/decorator.exsd"/>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
@@ -200,7 +200,7 @@
             viewerId="com.aptana.ide.ui.io.fileExplorerView">
          <includes>
             <contentExtension
-                  pattern="org.eclipse.ui.navigator.resources.filters.*">
+                  pattern="org.eclipse.ui.navigator.resources.filters.closedProject">
             </contentExtension>
             <contentExtension
                   pattern="org.eclipse.ui.navigator.resources.linkHelper">
@@ -237,7 +237,7 @@
             icon="icons/full/obj16/projects.png"
             id="com.aptana.ide.ui.io.navigatorContent"
             labelProvider="com.aptana.ide.ui.io.navigator.FileTreeLabelProvider"
-            name="Navigator Content"
+            name="%navigatorContent.default.name"
             priority="high">
          <enablement>
             <or>
@@ -601,9 +601,16 @@
       </actionProvider>
       <commonFilter
             activeByDefault="true"
-            description="Show other connections"
+            class="com.aptana.ide.ui.io.navigator.FileSystemDotFilter"
+            description="%commonFilter.startsWithDot.description"
+            id="com.aptana.ide.ui.io.navigator.filters.startsWithDot"
+            name="%commonFilter.startsWithDot.name">
+      </commonFilter>
+      <commonFilter
+            activeByDefault="true"
+            description="%commonFilter.connections.description"
             id="com.aptana.ide.ui.io.navigator.filters.generic"
-            name="Other Connections Filter">
+            name="%commonFilter.connections.name">
          <filterExpression>
             <and>
                <instanceof
@@ -744,7 +751,7 @@
       <page
             class="com.aptana.ide.ui.io.properties.FileInfoPropertyPage"
             id="com.aptana.ide.ui.io.properties.FilePropertyPage"
-            name="Resource">
+            name="%propertyPage.resource.name">
          <enabledWhen>
             <or>
                <instanceof
