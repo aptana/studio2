@@ -35,8 +35,6 @@
 package com.aptana.ide.core.ui;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -69,22 +67,18 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorMapping;
 import org.eclipse.ui.IPathEditorInput;
-import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
@@ -96,19 +90,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchEncoding;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.internal.ErrorEditorPart;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput;
 import org.eclipse.ui.internal.registry.EditorDescriptor;
 import org.eclipse.ui.internal.registry.EditorRegistry;
 import org.eclipse.ui.internal.registry.FileEditorMapping;
 import org.eclipse.ui.internal.util.PrefUtil;
-import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
-import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.update.configuration.IConfiguredSite;
 import org.eclipse.update.configuration.IInstallConfiguration;
 import org.eclipse.update.configuration.ILocalSite;
@@ -119,20 +109,10 @@ import org.eclipse.update.core.VersionedIdentifier;
 import org.osgi.framework.Bundle;
 
 import com.aptana.ide.core.AptanaCorePlugin;
-import com.aptana.ide.core.BaseFileEditorInput;
 import com.aptana.ide.core.BaseFileEditorInputImpl;
 import com.aptana.ide.core.EclipseUtils;
-import com.aptana.ide.core.FileUtils;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.ConnectionException;
-import com.aptana.ide.core.io.IVirtualFile;
-import com.aptana.ide.core.io.IVirtualFileManager;
-import com.aptana.ide.core.io.IVirtualFileManagerDialog;
-import com.aptana.ide.core.io.ProtocolManager;
-import com.aptana.ide.core.io.VirtualFileManagerException;
-import com.aptana.ide.core.io.sync.ISyncManagerChangeListener;
-import com.aptana.ide.core.io.sync.SyncManager;
 import com.aptana.ide.core.ui.preferences.ApplicationPreferences;
 import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
 
@@ -1528,454 +1508,6 @@ public final class CoreUIUtils
 	}
 
 	/**
-	 * Opens a virtual file in an editor
-	 * 
-	 * @param file
-	 */
-	public static void openFileInEditor(final IVirtualFile file)
-	{
-		IEditorDescriptor editorDesc = null;
-		try
-		{
-			editorDesc = IDE.getEditorDescriptor(file.getName());
-			CoreUIUtils.openFileInEditor(file, editorDesc);
-		}
-		catch (PartInitException e)
-		{
-			IdeLog.logError(CoreUIPlugin.getDefault(), Messages.CoreUIUtils_ERR_OpeningEditorToVirtualFile, e);
-		}
-	}
-
-	/**
-	 * openFileInEditor
-	 * 
-	 * @param file
-	 * @param editorDesc
-	 */
-	public static void openFileInEditor(final IVirtualFile file, final IEditorDescriptor editorDesc)
-	{
-		final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-		Job openRemoteFileJob = new Job(Messages.CoreUIUtils_MSG_OpeningRemoteFile + file.getName())
-		{
-			protected IStatus run(IProgressMonitor monitor)
-			{
-				File f = null;
-
-				try
-				{
-					if (file.isLocal())
-					{
-						f = new java.io.File(file.getAbsolutePath());
-					}
-					else
-					{
-						f = saveRemoteFileAsLocal(file);
-					}
-
-					if (f != null)
-					{
-						final File finalF = f;
-
-						UIJob openEditor = new UIJob("Opening editor") //$NON-NLS-1$
-						{
-
-							public IStatus runInUIThread(IProgressMonitor monitor)
-							{
-								try
-								{
-									boolean alreadyOpen = fileOpenInEditor(finalF.getAbsolutePath());
-									IEditorInput input = CoreUIUtils.createJavaFileEditorInput(finalF);
-									if (input instanceof BaseFileEditorInput)
-									{
-										((BaseFileEditorInput) input).setVirtualFile(file);
-									}
-									IEditorPart editorPart = IDE.openEditor(page, input, editorDesc.getId());
-
-									if (editorPart != null && editorPart instanceof ErrorEditorPart)
-									{
-										page.closeEditor(editorPart, false);
-										showError(StringUtils.format(Messages.FileExplorerView_ErrorOpeningEditor,
-												finalF.getAbsolutePath()), null);
-									}
-									else if (editorPart != null && alreadyOpen == false)
-									{
-										attachSaveListener(file, finalF, editorPart);
-									}
-								}
-								catch (Exception e)
-								{
-									if (finalF != null)
-									{
-										showError(StringUtils.format(Messages.FileExplorerView_ErrorOpeningEditor,
-												finalF.getAbsolutePath()), e);
-									}
-								}
-								return Status.OK_STATUS;
-							}
-
-						};
-
-						openEditor.setSystem(true);
-						openEditor.schedule();
-					}
-				}
-				catch (Exception e)
-				{
-					if (f != null)
-					{
-						showError(
-								StringUtils.format(Messages.FileExplorerView_ErrorOpeningEditor, f.getAbsolutePath()),
-								e);
-					}
-				}
-				return Status.OK_STATUS;
-			}
-
-		};
-		openRemoteFileJob.setUser(true);
-		openRemoteFileJob.setPriority(Job.INTERACTIVE);
-		openRemoteFileJob.schedule();
-	}
-
-	/**
-	 * Watches the local file for changes and saves them back to the IVirtualFile when the editor is saved
-	 * 
-	 * @param file
-	 * @param f
-	 * @param editorPart
-	 */
-	public static void attachSaveListener(final IVirtualFile file, File f, final IEditorPart editorPart)
-	{
-		final File workFile = f;
-
-		if (!file.isLocal())
-		{
-			if (editorPart instanceof ITextEditor || editorPart instanceof EditorPart)
-			{
-				editorPart.addPropertyListener(new IPropertyListener()
-				{
-					public void propertyChanged(Object source, int propId)
-					{
-						if (propId == EditorPart.PROP_DIRTY && source instanceof EditorPart)
-						{
-							EditorPart ed = (EditorPart) source;
-							
-							if (!ed.isDirty())
-							{
-								Job saveRemoteFileJob = new Job(Messages.CoreUIUtils_MSG_RemotelySaving + ed.getPartName())
-								{
-									protected IStatus run(IProgressMonitor monitor)
-									{
-										FileInputStream inputStream = null;
-										
-										try
-										{
-											inputStream = new FileInputStream(workFile);
-											
-											synchronized (CoreUIUtils.class)
-											{
-												file.getFileManager().putStream(inputStream, file);
-											}
-										}
-										catch (FileNotFoundException e1)
-										{
-											showError(StringUtils
-													.format(Messages.FileExplorerView_ErrorSavingFile, new String[] {
-															file.getAbsolutePath(), workFile.getAbsolutePath() }), e1);
-										}
-										catch (ConnectionException e1)
-										{
-											fixConnection(file.getFileManager());
-										}
-										catch (VirtualFileManagerException e1)
-										{
-											showError(StringUtils
-													.format(Messages.FileExplorerView_ErrorSavingFile, new String[] {
-															file.getAbsolutePath(), workFile.getAbsolutePath() }), e1);
-										}
-										catch (IOException e1)
-										{
-											showError(StringUtils
-													.format(Messages.FileExplorerView_ErrorSavingFile, new String[] {
-															file.getAbsolutePath(), workFile.getAbsolutePath() }), e1);
-										}
-										finally
-										{
-											if (inputStream != null)
-											{
-												try
-												{
-													inputStream.close();
-												}
-												catch (IOException e)
-												{
-												}
-											}
-										}
-										
-										return Status.OK_STATUS;
-									}
-
-								};
-								
-								saveRemoteFileJob.schedule();
-							}
-						}
-					}
-				});
-				// WORKAROUND for http://support.aptana.com/asap/browse/STU-211
-				// Resolution for old-fashion document providers which are not aware of IURIEditorInput
-				// In fact, they should be based on TextFileDocumentProvider.
-				/*
-				if (editorPart instanceof ITextEditor) {
-					final long[] lastModified = new long[] { workFile.lastModified() };
-					IDocumentProvider documentProvider = ((ITextEditor) editorPart).getDocumentProvider();
-					if (documentProvider != null && !handledProviders.contains(documentProvider)) {
-						handledProviders.add(documentProvider); // add listener to provider only once
-						documentProvider.addElementStateListener(new IElementStateListener() {
-							public void elementContentAboutToBeReplaced(Object element) {
-							}
-	
-							public void elementContentReplaced(Object element) {
-							}
-	
-							public void elementDeleted(Object element) {
-							}
-	
-							public void elementDirtyStateChanged(Object element, boolean isDirty) {
-								if (!(element instanceof BaseFileEditorInput)) {
-									return;
-								}
-								if (!isDirty) {
-									if (workFile.lastModified() == lastModified[0]) {
-										IDocumentProvider documentProvider = ((ITextEditor) editorPart).getDocumentProvider();
-										if (documentProvider == null) {
-											return;
-										}
-										IDocument document = documentProvider.getDocument(element);
-										if (document == null) {
-											return;
-										}
-										String text = document.get();
-										try {
-											FileUtils.writeStringToFile(text, workFile);
-										} catch (IOException e) {
-											IdeLog.logImportant(CoreUIPlugin.getDefault(), "File save failed", e);
-										}
-										lastModified[0] = workFile.lastModified();
-									}
-								} else {
-									lastModified[0] = workFile.lastModified();
-								}
-							}
-	
-							public void elementMoved(Object originalElement, Object movedElement) {
-							}
-						});
-					}
-				}
-				*/
-			}
-		}
-	}
-
-	/**
-	 * Saves a remote file as a local file
-	 * 
-	 * @param file
-	 * @return File
-	 */
-	public static File saveRemoteFileAsLocal(final IVirtualFile file)
-	{
-		IVirtualFileManager manager = file.getFileManager();
-		String relativePath = file.getParentFile().getRelativePath();
-		String protocolName = manager.getProtocolManager().getDisplayName();
-
-		IPath path = new Path(FileUtils.systemTempDir);
-		path = path.append(FileUtils.ensureValidFilename(manager.getNickName()));
-		path = path.append(relativePath);
-		path = path.append("(" + protocolName + ") " + file.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-
-		// Build the file
-		File f = new File(path.toOSString());
-		boolean downloadFile = true;
-
-		if (f.exists())
-		{
-			if (fileOpenInEditor(path.toOSString()) == false)
-			{
-				f.delete();
-			}
-			else
-			{
-				downloadFile = false;
-			}
-		}
-
-		if (downloadFile)
-		{
-			f.deleteOnExit();
-			f.getParentFile().mkdirs();
-
-			try
-			{
-				file.getFileManager().putToLocalFile(file, f);
-			}
-			catch (ConnectionException e)
-			{
-				f = null;
-				fixConnection(file.getFileManager());
-			}
-			catch (VirtualFileManagerException e)
-			{
-				if (e.getCause() instanceof java.net.SocketTimeoutException)
-				{
-					showError(StringUtils.format(Messages.FileExplorerView_ConnectionTimedOut, new String[] {
-							file.getAbsolutePath(), f.getAbsolutePath() }), e);
-				}
-				else
-				{
-					showError(StringUtils.format(Messages.FileExplorerView_UnableToSaveRemoteFile, new String[] {
-							file.getAbsolutePath(), f.getAbsolutePath() }), e);
-				}
-				f = null;
-			}
-		}
-
-		return f;
-	}
-
-	private static boolean fileOpenInEditor(final String path)
-	{
-		// find the workbench page
-		final IWorkbench workbench = PlatformUI.getWorkbench();
-		Display display = workbench.getDisplay();
-
-		class PageInfo implements Runnable
-		{
-			boolean result = false;
-
-			/**
-			 * @see java.lang.Runnable#run()
-			 */
-			public void run()
-			{
-				IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-
-				if (window != null)
-				{
-					IWorkbenchPage page = window.getActivePage();
-					IEditorReference[] refs = page.getEditorReferences();
-
-					if (refs != null)
-					{
-						for (int i = 0; i < refs.length; i++)
-						{
-							IEditorInput input;
-
-							try
-							{
-								input = refs[i].getEditorInput();
-
-								if (input instanceof BaseFileEditorInput)
-								{
-									String editorPath = ((BaseFileEditorInput) input).getPath().toOSString();
-
-									if (editorPath.equals(path))
-									{
-										result = true;
-										break;
-									}
-								}
-							}
-							catch (PartInitException e)
-							{
-							}
-						}
-					}
-				}
-			}
-		}
-
-		PageInfo pageInfo = new PageInfo();
-
-		// execute callback in the correct thread
-		display.syncExec(pageInfo);
-
-		return pageInfo.result;
-	}
-
-	/**
-	 * Presents a dialog allow the user to "fix" a connection
-	 * 
-	 * @param manager
-	 */
-	public static void fixConnection(final IVirtualFileManager manager)
-	{
-		Display.getDefault().syncExec(new Runnable()
-		{
-			public void run()
-			{
-				/*
-				 * Avoid recursion in editVirtualFileManagerProperties/FtpDialog.attemptConnection
-				 * http://support.aptana.com/asap/browse/STU-3982
-				 * http://support.aptana.com/asap/browse/STU-3983
-				 * 
-				 * No synchronization required since we run in UI thread 
-				 */
-				if (isInFixConnection) {
-					return;
-				}
-				try {
-					isInFixConnection = true;
-					if (manager != null && manager.isEditable())
-					{
-						if (MessageDialog.openQuestion(Display.getDefault().getActiveShell(),
-								Messages.FileExplorerView_ConnectionFailed, Messages.FileExplorerView_OpenPropertiesDialog))
-						{
-							editVirtualFileManagerProperties(manager);
-						}
-					}
-				} finally {
-					isInFixConnection = false;
-				}
-			}
-		});
-	}
-
-	/**
-	 * editVirtualFileManagerProperties
-	 * 
-	 * @param vfm
-	 * @return boolean
-	 */
-	public static boolean editVirtualFileManagerProperties(IVirtualFileManager vfm)
-	{
-		if (vfm.isEditable())
-		{
-			ProtocolManager pm = vfm.getProtocolManager();
-			IVirtualFileManagerDialog nld = pm.createPropertyDialog(Display.getDefault().getActiveShell(),
-					SWT.DIALOG_TRIM | SWT.RESIZE | SWT.APPLICATION_MODAL);
-			if (nld != null)
-			{
-				nld.setItem(vfm, false);
-				IVirtualFileManager result = nld.open();
-				if (result == null)
-				{
-					return false;
-				}
-				else
-				{
-					SyncManager.getSyncManager().fireSyncManagerChangeEvent(vfm, ISyncManagerChangeListener.EDIT);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * @param message
 	 * @param e
 	 */
@@ -2024,21 +1556,6 @@ public final class CoreUIUtils
 
 		};
 		messageJob.schedule();
-	}
-
-	/**
-	 * Are we installed as a plugin into Eclipse?
-	 * 
-	 * @return true if plugin, false otherwise
-	 */
-	public static boolean isInstalledAsPlugin()
-	{
-		String product = StringUtils.replaceNullWithEmpty(System.getProperty("eclipse.product")); //$NON-NLS-1$
-		if (product != null && product.equals("com.aptana.ide.rcp.product")) //$NON-NLS-1$
-		{
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -2241,103 +1758,6 @@ public final class CoreUIUtils
 			enabled = false;
 		}
 		return enabled;
-	}
-
-	/**
-	 * Returns true if a feature with this id is enabled
-	 * 
-	 * @param featureId
-	 * @return true if enabled, false otherwise
-	 * @deprecated Use the FeatureUtil or other APIs from update plugin
-	 */
-	public static boolean isFeatureInstalled(String featureId)
-	{
-		boolean installed = false;
-		try
-		{
-			ILocalSite localSite = SiteManager.getLocalSite();
-			IInstallConfiguration config = localSite.getCurrentConfiguration();
-			IConfiguredSite[] sites = config.getConfiguredSites();
-
-			for (int i = 0; i < sites.length && !installed; i++)
-			{
-				IFeatureReference[] refs = sites[i].getFeatureReferences();
-				for (int j = 0; (j < refs.length) && !installed; j++)
-				{
-					IFeatureReference ref = refs[j];
-					VersionedIdentifier ident = ref.getVersionedIdentifier();
-					if (ident != null && ident.getIdentifier().equals(featureId))
-					{
-						installed = true;
-					}
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			installed = false;
-		}
-		return installed;
-	}
-
-	/**
-	 * Creates a status object
-	 * 
-	 * @param severity
-	 * @param message
-	 * @return - status
-	 */
-	public static IStatus createStatus(final int severity, final String message)
-	{
-		return new IStatus()
-		{
-
-			public boolean matches(int severityMask)
-			{
-				return severityMask == severity;
-			}
-
-			public boolean isOK()
-			{
-				return false;
-			}
-
-			public boolean isMultiStatus()
-			{
-				return false;
-			}
-
-			public int getSeverity()
-			{
-				return severity;
-			}
-
-			public String getPlugin()
-			{
-				return null;
-			}
-
-			public String getMessage()
-			{
-				return message;
-			}
-
-			public Throwable getException()
-			{
-				return null;
-			}
-
-			public int getCode()
-			{
-				return 0;
-			}
-
-			public IStatus[] getChildren()
-			{
-				return null;
-			}
-
-		};
 	}
 
     /**

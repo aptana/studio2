@@ -57,15 +57,17 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
@@ -267,46 +269,97 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
     }
 
     private Composite createSitePresentation(Composite parent) {
-        SashForm sash = new SashForm(parent, SWT.HORIZONTAL);
-        GridLayout layout = new GridLayout();
+        final Composite main = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout(5, false);
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-        sash.setLayout(layout);
+        layout.horizontalSpacing = 0;
+        main.setLayout(layout);
 
         // source end point
-        fSource = new ConnectionPointComposite(sash, Messages.FTPManagerComposite_LBL_Source, this);
+        fSource = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Source, this);
         fSource.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        Composite right = new Composite(sash, SWT.NONE);
-        layout = new GridLayout(2, false);
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        right.setLayout(layout);
+        final Sash leftSash = new Sash(main, SWT.VERTICAL);
+        leftSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
 
         // transfer arrows
-        Composite directions = new Composite(right, SWT.NONE);
+        final Composite directions = new Composite(main, SWT.NONE);
         layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
         directions.setLayout(layout);
-        directions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
+        directions.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, true));
 
         fTransferRightButton = new Button(directions, SWT.BORDER);
         fTransferRightButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
                 ISharedImages.IMG_TOOL_FORWARD));
         fTransferRightButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferRight);
+        fTransferRightButton.setLayoutData(new GridData(SWT.CENTER, SWT.END, true, true));
         fTransferRightButton.addSelectionListener(this);
         fTransferLeftButton = new Button(directions, SWT.BORDER);
         fTransferLeftButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
                 ISharedImages.IMG_TOOL_BACK));
         fTransferLeftButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferLeft);
+        fTransferLeftButton.setLayoutData(new GridData(SWT.CENTER, SWT.BEGINNING, true, true));
         fTransferLeftButton.addSelectionListener(this);
 
+        final Sash rightSash = new Sash(main, SWT.VERTICAL);
+        rightSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
+
         // destination end point
-        fTarget = new ConnectionPointComposite(right, Messages.FTPManagerComposite_LBL_Target, this);
+        fTarget = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Target, this);
         fTarget.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        return sash;
+        leftSash.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(SelectionEvent event) {
+                if (event.detail != SWT.DRAG) {
+                    layout();
+                }
+            }
+
+            private void layout() {
+                Rectangle overallBounds = main.getBounds();
+                Rectangle leftSashBounds = leftSash.getBounds();
+                Rectangle middleBounds = directions.getBounds();
+                Rectangle rightSashBounds = rightSash.getBounds();
+
+                fSource.getControl().setBounds(0, 0, leftSashBounds.x, overallBounds.height);
+                int x = leftSashBounds.x + leftSashBounds.width;
+                directions.setBounds(x, 0, middleBounds.width, overallBounds.height);
+                x += middleBounds.width;
+                rightSash.setBounds(x, 0, rightSashBounds.width, overallBounds.height);
+                x += rightSashBounds.width;
+                fTarget.getControl().setBounds(x, 0, overallBounds.width - x, overallBounds.height);
+            }
+        });
+
+        rightSash.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(SelectionEvent event) {
+                if (event.detail != SWT.DRAG) {
+                    layout();
+                }
+            }
+
+            private void layout() {
+                Rectangle overallBounds = main.getBounds();
+                Rectangle leftSashBounds = leftSash.getBounds();
+                Rectangle middleBounds = directions.getBounds();
+                Rectangle rightSashBounds = rightSash.getBounds();
+
+                int x = rightSashBounds.x + rightSashBounds.width;
+                fTarget.getControl().setBounds(x, 0, overallBounds.width - x, overallBounds.height);
+                x = rightSashBounds.x - middleBounds.width;
+                directions.setBounds(x, 0, middleBounds.width, overallBounds.height);
+                x -= leftSashBounds.width;
+                leftSash.setBounds(x, 0, leftSashBounds.width, overallBounds.height);
+                fSource.getControl().setBounds(0, 0, x, overallBounds.height);
+            }
+        });
+
+        return main;
     }
 
     private void saveAs() {

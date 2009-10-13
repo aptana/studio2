@@ -75,7 +75,7 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
             switch (event.getKind()) {
             case SiteConnectionEvent.POST_ADD:
                 // opens the corresponding connection editor
-                EditorUtils.openConnectionEditor(siteConnection);
+                // EditorUtils.openConnectionEditor(siteConnection);
                 break;
             case SiteConnectionEvent.POST_DELETE:
                 // closes the corresponding connection editor

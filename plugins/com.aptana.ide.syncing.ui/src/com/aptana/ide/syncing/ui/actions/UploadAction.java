@@ -88,10 +88,8 @@ public class UploadAction extends BaseSyncAction {
                     fileStores[i] = SyncUtils.getFileStore(files[i]);
                 }
 
-                monitor.beginTask(Messages.UploadAction_MainTask, fileStores.length);
                 CopyFilesOperation operation = new CopyFilesOperation(getShell());
                 IStatus status = operation.copyFiles(fileStores, sourceRoot, targetRoot, monitor);
-                monitor.done();
 
                 if (status != Status.CANCEL_STATUS) {
                     postAction(status);
@@ -99,6 +97,7 @@ public class UploadAction extends BaseSyncAction {
                 return status;
             }
         };
+        job.setUser(true);
         job.schedule();
     }
 

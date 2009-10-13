@@ -43,6 +43,7 @@ import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
 
 import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.ISiteConnectionManager;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
 
@@ -91,6 +92,17 @@ public class SiteConnectionWorkbenchAdapter extends FileSystemWorkbenchAdapter {
 			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
 		}
 		return super.getLabel(object);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter#getChildren(java.lang.Object)
+	 */
+	@Override
+	public Object[] getChildren(Object object) {
+		if (object instanceof ISiteConnectionManager) {
+			return new Object[] { SiteConnections.getInstance() };
+		}
+		return super.getChildren(object);
 	}
 
 	/* (non-Javadoc)

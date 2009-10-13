@@ -40,7 +40,6 @@ import java.util.List;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
 import com.aptana.ide.ui.io.internal.Utils;
@@ -50,18 +49,16 @@ import com.aptana.ide.ui.io.internal.Utils;
  */
 public class OpenFileAction extends BaseSelectionListenerAction {
 
-    private IWorkbenchPage fPage;
     private List<IFileStore> fFileStores;
 
-    public OpenFileAction(IWorkbenchPage page) {
+    public OpenFileAction() {
         super(Messages.OpenFileAction_Text);
-        fPage = page;
         fFileStores = new ArrayList<IFileStore>();
     }
 
     public void run() {
         for (IFileStore fileStore : fFileStores) {
-            EditorUtils.openFileInEditor(fPage, fileStore);
+            EditorUtils.openFileInEditor(fileStore);
         }
     }
 

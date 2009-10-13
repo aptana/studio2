@@ -70,9 +70,8 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
 	 * 
 	 */
 	protected ConnectionPoint(String type) {
-		setId(UUID.randomUUID().toString());
 		this.type = type;
-		VirtualConnectionManager.getInstance().register(this);
+		setId(UUID.randomUUID().toString());
 	}
 
 	/**
@@ -117,6 +116,7 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
 	 */
 	/* package */ final void setId(String id) {
 		this.id = id;
+		VirtualConnectionManager.getInstance().register(this);
 	}
 
 	/**
