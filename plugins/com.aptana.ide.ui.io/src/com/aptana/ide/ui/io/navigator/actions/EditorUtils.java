@@ -108,7 +108,7 @@ public class EditorUtils {
                                         editorPart = page.openEditor(editorInput, IDE
                                                 .getEditorDescriptor(localFileStore.getName())
                                                 .getId());
-                                        if (!opened) {
+                                        if (!opened && editorPart != null) {
                                             attachSaveListener(fileStore, localFileStore,
                                                     editorPart);
                                         }
