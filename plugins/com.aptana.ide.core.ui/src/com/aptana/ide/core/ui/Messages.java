@@ -75,8 +75,6 @@ public final class Messages extends NLS
 
 	public static String CoreUIUtils_ERR_InAsyncCallInGetOpenEditorPaths;
 
-	public static String CoreUIUtils_ERR_OpeningEditorToVirtualFile;
-
 	public static String CoreUIUtils_ERR_UnableToFindBundleName;
 
 	public static String CoreUIUtils_ERR_UnableToResolveURL;
@@ -86,10 +84,6 @@ public final class Messages extends NLS
 	public static String CoreUIUtils_MSG_Error;
 
 	public static String CoreUIUtils_MSG_Information;
-
-	public static String CoreUIUtils_MSG_OpeningRemoteFile;
-
-	public static String CoreUIUtils_MSG_RemotelySaving;
 
 	public static String CoreUIUtils_MSG_ShowingError;
 
@@ -351,44 +345,15 @@ public final class Messages extends NLS
 	 */
 	public static String CoreUIUtils_UnableToParseEclipseVersion;
 
-	public static String CoreUIUtils_WRN_UnableToGetInstalledFeatureId;
-
-	public static String CoreUIUtils_WRN_UnableToGetInstalledFeatures;
-
 	/**
 	 * WindowActionDelegate_UnableToOpenLogFile
 	 */
 	public static String WindowActionDelegate_UnableToOpenLogFile;
 
 	/**
-	 * FileExplorerView_ErrorOpeningEditor
-	 */
-	public static String FileExplorerView_ErrorOpeningEditor;
-
-	/**
-	 * FileExplorerView_ErrorSavingFile
-	 */
-	public static String FileExplorerView_ErrorSavingFile;
-
-	/**
 	 * FileExplorerView_UnableToSaveRemoteFile
 	 */
 	public static String FileExplorerView_UnableToSaveRemoteFile;
-
-	/**
-	 * FileExplorerView_ConnectionFailed
-	 */
-	public static String FileExplorerView_OpenPropertiesDialog;
-
-	/**
-	 * FileExplorerView_ConnectionFailed
-	 */
-	public static String FileExplorerView_ConnectionFailed;
-
-	/**
-	 * FileExplorerView_ConnectionTimedOut
-	 */
-	public static String FileExplorerView_ConnectionTimedOut;
 
 	/**
 	 * ClearLogConfirmTitle

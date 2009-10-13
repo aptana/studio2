@@ -40,6 +40,10 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = "com.aptana.ide.ui.io.navigator.actions.messages"; //$NON-NLS-1$
 
+    public static String EditorUtils_ERR_OpeningEditor;
+    public static String EditorUtils_ERR_SavingRemoteFile;
+    public static String EditorUtils_MSG_OpeningRemoteFile;
+    public static String EditorUtils_MSG_RemotelySaving;
     public static String EditorUtils_OpenFileJob_Title;
 
     public static String FileSystemDeleteAction_Confirm_MultipleFiles;

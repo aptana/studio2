@@ -513,7 +513,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
                 updateContent(adaptable);
             } else {
                 // opens the file in the editor
-                OpenFileAction action = new OpenFileAction(CoreUIUtils.getActivePage());
+                OpenFileAction action = new OpenFileAction();
                 action.updateSelection((IStructuredSelection) selection);
                 action.run();
             }

@@ -65,7 +65,7 @@ public class OpenActionProvider extends CommonActionProvider {
 
         if (aSite.getViewSite() instanceof ICommonViewerWorkbenchSite) {
             fSite = (ICommonViewerWorkbenchSite) aSite.getViewSite();
-            fOpenFileAction = new OpenFileAction(fSite.getPage());
+            fOpenFileAction = new OpenFileAction();
             fContribute = true;
         }
     }
