@@ -89,4 +89,9 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
         }
         return super.getAdapter(adapter);
     }
+
+    @Override
+    public String toString() {
+        return Messages.ProjectSiteConnections_Name;
+    }
 }

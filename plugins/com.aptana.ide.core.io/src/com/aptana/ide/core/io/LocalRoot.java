@@ -139,14 +139,19 @@ public final class LocalRoot extends PlatformObject {
 		return root.hashCode();
 	}
 
+    @Override
+    public String toString() {
+        return getFile().toString();
+    }
+
 	public static LocalRoot[] createRoots() {
 		List<LocalRoot> list = new ArrayList<LocalRoot>();
 		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
-			for (File root : new File("/Volumes").listFiles()) {
+			for (File root : new File("/Volumes").listFiles()) { //$NON-NLS-1$
 				try {
 					if (root.listFiles() != null) {
 						LocalRoot localRoot = new LocalRoot(root.getName(), root.getCanonicalFile());
-						if ("/".equals(localRoot.getFile().getCanonicalPath())) {
+						if ("/".equals(localRoot.getFile().getCanonicalPath())) { //$NON-NLS-1$
 							list.add(0, localRoot);
 						} else {
 							list.add(localRoot);

@@ -34,6 +34,7 @@
  */
 package com.aptana.ide.ui.io.navigator;
 
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.navigator.CommonNavigator;
 
@@ -46,6 +47,11 @@ public class FileNavigatorView extends CommonNavigator {
     @Override
     public void createPartControl(Composite aParent) {
         super.createPartControl(aParent);
+
+        getCommonViewer().setLabelProvider(
+                new FileNavigatorDecoratingLabelProvider(getNavigatorContentService()
+                        .createCommonLabelProvider()));
+        ColumnViewerToolTipSupport.enableFor(getCommonViewer());
 
         PreferenceUtils.registerBackgroundColorPreference(getCommonViewer().getControl(),
                 "com.aptana.ide.ui.io.background.color.fileView"); //$NON-NLS-1$
