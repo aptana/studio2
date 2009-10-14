@@ -608,13 +608,9 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
     }
 
     private void setPath(String path) {
-        String separator = "/"; //$NON-NLS-1$
-        if (!path.startsWith(separator)) {
-            path = separator + path;
-        }
-
-        StringBuilder linkPath = new StringBuilder(separator);
+        StringBuilder linkPath = new StringBuilder();
         String displayedPath = FileUtils.compressLeadingPath(path, 50);
+        String separator = "/"; //$NON-NLS-1$
         if (displayedPath.equals(path)) {
             String[] folders = path.split(separator);
             for (int i = 1; i < folders.length; ++i) {
