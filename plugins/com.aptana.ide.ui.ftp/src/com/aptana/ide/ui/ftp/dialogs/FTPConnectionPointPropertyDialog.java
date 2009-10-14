@@ -620,7 +620,10 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	 */
 	public boolean testConnection(ConnectionContext context, final IConnectionRunnable connectRunnable) {
 		// WORKAROUND: getting contents after the control is disabled will return empty string if not called here
+		hostText.getText();
+		loginCombo.getText();
 		passwordText.getText();
+		remotePathText.getText();
 		lockUI(true);
 		((GridData) progressMonitorPart.getLayoutData()).exclude = false;
 		layoutShell();

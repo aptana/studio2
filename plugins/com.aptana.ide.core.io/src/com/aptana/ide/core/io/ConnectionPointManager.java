@@ -123,7 +123,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 				FileReader reader = new FileReader(file);
 				XMLMemento memento = XMLMemento.createReadRoot(reader);
 				for (IMemento child : memento.getChildren(ELEMENT_CONNECTION)) {
-					ConnectionPoint connectionPoint = restoreConnectionPoint(child);
+					ConnectionPoint connectionPoint = restoreConnectionPoint(child, null);
 					if (connectionPoint != null) {
 						connections.add(connectionPoint);
 					} else {
@@ -242,8 +242,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, CoreIOPlugin.PLUGIN_ID, "Store connection properties failed", e));
 		}
-		ConnectionPoint clonedConnectionPoint = restoreConnectionPoint(memento);
-		clonedConnectionPoint.setId(UUID.randomUUID().toString());
+		ConnectionPoint clonedConnectionPoint = restoreConnectionPoint(memento, UUID.randomUUID().toString());
 		return clonedConnectionPoint;
 	}
 
@@ -306,7 +305,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 		return saveMemento;
 	}
 	
-	private ConnectionPoint restoreConnectionPoint(IMemento memento) throws CoreException {
+	private ConnectionPoint restoreConnectionPoint(IMemento memento, String id) throws CoreException {
 		ConnectionPoint connectionPoint  = null;
 		String typeId = memento.getString(ATTR_TYPE);
 		if (typeId != null) {
@@ -315,8 +314,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 				Object object = element.createExecutableExtension(ATT_CLASS);
 				if (object instanceof ConnectionPoint) {
 					connectionPoint = (ConnectionPoint) object;
-					connectionPoint.setId(memento.getString(ATTR_ID) != null ? memento.getString(ATTR_ID) : memento.getID());
-					//TODO: remove memento.getID() before production
+					connectionPoint.setId(id != null ? id : memento.getString(ATTR_ID));
 					connectionPoint.loadState(memento);
 				}
 			}
