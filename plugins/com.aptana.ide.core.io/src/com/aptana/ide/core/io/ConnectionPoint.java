@@ -58,7 +58,7 @@ import com.aptana.ide.core.io.vfs.VirtualConnectionManager;
  */
 public abstract class ConnectionPoint extends PlatformObject implements IConnectionPoint, IExecutableExtension {
 
-	protected static final String ELEMENT_NAME = "name";
+	protected static final String ELEMENT_NAME = "name"; //$NON-NLS-1$
 
 	private String id;
 	private String type;
@@ -78,7 +78,7 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
 	 * 
 	 */
 	protected ConnectionPoint() {
-		this("");
+		this(""); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -215,5 +215,9 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
         }
         return super.getAdapter(adapter);
     }
-    
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

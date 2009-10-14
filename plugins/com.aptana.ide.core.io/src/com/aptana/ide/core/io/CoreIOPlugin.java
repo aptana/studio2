@@ -37,6 +37,9 @@ package com.aptana.ide.core.io;
 
 import java.util.WeakHashMap;
 
+import org.eclipse.core.internal.resources.DelayedSnapshotJob;
+import org.eclipse.core.internal.resources.SaveManager;
+import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ISaveContext;
 import org.eclipse.core.resources.ISaveParticipant;
@@ -52,11 +55,14 @@ import org.osgi.framework.BundleContext;
 
 import com.aptana.ide.core.io.auth.AuthenticationManager;
 import com.aptana.ide.core.io.auth.IAuthenticationManager;
+import com.aptana.ide.core.io.events.ConnectionPointEvent;
+import com.aptana.ide.core.io.events.IConnectionPointListener;
 import com.aptana.ide.core.io.internal.DeleteResourceShortcutListener;
 
 /**
  * The activator class controls the plug-in life cycle
  */
+@SuppressWarnings("restriction")
 public class CoreIOPlugin extends Plugin {
 
 	// The plug-in ID
@@ -66,7 +72,17 @@ public class CoreIOPlugin extends Plugin {
 	private static CoreIOPlugin plugin;
 	
 	private WeakHashMap<Object, ConnectionContext> connectionContexts = new WeakHashMap<Object, ConnectionContext>();
-	
+
+    private IConnectionPointListener listener = new IConnectionPointListener() {
+
+        public void connectionPointChanged(ConnectionPointEvent event) {
+            // saves the connections on any change instead of waiting for the
+            // shutdown in case of workbench crash
+            SaveManager saveManager = ((Workspace) ResourcesPlugin.getWorkspace()).getSaveManager();
+            (new DelayedSnapshotJob(saveManager)).schedule();
+        }
+    };
+
 	/**
 	 * The constructor
 	 */
@@ -91,6 +107,7 @@ public class CoreIOPlugin extends Plugin {
 
         ResourcesPlugin.getWorkspace().addResourceChangeListener(
                 new DeleteResourceShortcutListener(), IResourceChangeEvent.POST_CHANGE);
+        getConnectionPointManager().addConnectionPointListener(listener);
 	}
 
 	/*
@@ -99,6 +116,7 @@ public class CoreIOPlugin extends Plugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
+		getConnectionPointManager().removeConnectionPointListener(listener);
 		plugin = null;
 		super.stop(context);
 	}

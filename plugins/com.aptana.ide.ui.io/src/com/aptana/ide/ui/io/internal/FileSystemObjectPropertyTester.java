@@ -48,6 +48,7 @@ public class FileSystemObjectPropertyTester extends PropertyTester {
 
     private static final String PROPERTY_IS_DIRECTORY = "isDirectory"; //$NON-NLS-1$
     private static final String PROPERTY_IS_LOCAL = "isLocal"; //$NON-NLS-1$
+    private static final String PROPERTY_IS_SYMLINK = "isSymlink"; //$NON-NLS-1$
 
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         if (receiver instanceof IAdaptable) {
@@ -56,10 +57,11 @@ public class FileSystemObjectPropertyTester extends PropertyTester {
             IFileInfo fileInfo = Utils.getFileInfo(adaptable);
 
             boolean value = toBoolean(expectedValue);
-            if (property.equals(PROPERTY_IS_DIRECTORY)) {
+            if (PROPERTY_IS_DIRECTORY.equals(property)) {
                 return fileInfo.isDirectory() == value;
-            }
-            if (property.equals(PROPERTY_IS_LOCAL)) {
+            } else if (PROPERTY_IS_SYMLINK.equals(property)) {
+            	return fileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK) == value;
+            } else if (PROPERTY_IS_LOCAL.equals(property)) {
                 try {
                     return (fileStore.toLocalFile(EFS.NONE, null) != null) == value;
                 } catch (CoreException e) {

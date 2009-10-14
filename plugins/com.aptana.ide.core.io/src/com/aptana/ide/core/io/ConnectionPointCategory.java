@@ -97,4 +97,9 @@ import java.util.List;
 		}
 		return list.toArray(new IConnectionPoint[list.size()]);
 	}
+
+	@Override
+	public String toString() {
+	    return getName();
+	}
 }

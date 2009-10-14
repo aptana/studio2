@@ -90,4 +90,8 @@ public class SiteConnections extends PlatformObject implements IWorkbenchAdapter
 		return null;
 	}
 
+    @Override
+    public String toString() {
+        return Messages.SiteConnections_LBL;
+    }
 }

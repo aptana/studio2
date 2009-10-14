@@ -19,7 +19,7 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://update.aptana.com/update/studio/"/>
+      <update label="%updateSiteName" url="http://download.aptana.org/tools/studio/plugin/update/studio/"/>
    </url>
 
    <requires>

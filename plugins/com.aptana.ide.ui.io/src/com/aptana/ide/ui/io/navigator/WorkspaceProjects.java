@@ -64,11 +64,15 @@ public class WorkspaceProjects implements IWorkbenchAdapter {
     }
 
     public String getLabel(Object o) {
-        return "Projects";
+        return Messages.WorkspaceProjects_LBL;
     }
 
     public Object getParent(Object o) {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return Messages.WorkspaceProjects_LBL;
+    }
 }

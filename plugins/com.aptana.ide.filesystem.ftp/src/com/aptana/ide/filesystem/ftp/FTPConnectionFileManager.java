@@ -483,7 +483,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		fileInfo.setPermissions(Policy.permissionsFromString(ftpFile.getPermissions()));
 		if (ftpFile.isLink()) {
 			fileInfo.setAttribute(EFS.ATTRIBUTE_SYMLINK, true);
-			fileInfo.setStringAttribute(EFS.ATTRIBUTE_LINK_TARGET, ftpFile.getLinkedName());
+			fileInfo.setStringAttribute(EFS.ATTRIBUTE_LINK_TARGET, ftpFile.getLinkedName().trim());
 		}
 	}
 	

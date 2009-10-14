@@ -32,49 +32,31 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.navigator;
+package com.aptana.ide.ui.io.navigator;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ProjectSiteConnection extends PlatformObject {
+public class FileSystemDotFilter extends ViewerFilter {
 
-    private IProject project;
-    private ISiteConnection siteConnection;
+    private static final String EXPRESSION = "."; //$NON-NLS-1$
 
-    public ProjectSiteConnection(IProject project, ISiteConnection siteConnection) {
-        this.project = project;
-        this.siteConnection = siteConnection;
-    }
-
-    public IProject getProject() {
-        return project;
-    }
-
-    public ISiteConnection getSiteConnection() {
-        return siteConnection;
-    }
-
-    @SuppressWarnings("unchecked")
-	public Object getAdapter(Class adapter) {
-        if (adapter == IProject.class) {
-            return project;
-        } else if (adapter == ISiteConnection.class) {
-        	return siteConnection;
-        } else if (adapter == IConnectionPoint.class) {
-            return siteConnection.getDestination();
-        }
-        return super.getAdapter(adapter);
+    public FileSystemDotFilter() {
     }
 
     @Override
-    public String toString() {
-        return getSiteConnection().toString();
+    public boolean select(Viewer viewer, Object parentElement, Object element) {
+        if (element instanceof IResource) {
+            return !((IResource) element).getName().startsWith(EXPRESSION);
+        }
+        IFileStore fileStore = FileSystemUtils.getFileStore(element);
+        return fileStore == null || !fileStore.getName().startsWith(EXPRESSION);
     }
 }

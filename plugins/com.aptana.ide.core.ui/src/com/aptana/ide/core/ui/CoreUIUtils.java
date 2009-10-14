@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -122,6 +121,7 @@ import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
  * 
  * @author Ingo Muschenetz
  */
+@SuppressWarnings("restriction")
 public final class CoreUIUtils
 {
 
@@ -129,20 +129,6 @@ public final class CoreUIUtils
 	private static final String FILE_SLASH = FILE_COLON + "/"; //$NON-NLS-1$
 	private static final String FILE_SLASH_SLASH = FILE_SLASH + "/"; //$NON-NLS-1$
 	private static final String FILE_SLASH_SLASH_SLASH =  FILE_SLASH_SLASH + "/"; //$NON-NLS-1$
-	/**
-	 * LICENSED_UPDATE_SITE_HOST_NAME
-	 * 
-	 * @deprecated Grab the hosts specified in the com.aptana.ide.into.proFeatures extensions' url values and use that
-	 *             to determine when to cache encrypted passwords
-	 */
-	public static final String LICENSED_UPDATE_SITE_HOST_NAME = "update.aptana.com"; //$NON-NLS-1$
-
-	/**
-	 * runningOnMac
-	 * 
-	 * @deprecated - use onMacOSX instead
-	 */
-	public static boolean runningOnMac = System.getProperty("os.name").startsWith("Mac OS"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * New version of boolean for running on mac os x, uses Platform check
@@ -184,8 +170,7 @@ public final class CoreUIUtils
      * Are we in Eclipse 3.5 or higher?
      */
 	public static boolean inEclipse35orHigher = false;
-	
-	private static boolean isInFixConnection = false;
+
 	/**
 	 * Separates URL segments
 	 */
@@ -1609,11 +1594,6 @@ public final class CoreUIUtils
 	 */
 	public static void openBrowserURLWithAllInfo(String browserUrl, boolean startWithQuestionMark, String from)
 	{
-		String value = getEncryptedProValue();
-		if (value.length() > 20)
-		{
-			value = value.substring(0, 20);
-		}
 		String key = ApplicationPreferences.getInstance().getString(IPreferenceConstants.ACTIVATION_KEY);
 		if (key == null)
 		{
@@ -1632,24 +1612,7 @@ public final class CoreUIUtils
 		{
 			idAddition = "&id="; //$NON-NLS-1$
 		}
-		openBrowserURLWithInfo(browserUrl + idAddition + value + "&lic=" + key, false, from); //$NON-NLS-1$
-	}
-
-	/**
-	 * Gets the encrypted pro value
-	 * 
-	 * @return - pro value
-	 */
-	public static String getEncryptedProValue()
-	{
-		PasswordAuthentication credentials = AptanaAuthenticator
-				.getCachedAuthentication(LICENSED_UPDATE_SITE_HOST_NAME);
-		String value = StringUtils.EMPTY;
-		if (credentials != null && credentials.getPassword() != null)
-		{
-			value = new String(credentials.getPassword());
-		}
-		return value;
+		openBrowserURLWithInfo(browserUrl + idAddition + "&lic=" + key, false, from); //$NON-NLS-1$
 	}
 
 	/**

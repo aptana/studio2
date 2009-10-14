@@ -38,7 +38,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
@@ -90,10 +89,6 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                                 event.width += DECORATOR.getBounds().width + PADDING
                                         + stringExtent.x + PADDING;
                             }
-                        } else if (data instanceof ISiteConnection) {
-                            String text = data.toString();
-                            Point stringExtent = event.gc.stringExtent(text);
-                            event.width += stringExtent.x + PADDING;
                         }
                     }
                 } catch (Exception e) {
@@ -132,26 +127,6 @@ public class SiteConnectionDecorator implements INavigatorDecorator {
                                 event.gc.drawString(lastConnection, x, y, true);
                                 event.x += stringExtent.x;
                             }
-                        } else if (data instanceof ISiteConnection) {
-                            String text = data.toString();
-                            Point stringExtent = event.gc.stringExtent(text);
-                            int x = event.x + event.width + PADDING;
-                            int y = event.y + (tree.getItemHeight() - stringExtent.y) / 2;
-
-                            boolean selected = false;
-                            TreeItem[] selection = tree.getSelection();
-                            for (TreeItem item : selection) {
-                                if (item == event.item) {
-                                    selected = true;
-                                    break;
-                                }
-                            }
-                            if (!selected) {
-                                event.gc.setForeground(Display.getCurrent().getSystemColor(
-                                        SWT.COLOR_DARK_GREEN));
-                            }
-                            event.gc.drawString(text, x, y, true);
-                            event.x += stringExtent.x;
                         }
                     }
                 } catch (Exception e) {

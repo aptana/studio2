@@ -147,8 +147,6 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 			FileSystemObject fsObject = (FileSystemObject) object;
 			if (fsObject.isDirectory()) {
 				return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
-			} else if (fsObject.isSymlink()) {
-				return CoreIOImages.getImageDescriptor(CoreIOImages.IMG_OBJS_SYMLINK);
 			}
 			File file = (File) fsObject.getAdapter(File.class);
 			if (file != null) {

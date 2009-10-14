@@ -80,7 +80,7 @@ public class LocalFileSystems implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
 	 */
 	public String getLabel(Object o) {
-		return "Local Filesystem";
+		return Messages.LocalFileSystems_LBL;
 	}
 
 	/* (non-Javadoc)
@@ -90,4 +90,8 @@ public class LocalFileSystems implements IWorkbenchAdapter {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+	    return Messages.LocalFileSystems_LBL;
+	}
 }
