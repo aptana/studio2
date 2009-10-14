@@ -62,6 +62,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -130,6 +131,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	private boolean lockedUI;
 	private boolean connectionTested;
 	private ModifyListener modifyListener;
+	private SelectionListener selectionListener;
 
 	private Image titleImage;
 	protected Font smallFont;
@@ -412,6 +414,15 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		loginCombo.addModifyListener(modifyListener);
 		passwordText.addModifyListener(modifyListener);
 		remotePathText.addModifyListener(modifyListener);
+		if (selectionListener == null) {
+			selectionListener = new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					validate();
+				}
+			};
+		}
+		loginCombo.addSelectionListener(selectionListener);
 	}
 	
 	protected void removeListeners() {
@@ -421,6 +432,9 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 			loginCombo.removeModifyListener(modifyListener);
 			passwordText.removeModifyListener(modifyListener);
 			remotePathText.removeModifyListener(modifyListener);
+		}
+		if (selectionListener != null) {
+			loginCombo.removeSelectionListener(selectionListener);			
 		}
 	}
 	
