@@ -445,7 +445,6 @@
       </decorator>
       <decorator
             adaptable="true"
-            class="com.aptana.ide.syncing.ui.decorators.SiteConnectionsDecorator"
             icon="icons/full/obj16/sync_decorator.gif"
             id="com.aptana.ide.syncing.ui.decorators.SiteConnectionsDecorator"
             label="%Decorator.SiteConnections.name"

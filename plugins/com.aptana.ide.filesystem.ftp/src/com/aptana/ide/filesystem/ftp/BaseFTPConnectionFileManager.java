@@ -149,12 +149,13 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 	public synchronized IExtendedFileInfo[] childInfos(IPath path, int options, IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		monitor.beginTask(StringUtils.format(Messages.BaseFTPConnectionFileManager_gethering_details, path.toPortableString()), 2);
+		options = (options & IExtendedFileStore.DETAILED);
 		try {
 			ExtendedFileInfo[] fileInfos = getCachedFileInfos(path);
 			if (fileInfos == null) {
 				testOrConnect(monitor);
 				try {
-					fileInfos = cache(path, fetchFiles(basePath.append(path), (options & IExtendedFileStore.DETAILED), monitor));
+					fileInfos = cache(path, fetchFiles(basePath.append(path), options, monitor));
 					for (ExtendedFileInfo fileInfo : fileInfos) {
 						postProcessFileInfo(fileInfo, path, options, monitor);
 						cache(path.append(fileInfo.getName()), fileInfo);
