@@ -50,6 +50,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreePath;
@@ -222,7 +223,7 @@ public class FileTreeSelectionDialog extends ElementTreeSelectionDialog {
 	 */
 	public FileTreeSelectionDialog(Shell parent, boolean allowFiles) {
 		super(parent,
-			new FileLabelProvider(),
+				new DecoratingLabelProvider(new FileLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()),
 			new FileContentProvider(allowFiles));
 		setTitle("Browse");
 		setComparator(new FileTreeNameSorter());

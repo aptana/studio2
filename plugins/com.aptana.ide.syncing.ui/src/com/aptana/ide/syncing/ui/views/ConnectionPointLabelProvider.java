@@ -40,23 +40,25 @@ import java.util.Date;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
-import com.aptana.ide.ui.io.navigator.FileTreeLabelProvider;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-@SuppressWarnings("restriction")
-public class ConnectionPointLabelProvider extends LabelProvider implements ITableLabelProvider {
-
-    private FileTreeLabelProvider wrapper = new FileTreeLabelProvider();
+public class ConnectionPointLabelProvider extends DecoratingLabelProvider implements ITableLabelProvider {
 
     private int fSizeIndex = 1;
     private int fModificationIndex = 2;
+
+    public ConnectionPointLabelProvider() {
+		super(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator());
+	}
 
     /**
      * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
@@ -65,7 +67,7 @@ public class ConnectionPointLabelProvider extends LabelProvider implements ITabl
     public Image getColumnImage(Object element, int columnIndex) {
         switch (columnIndex) {
         case 0:
-            return wrapper.getImage(element);
+            return getImage(element);
         default:
             return null;
         }
@@ -77,7 +79,7 @@ public class ConnectionPointLabelProvider extends LabelProvider implements ITabl
      */
     public String getColumnText(Object element, int columnIndex) {
         if (columnIndex == 0) {
-            return wrapper.getText(element);
+            return getText(element);
         }
         if (columnIndex == fSizeIndex) {
             return getFilesize(element);
@@ -175,4 +177,5 @@ public class ConnectionPointLabelProvider extends LabelProvider implements ITabl
         }
         return ""; //$NON-NLS-1$
     }
+
 }
