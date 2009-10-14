@@ -156,6 +156,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 				try {
 					fileInfos = cache(path, fetchFiles(basePath.append(path), (options & IExtendedFileStore.DETAILED), monitor));
 					for (ExtendedFileInfo fileInfo : fileInfos) {
+						postProcessFileInfo(fileInfo, path, options, monitor);
 						cache(path.append(fileInfo.getName()), fileInfo);
 					}
 				} catch (FileNotFoundException e) {
@@ -465,10 +466,41 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		if (path.segmentCount() == 0) {
 			fileInfo.setName(Path.ROOT.toPortableString());
 		}
+		postProcessFileInfo(fileInfo, path, options, monitor);
+		return cache(path, fileInfo);
+	}
+	
+	private void postProcessFileInfo(ExtendedFileInfo fileInfo, IPath dirPath, int options, IProgressMonitor monitor) throws CoreException {
+		if (fileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK)) {
+			String linkTarget = fileInfo.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET);
+			if (linkTarget != null && linkTarget.length() > 0) {
+				IPath targetPath = Path.fromPortableString(linkTarget);
+				if (!targetPath.isAbsolute()) {
+					targetPath = dirPath.append(targetPath);
+				}
+				ExtendedFileInfo targetFileInfo = getCachedFileInfo(targetPath);
+				if (targetFileInfo == null) {
+					try {
+						targetFileInfo = fetchFile(targetPath, options, Policy.subMonitorFor(monitor, 1));
+					} catch (FileNotFoundException e) {
+						targetFileInfo = new ExtendedFileInfo();
+					}
+				}
+				cache(targetPath, targetFileInfo);
+				fileInfo.setExists(targetFileInfo.exists());
+				if (targetFileInfo.exists()) {
+					fileInfo.setDirectory(targetFileInfo.isDirectory());
+					fileInfo.setLength(targetFileInfo.getLength());
+					fileInfo.setLastModified(targetFileInfo.getLastModified());
+					fileInfo.setOwner(targetFileInfo.getOwner());
+					fileInfo.setGroup(targetFileInfo.getGroup());
+					fileInfo.setPermissions(targetFileInfo.getPermissions());
+				}
+			}
+		}
 		long permissions = fileInfo.getPermissions();
 		fileInfo.setAttribute(EFS.ATTRIBUTE_READ_ONLY, (permissions & IExtendedFileInfo.PERMISSION_OWNER_WRITE) == 0);
 		fileInfo.setAttribute(EFS.ATTRIBUTE_EXECUTABLE, (permissions & IExtendedFileInfo.PERMISSION_OWNER_EXECUTE) != 0);
-		return cache(path, fileInfo);
 	}
 	
 	private ExtendedFileInfo getCachedFileInfo(IPath path) {
