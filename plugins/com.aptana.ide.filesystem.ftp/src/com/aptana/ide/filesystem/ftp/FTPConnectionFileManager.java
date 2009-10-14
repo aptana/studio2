@@ -1005,7 +1005,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		if (statSuppoted != Boolean.FALSE) {
 			FTPFile[] ftpFiles = null;
 			try {
-				ftpFiles = ftpSTAT(dirPath.toPortableString());
+				ftpFiles = ftpSTAT(dirPath.addTrailingSeparator().toPortableString());
 			} catch (FTPException e) {
 				if (e.getReplyCode() != 500) {
 					throwFileNotFound(e, dirPath);
@@ -1013,7 +1013,16 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			}
 			if (statSuppoted == null && (ftpFiles == null || ftpFiles.length == 0)) {
 				statSuppoted = Boolean.FALSE;
+				Policy.checkCanceled(monitor);
 				return listFiles(dirPath, monitor);
+			} else if (statSuppoted == null) {
+				statSuppoted = Boolean.TRUE;
+			}
+			if (ftpFiles.length == 1 && ftpFiles[0].getLinkedName() != null && dirPath.equals(Path.fromPortableString(ftpFiles[0].getName()))) {
+				Policy.checkCanceled(monitor);
+				changeCurrentDir(dirPath);
+				Policy.checkCanceled(monitor);
+				return ftpClient.dirDetails("-a"); //$NON-NLS-1$
 			}
 			return ftpFiles;
 		} else {
