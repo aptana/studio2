@@ -430,7 +430,7 @@
   	<more>http://quantum.sourceforge.net/index.html</more>
   	<sortweight>3</sortweight>
   	<release>
-  		<version>3.3.1</version>
+  		<version>3.3.4</version>
 		<year>2009</year>
 		<month>8</month>
   		<day>13</day>
@@ -456,18 +456,18 @@
   	<installer_id>installer.featured</installer_id>
   </plugin>
   <plugin>
-  	<id>org.eclipse.php</id>
+  	<id>org.zend.php.debug_feature</id>
   	<name>PHP Debugger Binaries (PDT)</name>
   	<category>Featured</category>
   	<description>This project provides PDT debugging support for your PHP projects</description>
   	<url>http://downloads.zend.com/pdt/</url>
   	<more>http://www.eclipse.org/pdt/</more>
-  	<sortweight>1</sortweight>
+  	<sortweight>2</sortweight>
   	<release>
   		<version>5.2</version>
-		<year>2009</year>
-		<month>8</month>
-  		<day>26</day>
+		<year>2008</year>
+		<month>12</month>
+  		<day>17</day>
 	</release>
   	<icon>images/feature_pdt.png</icon>
   	<installer_id>installer.featured</installer_id>
