@@ -18,7 +18,7 @@ import com.aptana.ide.update.manager.IPluginManager;
 public class AddRepositoryStartup implements IStartup {
 	private static final VersionRange versionRange = new VersionRange("[1.0.0,1.0.100)"); //$NON-NLS-1$
 	public void earlyStartup() {
-		// Add the db-tools update site. It is required to present when installing
+		// Add the necessary update site. It is required to present when installing
 		// Cloud plugin.
 		try {
 			String pluginVersionString = PluginUtils.getPluginVersion("org.eclipse.equinox.p2.core"); //$NON-NLS-1$
@@ -32,7 +32,7 @@ public class AddRepositoryStartup implements IStartup {
 			
 			if (versionRange.isIncluded(pluginVersion)) {
 				IPluginManager pluginManager = Activator.getDefault().getPluginManager();
-				URL siteURL = new URL("http://download.aptana.org/tools/studio/plugin/install/db-tools"); //$NON-NLS-1$
+				URL siteURL = new URL("http://download.aptana.org/tools/studio/plugin/install/xul"); //$NON-NLS-1$
 				URL[] existingMetaRepos = ProvisioningHelper.getMetadataRepositories();
 				if (!contains(existingMetaRepos, siteURL)) {
 					pluginManager.addUpdateSite(siteURL);
