@@ -41,8 +41,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.filesystem.EFS;
@@ -473,35 +475,52 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 	
 	private void postProcessFileInfo(ExtendedFileInfo fileInfo, IPath dirPath, int options, IProgressMonitor monitor) throws CoreException {
 		if (fileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK)) {
-			String linkTarget = fileInfo.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET);
-			if (linkTarget != null && linkTarget.length() > 0) {
-				IPath targetPath = Path.fromPortableString(linkTarget);
-				if (!targetPath.isAbsolute()) {
-					targetPath = dirPath.append(targetPath);
-				}
-				ExtendedFileInfo targetFileInfo = getCachedFileInfo(targetPath);
-				if (targetFileInfo == null) {
-					try {
-						targetFileInfo = fetchFile(targetPath, options, Policy.subMonitorFor(monitor, 1));
-					} catch (FileNotFoundException e) {
-						targetFileInfo = new ExtendedFileInfo();
-					}
-				}
-				cache(targetPath, targetFileInfo);
-				fileInfo.setExists(targetFileInfo.exists());
-				if (targetFileInfo.exists()) {
-					fileInfo.setDirectory(targetFileInfo.isDirectory());
-					fileInfo.setLength(targetFileInfo.getLength());
-					fileInfo.setLastModified(targetFileInfo.getLastModified());
-					fileInfo.setOwner(targetFileInfo.getOwner());
-					fileInfo.setGroup(targetFileInfo.getGroup());
-					fileInfo.setPermissions(targetFileInfo.getPermissions());
-				}
+			ExtendedFileInfo targetFileInfo = resolveSymlink(dirPath, fileInfo.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET), options, monitor);
+			fileInfo.setExists(targetFileInfo.exists());
+			if (targetFileInfo.exists()) {
+				fileInfo.setDirectory(targetFileInfo.isDirectory());
+				fileInfo.setLength(targetFileInfo.getLength());
+				fileInfo.setLastModified(targetFileInfo.getLastModified());
+				fileInfo.setOwner(targetFileInfo.getOwner());
+				fileInfo.setGroup(targetFileInfo.getGroup());
+				fileInfo.setPermissions(targetFileInfo.getPermissions());
 			}
 		}
 		long permissions = fileInfo.getPermissions();
 		fileInfo.setAttribute(EFS.ATTRIBUTE_READ_ONLY, (permissions & IExtendedFileInfo.PERMISSION_OWNER_WRITE) == 0);
 		fileInfo.setAttribute(EFS.ATTRIBUTE_EXECUTABLE, (permissions & IExtendedFileInfo.PERMISSION_OWNER_EXECUTE) != 0);
+	}
+	
+	private ExtendedFileInfo resolveSymlink(IPath dirPath, String linkTarget, int options, IProgressMonitor monitor) throws CoreException {
+		Set<IPath> visited = new HashSet<IPath>();
+		visited.add(dirPath);
+		while (linkTarget != null && linkTarget.length() > 0) {
+			IPath targetPath = Path.fromPortableString(linkTarget);
+			if (!targetPath.isAbsolute()) {
+				targetPath = dirPath.append(targetPath);
+			}
+			if (visited.contains(targetPath)) {
+				break;
+			}
+			visited.add(targetPath);
+			ExtendedFileInfo targetFileInfo = getCachedFileInfo(targetPath);
+			if (targetFileInfo == null) {
+				try {
+					Policy.checkCanceled(monitor);
+					targetFileInfo = fetchFile(targetPath, options, Policy.subMonitorFor(monitor, 1));
+				} catch (FileNotFoundException e) {
+					targetFileInfo = new ExtendedFileInfo();
+				}
+			}
+			cache(targetPath, targetFileInfo);
+			if (targetFileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK)) {
+				linkTarget = targetFileInfo.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET);
+				dirPath = targetPath.removeLastSegments(1);
+				continue;
+			}
+			return targetFileInfo;
+		}
+		return new ExtendedFileInfo();
 	}
 	
 	private ExtendedFileInfo getCachedFileInfo(IPath path) {
