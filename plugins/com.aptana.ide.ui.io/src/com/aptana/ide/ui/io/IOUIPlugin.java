@@ -101,6 +101,8 @@ public class IOUIPlugin extends AbstractUIPlugin {
 			case ConnectionPointEvent.POST_DELETE:
 			    refreshNavigatorView(manager.getConnectionPointCategory(type.getCategory().getId()));
 			    break;
+			case ConnectionPointEvent.POST_CHANGE:
+			    refreshNavigatorView(connection);
 			}
         }
 

@@ -219,6 +219,17 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 	}
 
 	/* (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IConnectionPointManager#connectionPointChanged(com.aptana.ide.core.io.IConnectionPoint)
+	 */
+    public void connectionPointChanged(IConnectionPoint connectionPoint) {
+        if (connections.contains(connectionPoint)) {
+            dirty = true;
+            broadcastEvent(new ConnectionPointEvent(this, ConnectionPointEvent.POST_CHANGE,
+                    connectionPoint));
+        }
+    }
+
+	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.io.IConnectionPointManager#cloneConnectionPoint(com.aptana.ide.core.io.IConnectionPoint)
 	 */
 	public IConnectionPoint cloneConnectionPoint(IConnectionPoint connectionPoint) throws CoreException {

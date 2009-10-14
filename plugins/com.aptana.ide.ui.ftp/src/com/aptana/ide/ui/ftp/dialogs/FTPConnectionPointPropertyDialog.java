@@ -472,14 +472,14 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 				getAuthId(ftpConnectionPoint),
 				passwordText.getText().toCharArray(), savePasswordButton.getSelection());
 
-		if (savePropertiesTo(ftpConnectionPoint)) {
-			/* TODO: notify */
-		}
+		boolean changed = savePropertiesTo(ftpConnectionPoint);
 		if (isNew) {
 			CoreIOPlugin.getConnectionPointManager().addConnectionPoint(ftpConnectionPoint);
 		} else if (ftpConnectionPoint != originalFtpConnectionPoint) {
 			CoreIOPlugin.getConnectionPointManager().removeConnectionPoint(originalFtpConnectionPoint);
 			CoreIOPlugin.getConnectionPointManager().addConnectionPoint(ftpConnectionPoint);
+		} else if (changed) {
+            CoreIOPlugin.getConnectionPointManager().connectionPointChanged(ftpConnectionPoint);
 		}
 		super.okPressed();
 	}
@@ -613,7 +613,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		try {
 			final IBaseRemoteConnectionPoint connectionPoint =  isNew ? ftpConnectionPoint
 					: (IBaseRemoteConnectionPoint) CoreIOPlugin.getConnectionPointManager().cloneConnectionPoint(ftpConnectionPoint);
-			savePropertiesTo(connectionPoint);
+            savePropertiesTo(connectionPoint);
 			if (context == null) {
 				context = new ConnectionContext();
 				context.setBoolean(ConnectionContext.QUICK_CONNECT, true);
