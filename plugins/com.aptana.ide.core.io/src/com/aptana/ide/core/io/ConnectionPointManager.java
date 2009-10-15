@@ -39,6 +39,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,11 +84,11 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 
 	private static ConnectionPointManager instance;
 
-	private List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
+	private List<ConnectionPoint> connections = Collections.synchronizedList(new ArrayList<ConnectionPoint>());
 	private Map<String, ConnectionPointCategory> categories = new HashMap<String, ConnectionPointCategory>();
 	private List<ConnectionPointType> types = new ArrayList<ConnectionPointType>();
 	private Map<String, IConfigurationElement> configurationElements = new HashMap<String, IConfigurationElement>();
-	private List<IMemento> unresolvedConnections = new ArrayList<IMemento>();
+	private List<IMemento> unresolvedConnections = Collections.synchronizedList(new ArrayList<IMemento>());
 	private boolean dirty = false;
 	
 	private ListenerList listeners = new ListenerList();
@@ -142,15 +143,19 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 	 */
 	public void saveState(IPath path) {
 		XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
-		for (ConnectionPoint connectionPoint : connections) {
-			if (connectionPoint.isPersistent()) {
-				IMemento child = memento.createChild(ELEMENT_CONNECTION);
-				child.putMemento(storeConnectionPoint(connectionPoint));
-			}
-		}
-		for (IMemento child : unresolvedConnections) {
-			memento.copyChild(child);
-		}
+        synchronized (connections) {
+            for (ConnectionPoint connectionPoint : connections) {
+                if (connectionPoint.isPersistent()) {
+                    IMemento child = memento.createChild(ELEMENT_CONNECTION);
+                    child.putMemento(storeConnectionPoint(connectionPoint));
+                }
+            }
+        }
+        synchronized (unresolvedConnections) {
+            for (IMemento child : unresolvedConnections) {
+                memento.copyChild(child);
+            }
+        }
 		try {
 			FileWriter writer = new FileWriter(path.toFile());
 			memento.save(writer);
