@@ -613,9 +613,14 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         String separator = "/"; //$NON-NLS-1$
         if (displayedPath.equals(path)) {
             String[] folders = path.split(separator);
-            for (int i = 1; i < folders.length; ++i) {
+            int i;
+            for (i = 1; i < folders.length - 1; ++i) {
                 linkPath.append(MessageFormat.format("<a href=\"{0}\">{1}</a>", i - 1, folders[i])); //$NON-NLS-1$
                 linkPath.append(separator);
+            }
+            if (folders.length > 1) {
+                // no need for a link on the last directory since we are in it
+                linkPath.append(folders[i]);
             }
         } else {
             // deals with the compression
@@ -624,10 +629,15 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             String endPath = displayedPath.substring(4);
             String[] endFolders = endPath.split(separator);
             int startIndex = path.split(separator).length - endFolders.length - 1;
-            for (int i = 0; i < endFolders.length; ++i) {
+            int i;
+            for (i = 0; i < endFolders.length - 1; ++i) {
                 linkPath.append(MessageFormat.format(
                         "<a href=\"{0}\">{1}</a>", startIndex + i, endFolders[i])); //$NON-NLS-1$
                 linkPath.append(separator);
+            }
+            if (endFolders.length > 0) {
+                // no need for a link on the last directory since we are in it
+                linkPath.append(endFolders[i]);
             }
         }
         fPathLink.setText(Messages.ConnectionPointComposite_LBL_Path + linkPath.toString());
