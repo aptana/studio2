@@ -21,7 +21,8 @@ import com.aptana.ide.parsing.nodes.IParseNodeAttribute;
 public class RequiredAttributeHTMLBuildParticipant extends HTMLBuildParticipant
 {
 
-	// TODO This varies by HTML version. I pulled this from HTML 4.01. From http://www.w3.org/TR/html4/index/attributes.html
+	// TODO This varies by HTML version. I pulled this from HTML 4.01. From
+	// http://www.w3.org/TR/html4/index/attributes.html
 	private static Map<String, String[]> REQUIRED_ATTRIBUTES = new HashMap<String, String[]>();
 	static
 	{
@@ -41,17 +42,14 @@ public class RequiredAttributeHTMLBuildParticipant extends HTMLBuildParticipant
 	}
 
 	@Override
-	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
+	public void build(BuildContext context, IProgressMonitor monitor)
 	{
-		for (BuildContext context : contexts)
-		{
-			if (!isHTMLFile(context))
-				continue;
-			// ok we have an html file
-			IParseNode root = context.getRootNode();
-			List<IProblem> problems = walk(context, root);
-			context.recordNewProblems(problems);
-		}
+		if (!isHTMLFile(context))
+			return;
+		// ok we have an html file
+		IParseNode root = context.getRootNode();
+		List<IProblem> problems = walk(context, root);
+		context.recordNewProblems(problems);
 	}
 
 	private List<IProblem> walk(BuildContext context, IParseNode root)
@@ -66,9 +64,9 @@ public class RequiredAttributeHTMLBuildParticipant extends HTMLBuildParticipant
 				Collection<String> missingAttributes = getMissingAttributes(elementNode);
 				for (String attributeName : missingAttributes)
 				{
-					problems.add(new Warning(2, context.getFile().getFullPath().toPortableString(), getLineNumber(context, elementNode), elementNode
-							.getStartingOffset(), elementNode.getEndingOffset(), "Missing required attribute '"
-							+ attributeName + "'"));
+					problems.add(new Warning(2, context.getFile().getFullPath().toPortableString(), getLineNumber(
+							context, elementNode), elementNode.getStartingOffset(), elementNode.getEndingOffset(),
+							"Missing required attribute '" + attributeName + "'"));
 				}
 			}
 			problems.addAll(walk(context, node));

@@ -1,7 +1,10 @@
 package com.aptana.ide.editor.html;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.aptana.ide.core.builder.BuildContext;
 import com.aptana.ide.core.builder.BuildParticipant;
@@ -35,6 +38,17 @@ public abstract class HTMLBuildParticipant extends BuildParticipant
 	public boolean isActive(IProject project)
 	{
 		return true;
+	}
+	
+	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
+	{
+		// do nothing
+	}
+	
+	@Override
+	public void buildFinishing(IProgressMonitor monitor)
+	{
+		// do nothing		
 	}
 
 }
