@@ -231,6 +231,8 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 	public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
 		try {
 			if (object instanceof IConnectionPoint) {
+			    // for deferred case, makes sure it is connected first
+			    ((IConnectionPoint) object).connect(monitor);
 				collector.add(
 						fetchFileSystemChildren(((IConnectionPoint) object).getRoot(), monitor),
 						monitor);
