@@ -64,7 +64,7 @@ public class DeferredTreeSelectionExpander extends JobChangeAdapter {
 	public DeferredTreeSelectionExpander(DeferredTreeContentManager dtContentManager, AbstractTreeViewer treeViewer) {
 		this.deferredTreeContentManager = dtContentManager;
 		this.viewer = treeViewer;
-		job = new UIJob("Expand tree job") {
+		job = new UIJob("Expand tree job") { //$NON-NLS-1$
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				if (treePath == null) {
@@ -72,7 +72,12 @@ public class DeferredTreeSelectionExpander extends JobChangeAdapter {
 				}
 				if (viewer.getExpandedState(subTreePath(treePath, currentSegment))) {
 					deferredTreeContentManager.addUpdateCompleteListener(DeferredTreeSelectionExpander.this);
-					viewer.expandToLevel(subTreePath(treePath, ++currentSegment), 1);
+					TreePath subTreePath = subTreePath(treePath, ++currentSegment);
+					while (viewer.getExpandedState(subTreePath)) {
+					    // already expanded; go to the next level
+					    subTreePath = subTreePath(treePath, ++currentSegment);
+					}
+					viewer.expandToLevel(subTreePath, 1);
 		            if (!deferredTreeContentManager.isDeferredAdapter(treePath.getSegment(currentSegment - 1))) {
 		                DeferredTreeSelectionExpander.this.done(null);
 		            }

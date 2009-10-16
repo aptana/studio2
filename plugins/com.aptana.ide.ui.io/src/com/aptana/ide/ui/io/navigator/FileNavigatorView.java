@@ -35,11 +35,9 @@
 package com.aptana.ide.ui.io.navigator;
 
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.navigator.CommonNavigator;
-import org.eclipse.ui.navigator.CommonViewer;
 
 import com.aptana.ide.core.ui.PreferenceUtils;
 
@@ -64,26 +62,14 @@ public class FileNavigatorView extends CommonNavigator {
     }
 
     public void setSelection(Object[] selectionPath) {
-        setSelection(selectionPath, false);
-    }
-
-    public void setSelection(Object[] selectionPath, boolean deferred) {
         if (selectionPath == null || selectionPath.length == 0) {
             return;
         }
 
-        CommonViewer treeViewer = getCommonViewer();
-        if (deferred) {
-            // TODO: makes the use of DeferredTreeSelectionExpander
-            DeferredTreeSelectionExpander selectionExpander = (DeferredTreeSelectionExpander) treeViewer
-                    .getData(FileTreeContentProvider.SELECTION_EXPANDER_KEY);
-            if (selectionExpander != null) {
-                selectionExpander.setSelection(new TreePath(selectionPath));
-            }
-        } else {
-            treeViewer.expandToLevel(new TreePath(selectionPath), 1);
-            treeViewer.setSelection(
-                    new StructuredSelection(selectionPath[selectionPath.length - 1]), true);
+        DeferredTreeSelectionExpander selectionExpander = (DeferredTreeSelectionExpander) getCommonViewer()
+                .getData(FileTreeContentProvider.SELECTION_EXPANDER_KEY);
+        if (selectionExpander != null) {
+            selectionExpander.setSelection(new TreePath(selectionPath));
         }
     }
 }
