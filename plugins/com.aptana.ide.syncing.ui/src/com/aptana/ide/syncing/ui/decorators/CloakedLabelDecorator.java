@@ -43,8 +43,8 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
-import com.aptana.ide.syncing.ui.actions.CloakingUtils;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
+import com.aptana.ide.ui.io.actions.CloakingUtils;
 
 /**
  * A class to decorate which objects are cloaked from synchronization.
@@ -74,7 +74,7 @@ public class CloakedLabelDecorator implements ILightweightLabelDecorator {
 
         IFileStore fileStore = SyncUtils.getFileStore(adaptable);
         if (fileStore != null) {
-            if (CloakingUtils.isFileCloaked(fileStore.getName())) {
+            if (CloakingUtils.isFileCloaked(fileStore)) {
                 addDecoration(decoration);
             }
         }

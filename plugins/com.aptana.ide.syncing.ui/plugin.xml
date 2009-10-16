@@ -2,12 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="com.aptana.ide.syncing.ui.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
          point="com.aptana.ide.ui.imageAssociations">
       <objectImage
             icon="icons/full/obj16/ftp.png"

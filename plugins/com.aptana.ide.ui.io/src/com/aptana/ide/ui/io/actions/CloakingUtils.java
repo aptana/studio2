@@ -32,17 +32,17 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.ui.io.actions;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.IDecoratorManager;
 
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
-import com.aptana.ide.syncing.ui.preferences.IPreferenceConstants;
+import com.aptana.ide.core.io.preferences.IPreferenceConstants;
+import com.aptana.ide.ui.io.IOUIPlugin;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -92,11 +92,12 @@ public class CloakingUtils {
     }
 
     /**
-     * @param filename
-     *            the filename to be checked
+     * @param fileStore
+     *            the file store to be checked
      * @return true if the file should be cloaked, false otherwise
      */
-    public static boolean isFileCloaked(String filename) {
+    public static boolean isFileCloaked(IFileStore fileStore) {
+        String filename = fileStore.getName();
         String[] expressions = getCloakedExpressions();
         for (String expression : expressions) {
             if (filename.matches(expression)) {
@@ -116,14 +117,6 @@ public class CloakingUtils {
             expressions[i] = convertCloakExpressionToRegex(filetypes[i]);
         }
         return expressions;
-    }
-
-    /**
-     * Refreshes the cloaking decorator.
-     */
-    public static void updateDecorator() {
-        IDecoratorManager dm = SyncingUIPlugin.getDefault().getWorkbench().getDecoratorManager();
-        dm.update("com.aptana.ide.syncing.ui.decorators.CloakedLabelDecorator"); //$NON-NLS-1$
     }
 
     private static String convertCloakExpressionToRegex(String expression) {
@@ -166,6 +159,6 @@ public class CloakingUtils {
     }
 
     private static IPreferenceStore getPreferenceStore() {
-        return SyncingUIPlugin.getDefault().getPreferenceStore();
+        return IOUIPlugin.getDefault().getPreferenceStore();
     }
 }

@@ -39,4 +39,10 @@ public interface IPreferenceConstants {
     public static final String FILE_PERMISSION = "FilePermission"; //$NON-NLS-1$
 
     public static final String DIRECTORY_PERMISSION = "DirectoryPermission"; //$NON-NLS-1$
+
+    /**
+     * Preference for which files to be cloaked by default during file transfer
+     * operations
+     */
+    public static final String GLOBAL_CLOAKING_EXTENSIONS = "GLOBAL_CLOAKING_EXTENSIONS"; //$NON-NLS-1$
 }

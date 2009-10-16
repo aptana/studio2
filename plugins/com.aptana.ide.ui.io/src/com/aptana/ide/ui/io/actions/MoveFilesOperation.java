@@ -55,7 +55,7 @@ public class MoveFilesOperation extends CopyFilesOperation {
     @Override
     protected boolean copyFile(IFileStore sourceStore, IFileStore destinationStore,
             IProgressMonitor monitor) {
-        if (sourceStore == null) {
+        if (sourceStore == null  || CloakingUtils.isFileCloaked(sourceStore)) {
             return false;
         }
 
