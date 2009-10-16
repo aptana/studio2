@@ -62,6 +62,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -130,6 +131,7 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	private boolean lockedUI;
 	private boolean connectionTested;
 	private ModifyListener modifyListener;
+	private SelectionListener selectionListener;
 
 	private Image titleImage;
 	protected Font smallFont;
@@ -412,6 +414,15 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		loginCombo.addModifyListener(modifyListener);
 		passwordText.addModifyListener(modifyListener);
 		remotePathText.addModifyListener(modifyListener);
+		if (selectionListener == null) {
+			selectionListener = new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					validate();
+				}
+			};
+		}
+		loginCombo.addSelectionListener(selectionListener);
 	}
 	
 	protected void removeListeners() {
@@ -421,6 +432,9 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 			loginCombo.removeModifyListener(modifyListener);
 			passwordText.removeModifyListener(modifyListener);
 			remotePathText.removeModifyListener(modifyListener);
+		}
+		if (selectionListener != null) {
+			loginCombo.removeSelectionListener(selectionListener);			
 		}
 	}
 	
@@ -472,14 +486,14 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 				getAuthId(ftpConnectionPoint),
 				passwordText.getText().toCharArray(), savePasswordButton.getSelection());
 
-		if (savePropertiesTo(ftpConnectionPoint)) {
-			/* TODO: notify */
-		}
+		boolean changed = savePropertiesTo(ftpConnectionPoint);
 		if (isNew) {
 			CoreIOPlugin.getConnectionPointManager().addConnectionPoint(ftpConnectionPoint);
 		} else if (ftpConnectionPoint != originalFtpConnectionPoint) {
 			CoreIOPlugin.getConnectionPointManager().removeConnectionPoint(originalFtpConnectionPoint);
 			CoreIOPlugin.getConnectionPointManager().addConnectionPoint(ftpConnectionPoint);
+		} else if (changed) {
+            CoreIOPlugin.getConnectionPointManager().connectionPointChanged(ftpConnectionPoint);
 		}
 		super.okPressed();
 	}
@@ -606,14 +620,17 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	 */
 	public boolean testConnection(ConnectionContext context, final IConnectionRunnable connectRunnable) {
 		// WORKAROUND: getting contents after the control is disabled will return empty string if not called here
+		hostText.getText();
+		loginCombo.getText();
 		passwordText.getText();
+		remotePathText.getText();
 		lockUI(true);
 		((GridData) progressMonitorPart.getLayoutData()).exclude = false;
 		layoutShell();
 		try {
 			final IBaseRemoteConnectionPoint connectionPoint =  isNew ? ftpConnectionPoint
 					: (IBaseRemoteConnectionPoint) CoreIOPlugin.getConnectionPointManager().cloneConnectionPoint(ftpConnectionPoint);
-			savePropertiesTo(connectionPoint);
+            savePropertiesTo(connectionPoint);
 			if (context == null) {
 				context = new ConnectionContext();
 				context.setBoolean(ConnectionContext.QUICK_CONNECT, true);

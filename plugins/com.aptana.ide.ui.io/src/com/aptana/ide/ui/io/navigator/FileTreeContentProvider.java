@@ -48,6 +48,9 @@ import com.aptana.ide.core.io.CoreIOPlugin;
  */
 public class FileTreeContentProvider implements ITreeContentProvider {
 
+    protected static final String SELECTION_EXPANDER_KEY = "deferred_selection_expander"; //$NON-NLS-1$
+    protected static final String CONTENT_PROVIDER_KEY = "deferred_content_provider"; //$NON-NLS-1$
+
 	private static final Object[] EMPTY = new Object[0];
 	
 	private ITreeContentProvider delegateContentProvider;
@@ -110,7 +113,14 @@ public class FileTreeContentProvider implements ITreeContentProvider {
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (delegateContentProvider == null && viewer instanceof AbstractTreeViewer) {
 			AbstractTreeViewer treeViewer = (AbstractTreeViewer) viewer;
-			delegateContentProvider = new FileTreeDeferredContentProvider(new DeferredTreeContentManager(treeViewer));
+			delegateContentProvider = (ITreeContentProvider) viewer.getData(CONTENT_PROVIDER_KEY);
+			if (delegateContentProvider == null) {
+    			DeferredTreeContentManager contentManager = new DeferredTreeContentManager(treeViewer);
+    			delegateContentProvider = new FileTreeDeferredContentProvider(contentManager);
+                treeViewer.setData(CONTENT_PROVIDER_KEY, delegateContentProvider);
+    			DeferredTreeSelectionExpander selectionExpander = new DeferredTreeSelectionExpander(contentManager, treeViewer);
+                treeViewer.setData(SELECTION_EXPANDER_KEY, selectionExpander);
+			}
 		}
 	}
 

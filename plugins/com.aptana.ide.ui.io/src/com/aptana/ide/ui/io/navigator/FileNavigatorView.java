@@ -35,6 +35,7 @@
 package com.aptana.ide.ui.io.navigator;
 
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.navigator.CommonNavigator;
 
@@ -51,11 +52,24 @@ public class FileNavigatorView extends CommonNavigator {
         getCommonViewer().setLabelProvider(
                 new FileNavigatorDecoratingLabelProvider(getNavigatorContentService()
                         .createCommonLabelProvider()));
+        getCommonViewer().setComparer(new FileSystemElementComparer());
         ColumnViewerToolTipSupport.enableFor(getCommonViewer());
 
         PreferenceUtils.registerBackgroundColorPreference(getCommonViewer().getControl(),
                 "com.aptana.ide.ui.io.background.color.fileView"); //$NON-NLS-1$
         PreferenceUtils.registerForegroundColorPreference(getCommonViewer().getControl(),
                 "com.aptana.ide.ui.io.foreground.color.fileView"); //$NON-NLS-1$
+    }
+
+    public void setSelection(Object[] selectionPath) {
+        if (selectionPath == null || selectionPath.length == 0) {
+            return;
+        }
+
+        DeferredTreeSelectionExpander selectionExpander = (DeferredTreeSelectionExpander) getCommonViewer()
+                .getData(FileTreeContentProvider.SELECTION_EXPANDER_KEY);
+        if (selectionExpander != null) {
+            selectionExpander.setSelection(new TreePath(selectionPath));
+        }
     }
 }

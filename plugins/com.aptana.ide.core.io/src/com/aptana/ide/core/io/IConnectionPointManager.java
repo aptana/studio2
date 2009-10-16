@@ -49,7 +49,8 @@ public interface IConnectionPointManager extends IAdaptable {
 
 	public void addConnectionPoint(IConnectionPoint connectionPoint);
 	public void removeConnectionPoint(IConnectionPoint connectionPoint);
-	
+	public void connectionPointChanged(IConnectionPoint connectionPoint);
+
 	public IConnectionPoint cloneConnectionPoint(IConnectionPoint connectionPoint) throws CoreException;
 	
 	public ConnectionPointType[] getTypes();

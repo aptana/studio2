@@ -43,7 +43,7 @@ import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class SiteConnectionsContentProvider extends FileTreeContentProvider {
+public class SiteConnectionsContentProvider extends FileTreeContentProvider { /* using FileTreeContentProvider is correct here! */
 
     @Override
     public Object[] getElements(Object inputElement) {
@@ -62,4 +62,5 @@ public class SiteConnectionsContentProvider extends FileTreeContentProvider {
         }
         return super.getChildren(element);
     }
+    
 }

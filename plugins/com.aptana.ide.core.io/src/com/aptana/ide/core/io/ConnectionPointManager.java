@@ -39,6 +39,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,11 +84,11 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 
 	private static ConnectionPointManager instance;
 
-	private List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
+	private List<ConnectionPoint> connections = Collections.synchronizedList(new ArrayList<ConnectionPoint>());
 	private Map<String, ConnectionPointCategory> categories = new HashMap<String, ConnectionPointCategory>();
 	private List<ConnectionPointType> types = new ArrayList<ConnectionPointType>();
 	private Map<String, IConfigurationElement> configurationElements = new HashMap<String, IConfigurationElement>();
-	private List<IMemento> unresolvedConnections = new ArrayList<IMemento>();
+	private List<IMemento> unresolvedConnections = Collections.synchronizedList(new ArrayList<IMemento>());
 	private boolean dirty = false;
 	
 	private ListenerList listeners = new ListenerList();
@@ -123,7 +124,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 				FileReader reader = new FileReader(file);
 				XMLMemento memento = XMLMemento.createReadRoot(reader);
 				for (IMemento child : memento.getChildren(ELEMENT_CONNECTION)) {
-					ConnectionPoint connectionPoint = restoreConnectionPoint(child);
+					ConnectionPoint connectionPoint = restoreConnectionPoint(child, null);
 					if (connectionPoint != null) {
 						connections.add(connectionPoint);
 					} else {
@@ -142,15 +143,19 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 	 */
 	public void saveState(IPath path) {
 		XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
-		for (ConnectionPoint connectionPoint : connections) {
-			if (connectionPoint.isPersistent()) {
-				IMemento child = memento.createChild(ELEMENT_CONNECTION);
-				child.putMemento(storeConnectionPoint(connectionPoint));
-			}
-		}
-		for (IMemento child : unresolvedConnections) {
-			memento.copyChild(child);
-		}
+        synchronized (connections) {
+            for (ConnectionPoint connectionPoint : connections) {
+                if (connectionPoint.isPersistent()) {
+                    IMemento child = memento.createChild(ELEMENT_CONNECTION);
+                    child.putMemento(storeConnectionPoint(connectionPoint));
+                }
+            }
+        }
+        synchronized (unresolvedConnections) {
+            for (IMemento child : unresolvedConnections) {
+                memento.copyChild(child);
+            }
+        }
 		try {
 			FileWriter writer = new FileWriter(path.toFile());
 			memento.save(writer);
@@ -219,6 +224,17 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 	}
 
 	/* (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IConnectionPointManager#connectionPointChanged(com.aptana.ide.core.io.IConnectionPoint)
+	 */
+    public void connectionPointChanged(IConnectionPoint connectionPoint) {
+        if (connections.contains(connectionPoint)) {
+            dirty = true;
+            broadcastEvent(new ConnectionPointEvent(this, ConnectionPointEvent.POST_CHANGE,
+                    connectionPoint));
+        }
+    }
+
+	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.io.IConnectionPointManager#cloneConnectionPoint(com.aptana.ide.core.io.IConnectionPoint)
 	 */
 	public IConnectionPoint cloneConnectionPoint(IConnectionPoint connectionPoint) throws CoreException {
@@ -231,8 +247,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, CoreIOPlugin.PLUGIN_ID, "Store connection properties failed", e));
 		}
-		ConnectionPoint clonedConnectionPoint = restoreConnectionPoint(memento);
-		clonedConnectionPoint.setId(UUID.randomUUID().toString());
+		ConnectionPoint clonedConnectionPoint = restoreConnectionPoint(memento, UUID.randomUUID().toString());
 		return clonedConnectionPoint;
 	}
 
@@ -295,7 +310,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 		return saveMemento;
 	}
 	
-	private ConnectionPoint restoreConnectionPoint(IMemento memento) throws CoreException {
+	private ConnectionPoint restoreConnectionPoint(IMemento memento, String id) throws CoreException {
 		ConnectionPoint connectionPoint  = null;
 		String typeId = memento.getString(ATTR_TYPE);
 		if (typeId != null) {
@@ -304,8 +319,7 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 				Object object = element.createExecutableExtension(ATT_CLASS);
 				if (object instanceof ConnectionPoint) {
 					connectionPoint = (ConnectionPoint) object;
-					connectionPoint.setId(memento.getString(ATTR_ID) != null ? memento.getString(ATTR_ID) : memento.getID());
-					//TODO: remove memento.getID() before production
+					connectionPoint.setId(id != null ? id : memento.getString(ATTR_ID));
 					connectionPoint.loadState(memento);
 				}
 			}
