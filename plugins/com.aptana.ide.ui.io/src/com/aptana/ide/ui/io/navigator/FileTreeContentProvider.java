@@ -48,8 +48,8 @@ import com.aptana.ide.core.io.CoreIOPlugin;
  */
 public class FileTreeContentProvider implements ITreeContentProvider {
 
-    protected static final String SELECTION_EXPANDER_KEY = "selection_expander"; //$NON-NLS-1$
-    protected static final String CONTENT_PROVIDER_KEY = "content_provider"; //$NON-NLS-1$
+    protected static final String SELECTION_EXPANDER_KEY = "deferred_selection_expander"; //$NON-NLS-1$
+    protected static final String CONTENT_PROVIDER_KEY = "deferred_content_provider"; //$NON-NLS-1$
 
 	private static final Object[] EMPTY = new Object[0];
 	

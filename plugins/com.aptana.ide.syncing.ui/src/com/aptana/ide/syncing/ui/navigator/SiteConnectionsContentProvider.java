@@ -36,14 +36,14 @@ package com.aptana.ide.syncing.ui.navigator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 
 import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class SiteConnectionsContentProvider extends BaseWorkbenchContentProvider {
+public class SiteConnectionsContentProvider extends FileTreeContentProvider { /* using FileTreeContentProvider is correct here! */
 
     @Override
     public Object[] getElements(Object inputElement) {
@@ -63,11 +63,4 @@ public class SiteConnectionsContentProvider extends BaseWorkbenchContentProvider
         return super.getChildren(element);
     }
     
-    @Override
-    public boolean hasChildren(Object element) {
-        if (element instanceof ProjectSiteConnection) {
-            return true;
-        }
-        return super.hasChildren(element);
-    }
 }
