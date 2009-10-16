@@ -73,6 +73,9 @@ public class DeferredTreeSelectionExpander extends JobChangeAdapter {
 				if (viewer.getExpandedState(subTreePath(treePath, currentSegment))) {
 					deferredTreeContentManager.addUpdateCompleteListener(DeferredTreeSelectionExpander.this);
 					viewer.expandToLevel(subTreePath(treePath, ++currentSegment), 1);
+		            if (!deferredTreeContentManager.isDeferredAdapter(treePath.getSegment(currentSegment - 1))) {
+		                DeferredTreeSelectionExpander.this.done(null);
+		            }
 				}
 				return Status.OK_STATUS;
 			}
@@ -80,12 +83,15 @@ public class DeferredTreeSelectionExpander extends JobChangeAdapter {
 		job.setSystem(true);
 		job.setPriority(Job.INTERACTIVE);
 	}
-	
+
 	public void setSelection(TreePath treePath) {
 		this.treePath = treePath;
 		if (treePath.getSegmentCount() > 1) {
 			deferredTreeContentManager.addUpdateCompleteListener(this);
 			viewer.expandToLevel(subTreePath(treePath, currentSegment = 1), 1);
+			if (!deferredTreeContentManager.isDeferredAdapter(treePath.getSegment(currentSegment - 1))) {
+			    done(null);
+			}
 		} else {
 			viewer.setSelection(new TreeSelection(treePath));
 			treePath = null;
@@ -103,7 +109,7 @@ public class DeferredTreeSelectionExpander extends JobChangeAdapter {
 		}
 		viewer.reveal(subTreePath(treePath, currentSegment));
 		if (currentSegment+1 < treePath.getSegmentCount()) {
-			if (job.cancel()) {
+			if (job.getState() == Job.RUNNING || job.cancel()) {
 				job.schedule(500);
 			}
 			return;
