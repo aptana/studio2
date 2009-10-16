@@ -75,6 +75,26 @@ public class DiskIndex
 		this.categoriesToDiscard = null;
 	}
 
+	private long skip(InputStream stream, long n) throws IOException
+	{
+		final long wantToSkip = n;
+		long actuallySkipped = 0;
+		while (n > 0)
+		{
+			long skipped = stream.skip(n);
+			actuallySkipped += skipped;
+			n = n - skipped;
+			if (actuallySkipped == wantToSkip)
+				return actuallySkipped;
+			int read = stream.read();
+			if (read == -1)
+				return actuallySkipped;
+			n--;
+			actuallySkipped++;
+		}
+		return actuallySkipped;
+	}
+
 	public void initialize() throws IOException
 	{
 		if (this.indexFile.exists())
@@ -92,7 +112,7 @@ public class DiskIndex
 				this.headerInfoOffset = readStreamInt(stream);
 				if (this.headerInfoOffset > 0)
 				{ // file is empty if its not set
-					stream.skip(this.headerInfoOffset - this.streamRead); // assume that the header info offset is over
+					skip(stream, this.headerInfoOffset - this.streamRead); // assume that the header info offset is over
 					// current buffer end
 					readHeaderInfo(stream);
 				}
@@ -293,7 +313,7 @@ public class DiskIndex
 		try
 		{
 			int offset = this.chunkOffsets[0];
-			stream.skip(offset);
+			skip(stream, offset);
 			int lastIndex = this.numberOfChunks - 1;
 			String[] docNames = new String[lastIndex * CHUNK_SIZE + sizeOfLastChunk];
 			for (int i = 0; i < this.numberOfChunks; i++)
@@ -802,13 +822,13 @@ public class DiskIndex
 	{
 		// will need all document names so get them now
 		this.cachedChunks = new String[this.numberOfChunks][];
-		FileInputStream stream = new FileInputStream(this.indexFile);
+		InputStream stream = new BufferedInputStream(new FileInputStream(this.indexFile));
 		try
 		{
 			// if (this.numberOfChunks > 5)
 			// BUFFER_READ_SIZE <<= 1;
 			int offset = this.chunkOffsets[0];
-			stream.skip(offset);
+			skip(stream, offset);
 			for (int i = 0; i < this.numberOfChunks; i++)
 			{
 				int size = i == this.numberOfChunks - 1 ? this.sizeOfLastChunk : CHUNK_SIZE;
@@ -875,7 +895,7 @@ public class DiskIndex
 			InputStream file = new BufferedInputStream(new FileInputStream(this.indexFile));
 			try
 			{
-				file.skip(start);
+				skip(file, start);
 				int numberOfNames = isLastChunk ? this.sizeOfLastChunk : CHUNK_SIZE;
 				chunk = new String[numberOfNames];
 				readChunk(chunk, file, 0, numberOfNames);
@@ -965,7 +985,7 @@ public class DiskIndex
 		int firstOffset = -1;
 		try
 		{
-			stream.skip(offset);
+			skip(stream, offset);
 			int size = readStreamInt(stream);
 			try
 			{
@@ -1042,10 +1062,10 @@ public class DiskIndex
 
 		if (matchingWords != null && count > 0)
 		{
-			stream = new FileInputStream(this.indexFile);
+			stream = new BufferedInputStream(new FileInputStream(this.indexFile));
 			try
 			{
-				stream.skip(firstOffset);
+				skip(stream, firstOffset);
 				for (int i = 0; i < count; i++)
 				{ // each array follows the previous one
 					categoryTable.put(matchingWords[i], readStreamDocumentArray(stream, readStreamInt(stream)));
@@ -1069,11 +1089,11 @@ public class DiskIndex
 		if (arrayOffset instanceof List<?>)
 			return (List<Integer>) arrayOffset;
 
-		FileInputStream stream = new FileInputStream(this.indexFile);
+		InputStream stream = new BufferedInputStream(new FileInputStream(this.indexFile));
 		try
 		{
 			int offset = ((Integer) arrayOffset).intValue();
-			stream.skip(offset);
+			skip(stream, offset);
 			return readStreamDocumentArray(stream, readStreamInt(stream));
 		}
 		finally
