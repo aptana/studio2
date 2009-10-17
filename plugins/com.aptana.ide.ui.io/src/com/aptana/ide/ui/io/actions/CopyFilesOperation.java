@@ -267,7 +267,7 @@ public class CopyFilesOperation {
      */
     protected boolean copyFile(IFileStore sourceStore, IFileStore destinationStore,
             IProgressMonitor monitor) {
-        if (sourceStore == null) {
+        if (sourceStore == null || CloakingUtils.isFileCloaked(sourceStore)) {
             return false;
         }
 
@@ -308,7 +308,7 @@ public class CopyFilesOperation {
      */
     protected boolean copyFile(IFileStore sourceStore, IFileStore sourceRoot,
             IFileStore destinationRoot, IProgressMonitor monitor) {
-        if (sourceStore == null) {
+        if (sourceStore == null || CloakingUtils.isFileCloaked(sourceStore)) {
             return false;
         }
 

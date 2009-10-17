@@ -53,7 +53,8 @@ import org.eclipse.swt.widgets.Text;
 
 import com.aptana.ide.core.ui.preferences.FileExtensionPreferencePage;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
-import com.aptana.ide.syncing.ui.actions.CloakingUtils;
+import com.aptana.ide.syncing.ui.decorators.DecoratorUtils;
+import com.aptana.ide.ui.io.IOUIPlugin;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -92,18 +93,18 @@ public class SyncPreferencePage extends FileExtensionPreferencePage {
 
     @Override
     protected String doGetPreferenceID() {
-        return IPreferenceConstants.GLOBAL_CLOAKING_EXTENSIONS;
+        return com.aptana.ide.core.io.preferences.IPreferenceConstants.GLOBAL_CLOAKING_EXTENSIONS;
     }
 
     @Override
     protected IPreferenceStore doGetPreferenceStore() {
-        return SyncingUIPlugin.getDefault().getPreferenceStore();
+        return IOUIPlugin.getDefault().getPreferenceStore();
     }
 
     @Override
     public boolean performOk() {
         boolean ret = super.performOk();
-        CloakingUtils.updateDecorator();
+        DecoratorUtils.updateCloakDecorator();
 
         return ret;
     }
