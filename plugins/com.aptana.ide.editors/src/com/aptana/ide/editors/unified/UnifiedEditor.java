@@ -148,7 +148,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput;
-import org.eclipse.ui.navigator.CommonViewer;
+import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
@@ -241,7 +241,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	// private UnifiedBracketMatcher bracketMatcher;
 	private ArrayList<ISaveAsEvent> _saveAsListeners;
 	private ArrayList<ISaveEvent> _saveListeners;
-	private CommonViewer _fileExplorerView;
+	private CommonNavigator _fileExplorerView;
 	// private TextColorer textColorer;
 	private IPreferenceStore _prefStore;
 	private IPartListener _partListener;
@@ -2699,7 +2699,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 	{
 		if (this._fileExplorerView == null)
 		{
-			this._fileExplorerView = (CommonViewer) CoreUIUtils.getViewInternal(
+			this._fileExplorerView = (CommonNavigator) CoreUIUtils.getViewInternal(
 					"com.aptana.ide.ui.io.fileExplorerView", null); //$NON-NLS-1$
 		}
 
@@ -2713,7 +2713,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 
 			public void run()
 			{
-				_fileExplorerView.refresh();
+				_fileExplorerView.getCommonViewer().refresh();
 			}
 
 		});
