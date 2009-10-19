@@ -10,6 +10,8 @@ public class Messages extends NLS {
 
     public static String SiteConnections_LBL;
 
+    public static String SiteConnections_TTP;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

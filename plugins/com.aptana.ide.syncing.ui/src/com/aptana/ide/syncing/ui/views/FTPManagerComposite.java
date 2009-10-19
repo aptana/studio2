@@ -224,8 +224,7 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
     protected Composite createControl(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
+        layout.verticalSpacing = 0;
         main.setLayout(layout);
 
         Composite top = createSiteInfo(main);
@@ -239,7 +238,10 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 
     private Composite createSiteInfo(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
-        main.setLayout(new GridLayout(4, false));
+        GridLayout layout = new GridLayout(4, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        main.setLayout(layout);
 
         Label label = new Label(main, SWT.NONE);
         label.setText(Messages.FTPManagerComposite_LBL_Sites);
