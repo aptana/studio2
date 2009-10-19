@@ -85,10 +85,12 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
 
             IOUIPlugin.refreshNavigatorView(SiteConnections.getInstance());
             IConnectionPoint source = siteConnection.getSource();
-            IContainer container = (IContainer) source.getAdapter(IContainer.class);
-            if (container != null) {
-                IOUIPlugin.refreshNavigatorView(ProjectSitesManager.getInstance().getProjectSites(
-                        container.getProject()));
+            if (source != null) {
+                IContainer container = (IContainer) source.getAdapter(IContainer.class);
+                if (container != null) {
+                    IOUIPlugin.refreshNavigatorView(ProjectSitesManager.getInstance()
+                            .getProjectSites(container.getProject()));
+                }
             }
         }
     };

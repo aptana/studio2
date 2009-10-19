@@ -366,6 +366,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
         GridLayout layout = new GridLayout();
         layout.marginHeight = 0;
         layout.marginWidth = 0;
+        layout.verticalSpacing = 0;
         main.setLayout(layout);
 
         Composite top = createTopComposite(main);
@@ -382,7 +383,10 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private Composite createTopComposite(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
-        main.setLayout(new GridLayout(3, false));
+        GridLayout layout = new GridLayout(3, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        main.setLayout(layout);
 
         Label label = new Label(main, SWT.NONE);
         label.setText(fName + ":"); //$NON-NLS-1$
@@ -401,7 +405,10 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private Composite createPathComposite(Composite parent) {
         Composite main = new Composite(parent, SWT.NONE);
-        main.setLayout(new GridLayout(2, false));
+        GridLayout layout = new GridLayout(2, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        main.setLayout(layout);
 
         fPathLink = new Link(main, SWT.NONE);
         fPathLink.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

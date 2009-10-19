@@ -92,6 +92,6 @@ public class SiteConnections extends PlatformObject implements IWorkbenchAdapter
 
     @Override
     public String toString() {
-        return Messages.SiteConnections_LBL;
+        return Messages.SiteConnections_TTP;
     }
 }

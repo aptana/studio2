@@ -180,7 +180,7 @@
          <menu
                id="synchronize"
                label="%Menu.Synchronize.name"
-               path="additions">
+               path="group.edit">
             <groupMarker
                   name="syncingGroup">
             </groupMarker>
@@ -276,7 +276,7 @@
          <menu
                id="synchronize"
                label="%Menu.Synchronize.name"
-               path="additions">
+               path="group.edit">
             <groupMarker
                   name="syncingGroup">
             </groupMarker>
@@ -367,9 +367,10 @@
          <action
                class="com.aptana.ide.syncing.ui.actions.OpenDefaultConnectionAction"
                enablesFor="1"
+               icon="icons/full/obj16/sync_vertical.gif"
                id="com.aptana.ide.syncing.ui.actions.OpenConnectionExplorerAction"
                label="%action.openConnection.label"
-               menubarPath="additions"
+               menubarPath="group.edit"
                tooltip="%action.openConnection.tooltip">
          </action>
          <visibility>
