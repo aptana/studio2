@@ -54,6 +54,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -548,6 +549,7 @@ public abstract class CommonConnectionTest {
 		assertTrue(fi.isDirectory());
 		
 		long lastModified = System.currentTimeMillis();
+		lastModified -= new Random().nextInt(7*24*60)*60000;
 		lastModified -= lastModified%60000; // remove seconds/milliseconds
 		IFileInfo pfi = new FileInfo();
 		pfi.setLastModified(lastModified);	
