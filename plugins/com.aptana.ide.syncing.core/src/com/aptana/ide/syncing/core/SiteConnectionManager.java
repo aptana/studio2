@@ -186,6 +186,14 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 		if (!(siteConnection instanceof SiteConnection)) {
 			throw new IllegalArgumentException();
 		}
+		if (siteConnection == DefaultSiteConnection.getInstance()) {
+		    // special handling for cloning the default site connection
+		    SiteConnection clone  = new SiteConnection();
+		    clone.setName(siteConnection.getName());
+		    clone.setSource(siteConnection.getSource());
+		    clone.setDestination(siteConnection.getDestination());
+		    return clone;
+		}
 		return restoreConnection(storeConnection((SiteConnection) siteConnection));
 	}
 
