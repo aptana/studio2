@@ -43,10 +43,12 @@ import com.aptana.ide.syncing.core.ISiteConnection;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class ProjectSiteConnection extends PlatformObject {
+public final class ProjectSiteConnection extends PlatformObject {
 
-    private IProject project;
-    private ISiteConnection siteConnection;
+    private final IProject project;
+    private final ISiteConnection siteConnection;
+
+    private int hashCode;
 
     public ProjectSiteConnection(IProject project, ISiteConnection siteConnection) {
         this.project = project;
@@ -62,15 +64,34 @@ public class ProjectSiteConnection extends PlatformObject {
     }
 
     @SuppressWarnings("unchecked")
-	public Object getAdapter(Class adapter) {
+    public Object getAdapter(Class adapter) {
         if (adapter == IProject.class) {
             return project;
         } else if (adapter == ISiteConnection.class) {
-        	return siteConnection;
+            return siteConnection;
         } else if (adapter == IConnectionPoint.class) {
             return siteConnection.getDestination();
         }
         return super.getAdapter(adapter);
+    }
+
+    @Override
+    public int hashCode() {
+        if (hashCode == 0) {
+            hashCode = 7;
+            hashCode = 31 * hashCode + project.hashCode();
+            hashCode = 31 * hashCode + siteConnection.hashCode();
+        }
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ProjectSiteConnection)) {
+            return false;
+        }
+        ProjectSiteConnection connection = (ProjectSiteConnection) o;
+        return project == connection.project && siteConnection == connection.siteConnection;
     }
 
     @Override
