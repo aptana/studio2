@@ -324,6 +324,7 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
                 IConnectionPoint result = createNewRemoteConnection();
                 if (result != null) {
                     updateRemotesViewer();
+                    setType(REMOTE);
                     changed = true;
                 }
                 validateAll();
