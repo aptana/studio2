@@ -180,7 +180,7 @@
          <menu
                id="synchronize"
                label="%Menu.Synchronize.name"
-               path="additions">
+               path="group.edit">
             <groupMarker
                   name="syncingGroup">
             </groupMarker>
@@ -276,7 +276,7 @@
          <menu
                id="synchronize"
                label="%Menu.Synchronize.name"
-               path="additions">
+               path="group.edit">
             <groupMarker
                   name="syncingGroup">
             </groupMarker>
