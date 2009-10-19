@@ -201,9 +201,6 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
         }
         siteConnection.setDestination(connectionPoint);
 
-        if (siteConnection != DefaultSiteConnection.getInstance()) {
-            SyncingPlugin.getSiteConnectionManager().addSiteConnection(siteConnection);
-        }
         changed = false;
         return true;
     }
