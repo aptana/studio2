@@ -35,8 +35,11 @@
 
 package com.aptana.ide.syncing.ui.navigator;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
@@ -45,17 +48,17 @@ import org.eclipse.ui.progress.IElementCollector;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.syncing.core.ISiteConnectionManager;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
-import com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter;
 
 /**
  * @author Max Stepanov
  *
  */
-public class SiteConnectionWorkbenchAdapter extends FileSystemWorkbenchAdapter {
+public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter, IDeferredWorkbenchAdapter {
 
 	private static SiteConnectionWorkbenchAdapter instance;
-	
-	private static ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
+
+	private static final Object[] EMPTY = new Object[0];
+	private static final ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
 	
 	/**
 	 * 
@@ -78,8 +81,12 @@ public class SiteConnectionWorkbenchAdapter extends FileSystemWorkbenchAdapter {
 			return IMAGE_DESCRIPTOR;
 		} else if (object instanceof ProjectSiteConnection) {
 			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
+			IWorkbenchAdapter workbenchAdapter = (IWorkbenchAdapter) Platform.getAdapterManager().getAdapter(object, IWorkbenchAdapter.class);
+			if (workbenchAdapter != null) {
+				return workbenchAdapter.getImageDescriptor(object);
+			}
 		}
-		return super.getImageDescriptor(object);
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -90,30 +97,59 @@ public class SiteConnectionWorkbenchAdapter extends FileSystemWorkbenchAdapter {
 			return ((ISiteConnection) object).getName();
 		} else if (object instanceof ProjectSiteConnection) {
 			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
+			IWorkbenchAdapter workbenchAdapter = (IWorkbenchAdapter) Platform.getAdapterManager().getAdapter(object, IWorkbenchAdapter.class);
+			if (workbenchAdapter != null) {
+				return workbenchAdapter.getLabel(object);
+			}
 		}
-		return super.getLabel(object);
+		return String.valueOf(object);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
-	@Override
 	public Object[] getChildren(Object object) {
 		if (object instanceof ISiteConnectionManager) {
 			return new Object[] { SiteConnections.getInstance() };
 		}
-		return super.getChildren(object);
+		return EMPTY;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
+	 */
+	public Object getParent(Object o) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.progress.IDeferredWorkbenchAdapter#getRule(java.lang.Object)
+	 */
+	public ISchedulingRule getRule(Object object) {
+		if (object instanceof IAdaptable) {
+			return (ISchedulingRule) ((IAdaptable) object).getAdapter(ISchedulingRule.class);
+		}
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.progress.IDeferredWorkbenchAdapter#isContainer()
+	 */
+	public boolean isContainer() {
+		return true;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.ui.io.navigator.FileSystemWorkbenchAdapter#fetchDeferredChildren(java.lang.Object, org.eclipse.ui.progress.IElementCollector, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	@Override
 	public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
 		if (object instanceof ProjectSiteConnection) {
 			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
+			IDeferredWorkbenchAdapter deferredWorkbenchAdapter = (IDeferredWorkbenchAdapter) Platform.getAdapterManager().getAdapter(object, IDeferredWorkbenchAdapter.class);
+			if (deferredWorkbenchAdapter != null) {
+				deferredWorkbenchAdapter.fetchDeferredChildren(object, collector, monitor);				
+			}
 		}
-		super.fetchDeferredChildren(object, collector, monitor);
 	}
 
 	public static class Factory implements IAdapterFactory {
@@ -142,5 +178,4 @@ public class SiteConnectionWorkbenchAdapter extends FileSystemWorkbenchAdapter {
 		}
 		
 	}
-
 }
