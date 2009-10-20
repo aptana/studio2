@@ -353,14 +353,12 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 					if (serverSupportsFeature("MDTM")) { //$NON-NLS-1$
 						Date lastModifiedLocalTZ = ftpClient.modtime(file.getName());
 						if (lastModifiedLocalTZ != null) {
-							serverTimeZoneShift = lastModifiedLocalTZ.getTime() - lastModifiedServerInLocalTZ.getTime();
 							// align to minutes
-							long rem = serverTimeZoneShift % 60000;
-							serverTimeZoneShift -= rem;
+							serverTimeZoneShift = (lastModifiedLocalTZ.getTime() - lastModifiedLocalTZ.getTime() % 60000) - (lastModifiedServerInLocalTZ.getTime() - lastModifiedServerInLocalTZ.getTime() % 60000);
 						}
 					}
 					if (serverTimeZoneShift == Integer.MIN_VALUE) {
-						serverTimeZoneShift = lastModifiedLocal.getTime() - lastModifiedServerInLocalTZ.getTime();
+						serverTimeZoneShift = (lastModifiedLocal.getTime() - lastModifiedLocal.getTime() % 60000) - (lastModifiedServerInLocalTZ.getTime() - lastModifiedServerInLocalTZ.getTime() % 60000);
 						// align to 1/4 hour
 						long rem = serverTimeZoneShift % 900000;
 						if (rem < 450000) {

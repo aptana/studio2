@@ -102,6 +102,10 @@ public class DeferredTreeSelectionExpander extends JobChangeAdapter {
 			treePath = null;
 		}
 	}
+	
+	public boolean isDone() {
+		return treePath == null;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.jobs.JobChangeAdapter#done(org.eclipse.core.runtime.jobs.IJobChangeEvent)

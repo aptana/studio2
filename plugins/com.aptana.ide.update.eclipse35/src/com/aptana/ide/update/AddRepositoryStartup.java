@@ -13,11 +13,15 @@ import org.osgi.framework.Version;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.PluginUtils;
-import com.aptana.ide.update.internal.manager.P2Eclipse35PluginManager;
 import com.aptana.ide.update.manager.IPluginManager;
 
+@SuppressWarnings("restriction")
 public class AddRepositoryStartup implements IStartup {
+
 	private static final VersionRange versionRange = new VersionRange("1.0.100"); //$NON-NLS-1$
+    private static final String[] SITES = {
+            "http://download.aptana.org/tools/studio/plugin/install/xul", //$NON-NLS-1$
+            "http://download.aptana.org/tools/studio/plugin/install/xul-eclipse" }; //$NON-NLS-1$
 
 	public void earlyStartup() {
 		// Add the necessary update site. It is required to present when installing
@@ -34,11 +38,14 @@ public class AddRepositoryStartup implements IStartup {
 			
 			if (versionRange.isIncluded(pluginVersion)) {
 				IPluginManager pluginManager = Activator.getDefault().getPluginManager();
-				URI siteURL = new URI("http://download.aptana.org/tools/studio/plugin/install/xul"); //$NON-NLS-1$
 				URI[] existingMetaRepos = ProvisioningUtil.getMetadataRepositories(IRepositoryManager.REPOSITORIES_ALL);
-				if (!contains(existingMetaRepos, siteURL)) {
-					pluginManager.addUpdateSite(siteURL.toURL());
-				}
+				URI siteURL;
+                for (String site : SITES) {
+                    siteURL = new URI(site);
+                    if (!contains(existingMetaRepos, siteURL)) {
+                        pluginManager.addUpdateSite(siteURL.toURL());
+                    }
+                }
 			}
 		} catch (MalformedURLException e) {
 			IdeLog.logError(P2Eclipse35Activator.getDefault(), e.getMessage(), e);

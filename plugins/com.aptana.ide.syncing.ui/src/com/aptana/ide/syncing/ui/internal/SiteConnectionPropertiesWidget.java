@@ -201,9 +201,6 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
         }
         siteConnection.setDestination(connectionPoint);
 
-        if (siteConnection != DefaultSiteConnection.getInstance()) {
-            SyncingPlugin.getSiteConnectionManager().addSiteConnection(siteConnection);
-        }
         changed = false;
         return true;
     }
@@ -324,6 +321,7 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
                 IConnectionPoint result = createNewRemoteConnection();
                 if (result != null) {
                     updateRemotesViewer();
+                    setType(REMOTE);
                     changed = true;
                 }
                 validateAll();
