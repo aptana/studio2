@@ -16,7 +16,12 @@ import com.aptana.ide.core.PluginUtils;
 import com.aptana.ide.update.manager.IPluginManager;
 
 public class AddRepositoryStartup implements IStartup {
+    
 	private static final VersionRange versionRange = new VersionRange("[1.0.0,1.0.100)"); //$NON-NLS-1$
+    private static final String[] SITES = {
+        "http://download.aptana.org/tools/studio/plugin/install/xul", //$NON-NLS-1$
+        "http://download.aptana.org/tools/studio/plugin/install/xul-eclipse" }; //$NON-NLS-1$
+
 	public void earlyStartup() {
 		// Add the necessary update site. It is required to present when installing
 		// Cloud plugin.
@@ -32,11 +37,14 @@ public class AddRepositoryStartup implements IStartup {
 			
 			if (versionRange.isIncluded(pluginVersion)) {
 				IPluginManager pluginManager = Activator.getDefault().getPluginManager();
-				URL siteURL = new URL("http://download.aptana.org/tools/studio/plugin/install/xul"); //$NON-NLS-1$
 				URL[] existingMetaRepos = ProvisioningHelper.getMetadataRepositories();
-				if (!contains(existingMetaRepos, siteURL)) {
-					pluginManager.addUpdateSite(siteURL);
-				}
+				URL siteURL;
+                for (String site : SITES) {
+                    siteURL = new URL(site);
+                    if (!contains(existingMetaRepos, siteURL)) {
+                        pluginManager.addUpdateSite(siteURL);
+                    }
+                }
 			}
 		} catch (MalformedURLException e) {
 			IdeLog.logError(P2Activator.getDefault(), e.getMessage(), e);
