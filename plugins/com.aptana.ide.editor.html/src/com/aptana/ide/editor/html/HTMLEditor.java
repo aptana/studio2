@@ -1059,11 +1059,13 @@ public class HTMLEditor extends EditorPart implements ITextEditor, ITextEditorEx
 	{
 		if (editor == null)
 		{
+			IdeLog.logError(HTMLPlugin.getDefault(), Messages.HTMLEditor_UnableToUpdatePreview + ": editor = null");
 			return;
 		}
 
 		if (!(editor instanceof IHTMLEditorPart))
 		{
+			IdeLog.logError(HTMLPlugin.getDefault(), Messages.HTMLEditor_UnableToUpdatePreview + ": editor !instanceof IHTMLEditorPart");
 			return;
 		}
 
@@ -1071,6 +1073,7 @@ public class HTMLEditor extends EditorPart implements ITextEditor, ITextEditorEx
 		{
 			if (!((IHTMLEditorPart) editor).isFileEditorInput())
 			{
+				IdeLog.logError(HTMLPlugin.getDefault(), Messages.HTMLEditor_UnableToUpdatePreview + ": !isFileEditorInput");
 				return;
 			}
 
@@ -1125,7 +1128,9 @@ public class HTMLEditor extends EditorPart implements ITextEditor, ITextEditorEx
 					{
 						if (prevTempFile != null)
 						{
-							prevTempFile.delete();
+							if (!prevTempFile.delete()) {
+								prevTempFile.deleteOnExit();
+							}
 						}
 						prevTempFile = tmpFile;
 						editor.setBrowserURL(tmpUrl);
