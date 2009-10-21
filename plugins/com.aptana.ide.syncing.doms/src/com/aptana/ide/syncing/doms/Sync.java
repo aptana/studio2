@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
@@ -76,8 +77,8 @@ public final class Sync {
             upload(((FileEditorInput) input).getFile());
         } else if (input instanceof IPathEditorInput) {
             upload(((IPathEditorInput) input).getPath());
-        } else if (input instanceof FileStoreEditorInput) {
-            FileStoreEditorInput editorInput = (FileStoreEditorInput) input;
+        } else if (input instanceof IURIEditorInput) {
+        	IURIEditorInput editorInput = (IURIEditorInput) input;
             try {
                 upload(EFS.getStore(editorInput.getURI()));
             } catch (CoreException e) {
@@ -129,8 +130,8 @@ public final class Sync {
             download(((FileEditorInput) input).getFile());
         } else if (input instanceof IPathEditorInput) {
             download(((IPathEditorInput) input).getPath());
-        } else if (input instanceof FileStoreEditorInput) {
-            FileStoreEditorInput editorInput = (FileStoreEditorInput) input;
+        } else if (input instanceof IURIEditorInput) {
+            IURIEditorInput editorInput = (IURIEditorInput) input;
             try {
                 download(EFS.getStore(editorInput.getURI()));
             } catch (CoreException e) {

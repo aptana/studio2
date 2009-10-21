@@ -11,6 +11,7 @@
 package com.aptana.ide.search.epl.internal.filesystem.text;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.MultiStatus;
@@ -20,6 +21,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -104,6 +106,11 @@ public class FilesOfScopeCalculator
 											((IPathEditorInput) input)
 													.getPath().toOSString());
 									fFiles.add(file);
+								} else if (input instanceof IURIEditorInput) {
+									URI uri = ((IURIEditorInput) input).getURI();
+									if ("file".equals(uri.getScheme())) {
+										fFiles.add(new File(uri));
+									}
 								} else if (input instanceof IFileEditorInput)
 								{
 									IFileEditorInput fi = (IFileEditorInput) input;

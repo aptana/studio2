@@ -12,6 +12,7 @@ package com.aptana.ide.search.epl.internal.filesystem.text;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
@@ -47,6 +48,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -379,6 +381,12 @@ public class FileTextSearchVisitor
 		{
 			File file = new File(((IPathEditorInput) input).getPath().toOSString());
 			processFile(result, ep, input, file);
+		}
+		else if (input instanceof IURIEditorInput) {
+			URI uri = ((IURIEditorInput) input).getURI();
+			if ("file".equals(uri.getScheme())) {
+				processFile(result, ep, input, new File(uri));				
+			}
 		}
 		else if (input instanceof IFileEditorInput){
 			IFileEditorInput fi=(IFileEditorInput) input;

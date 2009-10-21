@@ -79,6 +79,7 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorMapping;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
@@ -450,6 +451,11 @@ public final class CoreUIUtils
 			{
 				IPathEditorInput pin = (IPathEditorInput) input;
 				return pin.getPath().toOSString();
+			} else if (input instanceof IURIEditorInput) {
+				URI uri = ((IURIEditorInput) input).getURI();
+				if ("file".equals(uri.getScheme())) {
+					return new File(uri).getAbsolutePath();
+				}
 			}
 		}
 		catch (Exception e)
