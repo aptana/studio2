@@ -43,6 +43,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 
+import com.aptana.ide.core.IdeLog;
+import com.aptana.ide.ui.io.IOUIPlugin;
+
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
@@ -55,13 +58,13 @@ public class MoveFilesOperation extends CopyFilesOperation {
     @Override
     protected boolean copyFile(IFileStore sourceStore, IFileStore destinationStore,
             IProgressMonitor monitor) {
-        if (sourceStore == null  || CloakingUtils.isFileCloaked(sourceStore)) {
+        if (sourceStore == null || CloakingUtils.isFileCloaked(sourceStore)) {
             return false;
         }
 
         boolean success = true;
-        monitor.subTask(MessageFormat.format(Messages.MoveFilesOperation_Subtask_Moving, sourceStore.getName(),
-                destinationStore.getName()));
+        monitor.subTask(MessageFormat.format(Messages.MoveFilesOperation_Subtask_Moving,
+                sourceStore.getName(), destinationStore.getName()));
         try {
             if (getAlwaysOverwrite()) {
                 sourceStore.move(destinationStore, EFS.OVERWRITE, monitor);
@@ -76,7 +79,10 @@ public class MoveFilesOperation extends CopyFilesOperation {
                 sourceStore.move(destinationStore, EFS.NONE, monitor);
             }
         } catch (CoreException e) {
-            // TODO: report the error
+            IdeLog
+                    .logError(IOUIPlugin.getDefault(), MessageFormat.format(
+                            Messages.MoveFilesOperation_ERR_FailedToMove, sourceStore,
+                            destinationStore), e);
             success = false;
         }
         return success;
