@@ -95,8 +95,7 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 				XMLMemento memento = XMLMemento.createReadRoot(reader);
 				for (IMemento child : memento.getChildren(ELEMENT_SITE)) {
 					SiteConnection siteConnection = restoreConnection(child);
-                    if (siteConnection != null && siteConnection.getSource() != null
-                            && siteConnection.getDestination() != null) {
+                    if (siteConnection != null && siteConnection.shouldRestore()) {
                         connections.add(siteConnection);
                     }
 				}

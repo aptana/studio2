@@ -59,7 +59,8 @@ public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter, IDefer
 
 	private static final Object[] EMPTY = new Object[0];
 	private static final ImageDescriptor IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/ftp.png"); //$NON-NLS-1$
-	
+	private static final ImageDescriptor ERROR_IMAGE_DESCRIPTOR = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/error.png"); //$NON-NLS-1$
+
 	/**
 	 * 
 	 */
@@ -78,6 +79,11 @@ public class SiteConnectionWorkbenchAdapter implements IWorkbenchAdapter, IDefer
 	 */
 	public ImageDescriptor getImageDescriptor(Object object) {
 		if (object instanceof ISiteConnection) {
+		    ISiteConnection siteConnection = (ISiteConnection) object;
+		    if (siteConnection.getSource() == null || siteConnection.getDestination() == null) {
+		        // the connection is no longer valid
+		        return ERROR_IMAGE_DESCRIPTOR;
+		    }
 			return IMAGE_DESCRIPTOR;
 		} else if (object instanceof ProjectSiteConnection) {
 			object = ((ProjectSiteConnection) object).getSiteConnection().getDestination();
