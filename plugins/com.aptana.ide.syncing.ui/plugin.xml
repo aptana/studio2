@@ -18,13 +18,10 @@
             labelProvider="com.aptana.ide.syncing.ui.navigator.SitesLabelProvider"
             name="%navigatorContent.site.name"
             priority="lowest">
-         <triggerPoints>
+         <enablement>
             <or>
                <instanceof
                      value="org.eclipse.core.resources.IWorkspaceRoot">
-               </instanceof>
-               <instanceof
-                     value="org.eclipse.core.resources.IProject">
                </instanceof>
                <instanceof
                      value="com.aptana.ide.syncing.ui.navigator.SiteConnections">
@@ -38,22 +35,17 @@
                <instanceof
                      value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
                </instanceof>
+               <instanceof
+                     value="org.eclipse.core.resources.IResource">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.FileSystemObject">
+               </instanceof>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+               </adapt>
             </or>
-         </triggerPoints>
-         <possibleChildren>
-               <instanceof
-                     value="com.aptana.ide.syncing.ui.navigator.SiteConnections">
-               </instanceof>
-               <instanceof
-                     value="com.aptana.ide.syncing.core.ISiteConnection">
-               </instanceof>
-            <instanceof
-                  value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
-            </instanceof>
-            <instanceof
-                  value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
-            </instanceof>
-         </possibleChildren>
+         </enablement>
          <dropAssistant
                class="com.aptana.ide.ui.io.navigator.resources.FileDropAdapterAssistant"
                id="com.aptana.ide.syncing.ui.navigator.resources.ProjectSiteDropAdapterAssistant">

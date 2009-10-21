@@ -34,7 +34,9 @@
  */
 package com.aptana.ide.syncing.ui.navigator;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.PlatformObject;
 
 import com.aptana.ide.core.io.IConnectionPoint;
@@ -71,6 +73,13 @@ public final class ProjectSiteConnection extends PlatformObject {
             return siteConnection;
         } else if (adapter == IConnectionPoint.class) {
             return siteConnection.getDestination();
+        } else if (adapter == IFileStore.class) {
+            IConnectionPoint destination = siteConnection.getDestination();
+            try {
+                return destination == null ? null : destination.getRoot();
+            } catch (CoreException e) {
+                // falls through on error
+            }
         }
         return super.getAdapter(adapter);
     }

@@ -40,6 +40,7 @@ import java.util.List;
 
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
@@ -59,6 +60,7 @@ import org.eclipse.ui.navigator.CommonDropAdapter;
 import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
 
 import com.aptana.ide.core.io.LocalRoot;
+import com.aptana.ide.ui.io.FileSystemUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.actions.MoveFilesOperation;
@@ -96,7 +98,8 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             status = performDrop(aDropAdapter, aDropTargetEvent.data);
         } else if (sources != null && sources.length > 0) {
             if (aDropAdapter.getCurrentOperation() == DND.DROP_COPY
-                    || (sources[0] instanceof IResource)) {
+                    || (sources[0] instanceof IResource)
+                    || !isFromSameFilesystem(aDropAdapter.getCurrentTarget(), sources)) {
                 status = performCopy(aDropAdapter, sources);
             } else {
                 status = performMove(aDropAdapter, sources);
@@ -272,6 +275,33 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             store = store.getParent();
         }
         return store;
+    }
+
+    /**
+     * @param destination
+     *            the destination target
+     * @param sources
+     *            the array of selected source files
+     * @return true if the sources are from the same file system as the
+     *         destination, false otherwise
+     */
+    private static boolean isFromSameFilesystem(Object destination, Object[] sources) {
+        IFileStore fileStore = FileSystemUtils.getFileStore(destination);
+        if (fileStore == null) {
+            return false;
+        }
+        IFileSystem filesystem = fileStore.getFileSystem();
+        IFileStore sourceFileStore;
+        for (Object source : sources) {
+            sourceFileStore = FileSystemUtils.getFileStore(source);
+            if (sourceFileStore == null) {
+                return false;
+            }
+            if (sourceFileStore.getFileSystem() != filesystem) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static Status createStatus(String message) {
