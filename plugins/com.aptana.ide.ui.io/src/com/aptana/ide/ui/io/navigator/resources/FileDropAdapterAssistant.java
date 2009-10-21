@@ -163,7 +163,8 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         operation.copyFiles(sources, destination, new JobChangeAdapter() {
 
             public void done(IJobChangeEvent event) {
-                IOUIPlugin.refreshNavigatorView(destination);
+                IOUIPlugin.refreshNavigatorView(null);
+                // TODO: make the proper re-expansion
             }
         });
 
@@ -184,7 +185,8 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         operation.copyFiles((String[]) data, destination, new JobChangeAdapter() {
 
             public void done(IJobChangeEvent event) {
-                IOUIPlugin.refreshNavigatorView(destination);
+                IOUIPlugin.refreshNavigatorView(null);
+                // TODO: make the proper re-expansion
             }
         });
 
@@ -205,7 +207,8 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         operation.copyFiles(sources, destination, new JobChangeAdapter() {
 
             public void done(IJobChangeEvent event) {
-                IOUIPlugin.refreshNavigatorView(destination);
+                IOUIPlugin.refreshNavigatorView(null);
+                // TODO: make the proper re-expansion
             }
         });
 
