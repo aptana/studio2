@@ -144,7 +144,7 @@ import com.aptana.ide.core.io.vfs.IFileTreeVisitor;
 		if (other instanceof VirtualFile) {
 			return baseURI.equals(((VirtualFile) other).baseURI)
 				&& ((path.isRoot() && !((VirtualFile) other).path.isRoot())
-						|| path.matchingFirstSegments(((VirtualFile) other).path) > 0);
+						|| path.matchingFirstSegments(((VirtualFile) other).path) == path.segmentCount());
 		}
 		return false;
 	}
