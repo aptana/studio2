@@ -15,23 +15,19 @@ public class MissingTitleTagBuildParticipant extends HTMLBuildParticipant
 {
 
 	@Override
-	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
+	public void build(BuildContext context, IProgressMonitor monitor)
 	{
-		for (BuildContext context : contexts)
+		if (!isHTMLFile(context))
+			return;
+		// ok we have an html file
+		IParseNode root = context.getRootNode();
+		if (!containsTitleTag(context, root))
 		{
-			if (!isHTMLFile(context))
-				continue;
-			// ok we have an html file
-			IParseNode root = context.getRootNode();
-			if (!containsTitleTag(context, root))
-			{
-				List<IProblem> problems = new ArrayList<IProblem>();
-				problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, 0, 0,
-						"Missing 'title' tag"));
-				context.recordNewProblems(problems);
-			}
+			List<IProblem> problems = new ArrayList<IProblem>();
+			problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), -1, 0, 0,
+					"Missing 'title' tag"));
+			context.recordNewProblems(problems);
 		}
-
 	}
 
 	private boolean containsTitleTag(BuildContext context, IParseNode root)

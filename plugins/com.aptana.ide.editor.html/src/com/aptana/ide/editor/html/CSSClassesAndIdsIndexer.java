@@ -39,22 +39,30 @@ public class CSSClassesAndIdsIndexer extends BuildParticipant
 	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
 	{
 		indices = new HashSet<Index>();
-		for (BuildContext context : contexts)
+	}
+
+	@Override
+	public void build(BuildContext context, IProgressMonitor monitor)
+	{
+		String extension = context.getFile().getFileExtension();
+		if (extension != null && extension.equalsIgnoreCase("css"))
 		{
-			String extension = context.getFile().getFileExtension();
-			if (extension != null && extension.equalsIgnoreCase("css"))
-			{
-				indexCSS(context);
-			}
-			else if (extension != null
-					&& (extension.equalsIgnoreCase("html") || extension.equalsIgnoreCase("htm")
-							|| extension.equalsIgnoreCase("shtml") || extension.equalsIgnoreCase("xhtml")))
-			{
-				indexHTML(context);
-			}
+			indexCSS(context);
 		}
+		else if (extension != null
+				&& (extension.equalsIgnoreCase("html") || extension.equalsIgnoreCase("htm")
+						|| extension.equalsIgnoreCase("shtml") || extension.equalsIgnoreCase("xhtml")))
+		{
+			indexHTML(context);
+		}
+	}
+
+	@Override
+	public void buildFinishing(IProgressMonitor monitor)
+	{
 		// Save the indexes now (so it gets saved to disk!)
 		saveModifiedIndices();
+		indices.clear();
 	}
 
 	private void saveModifiedIndices()
@@ -182,7 +190,8 @@ public class CSSClassesAndIdsIndexer extends BuildParticipant
 				addIndex(context, IIndexConstants.CSS_CLASS, cssClass);
 			}
 			else if (l.typeIndex == CSSTokenTypes.COLOR
-					|| (l.typeIndex == CSSTokenTypes.IDENTIFIER && CSSColors.namedColorExists(l.getText().toLowerCase())))
+					|| (l.typeIndex == CSSTokenTypes.IDENTIFIER && CSSColors
+							.namedColorExists(l.getText().toLowerCase())))
 			{
 				addIndex(context, IIndexConstants.CSS_COLOR, CSSColors.to6CharHexWithLeadingHash(l.getText()));
 			}

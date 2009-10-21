@@ -8,7 +8,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.builder.BuildContext;
@@ -20,29 +19,37 @@ public class TaskBuildParticipant extends BuildParticipant
 
 	private static final String TASK_MARKER_ID = "com.aptana.ide.editors.task";
 
+	private TaskParser parser;
+
 	@Override
 	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
 	{
-		SubMonitor sub = SubMonitor.convert(monitor, contexts.size());
-		TaskParser parser = new TaskParser();
-		for (BuildContext buildContext : contexts)
+		parser = new TaskParser();
+	}
+
+	@Override
+	public void build(BuildContext buildContext, IProgressMonitor monitor)
+	{
+		try
 		{
-			try
-			{
-				removeExistingTasks(buildContext);
-			}
-			catch (CoreException e)
-			{
-				IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
-			}
-			List<TaskTag> tasks = parser.parse(buildContext);
-			for (TaskTag task : tasks)
-			{
-				recordNewProblems(buildContext, task);
-			}
-			sub.worked(1);
+			removeExistingTasks(buildContext);
 		}
-		sub.done();
+		catch (CoreException e)
+		{
+			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
+		}
+		List<TaskTag> tasks = parser.parse(buildContext);
+		for (TaskTag task : tasks)
+		{
+			recordNewProblems(buildContext, task);
+		}
+
+	}
+
+	@Override
+	public void buildFinishing(IProgressMonitor monitor)
+	{
+		// do nothing
 	}
 
 	private void removeExistingTasks(BuildContext buildContext) throws CoreException

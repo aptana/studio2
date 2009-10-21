@@ -20,18 +20,15 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 {
 
 	@Override
-	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
+	public void build(BuildContext context, IProgressMonitor monitor)
 	{
-		for (BuildContext context : contexts)
-		{
-			if (!isHTMLFile(context))
-				continue;
-			// ok we have an html file
-			IParseNode root = context.getRootNode();
-			List<IProblem> problems = walk(context, root);
-			problems.addAll(findUnopenedLexemes(context));
-			context.recordNewProblems(problems);
-		}
+		if (!isHTMLFile(context))
+			return;
+		// ok we have an html file
+		IParseNode root = context.getRootNode();
+		List<IProblem> problems = walk(context, root);
+		problems.addAll(findUnopenedLexemes(context));
+		context.recordNewProblems(problems);
 	}
 
 	private Collection<? extends IProblem> findUnopenedLexemes(BuildContext context)
@@ -45,9 +42,10 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 			{
 				if (isUnopened(context, lex))
 				{
-					
-					problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), getLineNumber(context, lex), lex
-							.getStartingOffset(), lex.getEndingOffset(), "Unopened tag '" + lex.getText() + "'"));
+
+					problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), getLineNumber(
+							context, lex), lex.getStartingOffset(), lex.getEndingOffset(), "Unopened tag '"
+							+ lex.getText() + "'"));
 				}
 			}
 		}
@@ -71,9 +69,9 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 				{
 					if (!isClosed(context, elementNode))
 					{
-						problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), getLineNumber(context, elementNode), elementNode
-								.getStartingOffset(), elementNode.getEndingOffset(), "Unclosed tag '"
-								+ elementNode.getName() + "'"));
+						problems.add(new Warning(3, context.getFile().getFullPath().toPortableString(), getLineNumber(
+								context, elementNode), elementNode.getStartingOffset(), elementNode.getEndingOffset(),
+								"Unclosed tag '" + elementNode.getName() + "'"));
 					}
 				}
 			}

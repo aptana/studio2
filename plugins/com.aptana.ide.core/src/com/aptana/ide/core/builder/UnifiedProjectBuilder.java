@@ -58,8 +58,20 @@ public class UnifiedProjectBuilder extends IncrementalProjectBuilder
 				System.out.println("Took " + (System.currentTimeMillis() - start) + "ms for build participant: "
 						+ buildParticipant.getClass().getSimpleName());
 		}
-		for (BuildContext context : contexts)
+		while (!contexts.isEmpty())
 		{
+			BuildContext context = contexts.remove(0);
+			for (BuildParticipant buildParticipant : participants)
+			{
+				try
+				{
+					buildParticipant.build(context, monitor);
+				}
+				catch (Exception e)
+				{
+					IdeLog.logError(AptanaCorePlugin.getDefault(), e.getMessage(), e);
+				}
+			}
 			cleanProblemMarkers(context);
 			List<IProblem> problems = context.getRecordedProblems();
 			if (problems.isEmpty())
@@ -69,6 +81,21 @@ public class UnifiedProjectBuilder extends IncrementalProjectBuilder
 			{
 				addMarker(context, problem);
 			}
+		}
+		for (BuildParticipant buildParticipant : participants)
+		{
+			long start = System.currentTimeMillis();
+			try
+			{
+				buildParticipant.buildFinishing(monitor);
+			}
+			catch (Exception e)
+			{
+				IdeLog.logError(AptanaCorePlugin.getDefault(), e.getMessage(), e);
+			}
+			if (DEBUG)
+				System.out.println("Took " + (System.currentTimeMillis() - start) + "ms for build participant: "
+						+ buildParticipant.getClass().getSimpleName());
 		}
 		return new IProject[0];
 	}
