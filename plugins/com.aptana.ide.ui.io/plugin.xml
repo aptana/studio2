@@ -226,7 +226,7 @@
          </includes>
        </viewerActionBinding>
        <dragAssistant
-             class="org.eclipse.ui.navigator.resources.ResourceDragAdapterAssistant"
+             class="com.aptana.ide.ui.io.navigator.resources.FileDragAdapterAssistant"
              viewerId="com.aptana.ide.ui.io.fileExplorerView"/>
    </extension>
    <extension
