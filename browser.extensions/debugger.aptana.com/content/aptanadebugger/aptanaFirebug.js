@@ -61,12 +61,14 @@ var DebuggerListener;
 var XHRSpyListener;
 var ConsoleListener;
 var fb14p = true;
+var fb143p = true;
 
 const self = this;
 
 this.setHook("init",function(debuggr)
 {
 	fb14p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.4") >= 0);
+	fb143p = (AptanaUtils.compareVersion(Firebug.version.substr(0,5), "1.4.3") >= 0);
 	const AptanaDebuggerExtension = FBL.extend(Firebug.Extension,
 	{
 		// Firebug 1.4
@@ -381,8 +383,13 @@ this.setHook("init",function(debuggr)
 		}
 	};
 	
-	if (fb14p)
-		Firebug.toggleAll("off");
+	if (fb14p) {
+		if (fb143p) {
+			Firebug.Activation.toggleAll("off");
+		} else {
+			Firebug.toggleAll("off");
+		}
+	}
 	Firebug.registerExtension(AptanaDebuggerExtension);
 	Firebug.Console.addListener(ConsoleListener);
 	Firebug.Spy.addListener(XHRSpyListener);
@@ -436,6 +443,12 @@ this.setHook("disable",function()
 	topWindow = null;
 	removeTabCloseListener();
 	browser = null;
+});
+
+this.setHook("openURL",function(url)
+{
+	if (fb143p)
+		Firebug.Activation.removePageAnnotation(url);
 });
 
 this.setHook("suspend",function()
