@@ -90,6 +90,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchEncoding;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput;
 import org.eclipse.ui.internal.registry.EditorDescriptor;
@@ -109,7 +110,6 @@ import org.eclipse.update.core.VersionedIdentifier;
 import org.osgi.framework.Bundle;
 
 import com.aptana.ide.core.AptanaCorePlugin;
-import com.aptana.ide.core.BaseFileEditorInputImpl;
 import com.aptana.ide.core.EclipseUtils;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
@@ -1148,7 +1148,7 @@ public final class CoreUIUtils
 		{
 			IFileSystem fs = EFS.getLocalFileSystem();
 			IFileStore localFile = fs.fromLocalFile(file);
-			input = BaseFileEditorInputImpl.create(localFile);
+			input = new FileStoreEditorInput(localFile);
 		}
 		catch (Exception e)
 		{

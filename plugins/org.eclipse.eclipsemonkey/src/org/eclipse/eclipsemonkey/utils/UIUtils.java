@@ -23,9 +23,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-
-import com.aptana.ide.core.BaseFileEditorInput;
-import com.aptana.ide.core.BaseFileEditorInputImpl;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 
 /**
  * @author Paul Colton
@@ -185,7 +183,7 @@ public class UIUtils
 		{
 			IFileSystem fs = EFS.getLocalFileSystem();
 			IFileStore localFile = fs.fromLocalFile(file);
-			input = BaseFileEditorInputImpl.create(localFile);
+			input = new FileStoreEditorInput(localFile);
 		}
 		catch (Exception e)
 		{
