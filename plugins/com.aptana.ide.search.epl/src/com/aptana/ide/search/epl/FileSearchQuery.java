@@ -41,6 +41,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -469,7 +470,7 @@ public class FileSearchQuery extends
 						if (input instanceof IFileEditorInput){
 							continue;
 						}
-						if (input instanceof IPathEditorInput)
+						if (input instanceof IPathEditorInput || input instanceof IURIEditorInput)
 						{
 							onlyFilesEditorInput = false;
 						}

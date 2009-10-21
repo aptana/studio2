@@ -35,9 +35,12 @@
 package com.aptana.ide.editor.html;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.text.IDocument;
@@ -48,6 +51,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -319,6 +323,15 @@ public class HTMLSourceEditor extends UnifiedEditor
 			File path = pin.getPath().toFile();
 			String location = getTempFileLocation(path, pin.getName());
 			outFile = new File(location);
+		} else if (in instanceof IURIEditorInput) {
+			URI uri = ((IURIEditorInput) in).getURI();
+			String location;
+			if ("file".equals(uri.getScheme())) {
+				location = getTempFileLocation(new File(uri), Path.fromPortableString(uri.getPath()).lastSegment());	
+			} else {
+				location = getTempFileLocation(null, Path.fromPortableString(uri.getPath()).lastSegment());
+			}
+			outFile = new File(location);
 		}
 
 		if (outFile != null)
@@ -338,8 +351,17 @@ public class HTMLSourceEditor extends UnifiedEditor
 	 */
 	public String getTempFileLocation(File file, String name)
 	{
+		if (file != null) {
+			file = file.getParentFile();
+		} else {
+			try {
+				return File.createTempFile(".tmp_" + name, "~").getAbsolutePath();
+			} catch (IOException e) {
+				return null;
+			}
+		}
 		// Add cache busting random number to fix STU-2094
-		return file.getParentFile() + File.separator + ".tmp_" + name + "." + ((int) (Math.random() * 100000)) + "~"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return file + File.separator + ".tmp_" + name + "." + ((int) (Math.random() * 100000)) + "~"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**
@@ -349,7 +371,9 @@ public class HTMLSourceEditor extends UnifiedEditor
 	 */
 	public boolean isFileEditorInput()
 	{
-		if (getEditorInput() instanceof IFileEditorInput || getEditorInput() instanceof IPathEditorInput
+		if (getEditorInput() instanceof IFileEditorInput
+				|| getEditorInput() instanceof IPathEditorInput
+				|| getEditorInput() instanceof IURIEditorInput
 				|| getEditorInput() instanceof NonExistingFileEditorInput)
 		{
 			return true;

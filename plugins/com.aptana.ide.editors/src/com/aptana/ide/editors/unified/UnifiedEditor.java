@@ -143,6 +143,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -2038,7 +2039,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			this._errorListener = new ProjectFileErrorListener(file);
 		}
 		// External file or Untitled file (not saved)
-		else if (input instanceof IPathEditorInput || input instanceof NonExistingFileEditorInput)
+		else if (input instanceof IPathEditorInput || input instanceof IURIEditorInput || input instanceof NonExistingFileEditorInput)
 		{
 			IDocument doc = this.getDocumentProvider().getDocument(input);
 			IAnnotationModel ann = this.getDocumentProvider().getAnnotationModel(input);
