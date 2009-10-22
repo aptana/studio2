@@ -41,6 +41,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
+import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.editors.UnifiedEditorsPlugin;
 
 /**
@@ -101,10 +102,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		// store.setDefault(ColorizerPreferencePage.VERT_CROSS, true);
 
 		// To set preferences for AbstractTextEditor
-		store = org.eclipse.ui.internal.editors.text.EditorsPlugin.getDefault().getPreferenceStore();
-		store.setToDefault(AbstractTextEditor.PREFERENCE_NAVIGATION_SMART_HOME_END);
-		store.setDefault(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_UNDO_HISTORY_SIZE, 500);
+		CoreUIUtils.getDisplay().asyncExec(new Runnable() {
 
+            public void run() {
+                IPreferenceStore store = org.eclipse.ui.internal.editors.text.EditorsPlugin.getDefault().getPreferenceStore();
+                store.setToDefault(AbstractTextEditor.PREFERENCE_NAVIGATION_SMART_HOME_END);
+                store.setDefault(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_UNDO_HISTORY_SIZE, 500);
+            }
+		});
 	}
 
 }
