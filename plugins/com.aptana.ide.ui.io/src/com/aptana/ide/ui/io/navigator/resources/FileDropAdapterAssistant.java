@@ -58,7 +58,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.ui.navigator.CommonDropAdapter;
-import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
+import org.eclipse.ui.navigator.resources.ResourceDropAdapterAssistant;
 
 import com.aptana.ide.core.io.LocalRoot;
 import com.aptana.ide.ui.io.FileSystemUtils;
@@ -70,15 +70,7 @@ import com.aptana.ide.ui.io.internal.Utils;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
-
-    public FileDropAdapterAssistant() {
-    }
-
-    public boolean isSupportedType(TransferData aTransferType) {
-        return super.isSupportedType(aTransferType)
-                || FileTransfer.getInstance().isSupportedType(aTransferType);
-    }
+public class FileDropAdapterAssistant extends ResourceDropAdapterAssistant {
 
     @Override
     public IStatus handleDrop(CommonDropAdapter aDropAdapter, DropTargetEvent aDropTargetEvent,
@@ -99,7 +91,6 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             status = performDrop(aDropAdapter, (String[]) aDropTargetEvent.data);
         } else if (sources != null && sources.length > 0) {
             if (aDropAdapter.getCurrentOperation() == DND.DROP_COPY
-                    || (sources[0] instanceof IResource)
                     || !isFromSameFilesystem(aDropAdapter.getCurrentTarget(), sources)) {
                 status = performCopy(aDropAdapter, sources);
             } else {
@@ -113,6 +104,11 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
 
     @Override
     public IStatus validateDrop(Object target, int operation, TransferData transferType) {
+        IStatus status = super.validateDrop(target, operation, transferType);
+        if (status == Status.OK_STATUS) {
+            return status;
+        }
+
         if (!(target instanceof IAdaptable)) {
             return createStatus(Messages.FileDropAdapterAssistant_ERR_NotAdaptable);
         }
@@ -295,14 +291,14 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
      *         destination, false otherwise
      */
     private static boolean isFromSameFilesystem(Object destination, Object[] sources) {
-        IFileStore fileStore = FileSystemUtils.getFileStore(destination);
+        IFileStore fileStore = Utils.getFileStore(destination);
         if (fileStore == null) {
             return false;
         }
         IFileSystem filesystem = fileStore.getFileSystem();
         IFileStore sourceFileStore;
         for (Object source : sources) {
-            sourceFileStore = FileSystemUtils.getFileStore(source);
+            sourceFileStore = Utils.getFileStore(source);
             if (sourceFileStore == null) {
                 return false;
             }
