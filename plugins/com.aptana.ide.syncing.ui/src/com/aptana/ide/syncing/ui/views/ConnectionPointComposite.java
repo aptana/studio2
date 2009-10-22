@@ -621,7 +621,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             // removes the leading separator
             path = path.substring(1);
         }
-        String displayedPath = FileUtils.compressLeadingPath(path, 50);
+        String displayedPath = FileUtils.compressLeadingPath(path, 60);
         if (displayedPath.equals(path)) {
             String[] folders = path.split(separator);
             int i;

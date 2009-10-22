@@ -183,6 +183,16 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 	}
 
 	/* (non-Javadoc)
+	 * @see com.aptana.ide.syncing.core.ISiteConnectionManager#siteConnectionChanged(com.aptana.ide.syncing.core.ISiteConnection)
+	 */
+	public void siteConnectionChanged(ISiteConnection siteConnection) {
+	    if (connections.contains(siteConnection)) {
+            dirty = true;
+            broadcastEvent(new SiteConnectionEvent(this, SiteConnectionEvent.POST_CHANGE, siteConnection));
+        }
+	}
+
+	/* (non-Javadoc)
 	 * @see com.aptana.ide.syncing.core.ISiteConnectionManager#cloneSiteConnection(com.aptana.ide.syncing.core.ISiteConnection)
 	 */
 	public ISiteConnection cloneSiteConnection(ISiteConnection siteConnection) throws CoreException {

@@ -331,6 +331,8 @@ public class SiteConnectionsEditorDialog extends TitleAreaDialog implements Site
         if (siteConnection != DefaultSiteConnection.getInstance()) {
             SyncingPlugin.getSiteConnectionManager().addSiteConnection(siteConnection);
         }
+        SyncingPlugin.getSiteConnectionManager().siteConnectionChanged(siteConnection);
+
     	return applied;
     }
     
