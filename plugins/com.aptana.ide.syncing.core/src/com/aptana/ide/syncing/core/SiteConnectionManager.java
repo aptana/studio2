@@ -40,6 +40,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -63,8 +64,9 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 	private static final String ELEMENT_SITE = "site"; //$NON-NLS-1$
 
 	private static SiteConnectionManager instance;
-	
-	private List<SiteConnection> connections = new ArrayList<SiteConnection>();
+
+    private List<SiteConnection> connections = Collections
+            .synchronizedList(new ArrayList<SiteConnection>());
 	private boolean dirty = false;
 	
 	private ListenerList listeners = new ListenerList();
@@ -111,10 +113,12 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 	 */
 	public void saveState(IPath path) {
 		XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
-		for (SiteConnection siteConnection : connections) {
-			IMemento child = memento.createChild(ELEMENT_SITE);
-			child.putMemento(storeConnection(siteConnection));
-		}
+        synchronized (connections) {
+            for (SiteConnection siteConnection : connections) {
+                IMemento child = memento.createChild(ELEMENT_SITE);
+                child.putMemento(storeConnection(siteConnection));
+            }
+        }
 		try {
 			FileWriter writer = new FileWriter(path.toFile());
 			memento.save(writer);
