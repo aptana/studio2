@@ -126,10 +126,10 @@
         <more>http://www.aptana.com/radrails</more>
         <sortweight>0</sortweight>
         <release>
-          <version>1.5.0</version>
+          <version>2.0.0</version>
           <year>2009</year>
           <month>10</month>
-          <day>2</day>
+          <day>28</day>
         </release>
 		<icon>images/feature_radrails.png</icon>
 		<installer_id>installer.platforms</installer_id>
