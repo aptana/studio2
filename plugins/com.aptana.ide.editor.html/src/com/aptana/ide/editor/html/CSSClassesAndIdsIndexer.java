@@ -32,13 +32,13 @@ public class CSSClassesAndIdsIndexer extends BuildParticipant
 
 	public CSSClassesAndIdsIndexer()
 	{
-		super();
+	    indices = new HashSet<Index>();
 	}
 
 	@Override
 	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
 	{
-		indices = new HashSet<Index>();
+		indices.clear();
 	}
 
 	@Override
@@ -80,8 +80,6 @@ public class CSSClassesAndIdsIndexer extends BuildParticipant
 				e.printStackTrace();
 			}
 		}
-		indices.clear();
-		indices = null;
 	}
 
 	private void indexHTML(BuildContext context)
