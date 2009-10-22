@@ -616,16 +616,20 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private void setPath(String path) {
         StringBuilder linkPath = new StringBuilder();
-        String displayedPath = FileUtils.compressLeadingPath(path, 50);
         String separator = "/"; //$NON-NLS-1$
+        if (path.startsWith(separator)) {
+            // removes the leading separator
+            path = path.substring(1);
+        }
+        String displayedPath = FileUtils.compressLeadingPath(path, 50);
         if (displayedPath.equals(path)) {
             String[] folders = path.split(separator);
             int i;
-            for (i = 1; i < folders.length - 1; ++i) {
-                linkPath.append(MessageFormat.format("<a href=\"{0}\">{1}</a>", i - 1, folders[i])); //$NON-NLS-1$
+            for (i = 0; i < folders.length - 1; ++i) {
+                linkPath.append(MessageFormat.format("<a href=\"{0}\">{1}</a>", i, folders[i])); //$NON-NLS-1$
                 linkPath.append(separator);
             }
-            if (folders.length > 1) {
+            if (folders.length > 0) {
                 // no need for a link on the last directory since we are in it
                 linkPath.append(folders[i]);
             }
