@@ -64,9 +64,6 @@ public final class LocalRoot extends PlatformObject {
             .expandEnvironmentStrings(PlatformUtils.DESKTOP_DIRECTORY);
     private static final boolean ON_WINDOWS = Platform.OS_WIN32.equals(Platform.getOS());
 
-    private static final String MY_COMPUTER_GUID = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"; //$NON-NLS-1$
-    private static final String MY_NETWORK_PLACES_GUID = "::{208D2C60-3AEA-1069-A2D7-08002B30309D}"; //$NON-NLS-1$
-
 	private final String name;
 	private final File root;
 
@@ -162,16 +159,7 @@ public final class LocalRoot extends PlatformObject {
 				} catch (IOException e) {
 				}
 			}
-		} else if (ON_WINDOWS) {
-            File[] roots = getWindowsDriveFiles();
-            for (File root : roots) {
-                try {
-                    list.add(new LocalRoot(FileSystemView.getFileSystemView().getSystemDisplayName(
-                            root), root.getCanonicalFile()));
-                } catch (IOException e) {
-                }
-            }       
-        } else {
+		} else if (!ON_WINDOWS) {
 			for (File root : File.listRoots()) {
 				try {
 					list.add(new LocalRoot(root.getName(), root.getCanonicalFile()));
@@ -223,22 +211,18 @@ public final class LocalRoot extends PlatformObject {
 		return list.toArray(new LocalRoot[list.size()]);
 	}
 
-    private static File[] getWindowsDriveFiles() {
-        File desktop = getWindowsDesktopFile();
-        if (desktop == null) {
-            return new File[0];
-        }
-        File[] files = FileSystemView.getFileSystemView().getFiles(desktop, false);
-        String name;
-        for (File file : files) {
-            name = file.getName();
-            if (name.equals(MY_COMPUTER_GUID) || name.equals(MY_NETWORK_PLACES_GUID)
-                    || name.startsWith("::")) { //$NON-NLS-1$
-                return FileSystemView.getFileSystemView().getFiles(file, false);
-            }
-        }
-        return files;
-    }
+	public static LocalRoot[] createWindowsSubroots(File root) {
+		File[] drives = FileSystemView.getFileSystemView().getFiles(root, false);
+		List<LocalRoot> subroots = new ArrayList<LocalRoot>();
+		for (File drive : drives) {
+			try {
+				subroots.add(new LocalRoot(FileSystemView.getFileSystemView()
+						.getSystemDisplayName(drive), drive.getCanonicalFile()));
+			} catch (IOException e) {
+			}
+		}
+		return subroots.toArray(new LocalRoot[subroots.size()]);
+	}
 
     private static File getWindowsHomeFile() {
         File desktop = getWindowsDesktopFile();
