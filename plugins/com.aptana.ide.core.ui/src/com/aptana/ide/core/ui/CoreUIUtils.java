@@ -79,6 +79,7 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorMapping;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
@@ -89,6 +90,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchEncoding;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput;
 import org.eclipse.ui.internal.registry.EditorDescriptor;
@@ -108,7 +110,6 @@ import org.eclipse.update.core.VersionedIdentifier;
 import org.osgi.framework.Bundle;
 
 import com.aptana.ide.core.AptanaCorePlugin;
-import com.aptana.ide.core.BaseFileEditorInputImpl;
 import com.aptana.ide.core.EclipseUtils;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
@@ -450,6 +451,11 @@ public final class CoreUIUtils
 			{
 				IPathEditorInput pin = (IPathEditorInput) input;
 				return pin.getPath().toOSString();
+			} else if (input instanceof IURIEditorInput) {
+				URI uri = ((IURIEditorInput) input).getURI();
+				if ("file".equals(uri.getScheme())) {
+					return new File(uri).getAbsolutePath();
+				}
 			}
 		}
 		catch (Exception e)
@@ -1142,7 +1148,7 @@ public final class CoreUIUtils
 		{
 			IFileSystem fs = EFS.getLocalFileSystem();
 			IFileStore localFile = fs.fromLocalFile(file);
-			input = BaseFileEditorInputImpl.create(localFile);
+			input = new FileStoreEditorInput(localFile);
 		}
 		catch (Exception e)
 		{

@@ -40,7 +40,9 @@ import java.util.List;
 
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -56,9 +58,10 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.ui.navigator.CommonDropAdapter;
-import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
+import org.eclipse.ui.navigator.resources.ResourceDropAdapterAssistant;
 
 import com.aptana.ide.core.io.LocalRoot;
+import com.aptana.ide.ui.io.FileSystemUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 import com.aptana.ide.ui.io.actions.MoveFilesOperation;
@@ -67,15 +70,7 @@ import com.aptana.ide.ui.io.internal.Utils;
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
-public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
-
-    public FileDropAdapterAssistant() {
-    }
-
-    public boolean isSupportedType(TransferData aTransferType) {
-        return super.isSupportedType(aTransferType)
-                || FileTransfer.getInstance().isSupportedType(aTransferType);
-    }
+public class FileDropAdapterAssistant extends ResourceDropAdapterAssistant {
 
     @Override
     public IStatus handleDrop(CommonDropAdapter aDropAdapter, DropTargetEvent aDropTargetEvent,
@@ -93,10 +88,10 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         }
 
         if (FileTransfer.getInstance().isSupportedType(currentTransfer)) {
-            status = performDrop(aDropAdapter, aDropTargetEvent.data);
+            status = performDrop(aDropAdapter, (String[]) aDropTargetEvent.data);
         } else if (sources != null && sources.length > 0) {
             if (aDropAdapter.getCurrentOperation() == DND.DROP_COPY
-                    || (sources[0] instanceof IResource)) {
+                    || !isFromSameFilesystem(aDropAdapter.getCurrentTarget(), sources)) {
                 status = performCopy(aDropAdapter, sources);
             } else {
                 status = performMove(aDropAdapter, sources);
@@ -109,24 +104,29 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
 
     @Override
     public IStatus validateDrop(Object target, int operation, TransferData transferType) {
+        IStatus status = super.validateDrop(target, operation, transferType);
+        if (status == Status.OK_STATUS) {
+            return status;
+        }
+
         if (!(target instanceof IAdaptable)) {
-            return createStatus("Target must be an IAdaptable");
+            return createStatus(Messages.FileDropAdapterAssistant_ERR_NotAdaptable);
         }
 
         IAdaptable destination = (IAdaptable) target;
         IFileStore fileStore = Utils.getFileStore(destination);
         if (fileStore == null) {
-            return createStatus("Target must be able to adapt to a IFileStore");
+            return createStatus(Messages.FileDropAdapterAssistant_ERR_NotIFileStore);
         }
 
         if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)) {
             IAdaptable[] files = getSelectedSourceFiles();
             if (files.length == 0) {
-                return createStatus("There are no valid selections to drop");
+                return createStatus(Messages.FileDropAdapterAssistant_ERR_InvalidDropSelection);
             }
             for (Object file : files) {
                 if (file instanceof LocalRoot) {
-                    return createStatus("Cannot drop a LocalRoot object into another directory");
+                    return createStatus(Messages.FileDropAdapterAssistant_ERR_DropLocalRoot);
                 }
             }
 
@@ -149,9 +149,9 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         return Status.OK_STATUS;
     }
 
-    private IStatus performCopy(CommonDropAdapter dropAdapter, IAdaptable[] sources) {
+    private IStatus performCopy(final CommonDropAdapter dropAdapter, IAdaptable[] sources) {
         MultiStatus problems = new MultiStatus(IOUIPlugin.PLUGIN_ID, 1,
-                "Problems occurred while copying files.", null);
+                Messages.FileDropAdapterAssistant_ERR_Copying, null);
         IStatus validate = validateDrop(dropAdapter.getCurrentTarget(), dropAdapter
                 .getCurrentOperation(), dropAdapter.getCurrentTransfer());
         if (!validate.isOK()) {
@@ -163,16 +163,16 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         operation.copyFiles(sources, destination, new JobChangeAdapter() {
 
             public void done(IJobChangeEvent event) {
-                IOUIPlugin.refreshNavigatorView(destination);
+                refresh(dropAdapter.getCurrentTarget());
             }
         });
 
         return problems;
     }
 
-    private IStatus performDrop(CommonDropAdapter dropAdapter, Object data) {
+    private IStatus performDrop(final CommonDropAdapter dropAdapter, String[] data) {
         MultiStatus problems = new MultiStatus(IOUIPlugin.PLUGIN_ID, 0,
-                "Problems occurred while importing files.", null);
+                Messages.FileDropAdapterAssistant_ERR_Importing, null);
         IStatus validate = validateDrop(dropAdapter.getCurrentTarget(), dropAdapter
                 .getCurrentOperation(), dropAdapter.getCurrentTransfer());
         if (!validate.isOK()) {
@@ -181,19 +181,19 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
 
         final IFileStore destination = getFolderStore((IAdaptable) dropAdapter.getCurrentTarget());
         CopyFilesOperation operation = new CopyFilesOperation(getShell());
-        operation.copyFiles((String[]) data, destination, new JobChangeAdapter() {
+        operation.copyFiles(data, destination, new JobChangeAdapter() {
 
             public void done(IJobChangeEvent event) {
-                IOUIPlugin.refreshNavigatorView(destination);
+                refresh(dropAdapter.getCurrentTarget());
             }
         });
 
         return problems;
     }
 
-    private IStatus performMove(CommonDropAdapter dropAdapter, IAdaptable[] sources) {
+    private IStatus performMove(final CommonDropAdapter dropAdapter, IAdaptable[] sources) {
         MultiStatus problems = new MultiStatus(IOUIPlugin.PLUGIN_ID, 1,
-                "Problems occurred while moving files.", null);
+                Messages.FileDropAdapterAssistant_ERR_Moving, null);
         IStatus validate = validateDrop(dropAdapter.getCurrentTarget(), dropAdapter
                 .getCurrentOperation(), dropAdapter.getCurrentTransfer());
         if (!validate.isOK()) {
@@ -205,7 +205,7 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
         operation.copyFiles(sources, destination, new JobChangeAdapter() {
 
             public void done(IJobChangeEvent event) {
-                IOUIPlugin.refreshNavigatorView(destination);
+                refresh(dropAdapter.getCurrentTarget());
             }
         });
 
@@ -217,7 +217,7 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             return;
         }
 
-        String title = "Drag and Drop Error";
+        String title = Messages.FileDropAdapterAssistant_ERR_DragAndDrop_Title;
         int codes = IStatus.ERROR | IStatus.WARNING;
 
         if (status.isMultiStatus()) {
@@ -229,6 +229,17 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             }
         } else {
             ErrorDialog.openError(getShell(), title, null, status, codes);
+        }
+    }
+
+    private void refresh(Object element) {
+        if (element instanceof IResource) {
+            try {
+                ((IResource) element).refreshLocal(IResource.DEPTH_INFINITE, null);
+            } catch (CoreException e) {
+            }
+        } else {
+            IOUIPlugin.refreshNavigatorView(element);
         }
     }
 
@@ -269,6 +280,33 @@ public class FileDropAdapterAssistant extends CommonDropAdapterAssistant {
             store = store.getParent();
         }
         return store;
+    }
+
+    /**
+     * @param destination
+     *            the destination target
+     * @param sources
+     *            the array of selected source files
+     * @return true if the sources are from the same file system as the
+     *         destination, false otherwise
+     */
+    private static boolean isFromSameFilesystem(Object destination, Object[] sources) {
+        IFileStore fileStore = Utils.getFileStore(destination);
+        if (fileStore == null) {
+            return false;
+        }
+        IFileSystem filesystem = fileStore.getFileSystem();
+        IFileStore sourceFileStore;
+        for (Object source : sources) {
+            sourceFileStore = Utils.getFileStore(source);
+            if (sourceFileStore == null) {
+                return false;
+            }
+            if (sourceFileStore.getFileSystem() != filesystem) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static Status createStatus(String message) {

@@ -37,6 +37,7 @@ package com.aptana.ide.views.outline;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +56,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
 import com.aptana.ide.core.StreamUtils;
@@ -487,6 +489,12 @@ public final class PathResolverProvider
 		{
 			IPathEditorInput fInput = (IPathEditorInput) (input);
 			return new FilePathResolver(fInput.getPath());
+		}
+		if (input instanceof IURIEditorInput) {
+			URI uri = ((IURIEditorInput) input).getURI();
+			if ("file".equals(uri.getScheme())) {
+				return new FilePathResolver(Path.fromOSString(new File(uri).getAbsolutePath()));
+			}
 		}
 		IPathEditorInput adapter = (IPathEditorInput) input.getAdapter(IPathEditorInput.class);
 		if (adapter != null)

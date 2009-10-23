@@ -114,7 +114,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 				try {
 					return fetchFileSystemChildren(((IConnectionPoint) object).getRoot(), new NullProgressMonitor());
 				} catch (CoreException e) {
-					IdeLog.logImportant(IOUIPlugin.getDefault(), "Fetch children failed", e);
+					IdeLog.logError(IOUIPlugin.getDefault(), "Fetch children failed", e);
 					UIUtils.showErrorMessage("Fetch children failed", e);
 				}
 			}
@@ -124,7 +124,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 			try {
 				return fetchFileSystemChildren(((LocalRoot) object).getRoot(), new NullProgressMonitor());
 			} catch (CoreException e) {
-				IdeLog.logImportant(IOUIPlugin.getDefault(), "Fetch children failed", e);
+				IdeLog.logError(IOUIPlugin.getDefault(), "Fetch children failed", e);
 				UIUtils.showErrorMessage("Fetch children failed", e);
 			}
 		} else if (object instanceof IConnectionPointManager) {
@@ -206,7 +206,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 			if (object instanceof IBaseRemoteConnectionPoint) {
 				IPath path = ((IBaseRemoteConnectionPoint) object).getPath();
 				if (path.segmentCount() > 0) {
-					return StringUtils.format("{0} ({1})", new String[] { ((IConnectionPoint) object).getName(), path.toPortableString() });
+					return StringUtils.format("{0} ({1})", new String[] { ((IConnectionPoint) object).getName(), path.toPortableString() }); //$NON-NLS-1$
 				}
 			}
 			return ((IConnectionPoint) object).getName();
@@ -232,7 +232,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 		try {
 			if (object instanceof IConnectionPoint) {
 			    // for deferred case, makes sure it is connected first
-			    ((IConnectionPoint) object).connect(monitor);
+			    // ((IConnectionPoint) object).connect(monitor);
 				collector.add(
 						fetchFileSystemChildren(((IConnectionPoint) object).getRoot(), monitor),
 						monitor);
@@ -240,15 +240,13 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 				collector.add(
 						fetchFileSystemChildren(((FileSystemObject) object).getFileStore(), monitor),
 						monitor);
-				
 			} else if (object instanceof IFileStore) {
 				collector.add(
 						fetchFileSystemChildren((IFileStore) object, monitor),
 						monitor);
-				
 			}
 		} catch (CoreException e) {
-			IdeLog.logImportant(IOUIPlugin.getDefault(), "Fetch deferred children failed", e);
+			IdeLog.logError(IOUIPlugin.getDefault(), "Fetch deferred children failed", e);
 			UIUtils.showErrorMessage("Fetch children failed", e);
 		} finally {
 			collector.done();

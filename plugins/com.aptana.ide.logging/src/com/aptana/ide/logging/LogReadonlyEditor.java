@@ -37,6 +37,9 @@ package com.aptana.ide.logging;
 import java.io.File;
 import java.util.Vector;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -69,17 +72,16 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 
-import com.aptana.ide.core.BaseFileEditorInput;
 import com.aptana.ide.core.FileUtils;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.IVirtualFile;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.Messages;
 import com.aptana.ide.editors.UnifiedEditorsPlugin;
@@ -171,7 +173,7 @@ public class LogReadonlyEditor extends TextEditor
 
 	private ToolBar refreshBar;
 	private ToolItem refreshItem;
-	private IVirtualFile refreshableFile;
+	private IFileStore refreshableFile;
 
 	private IPropertyChangeListener colorizationPreferencesListener;
 
@@ -190,10 +192,17 @@ public class LogReadonlyEditor extends TextEditor
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException
 	{
 		super.init(site, input);
-		if (input instanceof BaseFileEditorInput)
+		if (input instanceof IURIEditorInput)
 		{
-			BaseFileEditorInput bfei = (BaseFileEditorInput) input;
-			this.refreshableFile = bfei.getVirtualFile();
+			IFileStore fileStore;
+			try {
+				fileStore = EFS.getStore(((IURIEditorInput) input).getURI());
+				if (fileStore.toLocalFile(EFS.NONE, null) == null) {
+					this.refreshableFile = fileStore;
+				}
+			} catch (CoreException e) {
+				IdeLog.logImportant(LoggingPlugin.getDefault(), StringUtils.EMPTY, e);
+			}
 		}
 	}
 
@@ -264,24 +273,8 @@ public class LogReadonlyEditor extends TextEditor
 
 						protected IStatus run(IProgressMonitor monitor)
 						{
-							String newFileName = FileUtils.getRandomFileName("temp", ".html"); //$NON-NLS-1$ //$NON-NLS-2$
-							final File temp = new File(FileUtils.systemTempDir + File.separator + newFileName);
-							temp.deleteOnExit();
-							temp.getParentFile().mkdirs();
-
-							try
-							{
-								refreshableFile.getFileManager().putToLocalFile(refreshableFile, temp);
-
-							}
-							catch (Exception e2)
-							{
-								CoreUIUtils.showError(StringUtils.format(
-										Messages.FileExplorerView_UnableToSaveRemoteFile, new String[] {
-												refreshableFile.getAbsolutePath(), temp.getAbsolutePath() }), e2);
-							}
-							finally
-							{
+							try {
+								final File temp = refreshableFile.toLocalFile(EFS.CACHE, monitor);
 								UIJob update = new UIJob(Messages.LogReadonlyEditor_Job_Updating)
 								{
 
@@ -293,7 +286,9 @@ public class LogReadonlyEditor extends TextEditor
 													&& !viewer.getTextWidget().isDisposed())
 											{
 												refreshItem.setEnabled(true);
-												viewer.getTextWidget().setText(FileUtils.readContent(temp));
+												if (temp != null) {
+													viewer.getTextWidget().setText(FileUtils.readContent(temp));
+												}
 											}
 
 										}
@@ -312,7 +307,12 @@ public class LogReadonlyEditor extends TextEditor
 
 								};
 								update.schedule();
+							} catch (CoreException e) {
+								CoreUIUtils.showError(StringUtils.format(
+										Messages.FileExplorerView_UnableToSaveRemoteFile, new String[] {
+												refreshableFile.toString() }), e);
 							}
+
 							return Status.OK_STATUS;
 						}
 

@@ -63,7 +63,9 @@ public final class LocalRoot extends PlatformObject {
     private static final String DESKTOP = PlatformUtils
             .expandEnvironmentStrings(PlatformUtils.DESKTOP_DIRECTORY);
     private static final boolean ON_WINDOWS = Platform.OS_WIN32.equals(Platform.getOS());
+
     private static final String MY_COMPUTER_GUID = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"; //$NON-NLS-1$
+    private static final String MY_NETWORK_PLACES_GUID = "::{208D2C60-3AEA-1069-A2D7-08002B30309D}"; //$NON-NLS-1$
 
 	private final String name;
 	private final File root;
@@ -227,8 +229,11 @@ public final class LocalRoot extends PlatformObject {
             return new File[0];
         }
         File[] files = FileSystemView.getFileSystemView().getFiles(desktop, false);
+        String name;
         for (File file : files) {
-            if (file.getName().equals(MY_COMPUTER_GUID)) {
+            name = file.getName();
+            if (name.equals(MY_COMPUTER_GUID) || name.equals(MY_NETWORK_PLACES_GUID)
+                    || name.startsWith("::")) { //$NON-NLS-1$
                 return FileSystemView.getFileSystemView().getFiles(file, false);
             }
         }

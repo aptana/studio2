@@ -1098,6 +1098,7 @@ function onOpenUrl(url, headers)
 		wrappedURL = url;
 		url = 'chrome://aptanadebugger/skin/main.html';
 	}
+	hook("openURL", [url]);
 	if (isClientDebugger) {
 		var headersData = "Cache-Control: no-cache, must-revalidate\r\nPragma: no-cache\r\n"+headers.join("\r\n");
 		var headersStream = Components.classes["@mozilla.org/io/string-input-stream;1"]

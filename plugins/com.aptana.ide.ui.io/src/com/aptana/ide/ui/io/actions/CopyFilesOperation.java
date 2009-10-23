@@ -55,6 +55,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 
+import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
@@ -288,7 +289,10 @@ public class CopyFilesOperation {
                 sourceStore.copy(destinationStore, EFS.NONE, monitor);
             }
         } catch (CoreException e) {
-            // TODO: report the error
+            IdeLog
+                    .logError(IOUIPlugin.getDefault(), MessageFormat.format(
+                            Messages.CopyFilesOperation_ERR_FailedToCopy, sourceStore,
+                            destinationStore), e);
             success = false;
         }
         return success;
@@ -355,7 +359,9 @@ public class CopyFilesOperation {
                 success = copyFile(sourceStores[i], targetStores[i], monitor) && success;
             }
         } catch (CoreException e) {
-            // TODO: report the error
+            IdeLog.logError(IOUIPlugin.getDefault(), MessageFormat.format(
+                    Messages.CopyFilesOperation_ERR_FailedToCopyToDest, sourceStore,
+                    destinationRoot), e);
             success = false;
         }
         return success;

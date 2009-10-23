@@ -68,6 +68,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
     private List<Object> excludes = new ArrayList<Object>();
 
     private boolean dirty;
+    private boolean shouldRestore;
 
     /**
 	 * 
@@ -185,6 +186,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
     }
 
     protected void loadState(IMemento memento) {
+        shouldRestore = true;
         IMemento child = memento.getChild(ELEMENT_NAME);
         if (child != null) {
             name = child.getTextData();
@@ -192,12 +194,20 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
         child = memento.getChild(ELEMENT_SOURCE);
         if (child != null) {
             URI uri = URI.create(child.getTextData());
-            sourceConnectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
+            IConnectionPoint connectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
+            if (connectionPoint == null) {
+                shouldRestore = false;
+            }
+            sourceConnectionPoint = connectionPoint;
         }
         child = memento.getChild(ELEMENT_DESTINATION);
         if (child != null) {
             URI uri = URI.create(child.getTextData());
-            destinationConnectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
+            IConnectionPoint connectionPoint = ConnectionPointUtils.findConnectionPoint(uri);
+            if (connectionPoint == null) {
+                shouldRestore = false;
+            }
+            destinationConnectionPoint = connectionPoint;
         }
         child = memento.getChild(ELEMENT_EXCLUDES);
         if (child != null) {
@@ -245,4 +255,7 @@ public class SiteConnection extends PlatformObject implements ISiteConnection {
         }
     }
 
+    final boolean shouldRestore() {
+        return shouldRestore;
+    }
 }

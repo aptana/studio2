@@ -24,6 +24,18 @@ public class BuildIndexCleaner extends BuildParticipant
 				index.remove(getContainerRelativePath(context));
 		}
 	}
+	
+	@Override
+	public void build(BuildContext context, IProgressMonitor monitor)
+	{
+		// do nothing		
+	}
+	
+	@Override
+	public void buildFinishing(IProgressMonitor monitor)
+	{
+		// do nothing		
+	}
 
 	private Index getIndex(BuildContext context)
 	{

@@ -22,24 +22,21 @@ public class LowerCaseTagAndAttributeNamesChecker extends HTMLBuildParticipant
 {
 
 	@Override
-	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
+	public void build(BuildContext context, IProgressMonitor monitor)
 	{
-		for (BuildContext context : contexts)
-		{
-			if (!isHTMLFile(context))
-				continue;
-			// ok we have an html file
-			IParseState parseState = context.getParseState();
-			if (!(parseState instanceof HTMLParseState))
-				continue;
-			// Make sure it's XHTML
-			HTMLParseState htmlParseState = (HTMLParseState) parseState;
-			if (htmlParseState.getDocumentType() < HTMLDocumentType.XHTML_1_0_STRICT)
-				continue;
-			IParseNode root = context.getRootNode();
-			List<IProblem> problems = walk(context, root);
-			context.recordNewProblems(problems);
-		}
+		if (!isHTMLFile(context))
+			return;
+		// ok we have an html file
+		IParseState parseState = context.getParseState();
+		if (!(parseState instanceof HTMLParseState))
+			return;
+		// Make sure it's XHTML
+		HTMLParseState htmlParseState = (HTMLParseState) parseState;
+		if (htmlParseState.getDocumentType() < HTMLDocumentType.XHTML_1_0_STRICT)
+			return;
+		IParseNode root = context.getRootNode();
+		List<IProblem> problems = walk(context, root);
+		context.recordNewProblems(problems);
 	}
 
 	private List<IProblem> walk(BuildContext context, IParseNode root)

@@ -32,22 +32,28 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
+package com.aptana.ide.ui.io.navigator.resources;
 
-package com.aptana.ide.core;
+import org.eclipse.osgi.util.NLS;
 
-import org.eclipse.ui.IPathEditorInput;
-import org.eclipse.ui.IStorageEditorInput;
-import org.eclipse.ui.IURIEditorInput;
-import org.eclipse.ui.editors.text.ILocationProvider;
+public class Messages extends NLS {
 
-import com.aptana.ide.core.io.IVirtualFile;
+    private static final String BUNDLE_NAME = "com.aptana.ide.ui.io.navigator.resources.messages"; //$NON-NLS-1$
 
-/**
- * @author Max Stepanov
- *
- */
-public interface BaseFileEditorInput extends IPathEditorInput, IStorageEditorInput, IURIEditorInput, ILocationProvider{
+    public static String FileDropAdapterAssistant_ERR_Copying;
+    public static String FileDropAdapterAssistant_ERR_DragAndDrop_Title;
+    public static String FileDropAdapterAssistant_ERR_DropLocalRoot;
+    public static String FileDropAdapterAssistant_ERR_Importing;
+    public static String FileDropAdapterAssistant_ERR_InvalidDropSelection;
+    public static String FileDropAdapterAssistant_ERR_Moving;
+    public static String FileDropAdapterAssistant_ERR_NotAdaptable;
+    public static String FileDropAdapterAssistant_ERR_NotIFileStore;
 
-	public IVirtualFile getVirtualFile();
-	public void setVirtualFile(IVirtualFile virtualFile);
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    private Messages() {
+    }
 }

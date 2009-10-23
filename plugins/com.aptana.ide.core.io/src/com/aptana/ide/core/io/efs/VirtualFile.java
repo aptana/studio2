@@ -142,9 +142,11 @@ import com.aptana.ide.core.io.vfs.IFileTreeVisitor;
 	@Override
 	public boolean isParentOf(IFileStore other) {
 		if (other instanceof VirtualFile) {
-			return baseURI.equals(((VirtualFile) other).baseURI)
-				&& ((path.isRoot() && !((VirtualFile) other).path.isRoot())
-						|| path.matchingFirstSegments(((VirtualFile) other).path) > 0);
+		    VirtualFile otherFile = (VirtualFile) other;
+            return baseURI.equals(otherFile.baseURI)
+                    && ((path.isRoot() && !otherFile.path.isRoot()) || (path
+                            .matchingFirstSegments(otherFile.path) == path.segmentCount() && path
+                            .segmentCount() <= otherFile.path.segmentCount()));
 		}
 		return false;
 	}

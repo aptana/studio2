@@ -18,41 +18,38 @@ import com.aptana.ide.parsing.IParseState;
 
 public class InvalidXHTMLCommentChecker extends HTMLBuildParticipant
 {
-
+	
 	@Override
-	public void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor)
+	public void build(BuildContext context, IProgressMonitor monitor)
 	{
-		for (BuildContext context : contexts)
+		if (!isHTMLFile(context))
+			return;
+		// ok we have an html file
+		IParseState parseState = context.getParseState();
+		if (!(parseState instanceof HTMLParseState))
+			return;
+		// Make sure it's XHTML
+		HTMLParseState htmlParseState = (HTMLParseState) parseState;
+		if (htmlParseState.getDocumentType() < HTMLDocumentType.XHTML_1_0_STRICT)
+			return;
+		// we have an XHTML doc and we need to do the check
+		List<IProblem> problems = new ArrayList<IProblem>();
+		LexemeList ll = context.getLexemeList();
+		for (Lexeme lexeme : ll.toArray())
 		{
-			if (!isHTMLFile(context))
-				continue;
-			// ok we have an html file
-			IParseState parseState = context.getParseState();
-			if (!(parseState instanceof HTMLParseState))
-				continue;
-			// Make sure it's XHTML
-			HTMLParseState htmlParseState = (HTMLParseState) parseState;
-			if (htmlParseState.getDocumentType() < HTMLDocumentType.XHTML_1_0_STRICT)
-				continue;
-			// we have an XHTML doc and we need to do the check
-			List<IProblem> problems = new ArrayList<IProblem>();
-			LexemeList ll = context.getLexemeList();
-			for (Lexeme lexeme : ll.toArray())
+			if (lexeme != null && lexeme.getLanguage().equals(HTMLMimeType.MimeType) && lexeme.typeIndex == HTMLTokenTypes.COMMENT)
 			{
-				if (lexeme != null && lexeme.getLanguage().equals(HTMLMimeType.MimeType) && lexeme.typeIndex == HTMLTokenTypes.COMMENT)
-				{
-					String text = lexeme.getText();
-					text = text.substring(4); // drop '<!--'
-					text = text.substring(0, text.length() - 3); // drop '-->'
-					if (text.contains("--"))
-						problems
-								.add(new Warning(1, context.getFile().getFullPath().toPortableString(), getLineNumber(context, lexeme), lexeme
-										.getStartingOffset(), lexeme.getEndingOffset(),
-										"Comments should not contain '--' in the text. Many browsers mishandle comments not ending in this exact pattern."));
-				}
+				String text = lexeme.getText();
+				text = text.substring(4); // drop '<!--'
+				text = text.substring(0, text.length() - 3); // drop '-->'
+				if (text.contains("--"))
+					problems
+							.add(new Warning(1, context.getFile().getFullPath().toPortableString(), getLineNumber(context, lexeme), lexeme
+									.getStartingOffset(), lexeme.getEndingOffset(),
+									"Comments should not contain '--' in the text. Many browsers mishandle comments not ending in this exact pattern."));
 			}
-			context.recordNewProblems(problems);
 		}
+		context.recordNewProblems(problems);
 	}
 
 }

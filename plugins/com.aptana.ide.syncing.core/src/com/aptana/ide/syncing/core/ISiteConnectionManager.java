@@ -48,6 +48,7 @@ public interface ISiteConnectionManager {
 
 	public void addSiteConnection(ISiteConnection siteConnection);
 	public void removeSiteConnection(ISiteConnection siteConnection);
+	public void siteConnectionChanged(ISiteConnection siteConnection);
 
 	ISiteConnection createSiteConnection();
 	ISiteConnection cloneSiteConnection(ISiteConnection siteConnection) throws CoreException;

@@ -12,6 +12,14 @@ public abstract class BuildParticipant
 {
 	public abstract boolean isActive(IProject project);
 
+	/**
+	 * Pre-build callback. DO NOT DO THE ACTUAL WORK ON THE CONTEXTS INVOLVING PARSING HERE, OR WE WILL RUN OUT OF
+	 * MEMORY STORING ALL THEIR ASTS!!!
+	 * 
+	 * @param contexts
+	 * @param isBatch
+	 * @param monitor
+	 */
 	public abstract void buildStarting(List<BuildContext> contexts, boolean isBatch, IProgressMonitor monitor);
 
 	public abstract void cleanStarting(IProject project);
@@ -41,4 +49,14 @@ public abstract class BuildParticipant
 		}
 		return -1;
 	}
+
+	public abstract void buildFinishing(IProgressMonitor monitor);
+
+	/**
+	 * Do the grunt work here. This is where it's ok to parse and get ASTs or Lexemes.
+	 * 
+	 * @param context
+	 * @param monitor
+	 */
+	public abstract void build(BuildContext context, IProgressMonitor monitor);
 }

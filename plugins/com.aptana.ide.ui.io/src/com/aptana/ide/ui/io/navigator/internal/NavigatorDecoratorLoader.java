@@ -2,14 +2,18 @@ package com.aptana.ide.ui.io.navigator.internal;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
+import org.eclipse.ui.progress.UIJob;
 
 import com.aptana.ide.core.ui.PartListenerAdapter;
 import com.aptana.ide.ui.io.IOUIPlugin;
@@ -62,15 +66,16 @@ public class NavigatorDecoratorLoader {
     };
 
     public static void init() {
-        final IWorkbench workbench = PlatformUI.getWorkbench();
-        workbench.getDisplay().syncExec(new Runnable() {
-
-            public void run() {
-                workbench.getActiveWorkbenchWindow().getPartService()
-                        .addPartListener(partListener);
-            }
-
-        });
+        Job job = new UIJob(PlatformUI.getWorkbench().getDisplay(), "Decorator Init") {
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(partListener);
+				return Status.OK_STATUS;
+			}
+		};
+		job.setPriority(Job.INTERACTIVE);
+		job.setSystem(true);
+		job.schedule();
     }
 
     private NavigatorDecoratorLoader() {

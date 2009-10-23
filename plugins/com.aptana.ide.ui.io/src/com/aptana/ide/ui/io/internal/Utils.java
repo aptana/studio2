@@ -47,11 +47,11 @@ import com.aptana.ide.ui.io.FileSystemUtils;
  */
 public class Utils {
 
-    public static IFileStore getFileStore(IAdaptable adaptable) {
+    public static IFileStore getFileStore(Object adaptable) {
         if (adaptable instanceof IResource) {
         	return EFSUtils.getFileStore((IResource) adaptable);
         }
-        return (IFileStore) adaptable.getAdapter(IFileStore.class);
+        return FileSystemUtils.getFileStore(adaptable);
     }
 
     public static IFileInfo getFileInfo(IAdaptable adaptable) {

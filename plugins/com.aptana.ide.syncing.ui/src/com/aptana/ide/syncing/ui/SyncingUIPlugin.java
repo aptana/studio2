@@ -45,8 +45,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.events.ConnectionPointEvent;
+import com.aptana.ide.core.io.events.IConnectionPointListener;
 import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.SiteConnection;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
 import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
@@ -95,6 +99,33 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
         }
     };
 
+    private IConnectionPointListener connectionPointListener = new IConnectionPointListener() {
+
+        public void connectionPointChanged(ConnectionPointEvent event) {
+            IConnectionPoint connectionPoint = event.getConnectionPoint();
+            switch (event.getKind()) {
+            case ConnectionPointEvent.POST_DELETE:
+                // check if any site connection has the deleted connection point as either source or destination
+                boolean affected = false;
+                ISiteConnection[] siteConnections = SyncingPlugin.getSiteConnectionManager().getSiteConnections();
+                for (ISiteConnection siteConnection : siteConnections) {
+                    if (siteConnection.getSource() == connectionPoint) {
+                        ((SiteConnection) siteConnection).setSource(null);
+                        affected = true;
+                    }
+                    if (siteConnection.getDestination() == connectionPoint) {
+                        ((SiteConnection) siteConnection).setDestination(null);
+                        affected = true;
+                    }
+                }
+                if (affected) {
+                    IOUIPlugin.refreshNavigatorView(SiteConnections.getInstance());
+                }
+                break;
+            }
+        }
+    };
+
     /**
      * The constructor
      */
@@ -108,6 +139,7 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
         super.start(context);
         plugin = this;
         SyncingPlugin.getSiteConnectionManager().addListener(connectionListener);
+        CoreIOPlugin.getConnectionPointManager().addConnectionPointListener(connectionPointListener);
     }
 
     /**
@@ -115,6 +147,7 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
      */
     public void stop(BundleContext context) throws Exception {
         SyncingPlugin.getSiteConnectionManager().removeListener(connectionListener);
+        CoreIOPlugin.getConnectionPointManager().removeConnectionPointListener(connectionPointListener);
         plugin = null;
         super.stop(context);
     }
