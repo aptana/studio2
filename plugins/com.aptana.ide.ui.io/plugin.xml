@@ -257,6 +257,9 @@
                      value="com.aptana.ide.ui.io.navigator.LocalFileSystems">
                </instanceof>
                <instanceof
+                     value="com.aptana.ide.ui.io.navigator.WindowsFileSystemRoot">
+               </instanceof>
+               <instanceof
                      value="com.aptana.ide.core.io.LocalRoot">
                </instanceof>
                <instanceof
@@ -290,6 +293,9 @@
                      value="com.aptana.ide.ui.io.navigator.LocalFileSystems">
                </instanceof>
                <instanceof
+                     value="com.aptana.ide.ui.io.navigator.WindowsFileSystemRoot">
+               </instanceof>
+               <instanceof
                      value="com.aptana.ide.core.io.LocalRoot">
                </instanceof>
                <instanceof
@@ -311,6 +317,9 @@
                </instanceof>
                <instanceof
                      value="com.aptana.ide.ui.io.navigator.LocalFileSystems">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.WindowsFileSystemRoot">
                </instanceof>
                <instanceof
                      value="com.aptana.ide.core.io.LocalRoot">
@@ -487,6 +496,9 @@
                <instanceof
                      value="com.aptana.ide.ui.io.navigator.LocalFileSystems">
                </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.WindowsFileSystemRoot">
+               </instanceof>
             </or>
          </enablement>
       </actionProvider>
@@ -518,6 +530,9 @@
                </instanceof>
                <instanceof
                      value="com.aptana.ide.ui.io.navigator.LocalFileSystems">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.WindowsFileSystemRoot">
                </instanceof>
             </or>
          </enablement>
