@@ -203,9 +203,17 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
             });			
 			break;
 		case SiteConnectionEvent.POST_CHANGE:
-		    ISiteConnection siteConnection = event.getSiteConnection();
-		    fSource.setConnectionPoint(siteConnection.getSource());
-            fTarget.setConnectionPoint(siteConnection.getDestination());
+		    if (fMain.isDisposed()) {
+                return;
+            }
+            fMain.getDisplay().asyncExec(new Runnable() {
+
+                public void run() {
+                    ISiteConnection siteConnection = event.getSiteConnection();
+                    fSource.setConnectionPoint(siteConnection.getSource());
+                    fTarget.setConnectionPoint(siteConnection.getDestination());
+                }
+            });
             break;
 		}
     }
