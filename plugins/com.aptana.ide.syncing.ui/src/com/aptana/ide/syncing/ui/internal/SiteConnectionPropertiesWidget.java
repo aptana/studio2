@@ -322,6 +322,7 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
                 if (result != null) {
                     updateRemotesViewer();
                     setType(REMOTE);
+                    remotesViewer.setSelection(new StructuredSelection(result));
                     changed = true;
                 }
                 validateAll();
