@@ -41,7 +41,7 @@
 	</installer>
 	<plugin>
 		<id>com.aptana.ide.feature.server.cloud</id>
-		<name>Aptana Cloud</name>
+		<name>Joyent Cloud</name>
 		<category>Platforms</category> 
 		<description>Easy Hosting and Development Services</description>
 		<url>http://download.aptana.com/tools/studio/plugin/install/cloud/</url>
