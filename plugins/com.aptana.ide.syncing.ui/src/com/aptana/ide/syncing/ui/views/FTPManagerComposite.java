@@ -297,17 +297,16 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
         final Composite directions = new Composite(main, SWT.NONE);
         layout = new GridLayout();
         layout.marginHeight = 0;
-        layout.marginWidth = 0;
         directions.setLayout(layout);
         directions.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, true));
 
-        fTransferRightButton = new Button(directions, SWT.BORDER);
+        fTransferRightButton = new Button(directions, SWT.NONE);
         fTransferRightButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
                 ISharedImages.IMG_TOOL_FORWARD));
         fTransferRightButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferRight);
         fTransferRightButton.setLayoutData(new GridData(SWT.CENTER, SWT.END, true, true));
         fTransferRightButton.addSelectionListener(this);
-        fTransferLeftButton = new Button(directions, SWT.BORDER);
+        fTransferLeftButton = new Button(directions, SWT.NONE);
         fTransferLeftButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(
                 ISharedImages.IMG_TOOL_BACK));
         fTransferLeftButton.setToolTipText(Messages.FTPManagerComposite_TTP_TransferLeft);
