@@ -82,7 +82,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 								+ "<p>The paragraph tag after an H1 tag looks like this</p>\n" //$NON-NLS-1$
 								+ "<h2>The H2 tag looks like this</h2>\n" //$NON-NLS-1$
 								+ "<p>The paragraph tag after an H2 tag looks like this</p>\n" //$NON-NLS-1$
-								+ "<h3>The H1 tag looks like this</h3>\n" //$NON-NLS-1$
+								+ "<h3>The H3 tag looks like this</h3>\n" //$NON-NLS-1$
 								+ "<p>The paragraph tag after an H3 tag looks like this</p>\n" //$NON-NLS-1$
 								+ "<h4>The H4 tag looks like this</h4>\n" //$NON-NLS-1$
 								+ "<p>The paragraph tag after an H4 tag looks like this</p>\n" //$NON-NLS-1$
