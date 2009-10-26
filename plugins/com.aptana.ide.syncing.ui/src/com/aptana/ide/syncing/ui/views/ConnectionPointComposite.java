@@ -616,6 +616,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
 
     private void setPath(String path) {
         StringBuilder linkPath = new StringBuilder();
+        path = path.replace('\\', '/');
         String separator = "/"; //$NON-NLS-1$
         if (path.startsWith(separator)) {
             // removes the leading separator
@@ -639,7 +640,7 @@ public class ConnectionPointComposite implements SelectionListener, ISelectionCh
             // strips out the leading '.../'
             String endPath = displayedPath.substring(4);
             String[] endFolders = endPath.split(separator);
-            int startIndex = path.split(separator).length - endFolders.length - 1;
+            int startIndex = path.split(separator).length - endFolders.length;
             int i;
             for (i = 0; i < endFolders.length - 1; ++i) {
                 linkPath.append(MessageFormat.format(
