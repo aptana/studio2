@@ -46,26 +46,6 @@ public final class Messages extends NLS {
     private static final String BUNDLE_NAME = "com.aptana.ide.update.preferences.messages"; //$NON-NLS-1$
 
     /**
-     * AutomaticUpdatesPreferencePage_LimitGenericLimitFeatures
-     */
-    public static String AutomaticUpdatesPreferencePage_LimitGenericLimitFeatures;
-
-    /**
-     * AutomaticUpdatesPreferencePage_PAUSE_TIME
-     */
-    public static String AutomaticUpdatesPreferencePage_PAUSE_TIME;
-
-    /**
-     * AutomaticUpdatesPreferencePage_NetworkConfiguration
-     */
-    public static String AutomaticUpdatesPreferencePage_NetworkConfiguration;
-
-    /**
-     * AutomaticUpdatesPreferencePage_NetworkIssueLink
-     */
-    public static String AutomaticUpdatesPreferencePage_NetworkIssueLink;
-
-    /**
      * AutomaticUpdatesPreferencePage_WhatTypesOfUpdates
      */
     public static String AutomaticUpdatesPreferencePage_WhatTypesOfUpdates;
