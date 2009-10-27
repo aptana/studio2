@@ -654,7 +654,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 
 			Color bg = colorizer.getBackground();
 			Color deadSpace = createDeadSpaceColor(bg);
-			if (deadSpace != null)
+			if (deadSpace != null && !deadSpace.isDisposed())
 			{
 				this.getViewer().getTextWidget().setBackground(deadSpace);
 			}
@@ -2531,7 +2531,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			Display display = Display.getCurrent();
 			if (display == null)
 				display = Display.getDefault();
-			display.syncExec(new Runnable()
+			display.asyncExec(new Runnable()
 			{
 
 				public void run()
