@@ -607,7 +607,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			setFoldingColors(colorizer);
 
 			// Removing caret support on Carbon since it causes lag
-			if (!Platform.getWS().equals(Platform.WS_CARBON))
+		    if (!Platform.getWS().equals(Platform.WS_CARBON))
 			{
 				if (this.getViewer().getTextWidget() != null)
 				{
@@ -635,9 +635,11 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 						try
 						{
 							ImageData iData = new ImageData(x, y, 1, data);
+							caret.setImage(null);
 							if (this._caretImage != null)
 							{
 								this._caretImage.dispose();
+								this._caretImage = null;
 							}
 							this._caretImage = new Image(caret.getDisplay(), iData);
 							caret.setImage(this._caretImage);
@@ -703,11 +705,12 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 			this.getViewer().getTextWidget().setSelectionBackground(eclipseSelectionBgColor);
 			this.getViewer().getTextWidget().setSelectionForeground(eclipseSelectionFgColor);
 			Caret caret = this.getViewer().getTextWidget().getCaret();
+	        caret.setImage(null);
 			if (this._caretImage != null)
 			{
 				this._caretImage.dispose();
+				this._caretImage = null;
 			}
-			caret.setImage(null);
 			if (this.getViewer() instanceof ITextViewerExtension2)
 			{
 				ITextViewerExtension2 highlightEditor = (ITextViewerExtension2) this.getViewer();
@@ -2280,6 +2283,7 @@ public abstract class UnifiedEditor extends BaseTextEditor implements IUnifiedEd
 		if (this._caretImage != null)
 		{
 			this._caretImage.dispose();
+			this._caretImage = null;
 		}
 
 		super.dispose();
