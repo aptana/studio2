@@ -35,12 +35,15 @@
 
 package com.aptana.ide.ui.io.navigator;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.filesystem.IFileInfo;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
 import com.aptana.ide.core.io.IConnectionPointCategory;
 import com.aptana.ide.core.io.LocalRoot;
+import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
  * @author Max Stepanov
@@ -59,10 +62,13 @@ public class FileTreeNameSorter extends ViewerSorter {
 	        return 1;
 	    } else if (element instanceof IConnectionPointCategory) {
 			return 2;
-		} else if (element instanceof FileSystemObject) {
-			return ((FileSystemObject) element).isDirectory() ? 3 : 4;
-		} else if (element instanceof IFile) {
-		    return ((IFile) element).getLocation().toFile().isDirectory() ? 3 : 4;
+		} else if (element instanceof IResource) {
+		    return ((IResource) element).getLocation().toFile().isDirectory() ? 3 : 4;
+		} else if (element instanceof IAdaptable) {
+		    IFileInfo fileInfo = FileSystemUtils.getFileInfo(element);
+            if (fileInfo != null) {
+                return fileInfo.isDirectory() ? 3 : 4;
+            }
 		}
 		return super.category(element);
 	}
