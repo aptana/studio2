@@ -45,6 +45,7 @@ import com.aptana.ide.core.epl.IMemento;
 import com.aptana.ide.core.io.ConnectionContext;
 import com.aptana.ide.core.io.ConnectionPoint;
 import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.IConnectionPoint15Constants;
 import com.aptana.ide.core.io.vfs.IConnectionFileManager;
 
 /**
@@ -374,5 +375,29 @@ public class FTPConnectionPoint extends ConnectionPoint implements IBaseFTPConne
 		return connectionFileManager;
 	}
 
-	
+    @Override
+    public boolean load15Data(String data) {
+        String[] items = data.split(IConnectionPoint15Constants.DELIMITER);
+
+        if (items.length < 7) {
+            return false;
+        }
+
+        setName(items[0]);
+        setHost(items[1]);
+        if (items[2] == null || items[2].equals("")) { //$NON-NLS-1$
+            setPath(Path.ROOT);
+        } else {
+            setPath(new Path(items[2]));
+        }
+        setLogin(items[3]);
+        setPassword(items[4].toCharArray());
+        setPassiveMode(items[5].equals(Boolean.TRUE.toString()));
+        setId(items[6]);
+
+        if (items.length >= 10) {
+            setPort(Integer.parseInt(items[9]));
+        }
+        return true;
+    }
 }

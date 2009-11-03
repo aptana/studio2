@@ -48,6 +48,8 @@ public final class Messages extends NLS {
     public static String SiteConnection_LBL_NoDestination;
     public static String SiteConnection_LBL_NoSource;
 
+    public static String SiteConnectionManager_ERR_FailedToLoadConnections;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

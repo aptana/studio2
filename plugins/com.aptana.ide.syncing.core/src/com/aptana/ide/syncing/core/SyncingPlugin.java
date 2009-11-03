@@ -44,6 +44,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+import com.aptana.ide.core.AptanaCorePlugin;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -68,6 +70,7 @@ public class SyncingPlugin extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
 		ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(this,
 				new WorkspaceSaveParticipant());
 		if (lastState != null) {
@@ -80,6 +83,19 @@ public class SyncingPlugin extends Plugin {
                 DefaultSiteConnection.getInstance().loadState(getStateLocation().append(location));
             }
 		}
+
+		// For 1.5 compatibility
+        lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(
+                AptanaCorePlugin.getDefault(), new WorkspaceSaveParticipant());
+        if (lastState != null) {
+            IPath location = lastState.lookup(new Path("save")); //$NON-NLS-1$
+            if (location != null) {
+                IPath absoluteLocation = AptanaCorePlugin.getDefault().getStateLocation().append(location);
+                SiteConnectionManager.getInstance().loadState(absoluteLocation);
+                absoluteLocation.toFile().delete();
+            }
+            ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
+        }
 	}
 
 	/*

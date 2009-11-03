@@ -50,7 +50,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public interface IConnectionPoint extends IAdaptable {
 
 	public String getName();
-		
+	public String getId();
+
 	public URI getRootURI();
 	public IFileStore getRoot() throws CoreException;
 	

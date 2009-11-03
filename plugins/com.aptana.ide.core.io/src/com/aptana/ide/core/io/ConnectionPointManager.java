@@ -326,7 +326,39 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 		}
 		return connectionPoint;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see com.aptana.ide.core.io.IConnectionPointManager#restore15ConnectionPoint(java.lang.String, java.lang.String)
+	 */
+	public ConnectionPoint restore15ConnectionPoint(String type, String data) throws CoreException {
+	    ConnectionPoint connectionPoint = null;
+	    String typeId = null;
+	    if (type.equals("com.aptana.ide.core.ui.io.file.LocalFileManager")) { //$NON-NLS-1$
+	        typeId = "local"; //$NON-NLS-1$
+	    } else if (type.equals("com.aptana.ide.core.ui.io.file.ProjectFileManager")) { //$NON-NLS-1$
+	        typeId = "workspace"; //$NON-NLS-1$
+	    } else if (type.equals("com.aptana.ide.io.ftp.FtpVirtualFileManager")) { //$NON-NLS-1$
+	        typeId = "ftp"; //$NON-NLS-1$
+	    } else if (type.equals("com.aptana.ide.io.sftp.SftpVirtualFileManager")) { //$NON-NLS-1$
+	        typeId = "sftp"; //$NON-NLS-1$
+	    } else if (type.equals("com.aptana.ide.io.ftps.FtpsVirtualFileManager")) { //$NON-NLS-1$
+	        typeId = "ftps"; //$NON-NLS-1$
+	    }
+	    if (typeId != null) {
+	        IConfigurationElement element = configurationElements.get(typeId);
+            if (element != null) {
+                Object object = element.createExecutableExtension(ATT_CLASS);
+                if (object instanceof ConnectionPoint) {
+                    connectionPoint = (ConnectionPoint) object;
+                    if (!connectionPoint.load15Data(data)) {
+                        return null;
+                    }
+                }
+            }
+	    }
+	    return connectionPoint;
+	}
+
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.io.IConnectionPointManager#createConnectionPoint(com.aptana.ide.core.io.ConnectionPointType)
 	 */

@@ -149,4 +149,30 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 		memento.createChild(ELEMENT_PATH).putTextData(path.toPortableString());
 	}
 
+    @Override
+    public boolean load15Data(String data) {
+        String[] items = data.split(IConnectionPoint15Constants.DELIMITER);
+
+        if (items.length < 3) {
+            return false;
+        }
+
+        if (items[0] == null || items[0].equals("")) { //$NON-NLS-1$
+            return false;
+        }
+        setName(items[0]);
+        if (items[1] == null || items[1].equals("")) { //$NON-NLS-1$
+            setPath(Path.ROOT);
+        } else {
+            Path path = new Path(items[1]);
+            if (path.toFile().exists()) {
+                setPath(path);
+            } else {
+                return false;
+            }
+        }
+        setId(items[2]);
+
+        return true;
+    }
 }

@@ -114,7 +114,7 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
 	/**
 	 * @param id the id to set
 	 */
-	/* package */ final void setId(String id) {
+	protected final void setId(String id) {
 		this.id = id;
 		VirtualConnectionManager.getInstance().register(this);
 	}
@@ -219,5 +219,16 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
     @Override
     public String toString() {
         return getName();
+    }
+
+    /**
+     * Loads the connection data that has 1.5 format.
+     * 
+     * @param data
+     *            the connection data
+     * @return true if loading is successful, false otherwise
+     */
+    public boolean load15Data(String data) {
+        return false;
     }
 }
