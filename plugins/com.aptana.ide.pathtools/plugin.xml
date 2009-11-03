@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
-            adaptable="false"
+            adaptable="true"
             id="com.aptana.ide.pathtools.resourceObjectContribution"
             objectClass="org.eclipse.core.resources.IResource">
          <action
@@ -103,8 +103,8 @@
          </visibility>
       </objectContribution>
       <objectContribution
-            adaptable="false"
-            id="com.aptana.ide.pathtools.fileSystemObjectContribution2"
+            adaptable="true"
+            id="com.aptana.ide.pathtools.fileSystemObjectContribution"
             objectClass="com.aptana.ide.ui.io.navigator.FileSystemObject">
          <action
                class="com.aptana.ide.pathtools.CopyPathAction"

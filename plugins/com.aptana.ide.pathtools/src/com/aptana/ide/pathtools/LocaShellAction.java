@@ -2,6 +2,8 @@ package com.aptana.ide.pathtools;
 
 import java.io.File;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -23,6 +25,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.pathtools.handlers.Utilities;
 import com.aptana.ide.pathtools.preferences.PathtoolsPreferences;
+import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
  * This launches the shell on selected folder or file.
@@ -85,23 +88,18 @@ public class LocaShellAction implements IViewActionDelegate, IObjectActionDelega
 						IResource resource = (IResource) firstElement;
 						location = resource.getLocation();
 					} else if (firstElement instanceof IAdaptable) {
-	                	if (firstElement instanceof IConnectionPoint) {
-	                		try {
-								firstElement = ((IConnectionPoint) firstElement).getRoot();
-							} catch (CoreException ignore) {
-							}
-	                	}
-						IAdaptable adaptable = (IAdaptable) firstElement;
-						// Is this a File adaptable
-						fileObject = (File) adaptable.getAdapter(File.class);
-						if (fileObject == null) {
-							// Is this an IResource adaptable
-							IResource resource = (IResource) adaptable
-									.getAdapter(IResource.class);
-							if (resource != null) {
-								location = resource.getLocation();
-							}
-						}
+					    IAdaptable adaptable = (IAdaptable) firstElement;
+                        // Is this an IResource adaptable
+                        IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+                        if (resource != null) {
+                            location = resource.getLocation();
+                        } else {
+                            IFileStore fileStore = FileSystemUtils.getFileStore(adaptable);
+                            try {
+                                fileObject = fileStore.toLocalFile(EFS.NONE, null);
+                            } catch (CoreException e) {
+                            }
+                        }
 					}
 				}
 			}

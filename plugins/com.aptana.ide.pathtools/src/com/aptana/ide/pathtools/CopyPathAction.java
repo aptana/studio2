@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -27,9 +29,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.pathtools.handlers.Utilities;
 import com.aptana.ide.pathtools.preferences.PathtoolsPreferences;
+import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
  * This copies the absolute paths of selected folders and files (one per line)
@@ -82,27 +84,23 @@ public class CopyPathAction implements IViewActionDelegate, IObjectActionDelegat
 					location = resource.getLocation();
 					fullPath = resource.getFullPath();
                 } else if (firstElement instanceof IAdaptable) {
-                	if (firstElement instanceof IConnectionPoint) {
-                		try {
-							firstElement = ((IConnectionPoint) firstElement).getRoot();
-						} catch (CoreException ignore) {
-						}
-                	}
-					// Is it a File adaptable ?
-                	File file = (File) ((IAdaptable) firstElement).getAdapter(File.class);
-                	if (file != null) {
-                		files.add(file);
-                	} else {
-						// Is it a IResource adaptable ?
-						IAdaptable adaptable = (IAdaptable) firstElement;
-						IResource resource = (IResource) adaptable
-								.getAdapter(IResource.class);
-						if (resource != null) {
-							// Get the location
-							location = resource.getLocation();
-							fullPath = resource.getFullPath();
-						}
-                	}
+                    IAdaptable adaptable = (IAdaptable) firstElement;
+                    // Is it a IResource adaptable ?
+                    IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+                    if (resource != null) {
+                        // Get the location
+                        location = resource.getLocation();
+                        fullPath = resource.getFullPath();
+                    } else {
+                        IFileStore fileStore = FileSystemUtils.getFileStore(adaptable);
+                        try {
+                            File file = fileStore.toLocalFile(EFS.NONE, null);
+                            if (file != null) {
+                                files.add(file);
+                            }
+                        } catch (CoreException e) {
+                        }
+                    }
  				}
 				if (location != null) {
 					// Get the file for the location
