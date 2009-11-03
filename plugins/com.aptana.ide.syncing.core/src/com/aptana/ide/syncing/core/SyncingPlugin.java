@@ -92,7 +92,6 @@ public class SyncingPlugin extends Plugin {
             if (location != null) {
                 IPath absoluteLocation = AptanaCorePlugin.getDefault().getStateLocation().append(location);
                 SiteConnectionManager.getInstance().loadState(absoluteLocation);
-                absoluteLocation.toFile().delete();
             }
             ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
         }
