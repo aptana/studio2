@@ -41,7 +41,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
 
 import com.aptana.ide.core.AptanaCorePlugin;
@@ -91,7 +93,13 @@ public class SyncingPlugin extends Plugin {
             IPath location = lastState.lookup(new Path("save")); //$NON-NLS-1$
             if (location != null) {
                 IPath absoluteLocation = AptanaCorePlugin.getDefault().getStateLocation().append(location);
-                SiteConnectionManager.getInstance().loadState(absoluteLocation);
+                // only loads it once
+                if (!Platform.getPreferencesService().getBoolean(PLUGIN_ID,
+                        absoluteLocation.toString(), false, null)) {
+                    SiteConnectionManager.getInstance().loadState(absoluteLocation);
+                    (new InstanceScope()).getNode(PLUGIN_ID).putBoolean(
+                            absoluteLocation.toString(), true);
+                }
             }
             ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
         }
