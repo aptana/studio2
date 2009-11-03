@@ -43,8 +43,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.prefs.BackingStoreException;
 
 import com.aptana.ide.core.AptanaCorePlugin;
 
@@ -97,8 +99,12 @@ public class SyncingPlugin extends Plugin {
                 if (!Platform.getPreferencesService().getBoolean(PLUGIN_ID,
                         absoluteLocation.toString(), false, null)) {
                     SiteConnectionManager.getInstance().loadState(absoluteLocation);
-                    (new InstanceScope()).getNode(PLUGIN_ID).putBoolean(
-                            absoluteLocation.toString(), true);
+                    IEclipsePreferences prefs = (new InstanceScope()).getNode(PLUGIN_ID);
+                    prefs.putBoolean(absoluteLocation.toString(), true);
+                    try {
+                        prefs.flush();
+                    } catch (BackingStoreException e) {
+                    }
                 }
             }
             ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
