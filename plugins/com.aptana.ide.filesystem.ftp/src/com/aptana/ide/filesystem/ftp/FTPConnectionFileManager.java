@@ -774,7 +774,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			Policy.checkCanceled(monitor);
 			return new FTPFileUploadOutputStream(uploadFtpClient,
 					new FTPOutputStream(uploadFtpClient, generateTempFileName(path.lastSegment())),
-					path.lastSegment());
+					path.lastSegment(), null);
 		} catch (Exception e) {
 			setMessageLogger(uploadFtpClient, null);
 			if (uploadFtpClient.connected()) {

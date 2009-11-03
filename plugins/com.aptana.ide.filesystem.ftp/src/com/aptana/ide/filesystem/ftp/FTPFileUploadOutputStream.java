@@ -37,6 +37,7 @@ package com.aptana.ide.filesystem.ftp;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 import com.enterprisedt.net.ftp.FTPClient;
 import com.enterprisedt.net.ftp.FTPException;
@@ -51,14 +52,16 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 	private FTPClient ftpClient;
 	private FileTransferOutputStream ftpOutputStream;
 	private String filename;
+	private Date modificationTime;
 	
 	/**
 	 * 
 	 */
-	public FTPFileUploadOutputStream(FTPClient ftpClient, FileTransferOutputStream ftpOutputStream, String filename) {
+	public FTPFileUploadOutputStream(FTPClient ftpClient, FileTransferOutputStream ftpOutputStream, String filename, Date modificationTime) {
 		this.ftpClient = ftpClient;
 		this.ftpOutputStream = ftpOutputStream;
 		this.filename = filename;
+		this.modificationTime = modificationTime;
 	}
 
 	private void safeQuit(boolean failed) {
@@ -98,13 +101,19 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 	public void close() throws IOException {
 		try {
 			ftpOutputStream.close();
-			if (filename != null) {
-				try {
-					ftpClient.rename(ftpOutputStream.getRemoteFile(), filename);
-				} catch (FTPException e) {
-					safeQuit(true);
-					throw new IOException(e.getMessage()); 
+			try {
+				if (modificationTime != null) {
+					ftpClient.setModTime(ftpOutputStream.getRemoteFile(), modificationTime);
 				}
+				if (filename != null) {
+					if (ftpClient.exists(filename)) {
+						ftpClient.delete(filename);
+					}
+					ftpClient.rename(ftpOutputStream.getRemoteFile(), filename);
+				}
+			} catch (FTPException e) {
+				safeQuit(true);
+				throw new IOException(e.getMessage()); 
 			}
 		} finally {
 			safeQuit(false);
