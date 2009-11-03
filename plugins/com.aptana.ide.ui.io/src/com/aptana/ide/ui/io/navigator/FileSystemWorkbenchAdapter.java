@@ -291,7 +291,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
                     }
                 } else {
                     if (bInfo.isDirectory()) {
-                        return -1;
+                        return 1;
                     }
                 }
                 return aInfo.getName().compareToIgnoreCase(bInfo.getName());
