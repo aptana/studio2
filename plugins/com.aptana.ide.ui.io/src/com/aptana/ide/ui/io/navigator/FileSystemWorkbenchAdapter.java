@@ -37,14 +37,11 @@ package com.aptana.ide.ui.io.navigator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.provider.FileInfo;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -72,7 +69,6 @@ import com.aptana.ide.core.io.WorkspaceConnectionPoint;
 import com.aptana.ide.ui.ImageAssociations;
 import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.CoreIOImages;
-import com.aptana.ide.ui.io.FileSystemUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.ImageUtils;
 
@@ -280,23 +276,6 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 		for (IFileInfo fi : fileInfos) {
 			list.add(new FileSystemObject(parent.getChild(fi.getName()), fi));
 		}
-		Collections.sort(list, new Comparator<FileSystemObject>() {
-
-            public int compare(FileSystemObject aObject, FileSystemObject bObject) {
-                IFileInfo aInfo = aObject.getFileInfo();
-                IFileInfo bInfo = bObject.getFileInfo();
-                if (aInfo.isDirectory()) {
-                    if (!bInfo.isDirectory()) {
-                        return -1;
-                    }
-                } else {
-                    if (bInfo.isDirectory()) {
-                        return 1;
-                    }
-                }
-                return aInfo.getName().compareToIgnoreCase(bInfo.getName());
-            }
-        });
 		return list.toArray(new FileSystemObject[list.size()]);
 	}
 
