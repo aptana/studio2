@@ -34,6 +34,8 @@
  */
 package com.aptana.ide.syncing.core;
 
+import java.io.File;
+
 import org.eclipse.core.resources.ISaveContext;
 import org.eclipse.core.resources.ISaveParticipant;
 import org.eclipse.core.resources.ISavedState;
@@ -41,12 +43,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.prefs.BackingStoreException;
 
 import com.aptana.ide.core.AptanaCorePlugin;
 
@@ -96,16 +94,8 @@ public class SyncingPlugin extends Plugin {
             if (location != null) {
                 IPath absoluteLocation = AptanaCorePlugin.getDefault().getStateLocation().append(location);
                 // only loads it once
-                if (!Platform.getPreferencesService().getBoolean(PLUGIN_ID,
-                        absoluteLocation.toString(), false, null)) {
-                    SiteConnectionManager.getInstance().loadState(absoluteLocation);
-                    IEclipsePreferences prefs = (new InstanceScope()).getNode(PLUGIN_ID);
-                    prefs.putBoolean(absoluteLocation.toString(), true);
-                    try {
-                        prefs.flush();
-                    } catch (BackingStoreException e) {
-                    }
-                }
+                SiteConnectionManager.getInstance().loadState(absoluteLocation);
+                absoluteLocation.toFile().renameTo(new File(absoluteLocation.toOSString() + ".bak")); //$NON-NLS-1$
             }
             ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
         }
