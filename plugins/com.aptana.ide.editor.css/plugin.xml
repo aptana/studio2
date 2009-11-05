@@ -7,6 +7,7 @@
             class="com.aptana.ide.editor.css.MultiPageCSSEditor"
             contributorClass="com.aptana.ide.editors.unified.actions.UnifiedActionContributor"
             default="true"
+            extensions="css"
             icon="icons/css.png"
             id="com.aptana.ide.editors.CSSEditor"
             name="%Editor.css.name">
