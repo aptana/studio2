@@ -101,12 +101,13 @@
    <extension
          point="org.eclipse.ui.editors">
          <editor
-            class="com.aptana.ide.editor.html.HTMLEditor"
-            contributorClass="com.aptana.ide.editor.html.actions.HTMLActionContributor"
-            default="true"
-            icon="icons/html.png"
-            id="com.aptana.ide.editors.HTMLEditor"
-            name="%Editor.html.name">
+               class="com.aptana.ide.editor.html.HTMLEditor"
+               contributorClass="com.aptana.ide.editor.html.actions.HTMLActionContributor"
+               default="true"
+               extensions="html,htm,xhtml,shtml"
+               icon="icons/html.png"
+               id="com.aptana.ide.editors.HTMLEditor"
+               name="%Editor.html.name">
             <contentTypeBinding contentTypeId="com.aptana.ide.editor.html.htmlSource"/>
          </editor>
    </extension>

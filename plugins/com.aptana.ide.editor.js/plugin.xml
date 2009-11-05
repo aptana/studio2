@@ -110,12 +110,13 @@
    <extension
          point="org.eclipse.ui.editors">
             <editor
-             class="com.aptana.ide.editor.js.JSEditor"
-             contributorClass="com.aptana.ide.editor.js.actions.JSActionContributor"
-             default="true"
-             icon="icons/js_file.gif"
-             id="com.aptana.ide.editors.JSEditor"
-             name="%Editor.js.name">
+                  class="com.aptana.ide.editor.js.JSEditor"
+                  contributorClass="com.aptana.ide.editor.js.actions.JSActionContributor"
+                  default="true"
+                  extensions="js,sdoc"
+                  icon="icons/js_file.gif"
+                  id="com.aptana.ide.editors.JSEditor"
+                  name="%Editor.js.name">
              <contentTypeBinding contentTypeId="com.aptana.ide.editor.js.jsSource"/>
            </editor>            
    </extension>
