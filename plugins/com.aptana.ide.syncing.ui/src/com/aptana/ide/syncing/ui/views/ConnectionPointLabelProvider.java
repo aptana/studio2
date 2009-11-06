@@ -164,7 +164,7 @@ public class ConnectionPointLabelProvider extends DecoratingLabelProvider implem
     private static String getLastModified(Object element) {
         long timestamp = -1;
         if (element instanceof IResource) {
-            timestamp = ((IResource) element).getModificationStamp();
+            timestamp = ((IResource) element).getLocalTimeStamp();
         } else if (element instanceof IAdaptable) {
             IFileInfo fileInfo = SyncUtils.getFileInfo((IAdaptable) element);
             if (fileInfo != null) {
