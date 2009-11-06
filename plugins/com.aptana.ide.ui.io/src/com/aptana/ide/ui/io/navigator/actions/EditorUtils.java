@@ -35,11 +35,11 @@
 package com.aptana.ide.ui.io.navigator.actions;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -55,7 +55,6 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.progress.UIJob;
 
-import com.aptana.ide.core.FileUtils;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.ui.UIUtils;
@@ -67,8 +66,21 @@ public class EditorUtils {
 
     public static class RemoteFileStoreEditorInput extends FileStoreEditorInput {
 
-        public RemoteFileStoreEditorInput(IFileStore fileStore) {
-            super(fileStore);
+        private IFileStore fRemoteFileStore;
+
+        public RemoteFileStoreEditorInput(IFileStore localFileStore, IFileStore remoteFileStore) {
+            super(localFileStore);
+            fRemoteFileStore = remoteFileStore;
+        }
+
+        @Override
+        public String getName() {
+            return fRemoteFileStore.getName();
+        }
+
+        @Override
+        public String getToolTipText() {
+            return fRemoteFileStore.toString();
         }
 
         @Override
@@ -76,6 +88,19 @@ public class EditorUtils {
             // not to persist for now until we figure out a way to re-associate
             // the local cache copy and the corresponding remote file on startup
             return null;
+        }
+
+        @Override
+        public int hashCode() {
+            return fRemoteFileStore.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof RemoteFileStoreEditorInput) {
+                return fRemoteFileStore.equals(((RemoteFileStoreEditorInput) o).fRemoteFileStore);
+            }
+            return false;
         }
     }
 
@@ -102,7 +127,7 @@ public class EditorUtils {
                                     IEditorPart editorPart = null;
                                     if (page != null) {
                                         IEditorInput editorInput = new RemoteFileStoreEditorInput(
-                                                localFileStore);
+                                                localFileStore, fileStore);
                                         boolean opened = (page.findEditor(editorInput) != null);
 
                                         editorPart = page.openEditor(editorInput, IDE
@@ -194,16 +219,18 @@ public class EditorUtils {
             throws CoreException {
         File file = fileStore.toLocalFile(EFS.NONE, monitor);
         if (file != null) {
+            // the file is already local
             return fileStore;
         }
-        IPath path = new Path(FileUtils.systemTempDir);
-        path = path.append(fileStore.toString());
-        IFileStore localFileStore = EFS.getLocalFileSystem().getStore(path);
-        IFileStore parent = localFileStore.getParent();
-        if (!parent.fetchInfo(EFS.NONE, monitor).exists()) {
-            parent.mkdir(EFS.NONE, monitor);
+        try {
+            file = File.createTempFile(fileStore.getFileSystem().getScheme(), fileStore.getName());
+        } catch (IOException e) {
+            return fileStore;
         }
+        IFileStore localFileStore = EFS.getLocalFileSystem().getStore(
+                new Path(file.getAbsolutePath()));
         fileStore.copy(localFileStore, EFS.OVERWRITE, monitor);
+        file.deleteOnExit();
 
         return localFileStore;
     }
