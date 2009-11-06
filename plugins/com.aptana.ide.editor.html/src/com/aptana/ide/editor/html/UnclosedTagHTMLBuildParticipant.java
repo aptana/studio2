@@ -14,6 +14,7 @@ import com.aptana.ide.editor.html.parsing.HTMLParseState;
 import com.aptana.ide.editor.html.parsing.HTMLUtils;
 import com.aptana.ide.editor.html.parsing.nodes.HTMLElementNode;
 import com.aptana.ide.lexer.Lexeme;
+import com.aptana.ide.lexer.LexemeList;
 import com.aptana.ide.parsing.nodes.IParseNode;
 
 public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
@@ -34,7 +35,12 @@ public class UnclosedTagHTMLBuildParticipant extends HTMLBuildParticipant
 	private Collection<? extends IProblem> findUnopenedLexemes(BuildContext context)
 	{
 		List<IProblem> problems = new ArrayList<IProblem>();
-		for (Lexeme lex : context.getLexemeList().toArray())
+		LexemeList list = context.getLexemeList();
+		if (list == null) {
+		    return problems;
+		}
+		Lexeme[] lexes = list.toArray();
+		for (Lexeme lex : lexes)
 		{
 			if (lex == null || !lex.getLanguage().equals(HTMLMimeType.MimeType))
 				continue;

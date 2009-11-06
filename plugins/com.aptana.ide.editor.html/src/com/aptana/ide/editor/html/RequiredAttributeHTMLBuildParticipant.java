@@ -55,6 +55,9 @@ public class RequiredAttributeHTMLBuildParticipant extends HTMLBuildParticipant
 	private List<IProblem> walk(BuildContext context, IParseNode root)
 	{
 		List<IProblem> problems = new ArrayList<IProblem>();
+		if (root == null) {
+		    return problems;
+		}
 		IParseNode[] children = root.getChildren();
 		for (IParseNode node : children)
 		{
