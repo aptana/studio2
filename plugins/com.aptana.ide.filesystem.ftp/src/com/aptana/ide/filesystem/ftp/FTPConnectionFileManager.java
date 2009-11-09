@@ -68,6 +68,7 @@ import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.ConnectionContext;
 import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.preferences.PreferenceUtils;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.enterprisedt.net.ftp.FTPClient;
@@ -744,10 +745,10 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.ftp.BaseFTPConnectionFileManager#writeFile(org.eclipse.core.runtime.IPath, org.eclipse.core.runtime.IProgressMonitor)
+	 * @see com.aptana.ide.core.ftp.BaseFTPConnectionFileManager#writeFile(org.eclipse.core.runtime.IPath, long, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	protected OutputStream writeFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException {
+	protected OutputStream writeFile(IPath path, long permissions, IProgressMonitor monitor) throws CoreException, FileNotFoundException {
 		monitor.beginTask(Messages.FTPConnectionFileManager_initiating_file_upload, 4);
 		FTPClient uploadFtpClient = new FTPClient();
 		try {
@@ -774,7 +775,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			Policy.checkCanceled(monitor);
 			return new FTPFileUploadOutputStream(uploadFtpClient,
 					new FTPOutputStream(uploadFtpClient, generateTempFileName(path.lastSegment())),
-					path.lastSegment(), null);
+					path.lastSegment(), null, permissions);
 		} catch (Exception e) {
 			setMessageLogger(uploadFtpClient, null);
 			if (uploadFtpClient.connected()) {
@@ -870,6 +871,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 				} catch (FileNotFoundException ignore) {
 				}
 				ftpClient.mkdir(path.toPortableString());
+				changeFilePermissions(path, PreferenceUtils.getDirectoryPermissions(), monitor);
 			} catch (FTPException e) {
 				throwFileNotFound(e, path);
 			}

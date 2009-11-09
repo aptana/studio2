@@ -53,15 +53,17 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 	private FileTransferOutputStream ftpOutputStream;
 	private String filename;
 	private Date modificationTime;
+	private long permissions;
 	
 	/**
 	 * 
 	 */
-	public FTPFileUploadOutputStream(FTPClient ftpClient, FileTransferOutputStream ftpOutputStream, String filename, Date modificationTime) {
+	public FTPFileUploadOutputStream(FTPClient ftpClient, FileTransferOutputStream ftpOutputStream, String filename, Date modificationTime, long permissions) {
 		this.ftpClient = ftpClient;
 		this.ftpOutputStream = ftpOutputStream;
 		this.filename = filename;
 		this.modificationTime = modificationTime;
+		this.permissions = permissions;
 	}
 
 	private void safeQuit(boolean failed) {
@@ -110,6 +112,7 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 						ftpClient.delete(filename);
 					}
 					ftpClient.rename(ftpOutputStream.getRemoteFile(), filename);
+                    ftpClient.site("CHMOD " + Long.toOctalString(permissions) + " " + filename); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			} catch (FTPException e) {
 				safeQuit(true);

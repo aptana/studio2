@@ -62,6 +62,7 @@ import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.URLEncoder;
 import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.InfiniteProgressMonitor;
+import com.aptana.ide.core.io.preferences.PreferenceUtils;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IConnectionFileManager;
 import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
@@ -246,7 +247,14 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 						Messages.BaseFTPConnectionFileManager_file_is_directory, new FileNotFoundException(path.toPortableString())));				
 			}
 			clearCache(path);
-			return writeFile(basePath.append(path), Policy.subMonitorFor(monitor, 1));
+			long permissions;
+			if (fileInfo.exists()) {
+			    permissions = fileInfo.getPermissions();
+			} else {
+			    // new file; uses the user-defined default permissions
+			    permissions = PreferenceUtils.getFilePermissions();
+			}
+			return writeFile(basePath.append(path), permissions, Policy.subMonitorFor(monitor, 1));
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
 					Messages.BaseFTPConnectionFileManager_parent_doesnt_exist, new FileNotFoundException(path.toPortableString())));
@@ -443,7 +451,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 	protected abstract ExtendedFileInfo[] fetchFiles(IPath path, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 	protected abstract String[] listDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 	protected abstract InputStream readFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
-	protected abstract OutputStream writeFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract OutputStream writeFile(IPath path, long permissions, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 	protected abstract void deleteFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 	protected abstract void deleteDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 	protected abstract void createDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;

@@ -42,15 +42,11 @@ import com.aptana.ide.ui.io.IOUIPlugin;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-    private static final long DEFAULT_FILE_PERMISSIONS = 0666;
-    private static final long DEFAULT_DIRECTORY_PERMISSIONS = 0777;
     private static final String DEFAULT_CLOAK_EXPRESSIONS = ".svn;.tmp*~;.settings;CVS;.git;.DS_Store"; //$NON-NLS-1$
 
     @Override
     public void initializeDefaultPreferences() {
         IPreferenceStore store = IOUIPlugin.getDefault().getPreferenceStore();
-        store.setDefault(IPreferenceConstants.FILE_PERMISSION, DEFAULT_FILE_PERMISSIONS);
-        store.setDefault(IPreferenceConstants.DIRECTORY_PERMISSION, DEFAULT_DIRECTORY_PERMISSIONS);
         store
                 .setDefault(IPreferenceConstants.GLOBAL_CLOAKING_EXTENSIONS,
                         DEFAULT_CLOAK_EXPRESSIONS);

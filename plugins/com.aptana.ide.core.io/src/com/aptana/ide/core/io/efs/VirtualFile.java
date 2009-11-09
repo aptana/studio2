@@ -41,6 +41,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.filesystem.IFileTree;
@@ -223,6 +224,7 @@ import com.aptana.ide.core.io.vfs.IFileTreeVisitor;
 	 */
 	@Override
 	public void putInfo(IFileInfo info, int options, IProgressMonitor monitor) throws CoreException {
+	    options &= ~EFS.SET_ATTRIBUTES;
 		fileManager.putInfo(path, info, options, monitor);
 	}
 

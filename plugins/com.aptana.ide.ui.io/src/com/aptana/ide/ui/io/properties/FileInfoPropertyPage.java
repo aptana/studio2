@@ -63,7 +63,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
 
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.preferences.IPreferenceConstants;
+import com.aptana.ide.core.io.preferences.PreferenceUtils;
 import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.aptana.ide.ui.UIUtils;
@@ -211,11 +211,9 @@ public class FileInfoPropertyPage extends PropertyPage implements IWorkbenchProp
     protected void performDefaults() {
         if (fPermissionsGroup != null) {
             if (fFileInfo.isDirectory()) {
-                fPermissionsGroup.setPermissions(doGetPreferenceStore().getLong(
-                        IPreferenceConstants.DIRECTORY_PERMISSION));
+                fPermissionsGroup.setPermissions(PreferenceUtils.getDirectoryPermissions());
             } else {
-                fPermissionsGroup.setPermissions(doGetPreferenceStore().getLong(
-                        IPreferenceConstants.FILE_PERMISSION));
+                fPermissionsGroup.setPermissions(PreferenceUtils.getFilePermissions());
             }
         }
         super.performDefaults();
