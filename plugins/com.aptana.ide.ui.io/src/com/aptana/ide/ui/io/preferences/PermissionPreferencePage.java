@@ -34,7 +34,8 @@
  */
 package com.aptana.ide.ui.io.preferences;
 
-import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -44,9 +45,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.osgi.service.prefs.BackingStoreException;
 
+import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.preferences.IPreferenceConstants;
-import com.aptana.ide.ui.io.IOUIPlugin;
+import com.aptana.ide.core.io.preferences.PreferenceUtils;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -72,10 +75,14 @@ public class PermissionPreferencePage extends PreferencePage implements IWorkben
      * @see org.eclipse.jface.preference.PreferencePage#performOk()
      */
     public boolean performOk() {
-        doGetPreferenceStore().setValue(IPreferenceConstants.FILE_PERMISSION,
-                fFilePermissions.getPermissions());
-        doGetPreferenceStore().setValue(IPreferenceConstants.DIRECTORY_PERMISSION,
-                fDirectoryPermissions.getPermissions());
+        IEclipsePreferences prefs = (new InstanceScope()).getNode(CoreIOPlugin.PLUGIN_ID);
+        prefs.putLong(IPreferenceConstants.FILE_PERMISSION, fFilePermissions.getPermissions());
+        prefs.putLong(IPreferenceConstants.DIRECTORY_PERMISSION, fDirectoryPermissions
+                .getPermissions());
+        try {
+            prefs.flush();
+        } catch (BackingStoreException e) {
+        }
         return super.performOk();
     }
 
@@ -92,14 +99,12 @@ public class PermissionPreferencePage extends PreferencePage implements IWorkben
 
         fFilePermissions = new PermissionsGroup(main);
         fFilePermissions.setText(Messages.PermissionPreferencePage_FileGroupTitle);
-        fFilePermissions.setPermissions(doGetPreferenceStore().getLong(
-                IPreferenceConstants.FILE_PERMISSION));
+        fFilePermissions.setPermissions(PreferenceUtils.getFilePermissions());
         fFilePermissions.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         fDirectoryPermissions = new PermissionsGroup(main);
         fDirectoryPermissions.setText(Messages.PermissionPreferencePage_DirectoryGroupTitle);
-        fDirectoryPermissions.setPermissions(doGetPreferenceStore().getLong(
-                IPreferenceConstants.DIRECTORY_PERMISSION));
+        fDirectoryPermissions.setPermissions(PreferenceUtils.getDirectoryPermissions());
         fDirectoryPermissions.getControl().setLayoutData(
                 new GridData(SWT.FILL, SWT.FILL, true, false));
 
@@ -110,17 +115,10 @@ public class PermissionPreferencePage extends PreferencePage implements IWorkben
      * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
      */
     protected void performDefaults() {
-        fFilePermissions.setPermissions(doGetPreferenceStore().getDefaultLong(
-                IPreferenceConstants.FILE_PERMISSION));
-        fDirectoryPermissions.setPermissions(doGetPreferenceStore().getDefaultLong(
-                IPreferenceConstants.DIRECTORY_PERMISSION));
+        fFilePermissions
+                .setPermissions(com.aptana.ide.core.io.preferences.PreferenceInitializer.DEFAULT_FILE_PERMISSIONS);
+        fDirectoryPermissions
+                .setPermissions(com.aptana.ide.core.io.preferences.PreferenceInitializer.DEFAULT_DIRECTORY_PERMISSIONS);
         super.performDefaults();
-    }
-
-    /**
-     * @see org.eclipse.jface.preference.PreferencePage#doGetPreferenceStore()
-     */
-    protected IPreferenceStore doGetPreferenceStore() {
-        return IOUIPlugin.getDefault().getPreferenceStore();
     }
 }
