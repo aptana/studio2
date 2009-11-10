@@ -41,7 +41,6 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.IOverwriteQuery;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.ui.io.IOUIPlugin;
@@ -66,18 +65,7 @@ public class MoveFilesOperation extends CopyFilesOperation {
         monitor.subTask(MessageFormat.format(Messages.MoveFilesOperation_Subtask_Moving,
                 sourceStore.getName(), destinationStore.getName()));
         try {
-            if (getAlwaysOverwrite()) {
-                sourceStore.move(destinationStore, EFS.OVERWRITE, monitor);
-            } else if (destinationStore.fetchInfo(0, monitor).exists()) {
-                String overwrite = getOverwriteQuery().queryOverwrite(destinationStore.toString());
-                if (overwrite.equals(IOverwriteQuery.ALL) || overwrite.equals(IOverwriteQuery.YES)) {
-                    sourceStore.move(destinationStore, EFS.OVERWRITE, monitor);
-                } else {
-                    success = false;
-                }
-            } else {
-                sourceStore.move(destinationStore, EFS.NONE, monitor);
-            }
+            sourceStore.move(destinationStore, EFS.OVERWRITE, monitor);
         } catch (CoreException e) {
             IdeLog
                     .logError(IOUIPlugin.getDefault(), MessageFormat.format(

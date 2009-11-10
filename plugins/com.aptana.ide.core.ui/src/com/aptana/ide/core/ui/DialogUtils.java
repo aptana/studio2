@@ -70,8 +70,7 @@ public final class DialogUtils {
 	{
 		if(!store.getString(key).equals(MessageDialogWithToggle.ALWAYS))
 		{
-			MessageDialogWithToggle d = MessageDialogWithToggle.openInformation(Display
-					.getCurrent().getActiveShell(), title, 
+			MessageDialogWithToggle d = MessageDialogWithToggle.openInformation(shell, title, 
 					message, Messages.DialogUtils_HideThisMessageInFuture, false,
 					store, key);
 			if(d.getReturnCode() == 3)
@@ -103,8 +102,7 @@ public final class DialogUtils {
 	{
 		if(!store.getString(key).equals(MessageDialogWithToggle.ALWAYS))
 		{
-			MessageDialogWithToggle d = MessageDialogWithToggle.openYesNoQuestion(Display
-					.getCurrent().getActiveShell(), title, 
+			MessageDialogWithToggle d = MessageDialogWithToggle.openYesNoQuestion(shell, title, 
 					message, Messages.DialogUtils_HideThisMessageInFuture, false,
 					store, key);
 			if(d.getReturnCode() == 3)

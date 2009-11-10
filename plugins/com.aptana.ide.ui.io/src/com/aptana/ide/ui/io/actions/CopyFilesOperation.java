@@ -49,16 +49,15 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.IOverwriteQuery;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.core.ui.DialogUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
+import com.aptana.ide.ui.io.preferences.IPreferenceConstants;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -79,45 +78,6 @@ public class CopyFilesOperation {
      * Overwrite-all flag
      */
     private boolean fAlwaysOverwrite;
-
-    private IOverwriteQuery fOverwriteQuery = new IOverwriteQuery() {
-
-        public String queryOverwrite(String pathString) {
-            if (fAlwaysOverwrite) {
-                return ALL;
-            }
-
-            final String returnCode[] = { CANCEL };
-            final String msg = MessageFormat.format(Messages.CopyFilesOperation_OverwriteWarning,
-                    pathString);
-            final String[] options = { IDialogConstants.YES_LABEL,
-                    IDialogConstants.YES_TO_ALL_LABEL, IDialogConstants.NO_LABEL,
-                    IDialogConstants.CANCEL_LABEL };
-            fShell.getDisplay().syncExec(new Runnable() {
-
-                public void run() {
-                    MessageDialog dialog = new MessageDialog(fShell,
-                            Messages.CopyFilesOperation_QuestionTitle, null, msg,
-                            MessageDialog.QUESTION, options, 0) {
-
-                        protected int getShellStyle() {
-                            return super.getShellStyle() | SWT.SHEET;
-                        }
-                    };
-                    dialog.open();
-                    int returnVal = dialog.getReturnCode();
-                    String[] returnCodes = { YES, ALL, NO, CANCEL };
-                    returnCode[0] = returnVal == -1 ? CANCEL : returnCodes[returnVal];
-                }
-            });
-            if (returnCode[0] == ALL) {
-                fAlwaysOverwrite = true;
-            } else if (returnCode[0] == CANCEL) {
-                fCancelled = true;
-            }
-            return returnCode[0];
-        }
-    };
 
     /**
      * Constructor.
@@ -179,6 +139,20 @@ public class CopyFilesOperation {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
+        fShell.getDisplay().syncExec(new Runnable() {
+
+            public void run() {
+                int retCode = DialogUtils.openIgnoreMessageDialogConfirm(fShell,
+                        Messages.CopyFilesOperation_OverwriteTitle,
+                        Messages.CopyFilesOperation_OverwriteWarning, IOUIPlugin.getDefault()
+                                .getPreferenceStore(), IPreferenceConstants.COPY_OVERWRITE);
+                fAlwaysOverwrite = (retCode == Window.OK);
+            }
+        });
+        if (!fAlwaysOverwrite) {
+            return Status.CANCEL_STATUS;
+        }
+
         int successCount = 0;
         for (IFileStore source : sources) {
             if (copyFile(source, destination.getChild(source.getName()), monitor)) {
@@ -209,6 +183,21 @@ public class CopyFilesOperation {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
+        fShell.getDisplay().syncExec(new Runnable() {
+
+            public void run() {
+                int retCode = DialogUtils.openIgnoreMessageDialogConfirm(fShell,
+                        Messages.CopyFilesOperation_OverwriteTitle,
+                        Messages.CopyFilesOperation_OverwriteWarning, IOUIPlugin.getDefault()
+                                .getPreferenceStore(), IPreferenceConstants.COPY_OVERWRITE);
+                fAlwaysOverwrite = (retCode == Window.OK);
+            }
+        });
+
+        if (!fAlwaysOverwrite) {
+            return Status.CANCEL_STATUS;
+        }
+
         int successCount = 0;
         for (IFileStore source : sources) {
             if (copyFile(source, sourceRoot, destinationRoot, monitor)) {
@@ -276,18 +265,7 @@ public class CopyFilesOperation {
         monitor.subTask(MessageFormat.format(Messages.CopyFilesOperation_Copy_Subtask, sourceStore
                 .getName(), destinationStore.getName()));
         try {
-            if (fAlwaysOverwrite) {
-                sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
-            } else if (destinationStore.fetchInfo(0, monitor).exists()) {
-                String overwrite = fOverwriteQuery.queryOverwrite(destinationStore.toString());
-                if (overwrite.equals(IOverwriteQuery.ALL) || overwrite.equals(IOverwriteQuery.YES)) {
-                    sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
-                } else {
-                    success = false;
-                }
-            } else {
-                sourceStore.copy(destinationStore, EFS.NONE, monitor);
-            }
+            sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
         } catch (CoreException e) {
             IdeLog
                     .logError(IOUIPlugin.getDefault(), MessageFormat.format(
@@ -365,14 +343,6 @@ public class CopyFilesOperation {
             success = false;
         }
         return success;
-    }
-
-    protected boolean getAlwaysOverwrite() {
-        return fAlwaysOverwrite;
-    }
-
-    protected IOverwriteQuery getOverwriteQuery() {
-        return fOverwriteQuery;
     }
 
     private void copyFiles(final IFileStore[] sources, final IFileStore destination,

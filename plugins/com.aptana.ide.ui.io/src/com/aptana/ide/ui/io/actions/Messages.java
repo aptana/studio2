@@ -47,7 +47,7 @@ public class Messages extends NLS {
     public static String CopyFilesOperation_ERR_FailedToCopyToDest;
     public static String CopyFilesOperation_ERR_SourceInDestination;
     public static String CopyFilesOperation_OverwriteWarning;
-    public static String CopyFilesOperation_QuestionTitle;
+    public static String CopyFilesOperation_OverwriteTitle;
     public static String CopyFilesOperation_Status_OK;
 
     public static String MoveFilesOperation_ERR_FailedToMove;
