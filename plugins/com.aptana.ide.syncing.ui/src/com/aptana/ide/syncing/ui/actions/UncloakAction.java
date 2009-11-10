@@ -45,9 +45,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.aptana.ide.core.io.preferences.CloakingUtils;
 import com.aptana.ide.syncing.ui.decorators.DecoratorUtils;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
-import com.aptana.ide.ui.io.actions.CloakingUtils;
 
 /**
  * Cloaks a specific file type so the files will be ignored during syncing.

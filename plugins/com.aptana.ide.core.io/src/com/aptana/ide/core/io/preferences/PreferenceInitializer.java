@@ -44,11 +44,13 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
     public static final long DEFAULT_FILE_PERMISSIONS = 0666;
     public static final long DEFAULT_DIRECTORY_PERMISSIONS = 0777;
+    public static final String DEFAULT_CLOAK_EXPRESSIONS = ".svn;.tmp*~;.settings;CVS;.git;.DS_Store"; //$NON-NLS-1$
 
     @Override
     public void initializeDefaultPreferences() {
         IEclipsePreferences prefs = (new DefaultScope()).getNode(CoreIOPlugin.PLUGIN_ID);
         prefs.putLong(IPreferenceConstants.FILE_PERMISSION, DEFAULT_FILE_PERMISSIONS);
         prefs.putLong(IPreferenceConstants.DIRECTORY_PERMISSION, DEFAULT_DIRECTORY_PERMISSIONS);
+        prefs.put(IPreferenceConstants.GLOBAL_CLOAKING_EXTENSIONS, DEFAULT_CLOAK_EXPRESSIONS);
     }
 }

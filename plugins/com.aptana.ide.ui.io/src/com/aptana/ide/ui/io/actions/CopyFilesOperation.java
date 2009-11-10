@@ -53,6 +53,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
 import com.aptana.ide.core.IdeLog;
+import com.aptana.ide.core.io.preferences.CloakingUtils;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.DialogUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;

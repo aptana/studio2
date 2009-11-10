@@ -42,7 +42,6 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorInput;
@@ -56,6 +55,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.progress.UIJob;
 
 import com.aptana.ide.core.StringUtils;
+import com.aptana.ide.core.io.efs.LocalFile;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.ui.UIUtils;
 
@@ -227,8 +227,7 @@ public class EditorUtils {
         } catch (IOException e) {
             return fileStore;
         }
-        IFileStore localFileStore = EFS.getLocalFileSystem().getStore(
-                new Path(file.getAbsolutePath()));
+        IFileStore localFileStore = new LocalFile(file);
         fileStore.copy(localFileStore, EFS.OVERWRITE, monitor);
         file.deleteOnExit();
 

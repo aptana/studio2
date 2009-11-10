@@ -42,13 +42,10 @@ import com.aptana.ide.ui.io.IOUIPlugin;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-    private static final String DEFAULT_CLOAK_EXPRESSIONS = ".svn;.tmp*~;.settings;CVS;.git;.DS_Store"; //$NON-NLS-1$
-
     @Override
     public void initializeDefaultPreferences() {
         IPreferenceStore store = IOUIPlugin.getDefault().getPreferenceStore();
-        store
-                .setDefault(IPreferenceConstants.GLOBAL_CLOAKING_EXTENSIONS,
-                        DEFAULT_CLOAK_EXPRESSIONS);
+        store.setDefault(IPreferenceConstants.GLOBAL_CLOAKING_EXTENSIONS,
+                com.aptana.ide.core.io.preferences.PreferenceInitializer.DEFAULT_CLOAK_EXPRESSIONS);
     }
 }

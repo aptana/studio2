@@ -34,7 +34,10 @@
  */
 package com.aptana.ide.syncing.ui.preferences;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -50,7 +53,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.osgi.service.prefs.BackingStoreException;
 
+import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.preferences.PreferenceInitializer;
 import com.aptana.ide.core.ui.preferences.FileExtensionPreferencePage;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.decorators.DecoratorUtils;
@@ -82,6 +88,16 @@ public class SyncPreferencePage extends FileExtensionPreferencePage {
     }
 
     @Override
+    protected Control createContents(Composite parent) {
+        // transfers the preferences
+        String value = Platform.getPreferencesService().getString(CoreIOPlugin.PLUGIN_ID,
+                doGetPreferenceID(), PreferenceInitializer.DEFAULT_CLOAK_EXPRESSIONS, null);
+        doGetPreferenceStore().setValue(doGetPreferenceID(), value);
+
+        return super.createContents(parent);
+    }
+
+    @Override
     protected String getTableDescription() {
         return Messages.SyncPreferencePage_LBL_Description;
     }
@@ -104,6 +120,13 @@ public class SyncPreferencePage extends FileExtensionPreferencePage {
     @Override
     public boolean performOk() {
         boolean ret = super.performOk();
+        String value = doGetPreferenceStore().getString(doGetPreferenceID());
+        IEclipsePreferences prefs = (new InstanceScope()).getNode(CoreIOPlugin.PLUGIN_ID);
+        prefs.put(doGetPreferenceID(), value);
+        try {
+            prefs.flush();
+        } catch (BackingStoreException e) {
+        }
         DecoratorUtils.updateCloakDecorator();
 
         return ret;

@@ -70,6 +70,7 @@ import org.junit.Test;
 import com.aptana.ide.core.io.ConnectionContext;
 import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.efs.LocalFile;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
@@ -803,7 +804,7 @@ public abstract class CommonConnectionTest {
 		File file = File.createTempFile("testMoveFileToLocal", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
 		file.delete();
 		file.deleteOnExit();
-		IFileStore fs2 = EFS.getLocalFileSystem().fromLocalFile(file);
+		IFileStore fs2 = new LocalFile(file);
 		assertNotNull(fs2);
 		assertFalse(fs2.fetchInfo().exists());
 		fs.move(fs2, EFS.NONE, null);
@@ -829,7 +830,7 @@ public abstract class CommonConnectionTest {
 		File file = File.createTempFile("testMoveFolderToLocal", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
 		file.delete();
 		file.deleteOnExit();
-		IFileStore fs2 = EFS.getLocalFileSystem().fromLocalFile(file);
+		IFileStore fs2 = new LocalFile(file);
 		assertNotNull(fs2);
 		assertFalse(fs2.fetchInfo().exists());
 		fs.move(fs2, EFS.NONE, null);

@@ -38,7 +38,6 @@ package com.aptana.ide.core.io;
 import java.io.File;
 import java.net.URI;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -46,6 +45,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.epl.IMemento;
+import com.aptana.ide.core.io.efs.LocalFile;
 
 /**
  * @author Max Stepanov
@@ -104,7 +104,7 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	 */
 	@Override
 	public URI getRootURI() {
-		return EFS.getLocalFileSystem().getStore(path).toURI();
+		return (new LocalFile(path.toFile())).toURI();
 	}
 
 	/* (non-Javadoc)
@@ -112,7 +112,7 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	 */
 	@Override
 	public IFileStore getRoot() throws CoreException {
-		return EFS.getLocalFileSystem().getStore(path);
+		return new LocalFile(path.toFile());
 	}
 
     /* (non-Javadoc)

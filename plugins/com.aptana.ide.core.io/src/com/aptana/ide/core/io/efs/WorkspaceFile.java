@@ -64,6 +64,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
 
+import com.aptana.ide.core.io.preferences.CloakingUtils;
+
 /**
  * @author Max Stepanov
  *
@@ -212,6 +214,10 @@ import org.eclipse.osgi.util.NLS;
 	 */
 	@Override
 	public void copy(IFileStore destination, int options, IProgressMonitor monitor) throws CoreException {
+	    if (CloakingUtils.isFileCloaked(this)) {
+	        // this file is cloaked from transferring
+	        return;
+	    }
 		ensureLocalFileStore();
 		if (localFileStore != null) {
 			localFileStore.copy(destination, options, monitor);
@@ -403,7 +409,7 @@ import org.eclipse.osgi.util.NLS;
 		ensureResource();
 		if (localFileStore == null) {
 			if (resource != null && resource.exists()) {
-				localFileStore = EFS.getLocalFileSystem().getStore(resource.getLocation());
+				localFileStore = new LocalFile(resource.getLocation().toFile());
 			} else if (force) {
 				IResource parent = workspaceRoot;
 				IPath relativePath = null;
@@ -422,7 +428,7 @@ import org.eclipse.osgi.util.NLS;
 					}
 				}
 				if (parent != null & relativePath != null) {
-					localFileStore = EFS.getLocalFileSystem().getStore(parent.getLocation()).getFileStore(relativePath);
+					localFileStore = new LocalFile(parent.getLocation().toFile()).getFileStore(relativePath);
 				}
 				
 			}

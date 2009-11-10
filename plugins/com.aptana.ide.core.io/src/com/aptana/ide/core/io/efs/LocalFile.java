@@ -38,26 +38,51 @@ package com.aptana.ide.core.io.efs;
 import java.io.File;
 
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 
+import com.aptana.ide.core.io.preferences.CloakingUtils;
 
 /**
- * @author Max Stepanov
- *
+ * @author Michael Xia (mxia@aptana.com)
  */
-public final class EFSUtils {
+@SuppressWarnings("restriction")
+public class LocalFile extends org.eclipse.core.internal.filesystem.local.LocalFile {
 
-	/**
-	 * 
-	 */
-	private EFSUtils() {
-	}
+    public LocalFile(File file) {
+        super(file);
+    }
 
-	public static IFileStore getFileStore(IResource resource) {
-		return WorkspaceFileSystem.getInstance().getStore(resource.getFullPath());
-	}
-	
-	public static IFileStore getFileStore(File file) {
-		return new LocalFile(file);
-	}
+    @Override
+    public void copy(IFileStore destFile, int options, IProgressMonitor monitor)
+            throws CoreException {
+        if (CloakingUtils.isFileCloaked(this)) {
+            // the file is cloaked from transferring
+            return;
+        }
+        super.copy(destFile, options, monitor);
+    }
+
+    @Override
+    public IFileStore getChild(IPath path) {
+        return new LocalFile(new File(file, path.toOSString()));
+    }
+
+    @Override
+    public IFileStore getFileStore(IPath path) {
+        return new LocalFile(new Path(file.getPath()).append(path).toFile());
+    }
+
+    @Override
+    public IFileStore getChild(String name) {
+        return new LocalFile(new File(file, name));
+    }
+
+    @Override
+    public IFileStore getParent() {
+        File parent = file.getParentFile();
+        return parent == null ? null : new LocalFile(parent);
+    }
 }

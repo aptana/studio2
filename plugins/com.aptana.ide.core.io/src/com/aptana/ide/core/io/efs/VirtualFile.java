@@ -54,6 +54,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.URLEncoder;
 import com.aptana.ide.core.io.InfiniteProgressMonitor;
+import com.aptana.ide.core.io.preferences.CloakingUtils;
 import com.aptana.ide.core.io.vfs.IConnectionFileManager;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.aptana.ide.core.io.vfs.IFileTreeVisitor;
@@ -190,6 +191,10 @@ import com.aptana.ide.core.io.vfs.IFileTreeVisitor;
 	 */
 	@Override
 	public void copy(IFileStore destination, int options, IProgressMonitor monitor) throws CoreException {
+	    if (CloakingUtils.isFileCloaked(this)) {
+	        // file is cloaked from transferring
+	        return;
+	    }
 		if (destination instanceof VirtualFile) {
 			if (((VirtualFile) destination).toCanonicalURI().equals(toCanonicalURI())) {
 				//nothing to do

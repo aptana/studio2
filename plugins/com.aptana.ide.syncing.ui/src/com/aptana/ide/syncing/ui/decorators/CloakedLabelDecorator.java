@@ -41,10 +41,10 @@ import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
+import com.aptana.ide.core.io.preferences.CloakingUtils;
 import com.aptana.ide.syncing.core.SiteConnectionUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
-import com.aptana.ide.ui.io.actions.CloakingUtils;
 
 /**
  * A class to decorate which objects are cloaked from synchronization.
