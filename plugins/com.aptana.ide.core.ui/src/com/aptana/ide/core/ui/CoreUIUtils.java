@@ -47,10 +47,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.internal.boot.PlatformURLHandler;
+import org.eclipse.core.internal.filesystem.local.LocalFile;
 import org.eclipse.core.internal.registry.IRegistryConstants;
 import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IContainer;
@@ -1146,8 +1145,7 @@ public final class CoreUIUtils
 		IEditorInput input = null;
 		try
 		{
-			IFileSystem fs = EFS.getLocalFileSystem();
-			IFileStore localFile = fs.fromLocalFile(file);
+			IFileStore localFile = new LocalFile(file);
 			input = new FileStoreEditorInput(localFile);
 		}
 		catch (Exception e)
@@ -1169,8 +1167,7 @@ public final class CoreUIUtils
 		IEditorInput input = null;
 		try
 		{
-			IFileSystem fs = EFS.getLocalFileSystem();
-			IFileStore localFile = fs.fromLocalFile(file);
+			IFileStore localFile = new LocalFile(file);
 			input = new NonExistingFileEditorInput(localFile, fileName);
 		}
 		catch (Exception e)
