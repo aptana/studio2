@@ -459,9 +459,17 @@
             class="com.aptana.ide.ui.io.navigator.actions.FileSystemEditActionProvider"
             id="com.aptana.ide.ui.io.navigator.actions.FileSystemEditActions">
          <enablement>
-            <instanceof
-                  value="com.aptana.ide.ui.io.navigator.FileSystemObject">
-            </instanceof>
+            <or>
+               <instanceof
+                     value="com.aptana.ide.ui.io.navigator.FileSystemObject">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.core.io.LocalRoot">
+               </instanceof>
+               <instanceof
+                     value="com.aptana.ide.core.io.IConnectionPoint">
+               </instanceof>
+            </or>
          </enablement>
       </actionProvider>
       <actionProvider

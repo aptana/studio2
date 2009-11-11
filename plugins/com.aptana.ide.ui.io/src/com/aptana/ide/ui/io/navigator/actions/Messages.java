@@ -46,6 +46,9 @@ public class Messages extends NLS {
     public static String EditorUtils_MSG_RemotelySaving;
     public static String EditorUtils_OpenFileJob_Title;
 
+    public static String FileSystemCopyAction_TTP;
+    public static String FileSystemCopyAction_TXT;
+
     public static String FileSystemDeleteAction_Confirm_MultipleFiles;
     public static String FileSystemDeleteAction_Confirm_SingleFile;
     public static String FileSystemDeleteAction_Confirm_Title;
@@ -56,6 +59,9 @@ public class Messages extends NLS {
     public static String FileSystemDeleteAction_Text;
 
     public static String FileSystemNewAction_Text;
+
+    public static String FileSystemPasteAction_TTP;
+    public static String FileSystemPasteAction_TXT;
 
     public static String FileSystemRefreshAction_Text;
     public static String FileSystemRefreshAction_ToolTip;
