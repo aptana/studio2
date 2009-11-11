@@ -81,9 +81,9 @@ public class FileSystemEditActionGroup extends ActionGroup {
     public void fillContextMenu(IMenuManager menu) {
         IStructuredSelection selection = getSelection();
         fCopyAction.selectionChanged(selection);
-        menu.appendToGroup(ICommonMenuConstants.GROUP_EDIT, fCopyAction);
+        //menu.appendToGroup(ICommonMenuConstants.GROUP_EDIT, fCopyAction);
         fPasteAction.selectionChanged(selection);
-        menu.appendToGroup(ICommonMenuConstants.GROUP_EDIT, fPasteAction);
+        //menu.appendToGroup(ICommonMenuConstants.GROUP_EDIT, fPasteAction);
 
         if (selection != null && !selection.isEmpty()) {
             Object[] elements = selection.toArray();
