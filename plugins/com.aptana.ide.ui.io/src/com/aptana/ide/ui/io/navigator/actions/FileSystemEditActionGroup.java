@@ -106,8 +106,8 @@ public class FileSystemEditActionGroup extends ActionGroup {
             fTextActionHandler = new TextActionHandler(actionBars);
         }
 
-        fTextActionHandler.setCopyAction(fCopyAction);
-        fTextActionHandler.setPasteAction(fPasteAction);
+        // fTextActionHandler.setCopyAction(fCopyAction);
+        // fTextActionHandler.setPasteAction(fPasteAction);
         fTextActionHandler.setDeleteAction(fDeleteAction);
         updateActionBars();
         fTextActionHandler.updateActionBars();
@@ -146,13 +146,13 @@ public class FileSystemEditActionGroup extends ActionGroup {
         fPasteAction.setDisabledImageDescriptor(images
                 .getImageDescriptor(ISharedImages.IMG_TOOL_PASTE_DISABLED));
         fPasteAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
-        fPasteAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_PASTE);
+        // fPasteAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_PASTE);
 
         fCopyAction = new FileSystemCopyAction(fShell, fClipboard, fPasteAction);
         fCopyAction.setDisabledImageDescriptor(images
                 .getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
         fCopyAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
-        fCopyAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
+        // fCopyAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
 
         fDeleteAction = new FileSystemDeleteAction(fShell);
         fDeleteAction.setDisabledImageDescriptor(images
