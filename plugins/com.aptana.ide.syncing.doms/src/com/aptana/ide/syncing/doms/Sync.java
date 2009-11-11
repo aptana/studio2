@@ -40,14 +40,18 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IURIEditorInput;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.part.FileEditorInput;
 
 import com.aptana.ide.core.ui.CoreUIUtils;
@@ -66,9 +70,11 @@ public final class Sync {
     public static void uploadCurrentEditor() {
         IEditorPart editor = CoreUIUtils.getActiveEditor();
         if (editor == null) {
-            MessageDialog.openError(Display.getDefault().getActiveShell(),
-                    Messages.Sync_TTL_UnableToUpload,
-                    Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToUpload);
+            if (!uploadCurrentSelection()) {
+                MessageDialog.openError(Display.getDefault().getActiveShell(),
+                        Messages.Sync_TTL_UnableToUpload,
+                        Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToUpload);
+            }
             return;
         }
         IEditorInput input = editor.getEditorInput();
@@ -83,7 +89,33 @@ public final class Sync {
                 upload(EFS.getStore(editorInput.getURI()));
             } catch (CoreException e) {
             }
+        } else {
+            uploadCurrentSelection();
         }
+    }
+
+    public static boolean uploadCurrentSelection() {
+        try {
+            IViewPart viewPart = CoreUIUtils.findView("com.aptana.ide.ui.io.fileExplorerView"); //$NON-NLS-1$
+            if (viewPart != null && viewPart instanceof CommonNavigator) {
+                ISelection selection = ((CommonNavigator) viewPart).getCommonViewer()
+                        .getSelection();
+                if (selection instanceof IStructuredSelection) {
+                    upload((IStructuredSelection) selection);
+                    return true;
+                }
+            }
+        } catch (PartInitException e) {
+        }
+        return false;
+    }
+
+    public static void upload(IStructuredSelection selection) {
+        UploadAction action = new UploadAction();
+        action.setActivePart(null, PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                .getActivePage().getActivePart());
+        action.setSelection(selection);
+        action.run(null);
     }
 
     /**
@@ -93,11 +125,7 @@ public final class Sync {
      *            the IAdaptable object
      */
     public static void upload(IAdaptable file) {
-        UploadAction action = new UploadAction();
-        action.setActivePart(null, PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                .getActivePage().getActivePart());
-        action.setSelection(new StructuredSelection(file));
-        action.run(null);
+         upload(new StructuredSelection(file));
     }
 
     /**
@@ -119,9 +147,11 @@ public final class Sync {
     public static void downloadCurrentEditor() {
         IEditorPart editor = CoreUIUtils.getActiveEditor();
         if (editor == null) {
-            MessageDialog.openError(Display.getDefault().getActiveShell(),
-                    Messages.Sync_TTL_UnableToDownload,
-                    Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToDownload);
+            if (!downloadCurrentSelection()) {
+                MessageDialog.openError(Display.getDefault().getActiveShell(),
+                        Messages.Sync_TTL_UnableToDownload,
+                        Messages.Sync_ERR_YouMustHaveACurrentlyOpenEditorToDownload);
+            }
             return;
         }
         IEditorInput input = editor.getEditorInput();
@@ -136,7 +166,33 @@ public final class Sync {
                 download(EFS.getStore(editorInput.getURI()));
             } catch (CoreException e) {
             }
+        } else {
+            downloadCurrentSelection();
         }
+    }
+
+    public static boolean downloadCurrentSelection() {
+        try {
+            IViewPart viewPart = CoreUIUtils.findView("com.aptana.ide.ui.io.fileExplorerView"); //$NON-NLS-1$
+            if (viewPart != null && viewPart instanceof CommonNavigator) {
+                ISelection selection = ((CommonNavigator) viewPart).getCommonViewer()
+                        .getSelection();
+                if (selection instanceof IStructuredSelection) {
+                    download((IStructuredSelection) selection);
+                    return true;
+                }
+            }
+        } catch (PartInitException e) {
+        }
+        return false;
+    }
+
+    public static void download(IStructuredSelection selection) {
+        DownloadAction action = new DownloadAction();
+        action.setActivePart(null, PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                .getActivePage().getActivePart());
+        action.setSelection(selection);
+        action.run(null);
     }
 
     /**
@@ -146,11 +202,7 @@ public final class Sync {
      *            the IAdaptable object
      */
     public static void download(IAdaptable file) {
-        DownloadAction action = new DownloadAction();
-        action.setActivePart(null, PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                .getActivePage().getActivePart());
-        action.setSelection(new StructuredSelection(file));
-        action.run(null);
+        download(new StructuredSelection(file));
     }
 
     /**
