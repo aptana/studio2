@@ -120,8 +120,10 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 		if (file.exists()) {
 		    connections.clear();
 		    unresolvedConnections.clear();
+
+		    FileReader reader = null;
 			try {
-				FileReader reader = new FileReader(file);
+				reader = new FileReader(file);
 				XMLMemento memento = XMLMemento.createReadRoot(reader);
 				for (IMemento child : memento.getChildren(ELEMENT_CONNECTION)) {
 					ConnectionPoint connectionPoint = restoreConnectionPoint(child, null);
@@ -133,10 +135,17 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
 				}
 			} catch (IOException e) {
 			} catch (CoreException e) {
+			} finally {
+			    if (reader != null) {
+			        try {
+                        reader.close();
+                    } catch (IOException e) {
+                    }
+			    }
 			}
 		}
 	}
-	
+
 	/**
 	 * saveState
 	 * @param path
@@ -156,14 +165,22 @@ import com.aptana.ide.core.io.events.IConnectionPointListener;
                 memento.copyChild(child);
             }
         }
+        FileWriter writer = null;
 		try {
-			FileWriter writer = new FileWriter(path.toFile());
+			writer = new FileWriter(path.toFile());
 			memento.save(writer);
 			isChanged();
 		} catch (IOException e) {
+		} finally {
+		    if (writer != null) {
+		        try {
+                    writer.close();
+                } catch (IOException e) {
+                }
+		    }
 		}
 	}
-	
+
 	/**
 	 * isChanged
 	 * @return

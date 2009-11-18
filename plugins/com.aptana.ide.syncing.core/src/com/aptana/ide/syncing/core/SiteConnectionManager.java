@@ -102,8 +102,10 @@ public class SiteConnectionManager implements ISiteConnectionManager {
 		File file = path.toFile();
 		if (file.exists()) {
 		    connections.clear();
+
+		    FileReader reader = null;
 			try {
-				FileReader reader = new FileReader(file);
+				reader = new FileReader(file);
 				XMLMemento memento = XMLMemento.createReadRoot(reader);
 				for (IMemento child : memento.getChildren(ELEMENT_SITE)) {
 					SiteConnection siteConnection = restoreConnection(child);
@@ -122,6 +124,13 @@ public class SiteConnectionManager implements ISiteConnectionManager {
                     IdeLog.logError(SyncingPlugin.getDefault(),
                             Messages.SiteConnectionManager_ERR_FailedToLoadConnections, e1);
                 }
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                    }
+                }
             }
 		}
 	}
@@ -138,11 +147,19 @@ public class SiteConnectionManager implements ISiteConnectionManager {
                 child.putMemento(storeConnection(siteConnection));
             }
         }
+        FileWriter writer = null;
 		try {
-			FileWriter writer = new FileWriter(path.toFile());
+			writer = new FileWriter(path.toFile());
 			memento.save(writer);
 			isChanged();
 		} catch (IOException e) {
+		} finally {
+		    if (writer != null) {
+		        try {
+                    writer.close();
+                } catch (IOException e) {
+                }
+		    }
 		}
 	}
 
@@ -288,7 +305,6 @@ public class SiteConnectionManager implements ISiteConnectionManager {
                 } catch (IOException e) {
                 }
             }
-
         }
 
         String s = contents.toString();

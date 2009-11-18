@@ -85,8 +85,9 @@ public class DefaultSiteConnection extends SiteConnection {
     protected void loadState(IPath path) {
         File file = path.toFile();
         if (file.exists()) {
+            FileReader reader = null;
             try {
-                FileReader reader = new FileReader(file);
+                reader = new FileReader(file);
                 XMLMemento memento = XMLMemento.createReadRoot(reader);
                 loadState(memento.getChild(ELEMENT_SITE));
 
@@ -98,6 +99,13 @@ public class DefaultSiteConnection extends SiteConnection {
                 fInstance.setDestination(null);
             } catch (IOException e) {
             } catch (CoreException e) {
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                    }
+                }
             }
         }
     }
@@ -110,11 +118,19 @@ public class DefaultSiteConnection extends SiteConnection {
     protected void saveState(IPath path) {
         XMLMemento memento = XMLMemento.createWriteRoot(ELEMENT_ROOT);
         saveState(memento.createChild(ELEMENT_SITE));
+        FileWriter writer = null;
         try {
-            FileWriter writer = new FileWriter(path.toFile());
+            writer = new FileWriter(path.toFile());
             memento.save(writer);
             isChanged();
         } catch (IOException e) {
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                }
+            }
         }
     }
 

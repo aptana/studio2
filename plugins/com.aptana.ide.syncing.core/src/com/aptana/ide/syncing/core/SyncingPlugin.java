@@ -88,17 +88,33 @@ public class SyncingPlugin extends Plugin {
 
 		// For 1.5 compatibility
         lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(
-                AptanaCorePlugin.getDefault(), new WorkspaceSaveParticipant());
+                AptanaCorePlugin.getDefault(), new ISaveParticipant() {
+
+                    public void doneSaving(ISaveContext context) {
+                    }
+
+                    public void prepareToSave(ISaveContext context) throws CoreException {
+                    }
+
+                    public void rollback(ISaveContext context) {
+                    }
+
+                    public void saving(ISaveContext context) throws CoreException {
+                    }
+                });
         if (lastState != null) {
             IPath location = lastState.lookup(new Path("save")); //$NON-NLS-1$
             if (location != null) {
                 IPath absoluteLocation = AptanaCorePlugin.getDefault().getStateLocation().append(location);
                 // only loads it once
                 SiteConnectionManager.getInstance().loadState(absoluteLocation);
-                absoluteLocation.toFile().renameTo(new File(absoluteLocation.toOSString() + ".bak")); //$NON-NLS-1$
+                File file = absoluteLocation.toFile();
+                if (file.renameTo(new File(absoluteLocation.toOSString() + ".bak"))) { //$NON-NLS-1$
+                    file.delete();
+                }
             }
-            ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
         }
+        ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
 	}
 
 	/*
