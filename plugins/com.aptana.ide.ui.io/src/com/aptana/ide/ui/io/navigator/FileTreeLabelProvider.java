@@ -36,8 +36,7 @@
 package com.aptana.ide.ui.io.navigator;
 
 import org.eclipse.ui.internal.navigator.extensions.SafeDelegateCommonLabelProvider;
-
-import com.aptana.ide.ui.UIPlugin;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
  * @author Max Stepanov
@@ -50,7 +49,7 @@ public class FileTreeLabelProvider extends SafeDelegateCommonLabelProvider {
 	 * @param labelProvider
 	 */
 	public FileTreeLabelProvider() {
-		super(UIPlugin.getDecoratingWorkbenchLabelProvider());
+		super(new WorkbenchLabelProvider());
 	}
 
 }
