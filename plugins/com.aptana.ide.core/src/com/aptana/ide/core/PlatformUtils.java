@@ -333,7 +333,7 @@ public final class PlatformUtils
 	 * @param path
 	 * @return expanded environment variable
 	 */
-	public static String expandEnvironmentStrings(String path)
+	public static synchronized String expandEnvironmentStrings(String path)
 	{
 		if (Platform.OS_WIN32.equals(Platform.getOS()))
 		{

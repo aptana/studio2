@@ -589,8 +589,12 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 	}
 	
 	public void validate() {
+		Button button = getButton(OK);
+		if (button == null) {
+			return;
+		}
 		boolean valid = isValid();
-		getButton(OK).setEnabled(valid);
+		button.setEnabled(valid);
 		testButton.setEnabled(valid);
 		browseButton.setEnabled(valid);
 		advancedOptions.setValid(valid);
