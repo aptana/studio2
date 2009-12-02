@@ -241,7 +241,7 @@ public class FTPAdvancedOptionsComposite extends Composite implements IOptionsCo
 			port = Integer.parseInt(portText.getText());
 		} catch (NumberFormatException e) {
 		}
-		if (port <= 0 || port > Short.MAX_VALUE) {
+		if (port <= 0) {
 			return "Please specify correct port number";
 		}
 		return null;
