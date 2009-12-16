@@ -24,7 +24,7 @@ function commandService()
 function preExecute(commandId, event) {
 	
 	// if we see a save command
-	if (commandId == "com.aptana.ide.editors.views.actions.actionKeyCommand")
+	if (commandId == "com.aptana.ide.editors.views.actions.js.actionKeyCommand")
 	{
 		main();
     }

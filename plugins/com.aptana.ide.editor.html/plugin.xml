@@ -355,12 +355,6 @@
           categoryId="com.aptana.ide.editors"
           id="com.aptana.ide.editors.unified.format"
           name="%Command.format.name"/>
-    <command
-          categoryId="com.aptana.ide.editors"
-          defaultHandler="com.aptana.ide.editors.views.actions.ActionKeyCommandHandler"
-          id="com.aptana.ide.editors.views.actions.html.actionKeyCommand"
-          name="%ToggleJSComments.command.name">
-    </command>         
 	   </extension>
 	
 	  <extension
@@ -377,7 +371,7 @@
 	        commandId="com.aptana.ide.editors.unified.format"
 	        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
       <key
-            commandId="com.aptana.ide.editors.views.actions.html.actionKeyCommand"
+            commandId="com.aptana.ide.editors.views.actions.js.actionKeyCommand"
             contextId="com.aptana.ide.editors.HTMLEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+/">
