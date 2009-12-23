@@ -39,7 +39,6 @@ import java.io.File;
 import java.net.URI;
 
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -72,7 +71,6 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	 */
 	public LocalConnectionPoint(IPath path) {
 		super(TYPE);
-		Assert.isTrue(path.isAbsolute());
 		this.path = path;
 	}
 
@@ -87,7 +85,6 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 	 * @param path the path to set
 	 */
 	public void setPath(IPath path) {
-		Assert.isTrue(path.isAbsolute());
 		this.path = path;
 	}
 	
@@ -136,7 +133,6 @@ public final class LocalConnectionPoint extends ConnectionPoint {
 		IMemento child = memento.getChild(ELEMENT_PATH);
 		if (child != null) {
 			path = Path.fromPortableString(child.getTextData());
-			Assert.isTrue(path.isAbsolute());
 		}
 	}
 
