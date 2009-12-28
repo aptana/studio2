@@ -304,11 +304,11 @@ public class FTPConnectionPoint extends ConnectionPoint implements IBaseFTPConne
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.ConnectionPoint#connect(org.eclipse.core.runtime.IProgressMonitor)
+	 * @see com.aptana.ide.core.io.ConnectionPoint#connect(boolean, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	public void connect(IProgressMonitor monitor) throws CoreException {
-		if (isConnected()) {
+	public void connect(boolean force, IProgressMonitor monitor) throws CoreException {
+		if (!force && isConnected()) {
 			return;
 		}
 		ConnectionContext context = CoreIOPlugin.getConnectionContext(this);

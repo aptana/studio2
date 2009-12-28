@@ -174,10 +174,17 @@ public abstract class ConnectionPoint extends PlatformObject implements IConnect
 		return EFS.getStore(getRootURI());
 	}
 
+    /* (non-Javadoc)
+     * @see com.aptana.ide.core.io.IConnectionPoint#connect(org.eclipse.core.runtime.IProgressMonitor)
+     */
+    public void connect(IProgressMonitor monitor) throws CoreException {
+        connect(false, monitor);
+    }
+
 	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.IConnectionPoint#connect(org.eclipse.core.runtime.IProgressMonitor)
+	 * @see com.aptana.ide.core.io.IConnectionPoint#connect(boolean, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public void connect(IProgressMonitor monitor) throws CoreException {
+	public void connect(boolean force, IProgressMonitor monitor) throws CoreException {
 	}
 
 	/* (non-Javadoc)

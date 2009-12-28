@@ -56,6 +56,7 @@ public interface IConnectionPoint extends IAdaptable {
 	public IFileStore getRoot() throws CoreException;
 	
 	public void connect(IProgressMonitor monitor) throws CoreException;
+	public void connect(boolean force, IProgressMonitor monitor) throws CoreException;
 	public boolean isConnected();
 	
 	public void disconnect(IProgressMonitor monitor) throws CoreException;

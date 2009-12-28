@@ -87,7 +87,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 	protected String host;
 	protected int port;
 	protected String login;
-	protected char[] password;
+	protected char[] password = new char[0];
 	protected IPath basePath;
 	protected String authId;
 	
@@ -100,6 +100,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		password = CoreIOPlugin.getAuthenticationManager().promptPassword(
 						authId, login, title, message);
 		if (password == null) {
+		    password = new char[0];
 			throw new OperationCanceledException();
 		}
 	}
@@ -107,6 +108,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 	protected void getOrPromptPassword(String title, String message) {
 		password = CoreIOPlugin.getAuthenticationManager().getPassword(authId);
 		if (password == null) {
+		    password = new char[0];
 			promptPassword(title, message);
 		}
 	}

@@ -100,6 +100,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 	 */
 	public Object[] getChildren(Object object) {
 		if (object instanceof IConnectionPoint) {
+		    IConnectionPoint connectionPoint = (IConnectionPoint) object;
 			if (object instanceof WorkspaceConnectionPoint) {
 			    IContainer container = ((WorkspaceConnectionPoint) object).getResource();
 			    if (container == null) {
@@ -112,10 +113,16 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 				}
 			} else {
 				try {
-					return fetchFileSystemChildren(((IConnectionPoint) object).getRoot(), new NullProgressMonitor());
+					return fetchFileSystemChildren(connectionPoint.getRoot(), new NullProgressMonitor());
 				} catch (CoreException e) {
-					IdeLog.logError(IOUIPlugin.getDefault(), "Fetch children failed", e);
-					UIUtils.showErrorMessage("Fetch children failed", e);
+				    // makes sure it's connected and tries again
+				    try {
+                        connectionPoint.connect(true, new NullProgressMonitor());
+                        return fetchFileSystemChildren(connectionPoint.getRoot(), new NullProgressMonitor());
+                    } catch (CoreException e1) {
+                        IdeLog.logError(IOUIPlugin.getDefault(), "Fetch children failed", e);
+                        UIUtils.showErrorMessage("Fetch children failed", e);
+                    }
 				}
 			}
 		} else if (object instanceof IConnectionPointCategory) {
@@ -246,6 +253,17 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 						monitor);
 			}
 		} catch (CoreException e) {
+            if (object instanceof IConnectionPoint) {
+                // makes sure the connection point is connected and tries again
+                IConnectionPoint connectionPoint = (IConnectionPoint) object;
+                try {
+                    connectionPoint.connect(true, monitor);
+                    collector.add(fetchFileSystemChildren(connectionPoint.getRoot(), monitor),
+                            monitor);
+                    return;
+                } catch (CoreException e1) {
+                }
+            }
 			IdeLog.logError(IOUIPlugin.getDefault(), "Fetch deferred children failed", e);
 			UIUtils.showErrorMessage("Fetch children failed", e);
 		} finally {
