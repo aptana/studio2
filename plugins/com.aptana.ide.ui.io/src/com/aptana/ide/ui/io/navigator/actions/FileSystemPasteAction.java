@@ -138,10 +138,6 @@ public class FileSystemPasteAction extends BaseSelectionListenerAction {
         if (fDestFileStores.size() == 0) {
             return false;
         }
-        IFileInfo fileInfo = FileSystemUtils.fetchFileInfo(fDestFileStores.get(0));
-        if (fileInfo == null || !fileInfo.isDirectory()) {
-            return false;
-        }
 
         fShell.getDisplay().syncExec(new Runnable() {
 
