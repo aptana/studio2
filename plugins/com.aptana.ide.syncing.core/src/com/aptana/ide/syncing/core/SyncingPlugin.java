@@ -109,12 +109,11 @@ public class SyncingPlugin extends Plugin {
                 // only loads it once
                 SiteConnectionManager.getInstance().loadState(absoluteLocation);
                 File file = absoluteLocation.toFile();
-                if (file.renameTo(new File(absoluteLocation.toOSString() + ".bak"))) { //$NON-NLS-1$
+                if (!file.renameTo(new File(absoluteLocation.toOSString() + ".bak"))) { //$NON-NLS-1$
                     file.delete();
                 }
             }
         }
-        ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
 	}
 
 	/*
@@ -123,6 +122,7 @@ public class SyncingPlugin extends Plugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
+        ResourcesPlugin.getWorkspace().removeSaveParticipant(AptanaCorePlugin.getDefault());
 		plugin = null;
 		super.stop(context);
 	}
@@ -162,13 +162,14 @@ public class SyncingPlugin extends Plugin {
 					break;
 				}
 			case ISaveContext.FULL_SAVE:
-				IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME)
-							.addFileExtension(Integer.toString(context.getSaveNumber()));
+				int saveNum = context.getSaveNumber();
+				IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME).addFileExtension(Integer
+							.toString(saveNum));
 				SiteConnectionManager.getInstance().saveState(getStateLocation().append(savePath));
 				context.map(new Path(SiteConnectionManager.STATE_FILENAME), savePath);
 
-                savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
-                        .toString(context.getSaveNumber()));
+				savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
+							.toString(saveNum));
                 DefaultSiteConnection.getInstance().saveState(getStateLocation().append(savePath));
                 context.map(new Path(DefaultSiteConnection.STATE_FILENAME), savePath);
 
@@ -181,12 +182,12 @@ public class SyncingPlugin extends Plugin {
 		 * @see org.eclipse.core.resources.ISaveParticipant#doneSaving(org.eclipse.core.resources.ISaveContext)
 		 */
 		public void doneSaving(ISaveContext context) {
-			IPath prevSavePath = new Path(SiteConnectionManager.STATE_FILENAME)
-						.addFileExtension(Integer.toString(context.getPreviousSaveNumber()));
+			int prevNum = context.getPreviousSaveNumber();
+			IPath prevSavePath = new Path(SiteConnectionManager.STATE_FILENAME).addFileExtension(Integer
+					.toString(prevNum));
 			getStateLocation().append(prevSavePath).toFile().delete();
 
-            prevSavePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
-                    .toString(context.getPreviousSaveNumber()));
+			prevSavePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer.toString(prevNum));
             getStateLocation().append(prevSavePath).toFile().delete();
 		}
 
@@ -194,12 +195,11 @@ public class SyncingPlugin extends Plugin {
 		 * @see org.eclipse.core.resources.ISaveParticipant#rollback(org.eclipse.core.resources.ISaveContext)
 		 */
 		public void rollback(ISaveContext context) {
-			IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME)
-						.addFileExtension(Integer.toString(context.getSaveNumber()));
+			int saveNum = context.getSaveNumber();
+			IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME).addFileExtension(Integer.toString(saveNum));
 			getStateLocation().append(savePath).toFile().delete();
 
-            savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
-                    .toString(context.getSaveNumber()));
+			savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer.toString(saveNum));
             getStateLocation().append(savePath).toFile().delete();
 		}
 
