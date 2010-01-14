@@ -1003,7 +1003,9 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			try {
 				ftpFiles = ftpSTAT(dirPath.addTrailingSeparator().toPortableString());
 			} catch (FTPException e) {
-				if (e.getReplyCode() != 500) {
+				if (e.getReplyCode() == 502) {
+					statSuppoted = null;
+				} else if (e.getReplyCode() != 500) {
 					throwFileNotFound(e, dirPath);
 				}
 			}
