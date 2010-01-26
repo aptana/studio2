@@ -62,6 +62,7 @@ var XHRSpyListener;
 var ConsoleListener;
 var fb14p = true;
 var fb143p = true;
+var firebug_unMinimize;
 
 const self = this;
 
@@ -69,6 +70,7 @@ this.setHook("init",function(debuggr)
 {
 	fb14p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.4") >= 0);
 	fb143p = (AptanaUtils.compareVersion(Firebug.version.substr(0,5), "1.4.3") >= 0);
+	fb15p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.5") >= 0);
 	const AptanaDebuggerExtension = FBL.extend(Firebug.Extension,
 	{
 		// Firebug 1.4
@@ -92,6 +94,8 @@ this.setHook("init",function(debuggr)
 						currentUrl = url;
 						return true;
 					}
+				} else if (fb143p && currentContext == null && !releaseContext) {
+					return true;
 				}
 			} else if ( attachNextContext ) {
 				attachNextContext = false;
@@ -250,6 +254,13 @@ this.setHook("init",function(debuggr)
 			if ( context == currentContext && currentContext ) {
 				debuggr.onTopLevel(frame, href);
 			}			
+		},
+		
+		onStartDebugging: function(context)
+		{
+			if ( context == currentContext ) {
+				context.hideDebuggerUI = false;
+			}	
 		}
 	});
 
@@ -410,6 +421,14 @@ this.setHook("init",function(debuggr)
 		return true;
 	};
 	
+	if (fb15p) {
+		firebug_unMinimize = Firebug.unMinimize;
+		Firebug.unMinimize = function() {
+			if (!currentContext || !currentContext.hideDebuggerUI)
+				firebug_unMinimize.apply(Firebug);
+		}
+	}
+	
 });
 
 function removeTabCloseListener()
@@ -491,7 +510,8 @@ this.setHook("setBreakpoint",function(href, line, props)
 {
 	var sourceFile = getSourceFileByHref(href);
 	if (!sourceFile) {
-		sourceFile = new FBL.NoScriptSourceFile(currentContext, href);
+		namespace = fb15p ? Firebug : FBL
+		sourceFile = new namespace.NoScriptSourceFile(currentContext, href);
 	}
 	return Firebug.Debugger.fbs.setBreakpoint(sourceFile, line, props, Firebug.Debugger);
 });
@@ -510,7 +530,8 @@ this.setHook("clearAllBreakpoints",function(hrefs)
 			sourceFile = getSourceFileByHref(hrefs[i]);
 		} catch(exc) {}
 		if (!sourceFile) {
-			sourceFile = new FBL.NoScriptSourceFile(currentContext, hrefs[i]);
+			namespace = fb15p ? Firebug : FBL
+			sourceFile = new namespace.NoScriptSourceFile(currentContext, hrefs[i]);
 		}
 		sourceFiles.push(sourceFile);
 	}
