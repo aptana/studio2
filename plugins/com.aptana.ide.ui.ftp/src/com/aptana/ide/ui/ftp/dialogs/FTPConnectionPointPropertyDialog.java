@@ -675,9 +675,11 @@ public class FTPConnectionPointPropertyDialog extends TitleAreaDialog implements
 		} catch (CoreException e) {
 			showErrorDialog(e);
 		} finally {
-			((GridData) progressMonitorPart.getLayoutData()).exclude = true;
-			layoutShell();
-			lockUI(false);			
+			if (!progressMonitorPart.isDisposed()) {
+				((GridData) progressMonitorPart.getLayoutData()).exclude = true;
+				layoutShell();
+				lockUI(false);
+			}
 		}
 		return false;
 	}
