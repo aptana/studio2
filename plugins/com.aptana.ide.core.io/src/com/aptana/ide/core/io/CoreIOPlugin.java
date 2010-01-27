@@ -178,19 +178,11 @@ public class CoreIOPlugin extends Plugin {
 		 * @see org.eclipse.core.resources.ISaveParticipant#saving(org.eclipse.core.resources.ISaveContext)
 		 */
 		public void saving(ISaveContext context) throws CoreException {
-			switch (context.getKind()) {
-			case ISaveContext.SNAPSHOT:
-				if (!ConnectionPointManager.getInstance().isChanged()) {
-					break;
-				}
-			case ISaveContext.FULL_SAVE:
-				IPath savePath = new Path(ConnectionPointManager.STATE_FILENAME)
-							.addFileExtension(Integer.toString(context.getSaveNumber()));
-				ConnectionPointManager.getInstance().saveState(getStateLocation().append(savePath));
-				context.map(new Path(ConnectionPointManager.STATE_FILENAME), savePath);
-				context.needSaveNumber();
-				break;
-			}
+			IPath savePath = new Path(ConnectionPointManager.STATE_FILENAME).addFileExtension(Integer.toString(context
+					.getSaveNumber()));
+			ConnectionPointManager.getInstance().saveState(getStateLocation().append(savePath));
+			context.map(new Path(ConnectionPointManager.STATE_FILENAME), savePath);
+			context.needSaveNumber();
 		}
 		
 		/* (non-Javadoc)

@@ -156,26 +156,16 @@ public class SyncingPlugin extends Plugin {
 		 * @see org.eclipse.core.resources.ISaveParticipant#saving(org.eclipse.core.resources.ISaveContext)
 		 */
 		public void saving(ISaveContext context) throws CoreException {
-			switch (context.getKind()) {
-			case ISaveContext.SNAPSHOT:
-				if (!SiteConnectionManager.getInstance().isChanged()) {
-					break;
-				}
-			case ISaveContext.FULL_SAVE:
-				int saveNum = context.getSaveNumber();
-				IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME).addFileExtension(Integer
-							.toString(saveNum));
-				SiteConnectionManager.getInstance().saveState(getStateLocation().append(savePath));
-				context.map(new Path(SiteConnectionManager.STATE_FILENAME), savePath);
+			int saveNum = context.getSaveNumber();
+			IPath savePath = new Path(SiteConnectionManager.STATE_FILENAME).addFileExtension(Integer.toString(saveNum));
+			SiteConnectionManager.getInstance().saveState(getStateLocation().append(savePath));
+			context.map(new Path(SiteConnectionManager.STATE_FILENAME), savePath);
 
-				savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer
-							.toString(saveNum));
-                DefaultSiteConnection.getInstance().saveState(getStateLocation().append(savePath));
-                context.map(new Path(DefaultSiteConnection.STATE_FILENAME), savePath);
+			savePath = new Path(DefaultSiteConnection.STATE_FILENAME).addFileExtension(Integer.toString(saveNum));
+			DefaultSiteConnection.getInstance().saveState(getStateLocation().append(savePath));
+			context.map(new Path(DefaultSiteConnection.STATE_FILENAME), savePath);
 
-                context.needSaveNumber();
-				break;
-			}
+			context.needSaveNumber();
 		}
 		
 		/* (non-Javadoc)
