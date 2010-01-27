@@ -698,5 +698,18 @@
             class="com.aptana.ide.syncing.ui.decorators.SiteConnectionDecorator">
       </decorator>
    </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="com.aptana.ide.syncing.ui.commands.upload"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+U">
+      </key>
+      <key
+            commandId="com.aptana.ide.syncing.ui.commands.download"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+D">
+      </key>
+   </extension>
 
 </plugin>
