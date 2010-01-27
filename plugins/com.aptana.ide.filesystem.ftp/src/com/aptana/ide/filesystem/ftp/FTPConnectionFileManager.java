@@ -173,11 +173,6 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		Assert.isTrue(ftpClient != null, Messages.FTPConnectionFileManager_not_initialized);
 		monitor = Policy.monitorFor(monitor);
 		try {
-			if (ftpClient.connected()) {
-				monitor.beginTask(Messages.FTPConnectionFileManager_checking_connection, IProgressMonitor.UNKNOWN);
-				ftpClient.pwd();
-				return;
-			}
 			cwd = null;
 			cleanup();
 
