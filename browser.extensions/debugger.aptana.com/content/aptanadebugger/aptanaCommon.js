@@ -43,7 +43,7 @@ function AptanaDebugger() {}
 
 // ************************************************************************************************
 
-const APTANA_DEBUGGER_VERSION = '1.4.3';
+const APTANA_DEBUGGER_VERSION = '1.5.0';
 const DEBUG = true;
 
 this.VERSION = APTANA_DEBUGGER_VERSION;
