@@ -97,14 +97,16 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	protected String timezone;
 	protected IPath cwd;
 	private FTPFileFactory fileFactory;
-	private Boolean statSuppoted = null;
+	private Boolean statSupported = null;
 	private Boolean chmodSupported = null;
 	private Boolean chgrpSupported = null;
 	private Map<IPath, FTPFile> ftpFileCache = new ExpiringMap<IPath, FTPFile>(CACHE_TTL);
 	private long serverTimeZoneShift = Integer.MIN_VALUE;
 	protected boolean hasServerInfo;
 	protected PrintWriter messageLogWriter;
-	
+
+	private int connectionRetryCount;
+
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.ftp.IFTPConnectionFileManager#init(java.lang.String, int, org.eclipse.core.runtime.IPath, java.lang.String, char[], boolean, java.lang.String, java.lang.String, java.lang.String)
 	 */
@@ -283,10 +285,9 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		Policy.checkCanceled(monitor);
 		FTPFile[] rootFiles = null;
 		try {
-			rootFiles = ftpSTAT(Path.ROOT.toPortableString());
+			rootFiles = listFiles(Path.ROOT, monitor);
 		} catch (Exception e) {
 		}
-		statSuppoted = (rootFiles != null && rootFiles.length > 0) ? Boolean.TRUE : Boolean.FALSE;
 
 		if (context != null && context.getBoolean(ConnectionContext.DETECT_TIMEZONE))
 		{
@@ -585,7 +586,15 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		} catch (OperationCanceledException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_fetch_failed, e));			
+			// forces one connection retry
+			if (connectionRetryCount < 1) {
+				connectionRetryCount++;
+				connect(monitor);
+				return fetchFile(path, options, monitor);
+			} else {
+				connectionRetryCount = 0;
+				throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_fetch_failed, e));
+			}
 		}
 		ExtendedFileInfo fileInfo = new ExtendedFileInfo(path.lastSegment());
 		fileInfo.setExists(false);
@@ -640,7 +649,15 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		} catch (OperationCanceledException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_fetching_directory_failed, e));			
+			// forces one connection retry
+			if (connectionRetryCount < 1) {
+				connectionRetryCount++;
+				connect(monitor);
+				return fetchFiles(path, options, monitor);
+			} else {
+				connectionRetryCount = 0;
+				throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_fetching_directory_failed, e));
+			}
 		} finally {
 			monitor.done();
 		}
@@ -993,29 +1010,25 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	}
 	
 	private FTPFile[] listFiles(IPath dirPath, IProgressMonitor monitor) throws IOException, ParseException, FTPException {
-		if (statSuppoted != Boolean.FALSE) {
+		if (statSupported == null || statSupported == Boolean.TRUE) {
 			FTPFile[] ftpFiles = null;
 			try {
 				ftpFiles = ftpSTAT(dirPath.addTrailingSeparator().toPortableString());
 			} catch (FTPException e) {
 				if (e.getReplyCode() == 502) {
-					statSuppoted = null;
+					statSupported = null;
 				} else if (e.getReplyCode() != 500) {
 					throwFileNotFound(e, dirPath);
 				}
 			}
-			if (statSuppoted == null && (ftpFiles == null || ftpFiles.length == 0)) {
-				statSuppoted = Boolean.FALSE;
+			if ((statSupported == null && (ftpFiles == null || ftpFiles.length == 0))
+					|| (ftpFiles.length == 1 && ftpFiles[0].getLinkedName() != null && dirPath.equals(Path
+							.fromPortableString(ftpFiles[0].getName())))) {
+				statSupported = Boolean.FALSE;
 				Policy.checkCanceled(monitor);
 				return listFiles(dirPath, monitor);
-			} else if (statSuppoted == null) {
-				statSuppoted = Boolean.TRUE;
-			}
-			if (ftpFiles.length == 1 && ftpFiles[0].getLinkedName() != null && dirPath.equals(Path.fromPortableString(ftpFiles[0].getName()))) {
-				Policy.checkCanceled(monitor);
-				changeCurrentDir(dirPath);
-				Policy.checkCanceled(monitor);
-				return ftpClient.dirDetails("-a"); //$NON-NLS-1$
+			} else if (statSupported == null) {
+				statSupported = Boolean.TRUE;
 			}
 			return ftpFiles;
 		} else {
