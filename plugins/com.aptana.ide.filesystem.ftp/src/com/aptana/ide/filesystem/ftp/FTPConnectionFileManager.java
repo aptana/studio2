@@ -1010,7 +1010,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	}
 	
 	private FTPFile[] listFiles(IPath dirPath, IProgressMonitor monitor) throws IOException, ParseException, FTPException {
-		if (statSupported == null || statSupported == Boolean.TRUE) {
+		if (statSupported == Boolean.TRUE) {
 			FTPFile[] ftpFiles = null;
 			try {
 				ftpFiles = ftpSTAT(dirPath.addTrailingSeparator().toPortableString());
