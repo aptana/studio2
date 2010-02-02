@@ -1027,7 +1027,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 					throwFileNotFound(e, dirPath);
 				}
 			}
-			if (ftpFiles == null || ftpFiles.length < 2) {
+			if (ftpFiles == null || ftpFiles.length == 0) {
 				if (statSupported == null) {
 					statSupported = Boolean.FALSE;
 				}
