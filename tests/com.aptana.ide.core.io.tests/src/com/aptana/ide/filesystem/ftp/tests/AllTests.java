@@ -1,4 +1,3 @@
-/* test commit */
 package com.aptana.ide.filesystem.ftp.tests;
 
 import org.junit.runner.RunWith;
