@@ -530,16 +530,11 @@ public class JSAutoIndentStrategy extends UnifiedAutoIndentStrategy
 
 			StringBuffer buf = new StringBuffer(c.text);
 
-			String indentation = getIndentationString(d, lineOffset, firstNonWS);
-			if (indentation == "") //$NON-NLS-1$
-			{
-				return;
-			}
-
+			String currentIndent = getIndentationString(d, lineOffset, firstNonWS);
 			String newline = c.text;
 
 			// now just add the indents
-			buf.append(indentation);
+			buf.append(currentIndent);
 
 			if (c.offset > 1 && d.getChar(c.offset - 1) == '{')
 			{
@@ -549,17 +544,21 @@ public class JSAutoIndentStrategy extends UnifiedAutoIndentStrategy
 				{
 					// move opening brace to next line!
 					c.offset = c.offset - 1;
-					buf.insert(0, newline + "{" + newline);
+					buf = new StringBuffer();
+					//newline, current indent, open brace
+					buf.append(newline).append(currentIndent).append("{");
+					buf.append(c.text); // newline
+					buf.append(currentIndent); // current indent
 					c.length += 1;
 					if (shouldAutoIndent())
 					{
 						c.shiftsCaret = false;
-						c.caretOffset = c.offset + buf.length();
-						buf.insert(buf.length() - c.text.length(), indentString);
-						if (d.getChar(c.offset) == '}')
+						buf.append(indentString); // additional indent
+						c.caretOffset = c.offset + buf.length(); // move caret here now
+						if (d.getChar(c.offset + 1) == '}')
 						{
-							buf.append(newline);
-							buf.append(indentation);
+							buf.append(newline); // newline
+							buf.append(currentIndent); // open brace indent level
 						}
 					}
 					else
@@ -576,7 +575,7 @@ public class JSAutoIndentStrategy extends UnifiedAutoIndentStrategy
 					if (d.getChar(c.offset) == '}')
 					{
 						buf.append(newline);
-						buf.append(indentation);
+						buf.append(currentIndent);
 					}
 				}
 			}
