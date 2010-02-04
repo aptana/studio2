@@ -517,7 +517,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 			if (targetFileInfo == null) {
 				try {
 					Policy.checkCanceled(monitor);
-					targetFileInfo = fetchFile(targetPath, options, Policy.subMonitorFor(monitor, 1));
+					targetFileInfo = cache(targetPath, fetchFile(targetPath, options, Policy.subMonitorFor(monitor, 1)));
 				} catch (FileNotFoundException e) {
 					targetFileInfo = new ExtendedFileInfo();
 				}
