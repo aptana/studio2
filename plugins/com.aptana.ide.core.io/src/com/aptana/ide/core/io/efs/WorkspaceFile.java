@@ -64,6 +64,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
 
+import com.aptana.ide.core.IdeLog;
+import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.preferences.CloakingUtils;
 
 /**
@@ -205,6 +207,7 @@ import com.aptana.ide.core.io.preferences.CloakingUtils;
 		try {
 			return new URI(WorkspaceFileSystem.SCHEME_WORKSPACE, path.toPortableString(), null);
 		} catch (URISyntaxException e) {
+			IdeLog.logError(CoreIOPlugin.getDefault(), e.getLocalizedMessage(), e);
 		}
 		return null;
 	}
