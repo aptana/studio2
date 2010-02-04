@@ -91,6 +91,8 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	
 	private static final String TMP_TIMEZONE_CHECK = ".tmp_tz_check"; //$NON-NLS-1$
 	
+	private final static String WINDOWS_STR = "WINDOWS";
+	
 	protected FTPClient ftpClient;
 	private List<String> serverFeatures;
 	protected String transferType;
@@ -1016,8 +1018,8 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	}
 
 	private FTPFile[] listFiles(IPath dirPath, IProgressMonitor monitor) throws IOException, ParseException, FTPException {
+		FTPFile[] ftpFiles = null;
 		if (statSupported != Boolean.FALSE) {
-			FTPFile[] ftpFiles = null;
 			try {
 				ftpFiles = ftpSTAT(dirPath.addTrailingSeparator().toPortableString());
 			} catch (FTPException e) {
@@ -1035,10 +1037,17 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			} else if (statSupported == null) {
 				statSupported = Boolean.TRUE;
 			}
-			return ftpFiles;
 		} else {
-			return ftpLIST(dirPath, monitor);
+			ftpFiles = ftpLIST(dirPath, monitor);
 		}
+		if (fileFactory.getSystem().toUpperCase().startsWith(WINDOWS_STR) && ftpFiles != null) {
+			for (FTPFile ftpFile : ftpFiles) {
+				if (ftpFile.getPermissions() == null) {
+					ftpFile.setPermissions("-rw-r-----");
+				}
+			}
+		}
+		return ftpFiles;
 	}
 
 	private void recursiveDeleteTree(IPath path, IProgressMonitor monitor, MultiStatus status) throws IOException, ParseException {
