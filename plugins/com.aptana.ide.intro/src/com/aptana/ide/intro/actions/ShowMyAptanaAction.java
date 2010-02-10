@@ -161,9 +161,11 @@ public class ShowMyAptanaAction implements IWorkbenchWindowPulldownDelegate2
 					IToolBarContributionItem toolbarItem = (IToolBarContributionItem) item;
 					// this returns the list of actual items for the actions
 					IContributionItem[] children = toolbarItem.getToolBarManager().getItems();
+					String id;
 					for (IContributionItem child : children)
 					{
-						if (child.getId().equals(action.getId()))
+						id = child.getId();
+						if (id != null && id.equals(action.getId()))
 						{
 							// found the toolbar item that corresponds to the
 							// action

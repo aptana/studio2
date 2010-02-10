@@ -115,6 +115,10 @@ public class RecreateMonkeyMenuAction implements IWorkbenchWindowActionDelegate
 	{
 		MenuManager outerManager = ((WorkbenchWindow) window).getMenuManager();
 		IContributionItem contribution = outerManager.findUsingPath("eclipsemonkeyMenu"); //$NON-NLS-1$
+		if (contribution == null) 
+		{
+			return;
+		}
 		IMenuManager menuManager = (IMenuManager) ((ActionSetContributionItem) contribution).getInnerItem();
 
 		MonkeyMenuStruct current = new MonkeyMenuStruct();
