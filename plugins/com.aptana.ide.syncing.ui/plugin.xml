@@ -186,7 +186,7 @@
             id="com.aptana.ide.syncing.ui.resourceContribution"
             objectClass="org.eclipse.core.resources.IResource">
          <menu
-               id="synchronize"
+               id="aptanasynchronize"
                label="%Menu.Synchronize.name"
                path="group.edit">
             <groupMarker
@@ -204,7 +204,7 @@
                enablesFor="1"
                id="com.aptana.ide.syncing.ui.actions.ResourceNewSiteAction"
                label="%Action.NewConnection.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.NewConnection.tooltip">
          </action>
          <action
@@ -212,7 +212,7 @@
                icon="icons/full/obj16/get.gif"
                id="com.aptana.ide.syncing.ui.actions.ResourceDownloadAction"
                label="%Action.Download.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.Download.tooltip">
          </action>
          <action
@@ -220,7 +220,7 @@
                icon="icons/full/obj16/put.gif"
                id="com.aptana.ide.syncing.ui.actions.ResourceUploadAction"
                label="%Action.Upload.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.Upload.tooltip">
          </action>
          <action
@@ -229,28 +229,28 @@
                icon="icons/full/obj16/sync_vertical.gif"
                id="com.aptana.ide.syncing.ui.actions.ResourceSynchronizeAction"
                label="%Action.Synchronize.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.Synchronize.tooltip">
          </action>
          <action
                class="com.aptana.ide.syncing.ui.actions.CloakPreferencesAction"
                id="com.aptana.ide.syncing.ui.actions.CloakPreferencesAction"
                label="%Action.CloakPreferences.name"
-               menubarPath="synchronize/cloakingGroup"
+               menubarPath="aptanasynchronize/cloakingGroup"
                tooltip="%Action.CloakPreferences.tooltip">
          </action>
          <action
                class="com.aptana.ide.syncing.ui.actions.UncloakAction"
                id="com.aptana.ide.syncing.ui.actions.ResourceUncloakAction"
                label="%Action.Uncloak.name"
-               menubarPath="synchronize/cloakingGroup"
+               menubarPath="aptanasynchronize/cloakingGroup"
                tooltip="%Action.Uncloak.tooltip">
          </action>
          <action
                class="com.aptana.ide.syncing.ui.actions.CloakAction"
                id="com.aptana.ide.syncing.ui.actions.ResourceCloakAction"
                label="%Action.Cloak.name"
-               menubarPath="synchronize/cloakingGroup"
+               menubarPath="aptanasynchronize/cloakingGroup"
                tooltip="%Action.Cloak.tooltip">
          </action>
          <visibility>
@@ -282,7 +282,7 @@
             id="com.aptana.ide.syncing.ui.filesystemContribution"
             objectClass="com.aptana.ide.ui.io.navigator.FileSystemObject">
          <menu
-               id="synchronize"
+               id="aptanasynchronize"
                label="%Menu.Synchronize.name"
                path="group.edit">
             <groupMarker
@@ -300,7 +300,7 @@
                enablesFor="1"
                id="com.aptana.ide.syncing.ui.actions.FilesystemNewSiteAction"
                label="%Action.NewConnection.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.NewConnection.tooltip">
          </action>
          <action
@@ -308,7 +308,7 @@
                icon="icons/full/obj16/get.gif"
                id="com.aptana.ide.syncing.ui.actions.FilesystemDownloadAction"
                label="%Action.Download.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.Download.tooltip">
          </action>
          <action
@@ -316,7 +316,7 @@
                icon="icons/full/obj16/put.gif"
                id="com.aptana.ide.syncing.ui.actions.FilesystemUploadAction"
                label="%Action.Upload.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.Upload.tooltip">
          </action>
          <action
@@ -325,28 +325,28 @@
                icon="icons/full/obj16/sync_vertical.gif"
                id="com.aptana.ide.syncing.ui.actions.FilesystemSynchronizeAction"
                label="%Action.Synchronize.name"
-               menubarPath="synchronize/syncingGroup"
+               menubarPath="aptanasynchronize/syncingGroup"
                tooltip="%Action.Synchronize.tooltip">
          </action>
          <action
                class="com.aptana.ide.syncing.ui.actions.CloakPreferencesAction"
                id="com.aptana.ide.syncing.ui.actions.CloakPreferencesAction"
                label="%Action.CloakPreferences.name"
-               menubarPath="synchronize/cloakingGroup"
+               menubarPath="aptanasynchronize/cloakingGroup"
                tooltip="%Action.CloakPreferences.tooltip">
          </action>
          <action
                class="com.aptana.ide.syncing.ui.actions.UncloakAction"
                id="com.aptana.ide.syncing.ui.actions.FilesystemUncloakAction"
                label="%Action.Uncloak.name"
-               menubarPath="synchronize/cloakingGroup"
+               menubarPath="aptanasynchronize/cloakingGroup"
                tooltip="%Action.Uncloak.tooltip">
          </action>
          <action
                class="com.aptana.ide.syncing.ui.actions.CloakAction"
                id="com.aptana.ide.syncing.ui.actions.FilesystemCloakAction"
                label="%Action.Cloak.name"
-               menubarPath="synchronize/cloakingGroup"
+               menubarPath="aptanasynchronize/cloakingGroup"
                tooltip="%Action.Cloak.tooltip">
          </action>
          <visibility>
