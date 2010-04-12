@@ -130,16 +130,20 @@ public class PluginsTreeModel
 	{
 		ROOT.clear();
 
-		List<Plugin> plugins = getPluginManager().getRemotePlugins();
-		InstallerCategory category;
-		for (Plugin plugin : plugins)
+		IPluginManager pluginManager = getPluginManager();
+		if (pluginManager != null)
 		{
-			// finds the category the plug-in belongs in and adds it
-			category = plugin.getInstallerCategory();
-			if (category != null)
+			List<Plugin> plugins = pluginManager.getRemotePlugins();
+			InstallerCategory category;
+			for (Plugin plugin : plugins)
 			{
-				PluginTreeNode catNode = generateNodePath(category);
-				catNode.add(new PluginTreeNode(plugin));
+				// finds the category the plug-in belongs in and adds it
+				category = plugin.getInstallerCategory();
+				if (category != null)
+				{
+					PluginTreeNode catNode = generateNodePath(category);
+					catNode.add(new PluginTreeNode(plugin));
+				}
 			}
 		}
 		updateStates();
@@ -187,10 +191,14 @@ public class PluginsTreeModel
 		PluginTreeNode[] categories = ROOT.getChildren();
 		updatePluginsList(availablePlugins, categories);
 
-		List<IPlugin> installedPlugins = getPluginManager().getInstalledPlugins();
-		for (PluginTreeNode plugin : availablePlugins)
+		IPluginManager pluginManager = getPluginManager();
+		if (pluginManager != null)
 		{
-			plugin.setInstalled(isInstalled(plugin, installedPlugins));
+			List<IPlugin> installedPlugins = pluginManager.getInstalledPlugins();
+			for (PluginTreeNode plugin : availablePlugins)
+			{
+				plugin.setInstalled(isInstalled(plugin, installedPlugins));
+			}
 		}
 	}
 
