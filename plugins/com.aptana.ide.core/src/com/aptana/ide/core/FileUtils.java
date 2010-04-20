@@ -667,6 +667,8 @@ public class FileUtils
 	 */
 	public static File[] matchFiles(String pattern, File[] files)
 	{
+		if (pattern == null || files == null || files.length < 1)
+			return new File[0];
 		String newPattern = StringUtils.replace(pattern, "\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
 		newPattern = StringUtils.replace(newPattern, ".", "\\."); //$NON-NLS-1$ //$NON-NLS-2$
 		newPattern = StringUtils.replace(newPattern, "*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -679,7 +681,6 @@ public class FileUtils
 				al.add(fileTest);
 			}
 		}
-
 		return (File[]) al.toArray(new File[0]);
 	}
 
