@@ -68,14 +68,6 @@ public class EclipseMonkeyPlugin extends AbstractUIPlugin implements IStartup {
 	private static Map<String, Object> _scopeStore = new ConcurrentHashMap<String, Object>();
 	
 	/**
-	 * 
-	 *
-	 */
-	public EclipseMonkeyPlugin() {
-		plugin = this;
-	}
-	
-	/**
 	 * All loaded languages
 	 * @return a map of loaded languages
 	 */
@@ -107,6 +99,7 @@ public class EclipseMonkeyPlugin extends AbstractUIPlugin implements IStartup {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		plugin = this;
 	}
 
 	/**
