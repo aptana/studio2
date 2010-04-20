@@ -929,9 +929,14 @@ public class CodeFormatAction extends Action implements IEditorActionDelegate, I
 	public void setActiveEditor(IAction action, IEditorPart targetEditor)
 	{
 		part = (IUnifiedEditor) targetEditor;
-		String[] legalLineDelimiters = part.getViewer().getDocument().getLegalLineDelimiters();
-
-		this.lineSeparator = legalLineDelimiters[0];
+		if (part != null && part.getViewer() != null && part.getViewer().getDocument() != null)
+		{
+			String[] legalLineDelimiters = part.getViewer().getDocument().getLegalLineDelimiters();
+			if (legalLineDelimiters != null && legalLineDelimiters.length > 0)
+			{
+				this.lineSeparator = legalLineDelimiters[0];
+			}
+		}
 	}
 
 	/**
