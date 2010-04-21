@@ -56,11 +56,14 @@ public class SiteConnectionsContentProvider extends FileTreeContentProvider { /*
     @Override
     public Object[] getChildren(Object element) {
         if (element instanceof IProject) {
-            Object[] children = new Object[1];
-            children[0] = ProjectSitesManager.getInstance().getProjectSites((IProject) element);
-            return children;
+        	IProject project = (IProject) element;
+        	if (project.isAccessible())
+        	{
+        		Object[] children = new Object[1];
+        		children[0] = ProjectSitesManager.getInstance().getProjectSites(project);
+        		return children;
+        	}
         }
         return super.getChildren(element);
     }
-    
 }
