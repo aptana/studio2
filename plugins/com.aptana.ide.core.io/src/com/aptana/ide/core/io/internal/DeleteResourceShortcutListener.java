@@ -85,8 +85,13 @@ public class DeleteResourceShortcutListener implements IResourceChangeListener {
                 IResourceDelta d = delta.findMember(connectionPoint.getPath());
                 if (d != null && d.getKind() == IResourceDelta.REMOVED) {
                     if (d.getMovedToPath() == null) {
-                        // the original container was deleted
-                        deleted.add(shortcut);
+                    	IResource resource = d.getResource();
+                    	if (!(resource instanceof IProject) && resource.getProject().exists() && !resource.getProject().isOpen())
+                    	{
+                    		continue;
+                    	}
+                    	// the original container was deleted
+                    	deleted.add(shortcut);
                     } else {
                         // the original container was moved
                         IPath newPath = d.getMovedToPath();
