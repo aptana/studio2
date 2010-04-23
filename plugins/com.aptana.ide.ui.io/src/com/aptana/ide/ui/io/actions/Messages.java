@@ -42,11 +42,23 @@ public class Messages extends NLS {
 
     public static String CopyFilesOperation_Copy_Subtask;
     public static String CopyFilesOperation_CopyJob_Title;
-    public static String CopyFilesOperation_ERR_DestinationInSource;
+    public static String CopyFilesOperation_DefaultNewName;
+
+	public static String CopyFilesOperation_DefaultNewName_WithCount;
+
+	public static String CopyFilesOperation_ERR_DestinationInSource;
     public static String CopyFilesOperation_ERR_FailedToCopy;
     public static String CopyFilesOperation_ERR_FailedToCopyToDest;
+
+	public static String CopyFilesOperation_ERR_NameConflict;
+
+	public static String CopyFilesOperation_ERR_NameExists;
     public static String CopyFilesOperation_ERR_SourceInDestination;
-    public static String CopyFilesOperation_OverwriteWarning;
+    public static String CopyFilesOperation_NameConflictDialog_Message;
+
+	public static String CopyFilesOperation_NameConflictDialog_Title;
+
+	public static String CopyFilesOperation_OverwriteWarning;
     public static String CopyFilesOperation_OverwriteTitle;
     public static String CopyFilesOperation_Status_OK;
 

@@ -40,6 +40,8 @@ import java.text.MessageFormat;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,6 +51,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
@@ -265,8 +269,17 @@ public class CopyFilesOperation {
         boolean success = true;
         monitor.subTask(MessageFormat.format(Messages.CopyFilesOperation_Copy_Subtask, sourceStore
                 .getName(), destinationStore.getName()));
+
+		if (destinationStore.equals(sourceStore))
+		{
+			destinationStore = getNewNameFor(destinationStore);
+			if (destinationStore == null)
+			{
+				return false;
+			}
+		}
         try {
-            sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
+        	sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
         } catch (CoreException e) {
             IdeLog
                     .logError(IOUIPlugin.getDefault(), MessageFormat.format(
@@ -368,6 +381,92 @@ public class CopyFilesOperation {
         job.setUser(true);
         job.schedule();
     }
+
+	/**
+	 * Returns a new name for a copy of the file.
+	 * 
+	 * @param originalFile
+	 *            the file store
+	 * @return the new file store for the copy, or <code>null</code> if the file should not be copied
+	 */
+	private IFileStore getNewNameFor(final IFileStore originalFile)
+	{
+		final IFileStore parent = originalFile.getParent();
+		final String returnValue[] = { "" }; //$NON-NLS-1$
+
+		fShell.getDisplay().syncExec(new Runnable()
+		{
+
+			public void run()
+			{
+				IInputValidator validator = new IInputValidator()
+				{
+					public String isValid(String string)
+					{
+						if (originalFile.getName().equals(string))
+						{
+							return Messages.CopyFilesOperation_ERR_NameConflict;
+						}
+						int type = Utils.getFileInfo(originalFile).isDirectory() ? IResource.FOLDER : IResource.FILE;
+						IStatus status = ResourcesPlugin.getWorkspace().validateName(string, type);
+						if (!status.isOK())
+						{
+							return status.getMessage();
+						}
+						if (Utils.getFileInfo(parent.getChild(string)).exists())
+						{
+							return Messages.CopyFilesOperation_ERR_NameExists;
+						}
+						return null;
+					}
+				};
+
+				InputDialog dialog = new InputDialog(fShell, Messages.CopyFilesOperation_NameConflictDialog_Title,
+						MessageFormat.format(Messages.CopyFilesOperation_NameConflictDialog_Message, originalFile
+								.getName()), getAutoNewNameFor(originalFile), validator);
+				dialog.setBlockOnOpen(true);
+				dialog.open();
+				if (dialog.getReturnCode() == Window.CANCEL)
+				{
+					returnValue[0] = null;
+				}
+				else
+				{
+					returnValue[0] = dialog.getValue();
+				}
+			}
+		});
+		if (returnValue[0] == null)
+		{
+			return null;
+		}
+		return parent.getChild(returnValue[0]);
+	}
+
+	private static String getAutoNewNameFor(IFileStore originalFile)
+	{
+		String name = originalFile.getName();
+		IFileStore parent = originalFile.getParent();
+
+		String newName;
+		int counter = 1;
+		while (true)
+		{
+			if (counter > 1)
+			{
+				newName = MessageFormat.format(Messages.CopyFilesOperation_DefaultNewName_WithCount, counter, name);
+			}
+			else
+			{
+				newName = MessageFormat.format(Messages.CopyFilesOperation_DefaultNewName, name);
+			}
+			if (!Utils.getFileInfo(parent.getChild(newName)).exists())
+			{
+				return newName;
+			}
+			counter++;
+		}
+	}
 
     /**
      * Checks if there is structural conflict for transferring the sources to
