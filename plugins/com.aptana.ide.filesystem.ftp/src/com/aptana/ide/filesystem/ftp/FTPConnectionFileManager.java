@@ -89,7 +89,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
  */
 /* package */ class FTPConnectionFileManager extends BaseFTPConnectionFileManager implements IFTPConnectionFileManager {
 	
-	private static final String TMP_TIMEZONE_CHECK = ".tmp_tz_check"; //$NON-NLS-1$
+	private static final String TMP_TIMEZONE_CHECK = "_tmp_tz_check"; //$NON-NLS-1$
 	
 	private final static String WINDOWS_STR = "WINDOWS";
 	
