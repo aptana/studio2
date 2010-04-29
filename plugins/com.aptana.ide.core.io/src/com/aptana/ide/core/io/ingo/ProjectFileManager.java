@@ -140,11 +140,11 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 		
 	}
 
-	@Override
-	public IVirtualFile getBaseFile() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public IVirtualFile getBaseFile() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getBasePath() {
@@ -295,13 +295,6 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 		return false;
 	}
 
-	@Override
-	public void putFile(IVirtualFile sourceFile, IVirtualFile targetFile)
-			throws ConnectionException, VirtualFileManagerException,
-			IOException {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void putFile(IVirtualFile clientFile, IVirtualFile targetServerFile,
@@ -310,13 +303,13 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 		
 	}
 
-	@Override
-	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
-			IFileProgressMonitor monitor) throws ConnectionException,
-			VirtualFileManagerException, IOException {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
+//			IFileProgressMonitor monitor) throws ConnectionException,
+//			VirtualFileManagerException, IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
 	public void putStream(InputStream input, IVirtualFile targetFile)
@@ -330,13 +323,6 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	public void putStream(InputStream input, IVirtualFile targetFile,
 			IFileProgressMonitor monitor) throws ConnectionException,
 			VirtualFileManagerException, IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void putToLocalFile(IVirtualFile file, File tempFile)
-			throws ConnectionException, VirtualFileManagerException {
 		// TODO Auto-generated method stub
 		
 	}

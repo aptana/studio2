@@ -34,16 +34,15 @@
  */
 package com.aptana.ide.core.io.ingo;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 
 /**
@@ -90,13 +89,13 @@ public abstract class VirtualFile implements IVirtualFile
 //		return input;
 //	}
 
-	/**
-	 * @see com.aptana.ide.core.io.IVirtualFile#putStream(InputStream)
-	 */
-	public void putStream(InputStream input) throws ConnectionException, VirtualFileManagerException, IOException
-	{
-		putStream(input, null);
-	}
+//	/**
+//	 * @see com.aptana.ide.core.io.IVirtualFile#putStream(InputStream)
+//	 */
+//	public void putStream(InputStream input) throws ConnectionException, VirtualFileManagerException, IOException
+//	{
+//		putStream(input, null);
+//	}
 
 	/**
 	 * Remove a duplicate file from the list of files.
@@ -137,11 +136,11 @@ public abstract class VirtualFile implements IVirtualFile
 	 * @return IVirtualFile[]
 	 * @deprecated
 	 */
-	public static IVirtualFile[] reparentFiles(IVirtualFileManager manager, IVirtualFile[] files)
+	public static IVirtualFile[] reparentFiles(IConnectionPoint manager, IFileStore[] files)
 	{
-		List<IVirtualFile> newFiles = new ArrayList<IVirtualFile>();
-		IVirtualFile file;
-		IVirtualFile newFile;
+		List<IFileStore> newFiles = new ArrayList<IFileStore>();
+		IFileStore file;
+		IFileStore newFile;
 
 		for (int i = 0; i < files.length; i++)
 		{
@@ -149,11 +148,11 @@ public abstract class VirtualFile implements IVirtualFile
 
 			if (file.fetchInfo().isDirectory())
 			{
-				newFile = manager.createVirtualDirectory(EFSUtils.getAbsolutePath(file));
+				newFile = file; //manager.createVirtualDirectory(EFSUtils.getAbsolutePath(file));
 			}
 			else
 			{
-				newFile = manager.createVirtualFile(EFSUtils.getAbsolutePath(file));
+				newFile = file; //manager.createVirtualFile(EFSUtils.getAbsolutePath(file));
 			}
 
 			newFiles.add(newFile);
@@ -168,18 +167,19 @@ public abstract class VirtualFile implements IVirtualFile
 	 * @param file
 	 * @param sourceManager
 	 * @return IVirtualFile[]
+	 * @throws CoreException 
 	 */
-	public static IVirtualFile[] getParentDirectories(IVirtualFile file, IVirtualFileManager sourceManager)
+	public static IFileStore[] getParentDirectories(IFileStore file, IConnectionPoint sourceManager) throws CoreException
 	{
-		List<IVirtualFile> parentDirs = new ArrayList<IVirtualFile>();
+		List<IFileStore> parentDirs = new ArrayList<IFileStore>();
 
-		if (sourceManager.containsFile(file))
+		if (sourceManager.getRoot().isParentOf(file))
 		{
-			IVirtualFile currentFile = file;
+			IFileStore currentFile = file;
 
 			while (currentFile != null)
 			{
-				if (currentFile.equals(sourceManager.getBaseFile()))
+				if (currentFile.equals(sourceManager.getRoot()))
 				{
 					break;
 				}
@@ -189,6 +189,6 @@ public abstract class VirtualFile implements IVirtualFile
 			}
 		}
 
-		return parentDirs.toArray(new IVirtualFile[parentDirs.size()]);
+		return parentDirs.toArray(new IFileStore[parentDirs.size()]);
 	}
 }

@@ -47,7 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.ISavedState;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -545,13 +545,13 @@ public final class SyncManager implements ISerializableSyncItem
 	 * @param file
 	 * @return VirtualFileManagerSyncPair[]
 	 */
-	public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IVirtualFile file)
+	public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IFileStore file)
 	{
 		List<VirtualFileManagerSyncPair> mySyncConfigurations = new ArrayList<VirtualFileManagerSyncPair>();
 		List<IVirtualFileManager> relevantManagers = new ArrayList<IVirtualFileManager>();
 
 		// Add project protocol managers
-		IVirtualFileManager[] fms = getContainingFileManagers(file);
+		IVirtualFileManager[] fms = new IVirtualFileManager[0]; //getContainingFileManagers(file);
 		relevantManagers.addAll(Arrays.asList(fms));
 
 		Object[] scs = SyncManager.getSyncManager().getItems(VirtualFileManagerSyncPair.class);
@@ -577,7 +577,7 @@ public final class SyncManager implements ISerializableSyncItem
 	 * @param valid Only return valid sync pairs
 	 * @return VirtualFileManagerSyncPair[]
 	 */
-	public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IVirtualFile file, boolean valid)
+	public static VirtualFileManagerSyncPair[] getContainingSyncPairs(IFileStore file, boolean valid)
 	{
 		VirtualFileManagerSyncPair[] confs = getContainingSyncPairs(file);
 
@@ -679,8 +679,9 @@ public final class SyncManager implements ISerializableSyncItem
 	 * 
 	 * @param file
 	 * @return boolean
+	 * @throws CoreException 
 	 */
-	public static boolean isVirtualFileManager(IVirtualFile file)
+	public static boolean isVirtualFileManager(IVirtualFile file) throws CoreException
 	{
 		Object[] objs = SyncManager.getSyncManager().getItems();
 		for (int i = 0; i < objs.length; i++)
@@ -689,7 +690,7 @@ public final class SyncManager implements ISerializableSyncItem
 			if (object instanceof IVirtualFileManager)
 			{
 				IVirtualFileManager fileManager = ((IVirtualFileManager) object);
-				if (fileManager.getBasePath() != null && fileManager.getBaseFile().equals(file))
+				if (fileManager.getBasePath() != null && fileManager.getRoot().equals(file))
 				{
 					return true;
 				}

@@ -156,10 +156,11 @@ public class SyncingTests extends TestCase
 	 * @param manager
 	 * @param path
 	 * @return IVirtualFile
+	 * @throws CoreException 
 	 */
-	protected IVirtualFile getDirectory(IVirtualFileManager manager, String path)
+	protected IVirtualFile getDirectory(IVirtualFileManager manager, String path) throws CoreException
 	{
-		return manager.createVirtualDirectory(EFSUtils.getAbsolutePath(manager.getBaseFile())
+		return manager.createVirtualDirectory(EFSUtils.getAbsolutePath(manager.getRoot())
 				+ serverManager.getFileSeparator() + path);
 	}
 
@@ -169,10 +170,11 @@ public class SyncingTests extends TestCase
 	 * @param manager
 	 * @param path
 	 * @return IVirtualFile
+	 * @throws CoreException 
 	 */
-	protected IVirtualFile getFile(IVirtualFileManager manager, String path)
+	protected IVirtualFile getFile(IVirtualFileManager manager, String path) throws CoreException
 	{
-		return manager.createVirtualFile(EFSUtils.getAbsolutePath(manager.getBaseFile()) + serverManager.getFileSeparator()
+		return manager.createVirtualFile(EFSUtils.getAbsolutePath(manager.getRoot()) + serverManager.getFileSeparator()
 				+ path);
 	}
 
@@ -182,10 +184,11 @@ public class SyncingTests extends TestCase
 	 * @param path
 	 * @param modificationTime
 	 * @return File
+	 * @throws CoreException 
 	 */
-	protected File createClientDirectory(String path, long modificationTime)
+	protected File createClientDirectory(String path, long modificationTime) throws CoreException
 	{
-		return this.createDirectory(EFSUtils.getAbsolutePath(clientManager.getBaseFile()) + clientManager.getFileSeparator()
+		return this.createDirectory(EFSUtils.getAbsolutePath(clientManager.getRoot()) + clientManager.getFileSeparator()
 				+ path, modificationTime);
 	}
 
@@ -195,10 +198,11 @@ public class SyncingTests extends TestCase
 	 * @param path
 	 * @param modificationTime
 	 * @return File
+	 * @throws CoreException 
 	 */
-	protected File createServerDirectory(String path, long modificationTime)
+	protected File createServerDirectory(String path, long modificationTime) throws CoreException
 	{
-		return this.createDirectory(EFSUtils.getAbsolutePath(serverManager.getBaseFile()) + serverManager.getFileSeparator()
+		return this.createDirectory(EFSUtils.getAbsolutePath(serverManager.getRoot()) + serverManager.getFileSeparator()
 				+ path, modificationTime);
 	}
 
@@ -229,8 +233,9 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws IOException
 	 * @return File
+	 * @throws CoreException 
 	 */
-	protected File createClientFile(String path, long modificationTime) throws IOException
+	protected File createClientFile(String path, long modificationTime) throws IOException, CoreException
 	{
 		return this.createClientFile(path, modificationTime, null);
 	}
@@ -243,10 +248,11 @@ public class SyncingTests extends TestCase
 	 * @param content
 	 * @throws IOException
 	 * @return File
+	 * @throws CoreException 
 	 */
-	protected File createClientFile(String path, long modificationTime, String content) throws IOException
+	protected File createClientFile(String path, long modificationTime, String content) throws IOException, CoreException
 	{
-		String fullpath = EFSUtils.getAbsolutePath(clientManager.getBaseFile()) + clientManager.getFileSeparator() + path;
+		String fullpath = EFSUtils.getAbsolutePath(clientManager.getRoot()) + clientManager.getFileSeparator() + path;
 
 		return this.createFile(fullpath, modificationTime, content);
 	}
@@ -259,8 +265,9 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws IOException
 	 * @return File
+	 * @throws CoreException 
 	 */
-	protected File createServerFile(String path, long modificationTime) throws IOException
+	protected File createServerFile(String path, long modificationTime) throws IOException, CoreException
 	{
 		return this.createServerFile(path, modificationTime, null);
 	}
@@ -273,10 +280,11 @@ public class SyncingTests extends TestCase
 	 * @param content
 	 * @throws IOException
 	 * @return File
+	 * @throws CoreException 
 	 */
-	protected File createServerFile(String path, long modificationTime, String content) throws IOException
+	protected File createServerFile(String path, long modificationTime, String content) throws IOException, CoreException
 	{
-		String fullpath = EFSUtils.getAbsolutePath(serverManager.getBaseFile()) + serverManager.getFileSeparator() + path;
+		String fullpath = EFSUtils.getAbsolutePath(serverManager.getRoot()) + serverManager.getFileSeparator() + path;
 
 		return this.createFile(fullpath, modificationTime, content);
 	}
@@ -339,7 +347,7 @@ public class SyncingTests extends TestCase
 	{
 		Synchronizer syncManager = new Synchronizer(useCRC, timeTolerance);
 
-		return syncManager.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+		return syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 	}
 
 	/*
@@ -798,7 +806,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		IVirtualFile clientFileOnServer = getFile(serverManager, clientDirectory.getName());
 		assertFalse("Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " exists.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -835,7 +843,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		IVirtualFile clientFileOnServer = getDirectory(serverManager, clientDirectory.getName());
 		assertFalse("Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " exists.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -873,7 +881,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.upload(items);
@@ -905,7 +913,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.upload(items);
@@ -937,7 +945,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.upload(items);
@@ -969,7 +977,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.upload(items);
@@ -1001,7 +1009,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.upload(items);
@@ -1032,7 +1040,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.uploadAndDelete(items);
@@ -1066,7 +1074,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.uploadAndDelete(items);
@@ -1099,7 +1107,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.download(items);
@@ -1134,7 +1142,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.download(items);
@@ -1171,7 +1179,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.download(items);
@@ -1203,7 +1211,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.download(items);
@@ -1235,7 +1243,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.download(items);
@@ -1267,7 +1275,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.download(items);
@@ -1299,7 +1307,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.download(items);
@@ -1330,7 +1338,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.downloadAndDelete(items);
@@ -1363,7 +1371,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.downloadAndDelete(items);
@@ -1396,7 +1404,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1432,7 +1440,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1467,7 +1475,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSyncAndDelete(items);
@@ -1500,7 +1508,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSyncAndDelete(items);
@@ -1534,7 +1542,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1566,7 +1574,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1597,7 +1605,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1631,7 +1639,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1665,7 +1673,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSyncAndDelete(items);
@@ -1699,7 +1707,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSyncAndDelete(items);
@@ -1733,7 +1741,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1771,7 +1779,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1803,7 +1811,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1835,7 +1843,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);
@@ -1867,7 +1875,7 @@ public class SyncingTests extends TestCase
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager
-				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
+				.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot());
 
 		// sync
 		syncManager.fullSync(items);

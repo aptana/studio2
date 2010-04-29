@@ -48,12 +48,12 @@ import com.aptana.ide.core.io.IFileProgressMonitor;
  */
 public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISerializableSyncItem
 {
-	/**
-	 * getBaseFile
-	 * 
-	 * @return The IVirtualFile of the basePath
-	 */
-	IVirtualFile getBaseFile();
+//	/**
+//	 * getBaseFile
+//	 * 
+//	 * @return The IVirtualFile of the basePath
+//	 */
+//	IVirtualFile getBaseFile();
 
 	/**
 	 * getBasePath
@@ -474,40 +474,31 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	void putStream(InputStream input, IVirtualFile targetFile, IFileProgressMonitor monitor) throws ConnectionException, 
 			VirtualFileManagerException, IOException;
 
-	/**
-	 * putToLocalFile
-	 * 
-	 * @param file
-	 * @param tempFile
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 */
-	void putToLocalFile(IVirtualFile file, File tempFile) throws ConnectionException, VirtualFileManagerException;
 
-	/**
-	 * putFile
-	 * 
-	 * @param sourceFile
-	 * @param targetFile
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 * @throws IOException
-	 */
-	void putFile(IVirtualFile sourceFile, IVirtualFile targetFile) throws ConnectionException, VirtualFileManagerException, 
-			IOException;
+//	/**
+//	 * putFile
+//	 * 
+//	 * @param sourceFile
+//	 * @param targetFile
+//	 * @throws ConnectionException
+//	 * @throws VirtualFileManagerException
+//	 * @throws IOException
+//	 */
+//	void putFile(IVirtualFile sourceFile, IVirtualFile targetFile) throws ConnectionException, VirtualFileManagerException, 
+//			IOException;
 
-	/**
-	 * putFile
-	 * 
-	 * @param sourceFile
-	 * @param targetFile
-	 * @param monitor
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 * @throws IOException
-	 */
-	void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile, IFileProgressMonitor monitor) throws ConnectionException, 
-			VirtualFileManagerException, IOException;
+//	/**
+//	 * putFile
+//	 * 
+//	 * @param sourceFile
+//	 * @param targetFile
+//	 * @param monitor
+//	 * @throws ConnectionException
+//	 * @throws VirtualFileManagerException
+//	 * @throws IOException
+//	 */
+//	void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile, IFileProgressMonitor monitor) throws ConnectionException, 
+//			VirtualFileManagerException, IOException;
 
 	/**
 	 * refresh

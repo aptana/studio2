@@ -47,11 +47,10 @@ import java.util.Set;
 import java.util.zip.CRC32;
 
 import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.provider.FileInfo;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 
 import com.aptana.ide.core.FileUtils;
@@ -59,16 +58,13 @@ import com.aptana.ide.core.ILoggable;
 import com.aptana.ide.core.ILogger;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.IFileProgressMonitor;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.ingo.ConnectionException;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.ProjectFile;
 import com.aptana.ide.core.io.ingo.VirtualFileManagerException;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
-import com.aptana.ide.core.ui.syncing.SyncingConsole;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 
 /**
@@ -95,13 +91,13 @@ public class Synchronizer implements ILoggable
 	private int _serverFileDeletedCount;
 	private int _serverFileTransferedCount;
 
-	private IVirtualFileManager _clientFileManager;
-	private IVirtualFileManager _serverFileManager;
+	private IConnectionPoint _clientFileManager;
+	private IConnectionPoint _serverFileManager;
 	private ISyncEventHandler _eventHandler;
 	private ILogger logger;
 
-	private List<IVirtualFile> _newFilesDownloaded;
-	private List<IVirtualFile> _newFilesUploaded;
+	private List<IFileStore> _newFilesDownloaded;
+	private List<IFileStore> _newFilesUploaded;
 
 	/**
 	 * Constructs a Synchronizer with default parameters.
@@ -131,8 +127,8 @@ public class Synchronizer implements ILoggable
 
 		this._useCRC = calculateCrc;
 		this._timeTolerance = timeTolerance;
-		_newFilesDownloaded = new ArrayList<IVirtualFile>();
-		_newFilesUploaded = new ArrayList<IVirtualFile>();
+		_newFilesDownloaded = new ArrayList<IFileStore>();
+		_newFilesUploaded = new ArrayList<IFileStore>();
 	}
 
 	/**
@@ -160,23 +156,23 @@ public class Synchronizer implements ILoggable
 	 *            The file to use when computing the canonical path
 	 * @return the file's canonical path
 	 */
-	public static String getCanonicalPath(IVirtualFile file)
+	public static String getCanonicalPath(IFileStore root, IFileStore file)
 	{
 		String basePath = null;
 		String result = null;
 
 		try
 		{
-			basePath = EFSUtils.getAbsolutePath(file.getFileManager().getBaseFile());
+			basePath = EFSUtils.getAbsolutePath(root);
 
 			if (file instanceof ProjectFile)
 			{
-				result = EFSUtils.getRelativePath(file);;
+				result = EFSUtils.getRelativePath(file);
 			}
-			else if (basePath.equals(file.getFileManager().getFileSeparator()))
-			{
-				result = EFSUtils.getAbsolutePath(file);
-			}
+//			else if (basePath.equals(file.getFileManager().getFileSeparator()))
+//			{
+//				result = EFSUtils.getAbsolutePath(file);
+//			}
 			else
 			{
 				result = EFSUtils.getAbsolutePath(file).substring(basePath.length());
@@ -302,14 +298,14 @@ public class Synchronizer implements ILoggable
 		return this._serverFileTransferedCount;
 	}
 
-	public IVirtualFile[] getNewFilesDownloaded()
+	public IFileStore[] getNewFilesDownloaded()
 	{
-		return _newFilesDownloaded.toArray(new IVirtualFile[_newFilesDownloaded.size()]);
+		return _newFilesDownloaded.toArray(new IFileStore[_newFilesDownloaded.size()]);
 	}
 
-	public IVirtualFile[] getNewFilesUploaded()
+	public IFileStore[] getNewFilesUploaded()
 	{
-		return _newFilesUploaded.toArray(new IVirtualFile[_newFilesUploaded.size()]);
+		return _newFilesUploaded.toArray(new IFileStore[_newFilesUploaded.size()]);
 	}
 
 	/**
@@ -325,45 +321,45 @@ public class Synchronizer implements ILoggable
 	 * @throws ConnectionException 
 	 * @throws CoreException 
 	 */
-	public VirtualFileSyncPair[] getSyncItems(IVirtualFile client, IVirtualFile server) throws IOException,
+	public VirtualFileSyncPair[] getSyncItems(IConnectionPoint clientPoint, IConnectionPoint serverPoint, IFileStore client, IFileStore server) throws IOException,
 			ConnectionException, VirtualFileManagerException, ConnectionException, CoreException
 	{
 		// store references to file managers
-		setClientFileManager(client.getFileManager());
-		setServerFileManager(server.getFileManager());
+		setClientFileManager(clientPoint);
+		setServerFileManager(serverPoint);
 
-		IVirtualFile[] clientFiles = new IVirtualFile[0];
-		IVirtualFile[] serverFiles = new IVirtualFile[0];
+		IFileStore[] clientFiles = new IFileStore[0];
+		IFileStore[] serverFiles = new IFileStore[0];
 
 		try
 		{
-			setClientEventHandler(client, server);
+			//setClientEventHandler(client, server);
 
 			if (!client.fetchInfo().isDirectory() || !server.fetchInfo().isDirectory())
 			{
 				if (client.fetchInfo().exists())
 				{
-					clientFiles = new IVirtualFile[]
+					clientFiles = new IFileStore[]
 						{ client };
 				}
 
 				if (server.fetchInfo().exists())
 				{
-					serverFiles = new IVirtualFile[]
+					serverFiles = new IFileStore[]
 						{ server };
 				}
 			}
 			else
 			{
 				// get the complete file listings for the client and server
-				clientFiles = client.getFileManager().getFiles(client, true, false);
-				serverFiles = server.getFileManager().getFiles(server, true, false);
+				clientFiles = EFSUtils.getFiles(client, true, false);
+				serverFiles = EFSUtils.getFiles(server, true, false);
 			}
 		}
 		finally
 		{
 			// we just throw exceptions back up the tree
-			removeClientEventHandler(client, server);
+			//removeClientEventHandler(client, server);
 		}
 
 		if (!syncContinue())
@@ -383,7 +379,7 @@ public class Synchronizer implements ILoggable
 	 * @throws IOException
 	 * @throws CoreException 
 	 */
-	public VirtualFileSyncPair[] createSyncItems(IVirtualFile[] clientFiles, IVirtualFile[] serverFiles)
+	public VirtualFileSyncPair[] createSyncItems(IFileStore[] clientFiles, IFileStore[] serverFiles)
 			throws ConnectionException, VirtualFileManagerException, IOException, CoreException
 	{
 		Map<String, VirtualFileSyncPair> fileList = new HashMap<String, VirtualFileSyncPair>();
@@ -397,11 +393,11 @@ public class Synchronizer implements ILoggable
 			if (!syncContinue())
 				return null;
 	
-			IVirtualFile clientFile = clientFiles[i];
+			IFileStore clientFile = clientFiles[i];
 			if (clientFile.fetchInfo().getAttribute(EFS.ATTRIBUTE_SYMLINK))
 				continue;
 			
-			String relativePath = getCanonicalPath(clientFile);
+			String relativePath = getCanonicalPath(_clientFileManager.getRoot(), clientFile);
 			VirtualFileSyncPair item = new VirtualFileSyncPair(clientFile, null, relativePath, SyncState.ClientItemOnly);			
 			fileList.put(item.getRelativePath(), item);	
 		}
@@ -412,8 +408,8 @@ public class Synchronizer implements ILoggable
 			if (!syncContinue())
 				return null;
 			
-			IVirtualFile serverFile = serverFiles[i];
-			String relativePath = getCanonicalPath(serverFile);
+			IFileStore serverFile = serverFiles[i];
+			String relativePath = getCanonicalPath(_serverFileManager.getRoot(), serverFile);
 
 			if (!fileList.containsKey(relativePath)) // Server only
 			{
@@ -498,20 +494,20 @@ public class Synchronizer implements ILoggable
 	 * @param client
 	 * @param server
 	 */
-	private void setClientEventHandler(IVirtualFile client, IVirtualFile server)
+	private void setClientEventHandler(IFileStore client, IFileStore server)
 	{
-		client.getFileManager().setEventHandler(this._eventHandler);
-		server.getFileManager().setEventHandler(this._eventHandler);
+		//client.getFileManager().setEventHandler(this._eventHandler);
+		//server.getFileManager().setEventHandler(this._eventHandler);
 	}
 
 	/**
 	 * @param client
 	 * @param server
 	 */
-	private void removeClientEventHandler(IVirtualFile client, IVirtualFile server)
+	private void removeClientEventHandler(IFileStore client, IFileStore server)
 	{
-		client.getFileManager().setEventHandler(null);
-		server.getFileManager().setEventHandler(null);
+		//client.getFileManager().setEventHandler(null);
+		//server.getFileManager().setEventHandler(null);
 	}
 
 	/**
@@ -629,17 +625,17 @@ public class Synchronizer implements ILoggable
 		return crc.getValue();
 	}
 
-	public void cancelAllOperations()
-	{
-		if (this._clientFileManager != null)
-		{
-			this._clientFileManager.cancel();
-		}
-		if (this._serverFileManager != null)
-		{
-			this._serverFileManager.cancel();
-		}
-	}
+//	public void cancelAllOperations()
+//	{
+//		if (this._clientFileManager != null)
+//		{
+//			this._clientFileManager.cancel();
+//		}
+//		if (this._serverFileManager != null)
+//		{
+//			this._serverFileManager.cancel();
+//		}
+//	}
 
 	/**
 	 * Download to the client all files on the server that are newer or that
@@ -688,7 +684,7 @@ public class Synchronizer implements ILoggable
 
 		boolean result = true;
 		int totalItems = fileList.length;
-		IVirtualFileManager client = getClientFileManager();
+		IConnectionPoint client = getClientFileManager();
 
 		this.reset();
 
@@ -729,17 +725,17 @@ public class Synchronizer implements ILoggable
 			        break;
 
 				case SyncState.ServerItemOnly:
-					String clientPath = constructDestinationPath(client.getBasePath(), client, item);
-					final IVirtualFile targetClientFile;
+					final IFileStore targetClientFile = constructDestinationPath(client.getRoot(), item);
+					//final IVirtualFile targetClientFile;
 
 					if (serverFile.fetchInfo().isDirectory())
 					{
-						targetClientFile = client.createVirtualDirectory(clientPath);
 						logCreatedDirectory(targetClientFile);
 
 						if (!targetClientFile.fetchInfo().exists())
 						{
-							client.createLocalDirectory(targetClientFile);
+							targetClientFile.mkdir(EFS.NONE, null); // createVirtualDirectory(clientPath);
+							//client.createLocalDirectory(targetClientFile);
 							this._clientDirectoryCreatedCount++;
 							_newFilesDownloaded.add(targetClientFile);
 						}
@@ -749,7 +745,7 @@ public class Synchronizer implements ILoggable
 					}
 					else
 					{
-						targetClientFile = client.createVirtualFile(clientPath);
+						//targetClientFile = client.getRoot().createVirtualFile(clientPath);
 						logDownloading(serverFile);
 //						try
 //						{
@@ -978,21 +974,21 @@ public class Synchronizer implements ILoggable
         int totalItems = fileList.length;
 
 		// find the difference in time between the two sync targets
-		IVirtualFileManager client = getClientFileManager();
-		IVirtualFileManager server = getServerFileManager();
+		IConnectionPoint client = getClientFileManager();
+		IConnectionPoint server = getServerFileManager();
 
 		// calculate base paths with trailing file separator
-		String clientBasePath = client.getBasePath();
-		String serverBasePath = server.getBasePath();
-
-		if (clientBasePath.equals(client.getFileSeparator()))
-		{
-			clientBasePath = StringUtils.EMPTY;
-		}
-		if (serverBasePath.equals(server.getFileSeparator()))
-		{
-			serverBasePath = StringUtils.EMPTY;
-		}
+//		String clientBasePath = client.getRoot();
+//		String serverBasePath = server.getRoot();
+//
+//		if (clientBasePath.equals(client.getFileSeparator()))
+//		{
+//			clientBasePath = StringUtils.EMPTY;
+//		}
+//		if (serverBasePath.equals(server.getFileSeparator()))
+//		{
+//			serverBasePath = StringUtils.EMPTY;
+//		}
 
 		// reset stats
 		this.reset();
@@ -1001,8 +997,8 @@ public class Synchronizer implements ILoggable
 		FILE_LOOP: for (int i = 0; i < fileList.length; i++)
 		{
 			final VirtualFileSyncPair item = fileList[i];
-			final IVirtualFile clientFile = item.getSourceFile();
-			final IVirtualFile serverFile = item.getDestinationFile();
+			final IFileStore clientFile = item.getSourceFile();
+			final IFileStore serverFile = item.getDestinationFile();
 
 			try
 			{
@@ -1033,16 +1029,39 @@ public class Synchronizer implements ILoggable
 	                        // transfers the file from client to server
 //	                        try
 //	                        {
-	                            serverFile.getFileManager().putFile(clientFile, serverFile, new IFileProgressMonitor()
-	                            {
-
-	                                public void bytesTransferred(long bytes)
-	                                {
-	                                    syncTransferring(item, bytes);
-	                                }
-
-	                                public void done()
-	                                {
+	                            clientFile.copy(serverFile, EFS.OVERWRITE, new IProgressMonitor() {
+									
+									public void worked(int work) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void subTask(String name) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void setTaskName(String name) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void setCanceled(boolean value) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public boolean isCanceled() {
+										// TODO Auto-generated method stub
+										return false;
+									}
+									
+									public void internalWorked(double work) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void done() {
 	                                    try
 	                                    {
 	            							EFSUtils.setModificationTime(clientFile, serverFile);
@@ -1053,10 +1072,27 @@ public class Synchronizer implements ILoggable
 	                                    Synchronizer.this._clientFileTransferedCount++;
 
 	                                    logSuccess();
-	                                    syncDone(item);
-	                                }
-
-	                            });
+	                                    syncDone(item);										
+									}
+									
+									public void beginTask(String name, int totalWork) {
+										// TODO Auto-generated method stub
+										
+									}
+								});
+	                            //;cgetFileManager().putFile(clientFile, serverFile, new IFileProgressMonitor()
+//	                            {
+//
+//	                                public void bytesTransferred(long bytes)
+//	                                {
+//	                                    syncTransferring(item, bytes);
+//	                                }
+//
+//	                                public void done()
+//	                                {
+//	                                }
+//
+//	                            });
 //	                        }
 //	                        catch (IOException e)
 //	                        {
@@ -1078,7 +1114,7 @@ public class Synchronizer implements ILoggable
 	                        // need to query first because deletion causes isDirectory to always return false
 	                        boolean wasDirectory = clientFile.fetchInfo().isDirectory();
 	                        // deletes the item
-	                        client.deleteFile(clientFile);
+	                        clientFile.delete(EFS.NONE, null); //.deleteFile(clientFile);
 	                        if (wasDirectory)
 	                        {
 	                            this._clientDirectoryDeletedCount++;
@@ -1093,17 +1129,16 @@ public class Synchronizer implements ILoggable
 	                    else
 						{
 	                        // creates the item on server
-							String serverPath = constructDestinationPath(serverBasePath, server, item);
-							final IVirtualFile targetServerFile;
+							final IFileStore targetServerFile = constructDestinationPath(server.getRoot(), item);
 
 							if (clientFile.fetchInfo().isDirectory())
 							{
-								targetServerFile = server.createVirtualDirectory(serverPath);
 								logCreatedDirectory(targetServerFile);
 
 								if (!targetServerFile.fetchInfo().exists())
 								{
-									server.createLocalDirectory(targetServerFile);
+									targetServerFile.mkdir(EFS.NONE, null); // = server.createVirtualDirectory(serverPath);
+									//server.createLocalDirectory(targetServerFile);
 									this._serverDirectoryCreatedCount++;
 									_newFilesUploaded.add(targetServerFile);
 								}
@@ -1113,35 +1148,87 @@ public class Synchronizer implements ILoggable
 							}
 							else
 							{
-								targetServerFile = server.createVirtualFile(serverPath);
+								//targetServerFile = server.createVirtualFile(serverPath);
 								logUploading(clientFile);
 //								try
 //								{
-									server.putFile(clientFile, targetServerFile, new IFileProgressMonitor()
-									{
-
-										public void bytesTransferred(long bytes)
+									clientFile.copy(targetServerFile, EFS.OVERWRITE, new IProgressMonitor() {
+									
+									public void worked(int work) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void subTask(String name) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void setTaskName(String name) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void setCanceled(boolean value) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public boolean isCanceled() {
+										// TODO Auto-generated method stub
+										return false;
+									}
+									
+									public void internalWorked(double work) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void done() {
+										try
 										{
-											syncTransferring(item, bytes);
+											EFSUtils.setModificationTime(clientFile, targetServerFile);
 										}
-
-										public void done()
+										catch (Exception e)
 										{
-											try
-											{
-												EFSUtils.setModificationTime(clientFile, targetServerFile);
-											}
-											catch (Exception e)
-											{
-											}
-											Synchronizer.this._clientFileTransferedCount++;
-											_newFilesUploaded.add(targetServerFile);
-
-											logSuccess();
-											syncDone(item);
 										}
+										Synchronizer.this._clientFileTransferedCount++;
+										_newFilesUploaded.add(targetServerFile);
 
-									});
+										logSuccess();
+										syncDone(item);
+									}
+									
+									public void beginTask(String name, int totalWork) {
+										// TODO Auto-generated method stub
+										
+									}
+								});
+//									server.putFile(clientFile, targetServerFile, new IFileProgressMonitor()
+//									{
+//
+//										public void bytesTransferred(long bytes)
+//										{
+//											syncTransferring(item, bytes);
+//										}
+//
+//										public void done()
+//										{
+//											try
+//											{
+//												EFSUtils.setModificationTime(clientFile, targetServerFile);
+//											}
+//											catch (Exception e)
+//											{
+//											}
+//											Synchronizer.this._clientFileTransferedCount++;
+//											_newFilesUploaded.add(targetServerFile);
+//
+//											logSuccess();
+//											syncDone(item);
+//										}
+//
+//									});
 //								}
 //								catch (IOException e)
 //								{
@@ -1172,16 +1259,39 @@ public class Synchronizer implements ILoggable
 	                        // transfers the file from client to server
 //							try
 //							{
-								clientFile.getFileManager().putFile(serverFile, clientFile, new IFileProgressMonitor()
-								{
-
-									public void bytesTransferred(long bytes)
-									{
-										syncTransferring(item, bytes);
+								clientFile.copy(serverFile, EFS.OVERWRITE, new IProgressMonitor() {
+									
+									public void worked(int work) {
+										// TODO Auto-generated method stub
+										
 									}
-
-									public void done()
-									{
+									
+									public void subTask(String name) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void setTaskName(String name) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void setCanceled(boolean value) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public boolean isCanceled() {
+										// TODO Auto-generated method stub
+										return false;
+									}
+									
+									public void internalWorked(double work) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									public void done() {
 			            				try {
 											EFSUtils.setModificationTime(serverFile, clientFile);
 										} catch (CoreException e) {
@@ -1193,8 +1303,35 @@ public class Synchronizer implements ILoggable
 										logSuccess();
 										syncDone(item);
 									}
-
+									
+									public void beginTask(String name, int totalWork) {
+										// TODO Auto-generated method stub
+										
+									}
 								});
+//								;, options, monitor, options, monitor)clientFile.getFileManager().putFile(serverFile, clientFile, new IFileProgressMonitor()
+//								{
+//
+//									public void bytesTransferred(long bytes)
+//									{
+//										syncTransferring(item, bytes);
+//									}
+//
+//									public void done()
+//									{
+//			            				try {
+//											EFSUtils.setModificationTime(serverFile, clientFile);
+//										} catch (CoreException e) {
+//											// TODO Auto-generated catch block
+//											e.printStackTrace();
+//										}
+//										Synchronizer.this._serverFileTransferedCount++;
+//
+//										logSuccess();
+//										syncDone(item);
+//									}
+//
+//								});
 //							}
 //							catch (IOException e)
 //							{
@@ -1216,7 +1353,7 @@ public class Synchronizer implements ILoggable
 	                        // need to query first because deletion causes isDirectory to always return false
 	                        boolean wasDirectory = serverFile.fetchInfo().isDirectory();
 	                        // deletes the item
-	                        server.deleteFile(serverFile);
+	                        serverFile.delete(EFS.NONE, null); //server.deleteFile(serverFile);
 	                        if (wasDirectory)
 	                        {
 	                            this._serverDirectoryDeletedCount++;
@@ -1231,17 +1368,17 @@ public class Synchronizer implements ILoggable
 	                    else
 						{
 	                        // creates the item on client
-							String clientPath = constructDestinationPath(clientBasePath, client, item);
-							final IVirtualFile targetClientFile;
+							final IFileStore targetClientFile = constructDestinationPath(client.getRoot(), item);
+							//final IVirtualFile targetClientFile;
 
 							if (serverFile.fetchInfo().isDirectory())
 							{
-								targetClientFile = client.createVirtualDirectory(clientPath);
 								logCreatedDirectory(targetClientFile);
 
 								if (!targetClientFile.fetchInfo().exists())
 								{
-									client.createLocalDirectory(targetClientFile);
+									targetClientFile.mkdir(EFS.NONE, null); // = client.createVirtualDirectory(clientPath);
+									//client.createLocalDirectory(targetClientFile);
 									this._clientDirectoryCreatedCount++;
 									_newFilesDownloaded.add(targetClientFile);
 								}
@@ -1251,20 +1388,43 @@ public class Synchronizer implements ILoggable
 							}
 							else
 							{
-								targetClientFile = client.createVirtualFile(clientPath);
+								//targetClientFile = client.createVirtualFile(clientPath);
 								logDownloading(targetClientFile);
 //								try
 //								{
-									client.putFile(serverFile, targetClientFile, new IFileProgressMonitor()
-									{
-
-										public void bytesTransferred(long bytes)
-										{
-											syncTransferring(item, bytes);
+									serverFile.copy(targetClientFile, EFS.OVERWRITE, new IProgressMonitor() {
+										
+										public void worked(int work) {
+											// TODO Auto-generated method stub
+											
 										}
-
-										public void done()
-										{
+										
+										public void subTask(String name) {
+											// TODO Auto-generated method stub
+											
+										}
+										
+										public void setTaskName(String name) {
+											// TODO Auto-generated method stub
+											
+										}
+										
+										public void setCanceled(boolean value) {
+											// TODO Auto-generated method stub
+											
+										}
+										
+										public boolean isCanceled() {
+											// TODO Auto-generated method stub
+											return false;
+										}
+										
+										public void internalWorked(double work) {
+											// TODO Auto-generated method stub
+											
+										}
+										
+										public void done() {
 											try
 											{
 												EFSUtils.setModificationTime(serverFile, targetClientFile);
@@ -1278,8 +1438,37 @@ public class Synchronizer implements ILoggable
 											logSuccess();
 											syncDone(item);
 										}
-
+										
+										public void beginTask(String name, int totalWork) {
+											// TODO Auto-generated method stub
+											
+										}
 									});
+//									client.putFile(serverFile, targetClientFile, new IFileProgressMonitor()
+//									{
+//
+//										public void bytesTransferred(long bytes)
+//										{
+//											syncTransferring(item, bytes);
+//										}
+//
+//										public void done()
+//										{
+//											try
+//											{
+//												EFSUtils.setModificationTime(serverFile, targetClientFile);
+//											}
+//											catch (Exception e)
+//											{
+//											}
+//											Synchronizer.this._serverFileTransferedCount++;
+//											_newFilesDownloaded.add(targetClientFile);
+//
+//											logSuccess();
+//											syncDone(item);
+//										}
+//
+//									});
 //								}
 //								catch (IOException e)
 //								{
@@ -1336,13 +1525,9 @@ public class Synchronizer implements ILoggable
 	 * @param item
 	 * @return String
 	 */
-	private String constructDestinationPath(String basePath, IVirtualFileManager manager, VirtualFileSyncPair item)
+	private IFileStore constructDestinationPath(IFileStore base, VirtualFileSyncPair item)
 	{
-		if (basePath.endsWith(manager.getFileSeparator()))
-		{
-			return basePath + item.getRelativePath();
-		}
-		return basePath + manager.getFileSeparator() + item.getRelativePath();
+		return base.getFileStore(new Path(item.getRelativePath()));
 	}
 
 	/**
@@ -1408,7 +1593,7 @@ public class Synchronizer implements ILoggable
 		checkFileManagers();
 		logBeginUploading();
 
-		IVirtualFileManager server = getServerFileManager();
+		IConnectionPoint server = getServerFileManager();
 		boolean result = true;
 		int totalItems = fileList.length;
 
@@ -1417,8 +1602,8 @@ public class Synchronizer implements ILoggable
 		FILE_LOOP: for (int i = 0; i < fileList.length; i++)
 		{
 			final VirtualFileSyncPair item = fileList[i];
-			final IVirtualFile clientFile = item.getSourceFile();
-			final IVirtualFile serverFile = item.getDestinationFile();
+			final IFileStore clientFile = item.getSourceFile();
+			final IFileStore serverFile = item.getDestinationFile();
 
 			setSyncItemDirection(item, true, false);
 			
@@ -1433,16 +1618,16 @@ public class Synchronizer implements ILoggable
 			{
 			    case SyncState.ClientItemOnly:
 			        // only exists on client; creates the item on server
-					String serverPath = constructDestinationPath(server.getBasePath(), server, item);
-					final IVirtualFile targetServerFile;
+					final IFileStore targetServerFile = constructDestinationPath(server.getRoot(), item);
+					//final IVirtualFile targetServerFile;
 
 					if (clientFile.fetchInfo().isDirectory())
 					{
-						targetServerFile = server.createVirtualDirectory(serverPath);
+						//targetServerFile.mkdir(EFS.NONE, null); // = server.createVirtualDirectory(serverPath);
 
 						if (!targetServerFile.fetchInfo().exists())
 						{
-							server.createLocalDirectory(targetServerFile);
+							targetServerFile.mkdir(EFS.NONE, null); //server.createLocalDirectory(targetServerFile);
 							this._serverDirectoryCreatedCount++;
 							_newFilesUploaded.add(targetServerFile);
 						}
@@ -1451,21 +1636,44 @@ public class Synchronizer implements ILoggable
 					}
 					else
 					{
-						targetServerFile = server.createVirtualFile(serverPath);
+						//targetServerFile = server.createVirtualFile(serverPath);
 
 						logUploading(clientFile);
 //						try
 //						{
-							server.putFile(clientFile, targetServerFile, new IFileProgressMonitor()
-							{
-
-								public void bytesTransferred(long bytes)
-								{
-									syncTransferring(item, bytes);
+							clientFile.copy(targetServerFile, EFS.OVERWRITE, new IProgressMonitor() {
+								
+								public void worked(int work) {
+									// TODO Auto-generated method stub
+									
 								}
-
-								public void done()
-								{
+								
+								public void subTask(String name) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public void setTaskName(String name) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public void setCanceled(boolean value) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public boolean isCanceled() {
+									// TODO Auto-generated method stub
+									return false;
+								}
+								
+								public void internalWorked(double work) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public void done() {
 									try
 									{
 										EFSUtils.setModificationTime(clientFile, targetServerFile);
@@ -1479,8 +1687,24 @@ public class Synchronizer implements ILoggable
 									logSuccess();
 									syncDone(item);
 								}
-
-							});
+								
+								public void beginTask(String name, int totalWork) {
+									// TODO Auto-generated method stub
+									
+								}
+							}); //server.putFile(clientFile, targetServerFile, new IFileProgressMonitor()
+//							{
+//
+//								public void bytesTransferred(long bytes)
+//								{
+//									syncTransferring(item, bytes);
+//								}
+//
+//								public void done()
+//								{
+//								}
+//
+//							});
 //						}
 //						catch (IOException e)
 //						{
@@ -1501,7 +1725,7 @@ public class Synchronizer implements ILoggable
                     {
                         // Need to query if directory first because deletion makes isDirectory always return false.
                         boolean wasDirectory = serverFile.fetchInfo().isDirectory();
-                        server.deleteFile(serverFile);
+                        serverFile.delete(EFS.NONE, null); //server.deleteFile(serverFile);
                         if (wasDirectory)
                         {
                             this._serverDirectoryDeletedCount++;
@@ -1537,16 +1761,39 @@ public class Synchronizer implements ILoggable
                         // transfers the file from client to server
 //						try
 //						{
-							serverFile.getFileManager().putFile(clientFile, serverFile, new IFileProgressMonitor()
-							{
-
-								public void bytesTransferred(long bytes)
-								{
-									syncTransferring(item, bytes);
+							clientFile.copy(serverFile, EFS.OVERWRITE, new IProgressMonitor() {
+								
+								public void worked(int work) {
+									// TODO Auto-generated method stub
+									
 								}
-
-								public void done()
-								{
+								
+								public void subTask(String name) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public void setTaskName(String name) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public void setCanceled(boolean value) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public boolean isCanceled() {
+									// TODO Auto-generated method stub
+									return false;
+								}
+								
+								public void internalWorked(double work) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								public void done() {
 									try
 									{
 										EFSUtils.setModificationTime(clientFile, serverFile);
@@ -1559,8 +1806,25 @@ public class Synchronizer implements ILoggable
 									logSuccess();
 									syncDone(item);
 								}
-
+								
+								public void beginTask(String name, int totalWork) {
+									// TODO Auto-generated method stub
+									
+								}
 							});
+//							serverFile.getFileManager().putFile(clientFile, serverFile, new IFileProgressMonitor()
+//							{
+//
+//								public void bytesTransferred(long bytes)
+//								{
+//									syncTransferring(item, bytes);
+//								}
+//
+//								public void done()
+//								{
+//								}
+//
+//							});
 //						}
 //						catch (IOException e)
 //						{
@@ -1619,7 +1883,7 @@ public class Synchronizer implements ILoggable
 	/**
 	 * @return Returns the clientFileManager.
 	 */
-	public IVirtualFileManager getClientFileManager()
+	public IConnectionPoint getClientFileManager()
 	{
 		return this._clientFileManager;
 	}
@@ -1628,7 +1892,7 @@ public class Synchronizer implements ILoggable
 	 * @param fileManager
 	 *            The clientFileManager to set.
 	 */
-	public void setClientFileManager(IVirtualFileManager fileManager)
+	public void setClientFileManager(IConnectionPoint fileManager)
 	{
 		this._clientFileManager = fileManager;
 	}
@@ -1636,7 +1900,7 @@ public class Synchronizer implements ILoggable
 	/**
 	 * @return Returns the serverFileManager.
 	 */
-	public IVirtualFileManager getServerFileManager()
+	public IConnectionPoint getServerFileManager()
 	{
 		return this._serverFileManager;
 	}
@@ -1645,7 +1909,7 @@ public class Synchronizer implements ILoggable
 	 * @param fileManager
 	 *            The serverFileManager to set.
 	 */
-	public void setServerFileManager(IVirtualFileManager fileManager)
+	public void setServerFileManager(IConnectionPoint fileManager)
 	{
 		this._serverFileManager = fileManager;
 	}
@@ -1704,7 +1968,7 @@ public class Synchronizer implements ILoggable
 				+ StringUtils.format(Messages.Synchronizer_BeginningUpload, getTimestamp()));
 	}
 
-	private void logCreatedDirectory(IVirtualFile file)
+	private void logCreatedDirectory(IFileStore file)
 	{
 		log(FileUtils.NEW_LINE + StringUtils.format(Messages.Synchronizer_CreatedDirectory, EFSUtils.getAbsolutePath(file)));
 	}
@@ -1724,7 +1988,7 @@ public class Synchronizer implements ILoggable
 		log(Messages.Synchronizer_Success);
 	}
 
-	private void logUploading(IVirtualFile file)
+	private void logUploading(IFileStore file)
 	{
 		log(FileUtils.NEW_LINE + StringUtils.format(Messages.Synchronizer_Uploading, EFSUtils.getAbsolutePath(file)));
 	}
@@ -1769,8 +2033,13 @@ public class Synchronizer implements ILoggable
 
 	public void disconnect()
 	{
-		getClientFileManager().disconnect();
-		getServerFileManager().disconnect();		
+		try {
+			getClientFileManager().disconnect(null);
+			getServerFileManager().disconnect(null);		
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

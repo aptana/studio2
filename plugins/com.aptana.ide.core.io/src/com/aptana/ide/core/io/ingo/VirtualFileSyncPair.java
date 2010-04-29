@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 
 import com.aptana.ide.core.io.syncing.SyncState;
@@ -52,8 +53,8 @@ public class VirtualFileSyncPair
 	public static final int Direction_ServerToClient = 2;
 
 	private String _relativePath;
-	private IVirtualFile _sourceFile;
-	private IVirtualFile _destinationFile;
+	private IFileStore _sourceFile;
+	private IFileStore _destinationFile;
 	private int _syncState;
 	private int _syncDirection = Direction_None;
 
@@ -65,7 +66,7 @@ public class VirtualFileSyncPair
 	 * @param relativePath
 	 * @param syncState
 	 */
-	public VirtualFileSyncPair(IVirtualFile sourceFile, IVirtualFile destinationFile, String relativePath, int syncState)
+	public VirtualFileSyncPair(IFileStore sourceFile, IFileStore destinationFile, String relativePath, int syncState)
 	{
 		this._sourceFile = sourceFile;
 		this._destinationFile = destinationFile;
@@ -78,7 +79,7 @@ public class VirtualFileSyncPair
 	 * 
 	 * @return IVirtualFile
 	 */
-	public IVirtualFile getSourceFile()
+	public IFileStore getSourceFile()
 	{
 		return this._sourceFile;
 	}
@@ -109,7 +110,7 @@ public class VirtualFileSyncPair
 	 * 
 	 * @param sourceFile
 	 */
-	public void setSourceFile(IVirtualFile sourceFile)
+	public void setSourceFile(IFileStore sourceFile)
 	{
 		this._sourceFile = sourceFile;
 	}
@@ -119,7 +120,7 @@ public class VirtualFileSyncPair
 	 * 
 	 * @return IVirtualFile
 	 */
-	public IVirtualFile getDestinationFile()
+	public IFileStore getDestinationFile()
 	{
 		return this._destinationFile;
 	}
@@ -150,7 +151,7 @@ public class VirtualFileSyncPair
 	 * 
 	 * @param destinationFile
 	 */
-	public void setDestinationFile(IVirtualFile destinationFile)
+	public void setDestinationFile(IFileStore destinationFile)
 	{
 		this._destinationFile = destinationFile;
 	}

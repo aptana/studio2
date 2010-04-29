@@ -6,6 +6,7 @@ Bundle-Version: 2.0.4.qualifier
 Bundle-Activator: com.aptana.ide.syncing.ui.SyncingUIPlugin
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.filesystem,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui.navigator,

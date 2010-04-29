@@ -38,12 +38,15 @@ package com.aptana.ide.core.io.efs;
 import java.io.File;
 import java.net.URI;
 
+import javax.security.auth.login.FailedLoginException;
+
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.filesystem.provider.FileInfo;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
@@ -161,6 +164,17 @@ public final class EFSUtils {
 	 * Returns the parent file of this file
 	 * @param file
 	 * @return
+	 * @throws Exception 
+	 * @throws CoreException 
+	 */
+	public static String getRelativePath(IFileStore file) {
+		return null; //throw new Exception();
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
 	 * @throws CoreException 
 	 */
 	public static String getRelativePath(IFileStore parent, IFileStore file) {
@@ -174,6 +188,24 @@ public final class EFSUtils {
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * Creates the file on the destination store using a relative path
+	 * @param sourceRoot
+	 * @param sourceStore
+	 * @param destinationRoot
+	 * @return
+	 */
+	public static IFileStore createFile(IFileStore sourceRoot, IFileStore sourceStore, IFileStore destinationRoot) {
+        String sourceRootPath = sourceRoot.toString();
+        String sourcePath = sourceStore.toString();
+        int index = sourcePath.indexOf(sourceRootPath);
+        if (index > -1) {
+            String relativePath = sourcePath.substring(index + sourceRootPath.length());
+            return destinationRoot.getFileStore(new Path(relativePath));
+        }
+        return null;
 	}
 
 }

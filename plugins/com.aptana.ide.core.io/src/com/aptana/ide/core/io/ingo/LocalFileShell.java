@@ -52,20 +52,20 @@ public class LocalFileShell extends LocalFile implements IVirtualFile {
 //	}
 
 
-	@Override
-	public void putStream(InputStream input) throws ConnectionException,
-			VirtualFileManagerException, IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void putStream(InputStream input, IFileProgressMonitor monitor)
-			throws ConnectionException, VirtualFileManagerException,
-			IOException {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void putStream(InputStream input) throws ConnectionException,
+//			VirtualFileManagerException, IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void putStream(InputStream input, IFileProgressMonitor monitor)
+//			throws ConnectionException, VirtualFileManagerException,
+//			IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 
 //	public File getFile() {

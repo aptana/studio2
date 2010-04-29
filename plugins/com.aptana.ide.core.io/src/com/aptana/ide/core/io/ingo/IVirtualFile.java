@@ -52,31 +52,4 @@ public interface IVirtualFile extends IFileStore, Comparable
 	 * @return Returns this file's owning file manager
 	 */
 	IVirtualFileManager getFileManager();
-
-	/**
-	 * Put the content of the specified input stream into this virtual file. This will create a new file if it does not
-	 * already exist. This will replace the entire content of the file if it does exist
-	 * 
-	 * @param input
-	 *            The input stream from which to retrieve data to place into this virtual file
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 * @throws IOException
-	 */
-	void putStream(InputStream input) throws ConnectionException, VirtualFileManagerException, IOException;
-
-	/**
-	 * Put the content of the specified input stream into this virtual file. This will create a new file if it does not
-	 * already exist. This will replace the entire content of the file if it does exist
-	 * 
-	 * @param input
-	 *            The input stream from which to retrieve data to place into this virtual file
-	 * @param monitor
-	 * 			  the monitor that handles the progress information
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 * @throws IOException
-	 */
-	void putStream(InputStream input, IFileProgressMonitor monitor) throws ConnectionException, 
-			VirtualFileManagerException, IOException;
 }

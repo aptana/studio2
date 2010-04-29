@@ -85,21 +85,21 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 
-	@Override
-	public IVirtualFile getBaseFile() {
-		// TODO Auto-generated method stub
-		IFileStore fs;
-		try {
-			fs = super.getRoot();
-			File f = fs.toLocalFile(0, null);
-			LocalFileShell lfs = new LocalFileShell(this, f);
-			return lfs;
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	@Override
+//	public IVirtualFile getBaseFile() {
+//		// TODO Auto-generated method stub
+//		IFileStore fs;
+//		try {
+//			fs = super.getRoot();
+//			File f = fs.toLocalFile(0, null);
+//			LocalFileShell lfs = new LocalFileShell(this, f);
+//			return lfs;
+//		} catch (CoreException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 	public void setHidden(boolean hidden) {
@@ -202,7 +202,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 
 	@Override
 	public String getBasePath() {
-		return EFSUtils.getAbsolutePath(getBaseFile());
+		try {
+			return EFSUtils.getAbsolutePath(getRoot());
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -457,13 +463,6 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public void putToLocalFile(IVirtualFile file, File tempFile)
-			throws ConnectionException, VirtualFileManagerException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
 		
@@ -591,14 +590,14 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		return null;
 	}
 
-
-	@Override
-	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
-			IFileProgressMonitor monitor) throws ConnectionException,
-			VirtualFileManagerException, IOException {
-		// TODO Auto-generated method stub
-		
-	}
+//
+//	@Override
+//	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
+//			IFileProgressMonitor monitor) throws ConnectionException,
+//			VirtualFileManagerException, IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 
 	@Override

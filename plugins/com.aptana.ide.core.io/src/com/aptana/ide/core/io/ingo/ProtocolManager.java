@@ -36,6 +36,7 @@ package com.aptana.ide.core.io.ingo;
 
 import java.util.Hashtable;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
@@ -196,8 +197,9 @@ public abstract class ProtocolManager implements Comparable
 	 * @param absolutePath
 	 *            the local path
 	 * @return Returns the file manager that matches this base path
+	 * @throws CoreException 
 	 */
-	public IVirtualFileManager getFileManager(String absolutePath)
+	public IVirtualFileManager getFileManager(String absolutePath) throws CoreException
 	{
 		IVirtualFileManager[] fms = getFileManagers();
 
@@ -205,7 +207,7 @@ public abstract class ProtocolManager implements Comparable
 		{
 			IVirtualFileManager manager = fms[i];
 
-			if (manager.getBasePath() != null && absolutePath.equals(EFSUtils.getAbsolutePath(manager.getBaseFile())))
+			if (manager.getBasePath() != null && absolutePath.equals(EFSUtils.getAbsolutePath(manager.getRoot())))
 			{
 				return manager;
 			}
