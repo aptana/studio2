@@ -34,12 +34,436 @@
  */
 package com.aptana.ide.filesystem.ftp.ingo;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.aptana.ide.core.io.IFileProgressMonitor;
+import com.aptana.ide.core.io.LocalConnectionPoint;
+import com.aptana.ide.core.io.ingo.ConnectionException;
+import com.aptana.ide.core.io.ingo.IVirtualFile;
+import com.aptana.ide.core.io.ingo.IVirtualFileManager;
+import com.aptana.ide.core.io.ingo.IVirtualFileManagerEventHandler;
+import com.aptana.ide.core.io.ingo.ProtocolManager;
+import com.aptana.ide.core.io.ingo.VirtualFileManagerException;
+import com.aptana.ide.core.io.ingo.VirtualFileManagerGroup;
+import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
+
 
 /**
  * @author Kevin Lindsey
  */
-public class FtpVirtualFileManager //extends VirtualManagerBase implements IFtpVirtualFileManager
+public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtualFileManager, IFtpVirtualFileManager
 {
+
+	@Override
+	public void addCloakExpression(String fileExpression) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addCloakedFile(IVirtualFile file) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void cancel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IVirtualFileManager cloneManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void connect() throws ConnectionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean containsFile(IVirtualFile file) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean createLocalDirectory(IVirtualFile directoryFile)
+			throws ConnectionException, VirtualFileManagerException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public IVirtualFile createVirtualDirectory(String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IVirtualFile createVirtualFile(String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteFile(IVirtualFile file) throws ConnectionException,
+			VirtualFileManagerException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void disconnect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IVirtualFile getBaseFile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getBasePath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String[] getCloakedFileExpressions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IVirtualFile[] getCloakedFiles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDescriptiveLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IVirtualFileManagerEventHandler getEventHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getFileSeparator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getFileTimeString(IVirtualFile file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IVirtualFile[] getFiles(IVirtualFile file)
+			throws ConnectionException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IVirtualFile[] getFiles(IVirtualFile file, boolean recurse,
+			boolean includeCloakedFiles) throws ConnectionException,
+			IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getGroup(IVirtualFile file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getHashString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public VirtualFileManagerGroup getManagerGroup() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getNickName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getOwner(IVirtualFile file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProtocolManager getProtocolManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public InputStream getStream(IVirtualFile file) throws ConnectionException,
+			VirtualFileManagerException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long getTimeOffset() throws ConnectionException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean hasFiles(IVirtualFile file) throws ConnectionException,
+			IOException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAutoCalculateServerTimeOffset() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEditable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isFileCloaked(IVirtualFile file) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isHidden() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isTransient() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean moveFile(IVirtualFile source, IVirtualFile destination) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void putFile(IVirtualFile sourceFile, IVirtualFile targetFile)
+			throws ConnectionException, VirtualFileManagerException,
+			IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void putFile(IVirtualFile clientFile, IVirtualFile targetServerFile,
+			IFileProgressMonitor iFileProgressMonitor) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
+			IFileProgressMonitor monitor) throws ConnectionException,
+			VirtualFileManagerException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void putStream(InputStream input, IVirtualFile targetFile)
+			throws ConnectionException, VirtualFileManagerException,
+			IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void putStream(InputStream input, IVirtualFile targetFile,
+			IFileProgressMonitor monitor) throws ConnectionException,
+			VirtualFileManagerException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void putToLocalFile(IVirtualFile file, File tempFile)
+			throws ConnectionException, VirtualFileManagerException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeCloakExpression(String fileExpression) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeCloakedFile(IVirtualFile file) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean renameFile(IVirtualFile file, String newName)
+			throws ConnectionException, VirtualFileManagerException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void resetTimeOffsetCache() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resolveBasePath() throws ConnectionException,
+			VirtualFileManagerException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setAutoCalculateServerTimeOffset(boolean calculateOffset) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBasePath(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setCloakedFiles(IVirtualFile[] files) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setEventHandler(IVirtualFileManagerEventHandler eventHandler) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setGroup(IVirtualFile file, String groupName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setHidden(boolean hidden) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setId(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setManagerGroup(VirtualFileManagerGroup group) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setNickName(String nickName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setOwner(IVirtualFile file, String ownerName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPoolSizes(int initialSize, int maxSize) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTimeOffset(long timeOffset) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTransient(boolean value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void fromSerializableString(String s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String toSerializableString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 //	private static final int DEFAULT_FTP_PORT = 21;
 //
 ////	private static Image fFTPIcon;
@@ -1418,5 +1842,329 @@ public class FtpVirtualFileManager //extends VirtualManagerBase implements IFtpV
 //	public String getPrivateKeyFile()
 //	{
 //		return null;
+//	}
+//
+//	@Override
+//	public void addCloakExpression(String fileExpression) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void addCloakedFile(IVirtualFile file) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public boolean containsFile(IVirtualFile file) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean createLocalDirectory(IVirtualFile directoryFile)
+//			throws ConnectionException, VirtualFileManagerException {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean deleteFile(IVirtualFile file) throws ConnectionException,
+//			VirtualFileManagerException {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public String[] getCloakedFileExpressions() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public IVirtualFile[] getCloakedFiles() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getDescriptiveLabel() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public IVirtualFileManagerEventHandler getEventHandler() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getFileTimeString(IVirtualFile file) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public IVirtualFile[] getFiles(IVirtualFile file)
+//			throws ConnectionException, IOException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public IVirtualFile[] getFiles(IVirtualFile file, boolean recurse,
+//			boolean includeCloakedFiles) throws ConnectionException,
+//			IOException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getGroup(IVirtualFile file) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getId() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public VirtualFileManagerGroup getManagerGroup() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getNickName() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getOwner(IVirtualFile file) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public ProtocolManager getProtocolManager() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public InputStream getStream(IVirtualFile file) throws ConnectionException,
+//			VirtualFileManagerException, IOException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public long getTimeOffset() throws ConnectionException {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//	@Override
+//	public boolean hasFiles(IVirtualFile file) throws ConnectionException,
+//			IOException {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean isAutoCalculateServerTimeOffset() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean isEditable() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean isFileCloaked(IVirtualFile file) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean isHidden() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean isTransient() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean isValid() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean moveFile(IVirtualFile source, IVirtualFile destination) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public void putFile(IVirtualFile sourceFile, IVirtualFile targetFile)
+//			throws ConnectionException, VirtualFileManagerException,
+//			IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void putFile(IVirtualFile clientFile, IVirtualFile targetServerFile,
+//			IFileProgressMonitor iFileProgressMonitor) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
+//			IFileProgressMonitor monitor) throws ConnectionException,
+//			VirtualFileManagerException, IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void putStream(InputStream input, IVirtualFile targetFile)
+//			throws ConnectionException, VirtualFileManagerException,
+//			IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void putStream(InputStream input, IVirtualFile targetFile,
+//			IFileProgressMonitor monitor) throws ConnectionException,
+//			VirtualFileManagerException, IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void putToLocalFile(IVirtualFile file, File tempFile)
+//			throws ConnectionException, VirtualFileManagerException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void removeCloakExpression(String fileExpression) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void removeCloakedFile(IVirtualFile file) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public boolean renameFile(IVirtualFile file, String newName)
+//			throws ConnectionException, VirtualFileManagerException {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public void resetTimeOffsetCache() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setAutoCalculateServerTimeOffset(boolean calculateOffset) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setCloakedFiles(IVirtualFile[] files) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setEventHandler(IVirtualFileManagerEventHandler eventHandler) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setGroup(IVirtualFile file, String groupName) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setHidden(boolean hidden) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setId(long id) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setManagerGroup(VirtualFileManagerGroup group) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setNickName(String nickName) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setOwner(IVirtualFile file, String ownerName) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setPoolSizes(int initialSize, int maxSize) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setTimeOffset(long timeOffset) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void setTransient(boolean value) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public int compareTo(Object o) {
+//		// TODO Auto-generated method stub
+//		return 0;
 //	}
 }

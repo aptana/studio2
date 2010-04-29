@@ -37,6 +37,11 @@ package com.aptana.ide.core.io.ingo;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.runtime.CoreException;
+
+import com.aptana.ide.core.io.syncing.SyncState;
+
 /**
  * @author Kevin Lindsey
  */
@@ -85,14 +90,15 @@ public class VirtualFileSyncPair
 	 * @throws ConnectionException
 	 * @throws VirtualFileManagerException
 	 * @throws IOException
+	 * @throws CoreException 
 	 */
-	public InputStream getSourceInputStream() throws ConnectionException, VirtualFileManagerException, IOException
+	public InputStream getSourceInputStream() throws ConnectionException, VirtualFileManagerException, IOException, CoreException
 	{
 		InputStream result = null;
 
-		if (this._sourceFile != null && this._sourceFile.isFile())
+		if (this._sourceFile != null && !this._sourceFile.fetchInfo().isDirectory())
 		{
-			result = this._sourceFile.getFileManager().getStream(this._sourceFile);
+			result = this._sourceFile.openInputStream(EFS.NONE, null);
 		}
 
 		return result;
@@ -125,14 +131,15 @@ public class VirtualFileSyncPair
 	 * @throws ConnectionException
 	 * @throws VirtualFileManagerException
 	 * @throws IOException
+	 * @throws CoreException 
 	 */
-	public InputStream getDestinationInputStream() throws ConnectionException, VirtualFileManagerException, IOException
+	public InputStream getDestinationInputStream() throws ConnectionException, VirtualFileManagerException, IOException, CoreException
 	{
 		InputStream result = null;
 
-		if (this._destinationFile != null && this._destinationFile.isFile())
+		if (this._destinationFile != null && !this._destinationFile.fetchInfo().isDirectory())
 		{
-			result = this._destinationFile.getFileManager().getStream(this._destinationFile);
+			result = this._destinationFile.openInputStream(EFS.NONE, null);
 		}
 
 		return result;
@@ -209,13 +216,13 @@ public class VirtualFileSyncPair
 		}
 		else
 		{
-			if (getSourceFile() != null && getSourceFile().isDirectory())
+			if (getSourceFile() != null && getSourceFile().fetchInfo().isDirectory())
 			{
 				return true;
 			}
 			else
 			{
-				return (getDestinationFile() != null && getDestinationFile().isDirectory());
+				return (getDestinationFile() != null && getDestinationFile().fetchInfo().isDirectory());
 			}
 		}
 	}

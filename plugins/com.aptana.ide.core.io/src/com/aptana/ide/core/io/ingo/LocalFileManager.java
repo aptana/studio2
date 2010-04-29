@@ -54,6 +54,7 @@ import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IFileProgressMonitor;
 import com.aptana.ide.core.io.LocalConnectionPoint;
+import com.aptana.ide.core.io.efs.EFSUtils;
 
 /**
  * @author Robin Debreuil
@@ -145,7 +146,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	public boolean createLocalDirectory(IVirtualFile directoryFile)
 			throws ConnectionException, VirtualFileManagerException {
 
-		File f = new File(directoryFile.getAbsolutePath());
+		File f = new File(EFSUtils.getAbsolutePath(directoryFile));
 		return f.mkdirs();
 	}
 
@@ -173,9 +174,10 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	/**
+	 * @throws CoreException 
 	 * @see com.aptana.ide.core.io.IVirtualFileManager#deleteFile(com.aptana.ide.core.io.IVirtualFile)
 	 */
-	public boolean deleteFile(IVirtualFile file)
+	public boolean deleteFile(IVirtualFile file) throws CoreException
 	{
 		boolean result = false;
 		if (file == null || !(file instanceof LocalFileShell))
@@ -184,7 +186,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		}
 
 		LocalFileShell lf = (LocalFileShell) file;
-		File target = lf.getFile();
+		File target = lf.toLocalFile(EFS.NONE, null);
 		if (target != null && target.exists())
 		{
 			result = deleteDirectory(target);
@@ -200,7 +202,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 
 	@Override
 	public String getBasePath() {
-		return getBaseFile().getAbsolutePath();
+		return EFSUtils.getAbsolutePath(getBaseFile());
 	}
 
 	@Override
@@ -309,12 +311,12 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		
 				try
 				{
-					result = new FileInputStream(file.getAbsolutePath());
+					result = new FileInputStream(EFSUtils.getAbsolutePath(file));
 				}
 				catch (FileNotFoundException e)
 				{
 					IdeLog.logError(CoreIOPlugin.getDefault(), StringUtils.format(
-							Messages.LocalFileManager_UnableToCreateFileStreamForFile, file.getAbsolutePath()), e);
+							Messages.LocalFileManager_UnableToCreateFileStreamForFile, EFSUtils.getAbsolutePath(file)), e);
 				}
 		
 				return result;
@@ -390,16 +392,11 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	public void putFile(IVirtualFile sourceFile, final IVirtualFile targetFile, final IFileProgressMonitor monitor)
 	{
 		try {
-			sourceFile.getStream(new IVirtualFile.Client()
-			{
-
-				public void streamGot(InputStream input) throws ConnectionException,
-						VirtualFileManagerException, IOException
-				{
-					putStream(input, targetFile, monitor);
-				}
-				
-			});
+			InputStream in = sourceFile.openInputStream(EFS.NONE, null);
+			putStream(in, targetFile, monitor);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (VirtualFileManagerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -425,7 +422,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 			VirtualFileManagerException, IOException {
 		
 
-		File file = new File(targetFile.getAbsolutePath());
+		File file = new File(EFSUtils.getAbsolutePath(targetFile));
 
 		try
 		{
@@ -601,6 +598,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 			VirtualFileManagerException, IOException {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public String getFileSeparator() {
+		// TODO Auto-generated method stub
+		return File.separator;
 	}
 
 	

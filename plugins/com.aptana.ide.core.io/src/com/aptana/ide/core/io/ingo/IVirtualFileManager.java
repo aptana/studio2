@@ -38,12 +38,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.core.runtime.CoreException;
+
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.IFileProgressMonitor;
 
 /**
  * @author Paul Colton
  */
-public interface IVirtualFileManager extends Comparable, ISerializableSyncItem
+public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISerializableSyncItem
 {
 	/**
 	 * getBaseFile
@@ -417,7 +420,7 @@ public interface IVirtualFileManager extends Comparable, ISerializableSyncItem
 	 * @throws ConnectionException
 	 * @throws VirtualFileManagerException
 	 */
-	boolean deleteFile(IVirtualFile file) throws ConnectionException, VirtualFileManagerException;
+	boolean deleteFile(IVirtualFile file) throws ConnectionException, VirtualFileManagerException, CoreException;
 
 	/**
 	 * getStream

@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
  com.aptana.ide.core.io,
  com.aptana.ide.filesystem.ftp;visibility:=reexport,
  org.junit4

@@ -69,8 +69,6 @@ public final class SyncManager implements ISerializableSyncItem
 	 */
 	static SyncManager _syncManager = null;
 
-	private static SyncDataWriter syncDataWriter;
-
 	private ArrayList<Object> items = new ArrayList<Object>();
 	private ArrayList<String> unknownItems = new ArrayList<String>();
 	private ArrayList<ISyncManagerChangeListener> listeners = new ArrayList<ISyncManagerChangeListener>();
@@ -158,30 +156,6 @@ public final class SyncManager implements ISerializableSyncItem
 		if (_syncManager == null)
 		{
 			_syncManager = new SyncManager();
-			syncDataWriter = new SyncDataWriter();
-			ISavedState lastState;
-
-//			try
-//			{
-//				// TODO: Fix Save Participant
-//				lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(AptanaCorePlugin.getDefault(),
-//						new WorkspaceSaveParticipant());
-//
-//				if (lastState != null)
-//				{
-//					IPath location = lastState.lookup(new Path("save")); //$NON-NLS-1$
-//					if (location != null)
-//					{
-//						// the plugin instance should read any important state from the file.
-//						File f = AptanaCorePlugin.getDefault().getStateLocation().append(location).toFile();
-//						_syncManager.readState(f);
-//					}
-//				}
-//			}
-//			catch (CoreException e)
-//			{
-//				IdeLog.logInfo(AptanaCorePlugin.getDefault(), Messages.InitialStartup_ErrorReadingData, e);
-//			}
 
 		}
 		return _syncManager;
@@ -195,30 +169,6 @@ public final class SyncManager implements ISerializableSyncItem
 	 */
 	public void saveNow()
 	{
-		synchronized (lock)
-		{
-			isBusy = true;
-			if (syncDataWriter != null)
-			{
-				try
-				{
-					syncDataWriter.saving();
-					syncDataWriter.doneSaving();
-				}
-				catch (CoreException ce)
-				{
-					try
-					{
-						syncDataWriter.rollback();
-					}
-					catch (Exception e)
-					{
-						IdeLog.logError(AptanaCorePlugin.getDefault(), "Error while saving the sync data", e); //$NON-NLS-1$
-					}
-				}
-			}
-			isBusy = false;
-		}
 	}
 	
 	/**

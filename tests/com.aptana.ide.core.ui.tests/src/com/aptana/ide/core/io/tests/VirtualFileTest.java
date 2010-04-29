@@ -37,12 +37,13 @@ package com.aptana.ide.core.io.tests;
 import java.io.File;
 import java.io.IOException;
 
-import com.aptana.ide.core.io.IVirtualFile;
-import com.aptana.ide.core.io.VirtualFile;
-import com.aptana.ide.core.ui.io.file.LocalFileManager;
-import com.aptana.ide.core.ui.io.file.LocalProtocolManager;
-
 import junit.framework.TestCase;
+
+import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.core.io.ingo.IVirtualFile;
+import com.aptana.ide.core.io.ingo.LocalFileManager;
+import com.aptana.ide.core.io.ingo.LocalProtocolManager;
+import com.aptana.ide.core.io.ingo.VirtualFile;
 
 /**
  * VirtualFileTest
@@ -70,7 +71,7 @@ public class VirtualFileTest extends TestCase
 		assertEquals(0, dirs.length);
 
 		// parent directory of temp directory
-		dirs = VirtualFile.getParentDirectories(fm.getBaseFile().getParentFile(), fm);
+		dirs = VirtualFile.getParentDirectories(EFSUtils.getParentFile(fm.getBaseFile()), fm);
 		assertEquals(0, dirs.length);
 
 		// sub directory

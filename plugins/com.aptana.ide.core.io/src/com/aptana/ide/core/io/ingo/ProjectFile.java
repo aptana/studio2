@@ -61,24 +61,16 @@ public class ProjectFile extends LocalFileShell {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.ui.io.file.LocalFile#getParentFile()
-	 */
-	@Override
-	public IVirtualFile getParentFile() {
-		return new ProjectFile((ProjectFileManager) getFileManager(), resource.getParent());
-	}
-
-	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.ui.io.file.LocalFile#getRelativePath()
 	 */
-	@Override
-	public String getRelativePath() {
-		String managerPath = ((ProjectFileManager)getFileManager()).getRelativePath();
-		String filePath = resource.getFullPath().toPortableString();
-		if (filePath.startsWith(managerPath)) {
-			filePath = filePath.substring(managerPath.length());
-		}
-		return filePath;
-	}
+//	@Override
+//	public String getRelativePath() {
+//		String managerPath = ((ProjectFileManager)getFileManager()).getRelativePath();
+//		String filePath = resource.getFullPath().toPortableString();
+//		if (filePath.startsWith(managerPath)) {
+//			filePath = filePath.substring(managerPath.length());
+//		}
+//		return filePath;
+//	}
 
 }

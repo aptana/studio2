@@ -153,6 +153,13 @@
                menubarPath="group.properties">
          </action>
          <action
+               class="com.aptana.ide.syncing.ui.actions.SiteConnectionSynchronizeAction"
+               enablesFor="1"
+               id="com.aptana.ide.ui.io.actions.connectionSynchronize"
+               label="%siteConnectionSynchronizeAction.label"
+               menubarPath="group.properties">
+         </action>
+         <action
                class="com.aptana.ide.syncing.ui.actions.DeleteSiteConnectionAction"
                enablesFor="+"
                icon="icons/full/etool16/delete.png"

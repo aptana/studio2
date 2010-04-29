@@ -36,9 +36,17 @@
 package com.aptana.ide.core.io.efs;
 
 import java.io.File;
+import java.net.URI;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.provider.FileInfo;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+
+import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.ingo.IVirtualFile;
 
 
 /**
@@ -60,4 +68,112 @@ public final class EFSUtils {
 	public static IFileStore getFileStore(File file) {
 		return new LocalFile(file);
 	}
+	
+	/**
+	 * Sets the modification time of the client file
+	 * @param serverFile
+	 * @param clientFile
+	 * @throws CoreException
+	 */
+	public static void setModificationTime(IFileStore sourceFile, IFileStore destFile) throws CoreException {
+		IFileInfo fi = new FileInfo();
+		fi.setLastModified(sourceFile.fetchInfo().getLastModified());
+		destFile.putInfo(fi, EFS.SET_LAST_MODIFIED, null);
+	}
+	
+	/**
+	 * Returns the child files of the filestore
+	 * @param file
+	 * @return 
+	 * @throws CoreException 
+	 */
+	public static IFileStore[] getFiles(IFileStore file) throws CoreException {
+		return getFiles(file, false, true);
+	}
+
+	/**
+	 * Returns the child files of the filestore
+	 * 
+	 * @param file
+	 * @param recurse
+	 *            Do we recurse through sub-directories?
+	 * @param includeCloakedFiles
+	 *            Do we include cloaked files in the list?
+	 * @return
+	 * @throws CoreException
+	 */
+	public static IFileStore[] getFiles(IFileStore file, boolean recurse, boolean includeCloakedFiles) throws CoreException {
+		return file.childStores(EFS.NONE, null);
+	}
+	
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 */
+	public static IVirtualFile getParentFile(IFileStore file) {
+		return (IVirtualFile)file.getParent();
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 */
+	public static String getAbsolutePath(IFileStore file) {
+
+		// need to strip scheme (i.e. file:)
+		String scheme = file.toURI().getScheme();
+		return file.toURI().toString().substring(scheme.length() + 1);
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 */
+	public static String getPath(IFileStore file) {
+
+		// need to strip scheme (i.e. file:)
+		URI fileURI = file.toURI();
+		String scheme = fileURI.getScheme();
+		String filename = file.getName();
+		return fileURI.toString().substring(scheme.length() + 1, filename.length());
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 * @throws CoreException 
+	 * @throws CoreException 
+	 */
+	public static String getRelativePath(IVirtualFile file) {
+		try {
+			return getRelativePath(file.getFileManager().getRoot(), file);
+		} catch (CoreException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 * @throws CoreException 
+	 */
+	public static String getRelativePath(IFileStore parent, IFileStore file) {
+
+		if(parent == file || parent.isParentOf(file)) {
+			String rootFile = getAbsolutePath(parent);
+			String childFile = getAbsolutePath(file);
+			return childFile.substring(rootFile.length());
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 }

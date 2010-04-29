@@ -39,16 +39,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
+import org.eclipse.core.runtime.CoreException;
+
 import junit.framework.TestCase;
 
 import com.aptana.ide.core.FileUtils;
-import com.aptana.ide.core.io.ConnectionException;
-import com.aptana.ide.core.io.IVirtualFile;
-import com.aptana.ide.core.io.IVirtualFileManager;
-import com.aptana.ide.core.io.sync.SyncState;
-import com.aptana.ide.core.io.sync.VirtualFileSyncPair;
-import com.aptana.ide.core.ui.io.file.LocalProtocolManager;
-import com.aptana.ide.syncing.Synchronizer;
+import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.core.io.ingo.ConnectionException;
+import com.aptana.ide.core.io.ingo.IVirtualFile;
+import com.aptana.ide.core.io.ingo.IVirtualFileManager;
+import com.aptana.ide.core.io.ingo.LocalProtocolManager;
+import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
+import com.aptana.ide.core.io.syncing.SyncState;
+import com.aptana.ide.syncing.core.ingo.Synchronizer;
 
 /**
  * @author Kevin Lindsey
@@ -156,7 +159,7 @@ public class SyncingTests extends TestCase
 	 */
 	protected IVirtualFile getDirectory(IVirtualFileManager manager, String path)
 	{
-		return manager.createVirtualDirectory(manager.getBaseFile().getAbsolutePath()
+		return manager.createVirtualDirectory(EFSUtils.getAbsolutePath(manager.getBaseFile())
 				+ serverManager.getFileSeparator() + path);
 	}
 
@@ -169,7 +172,7 @@ public class SyncingTests extends TestCase
 	 */
 	protected IVirtualFile getFile(IVirtualFileManager manager, String path)
 	{
-		return manager.createVirtualFile(manager.getBaseFile().getAbsolutePath() + serverManager.getFileSeparator()
+		return manager.createVirtualFile(EFSUtils.getAbsolutePath(manager.getBaseFile()) + serverManager.getFileSeparator()
 				+ path);
 	}
 
@@ -182,7 +185,7 @@ public class SyncingTests extends TestCase
 	 */
 	protected File createClientDirectory(String path, long modificationTime)
 	{
-		return this.createDirectory(clientManager.getBaseFile().getAbsolutePath() + clientManager.getFileSeparator()
+		return this.createDirectory(EFSUtils.getAbsolutePath(clientManager.getBaseFile()) + clientManager.getFileSeparator()
 				+ path, modificationTime);
 	}
 
@@ -195,7 +198,7 @@ public class SyncingTests extends TestCase
 	 */
 	protected File createServerDirectory(String path, long modificationTime)
 	{
-		return this.createDirectory(serverManager.getBaseFile().getAbsolutePath() + serverManager.getFileSeparator()
+		return this.createDirectory(EFSUtils.getAbsolutePath(serverManager.getBaseFile()) + serverManager.getFileSeparator()
 				+ path, modificationTime);
 	}
 
@@ -243,7 +246,7 @@ public class SyncingTests extends TestCase
 	 */
 	protected File createClientFile(String path, long modificationTime, String content) throws IOException
 	{
-		String fullpath = clientManager.getBaseFile().getAbsolutePath() + clientManager.getFileSeparator() + path;
+		String fullpath = EFSUtils.getAbsolutePath(clientManager.getBaseFile()) + clientManager.getFileSeparator() + path;
 
 		return this.createFile(fullpath, modificationTime, content);
 	}
@@ -273,7 +276,7 @@ public class SyncingTests extends TestCase
 	 */
 	protected File createServerFile(String path, long modificationTime, String content) throws IOException
 	{
-		String fullpath = serverManager.getBaseFile().getAbsolutePath() + serverManager.getFileSeparator() + path;
+		String fullpath = EFSUtils.getAbsolutePath(serverManager.getBaseFile()) + serverManager.getFileSeparator() + path;
 
 		return this.createFile(fullpath, modificationTime, content);
 	}
@@ -316,7 +319,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	protected VirtualFileSyncPair[] getSyncItems() throws IOException, ConnectionException
+	protected VirtualFileSyncPair[] getSyncItems() throws IOException, ConnectionException, CoreException
 	{
 		return this.getSyncItems(false, 0);
 	}
@@ -329,9 +332,10 @@ public class SyncingTests extends TestCase
 	 * @return SyncItem[]
 	 * @throws IOException
 	 * @throws ConnectionException
+	 * @throws CoreException 
 	 */
 	protected VirtualFileSyncPair[] getSyncItems(boolean useCRC, int timeTolerance) throws IOException,
-			ConnectionException
+			ConnectionException, CoreException
 	{
 		Synchronizer syncManager = new Synchronizer(useCRC, timeTolerance);
 
@@ -348,7 +352,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientFileOnly() throws IOException, ConnectionException
+	public void testClientFileOnly() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime); //$NON-NLS-1$
@@ -365,7 +369,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientDirectoryOnly() throws IOException, ConnectionException
+	public void testClientDirectoryOnly() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime); //$NON-NLS-1$
@@ -382,7 +386,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientFileIsNewer() throws IOException, ConnectionException
+	public void testClientFileIsNewer() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -401,7 +405,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientDirectoryIsNewer() throws IOException, ConnectionException
+	public void testClientDirectoryIsNewer() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String directoryName = "test"; //$NON-NLS-1$
@@ -421,7 +425,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerFileOnly() throws IOException, ConnectionException
+	public void testServerFileOnly() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createServerFile("test.txt", currentTime); //$NON-NLS-1$
@@ -438,7 +442,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerDirectoryOnly() throws IOException, ConnectionException
+	public void testServerDirectoryOnly() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createServerDirectory("test", currentTime); //$NON-NLS-1$
@@ -455,7 +459,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerFileIsNewer() throws IOException, ConnectionException
+	public void testServerFileIsNewer() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -474,7 +478,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerDirectoryIsNewer() throws IOException, ConnectionException
+	public void testServerDirectoryIsNewer() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String directoryName = "test"; //$NON-NLS-1$
@@ -494,7 +498,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileTimesMatch() throws IOException, ConnectionException
+	public void testFileTimesMatch() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -513,7 +517,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryTimesMatch() throws IOException, ConnectionException
+	public void testDirectoryTimesMatch() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String directoryName = "test"; //$NON-NLS-1$
@@ -533,7 +537,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileTimesWithinTolerance1() throws IOException, ConnectionException
+	public void testFileTimesWithinTolerance1() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -552,7 +556,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileTimesWithinTolerance2() throws IOException, ConnectionException
+	public void testFileTimesWithinTolerance2() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -571,7 +575,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileTimesOutsideTolerance1() throws IOException, ConnectionException
+	public void testFileTimesOutsideTolerance1() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -590,7 +594,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileTimesOutsideTolerance2() throws IOException, ConnectionException
+	public void testFileTimesOutsideTolerance2() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -609,7 +613,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryTimesWithinTolerance1() throws IOException, ConnectionException
+	public void testDirectoryTimesWithinTolerance1() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String dirname = "test"; //$NON-NLS-1$
@@ -629,7 +633,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryTimesWithinTolerance2() throws IOException, ConnectionException
+	public void testDirectoryTimesWithinTolerance2() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String dirname = "test"; //$NON-NLS-1$
@@ -649,7 +653,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryTimesOutsideTolerance1() throws IOException, ConnectionException
+	public void testDirectoryTimesOutsideTolerance1() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String dirname = "test"; //$NON-NLS-1$
@@ -669,7 +673,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryTimesOutsideTolerance2() throws IOException, ConnectionException
+	public void testDirectoryTimesOutsideTolerance2() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String dirname = "test"; //$NON-NLS-1$
@@ -689,7 +693,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFilesCRCsDiffer() throws IOException, ConnectionException
+	public void testFilesCRCsDiffer() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -709,7 +713,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFilesCRCsMatch() throws IOException, ConnectionException
+	public void testFilesCRCsMatch() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String filename = "test.txt"; //$NON-NLS-1$
@@ -729,7 +733,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryCRCsMatch() throws IOException, ConnectionException
+	public void testDirectoryCRCsMatch() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String directoryName = "test"; //$NON-NLS-1$
@@ -749,7 +753,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testTypeMismatch1() throws IOException, ConnectionException
+	public void testTypeMismatch1() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String name = "test"; //$NON-NLS-1$
@@ -768,7 +772,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testTypeMismatch2() throws IOException, ConnectionException
+	public void testTypeMismatch2() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		String name = "test"; //$NON-NLS-1$
@@ -787,7 +791,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyFileUpload() throws IOException, ConnectionException
+	public void testClientOnlyFileUpload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime); //$NON-NLS-1$
@@ -797,7 +801,7 @@ public class SyncingTests extends TestCase
 				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
 
 		IVirtualFile clientFileOnServer = getFile(serverManager, clientDirectory.getName());
-		assertFalse("Server file: " + clientFileOnServer.getAbsolutePath() + " exists.", clientFileOnServer.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse("Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " exists.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// sync
 		syncManager.upload(items);
@@ -815,7 +819,7 @@ public class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 
 		assertFalse(
-				"Server file: " + clientFileOnServer.getAbsolutePath() + " does not exist.", clientFileOnServer.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " does not exist.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -824,7 +828,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyDirectoryUpload() throws IOException, ConnectionException
+	public void testClientOnlyDirectoryUpload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientDirectory = this.createClientDirectory("test", currentTime); //$NON-NLS-1$
@@ -834,7 +838,7 @@ public class SyncingTests extends TestCase
 				.getSyncItems(clientManager.getBaseFile(), serverManager.getBaseFile());
 
 		IVirtualFile clientFileOnServer = getDirectory(serverManager, clientDirectory.getName());
-		assertFalse("Server file: " + clientFileOnServer.getAbsolutePath() + " exists.", clientFileOnServer.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse("Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " exists.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// sync
 		syncManager.upload(items);
@@ -852,7 +856,7 @@ public class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 
 		assertTrue(
-				"Server file: " + clientFileOnServer.getAbsolutePath() + " does not exist.", clientFileOnServer.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " does not exist.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -861,7 +865,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientNewerFileUpload() throws IOException, ConnectionException
+	public void testClientNewerFileUpload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime); //$NON-NLS-1$
@@ -893,7 +897,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientNewerDirectoryUpload() throws IOException, ConnectionException
+	public void testClientNewerDirectoryUpload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime); //$NON-NLS-1$
@@ -925,7 +929,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileCRCsDifferUpload() throws IOException, ConnectionException
+	public void testFileCRCsDifferUpload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -957,7 +961,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileCRCsMatchUpload() throws IOException, ConnectionException
+	public void testFileCRCsMatchUpload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -989,7 +993,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryCRCsMatchUpload() throws IOException, ConnectionException
+	public void testDirectoryCRCsMatchUpload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime); //$NON-NLS-1$
@@ -1021,7 +1025,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyFileUploadAndDelete() throws IOException, ConnectionException
+	public void testServerOnlyFileUploadAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File serverFile = this.createServerFile("delete.txt", currentTime); //$NON-NLS-1$
@@ -1055,7 +1059,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyDirectoryUploadAndDelete() throws IOException, ConnectionException
+	public void testServerOnlyDirectoryUploadAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File serverDir = this.createServerDirectory("delete", currentTime); //$NON-NLS-1$
@@ -1088,7 +1092,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyFileDownload() throws IOException, ConnectionException
+	public void testServerOnlyFileDownload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File serverFile = this.createServerFile("test.txt", currentTime); //$NON-NLS-1$
@@ -1114,7 +1118,7 @@ public class SyncingTests extends TestCase
 
 		IVirtualFile serverFileOnClient = getFile(clientManager, serverFile.getName());
 		assertTrue(
-				"Server file: " + serverFileOnClient.getAbsolutePath() + " does not exist.", serverFileOnClient.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+				"Server file: " + EFSUtils.getAbsolutePath(serverFileOnClient) + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -1123,7 +1127,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyDirectoryDownload() throws IOException, ConnectionException
+	public void testServerOnlyDirectoryDownload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File serverDir = this.createServerDirectory("test", currentTime); //$NON-NLS-1$
@@ -1149,7 +1153,7 @@ public class SyncingTests extends TestCase
 
 		IVirtualFile serverFileOnClient = getDirectory(clientManager, serverDir.getName());
 		assertTrue(
-				"Server file: " + serverFileOnClient.getAbsolutePath() + " does not exist.", serverFileOnClient.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+				"Server file: " + EFSUtils.getAbsolutePath(serverFileOnClient) + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
@@ -1159,7 +1163,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerNewerFileDownload() throws IOException, ConnectionException
+	public void testServerNewerFileDownload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime - 1000); //$NON-NLS-1$
@@ -1191,7 +1195,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerNewerDirectoryDownload() throws IOException, ConnectionException
+	public void testServerNewerDirectoryDownload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime - 1000); //$NON-NLS-1$
@@ -1223,7 +1227,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileCRCsDifferDownload() throws IOException, ConnectionException
+	public void testFileCRCsDifferDownload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1255,7 +1259,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileCRCsMatchDownload() throws IOException, ConnectionException
+	public void testFileCRCsMatchDownload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1287,7 +1291,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryCRCsMatchDownload() throws IOException, ConnectionException
+	public void testDirectoryCRCsMatchDownload() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime); //$NON-NLS-1$
@@ -1319,7 +1323,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyFileDownloadAndDelete() throws IOException, ConnectionException
+	public void testClientOnlyFileDownloadAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientFile = this.createClientFile("delete.txt", currentTime); //$NON-NLS-1$
@@ -1352,7 +1356,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyDirectoryDownloadAndDelete() throws IOException, ConnectionException
+	public void testClientOnlyDirectoryDownloadAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientFile = this.createClientDirectory("delete", currentTime); //$NON-NLS-1$
@@ -1385,7 +1389,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyFileFullSync() throws IOException, ConnectionException
+	public void testClientOnlyFileFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientFile = this.createClientFile("test.txt", currentTime); //$NON-NLS-1$
@@ -1411,7 +1415,7 @@ public class SyncingTests extends TestCase
 
 		IVirtualFile clientFileOnServer = getFile(serverManager, clientFile.getName());
 		assertTrue(
-				"Server file: " + clientFileOnServer.getAbsolutePath() + " does not exist.", clientFileOnServer.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " does not exist.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
@@ -1421,7 +1425,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyDirectoryFullSync() throws IOException, ConnectionException
+	public void testClientOnlyDirectoryFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientFile = this.createClientDirectory("test", currentTime); //$NON-NLS-1$
@@ -1447,7 +1451,7 @@ public class SyncingTests extends TestCase
 
 		IVirtualFile clientFileOnServer = getDirectory(serverManager, clientFile.getName());
 		assertTrue(
-				"Server file: " + clientFileOnServer.getAbsolutePath() + " does not exist.", clientFileOnServer.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " does not exist.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**
@@ -1456,7 +1460,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyFileFullSyncAndDelete() throws IOException, ConnectionException
+	public void testClientOnlyFileFullSyncAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientFile = this.createClientFile("delete.txt", currentTime); //$NON-NLS-1$
@@ -1489,7 +1493,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientOnlyDirectoryFullSyncAndDelete() throws IOException, ConnectionException
+	public void testClientOnlyDirectoryFullSyncAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientFile = this.createClientDirectory("delete", currentTime); //$NON-NLS-1$
@@ -1522,7 +1526,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientNewerFileFullSync() throws IOException, ConnectionException
+	public void testClientNewerFileFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime); //$NON-NLS-1$
@@ -1554,7 +1558,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testClientNewerDirectoryFullSync() throws IOException, ConnectionException
+	public void testClientNewerDirectoryFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime); //$NON-NLS-1$
@@ -1586,7 +1590,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyFileFullSync() throws IOException, ConnectionException
+	public void testServerOnlyFileFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File serverFile = this.createServerFile("test.txt", currentTime); //$NON-NLS-1$
@@ -1611,7 +1615,7 @@ public class SyncingTests extends TestCase
 		assertEquals(1, syncManager.getServerFileTransferedCount());
 
 		IVirtualFile serverFileOnClient = getFile(clientManager, serverFile.getName());
-		assertTrue("Server file: " + serverFile.getAbsolutePath() + " does not exist.", serverFileOnClient.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue("Server file: " + serverFile.getAbsolutePath() + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -1620,7 +1624,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyDirectoryFullSync() throws IOException, ConnectionException
+	public void testServerOnlyDirectoryFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File file = this.createServerDirectory(FileUtils.getRandomFileName("test", null), currentTime); //$NON-NLS-1$
@@ -1645,7 +1649,7 @@ public class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 
 		IVirtualFile directory = getDirectory(serverManager, file.getName());
-		assertTrue("Server file: " + directory.getAbsolutePath() + " does not exist.", directory.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue("Server file: " + EFSUtils.getAbsolutePath(directory) + " does not exist.", directory.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -1654,7 +1658,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyFileFullSyncAndDelete() throws IOException, ConnectionException
+	public void testServerOnlyFileFullSyncAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File serverFile = this.createServerFile("delete.txt", currentTime); //$NON-NLS-1$
@@ -1688,7 +1692,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerOnlyDirectoryFullSyncAndDelete() throws IOException, ConnectionException
+	public void testServerOnlyDirectoryFullSyncAndDelete() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File serverDir = this.createServerDirectory("delete", currentTime); //$NON-NLS-1$
@@ -1721,7 +1725,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerNewerFileFullSync() throws IOException, ConnectionException
+	public void testServerNewerFileFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		File clientFile = this.createClientFile(FileUtils.getRandomFileName("test", ".txt"), currentTime - 1000); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1747,10 +1751,10 @@ public class SyncingTests extends TestCase
 		assertEquals(1, syncManager.getServerFileTransferedCount());
 
 		IVirtualFile clientFileOnServer = getFile(serverManager, clientFile.getName());
-		assertTrue(clientFileOnServer.exists());
+		assertTrue(clientFileOnServer.fetchInfo().exists());
 
 		IVirtualFile serverFileOnClient = getFile(clientManager, serverFile.getName());
-		assertTrue("Server file: " + serverFile.getAbsolutePath() + " does not exist.", serverFileOnClient.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue("Server file: " + serverFile.getAbsolutePath() + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -1759,7 +1763,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testServerNewerDirectoryFullSync() throws IOException, ConnectionException
+	public void testServerNewerDirectoryFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime - 1000); //$NON-NLS-1$
@@ -1791,7 +1795,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileCRCsDifferFullSync() throws IOException, ConnectionException
+	public void testFileCRCsDifferFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1823,7 +1827,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testFileCRCsMatchFullSync() throws IOException, ConnectionException
+	public void testFileCRCsMatchFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientFile("test.txt", currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1855,7 +1859,7 @@ public class SyncingTests extends TestCase
 	 * @throws IOException
 	 * @throws ConnectionException
 	 */
-	public void testDirectoryCRCsMatchFullSync() throws IOException, ConnectionException
+	public void testDirectoryCRCsMatchFullSync() throws IOException, ConnectionException, CoreException
 	{
 		long currentTime = new Date().getTime();
 		this.createClientDirectory("test", currentTime); //$NON-NLS-1$

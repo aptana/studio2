@@ -41,6 +41,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.runtime.CoreException;
+
+import com.aptana.ide.core.io.efs.EFSUtils;
+
 /**
  * Base implementation of IVirtualFile.
  * 
@@ -58,20 +63,12 @@ public abstract class VirtualFile implements IVirtualFile
 	}
 
 	/**
-	 * @see IVirtualFile#getFiles()
-	 */
-	public IVirtualFile[] getFiles() throws ConnectionException, IOException
-	{
-		return getFiles(false, true);
-	}
-
-	/**
 	 * @see com.aptana.ide.core.io.IVirtualFile#getTimeStamp()
 	 */
 	public String getTimeStamp()
 	{
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-		return df.format(new Date(getModificationMillis()));
+		return df.format(new Date(fetchInfo().getLastModified()));
 	}
 
 	/**
@@ -83,14 +80,15 @@ public abstract class VirtualFile implements IVirtualFile
 	}
 
 	/**
+	 * @throws CoreException 
 	 * @see com.aptana.ide.core.io.IVirtualFile#getStream(Client)
 	 */
-	public InputStream getStream(Client client) throws ConnectionException, VirtualFileManagerException, IOException
-	{
-		InputStream input = getStream();
-		client.streamGot(input);
-		return input;
-	}
+//	public InputStream getStream(Client client) throws ConnectionException, VirtualFileManagerException, IOException, CoreException
+//	{
+//		InputStream input = openInputStream(EFS.NONE, null);
+//		client.streamGot(input);
+//		return input;
+//	}
 
 	/**
 	 * @see com.aptana.ide.core.io.IVirtualFile#putStream(InputStream)
@@ -120,8 +118,8 @@ public abstract class VirtualFile implements IVirtualFile
 			{
 				element = files[i];
 
-				if (element.getParentFile() == null
-						|| element.getParentFile().getAbsolutePath().equals(toRemove.getAbsolutePath()) == false)
+				if (EFSUtils.getParentFile(element) == null
+						|| EFSUtils.getAbsolutePath(EFSUtils.getParentFile(element)).equals(EFSUtils.getAbsolutePath(toRemove)) == false)
 				{
 					filteredSources.add(element);
 				}
@@ -149,13 +147,13 @@ public abstract class VirtualFile implements IVirtualFile
 		{
 			file = files[i];
 
-			if (file.isDirectory())
+			if (file.fetchInfo().isDirectory())
 			{
-				newFile = manager.createVirtualDirectory(file.getAbsolutePath());
+				newFile = manager.createVirtualDirectory(EFSUtils.getAbsolutePath(file));
 			}
 			else
 			{
-				newFile = manager.createVirtualFile(file.getAbsolutePath());
+				newFile = manager.createVirtualFile(EFSUtils.getAbsolutePath(file));
 			}
 
 			newFiles.add(newFile);
@@ -187,7 +185,7 @@ public abstract class VirtualFile implements IVirtualFile
 				}
 
 				parentDirs.add(0, currentFile); // add at beginning of list, as we want most "distant" folder first
-				currentFile = currentFile.getParentFile();
+				currentFile = EFSUtils.getParentFile(currentFile);
 			}
 		}
 

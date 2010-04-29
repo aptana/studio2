@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.Platform;
 import com.aptana.ide.core.AptanaCorePlugin;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
+import com.aptana.ide.core.io.efs.EFSUtils;
 
 /**
  * @author Kevin Lindsey
@@ -204,7 +205,7 @@ public abstract class ProtocolManager implements Comparable
 		{
 			IVirtualFileManager manager = fms[i];
 
-			if (manager.getBasePath() != null && absolutePath.equals(manager.getBaseFile().getAbsolutePath()))
+			if (manager.getBasePath() != null && absolutePath.equals(EFSUtils.getAbsolutePath(manager.getBaseFile())))
 			{
 				return manager;
 			}
@@ -623,4 +624,9 @@ public abstract class ProtocolManager implements Comparable
 
 	private String extensionPluginId;
 	private String extensionId;
+
+	public IVirtualFileManagerDialog createPropertyDialog(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

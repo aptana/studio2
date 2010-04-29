@@ -486,6 +486,23 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 		return null;
 	}
 
+	@Override
+	public String getFileSeparator() {
+		// TODO Auto-generated method stub
+		return File.separator;
+	}
+
+	public static IVirtualFile convertResourceToFile(Object project) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static IVirtualFile[] convertResourcesToFiles(
+			Object[] selectedObjects) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 //	//private static Image fSiteErrorImage = null;
 //	private static IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 //	private IContainer baseContainer;

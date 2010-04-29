@@ -34,264 +34,252 @@
  */
 package com.aptana.ide.syncing.tests;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-
 import junit.framework.TestCase;
-
-import com.aptana.ide.core.FileUtils;
-import com.aptana.ide.core.io.ConnectionException;
-import com.aptana.ide.core.io.IVirtualFile;
-import com.aptana.ide.core.io.VirtualFileManagerException;
-import com.aptana.ide.io.ftp.FtpProtocolManager;
-import com.aptana.ide.io.ftp.FtpVirtualFileManager;
 
 /**
  * @author Kevin Lindsey
  */
 public class FtpTests extends TestCase
 {
-	private static final String server = "aptana.ftpstream.com"; //$NON-NLS-1$
-	private static final String user = "test1"; //$NON-NLS-1$
-	private static final String pass = "noc$$1"; //System.getProperty("ftp.password"); //$NON-NLS-1$
-	private static final String home = "/"; //$NON-NLS-1$
-	private static final String nickname = "Aptana FTP Test Site"; //$NON-NLS-1$
-	
-	private FtpVirtualFileManager _manager;
-
-	/**
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-		FtpProtocolManager protocolManager = new FtpProtocolManager();
-
-		this._manager = (FtpVirtualFileManager) protocolManager.createFileManager();
-		this._manager.setServer(server);
-		this._manager.setUser(user);
-		this._manager.setPassword(pass);
-		this._manager.setBasePath(home);
-		this._manager.setNickName(nickname);
-	}
-
-	/**
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception
-	{
-		if (this._manager != null && this._manager.isConnected())
-		{
-			this._manager.disconnect();
-		}
-		this._manager = null;
-		super.tearDown();
-	}
-
-	/**
-	 * testGetFiles
-	 * 
-	 * @throws IOException
-	 * @throws ConnectionException
-	 * @throws InterruptedException 
-	 */
-	public void testGetFiles() throws IOException, ConnectionException, InterruptedException
-	{
-		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("unit_test_getFiles", null); //$NON-NLS-1$
-
-		IVirtualFile folder = this._manager.createVirtualDirectory(path);
-		this._manager.createLocalDirectory(folder);
-
-		IVirtualFile[] files = this._manager.getFiles(folder, true, true);
-		assertEquals(files.length, 0);
-
-		// Create some files
-		IVirtualFile file1 = this._manager.createVirtualFile(path + this._manager.getFileSeparator() + FileUtils.getRandomFileName("test1", ".txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		IVirtualFile file2 = this._manager.createVirtualFile(path + this._manager.getFileSeparator() + FileUtils.getRandomFileName("test2", ".txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		createFile(file1);
-		createFile(file2);
-
-		// assert that they are now there
-		files = this._manager.getFiles(folder, true, true);
-		Arrays.sort(files);
-		assertEquals(2, files.length);
-		// since names are random, they may not be in the same order as we put them in
-		assertTrue(Arrays.binarySearch(files, file1) >= 0);
-		assertTrue(Arrays.binarySearch(files, file2) >= 0);
-
-		this._manager.addCloakExpression("(?i).*\\.txt"); //$NON-NLS-1$
-		assertTrue(file1.isCloaked());
-		assertTrue(file2.isCloaked());
-		assertEquals(0, this._manager.getFiles(folder, true, false).length);
-		this._manager.removeCloakExpression("(?i).*\\.txt"); //$NON-NLS-1$
-		assertEquals(2, this._manager.getFiles(folder, true, false).length);
-
-		// delete them
-		assertTrue(deleteFile(file1));
-		assertTrue(deleteFile(file2));
-		assertTrue(deleteFile(folder)); // deleting fails on this server, for some reason
-
-		// assert that they are gone
-		assertFalse(folder.exists());
-	}
-	
-	/**
-	 * testDoesNotExist
-	 * 
-	 * @throws ConnectionException
-	 * @throws IOException
-	 */
-	public void testDoesNotExist() throws ConnectionException, IOException
-	{
-		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("nothing", null) //$NON-NLS-1$
-				+ this._manager.getFileSeparator() + "non-existant.txt"; //$NON-NLS-1$
-		IVirtualFile file = this._manager.createVirtualFile(path);
-
-		assertFalse(file.exists());
-	}
-
-	/**
-	 * testExists
-	 * 
-	 * @throws ConnectionException
-	 * @throws IOException
-	 */
-	public void testExists() throws ConnectionException, IOException
-	{
-		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("index_test", ".html"); //$NON-NLS-1$ //$NON-NLS-2$
-		IVirtualFile file = this._manager.createVirtualFile(path);
-		assertFalse(file.exists());
-		createFile(file);
-		assertTrue(file.exists());
-		deleteFile(file);
-	}
-
-	/**
-	 * testCreateDirectory
-	 * 
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 */
-	public void testCreateDirectory() throws ConnectionException, VirtualFileManagerException
-	{
-		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("unit_tests", null); //$NON-NLS-1$
-		IVirtualFile dir = this._manager.createVirtualDirectory(path);
-
-		// make sure we successfully created a directory
-		assertTrue(this._manager.createLocalDirectory(dir));
-
-		// delete created directory
-		assertTrue(this._manager.deleteFile(dir));
-	}
-
-	/**
-	 * testDeleteFile
-	 * 
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 */
-	public void testDeleteFile() throws ConnectionException, VirtualFileManagerException, IOException
-	{
-		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("delete", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
-		IVirtualFile file = this._manager.createVirtualFile(path);
-		String content = "This is a unit test file that should be deleted."; //$NON-NLS-1$
-		ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
-
-		// create temp file to delete
-		this._manager.putStream(input, file);
-
-		// delete file
-		assertTrue(this._manager.deleteFile(file));
-	}
-
-	/**
-	 * testRenameFile
-	 * 
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 */
-	public void testRenameFile() throws ConnectionException, VirtualFileManagerException, IOException
-	{
-		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("rename_temp", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
-		String newPath = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("new_name_temp", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		IVirtualFile file = this._manager.createVirtualFile(path);
-		IVirtualFile newFile = this._manager.createVirtualFile(newPath);
-
-		String content = "This is a unit test file that should be deleted."; //$NON-NLS-1$
-		ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
-
-		// create temp file to delete
-		this._manager.putStream(input, file);
-
-		// should fail as we need a name, not a path
-		try
-		{
-			file.rename(newPath);
-			fail();
-		}
-		catch(IllegalArgumentException e)
-		{
-		}
-		
-		// rename file
-		assertTrue(file.rename(newFile.getName()));
-
-		// Prove that it is now in the new space
-		assertEquals(file.getAbsolutePath(), newFile.getAbsolutePath());
-
-		// delete file
-		assertTrue(file.delete());
-	}
-
-	/**
-	 * testDeleteFile
-	 * 
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 */
-	public void testGetStream() throws ConnectionException, VirtualFileManagerException, IOException
-	{
-		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("delete", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
-		IVirtualFile file = this._manager.createVirtualFile(path);
-		createFile(file);
-
-		// make sure we can get a stream
-		InputStream s = this._manager.getStream(file);
-		assertNotNull(s);
-
-		// delete file
-		assertTrue(deleteFile(file));
-	}
-
-	/**
-	 * createFile
-	 * 
-	 * @param file
-	 * @throws VirtualFileManagerException
-	 * @throws ConnectionException
-	 */
-	private void createFile(IVirtualFile file) throws VirtualFileManagerException, ConnectionException, IOException
-	{
-		String content = "This is a unit test file that should be deleted."; //$NON-NLS-1$
-		ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
-
-		// create temp file to delete
-		this._manager.putStream(input, file);
-	}
-
-	/**
-	 * deleteFile
-	 * 
-	 * @param file
-	 * @return
-	 * @throws ConnectionException
-	 * @throws VirtualFileManagerException
-	 */
-	private boolean deleteFile(IVirtualFile file) throws ConnectionException, VirtualFileManagerException, IOException
-	{
-		return file.delete();
-	}
+//	private static final String server = "aptana.ftpstream.com"; //$NON-NLS-1$
+//	private static final String user = "test1"; //$NON-NLS-1$
+//	private static final String pass = "noc$$1"; //System.getProperty("ftp.password"); //$NON-NLS-1$
+//	private static final String home = "/"; //$NON-NLS-1$
+//	private static final String nickname = "Aptana FTP Test Site"; //$NON-NLS-1$
+//	
+//	private FtpVirtualFileManager _manager;
+//
+//	/**
+//	 * @see junit.framework.TestCase#setUp()
+//	 */
+//	protected void setUp() throws Exception
+//	{
+//		super.setUp();
+//		FtpProtocolManager protocolManager = new FtpProtocolManager();
+//
+//		this._manager = (FtpVirtualFileManager) protocolManager.createFileManager();
+//		this._manager.setServer(server);
+//		this._manager.setUser(user);
+//		this._manager.setPassword(pass);
+//		this._manager.setBasePath(home);
+//		this._manager.setNickName(nickname);
+//	}
+//
+//	/**
+//	 * @see junit.framework.TestCase#tearDown()
+//	 */
+//	protected void tearDown() throws Exception
+//	{
+//		if (this._manager != null && this._manager.isConnected())
+//		{
+//			this._manager.disconnect();
+//		}
+//		this._manager = null;
+//		super.tearDown();
+//	}
+//
+//	/**
+//	 * testGetFiles
+//	 * 
+//	 * @throws IOException
+//	 * @throws ConnectionException
+//	 * @throws InterruptedException 
+//	 */
+//	public void testGetFiles() throws IOException, ConnectionException, InterruptedException
+//	{
+//		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("unit_test_getFiles", null); //$NON-NLS-1$
+//
+//		IVirtualFile folder = this._manager.createVirtualDirectory(path);
+//		this._manager.createLocalDirectory(folder);
+//
+//		IVirtualFile[] files = this._manager.getFiles(folder, true, true);
+//		assertEquals(files.length, 0);
+//
+//		// Create some files
+//		IVirtualFile file1 = this._manager.createVirtualFile(path + this._manager.getFileSeparator() + FileUtils.getRandomFileName("test1", ".txt")); //$NON-NLS-1$ //$NON-NLS-2$
+//		IVirtualFile file2 = this._manager.createVirtualFile(path + this._manager.getFileSeparator() + FileUtils.getRandomFileName("test2", ".txt")); //$NON-NLS-1$ //$NON-NLS-2$
+//		createFile(file1);
+//		createFile(file2);
+//
+//		// assert that they are now there
+//		files = this._manager.getFiles(folder, true, true);
+//		Arrays.sort(files);
+//		assertEquals(2, files.length);
+//		// since names are random, they may not be in the same order as we put them in
+//		assertTrue(Arrays.binarySearch(files, file1) >= 0);
+//		assertTrue(Arrays.binarySearch(files, file2) >= 0);
+//
+//		this._manager.addCloakExpression("(?i).*\\.txt"); //$NON-NLS-1$
+//		assertTrue(file1.isCloaked());
+//		assertTrue(file2.isCloaked());
+//		assertEquals(0, this._manager.getFiles(folder, true, false).length);
+//		this._manager.removeCloakExpression("(?i).*\\.txt"); //$NON-NLS-1$
+//		assertEquals(2, this._manager.getFiles(folder, true, false).length);
+//
+//		// delete them
+//		assertTrue(deleteFile(file1));
+//		assertTrue(deleteFile(file2));
+//		assertTrue(deleteFile(folder)); // deleting fails on this server, for some reason
+//
+//		// assert that they are gone
+//		assertFalse(folder.exists());
+//	}
+//	
+//	/**
+//	 * testDoesNotExist
+//	 * 
+//	 * @throws ConnectionException
+//	 * @throws IOException
+//	 */
+//	public void testDoesNotExist() throws ConnectionException, IOException
+//	{
+//		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("nothing", null) //$NON-NLS-1$
+//				+ this._manager.getFileSeparator() + "non-existant.txt"; //$NON-NLS-1$
+//		IVirtualFile file = this._manager.createVirtualFile(path);
+//
+//		assertFalse(file.exists());
+//	}
+//
+//	/**
+//	 * testExists
+//	 * 
+//	 * @throws ConnectionException
+//	 * @throws IOException
+//	 */
+//	public void testExists() throws ConnectionException, IOException
+//	{
+//		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("index_test", ".html"); //$NON-NLS-1$ //$NON-NLS-2$
+//		IVirtualFile file = this._manager.createVirtualFile(path);
+//		assertFalse(file.exists());
+//		createFile(file);
+//		assertTrue(file.exists());
+//		deleteFile(file);
+//	}
+//
+//	/**
+//	 * testCreateDirectory
+//	 * 
+//	 * @throws ConnectionException
+//	 * @throws VirtualFileManagerException
+//	 */
+//	public void testCreateDirectory() throws ConnectionException, VirtualFileManagerException
+//	{
+//		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("unit_tests", null); //$NON-NLS-1$
+//		IVirtualFile dir = this._manager.createVirtualDirectory(path);
+//
+//		// make sure we successfully created a directory
+//		assertTrue(this._manager.createLocalDirectory(dir));
+//
+//		// delete created directory
+//		assertTrue(this._manager.deleteFile(dir));
+//	}
+//
+//	/**
+//	 * testDeleteFile
+//	 * 
+//	 * @throws ConnectionException
+//	 * @throws VirtualFileManagerException
+//	 */
+//	public void testDeleteFile() throws ConnectionException, VirtualFileManagerException, IOException
+//	{
+//		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("delete", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
+//		IVirtualFile file = this._manager.createVirtualFile(path);
+//		String content = "This is a unit test file that should be deleted."; //$NON-NLS-1$
+//		ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
+//
+//		// create temp file to delete
+//		this._manager.putStream(input, file);
+//
+//		// delete file
+//		assertTrue(this._manager.deleteFile(file));
+//	}
+//
+//	/**
+//	 * testRenameFile
+//	 * 
+//	 * @throws ConnectionException
+//	 * @throws VirtualFileManagerException
+//	 */
+//	public void testRenameFile() throws ConnectionException, VirtualFileManagerException, IOException
+//	{
+//		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("rename_temp", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
+//		String newPath = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("new_name_temp", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
+//
+//		IVirtualFile file = this._manager.createVirtualFile(path);
+//		IVirtualFile newFile = this._manager.createVirtualFile(newPath);
+//
+//		String content = "This is a unit test file that should be deleted."; //$NON-NLS-1$
+//		ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
+//
+//		// create temp file to delete
+//		this._manager.putStream(input, file);
+//
+//		// should fail as we need a name, not a path
+//		try
+//		{
+//			file.rename(newPath);
+//			fail();
+//		}
+//		catch(IllegalArgumentException e)
+//		{
+//		}
+//		
+//		// rename file
+//		assertTrue(file.rename(newFile.getName()));
+//
+//		// Prove that it is now in the new space
+//		assertEquals(file.getAbsolutePath(), newFile.getAbsolutePath());
+//
+//		// delete file
+//		assertTrue(file.delete());
+//	}
+//
+//	/**
+//	 * testDeleteFile
+//	 * 
+//	 * @throws ConnectionException
+//	 * @throws VirtualFileManagerException
+//	 */
+//	public void testGetStream() throws ConnectionException, VirtualFileManagerException, IOException
+//	{
+//		String path = home + this._manager.getFileSeparator() + FileUtils.getRandomFileName("delete", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
+//		IVirtualFile file = this._manager.createVirtualFile(path);
+//		createFile(file);
+//
+//		// make sure we can get a stream
+//		InputStream s = this._manager.getStream(file);
+//		assertNotNull(s);
+//
+//		// delete file
+//		assertTrue(deleteFile(file));
+//	}
+//
+//	/**
+//	 * createFile
+//	 * 
+//	 * @param file
+//	 * @throws VirtualFileManagerException
+//	 * @throws ConnectionException
+//	 */
+//	private void createFile(IVirtualFile file) throws VirtualFileManagerException, ConnectionException, IOException
+//	{
+//		String content = "This is a unit test file that should be deleted."; //$NON-NLS-1$
+//		ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
+//
+//		// create temp file to delete
+//		this._manager.putStream(input, file);
+//	}
+//
+//	/**
+//	 * deleteFile
+//	 * 
+//	 * @param file
+//	 * @return
+//	 * @throws ConnectionException
+//	 * @throws VirtualFileManagerException
+//	 */
+//	private boolean deleteFile(IVirtualFile file) throws ConnectionException, VirtualFileManagerException, IOException
+//	{
+//		return file.delete();
+//	}
 }
