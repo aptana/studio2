@@ -8,10 +8,12 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  com.aptana.ide.core,
- com.aptana.ide.syncing,
  org.junit,
  com.aptana.ide.libraries,
  org.eclipse.jface,
+ com.aptana.ide.core.io,
+ com.aptana.ide.syncing.core,
+ com.aptana.ide.filesystem.ftp,
  com.aptana.ide.io.file
 Eclipse-AutoStart: true
 Export-Package: com.aptana.ide.syncing.tests

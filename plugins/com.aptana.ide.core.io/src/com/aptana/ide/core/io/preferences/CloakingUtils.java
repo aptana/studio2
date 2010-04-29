@@ -94,6 +94,14 @@ public class CloakingUtils {
     }
 
     /**
+     * Cloaks any files with this particular name
+     * @param fileStore
+     */
+    public static void cloakFileName(IFileStore fileStore) {
+    	addCloakFileType(fileStore.getName());
+    }
+    
+    /**
      * @param fileStore
      *            the file store to be checked
      * @return true if the file should be cloaked, false otherwise

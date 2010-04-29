@@ -36,7 +36,7 @@ package com.aptana.ide.core.io.sync.tests;
 
 import junit.framework.TestCase;
 
-import com.aptana.ide.core.io.sync.VirtualFileManagerSyncPair;
+import com.aptana.ide.core.io.ingo.VirtualFileManagerSyncPair;
 
 /**
  * VirtualFileManagerSyncPairTest

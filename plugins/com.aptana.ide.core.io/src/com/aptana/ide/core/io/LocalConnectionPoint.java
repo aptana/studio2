@@ -50,7 +50,7 @@ import com.aptana.ide.core.io.efs.LocalFile;
  * @author Max Stepanov
  *
  */
-public final class LocalConnectionPoint extends ConnectionPoint {
+public class LocalConnectionPoint extends ConnectionPoint {
 
 	public static final String TYPE = "local"; //$NON-NLS-1$
 	

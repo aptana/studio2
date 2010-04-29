@@ -37,12 +37,16 @@ package com.aptana.ide.core.io.tests;
 import java.io.File;
 import java.io.IOException;
 
-import com.aptana.ide.core.io.IVirtualFile;
-import com.aptana.ide.core.io.VirtualFile;
-import com.aptana.ide.core.ui.io.file.LocalFileManager;
-import com.aptana.ide.core.ui.io.file.LocalProtocolManager;
-
 import junit.framework.TestCase;
+
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
+
+import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.core.io.ingo.IVirtualFile;
+import com.aptana.ide.core.io.ingo.LocalFileManager;
+import com.aptana.ide.core.io.ingo.LocalProtocolManager;
+import com.aptana.ide.core.io.ingo.VirtualFile;
 
 /**
  * VirtualFileTest
@@ -56,8 +60,9 @@ public class VirtualFileTest extends TestCase
 	 * Test method for 'com.aptana.ide.core.io.VirtualFile.getParentDirectories(IVirtualFile, IVirtualFileManager)'
 	 * 
 	 * @throws IOException
+	 * @throws CoreException 
 	 */
-	public void testGetParentDirectories() throws IOException
+	public void testGetParentDirectories() throws IOException, CoreException
 	{
 		File baseFile = File.createTempFile("test", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
 		File baseDirectory = baseFile.getParentFile();
@@ -66,11 +71,11 @@ public class VirtualFileTest extends TestCase
 		fm.setBasePath(baseDirectory.getAbsolutePath());
 
 		// temp directory itself. should return no parents
-		IVirtualFile[] dirs = VirtualFile.getParentDirectories(fm.getBaseFile(), fm);
+		IFileStore[] dirs = VirtualFile.getParentDirectories(fm.getRoot(), fm);
 		assertEquals(0, dirs.length);
 
 		// parent directory of temp directory
-		dirs = VirtualFile.getParentDirectories(fm.getBaseFile().getParentFile(), fm);
+		dirs = VirtualFile.getParentDirectories(EFSUtils.getParentFile(fm.getRoot()), fm);
 		assertEquals(0, dirs.length);
 
 		// sub directory

@@ -34,16 +34,7 @@
  */
 package com.aptana.ide.io.ftp.tests;
 
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.TestCase;
-
-import com.aptana.ide.core.io.ConnectionException;
-import com.aptana.ide.core.io.IVirtualFile;
-import com.aptana.ide.core.io.IVirtualFileManager;
-import com.aptana.ide.io.ftp.FtpProtocolManager;
-import com.aptana.ide.io.ftp.FtpVirtualFileManager;
 
 /**
  * FtpVirtualFileManagerTest
@@ -52,68 +43,68 @@ import com.aptana.ide.io.ftp.FtpVirtualFileManager;
  */
 public class FtpVirtualFileManagerTest extends TestCase
 {
-	
-	/**
-	 * Test method for 'com.aptana.ide.io.ftp.FtpVirtualFileManager.getHashString()'
-	 */
-	public void testGetHashString()
-	{
-		// see below
-	}
-
-	/**
-	 * Test method for 'com.aptana.ide.io.ftp.FtpVirtualFileManager.fromSerializableString(String)'
-	 * 
-	 * @throws ConnectionException
-	 */
-	public void testFromSerializableString() throws ConnectionException
-	{
-		IVirtualFileManager fileManager = FtpProtocolManager.getInstance().createFileManager();
-		FtpVirtualFileManager ftp = (FtpVirtualFileManager) fileManager;
-		ftp.setNickName("nickname"); //$NON-NLS-1$
-		ftp.setServer("server.host.name"); //$NON-NLS-1$
-		ftp.setBasePath("/base/path"); //$NON-NLS-1$
-		ftp.setUser("user"); //$NON-NLS-1$
-		ftp.setPassword("password$$!!@@~~"); //$NON-NLS-1$
-		ftp.setPassiveMode(!ftp.getPassiveMode());
-		// ftp.setId(0); // Id is auto-calculated
-		ftp.setAutoCalculateServerTimeOffset(!ftp.isAutoCalculateServerTimeOffset());
-		ftp.setTimeOffset(100000); // requires a valid server, so we have to fake a value
-		ftp.setPort(ftp.getPort() + 1);
-
-		IVirtualFile f1 = ftp.createVirtualFile("/test.txt"); //$NON-NLS-1$
-		IVirtualFile f2 = ftp.createVirtualDirectory("/test_directory"); //$NON-NLS-1$
-		ftp.addCloakedFile(f1);
-		ftp.addCloakedFile(f2);
-
-		ftp.addCloakExpression(".*\\.js"); //$NON-NLS-1$
-		ftp.addCloakExpression("\\.svn"); //$NON-NLS-1$
-
-		String serialized = ftp.getHashString();
-		IVirtualFileManager fileManager2 = FtpProtocolManager.getInstance().createFileManager();
-		FtpVirtualFileManager ftp2 = (FtpVirtualFileManager) fileManager2;
-		ftp2.fromSerializableString(serialized);
-
-		String[] strings = serialized.split(FtpVirtualFileManager.DELIMITER);
-		assertEquals(13, strings.length);
-
-		assertEquals(ftp.getNickName(), ftp2.getNickName());
-		assertEquals(ftp.getServer(), ftp2.getServer());
-		assertEquals(ftp.getBasePath(), ftp2.getBasePath());
-		assertEquals(ftp.getUser(), ftp2.getUser());
-		assertEquals(ftp.getPassword(), ftp2.getPassword());
-		assertEquals(ftp.isAutoCalculateServerTimeOffset(), ftp2.isAutoCalculateServerTimeOffset());
-		assertEquals(ftp.getId(), ftp2.getId());
-		assertEquals(ftp.getTimeOffset(), ftp2.getTimeOffset());
-		assertEquals(ftp.getPort(), ftp2.getPort());
-		assertEquals(ftp.getPassiveMode(), ftp2.getPassiveMode());
-		assertEquals(ftp.getSavePassword(), ftp2.getSavePassword());
-
-		assertEquals(ftp.getCloakedFiles().length, ftp2.getCloakedFiles().length);
-		
-		List<String> al = Arrays.asList(ftp.getCloakedFileExpressions());
-		assertTrue(al.contains(".*\\.js"));
-		assertTrue(al.contains("\\.svn"));
-	}
+//	
+//	/**
+//	 * Test method for 'com.aptana.ide.io.ftp.FtpVirtualFileManager.getHashString()'
+//	 */
+//	public void testGetHashString()
+//	{
+//		// see below
+//	}
+//
+//	/**
+//	 * Test method for 'com.aptana.ide.io.ftp.FtpVirtualFileManager.fromSerializableString(String)'
+//	 * 
+//	 * @throws ConnectionException
+//	 */
+//	public void testFromSerializableString() throws ConnectionException
+//	{
+//		IVirtualFileManager fileManager = FtpProtocolManager.getInstance().createFileManager();
+//		FtpVirtualFileManager ftp = (FtpVirtualFileManager) fileManager;
+//		ftp.setNickName("nickname"); //$NON-NLS-1$
+//		ftp.setServer("server.host.name"); //$NON-NLS-1$
+//		ftp.setBasePath("/base/path"); //$NON-NLS-1$
+//		ftp.setUser("user"); //$NON-NLS-1$
+//		ftp.setPassword("password$$!!@@~~"); //$NON-NLS-1$
+//		ftp.setPassiveMode(!ftp.getPassiveMode());
+//		// ftp.setId(0); // Id is auto-calculated
+//		ftp.setAutoCalculateServerTimeOffset(!ftp.isAutoCalculateServerTimeOffset());
+//		ftp.setTimeOffset(100000); // requires a valid server, so we have to fake a value
+//		ftp.setPort(ftp.getPort() + 1);
+//
+//		IVirtualFile f1 = ftp.createVirtualFile("/test.txt"); //$NON-NLS-1$
+//		IVirtualFile f2 = ftp.createVirtualDirectory("/test_directory"); //$NON-NLS-1$
+//		ftp.addCloakedFile(f1);
+//		ftp.addCloakedFile(f2);
+//
+//		ftp.addCloakExpression(".*\\.js"); //$NON-NLS-1$
+//		ftp.addCloakExpression("\\.svn"); //$NON-NLS-1$
+//
+//		String serialized = ftp.getHashString();
+//		IVirtualFileManager fileManager2 = FtpProtocolManager.getInstance().createFileManager();
+//		FtpVirtualFileManager ftp2 = (FtpVirtualFileManager) fileManager2;
+//		ftp2.fromSerializableString(serialized);
+//
+//		String[] strings = serialized.split(FtpVirtualFileManager.DELIMITER);
+//		assertEquals(13, strings.length);
+//
+//		assertEquals(ftp.getNickName(), ftp2.getNickName());
+//		assertEquals(ftp.getServer(), ftp2.getServer());
+//		assertEquals(ftp.getBasePath(), ftp2.getBasePath());
+//		assertEquals(ftp.getUser(), ftp2.getUser());
+//		assertEquals(ftp.getPassword(), ftp2.getPassword());
+//		assertEquals(ftp.isAutoCalculateServerTimeOffset(), ftp2.isAutoCalculateServerTimeOffset());
+//		assertEquals(ftp.getId(), ftp2.getId());
+//		assertEquals(ftp.getTimeOffset(), ftp2.getTimeOffset());
+//		assertEquals(ftp.getPort(), ftp2.getPort());
+//		assertEquals(ftp.getPassiveMode(), ftp2.getPassiveMode());
+//		assertEquals(ftp.getSavePassword(), ftp2.getSavePassword());
+//
+//		assertEquals(ftp.getCloakedFiles().length, ftp2.getCloakedFiles().length);
+//		
+//		List<String> al = Arrays.asList(ftp.getCloakedFileExpressions());
+//		assertTrue(al.contains(".*\\.js"));
+//		assertTrue(al.contains("\\.svn"));
+//	}
 
 }
