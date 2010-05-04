@@ -93,7 +93,7 @@ public class VirtualFileSyncPair
 	 * @throws IOException
 	 * @throws CoreException 
 	 */
-	public InputStream getSourceInputStream() throws ConnectionException, VirtualFileManagerException, IOException, CoreException
+	public InputStream getSourceInputStream() throws IOException, CoreException
 	{
 		InputStream result = null;
 
@@ -134,7 +134,7 @@ public class VirtualFileSyncPair
 	 * @throws IOException
 	 * @throws CoreException 
 	 */
-	public InputStream getDestinationInputStream() throws ConnectionException, VirtualFileManagerException, IOException, CoreException
+	public InputStream getDestinationInputStream() throws IOException, CoreException
 	{
 		InputStream result = null;
 

@@ -46,9 +46,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.ConnectionException;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.VirtualFileManagerException;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.syncing.core.ingo.ISyncEventHandler;
@@ -351,21 +349,15 @@ public class SyncJob extends Job implements ISyncEventHandler
 
 	private boolean fullSync(VirtualFileSyncPair[] pairs)
 	{
-		return fSyncer.fullSyncAndDelete(pairs, fDeleteLocal, fDeleteRemote);
+		return fSyncer.fullSyncAndDelete(pairs, fDeleteLocal, fDeleteRemote, this.progressMonitor);
 	}
 
 	private boolean download(VirtualFileSyncPair[] pairs)
 	{
 		try
 		{
-			fSyncer.downloadAndDelete(pairs, fDeleteLocal);
+			fSyncer.downloadAndDelete(pairs, fDeleteLocal, this.progressMonitor);
 			return true;
-		}
-		catch (VirtualFileManagerException e)
-		{
-		}
-		catch (ConnectionException e)
-		{
 		}
 		catch (CoreException e)
 		{
@@ -377,14 +369,8 @@ public class SyncJob extends Job implements ISyncEventHandler
 	{
 		try
 		{
-			fSyncer.uploadAndDelete(pairs, fDeleteRemote);
+			fSyncer.uploadAndDelete(pairs, fDeleteRemote, this.progressMonitor);
 			return true;
-		}
-		catch (VirtualFileManagerException e)
-		{
-		}
-		catch (ConnectionException e)
-		{
 		}
 		catch (CoreException e)
 		{

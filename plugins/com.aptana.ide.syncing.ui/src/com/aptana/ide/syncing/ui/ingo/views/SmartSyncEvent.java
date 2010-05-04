@@ -34,7 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.ingo.views;
 
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 
 /**
@@ -46,12 +46,12 @@ public class SmartSyncEvent
 	/**
 	 * Destination file manager
 	 */
-	public IVirtualFileManager destinationManager;
+	public IConnectionPoint destinationManager;
 
 	/**
 	 * Source file manager
 	 */
-	public IVirtualFileManager sourceManager;
+	public IConnectionPoint sourceManager;
 
 	/**
 	 * All the pairs that completed successfully

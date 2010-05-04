@@ -34,12 +34,9 @@
  */
 package com.aptana.ide.core.io.ingo;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.eclipse.core.filesystem.IFileStore;
 
-import com.aptana.ide.core.io.IFileProgressMonitor;
+import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
  * @author Paul Colton
@@ -51,5 +48,5 @@ public interface IVirtualFile extends IFileStore, Comparable
 	 * 
 	 * @return Returns this file's owning file manager
 	 */
-	IVirtualFileManager getFileManager();
+	IConnectionPoint getFileManager();
 }

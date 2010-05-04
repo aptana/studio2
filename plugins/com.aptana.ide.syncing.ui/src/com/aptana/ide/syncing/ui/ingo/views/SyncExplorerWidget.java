@@ -613,7 +613,7 @@ public class SyncExplorerWidget
 		smartSyncButton = new Button(smartSyncComp, SWT.PUSH);
 		smartSyncButton.setEnabled(false);
 		smartSyncButton.setText(Messages.SyncExplorerWidget_SmartSyncButton);
-		smartSyncButton.setImage(SyncingUIPlugin.getImage("icons/direction_both.gif")); //$NON-NLS-1$
+		smartSyncButton.setImage(SyncingUIPlugin.getImage("icons/full/obj16/direction_both.gif")); //$NON-NLS-1$
 		smartSyncButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		smartSyncButton.addSelectionListener(new SelectionAdapter()
 		{
@@ -745,7 +745,7 @@ public class SyncExplorerWidget
 		final ToolBar clearBar = new ToolBar(bars, SWT.FLAT);
 		clear = new ToolItem(clearBar, SWT.PUSH);
 		clear.setToolTipText(Messages.SyncExplorerWidget_Clear);
-		clear.setImage(SyncingUIPlugin.getImage("icons/clear.png")); //$NON-NLS-1$
+		clear.setImage(SyncingUIPlugin.getImage("icons/full/obj16/clear.png")); //$NON-NLS-1$
 		clear.addSelectionListener(new SelectionAdapter()
 		{
 
@@ -778,7 +778,7 @@ public class SyncExplorerWidget
 					SyncingUIPlugin.getDefault().getPreferenceStore().setValue(
 							com.aptana.ide.syncing.ui.preferences.IPreferenceConstants.SHOW_SYNC_EXPLORER_TABLE, false);
 					statusTabs.setVisible(false);
-					showHide.setImage(SyncingUIPlugin.getImage("icons/up_arrow.png")); //$NON-NLS-1$
+					showHide.setImage(SyncingUIPlugin.getImage("icons/full/obj16/up_arrow.png")); //$NON-NLS-1$
 					showHide.setToolTipText(Messages.SyncExplorerWidget_ShowTabs);
 					clearBar.setVisible(false);
 					displayArea.setMaximizedControl(top);
@@ -788,7 +788,7 @@ public class SyncExplorerWidget
 					SyncingUIPlugin.getDefault().getPreferenceStore().setValue(
 							com.aptana.ide.syncing.ui.preferences.IPreferenceConstants.SHOW_SYNC_EXPLORER_TABLE, true);
 					statusTabs.setVisible(true);
-					showHide.setImage(SyncingUIPlugin.getImage("icons/down_arrow.png")); //$NON-NLS-1$
+					showHide.setImage(SyncingUIPlugin.getImage("icons/full/obj16/down_arrow.png")); //$NON-NLS-1$
 					clearBar.setVisible(true);
 					showHide.setToolTipText(Messages.SyncExplorerWidget_HideTabs);
 					displayArea.setMaximizedControl(null);
@@ -885,7 +885,7 @@ public class SyncExplorerWidget
 		});
 
 		configure = new ToolItem(bottomBar, SWT.DROP_DOWN);
-		configure.setImage(SyncingUIPlugin.getImage("icons/configure.gif")); //$NON-NLS-1$
+		configure.setImage(SyncingUIPlugin.getImage("icons/full/obj16/configure.gif")); //$NON-NLS-1$
 		configure.setToolTipText(Messages.SyncExplorerWidget_Options);
 		configure.addSelectionListener(new SelectionAdapter()
 		{
@@ -950,13 +950,13 @@ public class SyncExplorerWidget
 		displayArea.setWeights(new int[] { 70, 30 });
 		if (start)
 		{
-			showHide.setImage(SyncingUIPlugin.getImage("icons/down_arrow.png")); //$NON-NLS-1$
+			showHide.setImage(SyncingUIPlugin.getImage("icons/full/obj16/down_arrow.png")); //$NON-NLS-1$
 			showHide.setToolTipText(Messages.SyncExplorerWidget_HideTabs);
 		}
 		else
 		{
 			displayArea.setMaximizedControl(top);
-			showHide.setImage(SyncingUIPlugin.getImage("icons/up_arrow.png")); //$NON-NLS-1$
+			showHide.setImage(SyncingUIPlugin.getImage("icons/full/obj16/up_arrow.png")); //$NON-NLS-1$
 			showHide.setToolTipText(Messages.SyncExplorerWidget_ShowTabs);
 			statusTabs.setVisible(false);
 		}
@@ -1177,7 +1177,7 @@ public class SyncExplorerWidget
 
 		});
 
-		up.setImage(SyncingUIPlugin.getImage("icons/up.png")); //$NON-NLS-1$
+		up.setImage(SyncingUIPlugin.getImage("icons/full/obj16/up.png")); //$NON-NLS-1$
 		//up.setToolTipText(com.aptana.ide.syncing.Messages.SyncManager_Up);
 		up.addSelectionListener(new SelectionAdapter()
 		{
@@ -1211,7 +1211,7 @@ public class SyncExplorerWidget
 		});
 		up.setEnabled(false);
 
-		refresh.setImage(SyncingUIPlugin.getImage("icons/refresh.gif")); //$NON-NLS-1$
+		refresh.setImage(SyncingUIPlugin.getImage("icons/full/obj16/refresh.gif")); //$NON-NLS-1$
 		//refresh.setToolTipText(com.aptana.ide.syncing.Messages.SyncManager_Refresh);
 		refresh.addSelectionListener(new SelectionAdapter()
 		{
@@ -1224,7 +1224,7 @@ public class SyncExplorerWidget
 		});
 		refresh.setEnabled(false);
 
-		home.setImage(SyncingUIPlugin.getImage("icons/home.png")); //$NON-NLS-1$
+		home.setImage(SyncingUIPlugin.getImage("icons/full/obj16/home.png")); //$NON-NLS-1$
 		//home.setToolTipText(com.aptana.ide.syncing.Messages.SyncManager_Home);
 		home.setEnabled(false);
 

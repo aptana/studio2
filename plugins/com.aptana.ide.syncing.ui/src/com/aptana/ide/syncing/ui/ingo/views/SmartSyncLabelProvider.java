@@ -148,8 +148,7 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object,
-	 *      java.lang.String)
+	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
 	 */
 	public boolean isLabelProperty(Object element, String property)
 	{
@@ -169,8 +168,7 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-	 *      int)
+	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
 	 */
 	public String getColumnText(Object element, int columnIndex)
 	{
@@ -263,8 +261,8 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 						case SyncState.ServerItemOnly:
 							return fDeleteRemoteFiles ? Messages.SmartSyncDialog_Delete : ""; //$NON-NLS-1$
 						case SyncState.ClientItemOnly:
-							if (fSyncDirection == DirectionToolBar.FORCE_UPLOAD || 
-									fSyncDirection == DirectionToolBar.UPLOAD || !fDeleteLocalFiles)
+							if (fSyncDirection == DirectionToolBar.FORCE_UPLOAD
+									|| fSyncDirection == DirectionToolBar.UPLOAD || !fDeleteLocalFiles)
 							{
 								return Messages.SmartSyncDialog_New;
 							}
@@ -285,8 +283,7 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-	 *      int)
+	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
 	 */
 	public Image getColumnImage(Object element, int columnIndex)
 	{
@@ -296,16 +293,16 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 			{
 				ISyncResource resource = (ISyncResource) element;
 				int state = resource.getTransferState();
-			
+
 				if (state == ISyncResource.ERROR)
 				{
-					return SyncingUIPlugin.getImage("icons/no.png"); //$NON-NLS-1$
+					return SyncingUIPlugin.getImage("icons/full/obj16/no.png"); //$NON-NLS-1$
 				}
 				if (state == ISyncResource.SYNCED)
 				{
-					return SyncingUIPlugin.getImage("icons/ok.png"); //$NON-NLS-1$
+					return SyncingUIPlugin.getImage("icons/full/obj16/ok.png"); //$NON-NLS-1$
 				}
-				return SyncingUIPlugin.getImage("icons/empty.png"); //$NON-NLS-1$
+				return SyncingUIPlugin.getImage("icons/full/obj16/empty.png"); //$NON-NLS-1$
 			}
 			if (element instanceof SyncFile)
 			{
@@ -324,7 +321,7 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 			}
 			else if (element instanceof SyncFolder)
 			{
-				return CoreUIPlugin.getImage("icons/folder.gif"); //$NON-NLS-1$
+				return CoreUIPlugin.getImage("icons/full/obj16/folder.gif"); //$NON-NLS-1$
 			}
 		}
 		else if (columnIndex == 1)
@@ -334,17 +331,16 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 				ISyncResource resource = (ISyncResource) element;
 				if (resource.isSkipped())
 				{
-					return SyncingUIPlugin.getImage("icons/checked.gif"); //$NON-NLS-1$
+					return SyncingUIPlugin.getImage("icons/full/obj16/checked.gif"); //$NON-NLS-1$
 				}
-				return SyncingUIPlugin.getImage("icons/unchecked.gif"); //$NON-NLS-1$
+				return SyncingUIPlugin.getImage("icons/full/obj16/unchecked.gif"); //$NON-NLS-1$
 			}
 		}
 		return null;
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object,
-	 *      int)
+	 * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
 	 */
 	public Color getBackground(Object element, int columnIndex)
 	{
@@ -370,7 +366,7 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 						case SyncState.ClientItemOnly:
 							return fDeleteLocalFiles ? fDeleteColor : null;
 						case SyncState.ServerItemOnly:
-							if (fSyncDirection == DirectionToolBar.FORCE_DOWNLOAD 
+							if (fSyncDirection == DirectionToolBar.FORCE_DOWNLOAD
 									|| fSyncDirection == DirectionToolBar.DOWNLOAD || !fDeleteRemoteFiles)
 							{
 								return fNewColor;
@@ -404,7 +400,7 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 						case SyncState.ServerItemOnly:
 							return fDeleteRemoteFiles ? fDeleteColor : null;
 						case SyncState.ClientItemOnly:
-							if (fSyncDirection == DirectionToolBar.FORCE_UPLOAD 
+							if (fSyncDirection == DirectionToolBar.FORCE_UPLOAD
 									|| fSyncDirection == DirectionToolBar.UPLOAD || !fDeleteLocalFiles)
 							{
 								return fNewColor;
@@ -429,8 +425,7 @@ public class SmartSyncLabelProvider implements ITableLabelProvider, ITableColorP
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object,
-	 *      int)
+	 * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
 	 */
 	public Color getForeground(Object element, int columnIndex)
 	{

@@ -55,7 +55,6 @@ import org.eclipse.ui.progress.UIJob;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.ConnectionException;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.LocalFileManager;
 import com.aptana.ide.core.io.ingo.VirtualFile;
@@ -84,8 +83,8 @@ public class FileUploadAction extends BaseSyncAction
 		confirmMessage = Messages.FileUploadAction_UplaodSelectedItemsToSite;
 	}
 
-	public static IVirtualFile[] getUploadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager, IFileStore[] files)
-			throws ConnectionException, IOException, CoreException
+	public static IVirtualFile[] getUploadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager, IFileStore[] files, IProgressMonitor monitor)
+			throws IOException, CoreException
 	{
 		Set<IFileStore> newFiles = new HashSet<IFileStore>();
 
@@ -120,7 +119,7 @@ public class FileUploadAction extends BaseSyncAction
 					newFiles.add(newFile);
 				}
 
-				newFiles.addAll(Arrays.asList(EFSUtils.getFiles(newFile, true, false)));
+				newFiles.addAll(Arrays.asList(EFSUtils.getFiles(newFile, true, false, null)));
 			}
 			else
 			{
@@ -142,10 +141,10 @@ public class FileUploadAction extends BaseSyncAction
 	 * @see com.aptana.ide.syncing.ui.ingo.BaseSyncAction#getItems(com.aptana.ide.syncing.Synchronizer,
 	 *      com.aptana.ide.core.io.sync.VirtualFileManagerSyncPair, com.aptana.ide.core.io.IVirtualFile[])
 	 */
-	protected VirtualFileSyncPair[] getItems(Synchronizer sm, VirtualFileManagerSyncPair conf, IVirtualFile[] files)
-			throws ConnectionException, IOException, CoreException
+	protected VirtualFileSyncPair[] getItems(Synchronizer sm, VirtualFileManagerSyncPair conf, IVirtualFile[] files, IProgressMonitor monitor)
+			throws IOException, CoreException
 	{
-		IVirtualFile[] newFiles = getUploadFiles(conf.getSourceFileManager(), conf.getDestinationFileManager(), files);
+		IVirtualFile[] newFiles = getUploadFiles(conf.getSourceFileManager(), conf.getDestinationFileManager(), files, monitor);
 		// set upload flag so we get a proper VFM refresh
 		conf.setSyncState(VirtualFileManagerSyncPair.Upload);
 
@@ -159,9 +158,9 @@ public class FileUploadAction extends BaseSyncAction
 	 * @see com.aptana.ide.syncing.ui.ingo.BaseSyncAction#syncItems(com.aptana.ide.syncing.Synchronizer,
 	 *      com.aptana.ide.core.io.sync.VirtualFileSyncPair[])
 	 */
-	protected void syncItems(Synchronizer sm, VirtualFileSyncPair[] items) throws ConnectionException, IOException, CoreException
+	protected void syncItems(Synchronizer sm, VirtualFileSyncPair[] items, IProgressMonitor monitor) throws IOException, CoreException
 	{
-		sm.upload(items);
+		sm.upload(items, monitor);
 	}
 
 	/**

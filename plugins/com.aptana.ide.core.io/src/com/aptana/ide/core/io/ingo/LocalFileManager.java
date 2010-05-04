@@ -55,6 +55,7 @@ import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IFileProgressMonitor;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.core.io.efs.LocalFile;
 
 /**
  * @author Robin Debreuil
@@ -74,14 +75,14 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	 *            The path to the new virtual directory
 	 * @return IVirtualFile Returns a virtual file for the new directory
 	 */
-	public IVirtualFile createVirtualDirectory(String path) {
-		return new LocalFileShell(this, new File(path));
+	public IFileStore createVirtualDirectory(String path) {
+		return new LocalFile(new File(path));
 	}
 	
 
 	@Override
-	public IVirtualFile createVirtualFile(String path) {
-		return new LocalFileShell(this, new File(path));
+	public IFileStore createVirtualFile(String path) {
+		return new LocalFile(new File(path));
 	}
 
 
@@ -113,7 +114,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public void addCloakedFile(IVirtualFile file) {
+	public void addCloakedFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -131,7 +132,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public void connect() throws ConnectionException {
+	public void connect()  {
 		// TODO Auto-generated method stub
 		
 	}
@@ -144,7 +145,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 
 	@Override
 	public boolean createLocalDirectory(IVirtualFile directoryFile)
-			throws ConnectionException, VirtualFileManagerException {
+			{
 
 		File f = new File(EFSUtils.getAbsolutePath(directoryFile));
 		return f.mkdirs();
@@ -177,15 +178,15 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	 * @throws CoreException 
 	 * @see com.aptana.ide.core.io.IVirtualFileManager#deleteFile(com.aptana.ide.core.io.IVirtualFile)
 	 */
-	public boolean deleteFile(IVirtualFile file) throws CoreException
+	public boolean deleteFile(IFileStore file) throws CoreException
 	{
 		boolean result = false;
-		if (file == null || !(file instanceof LocalFileShell))
+		if (file == null || !(file instanceof LocalFile))
 		{
 			return result;
 		}
 
-		LocalFileShell lf = (LocalFileShell) file;
+		LocalFile lf = (LocalFile) file;
 		File target = lf.toLocalFile(EFS.NONE, null);
 		if (target != null && target.exists())
 		{
@@ -243,22 +244,22 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 
 	@Override
 	public IVirtualFile[] getFiles(IVirtualFile file)
-			throws ConnectionException, IOException {
+			throws IOException {
 		// TODO Auto-generated method stub
 		return getFiles(file, false, true);
 	}
 
 	@Override
 	public IVirtualFile[] getFiles(IVirtualFile file, boolean recurse,
-			boolean includeCloakedFiles) throws ConnectionException,
+			boolean includeCloakedFiles) throws 
 			IOException {
 		
 		IFileStore[] fs;
 		try {
 			fs = super.getRoot().childStores(EFS.NONE, null);
-			ArrayList<LocalFileShell> a = new ArrayList<LocalFileShell>();
+			ArrayList<LocalFile> a = new ArrayList<LocalFile>();
 			for (IFileStore iFileStore : fs) {
-				LocalFileShell lfs = new LocalFileShell(this, iFileStore.toLocalFile(EFS.NONE, null));
+				LocalFile lfs = new LocalFile(iFileStore.toLocalFile(EFS.NONE, null));
 				// add in recursion and cloaked files
 				a.add(lfs);
 			}			
@@ -310,8 +311,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public InputStream getStream(IVirtualFile file) throws ConnectionException,
-			VirtualFileManagerException, IOException {
+	public InputStream getStream(IVirtualFile file) throws IOException {
 
 		InputStream result = null;
 		
@@ -329,13 +329,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public long getTimeOffset() throws ConnectionException {
+	public long getTimeOffset()  {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean hasFiles(IVirtualFile file) throws ConnectionException,
+	public boolean hasFiles(IVirtualFile file) throws 
 			IOException {
 		// TODO Auto-generated method stub
 		return false;
@@ -378,7 +378,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public boolean moveFile(IVirtualFile source, IVirtualFile destination) {
+	public boolean moveFile(IFileStore source, IFileStore destination) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -386,8 +386,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	/**
 	 * @see com.aptana.ide.core.io.IVirtualFileManager#putFile(IVirtualFile, IVirtualFile)
 	 */
-	public void putFile(IVirtualFile sourceFile, IVirtualFile targetFile) throws ConnectionException,
-			VirtualFileManagerException, IOException
+	public void putFile(IVirtualFile sourceFile, IVirtualFile targetFile) throws  IOException
 	{
 		putFile(sourceFile, targetFile, null);
 	}
@@ -403,12 +402,6 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (VirtualFileManagerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -417,15 +410,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 
 	@Override
 	public void putStream(InputStream input, IVirtualFile targetFile)
-			throws ConnectionException, VirtualFileManagerException,
-			IOException {
+			throws IOException {
 		putStream(input, targetFile, null);
 	}
 
 	@Override
 	public void putStream(InputStream input, IVirtualFile targetFile,
-			IFileProgressMonitor monitor) throws ConnectionException,
-			VirtualFileManagerException, IOException {
+			IFileProgressMonitor monitor) throws IOException {
 		
 
 		File file = new File(EFSUtils.getAbsolutePath(targetFile));
@@ -475,14 +466,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public void removeCloakedFile(IVirtualFile file) {
+	public void removeCloakedFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public boolean renameFile(IVirtualFile file, String newName)
-			throws ConnectionException, VirtualFileManagerException {
+	public boolean renameFile(IFileStore file, String newName) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -494,8 +484,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	@Override
-	public void resolveBasePath() throws ConnectionException,
-			VirtualFileManagerException {
+	public void resolveBasePath() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -593,7 +582,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 //
 //	@Override
 //	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
-//			IFileProgressMonitor monitor) throws ConnectionException,
+//			IFileProgressMonitor monitor) throws 
 //			VirtualFileManagerException, IOException {
 //		// TODO Auto-generated method stub
 //		
@@ -1361,7 +1350,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 //	/**
 //	 * @see com.aptana.ide.core.io.IVirtualFileManager#resolveBasePath()
 //	 */
-//	public void resolveBasePath() throws ConnectionException, VirtualFileManagerException
+//	public void resolveBasePath() throws VirtualFileManagerException
 //	{
 //		if (!Platform.OS_MACOSX.equals(Platform.getOS()))
 //		{
@@ -1507,7 +1496,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 //
 //	@Override
 //	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
-//			IFileProgressMonitor monitor) throws ConnectionException,
+//			IFileProgressMonitor monitor) throws 
 //			VirtualFileManagerException, IOException {
 //		// TODO Auto-generated method stub
 //		

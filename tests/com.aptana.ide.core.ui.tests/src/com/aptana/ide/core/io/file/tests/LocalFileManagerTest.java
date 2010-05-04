@@ -37,17 +37,15 @@ package com.aptana.ide.core.io.file.tests;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.core.runtime.CoreException;
-
 import junit.framework.TestCase;
 
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
+
 import com.aptana.ide.core.FileUtils;
-import com.aptana.ide.core.io.ingo.ConnectionException;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.LocalFileShell;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.efs.LocalFile;
+import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.LocalFileManager;
 import com.aptana.ide.core.io.ingo.LocalProtocolManager;
 import com.aptana.ide.core.io.preferences.CloakingUtils;
@@ -91,7 +89,7 @@ public class LocalFileManagerTest extends TestCase
 	 * @throws ConnectionException
 	 * @throws CoreException 
 	 */
-	public void testLocalFileManager() throws IOException, ConnectionException, CoreException
+	public void testLocalFileManager() throws IOException, CoreException
 	{
 		File f = File.createTempFile("localTest", ".js"); //$NON-NLS-1$ //$NON-NLS-2$
 		String root = f.getParent() + this._manager.getFileSeparator() + "testdir" + this._manager.getFileSeparator(); //$NON-NLS-1$
@@ -110,10 +108,10 @@ public class LocalFileManagerTest extends TestCase
 		assertFalse(froot.exists());
 		froot.mkdirs();
 		assertTrue(froot.exists());
-		IVirtualFile vroot = this._manager.createVirtualDirectory(root);
+		IFileStore vroot = this._manager.createVirtualDirectory(root);
 
 		// create file via manager
-		IVirtualFile vf0 = this._manager.createVirtualFile(root + name0);
+		IFileStore vf0 = this._manager.createVirtualFile(root + name0);
 		assertNotNull(vf0);
 		assertTrue(vf0 instanceof LocalFile);
 		File f0 = new File(root + name0);
@@ -131,8 +129,8 @@ public class LocalFileManagerTest extends TestCase
 		assertEquals(froot.getCanonicalPath(), EFSUtils.getAbsolutePath(EFSUtils.getParentFile(vf0)));
 
 		// create 2 folders
-		IVirtualFile vd0 = this._manager.createVirtualDirectory(root + dir0);
-		IVirtualFile vd1 = this._manager.createVirtualDirectory(root + dir1);
+		IFileStore vd0 = this._manager.createVirtualDirectory(root + dir0);
+		IFileStore vd1 = this._manager.createVirtualDirectory(root + dir1);
 		File d0 = new File(root + dir0);
 		File d1 = new File(root + dir1);
 		d0.mkdir();
@@ -142,7 +140,7 @@ public class LocalFileManagerTest extends TestCase
 
 		// copy file to new name
 		File dest_f0_b = new File(root + name0_copy);
-		IVirtualFile vdest_f0_b = new LocalFileShell(this._manager, dest_f0_b);
+		IFileStore vdest_f0_b = new LocalFile(dest_f0_b);
 		// this._manager.copyFile(vf0, vdest_f0_b);
 		f0.createNewFile();
 		assertTrue(f0.exists());
@@ -151,7 +149,7 @@ public class LocalFileManagerTest extends TestCase
 
 		// copy file to folder
 		File dest_f0 = new File(root + dir0 + this._manager.getFileSeparator() + name0);
-		IVirtualFile vdest_f0 = new LocalFileShell(this._manager, dest_f0);
+		IFileStore vdest_f0 = new LocalFile(dest_f0);
 		// this._manager.copyFile(vf0, vdest_f0);
 		f0.createNewFile();
 		assertTrue(f0.exists());
@@ -160,7 +158,7 @@ public class LocalFileManagerTest extends TestCase
 
 		// move file
 		File dest_f1 = new File(root + dir1 + this._manager.getFileSeparator() + name0);
-		IVirtualFile vdest_f1 = new LocalFileShell(this._manager, dest_f1);
+		IFileStore vdest_f1 = new LocalFile(dest_f1);
 		this._manager.moveFile(vf0, vdest_f1);
 		assertFalse(f0.exists());
 		dest_f1.createNewFile();
@@ -175,10 +173,10 @@ public class LocalFileManagerTest extends TestCase
 		assertEquals(f0b.getCanonicalPath(), EFSUtils.getAbsolutePath(vdest_f1));
 
 		// before cloaking, not recursive
-		assertEquals(3, EFSUtils.getFiles(vroot).length);
+		assertEquals(3, EFSUtils.getFiles(vroot, null).length);
 		
 		// before cloaking, recursive
-		assertEquals(5, EFSUtils.getFiles(vroot,true, true).length);
+		assertEquals(5, EFSUtils.getFiles(vroot,true, true, null).length);
 		
 		// Check file cloaking
 		assertFalse(CloakingUtils.isFileCloaked(vdest_f0_b));
@@ -194,24 +192,24 @@ public class LocalFileManagerTest extends TestCase
 		assertTrue(CloakingUtils.isFileCloaked(vdest_f0_b));
 		
 		// after cloaking, not recursive
-		assertEquals(3, EFSUtils.getFiles(vroot).length);		
+		assertEquals(3, EFSUtils.getFiles(vroot, null).length);		
 		// after cloaking, recursive
-		assertEquals(5, EFSUtils.getFiles(vroot, true, true).length);
+		assertEquals(5, EFSUtils.getFiles(vroot, true, true, null).length);
 
 		// after cloaking, not recursive (so 1 JS, and 2 directories)
-		assertEquals(3, EFSUtils.getFiles(vroot, false, true).length);
+		assertEquals(3, EFSUtils.getFiles(vroot, false, true, null).length);
 		// after cloaking, not recursive (so 2 directories)
-		assertEquals(2, EFSUtils.getFiles(vroot, false, false).length);
+		assertEquals(2, EFSUtils.getFiles(vroot, false, false, null).length);
 		// after cloaking, recursive (so 2 directories)
-		assertEquals(2, EFSUtils.getFiles(vroot, true, false).length);
+		assertEquals(2, EFSUtils.getFiles(vroot, true, false, null).length);
 
 		this._manager.removeCloakExpression("(?i).*\\.JS"); //$NON-NLS-1$
 		assertFalse(CloakingUtils.isFileCloaked(vdest_f0_b));
 
 		// after cloaking removed, not recursive
-		assertEquals(3, EFSUtils.getFiles(vroot).length);		
+		assertEquals(3, EFSUtils.getFiles(vroot, null).length);		
 		// after cloaking removed, recursive
-		assertEquals(5, EFSUtils.getFiles(vroot, true, true).length);
+		assertEquals(5, EFSUtils.getFiles(vroot, true, true, null).length);
 
 		// Now try cloaking based on file path
 		this._manager.addCloakExpression("dir0"); //$NON-NLS-1$
@@ -247,7 +245,7 @@ public class LocalFileManagerTest extends TestCase
 	 * 
 	 * @throws ConnectionException
 	 */
-	public void testFromSerializableString() throws ConnectionException
+	public void testFromSerializableString() 
 	{
 		IVirtualFileManager fileManager = LocalProtocolManager.getInstance().createFileManager();
 		LocalFileManager ftp = (LocalFileManager) fileManager;
@@ -257,8 +255,8 @@ public class LocalFileManagerTest extends TestCase
 		ftp.setAutoCalculateServerTimeOffset(!ftp.isAutoCalculateServerTimeOffset());
 		ftp.setTimeOffset(100000); // requires a valid server, so we have to fake a value
 
-		IVirtualFile f1 = ftp.createVirtualFile("/test.txt"); //$NON-NLS-1$
-		IVirtualFile f2 = ftp.createVirtualDirectory("/test_directory"); //$NON-NLS-1$
+		IFileStore f1 = ftp.createVirtualFile("/test.txt"); //$NON-NLS-1$
+		IFileStore f2 = ftp.createVirtualDirectory("/test_directory"); //$NON-NLS-1$
 		ftp.addCloakedFile(f1);
 		ftp.addCloakedFile(f2);
 

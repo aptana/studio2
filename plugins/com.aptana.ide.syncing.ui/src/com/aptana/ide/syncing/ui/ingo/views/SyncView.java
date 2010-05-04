@@ -109,14 +109,14 @@ public class SyncView extends ViewPart implements ISyncManagerChangeListener
 	private static final String VIEW_CONTEXT_ID = "com.aptana.core.ui.sync.context"; //$NON-NLS-1$
 
 	private static ImageDescriptor fNewFolderIconDescriptor = SyncingUIPlugin
-			.getImageDescriptor("icons/sync_connection_new.gif"); //$NON-NLS-1$
-	private static Image fSiteImage = SyncingUIPlugin.getImageDescriptor("icons/sync_connection.gif").createImage(); //$NON-NLS-1$
-	private static Image fSiteErrorImage = SyncingUIPlugin.getImageDescriptor("icons/error.png").createImage(); //$NON-NLS-1$
-	private static ImageDescriptor fRefreshIconDescriptor = ImageUtils.getImageDescriptor("icons/refresh.gif"); //$NON-NLS-1$
+			.getImageDescriptor("icons/full/obj16/sync_connection_new.gif"); //$NON-NLS-1$
+	private static Image fSiteImage = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/sync_connection.gif").createImage(); //$NON-NLS-1$
+	private static Image fSiteErrorImage = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/error.png").createImage(); //$NON-NLS-1$
+	private static ImageDescriptor fRefreshIconDescriptor = ImageUtils.getImageDescriptor("icons/full/obj16/refresh.gif"); //$NON-NLS-1$
 	private static ImageDescriptor fShowLocalIconDescriptor = SyncingUIPlugin
-			.getImageDescriptor("icons/show_local_connections.gif"); //$NON-NLS-1$
+			.getImageDescriptor("icons/full/obj16/show_local_connections.gif"); //$NON-NLS-1$
 	private static ImageDescriptor fShowRemoteIconDescriptor = SyncingUIPlugin
-			.getImageDescriptor("icons/show_remote_connections.gif"); //$NON-NLS-1$
+			.getImageDescriptor("icons/full/obj16/show_remote_connections.gif"); //$NON-NLS-1$
 
 	private TableViewer _connectionTableViewer;
 	private ArrayList<Object> _items = new ArrayList<Object>();

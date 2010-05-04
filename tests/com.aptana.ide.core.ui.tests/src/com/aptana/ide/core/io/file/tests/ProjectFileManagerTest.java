@@ -39,9 +39,10 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.CoreException;
+
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.efs.LocalFile;
-import com.aptana.ide.core.io.ingo.ConnectionException;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.LocalFileShell;
@@ -86,8 +87,9 @@ public class ProjectFileManagerTest extends TestCase
 	 * 
 	 * @throws IOException
 	 * @throws ConnectionException 
+	 * @throws CoreException 
 	 */
-	public void testProjectFileManager() throws IOException, ConnectionException
+	public void testProjectFileManager() throws IOException, CoreException
 	{
 		File f = File.createTempFile("localTest", ".js"); //$NON-NLS-1$ //$NON-NLS-2$
 		String root = f.getParent() + this._manager.getFileSeparator();
@@ -202,7 +204,7 @@ public class ProjectFileManagerTest extends TestCase
 	 * 
 	 * @throws ConnectionException
 	 */
-	public void testFromSerializableString() throws ConnectionException
+	public void testFromSerializableString() 
 	{
 		IVirtualFileManager fileManager = ProjectProtocolManager.getInstance().createFileManager();
 		ProjectFileManager ftp = (ProjectFileManager) fileManager;

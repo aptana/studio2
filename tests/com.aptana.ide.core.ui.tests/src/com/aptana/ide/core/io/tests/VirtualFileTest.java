@@ -81,7 +81,7 @@ public class VirtualFileTest extends TestCase
 		// sub directory
 		File subDir = new File(baseDirectory.getAbsolutePath() + fm.getFileSeparator() + "testsub"); //$NON-NLS-1$
 		subDir.mkdir();
-		IVirtualFile testsub = fm.createVirtualFile(subDir.getAbsolutePath());
+		IFileStore testsub = fm.createVirtualFile(subDir.getAbsolutePath());
 
 		dirs = VirtualFile.getParentDirectories(testsub, fm);
 		assertEquals(1, dirs.length);

@@ -49,24 +49,6 @@ public class LocalProtocolManager extends ProtocolManager
 	 */
 	static LocalProtocolManager _localProtocolManager = new LocalProtocolManager();
 
-	/*
-	 * Fields
-	 */
-	//private static Image fFolderIcon;
-
-	/**
-	 * static ctor
-	 */
-//	static
-//	{
-//		ImageDescriptor imageDescriptor = CoreUIPlugin.getImageDescriptor("icons/folder.gif"); //$NON-NLS-1$
-//
-//		if (imageDescriptor != null)
-//		{
-//			fFolderIcon = imageDescriptor.createImage();
-//		}
-//	}
-
 	/**
 	 * getManagedType
 	 * 
@@ -135,14 +117,6 @@ public class LocalProtocolManager extends ProtocolManager
 	{
 		return _localProtocolManager;
 	}
-
-	/**
-	 * @see ProtocolManager#createPropertyDialog(Shell, int)
-	 */
-//	public IVirtualFileManagerDialog createPropertyDialog(Shell parent, int style)
-//	{
-//		return null;
-//	}
 	
 	/**
 	 * @see ProtocolManager#getStaticInstance()
@@ -151,24 +125,4 @@ public class LocalProtocolManager extends ProtocolManager
 	{
 		return getInstance();
 	}
-
-
-	/**
-	 * getImage
-	 * 
-	 * @return Image
-	 */
-//	public Image getImage()
-//	{
-//		return fFolderIcon;
-//	}
-	
-	/**
-	 * @see com.aptana.ide.core.io.ProtocolManager#fromString(java.lang.String)
-	 */
-//	public IVirtualFileManager fromString(String hash) 
-//	{
-//		return LocalFileManager.fromStringStatic(hash);
-//	}
-
 }

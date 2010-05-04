@@ -59,7 +59,7 @@ public class VirtualFileSyncDecorator implements ILightweightLabelDecorator
 
 	static
 	{
-		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/sync_overlay.gif"); //$NON-NLS-1$
+		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/sync_overlay.gif"); //$NON-NLS-1$
 	}
 
 	/**
@@ -68,12 +68,12 @@ public class VirtualFileSyncDecorator implements ILightweightLabelDecorator
 	 */
 	public void decorate(Object element, IDecoration decoration)
 	{
-		if (!(element instanceof LocalFile) || !((LocalFileShell) element).fetchInfo().isDirectory())
+		if (!(element instanceof LocalFile) || !((LocalFile) element).fetchInfo().isDirectory())
 		{
 			return;
 		}
 
-		LocalFileShell lf = (LocalFileShell) element;
+		LocalFile lf = (LocalFile) element;
 		IVirtualFileManager fms;
 		try {
 			fms = LocalProtocolManager.getInstance().getFileManager(EFSUtils.getAbsolutePath(lf));

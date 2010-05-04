@@ -37,20 +37,11 @@ package com.aptana.ide.core.io.ingo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 
-import com.aptana.ide.core.IdeLog;
-import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IFileProgressMonitor;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 import com.aptana.ide.core.resources.IProjectProvider;
@@ -79,7 +70,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	}
 
 	@Override
-	public void addCloakedFile(IVirtualFile file) {
+	public void addCloakedFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -97,7 +88,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	}
 
 	@Override
-	public void connect() throws ConnectionException {
+	public void connect() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -109,8 +100,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	}
 
 	@Override
-	public boolean createLocalDirectory(IVirtualFile directoryFile)
-			throws ConnectionException, VirtualFileManagerException {
+	public boolean createLocalDirectory(IVirtualFile directoryFile) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -125,13 +115,6 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	public IVirtualFile createVirtualFile(String path) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public boolean deleteFile(IVirtualFile file) throws ConnectionException,
-			VirtualFileManagerException {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -184,14 +167,14 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 
 	@Override
 	public IVirtualFile[] getFiles(IVirtualFile file)
-			throws ConnectionException, IOException {
+			throws  IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public IVirtualFile[] getFiles(IVirtualFile file, boolean recurse,
-			boolean includeCloakedFiles) throws ConnectionException,
+			boolean includeCloakedFiles) throws 
 			IOException {
 		// TODO Auto-generated method stub
 		return null;
@@ -234,20 +217,19 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	}
 
 	@Override
-	public InputStream getStream(IVirtualFile file) throws ConnectionException,
-			VirtualFileManagerException, IOException {
+	public InputStream getStream(IVirtualFile file) throws  IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public long getTimeOffset() throws ConnectionException {
+	public long getTimeOffset() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean hasFiles(IVirtualFile file) throws ConnectionException,
+	public boolean hasFiles(IVirtualFile file) throws 
 			IOException {
 		// TODO Auto-generated method stub
 		return false;
@@ -290,7 +272,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	}
 
 	@Override
-	public boolean moveFile(IVirtualFile source, IVirtualFile destination) {
+	public boolean moveFile(IFileStore source, IFileStore destination) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -305,7 +287,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 
 //	@Override
 //	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
-//			IFileProgressMonitor monitor) throws ConnectionException,
+//			IFileProgressMonitor monitor) throws 
 //			VirtualFileManagerException, IOException {
 //		// TODO Auto-generated method stub
 //		
@@ -313,16 +295,14 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 
 	@Override
 	public void putStream(InputStream input, IVirtualFile targetFile)
-			throws ConnectionException, VirtualFileManagerException,
-			IOException {
+			throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void putStream(InputStream input, IVirtualFile targetFile,
-			IFileProgressMonitor monitor) throws ConnectionException,
-			VirtualFileManagerException, IOException {
+			IFileProgressMonitor monitor) throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -340,14 +320,13 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	}
 
 	@Override
-	public void removeCloakedFile(IVirtualFile file) {
+	public void removeCloakedFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public boolean renameFile(IVirtualFile file, String newName)
-			throws ConnectionException, VirtualFileManagerException {
+	public boolean renameFile(IFileStore file, String newName) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -359,8 +338,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 	}
 
 	@Override
-	public void resolveBasePath() throws ConnectionException,
-			VirtualFileManagerException {
+	public void resolveBasePath() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -487,6 +465,13 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 			Object[] selectedObjects) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean deleteFile(IFileStore file) throws 
+			CoreException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 //	//private static Image fSiteErrorImage = null;
@@ -852,13 +837,13 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public boolean createLocalDirectory(IVirtualFile directoryFile)
-//			throws ConnectionException, VirtualFileManagerException {
+//			throws  VirtualFileManagerException {
 //		// TODO Auto-generated method stub
 //		return false;
 //	}
 //
 //	@Override
-//	public boolean deleteFile(IVirtualFile file) throws ConnectionException,
+//	public boolean deleteFile(IVirtualFile file) throws 
 //			VirtualFileManagerException {
 //		// TODO Auto-generated method stub
 //		return false;
@@ -902,7 +887,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public IVirtualFile[] getFiles(IVirtualFile file)
-//			throws ConnectionException, IOException {
+//			throws  IOException {
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
@@ -938,7 +923,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //	}
 //
 //	@Override
-//	public InputStream getStream(IVirtualFile file) throws ConnectionException,
+//	public InputStream getStream(IVirtualFile file) throws 
 //			VirtualFileManagerException, IOException {
 //		// TODO Auto-generated method stub
 //		return null;
@@ -951,7 +936,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //	}
 //
 //	@Override
-//	public boolean hasFiles(IVirtualFile file) throws ConnectionException,
+//	public boolean hasFiles(IVirtualFile file) throws 
 //			IOException {
 //		// TODO Auto-generated method stub
 //		return false;
@@ -1001,7 +986,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public void putFile(IVirtualFile sourceFile, IVirtualFile targetFile)
-//			throws ConnectionException, VirtualFileManagerException,
+//			throws  VirtualFileManagerException,
 //			IOException {
 //		// TODO Auto-generated method stub
 //		
@@ -1016,7 +1001,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
-//			IFileProgressMonitor monitor) throws ConnectionException,
+//			IFileProgressMonitor monitor) throws 
 //			VirtualFileManagerException, IOException {
 //		// TODO Auto-generated method stub
 //		
@@ -1024,7 +1009,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public void putStream(InputStream input, IVirtualFile targetFile)
-//			throws ConnectionException, VirtualFileManagerException,
+//			throws  VirtualFileManagerException,
 //			IOException {
 //		// TODO Auto-generated method stub
 //		
@@ -1032,7 +1017,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public void putStream(InputStream input, IVirtualFile targetFile,
-//			IFileProgressMonitor monitor) throws ConnectionException,
+//			IFileProgressMonitor monitor) throws 
 //			VirtualFileManagerException, IOException {
 //		// TODO Auto-generated method stub
 //		
@@ -1040,7 +1025,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public void putToLocalFile(IVirtualFile file, File tempFile)
-//			throws ConnectionException, VirtualFileManagerException {
+//			throws  VirtualFileManagerException {
 //		// TODO Auto-generated method stub
 //		
 //	}
@@ -1065,7 +1050,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //
 //	@Override
 //	public boolean renameFile(IVirtualFile file, String newName)
-//			throws ConnectionException, VirtualFileManagerException {
+//			throws  VirtualFileManagerException {
 //		// TODO Auto-generated method stub
 //		return false;
 //	}
@@ -1077,7 +1062,7 @@ public class ProjectFileManager extends LocalConnectionPoint implements IVirtual
 //	}
 //
 //	@Override
-//	public void resolveBasePath() throws ConnectionException,
+//	public void resolveBasePath() throws 
 //			VirtualFileManagerException {
 //		// TODO Auto-generated method stub
 //		

@@ -132,7 +132,7 @@ public class SyncManagerFileLabelProvider extends LabelProvider implements ITabl
 //		}
 //		if (element == FileTreeContentProvider.LOADING)
 //		{
-//			return SyncingPlugin.getImage("icons/hourglass.png"); //$NON-NLS-1$
+//			return SyncingPlugin.getImage("icons/full/obj16/hourglass.png"); //$NON-NLS-1$
 //		}
 		return null; //image;
 	}
