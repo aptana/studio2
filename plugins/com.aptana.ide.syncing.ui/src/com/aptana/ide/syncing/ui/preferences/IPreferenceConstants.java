@@ -60,4 +60,100 @@ public interface IPreferenceConstants {
      * exporting the sync settings
      */
     public static final String EXPORT_OVEWRITE_FILE_WITHOUT_WARNING = "OVEWRITE_FILE_WITHOUT_WARNING"; //$NON-NLS-1$
+    
+	/**
+	 * IGNORE_DIALOG_FILE_UPLOAD_PROMPT
+	 */
+	String IGNORE_DIALOG_FILE_SYNC_PROMPT = "IGNORE_DIALOG_FILE_SYNC_PROMPT"; //$NON-NLS-1$
+
+	/**
+	 * EXPORT_OVEWRITE_FILES_WITHOUT_WARNING
+	 */
+	String EXPORT_OVEWRITE_FILES_WITHOUT_WARNING = "OVEWRITE_FILES_WITHOUT_WARNING"; //$NON-NLS-1$
+
+	/**
+	 * SHOW_SYNC_EXPLORER_TABLE
+	 */
+	String SHOW_SYNC_EXPLORER_TABLE = "SHOW_SYNC_EXPLORER_TABLE"; //$NON-NLS-1$
+
+	/**
+	 * SHOW_DATE
+	 */
+	String SHOW_DATE = "SHOW_DATE"; //$NON-NLS-1$
+
+	/**
+	 * SHOW_SIZE
+	 */
+	String SHOW_SIZE = "SHOW_SIZE"; //$NON-NLS-1$
+
+    /**
+     * VIEW_MODE
+     */
+    static final String VIEW_MODE = "VIEW_MODE"; //$NON-NLS-1$
+
+    /**
+     * FLAT
+     */
+    static final String VIEW_FLAT = "FLAT"; //$NON-NLS-1$
+
+    /**
+     * TREE
+     */
+    static final String VIEW_TREE = "TREE"; //$NON-NLS-1$
+
+    /**
+     * DIRECTION_MODE
+     */
+    static final String DIRECTION_MODE = "DIRECTION_MODE"; //$NON-NLS-1$
+
+    /**
+     * DIRECTION_BOTH
+     */
+    static final String DIRECTION_BOTH = "BOTH"; //$NON-NLS-1$
+
+    /**
+     * DIRECTION_UPLOAD
+     */
+    static final String DIRECTION_UPLOAD = "UPLOAD"; //$NON-NLS-1$
+
+    /**
+     * DIRECTION_DOWNLOAD
+     */
+    static final String DIRECTION_DOWNLOAD = "DOWNLOAD"; //$NON-NLS-1$
+
+    /**
+     * DIRECTION_FORCE_UPLOAD
+     */
+    static final String DIRECTION_FORCE_UPLOAD = "FORCE_UPLOAD"; //$NON-NLS-1$
+
+    /**
+     * DIRECTION_FORCE_DOWNLOAD
+     */
+    static final String DIRECTION_FORCE_DOWNLOAD = "FORCE_DOWNLOAD"; //$NON-NLS-1$
+
+    /**
+     * DELETE_REMOTE_FILES
+     */
+    static final String DELETE_REMOTE_FILES = "DELETE_REMOTE_FILES"; //$NON-NLS-1$
+
+    /**
+     * DELETE_LOCAL_FILES
+     */
+    static final String DELETE_LOCAL_FILES = "DELETE_LOCAL_FILES"; //$NON-NLS-1$
+
+    /**
+     * SHOW_MODIFICATION_TIME
+     */
+    static final String SHOW_MODIFICATION_TIME = "SHOW_MODIFICATION_TIME"; //$NON-NLS-1$
+
+    /**
+     * FILE_PERMISSION
+     */
+	static final String FILE_PERMISSION = "FILE_PERMISSION"; //$NON-NLS-1$
+
+	/**
+	 * DIRECTORY_PERMISSION
+	 */
+	static final String DIRECTORY_PERMISSION = "DIRECTORY_PERMISSION"; //$NON-NLS-1$
+    
 }

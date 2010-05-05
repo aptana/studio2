@@ -1,3 +1,16 @@
 .DS_Store
 bin/
 AptanaStudio.app/
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/metadata/oaa/ClosureType.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/metadata/oaa/OAAElementDefinition.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/metadata/oaa/OAAHandler.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/metadata/oaa/OAAList.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/metadata/oaa/OAAParser.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/metadata/oaa/OAAReference.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/metadata/oaa/OAATest.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/tools/AllMetadataToBinary.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/tools/AllScriptDocsToBinary.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/tools/GenerateAllBinaries.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/tools/Messages.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/tools/MetadataToBinary.class
+tools/com.aptana.ide.parsing.tools/com/aptana/parsing/tools/ScriptDocToBinary.class

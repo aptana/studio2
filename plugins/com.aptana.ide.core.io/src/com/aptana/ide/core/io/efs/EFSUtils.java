@@ -36,9 +36,26 @@
 package com.aptana.ide.core.io.efs;
 
 import java.io.File;
+import java.net.URI;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.provider.FileInfo;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+
+import com.aptana.ide.core.IdeLog;
+import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.ingo.IVirtualFile;
+import com.aptana.ide.core.io.preferences.CloakingUtils;
 
 
 /**
@@ -60,4 +77,211 @@ public final class EFSUtils {
 	public static IFileStore getFileStore(File file) {
 		return new LocalFile(file);
 	}
+	
+	/**
+	 * Sets the modification time of the client file
+	 * @param serverFile
+	 * @param clientFile
+	 * @throws CoreException
+	 */
+	public static void setModificationTime(IFileStore sourceFile, IFileStore destFile) throws CoreException {
+		IFileInfo fi = new FileInfo();
+		fi.setLastModified(sourceFile.fetchInfo().getLastModified());
+		destFile.putInfo(fi, EFS.SET_LAST_MODIFIED, null);
+	}
+	
+	/**
+	 * Returns the child files of the filestore
+	 * @param file
+	 * @return 
+	 * @throws CoreException 
+	 */
+	public static IFileStore[] getFiles(IFileStore file, IProgressMonitor monitor) throws CoreException {
+		return getFiles(file, false, true, monitor);
+	}
+
+	/**
+	 * @throws CoreException 
+	 * @see com.aptana.ide.core.io.IVirtualFileManager#getFiles(com.aptana.ide.core.io.IVirtualFile, boolean, boolean)
+	 */
+	public static IFileStore[] getFiles(IFileStore file, boolean recurse, boolean includeCloakedFiles, IProgressMonitor monitor) throws CoreException
+	{
+		IFileStore[] result = null;
+		ArrayList<IFileStore> list = new ArrayList<IFileStore>();
+		getFiles(file, recurse, list, includeCloakedFiles, monitor);
+		result = list.toArray(new IFileStore[0]);
+		return result;
+	}
+
+	/**
+	 * getFiles
+	 * 
+	 * @param file
+	 * @param recurse
+	 * @param list
+	 * @throws CoreException 
+	 */
+	private static void getFiles(IFileStore file, boolean recurse, List<IFileStore> list, boolean includeCloakedFiles, IProgressMonitor monitor) throws CoreException
+	{
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+
+		if (file == null)
+		{
+			return;
+		}
+
+		IFileStore[] children = file.childStores(EFS.NONE, monitor);
+
+		if (children != null)
+		{
+			boolean addingFile;
+			for (int i = 0; i < children.length; i++)
+			{
+				IFileStore child = children[i];
+				addingFile = false;
+				if (includeCloakedFiles || !CloakingUtils.isFileCloaked(child))
+				{
+					list.add(child);
+					addingFile = true;
+				}
+
+				if (recurse && child.fetchInfo(EFS.NONE, monitor).isDirectory() && addingFile)
+				{
+					getFiles(child, recurse, list, includeCloakedFiles, monitor);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 */
+	public static IVirtualFile getParentFile(IFileStore file) {
+		return (IVirtualFile)file.getParent();
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 */
+	public static String getAbsolutePath(IFileStore file) {
+
+		// need to strip scheme (i.e. file:)
+		String scheme = file.toURI().getScheme();
+		return file.toURI().toString().substring(scheme.length() + 1);
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 */
+	public static String getPath(IFileStore file) {
+
+		// need to strip scheme (i.e. file:)
+		URI fileURI = file.toURI();
+		String scheme = fileURI.getScheme();
+		String filename = file.getName();
+		return fileURI.toString().substring(scheme.length() + 1, filename.length());
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 * @throws CoreException 
+	 * @throws CoreException 
+	 */
+	public static String getRelativePath(IVirtualFile file) {
+		return getRelativePath(file.getFileManager(), file);
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 * @throws CoreException 
+	 */
+	public static String getRelativePath(IConnectionPoint point, IFileStore file) {
+		try
+		{
+			return getRelativePath(point.getRoot(), file);
+		}
+		catch (CoreException e)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the parent file of this file
+	 * @param file
+	 * @return
+	 * @throws CoreException 
+	 */
+	public static String getRelativePath(IFileStore parent, IFileStore file) {
+
+		if(parent == file || parent.isParentOf(file)) {
+			String rootFile = getAbsolutePath(parent);
+			String childFile = getAbsolutePath(file);
+			return childFile.substring(rootFile.length());
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	/**
+	 * Creates the file on the destination store using a relative path
+	 * @param sourceRoot
+	 * @param sourceStore
+	 * @param destinationRoot
+	 * @return
+	 */
+	public static IFileStore createFile(IFileStore sourceRoot, IFileStore sourceStore, IFileStore destinationRoot) {
+        String sourceRootPath = sourceRoot.toString();
+        String sourcePath = sourceStore.toString();
+        int index = sourcePath.indexOf(sourceRootPath);
+        if (index > -1) {
+            String relativePath = sourcePath.substring(index + sourceRootPath.length());
+            return destinationRoot.getFileStore(new Path(relativePath));
+        }
+        return null;
+	}
+
+    /**
+     * @param sourceStore
+     *            the file to be copied
+     * @param destinationStore
+     *            the destination location
+     * @param monitor
+     *            the progress monitor
+     * @return true if the file is successfully copied, false if the operation
+     *         did not go through for any reason
+     * @throws CoreException 
+     */
+    public static boolean copyFile(IFileStore sourceStore, IFileStore destinationStore,
+            IProgressMonitor monitor) throws CoreException {
+        if (sourceStore == null || CloakingUtils.isFileCloaked(sourceStore)) {
+            return false;
+        }
+
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+
+        boolean success = true;
+        monitor.subTask(MessageFormat.format("Copying {0} to {1}", sourceStore
+                .getName(), destinationStore.getName()));
+
+        sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
+        return success;
+    }
+
 }

@@ -9,7 +9,8 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  com.aptana.ide.core,
  org.eclipse.ui,
- org.junit
+ org.junit,
+ com.aptana.ide.core.io;bundle-version="2.0.3"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Export-Package: com.aptana.ide.core.tests,

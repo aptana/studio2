@@ -52,8 +52,8 @@ public class FTPConnectionTest extends CommonConnectionTest {
 	@Before
 	public final void initialize() throws CoreException {
 		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
-		ftpcp.setHost("aptana.ftpstream.com"); //$NON-NLS-1$
-		ftpcp.setLogin("test5"); //$NON-NLS-1$
+		ftpcp.setHost("localhost"); //$NON-NLS-1$
+		ftpcp.setLogin("aptana"); //$NON-NLS-1$
 		ftpcp.setPassword(new char[] { 'n', 'o', 'c', '$', '$', '1' });
 		cp = ftpcp;
 		super.initialize();
