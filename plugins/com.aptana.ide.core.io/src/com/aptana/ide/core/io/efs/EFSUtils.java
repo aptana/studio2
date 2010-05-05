@@ -53,6 +53,7 @@ import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.preferences.CloakingUtils;
 
@@ -197,23 +198,24 @@ public final class EFSUtils {
 	 * @throws CoreException 
 	 */
 	public static String getRelativePath(IVirtualFile file) {
-		try {
-			return getRelativePath(file.getFileManager().getRoot(), file);
-		} catch (CoreException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return getRelativePath(file.getFileManager(), file);
 	}
 
 	/**
 	 * Returns the parent file of this file
 	 * @param file
 	 * @return
-	 * @throws Exception 
 	 * @throws CoreException 
 	 */
-	public static String getRelativePath(IFileStore file) {
-		return null; //throw new Exception();
+	public static String getRelativePath(IConnectionPoint point, IFileStore file) {
+		try
+		{
+			return getRelativePath(point.getRoot(), file);
+		}
+		catch (CoreException e)
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -262,9 +264,10 @@ public final class EFSUtils {
      *            the progress monitor
      * @return true if the file is successfully copied, false if the operation
      *         did not go through for any reason
+     * @throws CoreException 
      */
     public static boolean copyFile(IFileStore sourceStore, IFileStore destinationStore,
-            IProgressMonitor monitor) {
+            IProgressMonitor monitor) throws CoreException {
         if (sourceStore == null || CloakingUtils.isFileCloaked(sourceStore)) {
             return false;
         }
@@ -276,14 +279,8 @@ public final class EFSUtils {
         boolean success = true;
         monitor.subTask(MessageFormat.format("Copying {0} to {1}", sourceStore
                 .getName(), destinationStore.getName()));
-        try {
-            sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
-        } catch (CoreException e) {
-            IdeLog
-                    .logError(CoreIOPlugin.getDefault(), MessageFormat.format("Failed to copy {0} to {1}", sourceStore,
-                            destinationStore), e);
-            success = false;
-        }
+
+        sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
         return success;
     }
 

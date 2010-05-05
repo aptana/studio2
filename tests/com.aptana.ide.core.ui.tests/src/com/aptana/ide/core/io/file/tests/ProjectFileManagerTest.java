@@ -39,13 +39,13 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.efs.LocalFile;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.LocalFileShell;
 import com.aptana.ide.core.io.ingo.ProjectFileManager;
 import com.aptana.ide.core.io.ingo.ProjectProtocolManager;
 import com.aptana.ide.core.io.preferences.CloakingUtils;
@@ -134,7 +134,7 @@ public class ProjectFileManagerTest extends TestCase
 
 		// copy file to new name
 		File dest_f0_b = new File(root + name0_copy);
-		IVirtualFile vdest_f0_b = new LocalFileShell(this._manager, dest_f0_b);
+		IFileStore vdest_f0_b = new LocalFile(dest_f0_b);
 		// this._manager.copyFile(vf0, vdest_f0_b);
 		f0.createNewFile();
 		assertTrue(f0.exists());
@@ -143,7 +143,7 @@ public class ProjectFileManagerTest extends TestCase
 
 		// copy file to folder
 		File dest_f0 = new File(root + dir0 + this._manager.getFileSeparator() + name0);
-		IVirtualFile vdest_f0 = new LocalFileShell(this._manager, dest_f0);
+		IFileStore vdest_f0 = new LocalFile(dest_f0);
 		// this._manager.copyFile(vf0, vdest_f0);
 		f0.createNewFile();
 		assertTrue(f0.exists());
@@ -152,7 +152,7 @@ public class ProjectFileManagerTest extends TestCase
 
 		// move file
 		File dest_f1 = new File(root + dir1 + this._manager.getFileSeparator() + name0);
-		IVirtualFile vdest_f1 = new LocalFileShell(this._manager, dest_f1);
+		IFileStore vdest_f1 = new LocalFile(dest_f1);
 		this._manager.moveFile(vf0, vdest_f1);
 		assertFalse(f0.exists());
 		dest_f1.createNewFile();

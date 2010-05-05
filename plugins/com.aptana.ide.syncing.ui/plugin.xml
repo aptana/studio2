@@ -155,6 +155,7 @@
          <action
                class="com.aptana.ide.syncing.ui.actions.SiteConnectionSynchronizeAction"
                enablesFor="1"
+               icon="icons/full/obj16/sync_both.gif"
                id="com.aptana.ide.ui.io.actions.connectionSynchronize"
                label="%siteConnectionSynchronizeAction.label"
                menubarPath="group.properties">

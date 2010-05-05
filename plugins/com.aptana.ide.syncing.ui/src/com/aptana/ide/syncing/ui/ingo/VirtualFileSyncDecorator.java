@@ -43,7 +43,6 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.efs.LocalFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.LocalFileShell;
 import com.aptana.ide.core.io.ingo.LocalProtocolManager;
 import com.aptana.ide.core.io.ingo.SyncManager;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;

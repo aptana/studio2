@@ -41,8 +41,8 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
 
@@ -63,7 +63,7 @@ public final class SyncModelBuilder
 	 * @param pairs
 	 * @return - the root of the syncing model
 	 */
-	public static SyncFolder buildSyncFolder(VirtualFileSyncPair[] pairs)
+	public static SyncFolder buildSyncFolder(IConnectionPoint sourceConnectionPoint, IConnectionPoint destConnectionPoint, VirtualFileSyncPair[] pairs)
 	{
 		SyncFolder root = new SyncFolder(new Path("/"), null, null); //$NON-NLS-1$
 		List<IFileStore> ignoredFiles = new ArrayList<IFileStore>();
@@ -152,7 +152,7 @@ public final class SyncModelBuilder
 		boolean found;
 		for (IFileStore file : ignoredFiles)
 		{
-			realPath = new Path(EFSUtils.getRelativePath(file));
+			realPath = new Path(EFSUtils.getRelativePath(sourceConnectionPoint, file));
 			parent = root;
 			found = true;
 			for (int i = 0; i < realPath.segmentCount(); i++)

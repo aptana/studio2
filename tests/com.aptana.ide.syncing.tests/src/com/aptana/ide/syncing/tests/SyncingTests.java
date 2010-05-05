@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.CoreException;
 
 import com.aptana.ide.core.FileUtils;
 import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.core.io.efs.LocalFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.LocalProtocolManager;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
@@ -344,9 +345,26 @@ public class SyncingTests extends TestCase
 	protected VirtualFileSyncPair[] getSyncItems(boolean useCRC, int timeTolerance) throws IOException,
 			CoreException
 	{
+
+		return this.getSyncItems(useCRC, timeTolerance, clientManager.getRoot(), serverManager.getRoot());
+	}
+
+	/**
+	 * getSyncItems
+	 * 
+	 * @param useCRC
+	 * @param timeTolerance
+	 * @return SyncItem[]
+	 * @throws IOException
+	 * @throws ConnectionException
+	 * @throws CoreException 
+	 */
+	protected VirtualFileSyncPair[] getSyncItems(boolean useCRC, int timeTolerance, IFileStore clientRoot, IFileStore serverRoot) throws IOException,
+			CoreException
+	{
 		Synchronizer syncManager = new Synchronizer(useCRC, timeTolerance);
 
-		return syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(), serverManager.getRoot(), null);
+		return syncManager.getSyncItems(clientManager, serverManager, clientRoot, serverRoot, null);
 	}
 
 	/*
@@ -1891,4 +1909,38 @@ public class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 	}
+	
+	/**
+	 * testDirectoryCRCsMatchFullSync
+	 * 
+	 * @throws IOException
+	 * @throws ConnectionException
+	 */
+	public void testSubDirectoryFullSync() throws IOException, CoreException
+	{
+		long currentTime = new Date().getTime();
+		File sourceDir = this.createClientDirectory("test", currentTime); //$NON-NLS-1$
+		this.createServerDirectory("test", currentTime); //$NON-NLS-1$
+		File destDir = this.createServerDirectory("test/subtest", currentTime); //$NON-NLS-1$
+		this.createServerFile("test/subtest/subtest.txt", currentTime); //$NON-NLS-1$
+
+		Synchronizer syncManager = new Synchronizer(true, 0);
+		VirtualFileSyncPair[] items = syncManager
+				.getSyncItems(clientManager, serverManager, new LocalFile(sourceDir), new LocalFile(destDir), null);
+
+		// sync
+		syncManager.fullSync(items, null);
+
+		// check client counts
+		assertEquals(0, syncManager.getClientDirectoryCreatedCount());
+		assertEquals(0, syncManager.getClientDirectoryDeletedCount());
+		assertEquals(0, syncManager.getClientFileDeletedCount());
+		assertEquals(0, syncManager.getClientFileTransferedCount());
+
+		// check server counts
+		assertEquals(0, syncManager.getServerDirectoryCreatedCount());
+		assertEquals(0, syncManager.getServerDirectoryDeletedCount());
+		assertEquals(0, syncManager.getServerFileDeletedCount());
+		assertEquals(1, syncManager.getServerFileTransferedCount());
+	}	
 }

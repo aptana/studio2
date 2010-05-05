@@ -266,7 +266,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 					{
 						fromFile = (IVirtualFile) from;
 						fromEnd = fromPoint.getName();
-						fromFolder = EFSUtils.getRelativePath(fromFile);
+						fromFolder = EFSUtils.getRelativePath(fromPoint, fromFile);
 					}
 					if (to instanceof IResource)
 					{
@@ -279,7 +279,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 					{
 						toFile = (IVirtualFile) to;
 						toEnd = toPoint.getName();
-						toFolder = EFSUtils.getRelativePath(toFile);
+						toFolder = EFSUtils.getRelativePath(toPoint, toFile);
 					}
 					else if (to instanceof IVirtualFileManager)
 					{
@@ -290,7 +290,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 							e.printStackTrace();
 						}
 						toEnd = ((IVirtualFileManager) to).getNickName();
-						toFolder = EFSUtils.getRelativePath(toFile);
+						toFolder = EFSUtils.getRelativePath(toPoint, toFile);
 					}
 					if (fromFile != null && toFile != null)
 					{
