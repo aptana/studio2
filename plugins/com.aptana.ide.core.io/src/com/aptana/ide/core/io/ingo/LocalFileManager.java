@@ -80,13 +80,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 	
 
-	@Override
+	
 	public IFileStore createVirtualFile(String path) {
 		return new LocalFile(new File(path));
 	}
 
 
-//	@Override
+//	
 //	public IVirtualFile getBaseFile() {
 //		// TODO Auto-generated method stub
 //		IFileStore fs;
@@ -107,43 +107,43 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		// TODO Auto-generated method stub		
 	}
 
-	@Override
+	
 	public void addCloakExpression(String fileExpression) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void addCloakedFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void cancel() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public IVirtualFileManager cloneManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public void connect()  {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public boolean containsFile(IVirtualFile file) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean createLocalDirectory(IVirtualFile directoryFile)
 			{
 
@@ -195,13 +195,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		return result;
 	}
 	
-	@Override
+	
 	public void disconnect() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public String getBasePath() {
 		try {
 			return EFSUtils.getAbsolutePath(getRoot());
@@ -212,44 +212,44 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		}
 	}
 
-	@Override
+	
 	public String[] getCloakedFileExpressions() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public IVirtualFile[] getCloakedFiles() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public String getDescriptiveLabel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public IVirtualFileManagerEventHandler getEventHandler() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public String getFileTimeString(IVirtualFile file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public IVirtualFile[] getFiles(IVirtualFile file)
 			throws IOException {
 		// TODO Auto-generated method stub
 		return getFiles(file, false, true);
 	}
 
-	@Override
+	
 	public IVirtualFile[] getFiles(IVirtualFile file, boolean recurse,
 			boolean includeCloakedFiles) throws 
 			IOException {
@@ -274,43 +274,43 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	
 	
 
-	@Override
+	
 	public String getGroup(IVirtualFile file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public String getHashString() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public VirtualFileManagerGroup getManagerGroup() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public String getNickName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public String getOwner(IVirtualFile file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public ProtocolManager getProtocolManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public InputStream getStream(IVirtualFile file) throws IOException {
 
 		InputStream result = null;
@@ -328,56 +328,56 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 				return result;
 	}
 
-	@Override
+	
 	public long getTimeOffset()  {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	
 	public boolean hasFiles(IVirtualFile file) throws 
 			IOException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean isAutoCalculateServerTimeOffset() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean isEditable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean isFileCloaked(IVirtualFile file) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean isHidden() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean isTransient() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean isValid() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean moveFile(IFileStore source, IFileStore destination) {
 		// TODO Auto-generated method stub
 		return false;
@@ -408,13 +408,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		}
 	}
 
-	@Override
+	
 	public void putStream(InputStream input, IVirtualFile targetFile)
 			throws IOException {
 		putStream(input, targetFile, null);
 	}
 
-	@Override
+	
 	public void putStream(InputStream input, IVirtualFile targetFile,
 			IFileProgressMonitor monitor) throws IOException {
 		
@@ -453,134 +453,134 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 		}
 	}
 
-	@Override
+	
 	public void refresh() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void removeCloakExpression(String fileExpression) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void removeCloakedFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public boolean renameFile(IFileStore file, String newName) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public void resetTimeOffsetCache() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void resolveBasePath() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setAutoCalculateServerTimeOffset(boolean calculateOffset) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setBasePath(String path) {
 		IPath dir = Path.fromOSString(path);
 		super.setPath(dir);
 	}
 
-	@Override
+	
 	public void setCloakedFiles(IVirtualFile[] files) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setEventHandler(IVirtualFileManagerEventHandler eventHandler) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setGroup(IVirtualFile file, String groupName) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setId(long id) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setManagerGroup(VirtualFileManagerGroup group) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setNickName(String nickName) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setOwner(IVirtualFile file, String ownerName) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setPoolSizes(int initialSize, int maxSize) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setTimeOffset(long timeOffset) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void setTransient(boolean value) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	
 	public void fromSerializableString(String s) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public String toSerializableString() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 //
-//	@Override
+//	
 //	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
 //			IFileProgressMonitor monitor) throws 
 //			VirtualFileManagerException, IOException {
@@ -589,7 +589,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 //	}
 
 
-	@Override
+	
 	public String getFileSeparator() {
 		// TODO Auto-generated method stub
 		return File.separator;
@@ -1487,14 +1487,14 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 //		return manager;
 //	}
 //
-//	@Override
+//	
 //	public void putFile(IVirtualFile clientFile, IVirtualFile targetServerFile,
 //			IFileProgressMonitor iFileProgressMonitor) {
 //		// TODO Auto-generated method stub
 //		
 //	}
 //
-//	@Override
+//	
 //	public void putFile2(IVirtualFile sourceFile, IVirtualFile targetFile,
 //			IFileProgressMonitor monitor) throws 
 //			VirtualFileManagerException, IOException {
