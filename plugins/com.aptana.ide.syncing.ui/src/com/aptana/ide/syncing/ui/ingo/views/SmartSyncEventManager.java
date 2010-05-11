@@ -38,7 +38,7 @@ import org.eclipse.core.runtime.ListenerList;
 
 import com.aptana.ide.core.AptanaCorePlugin;
 import com.aptana.ide.core.IdeLog;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 
 /**
@@ -84,8 +84,8 @@ public class SmartSyncEventManager
 	 * @param destinationManager
 	 * @param comment 
 	 */
-	public void fireEvent(VirtualFileSyncPair[] completedPairs, IVirtualFileManager sourceManager,
-			IVirtualFileManager destinationManager, String comment)
+	public void fireEvent(VirtualFileSyncPair[] completedPairs, IConnectionPoint sourceManager,
+			IConnectionPoint destinationManager, String comment)
 	{
 		SmartSyncEvent event = new SmartSyncEvent();
 		event.sourceManager = sourceManager;

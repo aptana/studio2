@@ -54,7 +54,7 @@ public class VirtualFileCloakedDecorator implements ILightweightLabelDecorator
 
 	static
 	{
-		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/cloaked_overlay.gif"); //$NON-NLS-1$
+		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/cloaked_overlay.gif"); //$NON-NLS-1$
 	}
 
 	/**

@@ -53,9 +53,7 @@ import org.eclipse.ui.progress.UIJob;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.ConnectionException;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.VirtualFile;
 import com.aptana.ide.core.io.ingo.VirtualFileManagerSyncPair;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
@@ -81,7 +79,7 @@ public class FileDownloadAction extends BaseSyncAction
 		confirmMessage = Messages.FileDownloadAction_DownloadSelectedItems;
 	}
 
-	public static IFileStore[] getDownloadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager, IFileStore[] files, boolean ignoreError) throws ConnectionException
+	public static IFileStore[] getDownloadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager, IFileStore[] files, boolean ignoreError, IProgressMonitor monitor) 
 	{
 		IFileStore[] reparentedFiles = VirtualFile.reparentFiles(sourceManager, files);
 		Set<IFileStore> newFiles = new HashSet<IFileStore>();
@@ -103,7 +101,7 @@ public class FileDownloadAction extends BaseSyncAction
 					newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
 					newFile.mkdir(EFS.NONE, null);
 					//destManager.createVirtualDirectory(destManager.getBasePath() + filePath);
-					IFileStore[] f = EFSUtils.getFiles(newFile, true, false);
+					IFileStore[] f = EFSUtils.getFiles(newFile, true, false, null);
 					if (!newFiles.contains(newFile))
 					{
 						newFiles.add(newFile);
@@ -139,9 +137,9 @@ public class FileDownloadAction extends BaseSyncAction
 	 * @see com.aptana.ide.syncing.ui.ingo.BaseSyncAction#syncItems(com.aptana.ide.syncing.Synchronizer,
 	 *      com.aptana.ide.core.io.sync.VirtualFileSyncPair[])
 	 */
-	protected void syncItems(Synchronizer sm, VirtualFileSyncPair[] items) throws ConnectionException, IOException, CoreException
+	protected void syncItems(Synchronizer sm, VirtualFileSyncPair[] items, IProgressMonitor monitor) throws IOException, CoreException
 	{
-		sm.download(items);
+		sm.download(items, monitor);
 	}
 
 	/**
@@ -149,10 +147,10 @@ public class FileDownloadAction extends BaseSyncAction
 	 * @see com.aptana.ide.syncing.ui.ingo.BaseSyncAction#getItems(com.aptana.ide.syncing.Synchronizer,
 	 *      com.aptana.ide.core.io.sync.VirtualFileManagerSyncPair, com.aptana.ide.core.io.IVirtualFile[])
 	 */
-	protected VirtualFileSyncPair[] getItems(Synchronizer sm, VirtualFileManagerSyncPair conf, IVirtualFile[] files)
-			throws ConnectionException, IOException, CoreException
+	protected VirtualFileSyncPair[] getItems(Synchronizer sm, VirtualFileManagerSyncPair conf, IVirtualFile[] files, IProgressMonitor monitor)
+			throws IOException, CoreException
 	{
-		IFileStore[] newFiles = getDownloadFiles(conf.getSourceFileManager(), conf.getDestinationFileManager(), files, false);
+		IFileStore[] newFiles = getDownloadFiles(conf.getSourceFileManager(), conf.getDestinationFileManager(), files, false, monitor);
 		// set upload flag so we get a proper VFM refresh
 		conf.setSyncState(VirtualFileManagerSyncPair.Download);
 

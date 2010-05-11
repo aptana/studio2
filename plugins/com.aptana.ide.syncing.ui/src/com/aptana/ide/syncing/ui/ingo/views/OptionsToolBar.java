@@ -192,7 +192,7 @@ public class OptionsToolBar
 
 		fFlatView = new MenuItem(menu, SWT.RADIO);
 		fFlatView.setText(Messages.SmartSyncDialog_FlatView);
-		fFlatView.setImage(SyncingUIPlugin.getImage("icons/flatView.gif")); //$NON-NLS-1$
+		fFlatView.setImage(SyncingUIPlugin.getImage("icons/full/obj16/flatView.gif")); //$NON-NLS-1$
 
 		SelectionAdapter refreshAdapter = new SelectionAdapter()
 		{
@@ -207,7 +207,7 @@ public class OptionsToolBar
 
 		fTreeView = new MenuItem(menu, SWT.RADIO);
 		fTreeView.setText(Messages.SmartSyncDialog_TreeView);
-		fTreeView.setImage(SyncingUIPlugin.getImage("icons/treeView.gif")); //$NON-NLS-1$
+		fTreeView.setImage(SyncingUIPlugin.getImage("icons/full/obj16/treeView.gif")); //$NON-NLS-1$
 		fTreeView.addSelectionListener(refreshAdapter);
 
 		fShowDates = new MenuItem(menu, SWT.CHECK);

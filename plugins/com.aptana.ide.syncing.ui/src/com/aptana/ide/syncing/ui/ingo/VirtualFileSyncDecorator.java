@@ -43,7 +43,6 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.efs.LocalFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.LocalFileShell;
 import com.aptana.ide.core.io.ingo.LocalProtocolManager;
 import com.aptana.ide.core.io.ingo.SyncManager;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
@@ -59,7 +58,7 @@ public class VirtualFileSyncDecorator implements ILightweightLabelDecorator
 
 	static
 	{
-		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/sync_overlay.gif"); //$NON-NLS-1$
+		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/sync_overlay.gif"); //$NON-NLS-1$
 	}
 
 	/**
@@ -68,12 +67,12 @@ public class VirtualFileSyncDecorator implements ILightweightLabelDecorator
 	 */
 	public void decorate(Object element, IDecoration decoration)
 	{
-		if (!(element instanceof LocalFile) || !((LocalFileShell) element).fetchInfo().isDirectory())
+		if (!(element instanceof LocalFile) || !((LocalFile) element).fetchInfo().isDirectory())
 		{
 			return;
 		}
 
-		LocalFileShell lf = (LocalFileShell) element;
+		LocalFile lf = (LocalFile) element;
 		IVirtualFileManager fms;
 		try {
 			fms = LocalProtocolManager.getInstance().getFileManager(EFSUtils.getAbsolutePath(lf));

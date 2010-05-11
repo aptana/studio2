@@ -54,7 +54,7 @@ public class VirtualFileManagerSyncDecorator implements ILightweightLabelDecorat
 
 	static
 	{
-		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/sync_overlay.gif"); //$NON-NLS-1$
+		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/sync_overlay.gif"); //$NON-NLS-1$
 	}
 
 	/**

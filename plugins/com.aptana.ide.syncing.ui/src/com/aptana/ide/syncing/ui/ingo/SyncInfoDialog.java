@@ -85,7 +85,7 @@ import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 public class SyncInfoDialog extends Dialog implements SelectionListener {
 
     private static final Image ADD_IMAGE = SWTUtils.getImage(SyncingUIPlugin
-            .getDefault(), "/icons/add_obj.gif"); //$NON-NLS-1$
+            .getDefault(), "/icons/full/obj16/add_obj.gif"); //$NON-NLS-1$
 
     private Text siteName;
     private Text localPath;

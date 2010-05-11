@@ -56,7 +56,6 @@ import com.aptana.ide.core.ILogger;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.ConnectionException;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.ProjectFileManager;
@@ -267,7 +266,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 					{
 						fromFile = (IVirtualFile) from;
 						fromEnd = fromPoint.getName();
-						fromFolder = EFSUtils.getRelativePath(fromFile);
+						fromFolder = EFSUtils.getRelativePath(fromPoint, fromFile);
 					}
 					if (to instanceof IResource)
 					{
@@ -280,7 +279,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 					{
 						toFile = (IVirtualFile) to;
 						toEnd = toPoint.getName();
-						toFolder = EFSUtils.getRelativePath(toFile);
+						toFolder = EFSUtils.getRelativePath(toPoint, toFile);
 					}
 					else if (to instanceof IVirtualFileManager)
 					{
@@ -291,7 +290,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 							e.printStackTrace();
 						}
 						toEnd = ((IVirtualFileManager) to).getNickName();
-						toFolder = EFSUtils.getRelativePath(toFile);
+						toFolder = EFSUtils.getRelativePath(toPoint, toFile);
 					}
 					if (fromFile != null && toFile != null)
 					{
@@ -304,7 +303,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 //									getFileManager().createVirtualDirectory(
 //										EFSUtils.getAbsolutePath(toFile) + toFile.getFileManager().getFileSeparator()
 //												+ fromFile.getName());
-								IFileStore[] files = EFSUtils.getFiles(toFile);
+								IFileStore[] files = EFSUtils.getFiles(toFile, null);
 								for (IFileStore target : files)
 								{
 									if (target.fetchInfo().isDirectory() && target.getName().equals(fromFile.getName()))
@@ -339,7 +338,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 									syncer.setLogger(logger);
 									syncer.setServerFileManager(toManager);
 									syncer.setClientFileManager(fromManager);
-									VirtualFileSyncPair[] pairs = syncer.getSyncItems(fromPoint, toPoint, fromFile, toDir);
+									VirtualFileSyncPair[] pairs = syncer.getSyncItems(fromPoint, toPoint, fromFile, toDir, monitor);
 									for (VirtualFileSyncPair vfsPair : pairs)
 									{
 										if (vfsPair.getSyncState() != SyncState.ClientItemOnly)
@@ -363,10 +362,6 @@ public class SyncModel extends BaseModelObject implements ILoggable
 										}
 									}
 								}
-							}
-							catch (ConnectionException e)
-							{
-								log(StringUtils.format(Messages.Synchronizer_Error, e.getLocalizedMessage()));
 							}
 							catch (IOException e)
 							{
@@ -479,7 +474,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 							{
 								syncer.setClientFileManager(pair.sourceManager);
 								syncer.setServerFileManager(pair.destManager);
-								syncer.uploadAndDelete(new VirtualFileSyncPair[] { pair });
+								syncer.uploadAndDelete(new VirtualFileSyncPair[] { pair }, null);
 								pair.status = SyncModel.SUCCESS;
 								lastSync = pair;
 								fireChange();

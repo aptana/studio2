@@ -41,7 +41,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class Messages extends NLS
 {
-	private static final String BUNDLE_NAME = "com.aptana.ide.syncing.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "com.aptana.ide.syncing.core.ingo.messages"; //$NON-NLS-1$
 
 	/**
 	 * BaseSyncAction_ActionWillOverwrite

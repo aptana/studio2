@@ -34,6 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.ingo;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -41,7 +42,6 @@ import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.ProjectProtocolManager;
 import com.aptana.ide.core.io.preferences.CloakingUtils;
@@ -58,7 +58,7 @@ public class VirtualProjectCloakedDecorator implements ILightweightLabelDecorato
 
 	static
 	{
-		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/cloaked_overlay.gif"); //$NON-NLS-1$
+		SYNC_FOLDER = SyncingUIPlugin.getImageDescriptor("icons/full/obj16/cloaked_overlay.gif"); //$NON-NLS-1$
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class VirtualProjectCloakedDecorator implements ILightweightLabelDecorato
 			IVirtualFileManager manager = tempManagers[i];
 			if (manager != null)
 			{
-				IVirtualFile file = container instanceof IContainer ?
+				IFileStore file = container instanceof IContainer ?
 						manager.createVirtualDirectory(container.getFullPath().toPortableString()) :
 							manager.createVirtualFile(container.getFullPath().toPortableString());
 				if(CloakingUtils.isFileCloaked(file))

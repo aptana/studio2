@@ -61,7 +61,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.ingo.ConnectionException;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.IVirtualFileManagerEventHandler;
@@ -127,7 +126,7 @@ public abstract class BaseSyncAction extends ActionDelegate implements IViewActi
 	 * @throws IOException
 	 */
 	protected abstract VirtualFileSyncPair[] getItems(Synchronizer sm, VirtualFileManagerSyncPair conf,
-			IVirtualFile[] files) throws ConnectionException, IOException, CoreException;
+			IVirtualFile[] files, IProgressMonitor monitor) throws IOException, CoreException;
 
 	/**
 	 * syncItems
@@ -137,8 +136,7 @@ public abstract class BaseSyncAction extends ActionDelegate implements IViewActi
 	 * @throws ConnectionException
 	 * @throws IOException
 	 */
-	protected abstract void syncItems(Synchronizer sm, VirtualFileSyncPair[] items) throws ConnectionException,
-			IOException, CoreException;
+	protected abstract void syncItems(Synchronizer sm, VirtualFileSyncPair[] items, IProgressMonitor monitor) throws IOException, CoreException;
 
 	/**
 	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
@@ -412,7 +410,7 @@ public abstract class BaseSyncAction extends ActionDelegate implements IViewActi
 
 		try
 		{
-			syncItems(sm, items);
+			syncItems(sm, items, monitor);
 		}
 		catch (Exception e)
 		{
@@ -451,7 +449,7 @@ public abstract class BaseSyncAction extends ActionDelegate implements IViewActi
 			{
 				conf.getDestinationFileManager().setEventHandler(fm);
 			}
-			VirtualFileSyncPair[] newItems = getItems(sm, conf, files);
+			VirtualFileSyncPair[] newItems = getItems(sm, conf, files, monitor);
 
 			// we only want to return items if we didn't cancel
 			if (monitor.isCanceled())

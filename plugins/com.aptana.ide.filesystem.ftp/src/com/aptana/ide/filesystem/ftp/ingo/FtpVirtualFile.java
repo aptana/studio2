@@ -34,28 +34,6 @@
  */
 package com.aptana.ide.filesystem.ftp.ingo;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.util.regex.Pattern;
-
-import org.eclipse.core.filesystem.IFileInfo;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.IFileSystem;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import com.aptana.ide.core.CoreConstants;
-import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.IFileProgressMonitor;
-import com.aptana.ide.core.io.ingo.ConnectionException;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.VirtualFile;
-import com.aptana.ide.core.io.ingo.VirtualFileManagerException;
 
 /**
  * @author Kevin Lindsey

@@ -487,7 +487,7 @@ public class SmartSyncViewer
 			}
 
 		});
-		fShowDiffs.setImage(SyncingUIPlugin.getImage("icons/compare_view.gif")); //$NON-NLS-1$
+		fShowDiffs.setImage(SyncingUIPlugin.getImage("icons/full/obj16/compare_view.gif")); //$NON-NLS-1$
 		fShowDiffs.setText(Messages.SmartSyncDialog_ShowDiffs);
 		fShowDiffs.setEnabled(true);
 		tree.setMenu(menu);

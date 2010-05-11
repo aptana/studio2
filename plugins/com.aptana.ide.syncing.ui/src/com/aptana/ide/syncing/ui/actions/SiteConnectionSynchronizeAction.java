@@ -37,6 +37,8 @@ package com.aptana.ide.syncing.ui.actions;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
@@ -47,35 +49,42 @@ import com.aptana.ide.syncing.ui.ingo.views.SmartSyncDialog;
 
 /**
  * @author Ingo Muschenetz
- *
  */
-public class SiteConnectionSynchronizeAction extends SiteConnectionActionDelegate {
-
-	/* (non-Javadoc)
+public class SiteConnectionSynchronizeAction extends SiteConnectionActionDelegate
+{
+	/*
+	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
-	public void run(IAction action) {
-		if (selectedObject == null) {
+	public void run(IAction action)
+	{
+		if (selectedObject == null)
+		{
 			return;
 		}
-		
-		SiteConnection cp = (SiteConnection)selectedObject;
+
+		SiteConnection cp = (SiteConnection) selectedObject;
 		IConnectionPoint source = cp.getSource();
 		IConnectionPoint dest = cp.getDestination();
 		SmartSyncDialog dialog;
-		try {
-			dialog = new SmartSyncDialog(CoreUIUtils.getActiveShell(), source, dest, source.getRoot(), dest.getRoot(), source.getName(), dest.getName());
+		try
+		{
+			dialog = new SmartSyncDialog(CoreUIUtils.getActiveShell(), source, dest, source.getRoot(), dest.getRoot(),
+					source.getName(), dest.getName());
 			dialog.open();
 			dialog.setHandler(new SyncEventHandlerAdapter()
 			{
 				public void syncDone(VirtualFileSyncPair item)
 				{
-					//refresh();
+					// refresh();
 				}
 			});
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}
+		catch (CoreException e)
+		{
+			MessageBox error = new MessageBox(CoreUIUtils.getActiveShell(), SWT.ICON_ERROR | SWT.OK);
+			error.setMessage("Unable to open synchronization dialog.");
+			error.open();
 		}
 	}
 

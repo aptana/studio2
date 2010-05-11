@@ -38,10 +38,10 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IViewActionDelegate;
 
-import com.aptana.ide.core.io.ingo.ConnectionException;
 import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.VirtualFileManagerSyncPair;
 import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
@@ -131,14 +131,14 @@ public class FileSynchronizeAction extends BaseSyncAction implements IViewAction
 	}
 
 	@Override
-	protected VirtualFileSyncPair[] getItems(Synchronizer sm, VirtualFileManagerSyncPair conf, IVirtualFile[] files)
-			throws ConnectionException, IOException
+	protected VirtualFileSyncPair[] getItems(Synchronizer sm, VirtualFileManagerSyncPair conf, IVirtualFile[] files, IProgressMonitor monitor)
+			throws IOException
 	{
 		return new VirtualFileSyncPair[0];
 	}
 
 	@Override
-	protected void syncItems(Synchronizer sm, VirtualFileSyncPair[] items) throws ConnectionException, IOException
+	protected void syncItems(Synchronizer sm, VirtualFileSyncPair[] items, IProgressMonitor monitor) throws IOException
 	{	
 	}
 
