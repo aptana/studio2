@@ -1395,6 +1395,13 @@ public class Synchronizer implements ILoggable
 	public void setClientFileManager(IConnectionPoint fileManager)
 	{
 		this._clientFileManager = fileManager;
+		try
+		{
+			this._clientFileRoot = fileManager.getRoot();
+		}
+		catch (CoreException e)
+		{
+		}
 	}
 
 	/**
@@ -1412,6 +1419,13 @@ public class Synchronizer implements ILoggable
 	public void setServerFileManager(IConnectionPoint fileManager)
 	{
 		this._serverFileManager = fileManager;
+		try
+		{
+			this._serverFileRoot = fileManager.getRoot();
+		}
+		catch (CoreException e)
+		{
+		}
 	}
 
 	/**
