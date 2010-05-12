@@ -95,6 +95,7 @@ import com.aptana.ide.core.ui.actions.CheckBoxAction;
 import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.ingo.SyncInfoDialog;
+import com.aptana.ide.syncing.ui.views.SmartSyncDialog;
 
 /**
  * @author Paul Colton

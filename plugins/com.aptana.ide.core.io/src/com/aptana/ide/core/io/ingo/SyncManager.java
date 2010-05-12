@@ -642,7 +642,7 @@ public final class SyncManager implements ISerializableSyncItem
 	 * @param file
 	 * @return boolean
 	 */
-	public static boolean hasContainingSyncPair(IVirtualFile file)
+	public static boolean hasContainingSyncPair(IFileStore file)
 	{
 		VirtualFileManagerSyncPair[] confs = getContainingSyncPairs(file);
 		return confs.length > 0;
@@ -654,7 +654,7 @@ public final class SyncManager implements ISerializableSyncItem
 	 * @param file
 	 * @return IVirtualFileManager[]
 	 */
-	public static IVirtualFileManager[] getContainingFileManagers(IVirtualFile file)
+	public static IVirtualFileManager[] getContainingFileManagers(IFileStore file)
 	{
 		List<Object> relevantManagers = new ArrayList<Object>();
 
@@ -681,7 +681,7 @@ public final class SyncManager implements ISerializableSyncItem
 	 * @return boolean
 	 * @throws CoreException 
 	 */
-	public static boolean isVirtualFileManager(IVirtualFile file) throws CoreException
+	public static boolean isVirtualFileManager(IFileStore file) throws CoreException
 	{
 		Object[] objs = SyncManager.getSyncManager().getItems();
 		for (int i = 0; i < objs.length; i++)
@@ -707,7 +707,7 @@ public final class SyncManager implements ISerializableSyncItem
 	 * @param file
 	 * @return IVirtualFileManager[]
 	 */
-	public static IVirtualFileManager[] getContainingFileManagers(ProtocolManager protocolManager, IVirtualFile file)
+	public static IVirtualFileManager[] getContainingFileManagers(ProtocolManager protocolManager, IFileStore file)
 	{
 		List<IVirtualFileManager> relevantManagers = new ArrayList<IVirtualFileManager>();
 		IVirtualFileManager[] fms = protocolManager.getFileManagers();

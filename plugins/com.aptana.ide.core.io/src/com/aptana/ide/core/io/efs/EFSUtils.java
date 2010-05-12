@@ -160,8 +160,8 @@ public final class EFSUtils {
 	 * @param file
 	 * @return
 	 */
-	public static IVirtualFile getParentFile(IFileStore file) {
-		return (IVirtualFile)file.getParent();
+	public static IFileStore getParentFile(IFileStore file) {
+		return (IFileStore)file.getParent();
 	}
 
 	/**

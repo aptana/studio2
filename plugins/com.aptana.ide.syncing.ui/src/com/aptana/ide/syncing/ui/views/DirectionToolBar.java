@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
+package com.aptana.ide.syncing.ui.views;
 
 import java.text.MessageFormat;
 
@@ -48,6 +48,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+
+import com.aptana.ide.syncing.ui.ingo.views.Messages;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)

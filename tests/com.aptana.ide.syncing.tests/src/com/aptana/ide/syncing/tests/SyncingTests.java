@@ -49,9 +49,9 @@ import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.efs.LocalFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.LocalProtocolManager;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
-import com.aptana.ide.syncing.core.ingo.Synchronizer;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.syncing.core.Synchronizer;
 
 /**
  * @author Kevin Lindsey

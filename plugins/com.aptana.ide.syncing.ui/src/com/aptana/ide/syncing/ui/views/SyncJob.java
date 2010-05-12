@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
+package com.aptana.ide.syncing.ui.views;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,10 +47,10 @@ import org.eclipse.core.runtime.jobs.Job;
 
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
-import com.aptana.ide.syncing.core.ingo.ISyncEventHandler;
-import com.aptana.ide.syncing.core.ingo.Synchronizer;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.syncing.core.Synchronizer;
+import com.aptana.ide.syncing.core.events.ISyncEventHandler;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
@@ -221,14 +221,14 @@ public class SyncJob extends Job implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncContinue()
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncContinue()
 	 */
 	public boolean syncContinue() {
 		return !progressMonitor.isCanceled();
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncDone(VirtualFileSyncPair)
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncDone(VirtualFileSyncPair)
 	 */
 	public void syncDone(VirtualFileSyncPair item)
 	{
@@ -254,7 +254,7 @@ public class SyncJob extends Job implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncErrorEvent(VirtualFileSyncPair, Exception)
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncErrorEvent(VirtualFileSyncPair, Exception)
 	 */
 	public boolean syncErrorEvent(VirtualFileSyncPair item, Exception e)
 	{
@@ -272,7 +272,7 @@ public class SyncJob extends Job implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncEvent(VirtualFileSyncPair, int, int)
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncEvent(VirtualFileSyncPair, int, int)
 	 */
 	public boolean syncEvent(VirtualFileSyncPair item, int index, int totalItems)
 	{
@@ -288,7 +288,7 @@ public class SyncJob extends Job implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncTransferring(VirtualFileSyncPair, long)
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncTransferring(VirtualFileSyncPair, long)
 	 */
 	public void syncTransferring(VirtualFileSyncPair item, long bytes)
 	{
@@ -303,7 +303,7 @@ public class SyncJob extends Job implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#getFilesEvent(IVirtualFileManager, String)
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#getFilesEvent(IVirtualFileManager, String)
 	 */
 	public boolean getFilesEvent(IVirtualFileManager manager, String path)
 	{

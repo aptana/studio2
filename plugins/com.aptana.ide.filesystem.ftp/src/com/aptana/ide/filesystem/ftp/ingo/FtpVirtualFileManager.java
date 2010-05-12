@@ -41,7 +41,6 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 
 import com.aptana.ide.core.io.IFileProgressMonitor;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.IVirtualFileManagerEventHandler;
 import com.aptana.ide.core.io.ingo.ProtocolManager;
@@ -80,22 +79,22 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 		
 	}
 
-	public boolean containsFile(IVirtualFile file) {
+	public boolean containsFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean createLocalDirectory(IVirtualFile directoryFile) {
+	public boolean createLocalDirectory(IFileStore directoryFile) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public IVirtualFile createVirtualDirectory(String path) {
+	public IFileStore createVirtualDirectory(String path) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IVirtualFile createVirtualFile(String path) {
+	public IFileStore createVirtualFile(String path) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -115,7 +114,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 		return null;
 	}
 
-	public IVirtualFile[] getCloakedFiles() {
+	public IFileStore[] getCloakedFiles() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -139,20 +138,20 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public String getFileTimeString(IVirtualFile file) {
+	public String getFileTimeString(IFileStore file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
-	public IVirtualFile[] getFiles(IVirtualFile file)
+	public IFileStore[] getFiles(IFileStore file)
 			throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
-	public IVirtualFile[] getFiles(IVirtualFile file, boolean recurse,
+	public IFileStore[] getFiles(IFileStore file, boolean recurse,
 			boolean includeCloakedFiles) throws
 			IOException {
 		// TODO Auto-generated method stub
@@ -160,7 +159,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public String getGroup(IVirtualFile file) {
+	public String getGroup(IFileStore file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -184,7 +183,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public String getOwner(IVirtualFile file) {
+	public String getOwner(IFileStore file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -196,7 +195,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public InputStream getStream(IVirtualFile file) throws IOException {
+	public InputStream getStream(IFileStore file) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -208,7 +207,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public boolean hasFiles(IVirtualFile file) throws IOException {
+	public boolean hasFiles(IFileStore file) throws IOException {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -226,7 +225,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public boolean isFileCloaked(IVirtualFile file) {
+	public boolean isFileCloaked(IFileStore file) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -257,7 +256,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 
 
 	
-	public void putFile(IVirtualFile clientFile, IVirtualFile targetServerFile,
+	public void putFile(IFileStore clientFile, IFileStore targetServerFile,
 			IFileProgressMonitor iFileProgressMonitor) {
 		// TODO Auto-generated method stub
 		
@@ -272,14 +271,14 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 //	}
 
 	
-	public void putStream(InputStream input, IVirtualFile targetFile)
+	public void putStream(InputStream input, IFileStore targetFile)
 			throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	
-	public void putStream(InputStream input, IVirtualFile targetFile,
+	public void putStream(InputStream input, IFileStore targetFile,
 			IFileProgressMonitor monitor) throws IOException {
 		// TODO Auto-generated method stub
 		
@@ -334,7 +333,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public void setCloakedFiles(IVirtualFile[] files) {
+	public void setCloakedFiles(IFileStore[] files) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -346,7 +345,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public void setGroup(IVirtualFile file, String groupName) {
+	public void setGroup(IFileStore file, String groupName) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -376,7 +375,7 @@ public class FtpVirtualFileManager extends FTPConnectionPoint implements IVirtua
 	}
 
 	
-	public void setOwner(IVirtualFile file, String ownerName) {
+	public void setOwner(IFileStore file, String ownerName) {
 		// TODO Auto-generated method stub
 		
 	}

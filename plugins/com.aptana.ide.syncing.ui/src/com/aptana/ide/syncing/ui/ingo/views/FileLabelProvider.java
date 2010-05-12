@@ -36,6 +36,7 @@ package com.aptana.ide.syncing.ui.ingo.views;
 
 import java.util.HashMap;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorDescriptor;
@@ -43,7 +44,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.ProtocolManager;
 import com.aptana.ide.core.ui.EclipseUIUtils;
@@ -88,9 +88,9 @@ public class FileLabelProvider extends LabelProvider
 		{
 			retVal = ((IVirtualFileManager) element).getDescriptiveLabel();
 		}
-		else if (element instanceof IVirtualFile)
+		else if (element instanceof IFileStore)
 		{
-			IVirtualFile f = (IVirtualFile) element;
+			IFileStore f = (IFileStore) element;
 			retVal = f.getName();
 		}
 		//if (element == FileTreeContentProvider.LOADING)

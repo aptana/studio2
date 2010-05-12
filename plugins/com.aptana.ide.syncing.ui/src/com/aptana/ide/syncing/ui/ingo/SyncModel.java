@@ -56,13 +56,12 @@ import com.aptana.ide.core.ILogger;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.ProjectFileManager;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.model.BaseModelObject;
-import com.aptana.ide.syncing.core.ingo.Synchronizer;
+import com.aptana.ide.syncing.core.Synchronizer;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
@@ -262,9 +261,9 @@ public class SyncModel extends BaseModelObject implements ILoggable
 						fromFolder = resource.getProjectRelativePath().toString();
 						fromFile = ProjectFileManager.convertResourceToFile(from);
 					}
-					else if (from instanceof IVirtualFile)
+					else if (from instanceof IFileStore)
 					{
-						fromFile = (IVirtualFile) from;
+						fromFile = (IFileStore) from;
 						fromEnd = fromPoint.getName();
 						fromFolder = EFSUtils.getRelativePath(fromPoint, fromFile);
 					}
@@ -275,9 +274,9 @@ public class SyncModel extends BaseModelObject implements ILoggable
 						toFolder = resource.getProjectRelativePath().toString();
 						toFile = ProjectFileManager.convertResourceToFile(to);
 					}
-					else if (to instanceof IVirtualFile)
+					else if (to instanceof IFileStore)
 					{
-						toFile = (IVirtualFile) to;
+						toFile = (IFileStore) to;
 						toEnd = toPoint.getName();
 						toFolder = EFSUtils.getRelativePath(toPoint, toFile);
 					}

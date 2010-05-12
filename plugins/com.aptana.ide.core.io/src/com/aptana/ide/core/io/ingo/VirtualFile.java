@@ -106,7 +106,7 @@ public abstract class VirtualFile implements IVirtualFile
 	 *            file to remove
 	 * @return the list of files, filtered
 	 */
-	public static IVirtualFile[] removeDuplicateFile(IVirtualFile[] files, IVirtualFile toRemove)
+	public static IFileStore[] removeDuplicateFile(IVirtualFile[] files, IFileStore toRemove)
 	{
 		List<IVirtualFile> filteredSources = new ArrayList<IVirtualFile>();
 
@@ -136,7 +136,7 @@ public abstract class VirtualFile implements IVirtualFile
 	 * @return IVirtualFile[]
 	 * @deprecated
 	 */
-	public static IVirtualFile[] reparentFiles(IConnectionPoint manager, IFileStore[] files)
+	public static IFileStore[] reparentFiles(IConnectionPoint manager, IFileStore[] files)
 	{
 		List<IFileStore> newFiles = new ArrayList<IFileStore>();
 		IFileStore file;

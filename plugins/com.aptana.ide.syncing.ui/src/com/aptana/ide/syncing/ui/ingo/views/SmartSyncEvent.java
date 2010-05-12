@@ -35,7 +35,7 @@
 package com.aptana.ide.syncing.ui.ingo.views;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)

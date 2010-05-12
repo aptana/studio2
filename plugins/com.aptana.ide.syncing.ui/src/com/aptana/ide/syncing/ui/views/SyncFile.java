@@ -32,11 +32,11 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
+package com.aptana.ide.syncing.ui.views;
 
 import org.eclipse.core.runtime.IPath;
 
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
@@ -66,7 +66,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#getPair()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#getPair()
 	 */
 	public VirtualFileSyncPair getPair()
 	{
@@ -74,7 +74,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#getParent()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#getParent()
 	 */
 	public SyncFolder getParent()
 	{
@@ -82,7 +82,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#getName()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#getName()
 	 */
 	public String getName()
 	{
@@ -90,7 +90,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#getPath()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#getPath()
 	 */
 	public IPath getPath()
 	{
@@ -98,7 +98,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#isSkipped()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#isSkipped()
 	 */
 	public boolean isSkipped()
 	{
@@ -106,7 +106,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#setSkipped(boolean)
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#setSkipped(boolean)
 	 */
 	public void setSkipped(boolean skipped)
 	{
@@ -114,7 +114,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#getSyncState()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#getSyncState()
 	 */
 	public int getSyncState()
 	{
@@ -126,7 +126,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#getTransferState()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#getTransferState()
 	 */
 	public int getTransferState()
 	{
@@ -134,7 +134,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#setTransferState(int)
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#setTransferState(int)
 	 */
 	public void setTransferState(int state)
 	{
@@ -142,7 +142,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#getTransferredBytes()
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#getTransferredBytes()
 	 */
 	public long getTransferredBytes()
 	{
@@ -150,7 +150,7 @@ public class SyncFile implements ISyncResource
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.ISyncResource#setTransferredBytes(long)
+	 * @see com.aptana.ide.syncing.ui.views.views.ISyncResource#setTransferredBytes(long)
 	 */
 	public void setTransferredBytes(long bytes)
 	{

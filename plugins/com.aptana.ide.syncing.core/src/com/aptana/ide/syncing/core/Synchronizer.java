@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.core.ingo;
+package com.aptana.ide.syncing.core;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,12 +58,11 @@ import com.aptana.ide.core.ILoggable;
 import com.aptana.ide.core.ILogger;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
-import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
-import com.aptana.ide.syncing.core.SyncingPlugin;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.syncing.core.events.ISyncEventHandler;
 
 /**
  * @author Kevin Lindsey
@@ -347,8 +346,13 @@ public class Synchronizer implements ILoggable
 			else
 			{
 				// get the complete file listings for the client and server
+				log(FileUtils.NEW_LINE + "Gathering list of source files. ");
 				clientFiles = EFSUtils.getFiles(client, true, false, monitor);
+				log("Completed.");
+				log(FileUtils.NEW_LINE + "Gathering list of destination files. ");
 				serverFiles = EFSUtils.getFiles(server, true, false, monitor);
+				log("Completed.");
+				log(FileUtils.NEW_LINE + "File listing complete.");
 			}
 		}
 		finally
@@ -377,6 +381,8 @@ public class Synchronizer implements ILoggable
 	public VirtualFileSyncPair[] createSyncItems(IFileStore[] clientFiles, IFileStore[] serverFiles)
 			throws IOException, CoreException
 	{
+		log(FileUtils.NEW_LINE + "Generating comparison.");
+
 		Map<String, VirtualFileSyncPair> fileList = new HashMap<String, VirtualFileSyncPair>();
 
 		// reset statistics and clear lists
@@ -406,6 +412,8 @@ public class Synchronizer implements ILoggable
 			IFileStore serverFile = serverFiles[i];
 			String relativePath = getCanonicalPath(_serverFileRoot, serverFile);
 
+			log(FileUtils.NEW_LINE + " Comparing " + relativePath + " from destination. ");
+
 			if (!fileList.containsKey(relativePath)) // Server only
 			{
 				if (serverFile.fetchInfo().getAttribute(EFS.ATTRIBUTE_SYMLINK))
@@ -413,6 +421,7 @@ public class Synchronizer implements ILoggable
 				VirtualFileSyncPair item = new VirtualFileSyncPair(null, serverFile, relativePath,
 						SyncState.ServerItemOnly);
 				fileList.put(relativePath, item);
+				log("Item not on destination.");
 				continue;
 			}
 
@@ -428,12 +437,14 @@ public class Synchronizer implements ILoggable
 				// this only occurs if one file is a directory and the other
 				// is not a directory
 				item.setSyncState(SyncState.IncompatibleFileTypes);
+				log("Incompatible types.");
 				continue;
 			}
 
 			if (serverFile.fetchInfo().isDirectory())
 			{
 				fileList.remove(relativePath);
+				log("Directory.");
 				continue;
 			}
 
@@ -453,6 +464,7 @@ public class Synchronizer implements ILoggable
 				else
 				{
 					item.setSyncState(SyncState.ItemsMatch);
+					log("Items identical.");
 				}
 			}
 			else
@@ -460,10 +472,12 @@ public class Synchronizer implements ILoggable
 				if (timeDiff < 0)
 				{
 					item.setSyncState(SyncState.ClientItemIsNewer);
+					log("Source Newer.");
 				}
 				else
 				{
 					item.setSyncState(SyncState.ServerItemIsNewer);
+					log("Destination Newer.");
 				}
 			}
 		}

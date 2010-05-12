@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.io.ingo;
+package com.aptana.ide.core.io.syncing;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +41,6 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 
-import com.aptana.ide.core.io.syncing.SyncState;
 
 /**
  * @author Kevin Lindsey

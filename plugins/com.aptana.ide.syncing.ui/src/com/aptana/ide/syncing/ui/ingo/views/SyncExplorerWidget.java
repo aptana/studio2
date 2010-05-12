@@ -103,16 +103,17 @@ import com.aptana.ide.core.io.ingo.ProjectProtocolManager;
 import com.aptana.ide.core.io.ingo.ProtocolManager;
 import com.aptana.ide.core.io.ingo.SyncManager;
 import com.aptana.ide.core.io.ingo.VirtualFileManagerGroup;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.model.IModelListener;
 import com.aptana.ide.core.model.IModifiableObject;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.handlers.SyncEventHandlerAdapter;
 import com.aptana.ide.syncing.ui.ingo.FileExplorerView;
-import com.aptana.ide.syncing.ui.ingo.SyncEventHandlerAdapter;
 import com.aptana.ide.syncing.ui.ingo.SyncModel;
 import com.aptana.ide.syncing.ui.ingo.SyncModel.SyncPair;
+import com.aptana.ide.syncing.ui.views.SmartSyncDialog;
 import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
 
 /**
@@ -165,9 +166,9 @@ public class SyncExplorerWidget
 			{
 				return 1;
 			}
-			if (element instanceof IVirtualFile)
+			if (element instanceof IFileStore)
 			{
-				IVirtualFile f = (IVirtualFile) element;
+				IFileStore f = (IFileStore) element;
 				return f.fetchInfo().isDirectory() ? 0 : 1;
 			}
 			if (element instanceof IContainer)
@@ -204,7 +205,7 @@ public class SyncExplorerWidget
 			{
 				return ((IVirtualFileManager) e1).compareTo(e2);
 			}
-			if (e1 instanceof IVirtualFile && e2 instanceof IVirtualFile)
+			if (e1 instanceof IFileStore && e2 instanceof IFileStore)
 			{
 				return ((IVirtualFile) e1).compareTo(e2);
 			}
@@ -640,7 +641,7 @@ public class SyncExplorerWidget
 				{
 					vf1 = ProjectFileManager.convertResourceToFile(input1);
 				}
-				else if (input1 instanceof IVirtualFile)
+				else if (input1 instanceof IFileStore)
 				{
 					vf1 = (IFileStore) input1;
 				}
@@ -1196,9 +1197,9 @@ public class SyncExplorerWidget
 							setPath(path, e1Parent);
 						}
 					}
-					else if (e1Input instanceof IVirtualFile)
+					else if (e1Input instanceof IFileStore)
 					{
-						IVirtualFile e1Parent = EFSUtils.getParentFile(((IVirtualFile) e1Input));
+						IFileStore e1Parent = EFSUtils.getParentFile(((IFileStore) e1Input));
 						if (e1Parent != null && !e1Parent.equals(e1Input))
 						{
 							treeViewer.setInput(e1Parent);
@@ -1269,7 +1270,7 @@ public class SyncExplorerWidget
 			{
 				Object selection = getSelection(treeViewer);
 				if (selection != null
-						&& (selection instanceof IContainer || (selection instanceof IVirtualFile && ((IVirtualFile) selection)
+						&& (selection instanceof IContainer || (selection instanceof IFileStore && ((IFileStore) selection)
 								.fetchInfo().isDirectory())))
 				{
 					setPath(path, selection);
@@ -1294,9 +1295,9 @@ public class SyncExplorerWidget
 					{
 						element1 = ((IFile) element1).getParent();
 					}
-					else if (element1 instanceof IVirtualFile && !((IVirtualFile) element1).fetchInfo().isDirectory())
+					else if (element1 instanceof IFileStore && !((IFileStore) element1).fetchInfo().isDirectory())
 					{
-						element1 = EFSUtils.getParentFile(((IVirtualFile) element1));
+						element1 = EFSUtils.getParentFile(((IFileStore) element1));
 					}
 				}
 				else
@@ -1366,9 +1367,9 @@ public class SyncExplorerWidget
 		}
 		else
 		{
-			if (element instanceof IVirtualFile)
+			if (element instanceof IFileStore)
 			{
-				"/".equals(EFSUtils.getAbsolutePath(((IVirtualFile) element))); //$NON-NLS-1$
+				"/".equals(EFSUtils.getAbsolutePath(((IFileStore) element))); //$NON-NLS-1$
 				viewer.refresh();
 			}
 			else
@@ -1468,9 +1469,9 @@ public class SyncExplorerWidget
 				label = ((IVirtualFileManager) entry).getNickName() + REMOTE;
 				remotes.add(label);
 			}
-			else if (entry instanceof IVirtualFile)
+			else if (entry instanceof IFileStore)
 			{
-				label = ((IVirtualFile) entry).getName() + LOCAL;
+				label = ((IFileStore) entry).getName() + LOCAL;
 				locals.add(label);
 			}
 			else
@@ -1536,7 +1537,7 @@ public class SyncExplorerWidget
 			}
 			label.setText(PATH + path);
 		}
-		else if (selection instanceof IVirtualFile)
+		else if (selection instanceof IFileStore)
 		{
 			String path;
 			path = EFSUtils.getRelativePath((IVirtualFile)selection);

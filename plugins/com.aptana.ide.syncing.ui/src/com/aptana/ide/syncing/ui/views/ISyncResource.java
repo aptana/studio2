@@ -32,50 +32,109 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo;
+package com.aptana.ide.syncing.ui.views;
 
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.eclipse.core.runtime.IPath;
+
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public class CloakPreferencesAction implements IObjectActionDelegate
+public interface ISyncResource
 {
 
 	/**
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IWorkbenchPart)
+	 * SYNCED transfer state
 	 */
-	public void setActivePart(IAction action, IWorkbenchPart targetPart)
-	{
-
-	}
+	static final int SYNCED = 0;
 
 	/**
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 * ERROR transfer state
 	 */
-	public void run(IAction action)
-	{
-		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(Display.getDefault().getActiveShell(),
-				"com.aptana.ide.core.ui.syncing.SyncGlobalCloakingPreferencePage", //$NON-NLS-1$
-				new String[] { "com.aptana.ide.core.ui.syncing.SyncGlobalCloakingPreferencePage" }, //$NON-NLS-1$
-				null);
-		dialog.open();
-	}
+	static final int ERROR = 1;
 
 	/**
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * SYNCING transfer state
 	 */
-	public void selectionChanged(IAction action, ISelection selection)
-	{
+	static final int SYNCING = 2;
 
-	}
+	/**
+	 * Gets the transfer state
+	 * 
+	 * @return - int state
+	 */
+	int getTransferState();
+
+	/**
+	 * Sets the transfer state
+	 * 
+	 * @param state
+	 */
+	void setTransferState(int state);
+
+	/**
+	 * Gets the sync state
+	 * 
+	 * @return - SyncState
+	 */
+	int getSyncState();
+
+	/**
+	 * True if skipped
+	 * 
+	 * @return - true if skipped
+	 */
+	boolean isSkipped();
+
+	/**
+	 * Sets the resource as skipped
+	 * 
+	 * @param skipped
+	 */
+	void setSkipped(boolean skipped);
+
+	/**
+	 * Gets the parent of this resource
+	 * 
+	 * @return - parent
+	 */
+	SyncFolder getParent();
+
+	/**
+	 * Gets the name of this resource
+	 * 
+	 * @return - name
+	 */
+	String getName();
+
+	/**
+	 * Gets the path of this resource
+	 * 
+	 * @return - path
+	 */
+	IPath getPath();
+
+	/**
+	 * Gets the sync pair object for this resource
+	 * 
+	 * @return - sync pair
+	 */
+	VirtualFileSyncPair getPair();
+
+	/**
+	 * Gets the number of bytes transferred for this resource
+	 * 
+	 * @return - the number of bytes transferred
+	 */
+	long getTransferredBytes();
+
+	/**
+	 * Sets the number of bytes transferred for this resource
+	 * 
+	 * @param bytes
+	 *            the number of bytes transferred
+	 */
+	void setTransferredBytes(long bytes);
 
 }

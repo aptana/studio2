@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
+package com.aptana.ide.syncing.ui.views;
 
 import java.net.UnknownHostException;
 import java.text.MessageFormat;
@@ -91,21 +91,22 @@ import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.VirtualFileManagerSyncPair;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.resources.IProjectProvider;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.SWTUtils;
 import com.aptana.ide.core.ui.preferences.IPreferenceConstants;
 import com.aptana.ide.core.ui.syncing.SyncingConsole;
-import com.aptana.ide.syncing.core.ingo.ISyncEventHandler;
-import com.aptana.ide.syncing.core.ingo.Synchronizer;
+import com.aptana.ide.syncing.core.Synchronizer;
+import com.aptana.ide.syncing.core.events.ISyncEventHandler;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
-import com.aptana.ide.syncing.ui.ingo.FileDownloadAction;
+import com.aptana.ide.syncing.ui.handlers.SyncEventHandlerAdapterWithProgressMonitor;
 import com.aptana.ide.syncing.ui.ingo.FileExplorerView;
-import com.aptana.ide.syncing.ui.ingo.FileUploadAction;
-import com.aptana.ide.syncing.ui.ingo.SyncEventHandlerAdapterWithProgressMonitor;
+import com.aptana.ide.syncing.ui.ingo.views.Messages;
+import com.aptana.ide.syncing.ui.internal.SyncUtils;
+import com.aptana.ide.syncing.ui.views.OptionsToolBar.Client;
 import com.aptana.ide.ui.io.preferences.PermissionsGroup;
 
 /**
@@ -1202,7 +1203,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 					if (forceUp)
 					{
 						IFileStore[] clientFiles = (IFileStore[]) ((filesToBeSynced == null) ? EFSUtils.getFiles(
-								source, true, false, null) : FileUploadAction.getUploadFiles(sourceConnectionPoint,
+								source, true, false, null) : SyncUtils.getUploadFiles(sourceConnectionPoint,
 								destConnectionPoint, filesToBeSynced, monitor));
 						items = syncer.createSyncItems(clientFiles, new IFileStore[0]);
 						Map<String, VirtualFileSyncPair> pairs = new HashMap<String, VirtualFileSyncPair>();
@@ -1225,7 +1226,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 					else if (forceDown)
 					{
 						IFileStore[] serverFiles = (IFileStore[]) ((filesToBeSynced == null) ? EFSUtils.getFiles(dest,
-								true, false, null) : FileDownloadAction.getDownloadFiles(sourceConnectionPoint,
+								true, false, null) : SyncUtils.getDownloadFiles(sourceConnectionPoint,
 								destConnectionPoint, filesToBeSynced, true, monitor));
 						items = syncer.createSyncItems(new IFileStore[0], serverFiles);
 						Map<String, VirtualFileSyncPair> pairs = new HashMap<String, VirtualFileSyncPair>();
@@ -1253,9 +1254,9 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 						}
 						else
 						{
-							IFileStore[] clientFiles = FileUploadAction.getUploadFiles(sourceConnectionPoint,
+							IFileStore[] clientFiles = SyncUtils.getUploadFiles(sourceConnectionPoint,
 									destConnectionPoint, filesToBeSynced, monitor);
-							IFileStore[] serverFiles = FileDownloadAction.getDownloadFiles(sourceConnectionPoint,
+							IFileStore[] serverFiles = SyncUtils.getDownloadFiles(sourceConnectionPoint,
 									destConnectionPoint, filesToBeSynced, true, monitor);
 							items = syncer.createSyncItems(clientFiles, serverFiles);
 						}
@@ -1509,7 +1510,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.DirectionToolBar.Client#selectionChanged(boolean)
+	 * @see com.aptana.ide.syncing.ui.views.views.DirectionToolBar.Client#selectionChanged(boolean)
 	 */
 	public void selectionChanged(int direction, boolean reload)
 	{
@@ -1538,7 +1539,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.OptionsToolBar.Client#stateChanged(int)
+	 * @see com.aptana.ide.syncing.ui.views.views.OptionsToolBar.Client#stateChanged(int)
 	 */
 	public void stateChanged(int type)
 	{
@@ -1547,7 +1548,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.views.OptionsToolBar.Client#showDatesSelected(boolean)
+	 * @see com.aptana.ide.syncing.ui.views.views.OptionsToolBar.Client#showDatesSelected(boolean)
 	 */
 	public void showDatesSelected(boolean show)
 	{

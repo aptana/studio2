@@ -32,14 +32,17 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
+package com.aptana.ide.syncing.ui.views;
 
 import org.eclipse.core.runtime.ListenerList;
 
 import com.aptana.ide.core.AptanaCorePlugin;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.syncing.ui.ingo.views.ISmartSyncListener;
+import com.aptana.ide.syncing.ui.ingo.views.Messages;
+import com.aptana.ide.syncing.ui.ingo.views.SmartSyncEvent;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)

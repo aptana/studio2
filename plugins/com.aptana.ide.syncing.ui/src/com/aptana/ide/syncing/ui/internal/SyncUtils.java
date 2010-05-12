@@ -35,19 +35,26 @@
 package com.aptana.ide.syncing.ui.internal;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.io.ConnectionPointUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.core.io.ingo.IVirtualFile;
+import com.aptana.ide.core.io.ingo.VirtualFile;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.ui.io.FileSystemUtils;
 
@@ -127,4 +134,111 @@ public class SyncUtils {
 		}
 		return null;
     }
+
+	public static IFileStore[] getUploadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager, IFileStore[] files, IProgressMonitor monitor)
+			throws IOException, CoreException
+	{
+		Set<IFileStore> newFiles = new HashSet<IFileStore>();
+	
+		// show be done via some sort of "import"
+		IFileStore[] reparentedFiles = VirtualFile.reparentFiles(sourceManager, files);
+		IFileStore file;
+		IFileStore[] parents;
+		IFileStore file2;
+		for (int i = 0; i < reparentedFiles.length; i++)
+		{
+			file = reparentedFiles[i];
+			parents = VirtualFile.getParentDirectories(file, sourceManager);
+	
+			for (int j = 0; j < parents.length; j++)
+			{
+				file2 = parents[j];
+	
+				if (!newFiles.contains(file2))
+				{
+					newFiles.add(file2);
+				}
+			}
+	
+			if (file.fetchInfo().isDirectory())
+			{
+				IFileStore newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+				newFile.mkdir(EFS.NONE, null);
+				//IFileStore newFile = file; //sourceManager.createVirtualDirectory(EFSUtils.getAbsolutePath(file));
+	
+				if (!newFiles.contains(newFile))
+				{
+					newFiles.add(newFile);
+				}
+	
+				newFiles.addAll(Arrays.asList(EFSUtils.getFiles(newFile, true, false, null)));
+			}
+			else
+			{
+				IFileStore newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+				//IFileStore newFile = file; //sourceManager.createVirtualFile(EFSUtils.getAbsolutePath(file));
+	
+				if (!newFiles.contains(newFile))
+				{
+					newFiles.add(newFile);
+				}
+			}
+		}
+	
+		return newFiles.toArray(new IVirtualFile[newFiles.size()]);
+	}
+
+	public static IFileStore[] getDownloadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager, IFileStore[] files, boolean ignoreError, IProgressMonitor monitor) 
+		{
+			IFileStore[] reparentedFiles = VirtualFile.reparentFiles(sourceManager, files);
+			Set<IFileStore> newFiles = new HashSet<IFileStore>();
+			IFileStore file;
+			String filePath;
+			IFileStore newFile;
+			for (int i = 0; i < reparentedFiles.length; i++)
+			{
+				file = reparentedFiles[i];
+	//			filePath = EFSUtils.getRelativePath(file);
+	//			filePath = StringUtils.replace(filePath, file.getFileManager().getFileSeparator(), destManager
+	//					.getFileSeparator());
+	
+				newFile = null;
+				try
+				{
+					if (file.fetchInfo().isDirectory())
+					{
+						newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+						newFile.mkdir(EFS.NONE, null);
+						//destManager.createVirtualDirectory(destManager.getBasePath() + filePath);
+						IFileStore[] f = EFSUtils.getFiles(newFile, true, false, null);
+						if (!newFiles.contains(newFile))
+						{
+							newFiles.add(newFile);
+						}
+						newFiles.addAll(Arrays.asList(f));
+					}
+					else
+					{
+						newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+						if (newFile.fetchInfo().exists())
+						{
+							if (!newFiles.contains(newFile))
+							{
+								newFiles.add(newFile);
+							}
+						}
+					}
+				}
+				catch (CoreException e)
+				{
+					if (newFile != null && !ignoreError)
+					{
+	//					SyncingConsole.println(StringUtils.format(Messages.FileDownloadAction_FileDoesNotExistAtRemoteSite,
+	//							newFile.getAbsolutePath())); // we ignore files that don't exist on the remote server
+					}
+				}
+			}
+	
+			return newFiles.toArray(new IVirtualFile[newFiles.size()]);
+		}
 }

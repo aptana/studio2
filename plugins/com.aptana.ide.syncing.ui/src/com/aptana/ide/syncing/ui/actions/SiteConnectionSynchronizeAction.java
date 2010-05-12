@@ -41,11 +41,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.SiteConnection;
-import com.aptana.ide.syncing.ui.ingo.SyncEventHandlerAdapter;
-import com.aptana.ide.syncing.ui.ingo.views.SmartSyncDialog;
+import com.aptana.ide.syncing.ui.handlers.SyncEventHandlerAdapter;
+import com.aptana.ide.syncing.ui.views.SmartSyncDialog;
 
 /**
  * @author Ingo Muschenetz

@@ -47,10 +47,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.views.DirectionToolBar;
+import com.aptana.ide.syncing.ui.views.ISyncResource;
+import com.aptana.ide.syncing.ui.views.OptionsToolBar;
+import com.aptana.ide.syncing.ui.views.SyncFile;
+import com.aptana.ide.syncing.ui.views.SyncFolder;
 
 /**
  * Label and color provider for the smart sync viewer.

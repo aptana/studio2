@@ -32,10 +32,10 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.core.ingo;
+package com.aptana.ide.syncing.core.events;
 
 import com.aptana.ide.core.io.ingo.IVirtualFileManagerEventHandler;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 
 /**
  * @author Kevin Lindsey

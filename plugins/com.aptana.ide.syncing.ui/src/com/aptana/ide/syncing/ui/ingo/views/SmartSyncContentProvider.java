@@ -41,6 +41,10 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.aptana.ide.core.io.syncing.SyncState;
+import com.aptana.ide.syncing.ui.views.DirectionToolBar;
+import com.aptana.ide.syncing.ui.views.ISyncResource;
+import com.aptana.ide.syncing.ui.views.OptionsToolBar;
+import com.aptana.ide.syncing.ui.views.SyncFolder;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)

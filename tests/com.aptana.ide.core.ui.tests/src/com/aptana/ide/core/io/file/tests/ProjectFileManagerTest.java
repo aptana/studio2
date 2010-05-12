@@ -44,7 +44,6 @@ import org.eclipse.core.runtime.CoreException;
 
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.efs.LocalFile;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.ProjectFileManager;
 import com.aptana.ide.core.io.ingo.ProjectProtocolManager;
@@ -105,7 +104,7 @@ public class ProjectFileManagerTest extends TestCase
 		boolean rootExists = froot.exists();
 
 		// create file via manager
-		IVirtualFile vf0 = this._manager.createVirtualFile(root + name0);
+		IFileStore vf0 = this._manager.createVirtualFile(root + name0);
 		assertNotNull(vf0);
 		assertTrue(vf0 instanceof LocalFile);
 		File f0 = new File(root + name0);
@@ -123,8 +122,8 @@ public class ProjectFileManagerTest extends TestCase
 		assertEquals(froot.getCanonicalPath(), EFSUtils.getAbsolutePath(EFSUtils.getParentFile(vf0)));
 
 		// create 2 folders
-		IVirtualFile vd0 = this._manager.createVirtualDirectory(root + dir0);
-		IVirtualFile vd1 = this._manager.createVirtualDirectory(root + dir1);
+		IFileStore vd0 = this._manager.createVirtualDirectory(root + dir0);
+		IFileStore vd1 = this._manager.createVirtualDirectory(root + dir1);
 		File d0 = new File(root + dir0);
 		File d1 = new File(root + dir1);
 		d0.mkdir();
@@ -214,8 +213,8 @@ public class ProjectFileManagerTest extends TestCase
 		ftp.setAutoCalculateServerTimeOffset(!ftp.isAutoCalculateServerTimeOffset());
 		ftp.setTimeOffset(100000); // requires a valid server, so we have to fake a value
 
-		IVirtualFile f1 = ftp.createVirtualFile("/base/path/test.txt"); //$NON-NLS-1$
-		IVirtualFile f2 = ftp.createVirtualDirectory("/base/path/test_directory"); //$NON-NLS-1$
+		IFileStore f1 = ftp.createVirtualFile("/base/path/test.txt"); //$NON-NLS-1$
+		IFileStore f2 = ftp.createVirtualDirectory("/base/path/test_directory"); //$NON-NLS-1$
 		ftp.addCloakedFile(f1);
 		ftp.addCloakedFile(f2);
 

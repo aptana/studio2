@@ -38,12 +38,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorDescriptor;
 
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.ingo.ProtocolManager;
 
@@ -159,9 +159,9 @@ public class SyncManagerFileLabelProvider extends LabelProvider implements ITabl
 
 	private static String getLastModified(Object element)
 	{
-		if (element instanceof IVirtualFile)
+		if (element instanceof IFileStore)
 		{
-			IVirtualFile f = (IVirtualFile) element;
+			IFileStore f = (IFileStore) element;
 			SimpleDateFormat sdfOutput = new SimpleDateFormat("MM/dd/yyyy hh:mm a"); //$NON-NLS-1$
 			if (f.fetchInfo().getLastModified() >= 0)
 			{
@@ -174,9 +174,9 @@ public class SyncManagerFileLabelProvider extends LabelProvider implements ITabl
 
 	private static String getFilesize(Object element)
 	{
-		if (element instanceof IVirtualFile)
+		if (element instanceof IFileStore)
 		{
-			IVirtualFile f = (IVirtualFile) element;
+			IFileStore f = (IFileStore) element;
 			if (!f.fetchInfo().isDirectory())
 			{
 				long rawSize = f.fetchInfo().getLength();
@@ -236,9 +236,9 @@ public class SyncManagerFileLabelProvider extends LabelProvider implements ITabl
 		{
 			retVal = ((IVirtualFileManager) element).getDescriptiveLabel();
 		}
-		else if (element instanceof IVirtualFile)
+		else if (element instanceof IFileStore)
 		{
-			IVirtualFile f = (IVirtualFile) element;
+			IFileStore f = (IFileStore) element;
 			retVal = f.getName();
 		}
 //		if (element == FileTreeContentProvider.LOADING)

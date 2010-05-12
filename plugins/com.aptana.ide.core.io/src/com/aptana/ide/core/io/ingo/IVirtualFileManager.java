@@ -110,7 +110,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * 
 	 * @return IVirtualFile[]
 	 */
-	IVirtualFile[] getCloakedFiles();
+	IFileStore[] getCloakedFiles();
 
 	/**
 	 * getCloakedFileExpressions
@@ -124,7 +124,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * 
 	 * @param files
 	 */
-	void setCloakedFiles(IVirtualFile[] files);
+	void setCloakedFiles(IFileStore[] files);
 
 	/**
 	 * Sets a file as cloaked
@@ -160,7 +160,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @param file
 	 * @return boolean
 	 */
-	boolean isFileCloaked(IVirtualFile file);
+	boolean isFileCloaked(IFileStore file);
 
 	/**
 	 * getFiles
@@ -172,7 +172,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @throws ConnectionException
 	 * @throws IOException
 	 */
-	IVirtualFile[] getFiles(IVirtualFile file) throws IOException;
+	IFileStore[] getFiles(IFileStore file) throws IOException;
 
 	/**
 	 * getFiles
@@ -185,7 +185,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @throws ConnectionException
 	 * @throws IOException
 	 */
-	IVirtualFile[] getFiles(IVirtualFile file, boolean recurse, boolean includeCloakedFiles)
+	IFileStore[] getFiles(IFileStore file, boolean recurse, boolean includeCloakedFiles)
 			throws IOException;
 
 	/**
@@ -197,7 +197,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @throws ConnectionException
 	 * @throws IOException
 	 */
-	boolean hasFiles(IVirtualFile file) throws IOException;
+	boolean hasFiles(IFileStore file) throws IOException;
 
 	/**
 	 * Get the string that is used to separate directories and files within a path
@@ -212,7 +212,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @param file
 	 * @return String
 	 */
-	String getFileTimeString(IVirtualFile file);
+	String getFileTimeString(IFileStore file);
 
 	/**
 	 * getGroup
@@ -220,7 +220,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @param file
 	 * @return group name
 	 */
-	String getGroup(IVirtualFile file);
+	String getGroup(IFileStore file);
 
 	/**
 	 * setGroup
@@ -228,7 +228,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @param file
 	 * @param groupName
 	 */
-	void setGroup(IVirtualFile file, String groupName);
+	void setGroup(IFileStore file, String groupName);
 
 	/**
 	 * Gets a string hash representation of this object.
@@ -327,7 +327,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @param file
 	 * @return owner name
 	 */
-	String getOwner(IVirtualFile file);
+	String getOwner(IFileStore file);
 
 	/**
 	 * setOwner
@@ -335,7 +335,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @param file
 	 * @param ownerName
 	 */
-	void setOwner(IVirtualFile file, String ownerName);
+	void setOwner(IFileStore file, String ownerName);
 
 	/**
 	 * getProtocolManager
@@ -378,7 +378,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 *            The file to check
 	 * @return yes, if the file is "inside" this manager
 	 */
-	boolean containsFile(IVirtualFile file);
+	boolean containsFile(IFileStore file);
 
 	/**
 	 * Creates a new directory within the file manager's file system
@@ -389,7 +389,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @throws ConnectionException
 	 * @throws VirtualFileManagerException
 	 */
-	boolean createLocalDirectory(IVirtualFile directoryFile);
+	boolean createLocalDirectory(IFileStore directoryFile);
 
 	/**
 	 * Creates a new virtual file for the specified directory path. Note that this does not create a directory within
@@ -431,7 +431,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @throws VirtualFileManagerException
 	 * @throws IOException
 	 */
-	InputStream getStream(IVirtualFile file) throws IOException;
+	InputStream getStream(IFileStore file) throws IOException;
 
 	/**
 	 * Move the virtual file to a new location
@@ -455,7 +455,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @throws VirtualFileManagerException
 	 * @throws IOException
 	 */
-	void putStream(InputStream input, IVirtualFile targetFile) throws 
+	void putStream(InputStream input, IFileStore targetFile) throws 
 			IOException;
 
 	/**
@@ -471,7 +471,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @throws VirtualFileManagerException
 	 * @throws IOException
 	 */
-	void putStream(InputStream input, IVirtualFile targetFile, IFileProgressMonitor monitor) throws 
+	void putStream(InputStream input, IFileStore targetFile, IFileProgressMonitor monitor) throws 
 			IOException;
 
 
@@ -584,7 +584,7 @@ public interface IVirtualFileManager extends IConnectionPoint, Comparable, ISeri
 	 * @param targetServerFile
 	 * @param iFileProgressMonitor
 	 */
-	void putFile(IVirtualFile clientFile, IVirtualFile targetServerFile,
+	void putFile(IFileStore clientFile, IFileStore targetServerFile,
 			IFileProgressMonitor iFileProgressMonitor);
 
 }

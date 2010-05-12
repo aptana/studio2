@@ -138,13 +138,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public boolean containsFile(IVirtualFile file) {
+	public boolean containsFile(IFileStore file) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	
-	public boolean createLocalDirectory(IVirtualFile directoryFile)
+	public boolean createLocalDirectory(IFileStore directoryFile)
 			{
 
 		File f = new File(EFSUtils.getAbsolutePath(directoryFile));
@@ -219,7 +219,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public IVirtualFile[] getCloakedFiles() {
+	public IFileStore[] getCloakedFiles() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -237,20 +237,20 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public String getFileTimeString(IVirtualFile file) {
+	public String getFileTimeString(IFileStore file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
-	public IVirtualFile[] getFiles(IVirtualFile file)
+	public IFileStore[] getFiles(IFileStore file)
 			throws IOException {
 		// TODO Auto-generated method stub
 		return getFiles(file, false, true);
 	}
 
 	
-	public IVirtualFile[] getFiles(IVirtualFile file, boolean recurse,
+	public IFileStore[] getFiles(IFileStore file, boolean recurse,
 			boolean includeCloakedFiles) throws 
 			IOException {
 		
@@ -275,7 +275,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	
 
 	
-	public String getGroup(IVirtualFile file) {
+	public String getGroup(IFileStore file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -299,7 +299,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public String getOwner(IVirtualFile file) {
+	public String getOwner(IFileStore file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -311,7 +311,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public InputStream getStream(IVirtualFile file) throws IOException {
+	public InputStream getStream(IFileStore file) throws IOException {
 
 		InputStream result = null;
 		
@@ -335,7 +335,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public boolean hasFiles(IVirtualFile file) throws 
+	public boolean hasFiles(IFileStore file) throws 
 			IOException {
 		// TODO Auto-generated method stub
 		return false;
@@ -354,7 +354,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public boolean isFileCloaked(IVirtualFile file) {
+	public boolean isFileCloaked(IFileStore file) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -386,7 +386,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	/**
 	 * @see com.aptana.ide.core.io.IVirtualFileManager#putFile(IVirtualFile, IVirtualFile)
 	 */
-	public void putFile(IVirtualFile sourceFile, IVirtualFile targetFile) throws  IOException
+	public void putFile(IFileStore sourceFile, IFileStore targetFile) throws  IOException
 	{
 		putFile(sourceFile, targetFile, null);
 	}
@@ -394,7 +394,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	/**
 	 * @see com.aptana.ide.core.io.IVirtualFileManager#putFile(IVirtualFile, IVirtualFile, IFileProgressMonitor)
 	 */
-	public void putFile(IVirtualFile sourceFile, final IVirtualFile targetFile, final IFileProgressMonitor monitor)
+	public void putFile(IFileStore sourceFile, final IFileStore targetFile, final IFileProgressMonitor monitor)
 	{
 		try {
 			InputStream in = sourceFile.openInputStream(EFS.NONE, null);
@@ -409,13 +409,13 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public void putStream(InputStream input, IVirtualFile targetFile)
+	public void putStream(InputStream input, IFileStore targetFile)
 			throws IOException {
 		putStream(input, targetFile, null);
 	}
 
 	
-	public void putStream(InputStream input, IVirtualFile targetFile,
+	public void putStream(InputStream input, IFileStore targetFile,
 			IFileProgressMonitor monitor) throws IOException {
 		
 
@@ -502,7 +502,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public void setCloakedFiles(IVirtualFile[] files) {
+	public void setCloakedFiles(IFileStore[] files) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -514,7 +514,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public void setGroup(IVirtualFile file, String groupName) {
+	public void setGroup(IFileStore file, String groupName) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -538,7 +538,7 @@ public class LocalFileManager extends LocalConnectionPoint implements IVirtualFi
 	}
 
 	
-	public void setOwner(IVirtualFile file, String ownerName) {
+	public void setOwner(IFileStore file, String ownerName) {
 		// TODO Auto-generated method stub
 		
 	}

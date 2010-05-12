@@ -32,11 +32,11 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo;
+package com.aptana.ide.syncing.ui.handlers;
 
 import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.VirtualFileSyncPair;
-import com.aptana.ide.syncing.core.ingo.ISyncEventHandler;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.syncing.core.events.ISyncEventHandler;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
@@ -45,7 +45,7 @@ public abstract class SyncEventHandlerAdapter implements ISyncEventHandler
 {
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncContinue()
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncContinue()
 	 */
 	public boolean syncContinue() {
 		// Does nothing by default, subclasses should override
@@ -53,7 +53,7 @@ public abstract class SyncEventHandlerAdapter implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncDone(com.aptana.ide.core.io.sync.VirtualFileSyncPair)
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncDone(com.aptana.ide.core.io.syncing.sync.VirtualFileSyncPair)
 	 */
 	public void syncDone(VirtualFileSyncPair item)
 	{
@@ -61,7 +61,7 @@ public abstract class SyncEventHandlerAdapter implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncErrorEvent(com.aptana.ide.core.io.sync.VirtualFileSyncPair,
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncErrorEvent(com.aptana.ide.core.io.syncing.sync.VirtualFileSyncPair,
 	 *      java.lang.Exception)
 	 */
 	public boolean syncErrorEvent(VirtualFileSyncPair item, Exception e)
@@ -71,7 +71,7 @@ public abstract class SyncEventHandlerAdapter implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncEvent(com.aptana.ide.core.io.sync.VirtualFileSyncPair,
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncEvent(com.aptana.ide.core.io.syncing.sync.VirtualFileSyncPair,
 	 *      int, int)
 	 */
 	public boolean syncEvent(VirtualFileSyncPair item, int index, int totalItems)
@@ -81,7 +81,7 @@ public abstract class SyncEventHandlerAdapter implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.sync.ISyncEventHandler#syncTransferring(com.aptana.ide.core.io.sync.VirtualFileSyncPair,
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#syncTransferring(com.aptana.ide.core.io.syncing.sync.VirtualFileSyncPair,
 	 *      long)
 	 */
 	public void syncTransferring(VirtualFileSyncPair item, long bytes)
