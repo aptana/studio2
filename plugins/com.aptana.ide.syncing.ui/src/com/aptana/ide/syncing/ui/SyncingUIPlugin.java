@@ -88,14 +88,7 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
             }
 
             IOUIPlugin.refreshNavigatorView(SiteConnections.getInstance());
-            IConnectionPoint source = siteConnection.getSource();
-            if (source != null) {
-                IContainer container = (IContainer) source.getAdapter(IContainer.class);
-                if (container != null) {
-                    IOUIPlugin.refreshNavigatorView(ProjectSitesManager.getInstance()
-                            .getProjectSites(container.getProject()));
-                }
-            }
+            refreshProjectSiteConnection(siteConnection);
         }
     };
 
@@ -116,6 +109,7 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
                     if (siteConnection.getDestination() == connectionPoint) {
                         ((SiteConnection) siteConnection).setDestination(null);
                         affected = true;
+                        refreshProjectSiteConnection(siteConnection);
                     }
                 }
                 if (affected) {
@@ -125,6 +119,17 @@ public class SyncingUIPlugin extends AbstractUIPlugin {
             }
         }
     };
+
+	private static void refreshProjectSiteConnection(ISiteConnection siteConnection) {
+		IConnectionPoint source = siteConnection.getSource();
+		if (source != null) {
+			IContainer container = (IContainer) source.getAdapter(IContainer.class);
+			if (container != null) {
+				IOUIPlugin.refreshNavigatorView(ProjectSitesManager.getInstance().getProjectSites(
+						container.getProject()));
+			}
+		}
+	}
 
     /**
      * The constructor

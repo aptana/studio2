@@ -34,6 +34,9 @@
  */
 package com.aptana.ide.syncing.ui.navigator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.PlatformObject;
@@ -62,12 +65,14 @@ public class ProjectSiteConnections extends PlatformObject implements IWorkbench
     }
 
     public Object[] getChildren(Object o) {
-        ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(fProject, true);
-        ProjectSiteConnection[] targets = new ProjectSiteConnection[sites.length];
-        for (int i = 0; i < sites.length; ++i) {
-            targets[i] = new ProjectSiteConnection(fProject, sites[i]);
-        }
-        return targets;
+		ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(fProject, true);
+		List<ProjectSiteConnection> targets = new ArrayList<ProjectSiteConnection>();
+		for (int i = 0; i < sites.length; ++i) {
+			if (sites[i].getDestination() != null) {
+				targets.add(new ProjectSiteConnection(fProject, sites[i]));
+			}
+		}
+		return targets.toArray(new ProjectSiteConnection[targets.size()]);
     }
 
     public ImageDescriptor getImageDescriptor(Object object) {
