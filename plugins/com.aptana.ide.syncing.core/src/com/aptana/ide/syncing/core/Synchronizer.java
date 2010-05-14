@@ -347,10 +347,10 @@ public class Synchronizer implements ILoggable
 			else
 			{
 				// get the complete file listings for the client and server
-				log(FileUtils.NEW_LINE + "Gathering list of source files. ");
+				log(FileUtils.NEW_LINE + "Gathering list of source files from '" + client.toURI().toString() + "'. ");
 				clientFiles = EFSUtils.getFiles(client, true, false, monitor);
 				log("Completed.");
-				log(FileUtils.NEW_LINE + "Gathering list of destination files. ");
+				log(FileUtils.NEW_LINE + "Gathering list of destination files from '" + server.toURI().toString() + "'. ");
 				serverFiles = EFSUtils.getFiles(server, true, false, monitor);
 				log("Completed.");
 				log(FileUtils.NEW_LINE + "File listing complete.");
