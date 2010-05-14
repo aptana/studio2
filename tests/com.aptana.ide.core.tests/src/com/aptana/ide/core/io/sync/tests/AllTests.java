@@ -10,7 +10,6 @@ public class AllTests
 	{
 		TestSuite suite = new TestSuite("Test for com.aptana.ide.core.io.sync.tests");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(VirtualFileManagerSyncPairTest.class);
 		//$JUnit-END$
 		return suite;
 	}

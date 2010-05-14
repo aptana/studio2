@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
+package com.aptana.ide.syncing.ui.views;
 
 import java.util.HashMap;
 
@@ -40,15 +40,8 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorDescriptor;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
 
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.ProtocolManager;
-import com.aptana.ide.core.ui.EclipseUIUtils;
-import com.aptana.ide.core.ui.ImageUtils;
-import com.aptana.ide.ui.io.navigator.FileTreeContentProvider;
+import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)
@@ -79,14 +72,9 @@ public class FileLabelProvider extends LabelProvider
 	public String getText(Object element)
 	{
 		String retVal = null;
-		if (element instanceof ProtocolManager)
+		if (element instanceof IConnectionPoint)
 		{
-			ProtocolManager pm = (ProtocolManager) element;
-			retVal = pm.getDisplayName();
-		}
-		else if (element instanceof IVirtualFileManager)
-		{
-			retVal = ((IVirtualFileManager) element).getDescriptiveLabel();
+			retVal = ((IConnectionPoint) element).getName();
 		}
 		else if (element instanceof IFileStore)
 		{

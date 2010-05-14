@@ -10,7 +10,6 @@ public class AllTests
 	{
 		TestSuite suite = new TestSuite("Test for com.aptana.ide.core.io.tests");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(VirtualFileTest.class);
 		//$JUnit-END$
 		return suite;
 	}

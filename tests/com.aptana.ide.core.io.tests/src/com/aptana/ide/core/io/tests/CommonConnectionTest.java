@@ -99,7 +99,7 @@ public abstract class CommonConnectionTest {
 	protected IConnectionPoint cp;
 	private IPath testPath;
 
-	protected void initialize() throws CoreException {
+	protected void initialize() throws CoreException, FileNotFoundException, IOException {
 		ConnectionContext context = new ConnectionContext();
 		context.put(ConnectionContext.COMMAND_LOG, System.out);
 		CoreIOPlugin.setConnectionContext(cp, context);

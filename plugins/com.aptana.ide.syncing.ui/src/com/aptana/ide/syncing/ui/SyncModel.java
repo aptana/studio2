@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo;
+package com.aptana.ide.syncing.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,8 +56,6 @@ import com.aptana.ide.core.ILogger;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.ProjectFileManager;
 import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.model.BaseModelObject;
@@ -254,41 +252,44 @@ public class SyncModel extends BaseModelObject implements ILoggable
 					IConnectionPoint toPoint = null;
 					IFileStore fromFile = null;
 					IFileStore toFile = null;
-					if (from instanceof IResource)
-					{
-						IResource resource = (IResource) from;
-						fromEnd = resource.getProject().getName();
-						fromFolder = resource.getProjectRelativePath().toString();
-						fromFile = ProjectFileManager.convertResourceToFile(from);
-					}
-					else if (from instanceof IFileStore)
+//					if (from instanceof IResource)
+//					{
+//						IResource resource = (IResource) from;
+//						fromEnd = resource.getProject().getName();
+//						fromFolder = resource.getProjectRelativePath().toString();
+//						fromFile = new LocalFile(resource.getLocation();ProjectFileManager.convertResourceToFile(from);
+//					}
+					//else
+					if (from instanceof IFileStore)
 					{
 						fromFile = (IFileStore) from;
 						fromEnd = fromPoint.getName();
 						fromFolder = EFSUtils.getRelativePath(fromPoint, fromFile);
 					}
-					if (to instanceof IResource)
-					{
-						IResource resource = (IResource) to;
-						toEnd = resource.getProject().getName();
-						toFolder = resource.getProjectRelativePath().toString();
-						toFile = ProjectFileManager.convertResourceToFile(to);
-					}
-					else if (to instanceof IFileStore)
+					
+//					if (to instanceof IResource)
+//					{
+//						IResource resource = (IResource) to;
+//						toEnd = resource.getProject().getName();
+//						toFolder = resource.getProjectRelativePath().toString();
+//						toFile = ProjectFileManager.convertResourceToFile(to);
+//					}
+					//else
+					if (to instanceof IFileStore)
 					{
 						toFile = (IFileStore) to;
 						toEnd = toPoint.getName();
 						toFolder = EFSUtils.getRelativePath(toPoint, toFile);
 					}
-					else if (to instanceof IVirtualFileManager)
+					else if (to instanceof IConnectionPoint)
 					{
 						try {
-							toFile = ((IVirtualFileManager) to).getRoot();
+							toFile = ((IConnectionPoint) to).getRoot();
 						} catch (CoreException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						toEnd = ((IVirtualFileManager) to).getNickName();
+						toEnd = ((IConnectionPoint) to).getName();
 						toFolder = EFSUtils.getRelativePath(toPoint, toFile);
 					}
 					if (fromFile != null && toFile != null)
@@ -325,14 +326,14 @@ public class SyncModel extends BaseModelObject implements ILoggable
 										}
 									}
 								}
-								IVirtualFileManager fromManager = (IVirtualFileManager)fromPoint; //fromFile.getFileManager().cloneManager();
-								IVirtualFileManager toManager = (IVirtualFileManager)toPoint; //toFile.getFileManager().cloneManager();
+								IConnectionPoint fromManager = (IConnectionPoint)fromPoint; //fromFile.getFileManager().cloneManager();
+								IConnectionPoint toManager = (IConnectionPoint)toPoint; //toFile.getFileManager().cloneManager();
 								if (fromManager != null && toManager != null)
 								{
-									fromManager.setBasePath(EFSUtils.getAbsolutePath(fromFile));
-									fromFile = fromManager.createVirtualDirectory(EFSUtils.getAbsolutePath(fromFile));
-									toManager.setBasePath(EFSUtils.getAbsolutePath(toDir));
-									toDir = toManager.createVirtualDirectory(EFSUtils.getAbsolutePath(toDir));
+									//fromManager.(EFSUtils.getAbsolutePath(fromFile));
+									//fromFile = fromManager.createVirtualDirectory(EFSUtils.getAbsolutePath(fromFile));
+									//toManager.setBasePath(EFSUtils.getAbsolutePath(toDir));
+									//toDir = toManager.createVirtualDirectory(EFSUtils.getAbsolutePath(toDir));
 									Synchronizer syncer = new Synchronizer();
 									syncer.setLogger(logger);
 									syncer.setServerFileManager(toManager);

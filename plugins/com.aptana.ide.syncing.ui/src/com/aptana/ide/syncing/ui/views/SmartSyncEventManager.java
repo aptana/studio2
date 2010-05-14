@@ -40,9 +40,6 @@ import com.aptana.ide.core.AptanaCorePlugin;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
-import com.aptana.ide.syncing.ui.ingo.views.ISmartSyncListener;
-import com.aptana.ide.syncing.ui.ingo.views.Messages;
-import com.aptana.ide.syncing.ui.ingo.views.SmartSyncEvent;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)

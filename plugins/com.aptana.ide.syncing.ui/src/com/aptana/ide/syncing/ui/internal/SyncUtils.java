@@ -36,8 +36,10 @@ package com.aptana.ide.syncing.ui.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.filesystem.EFS;
@@ -53,8 +55,6 @@ import org.eclipse.core.runtime.Path;
 import com.aptana.ide.core.io.ConnectionPointUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
-import com.aptana.ide.core.io.ingo.VirtualFile;
 import com.aptana.ide.syncing.core.ISiteConnection;
 import com.aptana.ide.ui.io.FileSystemUtils;
 
@@ -141,14 +141,13 @@ public class SyncUtils {
 		Set<IFileStore> newFiles = new HashSet<IFileStore>();
 	
 		// show be done via some sort of "import"
-		IFileStore[] reparentedFiles = VirtualFile.reparentFiles(sourceManager, files);
 		IFileStore file;
 		IFileStore[] parents;
 		IFileStore file2;
-		for (int i = 0; i < reparentedFiles.length; i++)
+		for (int i = 0; i < files.length; i++)
 		{
-			file = reparentedFiles[i];
-			parents = VirtualFile.getParentDirectories(file, sourceManager);
+			file = files[i];
+			parents = getParentDirectories(file, sourceManager);
 	
 			for (int j = 0; j < parents.length; j++)
 			{
@@ -185,19 +184,18 @@ public class SyncUtils {
 			}
 		}
 	
-		return newFiles.toArray(new IVirtualFile[newFiles.size()]);
+		return newFiles.toArray(new IFileStore[newFiles.size()]);
 	}
 
 	public static IFileStore[] getDownloadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager, IFileStore[] files, boolean ignoreError, IProgressMonitor monitor) 
 		{
-			IFileStore[] reparentedFiles = VirtualFile.reparentFiles(sourceManager, files);
 			Set<IFileStore> newFiles = new HashSet<IFileStore>();
 			IFileStore file;
 			String filePath;
 			IFileStore newFile;
-			for (int i = 0; i < reparentedFiles.length; i++)
+			for (int i = 0; i < files.length; i++)
 			{
-				file = reparentedFiles[i];
+				file = files[i];
 	//			filePath = EFSUtils.getRelativePath(file);
 	//			filePath = StringUtils.replace(filePath, file.getFileManager().getFileSeparator(), destManager
 	//					.getFileSeparator());
@@ -239,6 +237,37 @@ public class SyncUtils {
 				}
 			}
 	
-			return newFiles.toArray(new IVirtualFile[newFiles.size()]);
+			return newFiles.toArray(new IFileStore[newFiles.size()]);
 		}
+	
+	/**
+	 * Creates a list of all parent directories of the current file (or directory)
+	 * 
+	 * @param file
+	 * @param sourceManager
+	 * @return IVirtualFile[]
+	 * @throws CoreException 
+	 */
+	public static IFileStore[] getParentDirectories(IFileStore file, IConnectionPoint sourceManager) throws CoreException
+	{
+		List<IFileStore> parentDirs = new ArrayList<IFileStore>();
+
+		if (sourceManager.getRoot().isParentOf(file))
+		{
+			IFileStore currentFile = file;
+
+			while (currentFile != null)
+			{
+				if (currentFile.equals(sourceManager.getRoot()))
+				{
+					break;
+				}
+
+				parentDirs.add(0, currentFile); // add at beginning of list, as we want most "distant" folder first
+				currentFile = EFSUtils.getParentFile(currentFile);
+			}
+		}
+
+		return parentDirs.toArray(new IFileStore[parentDirs.size()]);
+	}
 }

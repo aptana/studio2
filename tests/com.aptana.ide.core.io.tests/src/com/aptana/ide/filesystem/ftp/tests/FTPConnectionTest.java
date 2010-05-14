@@ -35,11 +35,15 @@
 
 package com.aptana.ide.filesystem.ftp.tests;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 
-import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
 import com.aptana.ide.core.io.tests.CommonConnectionTest;
+import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
 
 
 /**
@@ -50,11 +54,16 @@ public class FTPConnectionTest extends CommonConnectionTest {
 
 	@Override
 	@Before
-	public final void initialize() throws CoreException {
+	public final void initialize() throws CoreException, IOException {
+		
+		Properties props = new Properties();
+		FileInputStream inStream = new FileInputStream(System.getenv().get("junit.properties"));
+		props.load(inStream);
+
 		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
-		ftpcp.setHost("localhost"); //$NON-NLS-1$
-		ftpcp.setLogin("aptana"); //$NON-NLS-1$
-		ftpcp.setPassword(new char[] { 'n', 'o', 'c', '$', '$', '1' });
+		ftpcp.setHost(props.getProperty("ftp.host")); //$NON-NLS-1$
+		ftpcp.setLogin(props.getProperty("ftp.username")); //$NON-NLS-1$
+		ftpcp.setPassword(props.getProperty("ftp.password").toCharArray());
 		cp = ftpcp;
 		super.initialize();
 	}

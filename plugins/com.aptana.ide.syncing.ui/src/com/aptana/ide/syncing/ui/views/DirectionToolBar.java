@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-import com.aptana.ide.syncing.ui.ingo.views.Messages;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)

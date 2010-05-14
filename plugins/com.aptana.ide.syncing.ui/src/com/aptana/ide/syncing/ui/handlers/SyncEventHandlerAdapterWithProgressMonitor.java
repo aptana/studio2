@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
 import com.aptana.ide.core.FileUtils;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 
 /**
@@ -69,7 +69,7 @@ public class SyncEventHandlerAdapterWithProgressMonitor extends SyncEventHandler
 	 * @see com.aptana.ide.core.io.sync.SyncEventHandlerAdapter#getFilesEvent(com.aptana.ide.core.io.IVirtualFileManager, java.lang.String)
 	 */
 	@Override
-	public boolean getFilesEvent(IVirtualFileManager manager, String path) {
+	public boolean getFilesEvent(IConnectionPoint manager, String path) {
 		monitor.subTask(FileUtils.compressPath(path, PATH_DISPLAY_CHARACTERS));
 		return !monitor.isCanceled() && super.getFilesEvent(manager, path);
 	}

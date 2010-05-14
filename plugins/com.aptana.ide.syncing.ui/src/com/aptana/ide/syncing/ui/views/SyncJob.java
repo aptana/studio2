@@ -45,8 +45,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
 import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.syncing.core.Synchronizer;
@@ -303,9 +303,9 @@ public class SyncJob extends Job implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#getFilesEvent(IVirtualFileManager, String)
+	 * @see com.aptana.ide.syncing.core.events.sync.ISyncEventHandler#getFilesEvent(IConnectionPoint, String)
 	 */
-	public boolean getFilesEvent(IVirtualFileManager manager, String path)
+	public boolean getFilesEvent(IConnectionPoint manager, String path)
 	{
 		return true;
 	}

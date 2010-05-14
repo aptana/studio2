@@ -89,8 +89,7 @@ import com.aptana.ide.core.ILogger;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
-import com.aptana.ide.core.io.ingo.VirtualFileManagerSyncPair;
+import com.aptana.ide.core.io.syncing.ConnectionPointSyncPair;
 import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.resources.IProjectProvider;
@@ -103,10 +102,7 @@ import com.aptana.ide.syncing.core.Synchronizer;
 import com.aptana.ide.syncing.core.events.ISyncEventHandler;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.handlers.SyncEventHandlerAdapterWithProgressMonitor;
-import com.aptana.ide.syncing.ui.ingo.FileExplorerView;
-import com.aptana.ide.syncing.ui.ingo.views.Messages;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
-import com.aptana.ide.syncing.ui.views.OptionsToolBar.Client;
 import com.aptana.ide.ui.io.preferences.PermissionsGroup;
 
 /**
@@ -270,12 +266,12 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	 * @throws CoreException
 	 * @throws CoreException
 	 */
-	public SmartSyncDialog(Shell parent, VirtualFileManagerSyncPair conf, IFileStore[] filesToBeSynced)
+	public SmartSyncDialog(Shell parent, ConnectionPointSyncPair conf, IFileStore[] filesToBeSynced)
 			throws CoreException
 	{
 		this(parent, conf.getSourceFileManager(), conf.getDestinationFileManager(), conf.getSourceFileManager()
 				.getRoot(), conf.getDestinationFileManager().getRoot(), conf.getSourceFileManager()
-				.getDescriptiveLabel(), conf.getDestinationFileManager().getDescriptiveLabel());
+				.getName(), conf.getDestinationFileManager().getName());
 		this.syncer.setClientFileManager(conf.getSourceFileManager());
 		this.syncer.setServerFileManager(conf.getDestinationFileManager());
 		sourceConnectionPoint = conf.getSourceFileManager();
@@ -1839,21 +1835,21 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 				// }
 			}
 
-			private void refresh(FileExplorerView fileExplorer, IVirtualFileManager fileManager)
-			{
-				// if (fileExplorer == null || fileManager == null)
-				// {
-				// return;
-				// }
-				// if (fileManager instanceof LocalFileManager)
-				// {
-				// fileExplorer.refresh(fileManager.getBaseFile());
-				// }
-				// else
-				// {
-				// fileExplorer.refresh(fileManager);
-				// }
-			}
+//			private void refresh(FileExplorerView fileExplorer, IVirtualFileManager fileManager)
+//			{
+//				// if (fileExplorer == null || fileManager == null)
+//				// {
+//				// return;
+//				// }
+//				// if (fileManager instanceof LocalFileManager)
+//				// {
+//				// fileExplorer.refresh(fileManager.getBaseFile());
+//				// }
+//				// else
+//				// {
+//				// fileExplorer.refresh(fileManager);
+//				// }
+//			}
 
 		};
 		updateEndJob.setSystem(true);

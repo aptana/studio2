@@ -76,9 +76,6 @@ import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.editors.FileCompareEditorInput;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
-import com.aptana.ide.syncing.ui.ingo.views.Messages;
-import com.aptana.ide.syncing.ui.ingo.views.SmartSyncContentProvider;
-import com.aptana.ide.syncing.ui.ingo.views.SmartSyncLabelProvider;
 
 /**
  * @author Kevin Sawicki (ksawicki@aptana.com)

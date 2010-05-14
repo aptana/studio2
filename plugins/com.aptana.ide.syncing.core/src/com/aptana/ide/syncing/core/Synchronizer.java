@@ -62,6 +62,7 @@ import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.aptana.ide.syncing.core.events.ISyncEventHandler;
 
 /**
@@ -412,7 +413,7 @@ public class Synchronizer implements ILoggable
 			IFileStore serverFile = serverFiles[i];
 			String relativePath = getCanonicalPath(_serverFileRoot, serverFile);
 
-			log(FileUtils.NEW_LINE + " Comparing " + relativePath + " from destination. ");
+			logDebug(FileUtils.NEW_LINE + " Comparing " + relativePath + " from destination. ");
 
 			if (!fileList.containsKey(relativePath)) // Server only
 			{
@@ -421,7 +422,7 @@ public class Synchronizer implements ILoggable
 				VirtualFileSyncPair item = new VirtualFileSyncPair(null, serverFile, relativePath,
 						SyncState.ServerItemOnly);
 				fileList.put(relativePath, item);
-				log("Item not on destination.");
+				logDebug("Item not on destination.");
 				continue;
 			}
 
@@ -437,21 +438,21 @@ public class Synchronizer implements ILoggable
 				// this only occurs if one file is a directory and the other
 				// is not a directory
 				item.setSyncState(SyncState.IncompatibleFileTypes);
-				log("Incompatible types.");
+				logDebug("Incompatible types.");
 				continue;
 			}
 
 			if (serverFile.fetchInfo().isDirectory())
 			{
 				fileList.remove(relativePath);
-				log("Directory.");
+				logDebug("Directory.");
 				continue;
 			}
 
 			// calculate modification time difference, taking server
 			// offset into account
-			long serverFileTime = serverFile.fetchInfo().getLastModified();
-			long clientFileTime = item.getSourceFile().fetchInfo().getLastModified();
+			long serverFileTime = serverFile.fetchInfo(IExtendedFileStore.DETAILED, null).getLastModified();
+			long clientFileTime = item.getSourceFile().fetchInfo(IExtendedFileStore.DETAILED, null).getLastModified();
 			long timeDiff = serverFileTime - clientFileTime;
 
 			// check modification date
@@ -464,7 +465,7 @@ public class Synchronizer implements ILoggable
 				else
 				{
 					item.setSyncState(SyncState.ItemsMatch);
-					log("Items identical.");
+					logDebug("Items identical.");
 				}
 			}
 			else
@@ -472,12 +473,12 @@ public class Synchronizer implements ILoggable
 				if (timeDiff < 0)
 				{
 					item.setSyncState(SyncState.ClientItemIsNewer);
-					log("Source Newer.");
+					logDebug("Source Newer.");
 				}
 				else
 				{
 					item.setSyncState(SyncState.ServerItemIsNewer);
-					log("Destination Newer.");
+					logDebug("Destination Newer.");
 				}
 			}
 		}
@@ -1491,6 +1492,10 @@ public class Synchronizer implements ILoggable
 	private void logDownloading(IFileStore file)
 	{
 		log(FileUtils.NEW_LINE + StringUtils.format(Messages.Synchronizer_Downloading, EFSUtils.getAbsolutePath(file)));
+	}
+
+	private void logDebug(String message)
+	{
 	}
 
 	private void logError(Exception e)

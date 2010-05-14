@@ -10,7 +10,6 @@ public class AllTests
 	{
 		TestSuite suite = new TestSuite("Test for com.aptana.ide.io.ftp.tests");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(FtpVirtualFileManagerTest.class);
 		//$JUnit-END$
 		return suite;
 	}

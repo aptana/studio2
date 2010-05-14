@@ -34,13 +34,13 @@
  */
 package com.aptana.ide.syncing.core.events;
 
-import com.aptana.ide.core.io.ingo.IVirtualFileManagerEventHandler;
+import com.aptana.ide.core.io.syncing.IConnectionPointEventHandler;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 
 /**
  * @author Kevin Lindsey
  */
-public interface ISyncEventHandler extends IVirtualFileManagerEventHandler
+public interface ISyncEventHandler extends IConnectionPointEventHandler
 {
 	/**
 	 * syncContinue

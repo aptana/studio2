@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo;
+package com.aptana.ide.syncing.ui;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -41,7 +41,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class Messages extends NLS
 {
-	private static final String BUNDLE_NAME = "com.aptana.ide.syncing.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.messages"; //$NON-NLS-1$
 
 	/**
 	 * BaseSyncAction_ActionWillOverwrite

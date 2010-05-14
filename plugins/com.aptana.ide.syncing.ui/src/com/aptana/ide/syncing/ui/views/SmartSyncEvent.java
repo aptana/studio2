@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2008 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2007 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -17,7 +17,7 @@
  * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  * 
  * Aptana provides a special exception to allow redistribution of this file
- * with certain other free and open source software ("FOSS") code and certain additional terms
+ * with certain Eclipse Public Licensed code and certain additional terms
  * pursuant to Section 7 of the GPL. You may view the exception and these
  * terms on the web at http://www.aptana.com/legal/gpl/.
  * 
@@ -32,35 +32,35 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.io.ingo;
+package com.aptana.ide.syncing.ui.views;
+
+import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 
 /**
- * 
- * @author paul
- *
+ * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public interface ISyncManagerChangeListener
+public class SmartSyncEvent
 {
+
 	/**
-	 * 
+	 * Destination file manager
 	 */
-	int ADD = 0;
-	
+	public IConnectionPoint destinationManager;
+
 	/**
-	 * 
+	 * Source file manager
 	 */
-	int DELETE = 1;
-	
+	public IConnectionPoint sourceManager;
+
 	/**
-	 * 
+	 * All the pairs that completed successfully
 	 */
-	int EDIT = 2;
-	
+	public VirtualFileSyncPair[] completedPairs;
+
 	/**
-	 * 
-	 * @param obj
-	 * @param actionId
+	 * Comment about the sync.
 	 */
-	void syncManagerEvent(Object obj, int actionId);
+	public String comment;
 
 }

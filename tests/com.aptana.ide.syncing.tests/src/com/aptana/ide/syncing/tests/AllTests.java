@@ -10,8 +10,9 @@ public class AllTests
 	{
 		TestSuite suite = new TestSuite("All Tests for the com.aptana.ide.syncing.tests plugin");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(FtpTests.class);
-		suite.addTestSuite(SyncingTests.class);
+		suite.addTestSuite(LocalSyncingTests.class);
+		suite.addTestSuite(FTPSyncingTests.class);
+		suite.addTestSuite(SFTPSyncingTests.class);
 		suite.addTest(com.aptana.ide.io.ftp.tests.AllTests.suite());
 		//$JUnit-END$
 		return suite;

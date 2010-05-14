@@ -34,7 +34,7 @@
  */
 package com.aptana.ide.syncing.ui.handlers;
 
-import com.aptana.ide.core.io.ingo.IVirtualFileManager;
+import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.syncing.core.events.ISyncEventHandler;
 
@@ -90,10 +90,10 @@ public abstract class SyncEventHandlerAdapter implements ISyncEventHandler
 	}
 
 	/**
-	 * @see com.aptana.ide.core.io.IVirtualFileManagerEventHandler#getFilesEvent(com.aptana.ide.core.io.IVirtualFileManager,
+	 * @see com.aptana.ide.core.io.IConnectionPointEventHandler#getFilesEvent(com.aptana.ide.core.io.IVirtualFileManager,
 	 *      java.lang.String)
 	 */
-	public boolean getFilesEvent(IVirtualFileManager manager, String path)
+	public boolean getFilesEvent(IConnectionPoint manager, String path)
 	{
 		// Does nothing by default, subclasses should override
 		return true;

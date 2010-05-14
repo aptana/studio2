@@ -35,21 +35,12 @@
 
 package com.aptana.ide.filesystem.ftp.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 import com.aptana.ide.core.io.tests.CommonConnectionTest;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
@@ -59,53 +50,23 @@ import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
  * @author Max Stepanov
  *
  */
-public class FTPConnectionWithBasePathTest extends CommonConnectionTest {
+public class SFTPConnectionTest extends CommonConnectionTest {
 
-	private static FTPConnectionPoint setupConnection() throws IOException {
+	@Override
+	@Before
+	public final void initialize() throws CoreException, IOException {
 		
 		Properties props = new Properties();
 		FileInputStream inStream = new FileInputStream(System.getenv().get("junit.properties"));
 		props.load(inStream);
 
 		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
-		ftpcp.setHost(props.getProperty("ftp.host")); //$NON-NLS-1$
-		ftpcp.setLogin(props.getProperty("ftp.username")); //$NON-NLS-1$
-		ftpcp.setPassword(props.getProperty("ftp.password").toCharArray());
-
-		return ftpcp;
-	}
-	
-	@Override
-	@Before
-	public final void initialize() throws CoreException, FileNotFoundException, IOException {
-		FTPConnectionPoint ftpcp = setupConnection();
-		ftpcp.setPath(Path.ROOT.append(getClass().getSimpleName()));
+		ftpcp.setHost(props.getProperty("sftp.host")); //$NON-NLS-1$
+		ftpcp.setLogin(props.getProperty("sftp.username")); //$NON-NLS-1$
+		ftpcp.setPassword(props.getProperty("sftp.password").toCharArray());
+		ftpcp.setPort(Integer.parseInt(props.getProperty("sftp.port")));
 		cp = ftpcp;
 		super.initialize();
-	}
-	
-	@BeforeClass
-	public static void initBasePath() throws CoreException, IOException {
-		FTPConnectionPoint ftpcp = setupConnection();
-		IFileStore fs = ftpcp.getRoot().getFileStore(Path.ROOT.append(FTPConnectionWithBasePathTest.class.getSimpleName()));
-		assertNotNull(fs);
-		if (!fs.fetchInfo().exists()) {
-			fs.mkdir(EFS.NONE, null);
-		}
-		ftpcp.disconnect(null);
-		assertFalse(ftpcp.isConnected());
-	}
-	
-	@AfterClass
-	public static void cleanupBasePath() throws CoreException, IOException {
-		FTPConnectionPoint ftpcp = setupConnection();
-		IFileStore fs = ftpcp.getRoot().getFileStore(Path.ROOT.append(FTPConnectionWithBasePathTest.class.getSimpleName()));
-		assertNotNull(fs);
-		if (fs.fetchInfo().exists()) {
-			fs.delete(EFS.NONE, null);
-		}
-		ftpcp.disconnect(null);
-		assertFalse(ftpcp.isConnected());
 	}
 
 	/* (non-Javadoc)

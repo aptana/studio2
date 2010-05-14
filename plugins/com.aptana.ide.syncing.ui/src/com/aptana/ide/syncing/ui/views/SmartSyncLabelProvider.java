@@ -32,7 +32,7 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
+package com.aptana.ide.syncing.ui.views;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -51,11 +51,6 @@ import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.ui.CoreUIPlugin;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
-import com.aptana.ide.syncing.ui.views.DirectionToolBar;
-import com.aptana.ide.syncing.ui.views.ISyncResource;
-import com.aptana.ide.syncing.ui.views.OptionsToolBar;
-import com.aptana.ide.syncing.ui.views.SyncFile;
-import com.aptana.ide.syncing.ui.views.SyncFolder;
 
 /**
  * Label and color provider for the smart sync viewer.

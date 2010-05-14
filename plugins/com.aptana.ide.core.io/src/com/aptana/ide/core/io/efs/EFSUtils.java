@@ -51,10 +51,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
-import com.aptana.ide.core.IdeLog;
-import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.ingo.IVirtualFile;
 import com.aptana.ide.core.io.preferences.CloakingUtils;
 
 
@@ -102,7 +99,7 @@ public final class EFSUtils {
 
 	/**
 	 * @throws CoreException 
-	 * @see com.aptana.ide.core.io.IVirtualFileManager#getFiles(com.aptana.ide.core.io.IVirtualFile, boolean, boolean)
+	 * @see {@link IConnectionPoint}#getFiles(IFileStore, boolean, boolean)
 	 */
 	public static IFileStore[] getFiles(IFileStore file, boolean recurse, boolean includeCloakedFiles, IProgressMonitor monitor) throws CoreException
 	{
@@ -188,17 +185,6 @@ public final class EFSUtils {
 		String scheme = fileURI.getScheme();
 		String filename = file.getName();
 		return fileURI.toString().substring(scheme.length() + 1, filename.length());
-	}
-
-	/**
-	 * Returns the parent file of this file
-	 * @param file
-	 * @return
-	 * @throws CoreException 
-	 * @throws CoreException 
-	 */
-	public static String getRelativePath(IVirtualFile file) {
-		return getRelativePath(file.getFileManager(), file);
 	}
 
 	/**

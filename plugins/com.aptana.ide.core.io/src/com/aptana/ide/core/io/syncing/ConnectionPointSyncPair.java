@@ -32,17 +32,17 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.core.io.ingo;
+package com.aptana.ide.core.io.syncing;
 
-import com.aptana.ide.core.AptanaCorePlugin;
-import com.aptana.ide.core.IdeLog;
+import org.eclipse.core.runtime.CoreException;
+
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
 
 /**
  * @author Kevin Lindsey
  */
-public class VirtualFileManagerSyncPair implements ISerializableSyncItem
+public class ConnectionPointSyncPair
 {
 	/**
 	 * Upload the items
@@ -63,8 +63,8 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 	 * Fields
 	 */
 	private String _nickName = StringUtils.EMPTY;
-	private IVirtualFileManager _sourceFileManager = null;
-	private IVirtualFileManager _destinationFileManager = null;
+	private IConnectionPoint _sourceFileManager = null;
+	private IConnectionPoint _destinationFileManager = null;
 	private String sourceId = "-1";
 	private String destId = "-1";
 	private int _syncOption = 0;
@@ -78,7 +78,7 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 	/**
 	 * SyncItem
 	 */
-	public VirtualFileManagerSyncPair()
+	public ConnectionPointSyncPair()
 	{
 	}
 
@@ -91,7 +91,7 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 	 * 
 	 * @return IVirtualFileManager
 	 */
-	public IVirtualFileManager getSourceFileManager()
+	public IConnectionPoint getSourceFileManager()
 	{
 		return this._sourceFileManager;
 	}
@@ -101,7 +101,7 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 	 * 
 	 * @param sourceFileManager
 	 */
-	public void setSourceFileManager(IVirtualFileManager sourceFileManager)
+	public void setSourceFileManager(IConnectionPoint sourceFileManager)
 	{
 		this._sourceFileManager = sourceFileManager;
 	}
@@ -111,7 +111,7 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 	 * 
 	 * @return IVirtualFileManager
 	 */
-	public IVirtualFileManager getDestinationFileManager()
+	public IConnectionPoint getDestinationFileManager()
 	{
 		return this._destinationFileManager;
 	}
@@ -121,7 +121,7 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 	 * 
 	 * @param destinationFileManager
 	 */
-	public void setDestinationFileManager(IVirtualFileManager destinationFileManager)
+	public void setDestinationFileManager(IConnectionPoint destinationFileManager)
 	{
 		this._destinationFileManager = destinationFileManager;
 	}
@@ -196,9 +196,15 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 	 */
 	public boolean isValid()
 	{
-		return getDestinationFileManager() != null && getDestinationFileManager().getBasePath() != null
-				&& getSourceFileManager() != null && getSourceFileManager().getBasePath() != null
-				&& getSourceFileManager().isValid() && getDestinationFileManager().isValid();
+		try
+		{
+			return getDestinationFileManager() != null && getDestinationFileManager().getRoot() != null
+					&& getSourceFileManager() != null && getSourceFileManager().getRoot() != null;
+		}
+		catch (CoreException e)
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -210,87 +216,8 @@ public class VirtualFileManagerSyncPair implements ISerializableSyncItem
 		_useCRC = usecrc;
 	}
 
-	/**
-	 * @see com.aptana.ide.core.io.sync.ISerializableSyncItem#toSerializableString()
-	 */
-	public String toSerializableString()
-	{
-		try
-		{
-			boolean shouldSerialize = true;
-			if (_sourceFileManager != null && StringUtils.EMPTY.equals(_sourceFileManager.toSerializableString()))
-			{
-				shouldSerialize = false;
-			}
-			else if (_destinationFileManager != null
-					&& StringUtils.EMPTY.equals(_destinationFileManager.toSerializableString()))
-			{
-				shouldSerialize = false;
-			}
-			String result = StringUtils.EMPTY;
-			if (shouldSerialize)
-			{
-				result += _nickName + ISerializableSyncItem.DELIMITER;
 
-				String sourceFileId = _sourceFileManager == null ? this.sourceId : _sourceFileManager.getId();
-				String destinationFileId = _destinationFileManager == null ? this.destId : _destinationFileManager
-						.getId();
 
-				result += sourceFileId + ISerializableSyncItem.DELIMITER;
-				result += destinationFileId + ISerializableSyncItem.DELIMITER;
-				result += _syncOption + ISerializableSyncItem.DELIMITER;
-				result += _useCRC + ISerializableSyncItem.DELIMITER;
-				result += _deleteRemoteFiles + ISerializableSyncItem.DELIMITER;
-			}
-			return result;
-		}
-		catch (Exception e)
-		{
-			IdeLog.logError(AptanaCorePlugin.getDefault(),
-					Messages.VirtualFileManagerSyncPair_UnableToSerializeSyncPair, e);
-		}
-
-		return null;
-	}
-
-	/**
-	 * @see com.aptana.ide.core.io.sync.ISerializableSyncItem#fromSerializableString(java.lang.String)
-	 */
-	public void fromSerializableString(String s)
-	{
-		try
-		{
-			String[] args = s.split(ISerializableSyncItem.DELIMITER);
-
-			if(args.length < 3)
-			{
-				/*IdeLog.logError(AptanaCorePlugin.getDefault(),
-						Messages.VirtualFileManagerSyncPair_UnableToLoadSyncConfiguration);*/
-				return;
-			}
-			
-			setNickName(args[0]);
-			String sourceId = args[1];
-			String destinationId = args[2];
-
-			this.sourceId = sourceId;
-			this.destId = destinationId;
-
-			_sourceFileManager = this.sourceId == "-1" ? null : SyncManager.getSyncManager().getVirtualFileManagerById(
-					this.sourceId);
-			_destinationFileManager = this.destId == "-1" ? null : SyncManager.getSyncManager()
-					.getVirtualFileManagerById(this.destId);
-
-			setSyncState(Integer.parseInt(args[3]));
-			setUseCRC(args[4] == "true"); //$NON-NLS-1$
-			setDeleteRemoteFiles(args[5] == "true"); //$NON-NLS-1$
-		}
-		catch (Exception e)
-		{
-			IdeLog.logError(AptanaCorePlugin.getDefault(),
-					Messages.VirtualFileManagerSyncPair_UnableToLoadSyncConfiguration, e);
-		}
-	}
 
 	/**
 	 * @see com.aptana.ide.core.io.sync.ISerializableSyncItem#getType()

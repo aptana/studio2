@@ -32,41 +32,21 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.ingo.views;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.IDecoratorManager;
-import org.eclipse.ui.progress.UIJob;
-
-import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+package com.aptana.ide.syncing.ui.views;
 
 /**
+ * Smart sync listener
+ * 
  * @author Kevin Sawicki (ksawicki@aptana.com)
  */
-public final class SyncUIUtils
+public interface ISmartSyncListener
 {
 
 	/**
-	 * Update the sync labels
+	 * A smart sync has been completed for the virtual file managers available in the smart sync event
+	 * 
+	 * @param event
 	 */
-	public static void updateSyncLabels()
-	{
-		UIJob job = new UIJob("Updating sync labels") //$NON-NLS-1$
-		{
+	public void smartSyncComplete(SmartSyncEvent event);
 
-			public IStatus runInUIThread(IProgressMonitor monitor)
-			{
-				IDecoratorManager dm = SyncingUIPlugin.getDefault().getWorkbench().getDecoratorManager();
-				dm.update("com.aptana.ide.syncing.SyncConnectionDecorator"); //$NON-NLS-1$
-				dm.update("com.aptana.ide.syncing.SyncProjectConnectionDecorator"); //$NON-NLS-1$
-				dm.update("com.aptana.ide.syncing.VirtualFileManagerSyncDecorator"); //$NON-NLS-1$
-				return Status.OK_STATUS;
-			}
-
-		};
-		job.setSystem(true);
-		job.schedule();
-	}
 }
