@@ -56,7 +56,6 @@ import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
-import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.aptana.ide.syncing.core.Synchronizer;
 
 /**

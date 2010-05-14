@@ -117,8 +117,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	private static final String CLOSE_WHEN_DONE = "com.aptana.ide.syncing.views.CLOSE_WHEN_DONE"; //$NON-NLS-1$
 	private static final String COMPARE_IN_BACKGROUND = IPreferenceConstants.COMPARE_IN_BACKGROUND;
 	private static final String USE_CRC = IPreferenceConstants.USE_CRC;
-	private static final String INITIAL_POOL_SIZE = IPreferenceConstants.INITIAL_POOL_SIZE;
-	private static final String MAX_POOL_SIZE = IPreferenceConstants.MAX_POOL_SIZE;
 
 	private static final String SKIPPED_LABEL = Messages.SmartSyncDialog_NumFilesToSkip;
 	private static final String UPDATED_LABEL = Messages.SmartSyncDialog_NumFilesToUpdate;
@@ -140,9 +138,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	private Button syncInBackground;
 	private PermissionsGroup filePermission;
 	private PermissionsGroup dirPermission;
-	private Text initialPoolSize;
-	private Text maxPoolSize;
-	private Label poolSizeError;
 
 	private Composite loadingComp;
 	private Label loadingLabel;
@@ -170,17 +165,11 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	private Label syncedText;
 	private SyncJob syncJob;
 
-	//private Text comment;
-	//private String commentStr;
-	//private boolean firstEdit;
 	private int skipped;
-	private boolean enabled;
 
 	private Job buildSmartSync;
 
 	private IFileStore[] filesToBeSynced;
-
-	//private Combo end2Combo;
 
 	/**
 	 * Creates a new smart sync dialog.
@@ -249,9 +238,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 				SyncingConsole.println(message);
 			}
 		});
-//		this.commentStr = ""; //$NON-NLS-1$
-//		this.firstEdit = true;
-		this.enabled = true;
 	}
 
 	/**
@@ -462,6 +448,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 		end2Label.setText("Destination: '" + end2 + "' (" + dest.toString() + ")");
 		end2Label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
+		// Commented out until we let the user switch endpoints
 		//		end2Combo = new Combo(endpoints, SWT.READ_ONLY);
 //		final List<IVirtualFileManager> vfms = new LinkedList<IVirtualFileManager>();
 //		int selectedIndex = 0;
@@ -677,33 +664,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 		dirPermission.setText(Messages.SmartSyncDialog_PermForDirectories);
 		dirPermission.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		dirPermission.setPermissions(FilePrefUtils.getDirectoryPermission());
-
-		Composite poolSizes = new Composite(advancedOptions, SWT.NONE);
-		layout = new GridLayout(2, false);
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		poolSizes.setLayout(layout);
-		poolSizes.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		Label label = new Label(poolSizes, SWT.NONE);
-		label.setText(Messages.SmartSyncDialog_InitialPoolSize);
-		initialPoolSize = new Text(poolSizes, SWT.BORDER | SWT.SINGLE);
-		initialPoolSize.setText(String.valueOf(getCoreUIPreferenceStore().getInt(INITIAL_POOL_SIZE)));
-		initialPoolSize.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		initialPoolSize.addModifyListener(this);
-		initialPoolSize.setEnabled(isCloudSync());
-
-		label = new Label(poolSizes, SWT.NONE);
-		label.setText(Messages.SmartSyncDialog_MaxPoolSize);
-		maxPoolSize = new Text(poolSizes, SWT.BORDER | SWT.SINGLE);
-		maxPoolSize.setText(String.valueOf(getCoreUIPreferenceStore().getInt(MAX_POOL_SIZE)));
-		maxPoolSize.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		maxPoolSize.addModifyListener(this);
-		maxPoolSize.setEnabled(isCloudSync());
-
-		poolSizeError = new Label(advancedOptions, SWT.NONE);
-		poolSizeError.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
-		poolSizeError.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		return advanced;
 	}
@@ -1072,21 +1032,11 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 
 	private void setEnabled(boolean enabled)
 	{
-		this.enabled = enabled;
 		//end2Combo.setEnabled(enabled);
 		directionBar.setEnabled(enabled);
 		optionsBar.setEnabled(enabled);
 		boolean syncEnabled = enabled && syncViewer.getCurrentResources().length > 0;
-		startSync.setEnabled(syncEnabled && poolSizeError.getText().length() == 0);
-//		comment.setEnabled(syncEnabled && isCloudSync());
-//		if (!syncEnabled)
-//		{
-//			comment.clearSelection();
-//		}
-//		else if (firstEdit)
-//		{
-//			comment.selectAll();
-//		}
+		startSync.setEnabled(syncEnabled);
 
 		if (enabled)
 		{
@@ -1099,7 +1049,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	 */
 	public int open()
 	{
-		// IVirtualFileManager fileManager = file1.getFileManager();
 		if (sourceConnectionPoint instanceof IProjectProvider)
 		{
 			IProjectProvider projectProvider = (IProjectProvider) sourceConnectionPoint;
@@ -1488,21 +1437,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	 */
 	public void modifyText(ModifyEvent e)
 	{
-		if (e.widget == initialPoolSize || e.widget == maxPoolSize)
-		{
-			try
-			{
-				getCoreUIPreferenceStore().setValue(INITIAL_POOL_SIZE, Integer.parseInt(initialPoolSize.getText()));
-				getCoreUIPreferenceStore().setValue(MAX_POOL_SIZE, Integer.parseInt(maxPoolSize.getText()));
-				poolSizeError.setText(""); //$NON-NLS-1$
-			}
-			catch (NumberFormatException nfe)
-			{
-				poolSizeError.setText(Messages.SmartSyncDialog_ErrorPoolSize);
-			}
-			// updates the states
-			setEnabled(this.enabled);
-		}
 	}
 
 	/**
@@ -1520,16 +1454,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 		else
 		{
 			syncViewer.refreshAndExpandTo(2);
-			boolean syncEnabled = syncViewer.getCurrentResources().length > 0;
-//			comment.setEnabled(syncEnabled && isCloudSync());
-//			if (!syncEnabled)
-//			{
-//				comment.clearSelection();
-//			}
-//			else if (firstEdit)
-//			{
-//				comment.selectAll();
-//			}
 		}
 		updateStatLabels();
 	}
@@ -1683,8 +1607,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 
 		boolean deleteLocal = deleteLocalFiles.getEnabled() && deleteLocalFiles.getSelection();
 		boolean deleteRemote = deleteRemoteFiles.getEnabled() && deleteRemoteFiles.getSelection();
-//		comment.clearSelection();
-//		comment.setEnabled(false);
 		deleteRemoteFiles.setEnabled(false);
 		deleteLocalFiles.setEnabled(false);
 
@@ -1703,13 +1625,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 			direction = SyncJob.BOTH;
 		}
 
-		if (isCloudSync())
-		{
-			int initialSize = Integer.parseInt(initialPoolSize.getText());
-			int maxSize = Integer.parseInt(maxPoolSize.getText());
-			// file1.getFileManager().setPoolSizes(initialSize, maxSize);
-			// file2.getFileManager().setPoolSizes(initialSize, maxSize);
-		}
 		if (syncJob != null)
 		{
 			// cancels the previous job if exists
@@ -1779,77 +1694,8 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 					// disconnect directly
 					syncer.disconnect();
 				}
-				refresh();
-
 				return Status.OK_STATUS;
 			}
-
-			/**
-			 * Performs post-sync refresh.
-			 */
-			private void refresh()
-			{
-				// // refreshes the file explorer
-				// IWorkbenchPart[] part = CoreUIUtils.getViewsInternal(FileExplorerView.ID);
-				// FileExplorerView fileExplorer;
-				// for (int i = 0; i < part.length; i++)
-				// {
-				// fileExplorer = (FileExplorerView) part[i];
-				//
-				// refresh(fileExplorer, syncer.getClientFileManager());
-				// refresh(fileExplorer, syncer.getServerFileManager());
-				// }
-				//
-				// // refreshes the project navigator
-				// try
-				// {
-				// IViewPart viewPart = CoreUIUtils.findView(AptanaNavigator.ID);
-				// if (viewPart instanceof AptanaNavigator)
-				// {
-				// AptanaNavigator nav = (AptanaNavigator) viewPart;
-				// ISelection selection = nav.getViewer().getSelection();
-				// if (selection instanceof IStructuredSelection)
-				// {
-				// Object[] objects = ((IStructuredSelection) selection).toArray();
-				// for (Object o : objects)
-				// {
-				// if (o instanceof IResource)
-				// {
-				// IResource res = (IResource) o;
-				// try
-				// {
-				// res.refreshLocal(IResource.DEPTH_INFINITE, null);
-				// }
-				// catch (CoreException e)
-				// {
-				// // Unable to refresh resource
-				// }
-				// }
-				// }
-				// }
-				// }
-				// }
-				// catch (PartInitException e)
-				// {
-				// // Unable to refresh the view
-				// }
-			}
-
-//			private void refresh(FileExplorerView fileExplorer, IVirtualFileManager fileManager)
-//			{
-//				// if (fileExplorer == null || fileManager == null)
-//				// {
-//				// return;
-//				// }
-//				// if (fileManager instanceof LocalFileManager)
-//				// {
-//				// fileExplorer.refresh(fileManager.getBaseFile());
-//				// }
-//				// else
-//				// {
-//				// fileExplorer.refresh(fileManager);
-//				// }
-//			}
 
 		};
 		updateEndJob.setSystem(true);
@@ -1862,7 +1708,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 		syncViewer.setDeleteRemoteFiles(deleteRemoteFiles.getSelection());
 		updateStatLabels();
 		boolean syncEnabled = syncViewer.getCurrentResources().length > 0;
-		startSync.setEnabled(syncEnabled && poolSizeError.getText().length() == 0);
+		startSync.setEnabled(syncEnabled);
 	}
 
 	private void updateFileButtonsState()
