@@ -40,6 +40,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchCommandConstants;
@@ -56,6 +57,7 @@ public class FileSystemEditActionGroup extends ActionGroup {
 
     private Clipboard fClipboard;
     private Shell fShell;
+    private Tree fTree;
 
     private FileSystemCopyAction fCopyAction;
     private FileSystemPasteAction fPasteAction;
@@ -63,8 +65,9 @@ public class FileSystemEditActionGroup extends ActionGroup {
 
     private TextActionHandler fTextActionHandler;
 
-    public FileSystemEditActionGroup(Shell shell) {
+    public FileSystemEditActionGroup(Shell shell, Tree tree) {
         fShell = shell;
+        fTree = tree;
         makeActions();
     }
 
@@ -154,7 +157,7 @@ public class FileSystemEditActionGroup extends ActionGroup {
         fCopyAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
         // fCopyAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
 
-        fDeleteAction = new FileSystemDeleteAction(fShell);
+        fDeleteAction = new FileSystemDeleteAction(fShell, fTree);
         fDeleteAction.setDisabledImageDescriptor(images
                 .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
         fDeleteAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
