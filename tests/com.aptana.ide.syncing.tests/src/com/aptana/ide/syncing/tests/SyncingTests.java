@@ -435,40 +435,34 @@ public abstract class SyncingTests extends TestCase
 		syncManager.setLogger(new ILogger()
 		{
 			
-			@Override
 			public void logWarning(String message, Throwable th)
 			{
 				// TODO Auto-generated method stub
 				
 			}
 			
-			@Override
 			public void logWarning(String message)
 			{
 				// TODO Auto-generated method stub
 				
 			}
 			
-			@Override
 			public void logInfo(String message, Throwable th)
 			{
 				System.out.print(message);
 			}
 			
-			@Override
 			public void logInfo(String message)
 			{
 				System.out.print(message);
 			}
 			
-			@Override
 			public void logError(String message, Throwable th)
 			{
 				// TODO Auto-generated method stub
 				
 			}
 			
-			@Override
 			public void logError(String message)
 			{
 				// TODO Auto-generated method stub
