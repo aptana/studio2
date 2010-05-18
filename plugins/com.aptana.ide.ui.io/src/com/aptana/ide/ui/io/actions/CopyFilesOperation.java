@@ -56,10 +56,12 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.aptana.ide.core.FileUtils;
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.io.preferences.CloakingUtils;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.core.ui.DialogUtils;
+import com.aptana.ide.core.ui.syncing.SyncingConsole;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.internal.Utils;
 import com.aptana.ide.ui.io.preferences.IPreferenceConstants;
@@ -269,22 +271,27 @@ public class CopyFilesOperation {
         boolean success = true;
         monitor.subTask(MessageFormat.format(Messages.CopyFilesOperation_Copy_Subtask, sourceStore
                 .getName(), destinationStore.getName()));
+        SyncingConsole.println(FileUtils.NEW_LINE + MessageFormat.format(Messages.CopyFilesOperation_Copy_Subtask, sourceStore
+                .toURI().toString(), destinationStore.toURI().toString()));
 
 		if (destinationStore.equals(sourceStore))
 		{
 			destinationStore = getNewNameFor(destinationStore);
 			if (destinationStore == null)
 			{
+		        SyncingConsole.println(". Failed.");
 				return false;
 			}
 		}
         try {
         	sourceStore.copy(destinationStore, EFS.OVERWRITE, monitor);
+	        SyncingConsole.println(". Success.");
         } catch (CoreException e) {
             IdeLog
                     .logError(IOUIPlugin.getDefault(), MessageFormat.format(
                             Messages.CopyFilesOperation_ERR_FailedToCopy, sourceStore,
                             destinationStore), e);
+	        SyncingConsole.println(". Failure.");
             success = false;
         }
         return success;
