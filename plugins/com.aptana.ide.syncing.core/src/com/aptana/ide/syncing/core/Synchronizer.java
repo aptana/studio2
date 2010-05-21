@@ -804,7 +804,7 @@ public class Synchronizer implements ILoggable
 					{
 						try
 						{
-							if (EFSUtils.copyFile(clientFile, serverFile, monitor))
+							if (EFSUtils.copyFile(serverFile, clientFile, monitor))
 							{
 								Synchronizer.this._serverFileTransferedCount++;
 								logSuccess();
@@ -1014,7 +1014,7 @@ public class Synchronizer implements ILoggable
 						{
 							try
 							{
-								if (EFSUtils.copyFile(clientFile, serverFile, monitor))
+								if (EFSUtils.copyFile(serverFile, clientFile, monitor))
 								{
 									Synchronizer.this._serverFileTransferedCount++;
 									logSuccess();
