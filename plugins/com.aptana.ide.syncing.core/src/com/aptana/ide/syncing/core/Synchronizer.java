@@ -735,8 +735,7 @@ public class Synchronizer implements ILoggable
 					break;
 
 				case SyncState.ServerItemOnly:
-					final IFileStore targetClientFile = constructDestinationPath(_clientFileRoot, item);
-					// final IVirtualFile targetClientFile;
+					final IFileStore targetClientFile = EFSUtils.createFile(_serverFileRoot, item.getDestinationFile(), _clientFileRoot);					// final IVirtualFile targetClientFile;
 
 					if (serverFile.fetchInfo().isDirectory())
 					{
@@ -952,7 +951,7 @@ public class Synchronizer implements ILoggable
 						else
 						{
 							// creates the item on server
-							final IFileStore targetServerFile = constructDestinationPath(_serverFileRoot, item);
+							final IFileStore targetServerFile = EFSUtils.createFile(_clientFileRoot, item.getSourceFile(), _serverFileRoot);
 
 							if (clientFile.fetchInfo().isDirectory())
 							{
@@ -1057,8 +1056,7 @@ public class Synchronizer implements ILoggable
 						else
 						{
 							// creates the item on client
-							final IFileStore targetClientFile = constructDestinationPath(_clientFileRoot, item);
-							// final IVirtualFile targetClientFile;
+							final IFileStore targetClientFile = EFSUtils.createFile(_serverFileRoot, item.getDestinationFile(), _clientFileRoot);
 
 							if (serverFile.fetchInfo().isDirectory())
 							{
@@ -1137,19 +1135,6 @@ public class Synchronizer implements ILoggable
 		}
 
 		return result;
-	}
-
-	/**
-	 * Constructs the path for use on the destination
-	 * 
-	 * @param basePath
-	 * @param manager
-	 * @param item
-	 * @return String
-	 */
-	private IFileStore constructDestinationPath(IFileStore base, VirtualFileSyncPair item)
-	{
-		return base.getFileStore(new Path(item.getRelativePath()));
 	}
 
 	/**
@@ -1238,9 +1223,8 @@ public class Synchronizer implements ILoggable
 			{
 				case SyncState.ClientItemOnly:
 					// only exists on client; creates the item on server
-					final IFileStore targetServerFile = constructDestinationPath(_serverFileRoot, item);
-					// final IVirtualFile targetServerFile;
-
+					final IFileStore targetServerFile = EFSUtils.createFile(_clientFileRoot, item.getSourceFile(), _serverFileRoot);
+					
 					if (clientFile.fetchInfo().isDirectory())
 					{
 						// targetServerFile.mkdir(EFS.NONE, null); // = server.createVirtualDirectory(serverPath);

@@ -32,6 +32,7 @@ public class FTPSyncingTests extends SyncingTests
 		ftpcp.setHost(props.getProperty("ftp.host")); //$NON-NLS-1$
 		ftpcp.setLogin(props.getProperty("ftp.username")); //$NON-NLS-1$
 		ftpcp.setPassword(props.getProperty("ftp.password").toCharArray());
+		ftpcp.connect(null);
 		serverManager = ftpcp;
 
 		super.setUp();

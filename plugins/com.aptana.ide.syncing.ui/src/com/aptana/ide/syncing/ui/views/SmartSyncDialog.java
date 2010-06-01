@@ -1160,7 +1160,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 						VirtualFileSyncPair pair;
 						for (IFileStore file : serverFiles)
 						{
-							pair = pairs.get(Synchronizer.getCanonicalPath(destConnectionPoint.getRoot(), file));
+							pair = pairs.get(EFSUtils.getRelativePath(destConnectionPoint.getRoot(), file));
 							if (pair != null)
 							{
 								pair.setDestinationFile(file);
@@ -1183,7 +1183,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 						VirtualFileSyncPair pair;
 						for (IFileStore file : clientFiles)
 						{
-							pair = pairs.get(Synchronizer.getCanonicalPath(sourceConnectionPoint.getRoot(), file));
+							pair = pairs.get(EFSUtils.getRelativePath(sourceConnectionPoint.getRoot(), file));
 							if (pair != null)
 							{
 								pair.setSourceFile(file);
