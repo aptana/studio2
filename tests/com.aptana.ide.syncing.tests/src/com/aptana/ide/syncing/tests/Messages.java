@@ -74,5 +74,6 @@ public final class Messages
 	/**
 	 * AllTests_TestSuiteName
 	 */
+	@SuppressWarnings("unchecked")
 	public static final Class AllTests_TestSuiteName = null;
 }
