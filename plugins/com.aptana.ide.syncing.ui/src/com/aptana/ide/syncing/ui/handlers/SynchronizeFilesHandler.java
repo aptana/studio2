@@ -32,37 +32,23 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.syncing.ui.handlers;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.handlers.HandlerUtil;
 
-public class Messages extends NLS {
+import com.aptana.ide.syncing.ui.actions.SynchronizeFilesAction;
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
+public class SynchronizeFilesHandler extends AbstractHandler {
 
-    public static String BaseSyncAction_MessageTitle;
-    public static String BaseSyncAction_Warning_NoCommonParent;
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		SynchronizeFilesAction action = new SynchronizeFilesAction();
+		action.setActivePart(null, HandlerUtil.getActivePart(event));
+		action.setSelection(HandlerUtil.getCurrentSelection(event));
+		action.run(null);
 
-    public static String DeleteSiteConnectionAction_JobName;
-    public static String DeleteSiteConnectionAction_SubtaskName;
-
-    public static String DownloadAction_MessageTitle;
-    public static String DownloadAction_PostMessage;
-
-    public static String NewSiteAction_LBL_New;
-
-    public static String SiteConnectionPropertiesAction_ERR_CreateDialogFailed;
-
-    public static String UploadAction_MessageTitle;
-    public static String UploadAction_PostMessage;
-
-    public static String SynchronizeFilesAction_MessageTitle;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
-
-    private Messages() {
-    }
+		return null;
+	}
 }
