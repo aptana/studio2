@@ -374,6 +374,10 @@ public class PingStartup implements IStartup
 		preferences.loadPreferences();
 
 		// build key/value pairs
+		if (!preferences.getBoolean(IPreferenceConstants.P_IDE_HAS_RUN))
+		{
+			addKeyPair(keyValues, "first_run", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		addKeyPair(keyValues, "id", getApplicationId(preferences)); //$NON-NLS-1$
 		addKeyPair(keyValues, "version", PluginUtils.getPluginVersion(AptanaCorePlugin.getDefault())); //$NON-NLS-1$
 		addKeyPair(keyValues, "product", System.getProperty("eclipse.product")); //$NON-NLS-1$ //$NON-NLS-2$
