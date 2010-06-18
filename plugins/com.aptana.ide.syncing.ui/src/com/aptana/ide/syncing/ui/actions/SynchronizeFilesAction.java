@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -34,35 +34,51 @@
  */
 package com.aptana.ide.syncing.ui.actions;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 
-public class Messages extends NLS {
+import com.aptana.ide.core.StringUtils;
+import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.core.ui.CoreUIUtils;
+import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.ui.handlers.SyncEventHandlerAdapter;
+import com.aptana.ide.syncing.ui.views.SmartSyncDialog;
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
+public class SynchronizeFilesAction extends BaseSyncAction {
 
-    public static String BaseSyncAction_MessageTitle;
-    public static String BaseSyncAction_Warning_NoCommonParent;
+	private static String MESSAGE_TITLE = StringUtils.ellipsify(Messages.SynchronizeFilesAction_MessageTitle);
 
-    public static String DeleteSiteConnectionAction_JobName;
-    public static String DeleteSiteConnectionAction_SubtaskName;
+	@Override
+	protected void performAction(final IAdaptable[] files, final ISiteConnection site) throws CoreException {
+		final IConnectionPoint source = site.getSource();
+		final IConnectionPoint dest = site.getDestination();
+		CoreUIUtils.getDisplay().asyncExec(new Runnable() {
 
-    public static String DownloadAction_MessageTitle;
-    public static String DownloadAction_PostMessage;
+			public void run() {
+				try {
+					SmartSyncDialog dialog = new SmartSyncDialog(getShell(), source, dest, source.getRoot(), dest
+							.getRoot(), source.getName(), dest.getName());
+					dialog.open();
+					dialog.setHandler(new SyncEventHandlerAdapter() {
 
-    public static String NewSiteAction_LBL_New;
+						public void syncDone(VirtualFileSyncPair item) {
+							// refresh();
+						}
+					});
+				} catch (CoreException e) {
+					MessageBox error = new MessageBox(CoreUIUtils.getActiveShell(), SWT.ICON_ERROR | SWT.OK);
+					error.setMessage("Unable to open synchronization dialog.");
+					error.open();
+				}
+			}
+		});
+	}
 
-    public static String SiteConnectionPropertiesAction_ERR_CreateDialogFailed;
-
-    public static String UploadAction_MessageTitle;
-    public static String UploadAction_PostMessage;
-
-    public static String SynchronizeFilesAction_MessageTitle;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
-
-    private Messages() {
-    }
+	@Override
+	protected String getMessageTitle() {
+		return MESSAGE_TITLE;
+	}
 }
