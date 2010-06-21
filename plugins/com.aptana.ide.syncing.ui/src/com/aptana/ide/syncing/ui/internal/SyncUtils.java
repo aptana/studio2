@@ -99,6 +99,19 @@ public class SyncUtils {
     /**
      * @param adaptable
      *            the IAdaptable object
+     * @return the array of file stores corresponding to the object
+     */
+    public static IFileStore[] getFileStores(IAdaptable[] adaptable) {
+		IFileStore[] fileStores = new IFileStore[adaptable.length];
+        for (int i = 0; i < fileStores.length; ++i) {
+            fileStores[i] = SyncUtils.getFileStore(adaptable[i]);
+        }
+        return fileStores;
+    }
+
+    /**
+     * @param adaptable
+     *            the IAdaptable object
      * @return the file info corresponding to the object
      */
     public static IFileInfo getFileInfo(IAdaptable adaptable) {
@@ -152,31 +165,28 @@ public class SyncUtils {
 			for (int j = 0; j < parents.length; j++)
 			{
 				file2 = parents[j];
-	
-				if (!newFiles.contains(file2))
+				IFileStore newFile = EFSUtils.createFile(sourceManager.getRoot(), file2, destManager.getRoot());
+
+				if (!newFiles.contains(newFile))
 				{
-					newFiles.add(file2);
+					newFiles.add(newFile);
 				}
 			}
 	
 			if (file.fetchInfo().isDirectory())
 			{
 				IFileStore newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
-				newFile.mkdir(EFS.NONE, null);
-				//IFileStore newFile = file; //sourceManager.createVirtualDirectory(EFSUtils.getAbsolutePath(file));
-	
 				if (!newFiles.contains(newFile))
 				{
 					newFiles.add(newFile);
 				}
-	
-				newFiles.addAll(Arrays.asList(EFSUtils.getFiles(newFile, true, false, null)));
+				if(newFile.fetchInfo().exists()) {
+					newFiles.addAll(Arrays.asList(EFSUtils.getFiles(newFile, true, false, null)));
+				}
 			}
 			else
 			{
-				IFileStore newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
-				//IFileStore newFile = file; //sourceManager.createVirtualFile(EFSUtils.getAbsolutePath(file));
-	
+				IFileStore newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());	
 				if (!newFiles.contains(newFile))
 				{
 					newFiles.add(newFile);
@@ -191,14 +201,10 @@ public class SyncUtils {
 		{
 			Set<IFileStore> newFiles = new HashSet<IFileStore>();
 			IFileStore file;
-			String filePath;
 			IFileStore newFile;
 			for (int i = 0; i < files.length; i++)
 			{
 				file = files[i];
-	//			filePath = EFSUtils.getRelativePath(file);
-	//			filePath = StringUtils.replace(filePath, file.getFileManager().getFileSeparator(), destManager
-	//					.getFileSeparator());
 	
 				newFile = null;
 				try
@@ -207,7 +213,6 @@ public class SyncUtils {
 					{
 						newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
 						newFile.mkdir(EFS.NONE, null);
-						//destManager.createVirtualDirectory(destManager.getBasePath() + filePath);
 						IFileStore[] f = EFSUtils.getFiles(newFile, true, false, null);
 						if (!newFiles.contains(newFile))
 						{
@@ -264,7 +269,7 @@ public class SyncUtils {
 				}
 
 				parentDirs.add(0, currentFile); // add at beginning of list, as we want most "distant" folder first
-				currentFile = EFSUtils.getParentFile(currentFile);
+				currentFile = currentFile.getParent();
 			}
 		}
 

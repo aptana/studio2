@@ -184,13 +184,12 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 	 *            the first end point
 	 * @param end2
 	 *            the second end point
+	 * @throws CoreException 
 	 */
 	public SmartSyncDialog(Shell parent, IConnectionPoint sourceManager, IConnectionPoint destManager,
-			IFileStore source, IFileStore dest, String end1, String end2)
+			IFileStore source, IFileStore dest, String end1, String end2) throws CoreException
 	{
 		super(parent);
-		sourceConnectionPoint = sourceManager;
-		destConnectionPoint = destManager;
 		setShellStyle(getDefaultOrientation() | SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		this.source = source;
 		this.dest = dest;
@@ -198,14 +197,19 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 		this.end2 = end2;
 		this.compareInBackground = getCoreUIPreferenceStore().getBoolean(COMPARE_IN_BACKGROUND);
 		this.syncer = new Synchronizer(getCoreUIPreferenceStore().getBoolean(USE_CRC), 1000);
-		if (source != null)
+		if (sourceManager != null)
 		{
+			sourceConnectionPoint = sourceManager;
 			this.syncer.setClientFileManager(sourceManager);
+			this.syncer.setClientFileRoot(sourceManager.getRoot());
 		}
-		if (dest != null)
+		if (destManager != null)
 		{
+			destConnectionPoint = destManager;
 			this.syncer.setServerFileManager(destManager);
+			this.syncer.setServerFileRoot(destManager.getRoot());
 		}
+
 		this.syncer.setLogger(new ILogger()
 		{			
 			public void logWarning(String message, Throwable th)
@@ -260,6 +264,8 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 				.getName(), conf.getDestinationFileManager().getName());
 		this.syncer.setClientFileManager(conf.getSourceFileManager());
 		this.syncer.setServerFileManager(conf.getDestinationFileManager());
+
+
 		sourceConnectionPoint = conf.getSourceFileManager();
 		destConnectionPoint = conf.getDestinationFileManager();
 		if (filesToBeSynced == null || filesToBeSynced.length == 0)
@@ -1148,9 +1154,8 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 					if (forceUp)
 					{
 						IFileStore[] clientFiles = (IFileStore[]) ((filesToBeSynced == null) ? EFSUtils.getFiles(
-								source, true, false, null) : SyncUtils.getUploadFiles(sourceConnectionPoint,
-								destConnectionPoint, filesToBeSynced, monitor));
-						items = syncer.createSyncItems(clientFiles, new IFileStore[0]);
+								source, true, false, null) : EFSUtils.getAllFiles(filesToBeSynced, true, false, monitor));
+						items = syncer.createSyncItems(clientFiles, new IFileStore[0], monitor);
 						Map<String, VirtualFileSyncPair> pairs = new HashMap<String, VirtualFileSyncPair>();
 						for (VirtualFileSyncPair item : items)
 						{
@@ -1173,7 +1178,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 						IFileStore[] serverFiles = (IFileStore[]) ((filesToBeSynced == null) ? EFSUtils.getFiles(dest,
 								true, false, null) : SyncUtils.getDownloadFiles(sourceConnectionPoint,
 								destConnectionPoint, filesToBeSynced, true, monitor));
-						items = syncer.createSyncItems(new IFileStore[0], serverFiles);
+						items = syncer.createSyncItems(new IFileStore[0], serverFiles, monitor);
 						Map<String, VirtualFileSyncPair> pairs = new HashMap<String, VirtualFileSyncPair>();
 						for (VirtualFileSyncPair item : items)
 						{
@@ -1199,11 +1204,11 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 						}
 						else
 						{
-							IFileStore[] clientFiles = SyncUtils.getUploadFiles(sourceConnectionPoint,
+							IFileStore[] clientFiles = EFSUtils.getAllFiles(filesToBeSynced, true, false, monitor);
+							IFileStore[] serverFiles = SyncUtils.getUploadFiles(sourceConnectionPoint,
 									destConnectionPoint, filesToBeSynced, monitor);
-							IFileStore[] serverFiles = SyncUtils.getDownloadFiles(sourceConnectionPoint,
-									destConnectionPoint, filesToBeSynced, true, monitor);
-							items = syncer.createSyncItems(clientFiles, serverFiles);
+
+							items = syncer.createSyncItems(clientFiles, serverFiles, monitor);
 						}
 					}
 				}
@@ -1746,14 +1751,6 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 			syncJob.cancel();
 		}
 		disconnectAndClose();
-	}
-
-	private boolean isCloudSync()
-	{
-		// String property = ProjectSynchronizationUtils.COM_APTANA_IDE_SERVER_CLOUD_SYNCING_CLOUD_VIRTUAL_FILE_MANAGER;
-		// return source.getFileManager().getClass().getName().equals(property) ||
-		// file2.getFileManager().getClass().getName().equals(property);
-		return false;
 	}
 
 	private static String getFilename(VirtualFileSyncPair item)

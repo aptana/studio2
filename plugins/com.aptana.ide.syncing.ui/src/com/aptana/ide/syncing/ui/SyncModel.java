@@ -445,7 +445,7 @@ public class SyncModel extends BaseModelObject implements ILoggable
 									//pair.getDestinationFile().putStream(pair.getSourceFile().openInputStream(EFS.NONE, null));
 									try
 									{
-			            				EFSUtils.setModificationTime(pair.getSourceFile(), pair.getDestinationFile());
+			            				EFSUtils.setModificationTime(pair.getSourceFileInfo().getLastModified(), pair.getDestinationFile());
 									}
 									catch (Exception e)
 									{
