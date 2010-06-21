@@ -288,7 +288,7 @@ public final class EFSUtils
 			fileList.addAll(Arrays.asList(getFiles(files[i], recurse, includeCloakedFiles, monitor)));
 		}
 		return fileList.toArray(new IFileStore[0]);
-	}	
+	}
 	
 	/**
 	 * Returns the files of the filestore array plus all of their children
