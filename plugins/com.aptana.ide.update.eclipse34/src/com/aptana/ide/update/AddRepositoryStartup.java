@@ -1,8 +1,6 @@
 package com.aptana.ide.update;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.eclipse.ui.IStartup;
@@ -40,10 +38,8 @@ public class AddRepositoryStartup implements IStartup {
                     }
                 }
 			}
-		} catch (MalformedURLException e) {
-			IdeLog.logError(P2Activator.getDefault(), e.getMessage(), e);
 		}
-		catch (URISyntaxException e)
+		catch (Exception e)
 		{
 			IdeLog.logError(P2Activator.getDefault(), e.getMessage(), e);
 		}
