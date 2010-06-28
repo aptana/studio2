@@ -559,7 +559,14 @@ public class P2PluginManager extends AbstractPluginManager
 		URL[] urls = ProvisioningHelper.getMetadataRepositories();
 		for (URL url : urls)
 		{
-			uris.add(url.toURI());
+			try
+			{
+				uris.add(url.toURI());
+			}
+			catch (Exception e)
+			{
+				// ignore
+			}
 		}
 		return uris.toArray(new URI[0]);
 	}
