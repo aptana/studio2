@@ -2,14 +2,14 @@
 <!-- ====================================================================== 
      Sep 1, 2009                                                        
 
-     Builds Eclipse 3.4 P2 compatible update plugin used in Aptana Studio.
+     Builds Eclipse 3.6 P2 compatible update plugin used in Aptana Studio.
                    
      cwilliams
      schitale                                                            
      ====================================================================== -->
-<project name="3.4-update-plugin" default="build">
+<project name="3.6-update-plugin" default="build">
 	<description>
-		Builds Eclipse 3.4 P2 compatible update plugin used in Aptana Studio.
+		Builds Eclipse 3.6 P2 compatible update plugin used in Aptana Studio.
     </description>
 
 	<property environment="env" />
