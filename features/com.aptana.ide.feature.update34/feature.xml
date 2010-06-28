@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.aptana.ide.feature.update35"
+      id="com.aptana.ide.feature.update34"
       label="%featureName"
       version="2.0.0.qualifier"
       provider-name="%providerName">
@@ -33,7 +33,7 @@
    </requires>
 
    <plugin
-         id="com.aptana.ide.update.eclipse35"
+         id="com.aptana.ide.update.eclipse34"
          download-size="0"
          install-size="0"
          version="0.0.0"
