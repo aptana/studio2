@@ -38,5 +38,5 @@ public interface IPluginManager
 
 	public String getUpdatePreferencePageId();
 
-	public URI[] getAllMetadataRepositories();
+	public URI[] getAllMetadataRepositories() throws PluginManagerException;
 }

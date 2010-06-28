@@ -598,9 +598,16 @@ public class P2Eclipse35PluginManager extends AbstractPluginManager
 		return id;
 	}
 
-	public URI[] getAllMetadataRepositories()
+	public URI[] getAllMetadataRepositories() throws PluginManagerException
 	{
-		return ProvisioningUtil.getMetadataRepositories(IRepositoryManager.REPOSITORIES_ALL);
+		try 
+		{
+			return ProvisioningUtil.getMetadataRepositories(IRepositoryManager.REPOSITORIES_ALL);	
+		}
+		catch (Exception e)
+		{
+			throw new PluginManagerException(e);
+		}		
 	}
 
 }
