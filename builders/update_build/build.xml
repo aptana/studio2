@@ -112,10 +112,15 @@
 			</fileset>
 		</delete>
 		<copy todir="${baseLocation}/dropins">
-			<fileset dir="${3.5-update-plugin.dir}">
-				<include name="plugins/com.aptana*.jar" />
+			<fileset dir="${3.4-update-plugin.dir}">
+				<include name="plugins/com.aptana.ide.update.*.jar" />
 			</fileset>
 		</copy>
+		<copy todir="${baseLocation}/dropins">
+      <fileset dir="${3.6-update-plugin.dir}">
+        <include name="plugins/com.aptana.ide.update.*.jar" />
+      </fileset>
+    </copy>
 	</target>
 
 	<!-- - - - - - - - - - - - - - - - - - 
