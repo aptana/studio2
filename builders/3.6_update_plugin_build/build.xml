@@ -95,7 +95,7 @@
 		<!-- Copy over the original base eclipse to a new location.
 								Have to use exec cp to retain permissions on *nix, Mac -->
 		<exec executable="cp">
-			<arg line="-R ${vanilla.eclipse} ${baseLocation}" />
+			<arg line="-R ${vanilla.eclipse}/ ${baseLocation}" />
 		</exec>
 	</target>
 
@@ -132,7 +132,7 @@
 		<for param="file">
 			<path>
 				<dirset dir="${buildDirectory}" defaultexcludes="true">
-					<include name="plugins/com.aptana.ide.update.eclipse34" />
+					<include name="plugins/com.aptana.ide.update.eclipse36" />
 				</dirset>
 			</path>
 			<sequential>
