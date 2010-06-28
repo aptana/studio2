@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- ====================================================================== 
-     Sep 1st 2009                                                        
+     Sep 1, 2009                                                        
 
-     Studio    
-     Builds the Studio core features
+     Builds Eclipse 3.4 P2 compatible update plugin used in Aptana Studio.
                    
      cwilliams
-     schitale                                                               
+     schitale                                                            
      ====================================================================== -->
-<project name="ide-core" default="build">
+<project name="3.4-update-plugin" default="build">
 	<description>
-            Builds the Studio feature
+		Builds Eclipse 3.4 P2 compatible update plugin used in Aptana Studio.
     </description>
 
 	<property environment="env" />
@@ -30,12 +29,9 @@
           target: build              
          ================================= -->
 	<target name="build" description="Builds the Studio feature" depends="generate.build.properties,get.revision,replace.versions,generate.base">
-		<delete dir="${buildDirectory}/plugins/com.aptana.ide.update.eclipse34" />
-		<delete dir="${buildDirectory}/plugins/com.aptana.ide.update.eclipse36" />
 		<java jar="${baseLocation}/plugins/${launcher.plugin}.jar" fork="true" failonerror="yes">
 			<arg line="-application org.eclipse.ant.core.antRunner -buildfile ${baseLocation}/plugins/${builder.plugin}/scripts/build.xml -Dbuilder=${basedir} -Dbuild.revision=${build.revision} -nosplash" />
 		</java>
-		<antcall target="categorize" />
 		<antcall target="clean.after" />
 	</target>
 
@@ -52,20 +48,6 @@
 				<propertyref prefix="sun." />
 			</propertyset>
 		</echoproperties>
-	</target>
-
-	<!-- ================================= 
-         target: categorize              
-        ================================= -->
-	<target name="categorize" description="categorize the update site">
-		<java jar="${baseLocation}/plugins/${launcher.plugin}.jar" fork="true" failonerror="yes">
-			<arg line="-application org.eclipse.equinox.p2.publisher.CategoryPublisher -nosplash -console -consolelog -metadataRepository file:${deploy.dir} -categoryDefinition file:${deploy.dir}/site.xml" />
-		</java>
-		<!-- Re-JAR the content.xml file! -->
-		<jar destfile="${deploy.dir}/content.jar">
-			<fileset file="${deploy.dir}/content.xml" />
-		</jar>
-		<delete file="${deploy.dir}/content.xml" />
 	</target>
 
 	<!-- ================================= 
@@ -87,7 +69,7 @@
 		<delete dir="${baseLocation}" />
 		<delete dir="${buildDirectory}/features/org.eclipse.pde.build.container.feature" failonerror="false" />
 		<delete dir="${p2.repo.dir}" failonerror="false" />
-		<!-- Do a git checkout -f of the build directory -->
+		<!-- Do an git checkout of the build directory -->
 		<exec executable="/bin/bash" dir="${buildDirectory}">
 			<arg value="-c" />
 			<arg value="${git.executable} checkout -f" />
@@ -104,19 +86,7 @@
 	<!-- - - - - - - - - - - - - - - - - - 
           target: generate.base                      
          - - - - - - - - - - - - - - - - - -->
-	<target name="generate.base" depends="copy.base.windows,copy.base">
-		<!-- Workaround for https://bugs.eclipse.org/241430 shouldn't be necessary when we move to 3.5 -->
-		<delete failonerror="false">
-			<fileset dir="${baseLocation}/configuration/.settings">
-				<include name="org.eclipse.equinox.p2.*.repository.prefs" />
-			</fileset>
-		</delete>
-		<copy todir="${baseLocation}/dropins">
-			<fileset dir="${3.5-update-plugin.dir}">
-				<include name="plugins/com.aptana*.jar" />
-			</fileset>
-		</copy>
-	</target>
+	<target name="generate.base" depends="copy.base.windows,copy.base" />
 
 	<!-- - - - - - - - - - - - - - - - - - 
           target: copy.base                      
@@ -162,9 +132,7 @@
 		<for param="file">
 			<path>
 				<dirset dir="${buildDirectory}" defaultexcludes="true">
-					<include name="plugins/*" />
-					<include name="features/*" />
-					<exclude name="${topLevelElementType}s/${topLevelElementId}" />
+					<include name="plugins/com.aptana.ide.update.eclipse34" />
 				</dirset>
 			</path>
 			<sequential>

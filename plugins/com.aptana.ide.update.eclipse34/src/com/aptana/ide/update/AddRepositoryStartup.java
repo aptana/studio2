@@ -1,15 +1,12 @@
 package com.aptana.ide.update;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.eclipse.ui.IStartup;
-
-import org.eclipse.equinox.internal.p2.console.ProvisioningHelper;
 import org.osgi.framework.Version;
-
-import com.aptana.ide.update.internal.manager.P2PluginManager;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.PluginUtils;
@@ -31,27 +28,28 @@ public class AddRepositoryStartup implements IStartup {
 				return;
 			}
 			Version pluginVersion = new Version(pluginVersionString);
-			if (pluginVersion == null) {
-				return;
-			}
 			
 			if (versionRange.isIncluded(pluginVersion)) {
 				IPluginManager pluginManager = Activator.getDefault().getPluginManager();
-				URL[] existingMetaRepos = ProvisioningHelper.getMetadataRepositories();
-				URL siteURL;
+				URI[] existingMetaRepos = pluginManager.getAllMetadataRepositories();
+				URI siteURL;
                 for (String site : SITES) {
-                    siteURL = new URL(site);
+                    siteURL = new URI(site);
                     if (!contains(existingMetaRepos, siteURL)) {
-                        pluginManager.addUpdateSite(siteURL);
+                        pluginManager.addUpdateSite(siteURL.toURL());
                     }
                 }
 			}
 		} catch (MalformedURLException e) {
 			IdeLog.logError(P2Activator.getDefault(), e.getMessage(), e);
 		}
+		catch (URISyntaxException e)
+		{
+			IdeLog.logError(P2Activator.getDefault(), e.getMessage(), e);
+		}
 	}
 		
-	private static boolean contains(URL[] existingMetaRepos, URL updateSiteURL)
+	private static boolean contains(URI[] existingMetaRepos, URI updateSiteURL)
 	{
 		if (existingMetaRepos == null)
 			return false;
