@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse36
+Bundle-Name: Aptatna Updates for Eclipse 3.6
 Bundle-SymbolicName: com.aptana.ide.update.eclipse36;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.aptana.ide.update.eclipse36.Activator
-Bundle-Vendor: APTANA
+Bundle-Vendor: Aptana, Inc.
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.update.core,
  org.eclipse.ui,

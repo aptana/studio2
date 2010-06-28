@@ -2,6 +2,7 @@ package com.aptana.ide.update.internal.manager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -550,5 +551,16 @@ public class P2PluginManager extends AbstractPluginManager
 		if (id.endsWith(FEATURE_IU_SUFFIX))
 			return id.substring(0, id.length() - FEATURE_IU_SUFFIX.length());
 		return id;
+	}
+
+	public URI[] getAllMetadataRepositories()
+	{
+		List<URI> uris = new ArrayList<URI>();
+		URL[] urls = ProvisioningHelper.getMetadataRepositories();
+		for (URL url : urls)
+		{
+			uris.add(url.toURI());
+		}
+		return uris.toArray(new URI[0]);
 	}
 }

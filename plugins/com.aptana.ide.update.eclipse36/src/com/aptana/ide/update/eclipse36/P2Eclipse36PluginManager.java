@@ -301,7 +301,7 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 						URI siteURL = plugin.getURL().toURI();
 
 						IMetadataRepositoryManager manager = getMetadataRepositoryManager();
-						IMetadataRepository repo = manager.loadRepository(siteURL, new NullProgressMonitor());
+						IMetadataRepository repo = manager.loadRepository(siteURL, sub.newChild(1));
 						if (repo == null)
 						{
 							throw new ProvisionException(
@@ -311,11 +311,9 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 						{
 							manager.setEnabled(siteURL, true);
 						}
-						sub.worked(1);
 
 						IArtifactRepositoryManager artifactManager = getArtifactRepositoryManager();
-						IArtifactRepository artifactRepo = artifactManager.loadRepository(siteURL,
-								new NullProgressMonitor());
+						IArtifactRepository artifactRepo = artifactManager.loadRepository(siteURL, sub.newChild(1));
 						if (artifactRepo == null)
 						{
 							throw new ProvisionException(
@@ -325,11 +323,10 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 						{
 							artifactManager.setEnabled(siteURL, true);
 						}
-						sub.worked(1);
 
 						IQuery<IInstallableUnit> query = QueryUtil.createIUQuery(getFeatureGroupName(plugin));
 						query = QueryUtil.createLatestQuery(query);
-						IQueryResult<IInstallableUnit> roots = repo.query(query, monitor);
+						IQueryResult<IInstallableUnit> roots = repo.query(query, sub.newChild(2));
 
 						if (roots.isEmpty())
 						{
@@ -343,10 +340,9 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 							{
 								profile = getFirstProfile();
 							}
-							roots = profile.query(query, monitor);
+							roots = profile.query(query, sub.newChild(2));
 						}
 						units.addAll(roots.toUnmodifiableSet());
-						sub.worked(2);
 					}
 				}
 				catch (Exception e)
