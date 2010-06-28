@@ -67,6 +67,7 @@ import org.eclipse.equinox.p2.operations.UninstallOperation;
 import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.IQueryResult;
 import org.eclipse.equinox.p2.query.QueryUtil;
+import org.eclipse.equinox.p2.repository.IRepositoryManager;
 import org.eclipse.equinox.p2.repository.artifact.IArtifactRepository;
 import org.eclipse.equinox.p2.repository.artifact.IArtifactRepositoryManager;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepository;
@@ -208,8 +209,7 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 			}
 			catch (URISyntaxException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				IdeLog.logError(Activator.getDefault(), e.getMessage(), e);
 			}
 		}
 		return uris.toArray(new URI[0]);
@@ -225,7 +225,6 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 			return Status.CANCEL_STATUS;
 		}
 
-		String profileId = IProfileRegistry.SELF;
 		IQueryResult<IInstallableUnit> result = null;
 		try
 		{
@@ -424,7 +423,7 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 
 		IQuery<IInstallableUnit> query = QueryUtil.createIUQuery(id);
 		query = QueryUtil.createLimitQuery(query, 1);
-		// TODO Limit to latest?
+
 		IQueryResult<IInstallableUnit> roots = profile.available(query, new NullProgressMonitor());
 		if (roots == null || roots.isEmpty())
 			return null;
@@ -536,6 +535,12 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 		if (id.endsWith(FEATURE_IU_SUFFIX))
 			return id.substring(0, id.length() - FEATURE_IU_SUFFIX.length());
 		return id;
+	}
+
+	public URI[] getAllMetadataRepositories()
+	{
+		IMetadataRepositoryManager manager = getMetadataRepositoryManager();
+		return manager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL);
 	}
 
 }

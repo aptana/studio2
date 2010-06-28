@@ -1,5 +1,6 @@
 package com.aptana.ide.update.manager;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
@@ -36,4 +37,6 @@ public interface IPluginManager
 	public IPlugin getInstalledFeature(String id);
 
 	public String getUpdatePreferencePageId();
+
+	public URI[] getAllMetadataRepositories();
 }

@@ -110,7 +110,7 @@ public class P2Eclipse35PluginManager extends AbstractPluginManager
 		try
 		{
 			URI siteURI = siteURL.toURI();
-			URI[] existingMetaRepos = ProvisioningUtil.getMetadataRepositories(IRepositoryManager.REPOSITORIES_ALL);
+			URI[] existingMetaRepos = getAllMetadataRepositories();
 			if (contains(existingMetaRepos, siteURI))
 			{
 				return false;
@@ -596,6 +596,11 @@ public class P2Eclipse35PluginManager extends AbstractPluginManager
 		if (id.endsWith(FEATURE_IU_SUFFIX))
 			return id.substring(0, id.length() - FEATURE_IU_SUFFIX.length());
 		return id;
+	}
+
+	public URI[] getAllMetadataRepositories()
+	{
+		return ProvisioningUtil.getMetadataRepositories(IRepositoryManager.REPOSITORIES_ALL);
 	}
 
 }
