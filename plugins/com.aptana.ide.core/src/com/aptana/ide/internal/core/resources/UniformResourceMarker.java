@@ -34,18 +34,21 @@
  */
 package com.aptana.ide.internal.core.resources;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.eclipse.core.internal.resources.IMarkerSetElement;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.internal.resources.IMarkerSetElement;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.Status;
 
 import com.aptana.ide.core.AptanaCorePlugin;
+import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.resources.IUniformResource;
 import com.aptana.ide.core.resources.IUniformResourceMarker;
 
@@ -215,9 +218,25 @@ public class UniformResourceMarker extends PlatformObject implements IUniformRes
 	public void setAttribute(String attributeName, Object value) throws CoreException {
 		MarkerInfo info = getInfo();
 		checkInfo(info);
-		info.setAttribute(attributeName, value);
-		IMarkerSetElement[] changes = new IMarkerSetElement[] { new MarkerDelta(IResourceDelta.CHANGED,resource,info) };
-		getMarkerManager().changedMarkers(resource, changes);
+		try
+		{
+			Method m = info.getClass().getDeclaredMethod("setAttribute", String.class, Object.class, Boolean.class);
+			if (m != null)
+			{
+				m.invoke(info, attributeName, value, true);
+			}
+			else
+			{
+				m = info.getClass().getDeclaredMethod("setAttribute", String.class, Object.class);
+				m.invoke(info, attributeName, value);
+			}
+			IMarkerSetElement[] changes = new IMarkerSetElement[] { new MarkerDelta(IResourceDelta.CHANGED,resource,info) };
+			getMarkerManager().changedMarkers(resource, changes);
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(AptanaCorePlugin.getDefault(), e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -233,9 +252,27 @@ public class UniformResourceMarker extends PlatformObject implements IUniformRes
 	public void setAttributes(String[] attributeNames, Object[] values) throws CoreException {
 		MarkerInfo info = getInfo();
 		checkInfo(info);
-		info.setAttributes(attributeNames, values);
-		IMarkerSetElement[] changes = new IMarkerSetElement[] { new MarkerDelta(IResourceDelta.CHANGED,resource,info) };
-		getMarkerManager().changedMarkers(resource, changes);
+		
+		try
+		{
+			Method m = info.getClass().getDeclaredMethod("setAttributes", String[].class, Object[].class, Boolean.class);
+			if (m != null)
+			{
+				m.invoke(info, attributeNames, values, true);
+			}
+			else
+			{
+				m = info.getClass().getDeclaredMethod("setAttributes", String.class, Object.class);
+				m.invoke(info, attributeNames, values);
+			}
+			
+			IMarkerSetElement[] changes = new IMarkerSetElement[] { new MarkerDelta(IResourceDelta.CHANGED,resource,info) };
+			getMarkerManager().changedMarkers(resource, changes);
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(AptanaCorePlugin.getDefault(), e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -244,9 +281,27 @@ public class UniformResourceMarker extends PlatformObject implements IUniformRes
 	public void setAttributes(Map attributes) throws CoreException {
 		MarkerInfo info = getInfo();
 		checkInfo(info);
-		info.setAttributes(attributes);
-		IMarkerSetElement[] changes = new IMarkerSetElement[] { new MarkerDelta(IResourceDelta.CHANGED,resource,info) };
-		getMarkerManager().changedMarkers(resource, changes);
+		
+		try
+		{
+			Method m = info.getClass().getDeclaredMethod("setAttributes", Map.class, Boolean.class);
+			if (m != null)
+			{
+				m.invoke(info, attributes, true);
+			}
+			else
+			{
+				m = info.getClass().getDeclaredMethod("setAttributes", Map.class);
+				m.invoke(info, attributes);
+			}
+			
+			IMarkerSetElement[] changes = new IMarkerSetElement[] { new MarkerDelta(IResourceDelta.CHANGED,resource,info) };
+			getMarkerManager().changedMarkers(resource, changes);
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(AptanaCorePlugin.getDefault(), e.getMessage(), e);
+		}
 	}
 
 	/**
