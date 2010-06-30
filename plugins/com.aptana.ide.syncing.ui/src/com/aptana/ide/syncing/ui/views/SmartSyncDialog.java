@@ -1336,7 +1336,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 
 		};
 		buildSmartSync.setPriority(Job.LONG);
-		buildSmartSync.setSystem(true);
+		buildSmartSync.setSystem(false);
 		buildSmartSync.schedule();
 	}
 
