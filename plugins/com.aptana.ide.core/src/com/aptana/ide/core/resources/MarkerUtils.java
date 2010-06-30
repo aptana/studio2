@@ -34,12 +34,16 @@
  */
 package com.aptana.ide.core.resources;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 
+import com.aptana.ide.core.AptanaCorePlugin;
+import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.internal.core.resources.MarkerInfo;
 import com.aptana.ide.internal.core.resources.MarkerManager;
 import com.aptana.ide.internal.core.resources.UniformResourceMarker;
@@ -69,8 +73,24 @@ public final class MarkerUtils {
 		info.setType(markerType);
 		info.setCreationTime(System.currentTimeMillis());
 		if ( attributes != null )
-		{
-			info.setAttributes(attributes);
+		{			
+			try
+			{
+				Method m = info.getClass().getDeclaredMethod("setAttributes", Map.class, Boolean.class);
+				if (m != null)
+				{
+					m.invoke(info, attributes, true);
+				}
+				else
+				{
+					m = info.getClass().getDeclaredMethod("setAttributes", Map.class);
+					m.invoke(info, attributes);
+				}
+			}
+			catch (Exception e)
+			{
+				IdeLog.logError(AptanaCorePlugin.getDefault(), e.getMessage(), e);
+			}			
 		}
 		getMarkerManager().add(resource, info);
 		return new UniformResourceMarker(resource, info.getId());

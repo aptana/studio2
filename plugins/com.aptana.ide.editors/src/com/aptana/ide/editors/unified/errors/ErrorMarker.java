@@ -34,6 +34,7 @@
  */
 package com.aptana.ide.editors.unified.errors;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.eclipse.core.internal.resources.MarkerInfo;
@@ -42,6 +43,9 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.PlatformObject;
+
+import com.aptana.ide.core.IdeLog;
+import com.aptana.ide.editors.UnifiedEditorsPlugin;
 
 /**
  * ErrorMarker
@@ -220,15 +224,47 @@ public class ErrorMarker extends PlatformObject implements IMarker
 	 */
 	public void setAttribute(String attributeName, int value)
 	{
-		info.setAttribute(attributeName, new Integer(value));
+		try
+		{
+			Method m = info.getClass().getMethod("setAttribute", String.class, Object.class, Boolean.class);
+			if (m == null)
+			{
+				m = info.getClass().getMethod("setAttribute", String.class, Object.class);
+				m.invoke(info, attributeName, new Integer(value));
+			}
+			else
+			{
+				m.invoke(info, attributeName, new Integer(value), true);
+			}
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
+		}		
 	}
 
 	/**
 	 * @see org.eclipse.core.resources.IMarker#setAttribute(java.lang.String, java.lang.Object)
 	 */
 	public void setAttribute(String attributeName, Object value)
-	{
-		info.setAttribute(attributeName, value);
+	{		
+		try
+		{
+			Method m = info.getClass().getMethod("setAttribute", String.class, Object.class, Boolean.class);
+			if (m == null)
+			{
+				m = info.getClass().getMethod("setAttribute", String.class, Object.class);
+				m.invoke(info, attributeName, value);
+			}
+			else
+			{
+				m.invoke(info, attributeName, value, true);
+			}
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -236,7 +272,23 @@ public class ErrorMarker extends PlatformObject implements IMarker
 	 */
 	public void setAttribute(String attributeName, boolean value)
 	{
-		info.setAttribute(attributeName, Boolean.valueOf(value));
+		try
+		{
+			Method m = info.getClass().getMethod("setAttribute", String.class, Object.class, Boolean.class);
+			if (m == null)
+			{
+				m = info.getClass().getMethod("setAttribute", String.class, Object.class);
+				m.invoke(info, attributeName, value);
+			}
+			else
+			{
+				m.invoke(info, attributeName, value, true);
+			}
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -244,7 +296,23 @@ public class ErrorMarker extends PlatformObject implements IMarker
 	 */
 	public void setAttributes(String[] attributeNames, Object[] values)
 	{
-		info.setAttributes(attributeNames, values);
+		try
+		{
+			Method m = info.getClass().getMethod("setAttributes", String[].class, Object[].class, Boolean.class);
+			if (m == null)
+			{
+				m = info.getClass().getMethod("setAttributes", String[].class, Object[].class);
+				m.invoke(info, attributeNames, values);
+			}
+			else
+			{
+				m.invoke(info, attributeNames, values, true);
+			}
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
+		}		
 	}
 
 	/**
@@ -252,6 +320,22 @@ public class ErrorMarker extends PlatformObject implements IMarker
 	 */
 	public void setAttributes(Map attributes)
 	{
-		info.setAttributes(attributes);
+		try
+		{
+			Method m = info.getClass().getMethod("setAttributes", Map.class, Boolean.class);
+			if (m == null)
+			{
+				m = info.getClass().getMethod("setAttributes", Map.class);
+				m.invoke(info, attributes);
+			}
+			else
+			{
+				m.invoke(info, attributes, true);
+			}
+		}
+		catch (Exception e)
+		{
+			IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
+		}
 	}
 }

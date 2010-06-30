@@ -2,14 +2,14 @@
 <!-- ====================================================================== 
      Sep 1, 2009                                                        
 
-     Builds Eclipse 3.5 P2 compatible update plugin used in Aptana Studio.
+     Builds Eclipse 3.6 P2 compatible update plugin used in Aptana Studio.
                    
      cwilliams
      schitale                                                            
      ====================================================================== -->
-<project name="3.5-update-plugin" default="build">
+<project name="3.6-update-plugin" default="build">
 	<description>
-		Builds Eclipse 3.5 P2 compatible update plugin used in Aptana Studio.
+		Builds Eclipse 3.6 P2 compatible update plugin used in Aptana Studio.
     </description>
 
 	<property environment="env" />
@@ -95,7 +95,7 @@
 		<!-- Copy over the original base eclipse to a new location.
 								Have to use exec cp to retain permissions on *nix, Mac -->
 		<exec executable="cp">
-			<arg line="-R ${vanilla.eclipse} ${baseLocation}" />
+			<arg line="-R ${vanilla.eclipse}/ ${baseLocation}" />
 		</exec>
 	</target>
 
@@ -132,7 +132,7 @@
 		<for param="file">
 			<path>
 				<dirset dir="${buildDirectory}" defaultexcludes="true">
-					<include name="plugins/com.aptana.ide.update.eclipse34" />
+					<include name="plugins/com.aptana.ide.update.eclipse36" />
 				</dirset>
 			</path>
 			<sequential>
