@@ -77,7 +77,8 @@ public final class EFSUtils
 		return WorkspaceFileSystem.getInstance().getStore(resource.getFullPath());
 	}
 
-	public static IFileStore getFileStore(File file) {
+	public static IFileStore getFileStore(File file)
+	{
 		return new LocalFile(file);
 	}
 
@@ -112,8 +113,6 @@ public final class EFSUtils
 		return getFiles(file, false, true);
 	}
 
-
-
 	/**
 	 * Returns the child files of the filestore
 	 * 
@@ -142,7 +141,7 @@ public final class EFSUtils
 	{
 		return getFiles(file, recurse, includeCloakedFiles, null);
 	}
-	
+
 	/**
 	 * Returns the parent file of this file
 	 * 
@@ -275,7 +274,7 @@ public final class EFSUtils
 		result = list.toArray(new IFileStore[0]);
 		return result;
 	}
-	
+
 	/**
 	 * Returns the child files of the filestore array
 	 * 
@@ -293,7 +292,7 @@ public final class EFSUtils
 		}
 		return fileList.toArray(new IFileStore[0]);
 	}
-	
+
 	/**
 	 * Returns the files of the filestore array plus all of their children
 	 * 
@@ -309,19 +308,23 @@ public final class EFSUtils
 		IFileStore[] childFiles = getFiles(files, true, false, monitor);
 		fileList.addAll(Arrays.asList(childFiles));
 		return fileList.toArray(new IFileStore[0]);
-	}	
+	}
 
 	/**
 	 * Creates a sub progress monitor
+	 * 
 	 * @param monitor
 	 * @param ticks
 	 * @return
 	 */
-	private static IProgressMonitor subMonitorFor(IProgressMonitor monitor, int ticks) {
-		if (monitor == null) {
+	private static IProgressMonitor subMonitorFor(IProgressMonitor monitor, int ticks)
+	{
+		if (monitor == null)
+		{
 			return new NullProgressMonitor();
 		}
-		if (monitor instanceof NullProgressMonitor) {
+		if (monitor instanceof NullProgressMonitor)
+		{
 			return monitor;
 		}
 		return new SubProgressMonitor(monitor, ticks);
@@ -346,13 +349,9 @@ public final class EFSUtils
 		monitor = Policy.monitorFor(monitor);
 		Policy.checkCanceled(monitor);
 
-		if(isFolder(file, monitor)) {
-
-			//long start = System.currentTimeMillis();
+		if (isFolder(file, monitor))
+		{
 			IFileStore[] children = file.childStores(EFS.NONE, monitor);
-			//System.out.println(MessageFormat.format("Fetched children of {0}", file.toString()));			
-			//System.out.println(MessageFormat.format("Completed in {0} ms.", System.currentTimeMillis() - start));
-
 			if (children != null)
 			{
 
@@ -371,38 +370,44 @@ public final class EFSUtils
 						addingFile = true;
 						subMonitor.worked(1);
 					}
-					
+
 					if (recurse && addingFile && isFolder(child, monitor))
 					{
 						getFiles(child, recurse, list, includeCloakedFiles, subMonitor);
 					}
 				}
-				
+
 				subMonitor.done();
-				
+
 			}
 		}
 	}
-	
+
 	/**
 	 * Determines if the listed item is a file or a folder.
+	 * 
 	 * @param file
 	 * @param monitor
 	 * @return
 	 * @throws CoreException
 	 */
-	private static boolean isFolder(IFileStore file, IProgressMonitor monitor) throws CoreException {
-		
+	private static boolean isFolder(IFileStore file, IProgressMonitor monitor) throws CoreException
+	{
+
 		// if we are an IContainer, folder == true;
 		// if we are an IFile, folder == false
 		// if neither, then check info for isDirectory()
-		IResource resource = (IResource)file.getAdapter(IResource.class);
-		if(resource instanceof IContainer) {
+		IResource resource = (IResource) file.getAdapter(IResource.class);
+		if (resource instanceof IContainer)
+		{
 			return true;
-		} else if (!(resource instanceof IFile) && file.fetchInfo(EFS.NONE, monitor).isDirectory()) {
-			return true;					
 		}
-		else {
+		else if (!(resource instanceof IFile) && file.fetchInfo(EFS.NONE, monitor).isDirectory())
+		{
+			return true;
+		}
+		else
+		{
 			return false;
 		}
 	}
