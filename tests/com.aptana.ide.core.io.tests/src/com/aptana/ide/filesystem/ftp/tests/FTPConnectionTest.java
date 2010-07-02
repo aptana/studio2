@@ -35,9 +35,7 @@
 
 package com.aptana.ide.filesystem.ftp.tests;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
@@ -45,43 +43,23 @@ import org.junit.Before;
 import com.aptana.ide.core.io.tests.CommonConnectionTest;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
 
-
 /**
  * @author Max Stepanov
- *
  */
-public class FTPConnectionTest extends CommonConnectionTest {
-
+public class FTPConnectionTest extends CommonConnectionTest
+{
 	@Override
 	@Before
-	public final void initialize() throws CoreException, IOException {
-		
-		Properties props = new Properties();
-		FileInputStream inStream = new FileInputStream(System.getenv().get("junit.properties"));
-		props.load(inStream);
-
+	public final void initialize() throws CoreException, IOException
+	{
 		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
-		ftpcp.setHost(props.getProperty("ftp.host")); //$NON-NLS-1$
-		ftpcp.setLogin(props.getProperty("ftp.username")); //$NON-NLS-1$
-		ftpcp.setPassword(props.getProperty("ftp.password").toCharArray());
+		ftpcp.setHost(getConfig().getProperty("ftp.host", "10.10.1.60")); //$NON-NLS-1$ //$NON-NLS-2$
+		ftpcp.setLogin(getConfig().getProperty("ftp.username", "ftpuser")); //$NON-NLS-1$ //$NON-NLS-2$
+		ftpcp.setPassword(getConfig().getProperty("ftp.password", //$NON-NLS-1$
+				String.valueOf(new char[] { 'l', 'e', 't', 'm', 'e', 'i', 'n' })).toCharArray());
+		supportsChangeGroup = Boolean.valueOf(getConfig().getProperty("ftp.supportsChangeGroup", "false"));
+		supportsChangePermissions = Boolean.valueOf(getConfig().getProperty("ftp.supportsChangePermissions", "true"));
 		cp = ftpcp;
 		super.initialize();
 	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.tests.CommonConnectionTest#supportsChangeGroup()
-	 */
-	@Override
-	protected boolean supportsChangeGroup() {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.tests.CommonConnectionTest#supportsChangePermissions()
-	 */
-	@Override
-	protected boolean supportsChangePermissions() {
-		return false;
-	}
-
 }

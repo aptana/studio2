@@ -43,6 +43,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +55,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Properties;
 import java.util.Random;
 
 import org.eclipse.core.filesystem.EFS;
@@ -80,6 +82,8 @@ import com.aptana.ide.core.io.vfs.IExtendedFileStore;
  */
 public abstract class CommonConnectionTest
 {
+	protected boolean supportsChangeGroup = false;
+	protected boolean supportsChangePermissions = false;
 
 	protected static final long ALLOWED_TIME_DIFFERENCE = 15 * 60 * 1000; /* 15 minute difference */
 
@@ -102,6 +106,22 @@ public abstract class CommonConnectionTest
 
 	protected IConnectionPoint cp;
 	private IPath testPath;
+
+	private static Properties cachedProperties;
+
+	protected static final Properties getConfig() {
+		if (cachedProperties == null) {
+			cachedProperties = new Properties();
+			String propertiesFile = System.getenv("junit.properties");
+			if (propertiesFile != null && new File(propertiesFile).length() > 0) {
+				try {
+					cachedProperties.load(new FileInputStream(propertiesFile));
+				} catch (IOException ignore) {
+				}
+			}
+		}
+		return cachedProperties;
+	}
 
 	protected void initialize() throws CoreException, FileNotFoundException, IOException
 	{
@@ -622,7 +642,7 @@ public abstract class CommonConnectionTest
 
 	protected boolean supportsChangePermissions()
 	{
-		return false;
+		return supportsChangePermissions;
 	}
 
 	@Test
@@ -656,7 +676,7 @@ public abstract class CommonConnectionTest
 
 	protected boolean supportsChangeGroup()
 	{
-		return false;
+		return supportsChangeGroup;
 	}
 
 	@Test
