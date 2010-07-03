@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -57,6 +58,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -74,6 +77,7 @@ import org.eclipse.ui.PlatformUI;
 import com.aptana.ide.core.CoreStrings;
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.syncing.ConnectionPointSyncPair;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.ui.CoreUIUtils;
 import com.aptana.ide.syncing.core.DefaultSiteConnection;
@@ -114,6 +118,8 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 
 	private ISiteConnection fSelectedSite;
 	private List<Listener> fListeners;
+	
+	private ConnectionPointComposite focusedConnection;
 
 	public FTPManagerComposite(Composite parent)
 	{
@@ -348,6 +354,20 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 		fSource = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Source, this);
 		fSource.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+		fSource.addTreeFocusListener(new FocusListener()
+		{
+			
+			public void focusLost(FocusEvent e)
+			{
+				focusedConnection = null;
+			}
+			
+			public void focusGained(FocusEvent e)
+			{
+				focusedConnection = fSource;
+			}
+		});
+		
 		final Sash leftSash = new Sash(main, SWT.VERTICAL);
 		leftSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
 
@@ -382,6 +402,20 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 		// destination end point
 		fTarget = new ConnectionPointComposite(main, Messages.FTPManagerComposite_LBL_Target, this);
 		fTarget.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		fTarget.addTreeFocusListener(new FocusListener()
+		{
+			
+			public void focusLost(FocusEvent e)
+			{
+				focusedConnection = null;
+			}
+			
+			public void focusGained(FocusEvent e)
+			{
+				focusedConnection = fTarget;
+			}
+		});
 
 		leftSash.addSelectionListener(new SelectionAdapter()
 		{
@@ -512,30 +546,50 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 
 		IConnectionPoint source = selection.getSource();
 		IConnectionPoint dest = selection.getDestination();
-		IFileStore sourceStore = SyncUtils.getFileStore(fSource.getCurrentInput());
-		IFileStore targetStore = SyncUtils.getFileStore(fTarget.getCurrentInput());
+		
+        ConnectionPointSyncPair cpsp = new ConnectionPointSyncPair(source, dest);
 
 		SmartSyncDialog dialog;
-		dialog = new SmartSyncDialog(CoreUIUtils.getActiveShell(), source, dest, sourceStore, targetStore, source
-				.getName(), dest.getName());
-		dialog.open();
-		dialog.setHandler(new SyncEventHandlerAdapter()
+		try
 		{
-			public void syncDone(VirtualFileSyncPair item)
+	        if(focusedConnection == null) {
+	    		IFileStore sourceStore = SyncUtils.getFileStore(fSource.getCurrentInput());
+	    		IFileStore targetStore = SyncUtils.getFileStore(fTarget.getCurrentInput());
+    			dialog = new SmartSyncDialog(CoreUIUtils.getActiveShell(), source, dest, sourceStore, targetStore, source
+    					.getName(), dest.getName());
+	        }
+	        else
+	        {
+    			IFileStore[] sourceStores = SyncUtils.getFileStores(focusedConnection.getSelectedElements());
+	    		dialog = new SmartSyncDialog(CoreUIUtils.getActiveShell(), cpsp, sourceStores);	        	
+	        }
+	        
+	    	dialog.open();
+			dialog.setHandler(new SyncEventHandlerAdapter()
 			{
-				IOUIPlugin.refreshNavigatorView(fSource.getCurrentInput());
-				IOUIPlugin.refreshNavigatorView(fTarget.getCurrentInput());
-				CoreUIUtils.getDisplay().asyncExec(new Runnable()
+				public void syncDone(VirtualFileSyncPair item)
 				{
-
-					public void run()
+					IOUIPlugin.refreshNavigatorView(fSource.getCurrentInput());
+					IOUIPlugin.refreshNavigatorView(fTarget.getCurrentInput());
+					CoreUIUtils.getDisplay().asyncExec(new Runnable()
 					{
-						fSource.refresh();
-						fTarget.refresh();
-					}
-				});
-			}
-		});
+
+						public void run()
+						{
+							fSource.refresh();
+							fTarget.refresh();
+						}
+					});
+				}
+			});
+		}
+		catch (CoreException e)
+		{
+			ErrorDialog.openError(CoreUIUtils.getActiveShell(),
+					"Error opening Synchronize dialog",
+					"Unable to open synchronize dialog. It appears either the source or destination endpoint is invalid",
+					e.getStatus());
+		}
 	}
 
 	private void transferSourceToDestination()

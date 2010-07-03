@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.aptana.ide.update.manager">
+      <manager
+            class="com.aptana.ide.update.eclipse36.P2Eclipse36PluginManager">
+      </manager>
+   </extension>
+
+</plugin>

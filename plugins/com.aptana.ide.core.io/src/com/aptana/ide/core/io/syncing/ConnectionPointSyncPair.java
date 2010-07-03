@@ -65,8 +65,6 @@ public class ConnectionPointSyncPair
 	private String _nickName = StringUtils.EMPTY;
 	private IConnectionPoint _sourceFileManager = null;
 	private IConnectionPoint _destinationFileManager = null;
-	private String sourceId = "-1";
-	private String destId = "-1";
 	private int _syncOption = 0;
 	private boolean _useCRC = false;
 	private boolean _deleteRemoteFiles = false;
@@ -80,6 +78,15 @@ public class ConnectionPointSyncPair
 	 */
 	public ConnectionPointSyncPair()
 	{
+	}
+	
+	/**
+	 * SyncItem
+	 */
+	public ConnectionPointSyncPair(IConnectionPoint source, IConnectionPoint dest)
+	{
+		_sourceFileManager = source;
+		_destinationFileManager = dest;
 	}
 
 	/*
