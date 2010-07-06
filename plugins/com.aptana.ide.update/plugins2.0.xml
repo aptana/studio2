@@ -1,17 +1,17 @@
 <plugins>
 	<installer>
-		<id>installer.platforms</id>
-		<category>Web Application Platforms</category>
+		<id>installer.featured</id>
+		<category>Featured Plugins</category>
 		<sortweight>0</sortweight>
 	</installer>
 	<installer>
-		<id>installer.featured</id>
-		<category>Featured Plugins (Sponsored Links)</category>
+		<id>installer.platforms</id>
+		<category>Web Application Platforms</category>
 		<sortweight>1</sortweight>
 	</installer>
 	<installer>
-		<id>installer.ajax</id>
-		<category>Ajax Libraries</category>
+		<id>installer.jslib</id>
+		<category>JavaScript Libraries</category>
 		<sortweight>2</sortweight>
 		<collapse>true</collapse>
 	</installer>
@@ -22,45 +22,34 @@
 		<collapse>true</collapse>
 	</installer>
 	<installer>
-		<id>installer.hosting</id>
-		<category>Hosting</category>
+		<id>installer.mobile</id>
+		<category>Mobile Application Platforms</category>
 		<sortweight>4</sortweight>
+		<collapse>true</collapse>
+	</installer>
+	<installer>
+		<id>installer.database</id>
+		<category>Database Utilities</category>
+		<sortweight>5</sortweight>
 		<collapse>true</collapse>
 	</installer>
 	<installer>
 		<id>installer.others</id>
 		<category>Others</category>
-		<sortweight>5</sortweight>
+		<sortweight>6</sortweight>
 		<collapse>true</collapse>
 	</installer>
 	<installer>
-		<id>installer.others.scm</id>
-		<category>SCM Plugins</category>
+		<id>installer.others.source</id>
+		<category>Source Control</category>
 		<parent>installer.others</parent>
 		<sortweight>0</sortweight>
 	</installer>
 	<plugin>
-		<id>com.aptana.ide.feature.server.cloud</id>
-		<name>Joyent Cloud</name>
-		<category>Platforms</category> 
-		<description>Easy Hosting and Development Services</description>
-		<url>http://download.aptana.com/tools/studio/plugin/install/cloud/</url>
-        <more>http://www.aptana.com/cloud/</more>
-		<sortweight>0</sortweight>
-		<release>
-		  <version>2.0.0</version>
-		  <year>2009</year>
-		  <month>10</month>
-		  <day>28</day>
-		</release>
-		<icon>images/feature_cloud.png</icon>
-		<installer_id>installer.hosting</installer_id>
-	</plugin>
-	<plugin>
 		<id>com.aptana.ide.feature.xul</id>
-		<name>Aptana XULRunner</name>
+		<name>Embedded FireFox Browser</name>
 		<category>Utilities</category> 
-		<description>Adds XULRunner support</description>
+		<description>Adds embedded Firefox support (XUL-based)</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/xul/</url>
         <more>http://www.aptana.org/</more>
 		<sortweight>0</sortweight>
@@ -71,51 +60,51 @@
 	</plugin>
 	<plugin>
 		<id>org.eclipse.team.svn</id>
-		<name>Subversive</name>
+		<name>Subversive (SVN)</name>
 		<category>Utilities</category> 
-		<description>Subversion SCM integration</description>
+		<description>Subversion revision control integration</description>
 		<url>http://download.eclipse.org/technology/subversive/0.7/update-site/</url>
         <more>http://www.eclipse.org/subversive/</more>
 		<sortweight>0</sortweight>
 		<release>
-		  <version>0.7.8.I20090904-1300</version>
-		  <year>2009</year>
-		  <month>9</month>
-		  <day>4</day>
+		  <version>0.7.9.I20100512-1900</version>
+		  <year>2010</year>
+		  <month>5</month>
+		  <day>12</day>
 		</release>
-		<installer_id>installer.others.scm</installer_id>
+		<installer_id>installer.others.source</installer_id>
 	</plugin>
 	<plugin>
 		<id>org.tigris.subversion.subclipse</id>
-		<name>Subclipse</name>
+		<name>Subclipse (SVN)</name>
 		<category>Utilities</category> 
-		<description>Subversion SCM integration</description>
+		<description>Subversion revision control integration</description>
 		<url>http://subclipse.tigris.org/update_1.6.x/</url>
         <more>http://subclipse.tigris.org/</more>
-		<sortweight>0</sortweight>
+		<sortweight>1</sortweight>
 		<release>
-		  <version>1.6.5</version>
-		  <year>2009</year>
-		  <month>8</month>
-		  <day>11</day>
+		  <version>1.6.12</version>
+		  <year>2010</year>
+		  <month>6</month>
+		  <day>22</day>
 		</release>
-		<installer_id>installer.others.scm</installer_id>
+		<installer_id>installer.others.source</installer_id>
 	</plugin>
 	<plugin>
 		<id>com.perforce.p4wsad</id>
-		<name>P4WSAD</name>
+		<name>P4WSAD (Perforce)</name>
 		<category>Utilities</category> 
-		<description>Perforce SCM integration</description>
-		<url>http://www.perforce.com/downloads/http/p4-wsad/install/</url>
+		<description>Perforce configuration management integration</description>
+		<url>http://www.perforce.com/downloads/http/p4-wsad/install/3.5/</url>
         <more>http://www.perforce.com/perforce/products/p4wsad.html</more>
-		<sortweight>1</sortweight>
+		<sortweight>3</sortweight>
 		<release>
-		  <version>2009.1.211156</version>
+		  <version>2009.3.248705</version>
 		  <year>2009</year>
-		  <month>1</month>
-		  <day>21</day>
+		  <month>3</month>
+		  <day>24</day>
 		</release>
-		<installer_id>installer.others.scm</installer_id>
+		<installer_id>installer.others.source</installer_id>
 	</plugin>
     <plugin>
         <id>org.radrails.rails_feature</id>
@@ -124,7 +113,7 @@
         <description>Ruby on Rails support</description>
         <url>http://download.aptana.com/tools/radrails/plugin/install/rails/</url>
         <more>http://www.aptana.com/radrails</more>
-        <sortweight>0</sortweight>
+        <sortweight>1</sortweight>
         <release>
           <version>2.0.0</version>
           <year>2009</year>
@@ -141,24 +130,41 @@
         <description>Python support</description>
         <url>http://www.pydev.org/updates/</url>
         <more>http://www.pydev.org/</more>
-        <sortweight>3</sortweight>
+        <sortweight>2</sortweight>
         <release>
-          <version>1.5.0</version>
-          <year>2009</year>
-          <month>9</month>
-          <day>3</day>
+          <version>1.5.9</version>
+          <year>2010</year>
+          <month>6</month>
+          <day>30</day>
         </release>
 		<icon>images/feature_pydev.png</icon>
 		<installer_id>installer.platforms</installer_id>
     </plugin>
     <plugin>
+    	<id>com.aptana.ide.feature.framework.air.beta</id>
+    	<name>Adobe AIR 2.0 Beta</name>
+    	<category>Platforms</category>
+    	<description>Tools for creating desktop Ajax apps with Adobe AIR</description>
+    	<url>http://download.aptana.org/tools/studio/plugin/install/air/</url>
+    	<more>http://www.aptana.com/air</more>
+		<sortweight>1</sortweight>
+		<release>
+			<version>2.0.0</version>
+			<year>2009</year>
+			<month>11</month>
+			<day>17</day>
+		</release>
+		<icon>images/feature_air.png</icon>
+		<installer_id>installer.desktop</installer_id>
+	</plugin>
+    <plugin>
         <id>com.aptana.ide.feature.framework.air</id>
-        <name>Aptana Adobe AIR 1.5 Development</name>
-        <category>Platforms</category>
+        <name>Adobe AIR 1.5</name>
+        <category>Featured</category>
         <description>Tools for creating desktop Ajax apps with Adobe AIR</description>
-        <url>http://download.aptana.org/tools/studio/plugin/install/air/</url>
+        <url>http://update.aptana.com/install/air/</url>
         <more>http://www.aptana.com/air</more>
-        <sortweight>1</sortweight>
+        <sortweight>2</sortweight>
         <release>
             <version>1.5.0</version>
             <year>2009</year>
@@ -170,12 +176,12 @@
     </plugin>   
     <plugin>
         <id>com.nokia.wrt.feature</id>
-        <name>Nokia WRT Plug-in for Aptana Studio</name>
+        <name>Nokia Web Runtime (WRT)</name>
         <category>Featured</category> 
         <description>Build, preview, and debug Web and Ajax apps for S60 phones</description>
         <url>http://tools.ext.nokia.com/wrt/prod/aptana/plugin/</url>
         <more>http://www.forum.nokia.com/Resources_and_Information/Tools/Runtimes/Web_Runtime/Aptana_Plugin/</more>
-        <sortweight>2</sortweight>
+        <sortweight>1</sortweight>
         <release>
           <version>2.3</version>
           <year>2009</year>
@@ -183,7 +189,7 @@
           <day>28</day>
         </release>
 		<icon>images/feature_nokia.png</icon>
-		<installer_id>installer.featured</installer_id>
+		<installer_id>installer.mobile</installer_id>
     </plugin>
 	<plugin>
 		<id>org.eclipse.cvs</id>
@@ -192,30 +198,30 @@
 		<description>CVS version control support</description>
 		<url>http://download.eclipse.org/releases/ganymede/</url>
         <more>http://www.aptana.org/#cvs</more>
-		<sortweight>1</sortweight>
+		<sortweight>4</sortweight>
 		<release>
             <version>1.1.1.r34x_20080902-7C79E8N9nJD4oAW9V1938</version>
 			<year>2008</year>
 			<month>9</month>
 			<day>2</day>
 		</release>
-		<installer_id>installer.others.scm</installer_id>
+		<installer_id>installer.others.source</installer_id>
 	</plugin>
     <plugin>
 		<id>org.eclipse.egit</id>
 		<name>Git</name>
 		<category>Utilities</category> 
-		<description>Adds support for Git SCM</description>
-		<url>http://www.jgit.org/updates/</url>
-		<more>http://git.or.cz/gitwiki/EclipsePlugin</more>
-		<sortweight>0</sortweight>
+		<description>Adds support for Git version control system</description>
+		<url>http://download.eclipse.org/egit/updates/</url>
+		<more>http://www.eclipse.org/egit/</more>
+		<sortweight>2</sortweight>
 		<release>
-            <version>0.5.0</version>
-			<year>2009</year>
-			<month>9</month>
-			<day>8</day>
+            <version>0.7.1</version>
+			<year>2010</year>
+			<month>3</month>
+			<day>22</day>
 		</release>
-		<installer_id>installer.others.scm</installer_id>
+		<installer_id>installer.others.source</installer_id>
     </plugin>
   <plugin>
 		<id>org.aflax.1.0</id>
@@ -232,7 +238,7 @@
 			<day>23</day>
 		</release>
 		<icon>images/ajax/aflax.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
 		<id>org.openrico.rico.2.0</id>
@@ -249,7 +255,7 @@
 			<day>23</day>
 		</release>
 		<icon>images/ajax/rico.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
 		<id>org.scriptaculous.1.8</id>
@@ -266,7 +272,7 @@
 			<day>23</day>
 		</release>
 		<icon>images/ajax/scriptaculous.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
 		<id>com.adobe.spry.1.6</id>
@@ -283,11 +289,11 @@
 			<day>23</day>
 		</release>
 		<icon>images/ajax/spry.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
 		<id>com.yahoo.yui.3.0</id>
-		<name>Yahoo! User Interface (YUI) Support</name>
+		<name>Yahoo! User Interface (YUI)</name>
 		<category>Ajax</category>
 		<description>Adds support for the YUI Ajax library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
@@ -300,7 +306,7 @@
 			<day>29</day>
 		</release>
 		<icon>images/ajax/yui.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
 		<id>org.prototypejs.prototype.1.6</id>
@@ -311,13 +317,13 @@
         <more>http://www.aptana.org/#prototype</more>
 		<sortweight>1</sortweight>
 		<release>
-            <version>1.6.0</version>
-			<year>2008</year>
-			<month>5</month>
-			<day>23</day>
+            <version>1.6.1</version>
+			<year>2010</year>
+			<month>7</month>
+			<day>2</day>
 		</release>
 		<icon>images/ajax/prototype.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
 		<id>com.ms.ajax.3.5</id>
@@ -334,7 +340,7 @@
 			<day>23</day>
 		</release>
 		<icon>images/ajax/library.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
 		<id>net.mootools.1.2</id>
@@ -351,10 +357,10 @@
 			<day>31</day>
 		</release>
 		<icon>images/ajax/mootools.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
-		<id>com.jquery.1.3</id>
+		<id>com.jquery.1.4</id>
 		<name>jQuery Support</name>
 		<category>Ajax</category>
 		<description>Adds support for the jQuery Ajax library</description>
@@ -362,13 +368,13 @@
         <more>http://www.aptana.org/#jquery</more>
 		<sortweight>-1</sortweight>
 		<release>
-            <version>1.3.2</version>
-			<year>2009</year>
-			<month>3</month>
-			<day>9</day>
+            <version>1.4.2</version>
+			<year>2010</year>
+			<month>7</month>
+			<day>2</day>
 		</release>
 		<icon>images/ajax/jquery.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
   </plugin>
   <plugin>
 		<id>com.extjs.ext.2.2</id>
@@ -385,7 +391,7 @@
 			<day>26</day>
 		</release>
 		<icon>images/ajax/ext.gif</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
   </plugin>
   <plugin>
 		<id>org.dojotoolkit.dojo.1.3</id>
@@ -402,7 +408,7 @@
 			<day>19</day>
 		</release>
 		<icon>images/ajax/dojo.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
   </plugin>
   <plugin>
 		<id>com.mochikit.1.4</id>
@@ -419,7 +425,7 @@
 			<day>23</day>
 		</release>
 		<icon>images/ajax/mochikit.png</icon>
-		<installer_id>installer.ajax</installer_id>
+		<installer_id>installer.jslib</installer_id>
   </plugin>
   <plugin>
   	<id>com.quantum.feature</id>
@@ -430,13 +436,13 @@
   	<more>http://quantum.sourceforge.net/index.html</more>
   	<sortweight>3</sortweight>
   	<release>
-  		<version>3.3.4</version>
+  		<version>3.3.9</version>
 		<year>2009</year>
-		<month>8</month>
-  		<day>13</day>
+		<month>11</month>
+  		<day>10</day>
 	</release>
   	<icon>images/feature_quantum.png</icon>
-  	<installer_id>installer.featured</installer_id>
+  	<installer_id>installer.database</installer_id>
   	</plugin>
   <plugin>
   	<id>org.eclipse.php</id>
@@ -445,7 +451,7 @@
   	<description>This project encompasses all development components necessary to develop PHP and facilitate extensibility.</description>
   	<url>http://download.eclipse.org/tools/pdt/updates/2.0/</url>
   	<more>http://www.eclipse.org/pdt/</more>
-  	<sortweight>1</sortweight>
+  	<sortweight>3</sortweight>
   	<release>
   		<version>2.1.2</version>
 		<year>2009</year>
@@ -453,7 +459,7 @@
   		<day>26</day>
 	</release>
   	<icon>images/feature_pdt.png</icon>
-  	<installer_id>installer.featured</installer_id>
+  	<installer_id>installer.platforms</installer_id>
   </plugin>
   <plugin>
   	<id>org.zend.php.debug_feature</id>
@@ -462,7 +468,7 @@
   	<description>This project provides PDT debugging support for your PHP projects</description>
   	<url>http://downloads.zend.com/pdt/</url>
   	<more>http://www.eclipse.org/pdt/</more>
-  	<sortweight>2</sortweight>
+  	<sortweight>4</sortweight>
   	<release>
   		<version>5.2</version>
 		<year>2008</year>
@@ -470,6 +476,6 @@
   		<day>17</day>
 	</release>
   	<icon>images/feature_pdt.png</icon>
-  	<installer_id>installer.featured</installer_id>
+  	<installer_id>installer.platforms</installer_id>
   </plugin>
 </plugins>
