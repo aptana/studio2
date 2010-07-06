@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -35,15 +35,8 @@
 
 package com.aptana.ide.core.io.tests;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,9 +46,9 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Properties;
 import java.util.Random;
 
 import org.eclipse.core.filesystem.EFS;
@@ -65,14 +58,12 @@ import org.eclipse.core.filesystem.IFileTree;
 import org.eclipse.core.filesystem.provider.FileInfo;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
-import org.junit.After;
-import org.junit.Test;
 
-import com.aptana.ide.core.io.ConnectionContext;
-import com.aptana.ide.core.io.CoreIOPlugin;
-import com.aptana.ide.core.io.IConnectionPoint;
-import com.aptana.ide.core.io.efs.LocalFile;
+import com.aptana.ide.core.io.IBaseRemoteConnectionPoint;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
@@ -80,85 +71,8 @@ import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 /**
  * @author Max Stepanov
  */
-public abstract class CommonConnectionTest
+public abstract class CommonConnectionTest extends BaseConnectionTest
 {
-	protected boolean supportsChangeGroup = false;
-	protected boolean supportsChangePermissions = false;
-
-	protected static final long ALLOWED_TIME_DIFFERENCE = 15 * 60 * 1000; /* 15 minute difference */
-
-	protected static final String TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nunc tellus, condimentum quis luctus fermentum, tincidunt eget dui. Sed bibendum iaculis ligula, fringilla ullamcorper justo ullamcorper non. Curabitur tristique mi a magna vestibulum fermentum. Praesent sed neque feugiat purus egestas tristique. Sed non nisi velit. Maecenas placerat, nisi quis iaculis porta, nisi mauris facilisis est, at rutrum lacus sem non ante. Morbi et cursus nibh. Aliquam tincidunt urna quis quam semper ut congue est auctor. Curabitur malesuada, diam ut congue elementum, orci eros rhoncus felis, vel elementum felis velit id eros. Quisque eros diam, malesuada nec tincidunt eget, gravida iaculis tortor. Donec sollicitudin ultricies ante ac facilisis. In egestas malesuada erat id vehicula.\n" + //$NON-NLS-1$
-			"Integer non urna nunc, et rhoncus eros. Suspendisse tincidunt laoreet enim vel pretium. Nam bibendum sodales risus nec adipiscing. Pellentesque fringilla interdum odio posuere consectetur. Nullam venenatis augue sed felis tempus eu posuere quam facilisis. Pellentesque commodo rutrum bibendum. Ut sit amet sapien in purus vestibulum sodales. Integer pharetra mi in dui auctor in tristique erat malesuada. Integer nec ipsum quam. Quisque non enim et quam consequat mollis id ac sem. Nunc ut elit ac odio adipiscing pretium vel eget mauris. Aenean diam diam, porttitor sit amet lobortis a, accumsan at ante. Phasellus ut nulla enim. In nec diam magna. In molestie vulputate viverra. Etiam at justo tellus, sed rutrum erat.\r\n"
-			+ //$NON-NLS-1$
-			"Duis consectetur ornare ante, sit amet ultricies leo aliquam vitae. In fermentum nisi non dolor viverra non hendrerit nulla malesuada. Mauris adipiscing aliquet fringilla. Curabitur porttitor tristique massa, et semper nulla semper et. Phasellus a ipsum eu lectus pulvinar aliquam eget viverra velit. Sed commodo ultrices pulvinar. In at felis sollicitudin lorem semper scelerisque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin vel purus id odio malesuada gravida. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque metus mi, eleifend consectetur varius vitae, euismod eget nulla. Morbi justo felis, accumsan vel tempor non, rutrum at augue. Curabitur nulla lorem, ultricies a lobortis in, semper vitae diam. Pellentesque nec orci non turpis dignissim mollis. Quisque quis sapien vitae ligula iaculis dapibus sed at quam. Nullam ut nisl id eros sagittis rutrum a vitae risus. Suspendisse lacinia lacinia rutrum. Fusce molestie pellentesque dapibus. Quisque eu orci dolor, eget venenatis velit.\n"
-			+ //$NON-NLS-1$
-			"Nam rhoncus gravida ultrices. Maecenas hendrerit diam pharetra mauris commodo eleifend. Etiam ullamcorper aliquet arcu, sit amet luctus risus scelerisque at. Praesent nibh eros, rutrum in imperdiet eget, dignissim ornare nisl. Fusce sollicitudin, turpis id volutpat tincidunt, diam nibh euismod eros, eget tempor justo nulla ut magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus eu neque ac ante varius imperdiet. Vestibulum blandit neque lacus, a suscipit mi. Maecenas aliquet, lorem ut interdum bibendum, velit tellus feugiat quam, non posuere leo justo eget ante. Aliquam mattis augue est, et malesuada libero. Suspendisse nisl tellus, tempus sit amet luctus quis, vulputate eu turpis. Morbi lobortis vulputate odio at faucibus. Cras ut nisi ipsum."; //$NON-NLS-1$
-	protected static final byte[] BYTES;
-
-	static
-	{
-		BYTES = new byte[65536 + 20];
-		for (int i = 0; i < BYTES.length; ++i)
-		{
-			BYTES[i] = (byte) i;
-		}
-	}
-
-	protected IConnectionPoint cp;
-	private IPath testPath;
-
-	private static Properties cachedProperties;
-
-	protected static final Properties getConfig() {
-		if (cachedProperties == null) {
-			cachedProperties = new Properties();
-			String propertiesFile = System.getenv("junit.properties");
-			if (propertiesFile != null && new File(propertiesFile).length() > 0) {
-				try {
-					cachedProperties.load(new FileInputStream(propertiesFile));
-				} catch (IOException ignore) {
-				}
-			}
-		}
-		return cachedProperties;
-	}
-
-	protected void initialize() throws CoreException, FileNotFoundException, IOException
-	{
-		ConnectionContext context = new ConnectionContext();
-		context.put(ConnectionContext.COMMAND_LOG, System.out);
-		CoreIOPlugin.setConnectionContext(cp, context);
-
-		testPath = Path.ROOT.append(getClass().getSimpleName() + System.currentTimeMillis());
-		IFileStore fs = cp.getRoot().getFileStore(testPath);
-		assertNotNull(fs);
-		fs.mkdir(EFS.NONE, null);
-		cp.disconnect(null);
-		assertFalse(cp.isConnected());
-	}
-
-	@After
-	public final void finish() throws CoreException
-	{
-		try
-		{
-			IFileStore fs = cp.getRoot().getFileStore(testPath);
-			if (fs.fetchInfo().exists())
-			{
-				fs.delete(EFS.NONE, null);
-				assertFalse(fs.fetchInfo().exists());
-			}
-		}
-		finally
-		{
-			if (cp.isConnected())
-			{
-				cp.disconnect(null);
-			}
-		}
-	}
-
-	@Test
 	public final void testURI() throws CoreException
 	{
 		assertEquals(cp.getRootURI(), cp.getRoot().toURI());
@@ -168,7 +82,6 @@ public abstract class CommonConnectionTest
 		assertEquals(fs, fs2);
 	}
 
-	@Test
 	public final void testConnectDisconnect() throws CoreException
 	{
 		cp.connect(null);
@@ -179,7 +92,22 @@ public abstract class CommonConnectionTest
 		assertFalse(cp.canDisconnect());
 	}
 
-	@Test
+	public final void testIncorrectPaths() throws CoreException
+	{
+		if (!(cp instanceof IBaseRemoteConnectionPoint))
+		{
+			return;
+		}
+
+		IBaseRemoteConnectionPoint ftpcp = (IBaseRemoteConnectionPoint) cp;
+		IPath basePath = ftpcp.getPath();
+
+		ftpcp.setPath(null);
+		ftpcp.connect(null);
+
+		ftpcp.setPath(basePath);
+	}
+
 	public final void testFetchRootInfo() throws CoreException
 	{
 		IFileStore fs = cp.getRoot();
@@ -193,7 +121,20 @@ public abstract class CommonConnectionTest
 		assertEquals(Path.ROOT.toPortableString(), fi.getName());
 	}
 
-	@Test
+	public final void testFetchInfoWillConnectIfDisconnected() throws CoreException
+	{
+		IFileStore fs = cp.getRoot();
+		assertNotNull(fs);
+		if (cp.isConnected())
+		{
+			cp.disconnect(null);
+		}
+		assertFalse(cp.isConnected());
+		IFileInfo fi = fs.fetchInfo();
+		assertTrue(cp.isConnected());
+		assertNotNull(fi);
+	}
+
 	public final void testNonexisting() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(new Path("/some/path/nonexisting.file")); //$NON-NLS-1$
@@ -218,7 +159,6 @@ public abstract class CommonConnectionTest
 		fs.delete(EFS.NONE, null);
 	}
 
-	@Test
 	public final void testParent() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(new Path("/some/path/some.file")); //$NON-NLS-1$
@@ -250,7 +190,6 @@ public abstract class CommonConnectionTest
 		assertEquals(null, cp.getRoot().getParent());
 	}
 
-	@Test
 	public final void testCreateEmptyFile() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/emptyfile.txt")); //$NON-NLS-1$
@@ -259,19 +198,44 @@ public abstract class CommonConnectionTest
 		assertNotNull(fi);
 		assertFalse(fi.exists());
 		assertEquals("emptyfile.txt", fi.getName()); //$NON-NLS-1$
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		OutputStream out = fs.openOutputStream(EFS.NONE, null);
 		out.close();
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 		fi = fs.fetchInfo();
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 		assertEquals(0, fi.getLength());
-		assertTrue(fi.getLastModified() > beforeTime && fi.getLastModified() < afterTime);
 	}
 
-	@Test
-	public final void testCreateEmptyFileRecursive() throws CoreException, IOException
+	public final void testCreateEmptyDotFile() throws CoreException, IOException
+	{
+		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/.emptyfile.txt")); //$NON-NLS-1$
+		assertNotNull(fs);
+		IFileInfo fi = fs.fetchInfo();
+		assertNotNull(fi);
+		assertFalse(fi.exists());
+		assertEquals(".emptyfile.txt", fi.getName()); //$NON-NLS-1$
+		try
+		{
+			OutputStream out = fs.openOutputStream(EFS.NONE, null);
+			out.close();
+		}
+		catch (CoreException e)
+		{
+			assertEquals(FileNotFoundException.class, e.getCause().getClass());
+			assertEquals(
+					testPath.append(".emptyfile.txt").toPortableString(), ((FileNotFoundException) e.getCause()).getMessage()); //$NON-NLS-1$
+			fi = fs.fetchInfo();
+			assertNotNull(fi);
+			assertFalse(fi.exists());
+			return;
+		}
+		fi = fs.fetchInfo();
+		assertNotNull(fi);
+		assertTrue(fi.exists());
+		assertEquals(0, fi.getLength());
+	}
+
+	public final void testCreateEmptyFileRecursive() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/nonexisting/emptyfile.txt")); //$NON-NLS-1$
 		assertNotNull(fs);
@@ -296,8 +260,7 @@ public abstract class CommonConnectionTest
 		assertFalse(fi.exists());
 	}
 
-	@Test
-	public final void testCreateFolder() throws CoreException, IOException
+	public final void testCreateFolder() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/newfolder")); //$NON-NLS-1$
 		assertNotNull(fs);
@@ -305,19 +268,15 @@ public abstract class CommonConnectionTest
 		assertNotNull(fi);
 		assertFalse(fi.exists());
 		assertEquals("newfolder", fi.getName()); //$NON-NLS-1$
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		fs.mkdir(EFS.SHALLOW, null);
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 		fi = fs.fetchInfo();
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 		assertTrue(fi.isDirectory());
-		assertTrue(fi.getLastModified() > beforeTime && fi.getLastModified() < afterTime);
 		fs.mkdir(EFS.SHALLOW, null); // retry to show no errors
 	}
 
-	@Test
-	public final void testCreateFolderRecursive() throws CoreException, IOException
+	public final void testCreateFolderRecursive() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/leve1/level2/level3")); //$NON-NLS-1$
 		assertNotNull(fs);
@@ -340,16 +299,12 @@ public abstract class CommonConnectionTest
 		assertNotNull(fi);
 		assertFalse(fi.exists());
 
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		fs2.mkdir(EFS.NONE, null);
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 		fi = fs2.fetchInfo();
 		assertNotNull(fi);
 		assertTrue(fi.exists());
-		assertTrue(fi.getLastModified() > beforeTime && fi.getLastModified() < afterTime);
 	}
 
-	@Test
 	public final void testWriteReadBinFile() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/rwfile.bin")); //$NON-NLS-1$
@@ -357,16 +312,13 @@ public abstract class CommonConnectionTest
 		IFileInfo fi = fs.fetchInfo();
 		assertNotNull(fi);
 		assertFalse(fi.exists());
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		OutputStream out = fs.openOutputStream(EFS.NONE, null);
 		out.write(BYTES);
 		out.close();
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 		fi = fs.fetchInfo();
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 		assertEquals(BYTES.length, fi.getLength());
-		assertTrue(fi.getLastModified() > beforeTime && fi.getLastModified() < afterTime);
 		InputStream in = fs.openInputStream(EFS.NONE, null);
 		ByteArrayOutputStream bout = new ByteArrayOutputStream(BYTES.length);
 		byte[] buffer = new byte[256];
@@ -380,7 +332,6 @@ public abstract class CommonConnectionTest
 		assertTrue(Arrays.equals(BYTES, bout.toByteArray()));
 	}
 
-	@Test
 	public final void testWriteReadTextFile() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/rwfile.txt")); //$NON-NLS-1$
@@ -388,16 +339,13 @@ public abstract class CommonConnectionTest
 		IFileInfo fi = fs.fetchInfo();
 		assertNotNull(fi);
 		assertFalse(fi.exists());
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		Writer w = new OutputStreamWriter(fs.openOutputStream(EFS.NONE, null));
 		w.write(TEXT);
 		w.close();
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 		fi = fs.fetchInfo();
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 		assertEquals(TEXT.length(), fi.getLength());
-		assertTrue(fi.getLastModified() > beforeTime && fi.getLastModified() < afterTime);
 		Reader r = new InputStreamReader(fs.openInputStream(EFS.NONE, null));
 		StringWriter sw = new StringWriter(TEXT.length());
 		char[] buffer = new char[256];
@@ -411,7 +359,6 @@ public abstract class CommonConnectionTest
 		assertTrue(Arrays.equals(TEXT.toCharArray(), sw.toString().toCharArray()));
 	}
 
-	@Test
 	public final void testWriteReadExistingFile() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/rwfile.txt")); //$NON-NLS-1$
@@ -423,16 +370,13 @@ public abstract class CommonConnectionTest
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		Writer w = new OutputStreamWriter(fs.openOutputStream(EFS.NONE, null));
 		w.write(TEXT);
 		w.close();
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 		fi = fs.fetchInfo();
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 		assertEquals(TEXT.length(), fi.getLength());
-		assertTrue(fi.getLastModified() > beforeTime && fi.getLastModified() < afterTime);
 		Reader r = new InputStreamReader(fs.openInputStream(EFS.NONE, null));
 		StringWriter sw = new StringWriter(TEXT.length());
 		char[] buffer = new char[256];
@@ -446,7 +390,61 @@ public abstract class CommonConnectionTest
 		assertTrue(Arrays.equals(TEXT.toCharArray(), sw.toString().toCharArray()));
 	}
 
-	@Test
+	public final void testWriteReadTextFileSimultanesously() throws CoreException, IOException
+	{
+		IFileStore[] fslist = new IFileStore[4];
+		for (int i = 0; i < fslist.length; ++i)
+		{
+			IFileStore fs = fslist[i] = cp.getRoot().getFileStore(
+					testPath.append(MessageFormat.format("/rwfile{0}.txt", i))); //$NON-NLS-1$
+			assertNotNull(fs);
+			IFileInfo fi = fs.fetchInfo();
+			assertNotNull(fi);
+			assertFalse(fi.exists());
+		}
+		Writer[] writers = new Writer[fslist.length];
+		for (int i = 0; i < fslist.length; ++i)
+		{
+			writers[i] = new OutputStreamWriter(fslist[i].openOutputStream(EFS.NONE, null));
+		}
+		for (int i = 0; i < writers.length; ++i)
+		{
+			writers[i].write(TEXT);
+		}
+		for (int i = 0; i < writers.length; ++i)
+		{
+			writers[i].close();
+		}
+		for (int i = 0; i < fslist.length; ++i)
+		{
+			IFileInfo fi = fslist[i].fetchInfo();
+			assertNotNull(fi);
+			assertTrue(fi.exists());
+			assertEquals(TEXT.length(), fi.getLength());
+		}
+		Reader[] readers = new Reader[fslist.length];
+		for (int i = 0; i < fslist.length; ++i)
+		{
+			readers[i] = new InputStreamReader(fslist[i].openInputStream(EFS.NONE, null));
+		}
+		for (int i = 0; i < readers.length; ++i)
+		{
+			StringWriter sw = new StringWriter(TEXT.length());
+			char[] buffer = new char[256];
+			int count;
+			while ((count = readers[i].read(buffer)) > 0)
+			{
+				sw.write(buffer, 0, count);
+			}
+			sw.close();
+			assertTrue(Arrays.equals(TEXT.toCharArray(), sw.toString().toCharArray()));
+		}
+		for (int i = 0; i < readers.length; ++i)
+		{
+			readers[i].close();
+		}
+	}
+
 	public final void testDeleteFile() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/deleteme.ext")); //$NON-NLS-1$
@@ -462,8 +460,7 @@ public abstract class CommonConnectionTest
 		assertFalse(fi.exists());
 	}
 
-	@Test
-	public final void testDeleteFolder() throws CoreException, IOException
+	public final void testDeleteFolder() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/deleteme")); //$NON-NLS-1$
 		assertNotNull(fs);
@@ -477,8 +474,7 @@ public abstract class CommonConnectionTest
 		assertFalse(fi.exists());
 	}
 
-	@Test
-	public final void testDeleteFolderRecursive() throws CoreException, IOException
+	public final void testDeleteFolderRecursive() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/delete.me/level1/level2/level3")); //$NON-NLS-1$
 		assertNotNull(fs);
@@ -493,24 +489,24 @@ public abstract class CommonConnectionTest
 		assertFalse(fi.exists());
 	}
 
-	@Test
 	public final void testListFiles() throws CoreException, IOException
 	{
 		String[] NAMES = new String[] { "file1.txt", "file2.txt", "file3.txt" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		IFileStore fs = cp.getRoot().getFileStore(testPath);
 		assertNotNull(fs);
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		for (int i = 0; i < NAMES.length; ++i)
 		{
 			OutputStream out = fs.getChild(NAMES[i]).openOutputStream(EFS.NONE, null);
 			out.close();
 		}
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 
 		String[] names = fs.childNames(EFS.NONE, null);
 		Arrays.sort(names);
 		assertEquals(NAMES.length, names.length);
-		assertArrayEquals(NAMES, names);
+		for (int i = 0; i < names.length; ++i)
+		{
+			assertEquals(NAMES[i], names[i]);
+		}
 
 		IFileStore[] fslist = fs.childStores(EFS.NONE, null);
 		Arrays.sort(fslist, new Comparator<IFileStore>()
@@ -539,27 +535,26 @@ public abstract class CommonConnectionTest
 		{
 			assertEquals(NAMES[i], filist[i].getName());
 			assertFalse(filist[i].isDirectory());
-			assertTrue(filist[i].getLastModified() > beforeTime && filist[i].getLastModified() < afterTime);
 		}
 	}
 
-	@Test
-	public final void testListFolders() throws CoreException, IOException
+	public final void testListFolders() throws CoreException
 	{
 		String[] NAMES = new String[] { "folder1", "folder2", "folder3" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		IFileStore fs = cp.getRoot().getFileStore(testPath);
 		assertNotNull(fs);
-		long beforeTime = System.currentTimeMillis() - ALLOWED_TIME_DIFFERENCE;
 		for (int i = 0; i < NAMES.length; ++i)
 		{
 			fs.getChild(NAMES[i]).mkdir(EFS.SHALLOW, null);
 		}
-		long afterTime = System.currentTimeMillis() + ALLOWED_TIME_DIFFERENCE;
 
 		String[] names = fs.childNames(EFS.NONE, null);
 		Arrays.sort(names);
 		assertEquals(NAMES.length, names.length);
-		assertArrayEquals(NAMES, names);
+		for (int i = 0; i < names.length; ++i)
+		{
+			assertEquals(NAMES[i], names[i]);
+		}
 
 		IFileStore[] fslist = fs.childStores(EFS.NONE, null);
 		Arrays.sort(fslist, new Comparator<IFileStore>()
@@ -588,23 +583,25 @@ public abstract class CommonConnectionTest
 		{
 			assertEquals(NAMES[i], filist[i].getName());
 			assertTrue(filist[i].isDirectory());
-			assertTrue(filist[i].getLastModified() > beforeTime && filist[i].getLastModified() < afterTime);
 		}
 	}
 
-	@Test
 	public final void testPutInfoFileBase() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/file.txt")); //$NON-NLS-1$
 		assertNotNull(fs);
 		OutputStream out = fs.openOutputStream(EFS.NONE, null);
 		out.close();
-		IFileInfo fi = fs.fetchInfo();
+		IFileInfo fi = fs.fetchInfo(IExtendedFileStore.DETAILED, null);
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 
-		long lastModified = System.currentTimeMillis();
-		lastModified -= lastModified % 1000; // remove milliseconds
+		long lastModified = fi.getLastModified();
+		if (supportsSetModificationTime())
+		{
+			lastModified -= new Random().nextInt(7 * 24 * 60) * 1000;
+			lastModified -= lastModified % 1000; // remove milliseconds
+		}
 		IFileInfo pfi = new FileInfo();
 		pfi.setLastModified(lastModified);
 		fs.putInfo(pfi, EFS.SET_LAST_MODIFIED, null);
@@ -615,20 +612,22 @@ public abstract class CommonConnectionTest
 		assertEquals(lastModified, fi.getLastModified());
 	}
 
-	@Test
-	public final void testPutInfoFolderBase() throws CoreException, IOException
+	public final void testPutInfoFolderBase() throws CoreException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/newfolder")); //$NON-NLS-1$
 		assertNotNull(fs);
 		fs.mkdir(EFS.SHALLOW, null);
-		IFileInfo fi = fs.fetchInfo();
+		IFileInfo fi = fs.fetchInfo(IExtendedFileStore.DETAILED, null);
 		assertNotNull(fi);
 		assertTrue(fi.exists());
 		assertTrue(fi.isDirectory());
 
-		long lastModified = System.currentTimeMillis();
-		lastModified -= new Random().nextInt(7 * 24 * 60) * 60000;
-		lastModified -= lastModified % 60000; // remove seconds/milliseconds
+		long lastModified = fi.getLastModified();
+		if (supportsSetModificationTime())
+		{
+			lastModified -= new Random().nextInt(7 * 24) * 60000;
+			lastModified -= lastModified % 60000; // remove seconds/milliseconds
+		}
 		IFileInfo pfi = new FileInfo();
 		pfi.setLastModified(lastModified);
 		fs.putInfo(pfi, EFS.SET_LAST_MODIFIED, null);
@@ -640,12 +639,7 @@ public abstract class CommonConnectionTest
 		assertEquals(lastModified, fi.getLastModified());
 	}
 
-	protected boolean supportsChangePermissions()
-	{
-		return supportsChangePermissions;
-	}
 
-	@Test
 	public final void testPutInfoPermissions() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/file.txt")); //$NON-NLS-1$
@@ -674,12 +668,7 @@ public abstract class CommonConnectionTest
 		assertEquals(permissions, fi.getPermissions());
 	}
 
-	protected boolean supportsChangeGroup()
-	{
-		return supportsChangeGroup;
-	}
 
-	@Test
 	public final void testPutInfoGroup() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/file.txt")); //$NON-NLS-1$
@@ -709,7 +698,6 @@ public abstract class CommonConnectionTest
 		assertEquals(group, fi.getGroup());
 	}
 
-	@Test
 	public final void testMoveFileSameFolder() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/file.txt")); //$NON-NLS-1$
@@ -731,7 +719,6 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testMoveFileAnotherFolder() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/file.txt")); //$NON-NLS-1$
@@ -766,7 +753,6 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testMoveFileToExisting() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/file.txt")); //$NON-NLS-1$
@@ -801,7 +787,6 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testMoveFolderSameFolder() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/fromfolder")); //$NON-NLS-1$
@@ -824,7 +809,6 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testMoveFolderAnotherFolder() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/fromfolder")); //$NON-NLS-1$
@@ -861,7 +845,6 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testMoveFolderToExisting() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/fromfolder")); //$NON-NLS-1$
@@ -898,7 +881,6 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testMoveFileToLocal() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/file.txt")); //$NON-NLS-1$
@@ -910,7 +892,7 @@ public abstract class CommonConnectionTest
 		File file = File.createTempFile("testMoveFileToLocal", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
 		file.delete();
 		file.deleteOnExit();
-		IFileStore fs2 = new LocalFile(file);
+		IFileStore fs2 = EFS.getLocalFileSystem().fromLocalFile(file);
 		assertNotNull(fs2);
 		assertFalse(fs2.fetchInfo().exists());
 		fs.move(fs2, EFS.NONE, null);
@@ -923,7 +905,6 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testMoveFolderToLocal() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/fromfolder")); //$NON-NLS-1$
@@ -937,7 +918,7 @@ public abstract class CommonConnectionTest
 		File file = File.createTempFile("testMoveFolderToLocal", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
 		file.delete();
 		file.deleteOnExit();
-		IFileStore fs2 = new LocalFile(file);
+		IFileStore fs2 = EFS.getLocalFileSystem().fromLocalFile(file);
 		assertNotNull(fs2);
 		assertFalse(fs2.fetchInfo().exists());
 		fs.move(fs2, EFS.NONE, null);
@@ -949,25 +930,27 @@ public abstract class CommonConnectionTest
 		assertEquals(BYTES.length, fi.getLength());
 	}
 
-	@Test
 	public final void testFetchTree() throws CoreException, IOException
 	{
 		IFileStore fs = cp.getRoot().getFileStore(testPath);
 		assertNotNull(fs);
 		long lastModified = System.currentTimeMillis();
 		lastModified -= lastModified % 1000; // remove milliseconds
-		IFileStore parent = fs.getChild("folder1/folder2/folder3/folder4/folder5");
-		parent.getChild("folder6").mkdir(EFS.NONE, null);
+		IFileStore parent = fs.getChild("folder1/folder2/folder3/folder4/folder5"); //$NON-NLS-1$
+		parent.getChild("folder6").mkdir(EFS.NONE, null); //$NON-NLS-1$
 		for (int j = 1; j < 7; ++j)
 		{
 			for (int i = 1; i < 6; ++i)
 			{
-				IFileStore child = parent.getChild("file" + i);
+				IFileStore child = parent.getChild("file" + i); //$NON-NLS-1$
 				OutputStream out = child.openOutputStream(EFS.NONE, null);
 				out.close();
-				IFileInfo fi = new FileInfo();
-				fi.setLastModified(lastModified);
-				child.putInfo(fi, EFS.SET_LAST_MODIFIED, null);
+				if (supportsSetModificationTime())
+				{
+					IFileInfo fi = new FileInfo();
+					fi.setLastModified(lastModified);
+					child.putInfo(fi, EFS.SET_LAST_MODIFIED, null);
+				}
 			}
 			parent = parent.getParent();
 		}
@@ -989,20 +972,68 @@ public abstract class CommonConnectionTest
 				assertTrue(fi.exists());
 				if (fi.isDirectory())
 				{
-					assertEquals("folder" + i, fi.getName());
-					assertEquals("folder" + i, fslist[j].getName());
+					assertEquals("folder" + i, fi.getName()); //$NON-NLS-1$
+					assertEquals("folder" + i, fslist[j].getName()); //$NON-NLS-1$
 					fs = fslist[j];
 				}
 				else
 				{
-					assertTrue(fi.getName().startsWith("file"));
-					assertTrue(fslist[j].getName().startsWith("file"));
+					assertTrue(fi.getName().startsWith("file")); //$NON-NLS-1$
+					assertTrue(fslist[j].getName().startsWith("file")); //$NON-NLS-1$
 					assertEquals(0, fi.getLength());
-					assertEquals(lastModified, fi.getLastModified());
+					if (supportsSetModificationTime())
+					{
+						assertEquals(lastModified, fi.getLastModified());
+					}
 				}
 			}
 			assertNotNull(fs);
 		}
 	}
 
+	protected final IFileStore populateRemoteFolder(String folderName, int numFiles) throws CoreException, IOException
+	{
+
+		IFileStore fs = cp.getRoot().getFileStore(testPath.append("/" + folderName)); //$NON-NLS-1$
+		assertNotNull(fs);
+		fs.mkdir(EFS.SHALLOW, null);
+		assertTrue(fs.fetchInfo().exists());
+		for (int i = 0; i < numFiles; i++)
+		{
+			OutputStream out = fs.getChild("file" + i + ".txt").openOutputStream(EFS.NONE, null); //$NON-NLS-1$
+			out.write(BYTES);
+			out.close();
+			assertTrue(fs.getChild("file" + i + ".txt").fetchInfo().exists()); //$NON-NLS-1$			
+		}
+		return fs;
+	}
+	
+	public final void testSymlinks() throws CoreException, IOException, InterruptedException
+	{
+		String targetName = "symlinkTargetFolder";
+		String linkName = "symlinkFolder";
+		
+		if(getRemoteFileDirectory() != null && cp instanceof IBaseRemoteConnectionPoint) {
+			IBaseRemoteConnectionPoint brcp = (IBaseRemoteConnectionPoint)cp;
+			Path targetPath = (Path)new Path(getRemoteFileDirectory()).append(brcp.getPath()).append(testPath).append("/" + targetName);
+			Path linkPath = (Path)new Path(getRemoteFileDirectory()).append(brcp.getPath()).append(testPath).append("/" + linkName);
+
+			// create target folder
+			File target = new File(targetPath.toPortableString());
+			assertTrue(target.mkdirs());
+			target.deleteOnExit();
+
+			Process process = Runtime.getRuntime().exec( new String[] { "ln", "-s", targetPath.toPortableString(), linkPath.toPortableString() } );
+			process.waitFor();
+			process.destroy();	
+
+			IFileInfo[] children = cp.getRoot().getFileStore(testPath).childInfos(EFS.NONE, null);
+			assertEquals(2, children.length);
+
+			process = Runtime.getRuntime().exec( new String[] { "rm", linkPath.toPortableString() } );
+			process.waitFor();
+			process.destroy();	
+
+		}
+	}
 }

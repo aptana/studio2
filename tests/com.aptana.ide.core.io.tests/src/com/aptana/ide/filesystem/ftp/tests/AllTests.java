@@ -6,7 +6,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	FTPConnectionTest.class,
-	FTPConnectionWithBasePathTest.class
+	FTPConnectionWithBasePathTest.class,
+	FTPCachedConnectionTest.class
 })
 public abstract class AllTests {
 }

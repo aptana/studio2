@@ -35,9 +35,6 @@
 
 package com.aptana.ide.filesystem.ftp.tests;
 
-import java.io.IOException;
-
-import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 
 import com.aptana.ide.core.io.tests.CommonConnectionTest;
@@ -50,16 +47,51 @@ public class SFTPConnectionTest extends CommonConnectionTest
 {
 	@Override
 	@Before
-	public final void initialize() throws CoreException, IOException
+	protected void setUp() throws Exception
 	{
 		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
 		ftpcp.setHost(getConfig().getProperty("ftp.host", "10.10.1.60")); //$NON-NLS-1$ //$NON-NLS-2$
 		ftpcp.setLogin(getConfig().getProperty("ftp.username", "ftpuser")); //$NON-NLS-1$ //$NON-NLS-2$
 		ftpcp.setPassword(getConfig().getProperty("ftp.password", //$NON-NLS-1$
 				String.valueOf(new char[] { 'l', 'e', 't', 'm', 'e', 'i', 'n' })).toCharArray());
-		supportsChangeGroup = Boolean.valueOf(getConfig().getProperty("ftp.supportsChangeGroup", "false"));
-		supportsChangePermissions = Boolean.valueOf(getConfig().getProperty("ftp.supportsChangePermissions", "true"));
 		cp = ftpcp;
-		super.initialize();
+		super.setUp();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#getRemoteFileDirectory()
+	 */
+	@Override
+	protected String getRemoteFileDirectory()
+	{
+		return getConfig().getProperty("ftp.remoteFileDirectory", null);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#supportsChangeGroup()
+	 */
+	@Override
+	protected boolean supportsChangeGroup()
+	{
+		return Boolean.valueOf(getConfig().getProperty("ftp.supportsChangeGroup", "false"));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#supportsChangePermissions()
+	 */
+	@Override
+	protected boolean supportsChangePermissions()
+	{
+		return Boolean.valueOf(getConfig().getProperty("ftp.supportsChangePermissions", "true"));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#supportsSetModificationTime()
+	 */
+	@Override
+	protected boolean supportsSetModificationTime()
+	{
+		return Boolean.valueOf(getConfig()
+				.getProperty("ftp.supportsSetModificationTime", "true"));
 	}
 }

@@ -35,16 +35,17 @@
 
 package com.aptana.ide.filesystem.ftp.tests;
 
+import com.aptana.ide.filesystem.ftp.FTPCachedConnectionPoint;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
 
 /**
  * @author Max Stepanov
  */
-public class FTPConnectionTest extends FTPCommonConnectionTest
+public class FTPCachedConnectionTest extends FTPCommonConnectionTest
 {
 	@Override
 	public FTPConnectionPoint getConnectionPoint()
 	{
-		return new FTPConnectionPoint();
+		return new FTPCachedConnectionPoint();
 	}
 }

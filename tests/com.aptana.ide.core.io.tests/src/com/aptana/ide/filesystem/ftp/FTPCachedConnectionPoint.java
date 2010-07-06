@@ -33,18 +33,54 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.filesystem.ftp.tests;
+package com.aptana.ide.filesystem.ftp;
 
+import org.eclipse.core.runtime.Platform;
+
+import com.aptana.ide.core.io.ConnectionContext;
+import com.aptana.ide.core.io.CoreIOPlugin;
+import com.aptana.ide.core.io.vfs.IConnectionFileManager;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
+import com.aptana.ide.filesystem.ftp.IFTPConnectionFileManager;
 
 /**
  * @author Max Stepanov
  */
-public class FTPConnectionTest extends FTPCommonConnectionTest
+public class FTPCachedConnectionPoint extends FTPConnectionPoint
 {
-	@Override
-	public FTPConnectionPoint getConnectionPoint()
+	/**
+	 * Default constructor
+	 */
+	public FTPCachedConnectionPoint()
 	{
-		return new FTPConnectionPoint();
+		super();
+	}
+
+	@Override
+	protected synchronized IConnectionFileManager getConnectionFileManager()
+	{
+		if (connectionFileManager == null)
+		{
+			// find contributed first
+			connectionFileManager = (IFTPConnectionFileManager) super.getAdapter(IFTPConnectionFileManager.class);
+			if (connectionFileManager == null
+					&& Platform.getAdapterManager().hasAdapter(this, IFTPConnectionFileManager.class.getName()))
+			{
+				connectionFileManager = (IFTPConnectionFileManager) Platform.getAdapterManager().loadAdapter(this,
+						IFTPConnectionFileManager.class.getName());
+			}
+			if (connectionFileManager == null)
+			{
+				connectionFileManager = new FTPCachedConnectionFileManager();
+			}
+			ConnectionContext context = CoreIOPlugin.getConnectionContext(this);
+			if (context != null)
+			{
+				CoreIOPlugin.setConnectionContext(connectionFileManager, context);
+			}
+			connectionFileManager
+					.init(host, port, path, login, password, passiveMode, transferType, encoding, timezone);
+		}
+		return connectionFileManager;
 	}
 }
