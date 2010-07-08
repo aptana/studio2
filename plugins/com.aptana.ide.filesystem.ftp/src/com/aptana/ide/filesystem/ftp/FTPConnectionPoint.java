@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -66,17 +66,17 @@ public class FTPConnectionPoint extends ConnectionPoint implements IBaseFTPConne
 	private static final String ELEMENT_ENCODING = "encoding"; //$NON-NLS-1$
 	private static final String ELEMENT_TIMEZONE = "timezone"; //$NON-NLS-1$
 		
-	private String host;
-	private int port = IFTPConstants.FTP_PORT_DEFAULT;
-	private IPath path = Path.ROOT;
-	private String login = StringUtils.EMPTY;
-	private char[] password;
-	private boolean passiveMode = true;
-	private String transferType = IFTPConstants.TRANSFER_TYPE_BINARY;
-	private String encoding = IFTPConstants.ENCODING_DEFAULT;
-	private String timezone = null;
+	protected String host;
+	protected int port = IFTPConstants.FTP_PORT_DEFAULT;
+	protected IPath path = Path.ROOT;
+	protected String login = StringUtils.EMPTY;
+	protected char[] password;
+	protected boolean passiveMode = true;
+	protected String transferType = IFTPConstants.TRANSFER_TYPE_BINARY;
+	protected String encoding = IFTPConstants.ENCODING_DEFAULT;
+	protected String timezone = null;
 	
-	private IFTPConnectionFileManager connectionFileManager;
+	protected IFTPConnectionFileManager connectionFileManager;
 	
 	/**
 	 * Default constructor
@@ -199,7 +199,7 @@ public class FTPConnectionPoint extends ConnectionPoint implements IBaseFTPConne
 	 * @see com.aptana.ide.core.ftp.IBaseRemoteConnectionPoint#setPath(org.eclipse.core.runtime.IPath)
 	 */
 	public void setPath(IPath path) {
-		if (path.isEmpty()) {
+		if (path == null || path.isEmpty()) {
 			path = Path.ROOT;
 		}
 		this.path = path;
@@ -360,7 +360,7 @@ public class FTPConnectionPoint extends ConnectionPoint implements IBaseFTPConne
 		connectionFileManager = null;
 	}
 	
-	private synchronized IConnectionFileManager getConnectionFileManager() {
+	protected synchronized IConnectionFileManager getConnectionFileManager() {
 		if (connectionFileManager == null) {
 			// find contributed first
 			connectionFileManager = (IFTPConnectionFileManager) super.getAdapter(IFTPConnectionFileManager.class);

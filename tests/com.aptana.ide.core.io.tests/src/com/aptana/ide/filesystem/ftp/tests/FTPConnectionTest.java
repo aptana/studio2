@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -35,31 +35,16 @@
 
 package com.aptana.ide.filesystem.ftp.tests;
 
-import java.io.IOException;
-
-import org.eclipse.core.runtime.CoreException;
-import org.junit.Before;
-
-import com.aptana.ide.core.io.tests.CommonConnectionTest;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
 
 /**
  * @author Max Stepanov
  */
-public class FTPConnectionTest extends CommonConnectionTest
+public class FTPConnectionTest extends FTPCommonConnectionTest
 {
 	@Override
-	@Before
-	public final void initialize() throws CoreException, IOException
+	public FTPConnectionPoint getConnectionPoint()
 	{
-		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
-		ftpcp.setHost(getConfig().getProperty("ftp.host", "10.10.1.60")); //$NON-NLS-1$ //$NON-NLS-2$
-		ftpcp.setLogin(getConfig().getProperty("ftp.username", "ftpuser")); //$NON-NLS-1$ //$NON-NLS-2$
-		ftpcp.setPassword(getConfig().getProperty("ftp.password", //$NON-NLS-1$
-				String.valueOf(new char[] { 'l', 'e', 't', 'm', 'e', 'i', 'n' })).toCharArray());
-		supportsChangeGroup = Boolean.valueOf(getConfig().getProperty("ftp.supportsChangeGroup", "false"));
-		supportsChangePermissions = Boolean.valueOf(getConfig().getProperty("ftp.supportsChangePermissions", "true"));
-		cp = ftpcp;
-		super.initialize();
+		return new FTPConnectionPoint();
 	}
 }

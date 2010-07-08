@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -32,96 +32,118 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-
 package com.aptana.ide.filesystem.ftp.tests;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 
+import com.aptana.ide.core.io.ConnectionContext;
+import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.tests.CommonConnectionTest;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
 
-
 /**
  * @author Max Stepanov
- *
  */
-public class FTPConnectionWithBasePathTest extends CommonConnectionTest {
+public class FTPConnectionWithBasePathTest extends CommonConnectionTest
+{
 
-	private static FTPConnectionPoint setupConnection() throws IOException {
-		
-		Properties props = new Properties();
-		FileInputStream inStream = new FileInputStream(System.getenv().get("junit.properties"));
-		props.load(inStream);
-
+	private static FTPConnectionPoint setupConnection()
+	{
 		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
-		ftpcp.setHost(props.getProperty("ftp.host")); //$NON-NLS-1$
-		ftpcp.setLogin(props.getProperty("ftp.username")); //$NON-NLS-1$
-		ftpcp.setPassword(props.getProperty("ftp.password").toCharArray());
+		ftpcp.setHost(getConfig().getProperty("ftp.host", "10.10.1.60")); //$NON-NLS-1$ //$NON-NLS-2$
+		ftpcp.setLogin(getConfig().getProperty("ftp.username", "ftpuser")); //$NON-NLS-1$ //$NON-NLS-2$
+		ftpcp.setPassword(getConfig().getProperty("ftp.password", //$NON-NLS-1$
+				String.valueOf(new char[] { 'l', 'e', 't', 'm', 'e', 'i', 'n' })).toCharArray());
+
+		ConnectionContext context = new ConnectionContext();
+		context.put(ConnectionContext.COMMAND_LOG, System.out);
+		CoreIOPlugin.setConnectionContext(ftpcp, context);
 
 		return ftpcp;
 	}
-	
+
 	@Override
-	@Before
-	public final void initialize() throws CoreException, FileNotFoundException, IOException {
+	protected void setUp() throws Exception
+	{
+		initBasePath();
 		FTPConnectionPoint ftpcp = setupConnection();
 		ftpcp.setPath(Path.ROOT.append(getClass().getSimpleName()));
 		cp = ftpcp;
-		super.initialize();
+		super.setUp();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#getRemoteFileDirectory()
+	 */
+	@Override
+	protected String getRemoteFileDirectory()
+	{
+		return getConfig().getProperty("ftp.remoteFileDirectory", null);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#supportsChangeGroup()
+	 */
+	@Override
+	protected boolean supportsChangeGroup()
+	{
+		return Boolean.valueOf(getConfig().getProperty("ftp.supportsChangeGroup", "false"));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#supportsChangePermissions()
+	 */
+	@Override
+	protected boolean supportsChangePermissions()
+	{
+		return Boolean.valueOf(getConfig().getProperty("ftp.supportsChangePermissions", "true"));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aptana.core.io.tests.BaseConnectionTest#supportsSetModificationTime()
+	 */
+	@Override
+	protected boolean supportsSetModificationTime()
+	{
+		return Boolean.valueOf(getConfig()
+				.getProperty("ftp.supportsSetModificationTime", "true"));
 	}
 	
-	@BeforeClass
-	public static void initBasePath() throws CoreException, IOException {
+	@Override
+	protected void tearDown() throws Exception
+	{
+		super.tearDown();
+		cleanupBasePath();
+	}
+
+	public static void initBasePath() throws CoreException
+	{
 		FTPConnectionPoint ftpcp = setupConnection();
-		IFileStore fs = ftpcp.getRoot().getFileStore(Path.ROOT.append(FTPConnectionWithBasePathTest.class.getSimpleName()));
+		IFileStore fs = ftpcp.getRoot().getFileStore(
+				Path.ROOT.append(FTPConnectionWithBasePathTest.class.getSimpleName()));
 		assertNotNull(fs);
-		if (!fs.fetchInfo().exists()) {
+		if (!fs.fetchInfo().exists())
+		{
 			fs.mkdir(EFS.NONE, null);
 		}
 		ftpcp.disconnect(null);
 		assertFalse(ftpcp.isConnected());
 	}
-	
-	@AfterClass
-	public static void cleanupBasePath() throws CoreException, IOException {
+
+	public static void cleanupBasePath() throws CoreException
+	{
 		FTPConnectionPoint ftpcp = setupConnection();
-		IFileStore fs = ftpcp.getRoot().getFileStore(Path.ROOT.append(FTPConnectionWithBasePathTest.class.getSimpleName()));
+		IFileStore fs = ftpcp.getRoot().getFileStore(
+				Path.ROOT.append(FTPConnectionWithBasePathTest.class.getSimpleName()));
 		assertNotNull(fs);
-		if (fs.fetchInfo().exists()) {
+		if (fs.fetchInfo().exists())
+		{
 			fs.delete(EFS.NONE, null);
 		}
 		ftpcp.disconnect(null);
 		assertFalse(ftpcp.isConnected());
 	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.tests.CommonConnectionTest#supportsChangeGroup()
-	 */
-	@Override
-	protected boolean supportsChangeGroup() {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aptana.ide.core.io.tests.CommonConnectionTest#supportsChangePermissions()
-	 */
-	@Override
-	protected boolean supportsChangePermissions() {
-		return false;
-	}
-
 }

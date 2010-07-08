@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -282,7 +282,7 @@ public class PluginsContentHandler implements ContentHandler
 		id = null;
 		category = null;
 		sortweight = Plugin.UNKNOWN_WEIGHT;
-		year = 2009;
+		year = 2010;
 		month = 1;
 		day = 1;
 		more = null;
