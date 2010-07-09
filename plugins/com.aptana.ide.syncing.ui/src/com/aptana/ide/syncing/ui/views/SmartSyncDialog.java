@@ -1205,8 +1205,8 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 						else
 						{
 							IFileStore[] clientFiles = EFSUtils.getAllFiles(filesToBeSynced, true, false, monitor);
-							IFileStore[] serverFiles = SyncUtils.getUploadFiles(sourceConnectionPoint,
-									destConnectionPoint, filesToBeSynced, monitor);
+							IFileStore[] serverFiles = SyncUtils.getDownloadFiles(sourceConnectionPoint,
+									destConnectionPoint, filesToBeSynced, true, monitor);
 
 							items = syncer.createSyncItems(clientFiles, serverFiles, monitor);
 						}

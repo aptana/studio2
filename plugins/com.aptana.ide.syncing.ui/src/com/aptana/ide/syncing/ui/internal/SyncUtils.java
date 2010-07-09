@@ -42,7 +42,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
@@ -233,13 +232,15 @@ public class SyncUtils
 				if (file.fetchInfo().isDirectory())
 				{
 					newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
-					newFile.mkdir(EFS.NONE, null);
-					IFileStore[] f = EFSUtils.getFiles(newFile, true, false, null);
-					if (!newFiles.contains(newFile))
+					if (newFile.fetchInfo().exists())
 					{
-						newFiles.add(newFile);
+						IFileStore[] f = EFSUtils.getFiles(newFile, true, false, null);
+						if (!newFiles.contains(newFile))
+						{
+							newFiles.add(newFile);
+						}
+						newFiles.addAll(Arrays.asList(f));
 					}
-					newFiles.addAll(Arrays.asList(f));
 				}
 				else
 				{
