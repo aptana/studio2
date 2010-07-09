@@ -14,6 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.aptana.ide.core.io,
  com.aptana.ide.syncing.core,
  com.aptana.ide.filesystem.ftp,
- com.aptana.ide.io.file
+ com.aptana.ide.io.file,
+ com.aptana.ide.syncing.ui;bundle-version="2.0.5",
+ org.eclipse.core.resources;bundle-version="3.5.2"
 Eclipse-AutoStart: true
 Export-Package: com.aptana.ide.syncing.tests
