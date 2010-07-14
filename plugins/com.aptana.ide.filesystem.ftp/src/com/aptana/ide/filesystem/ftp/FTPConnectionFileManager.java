@@ -72,6 +72,7 @@ import com.aptana.ide.core.io.preferences.PreferenceUtils;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.enterprisedt.net.ftp.FTPClient;
+import com.enterprisedt.net.ftp.FTPClientInterface;
 import com.enterprisedt.net.ftp.FTPConnectMode;
 import com.enterprisedt.net.ftp.FTPConnectionClosedException;
 import com.enterprisedt.net.ftp.FTPException;
@@ -87,7 +88,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
  * @author Max Stepanov
  *
  */
-/* package */ class FTPConnectionFileManager extends BaseFTPConnectionFileManager implements IFTPConnectionFileManager {
+/* package */ class FTPConnectionFileManager extends BaseFTPConnectionFileManager implements IFTPConnectionFileManager, IPoolConnectionManager {
 	
 	private static final String TMP_TIMEZONE_CHECK = "_tmp_tz_check"; //$NON-NLS-1$
 	
@@ -109,12 +110,15 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 
 	private int connectionRetryCount;
 
+	protected FTPClientPool pool;
+
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.ftp.IFTPConnectionFileManager#init(java.lang.String, int, org.eclipse.core.runtime.IPath, java.lang.String, char[], boolean, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void init(String host, int port, IPath basePath, String login, char[] password, boolean passive, String transferType, String encoding, String timezone) {
 		Assert.isTrue(ftpClient == null, Messages.FTPConnectionFileManager_already_initialized);
 		try {
+			this.pool = new FTPClientPool(this);
 			ftpClient = new FTPClient();
 			this.host = host;
 			this.port = port;
@@ -428,6 +432,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_disconnect_failed, e));
 		} finally {
 			cwd = null;
+			pool.dispose();
 			cleanup();
 			monitor.done();
 		}
@@ -699,7 +704,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	@Override
 	protected InputStream readFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException {
 		monitor.beginTask(Messages.FTPConnectionFileManager_initiating_download, 4);
-		FTPClient downloadFtpClient = new FTPClient();
+		FTPClient downloadFtpClient = (FTPClient) pool.checkOut();
 		try {
 			initFTPClient(downloadFtpClient, ftpClient.getConnectMode() == FTPConnectMode.PASV, ftpClient.getControlEncoding());
 			downloadFtpClient.setRemoteHost(host);
@@ -722,7 +727,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			monitor.worked(1);
 			Policy.checkCanceled(monitor);
 			try {
-				return new FTPFileDownloadInputStream(downloadFtpClient,
+				return new FTPFileDownloadInputStream(pool, downloadFtpClient,
 						new FTPInputStream(downloadFtpClient, path.lastSegment()));
 			} catch (FTPException e) {
 				throwFileNotFound(e, path);
@@ -730,6 +735,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			}
 		} catch (Exception e) {
 			setMessageLogger(downloadFtpClient, null);
+			pool.checkIn(downloadFtpClient);
 			if (downloadFtpClient.connected()) {
 				try {
 					if (e instanceof OperationCanceledException
@@ -760,7 +766,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	@Override
 	protected OutputStream writeFile(IPath path, long permissions, IProgressMonitor monitor) throws CoreException, FileNotFoundException {
 		monitor.beginTask(Messages.FTPConnectionFileManager_initiating_file_upload, 4);
-		FTPClient uploadFtpClient = new FTPClient();
+		FTPClient uploadFtpClient = (FTPClient) pool.checkOut();
 		try {
 			initFTPClient(uploadFtpClient, ftpClient.getConnectMode() == FTPConnectMode.PASV, ftpClient.getControlEncoding());
 			uploadFtpClient.setRemoteHost(host);
@@ -783,11 +789,12 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			}
 			monitor.worked(1);
 			Policy.checkCanceled(monitor);
-			return new FTPFileUploadOutputStream(uploadFtpClient,
+			return new FTPFileUploadOutputStream(pool, uploadFtpClient,
 					new FTPOutputStream(uploadFtpClient, generateTempFileName(path.lastSegment())),
 					path.lastSegment(), null, permissions);
 		} catch (Exception e) {
 			setMessageLogger(uploadFtpClient, null);
+			pool.checkIn(uploadFtpClient);
 			if (uploadFtpClient.connected()) {
 				try {
 					if (e instanceof OperationCanceledException
@@ -1097,4 +1104,8 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		return sb.toString();
 	}
 
+	public FTPClientInterface newClient()
+	{
+		return new FTPClient();
+	}
 }

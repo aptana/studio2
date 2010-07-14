@@ -35,89 +35,14 @@
 
 package com.aptana.ide.filesystem.ftp;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.enterprisedt.net.ftp.FTPClient;
-import com.enterprisedt.net.ftp.FileTransferInputStream;
+import com.enterprisedt.net.ftp.FTPClientInterface;
 
 /**
  * @author Max Stepanov
  *
  */
-/* package */ class FTPFileDownloadInputStream extends InputStream {
+public interface IPoolConnectionManager {
 
-	private FTPClient ftpClient;
-	private FileTransferInputStream ftpInputStream;
-	private FTPClientPool pool;
-
-	/**
-	 * 
-	 */
-	public FTPFileDownloadInputStream(FTPClientPool pool, FTPClient ftpClient, FileTransferInputStream ftpInputStream) {
-		this.pool = pool;
-		this.ftpClient = ftpClient;
-		this.ftpInputStream = ftpInputStream;
-	}
-	
-	private void safeQuit() {
-		try {
-			ftpInputStream.close();
-		} catch (IOException e) {
-			// ignore
-		}
-		pool.checkIn(ftpClient);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#read()
-	 */
-	@Override
-	public int read() throws IOException {
-		try {
-			return ftpInputStream.read();
-		} catch (IOException e) {
-			safeQuit();
-			throw e;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#available()
-	 */
-	@Override
-	public int available() throws IOException {
-		try {
-			return ftpInputStream.available();
-		} catch (IOException e) {
-			safeQuit();
-			throw e;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#close()
-	 */
-	@Override
-	public void close() throws IOException {
-		try {
-			ftpInputStream.close();
-		} finally {
-			safeQuit();
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#read(byte[], int, int)
-	 */
-	@Override
-	public int read(byte[] b, int off, int len) throws IOException {
-		try {
-			return ftpInputStream.read(b, off, len);
-		} catch (IOException e) {
-			safeQuit();
-			throw e;
-		}
-	}
+	public FTPClientInterface newClient();
 
 }

@@ -54,11 +54,13 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 	private String filename;
 	private Date modificationTime;
 	private long permissions;
-	
+	private FTPClientPool pool;
+
 	/**
 	 * 
 	 */
-	public FTPFileUploadOutputStream(FTPClient ftpClient, FileTransferOutputStream ftpOutputStream, String filename, Date modificationTime, long permissions) {
+	public FTPFileUploadOutputStream(FTPClientPool pool, FTPClient ftpClient, FileTransferOutputStream ftpOutputStream, String filename, Date modificationTime, long permissions) {
+		this.pool = pool;
 		this.ftpClient = ftpClient;
 		this.ftpOutputStream = ftpOutputStream;
 		this.filename = filename;
@@ -67,20 +69,22 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 	}
 
 	private void safeQuit(boolean failed) {
-		ftpClient.setMessageListener(null);
 		try {
 			if (ftpClient.connected()) {
 				if (failed) {
 					ftpClient.delete(ftpOutputStream.getRemoteFile());
 				}
-				ftpClient.quit();
 			}
 		} catch (Exception e) {
+			// ignore
+		} finally  {
 			try {
-				ftpClient.quitImmediately();
-			} catch (Exception ignore) {
+				ftpOutputStream.close();
+			} catch (IOException e) {
+				// ignore
 			}
-		}		
+			pool.checkIn(ftpClient);
+		}
 	}
 
 	/* (non-Javadoc)

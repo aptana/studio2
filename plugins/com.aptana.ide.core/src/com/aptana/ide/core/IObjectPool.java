@@ -33,91 +33,35 @@
  * Any modifications to this file must keep this entire header intact.
  */
 
-package com.aptana.ide.filesystem.ftp;
+package com.aptana.ide.core;
 
-import java.io.IOException;
-import java.io.InputStream;
+public interface IObjectPool<T>
+{
 
-import com.enterprisedt.net.ftp.FTPClient;
-import com.enterprisedt.net.ftp.FileTransferInputStream;
+	public T create();
 
-/**
- * @author Max Stepanov
- *
- */
-/* package */ class FTPFileDownloadInputStream extends InputStream {
+	public boolean validate(T o);
 
-	private FTPClient ftpClient;
-	private FileTransferInputStream ftpInputStream;
-	private FTPClientPool pool;
+	public void expire(T o);
 
 	/**
+	 * Looks for an "unlocked" instance and returns it. If no such instance is found, it generates a new one and returns
+	 * that.
 	 * 
+	 * @return an instance of the object class
 	 */
-	public FTPFileDownloadInputStream(FTPClientPool pool, FTPClient ftpClient, FileTransferInputStream ftpInputStream) {
-		this.pool = pool;
-		this.ftpClient = ftpClient;
-		this.ftpInputStream = ftpInputStream;
-	}
-	
-	private void safeQuit() {
-		try {
-			ftpInputStream.close();
-		} catch (IOException e) {
-			// ignore
-		}
-		pool.checkIn(ftpClient);
-	}
+	public T checkOut();
 
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#read()
+	/**
+	 * "Unlocks" a specific instance.
+	 * 
+	 * @param t the instance to be unlocked
 	 */
-	@Override
-	public int read() throws IOException {
-		try {
-			return ftpInputStream.read();
-		} catch (IOException e) {
-			safeQuit();
-			throw e;
-		}
-	}
+	public void checkIn(T t);
 
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#available()
+	/**
+	 * Expires all unlocked instances of the object class in the pool.
 	 */
-	@Override
-	public int available() throws IOException {
-		try {
-			return ftpInputStream.available();
-		} catch (IOException e) {
-			safeQuit();
-			throw e;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#close()
-	 */
-	@Override
-	public void close() throws IOException {
-		try {
-			ftpInputStream.close();
-		} finally {
-			safeQuit();
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#read(byte[], int, int)
-	 */
-	@Override
-	public int read(byte[] b, int off, int len) throws IOException {
-		try {
-			return ftpInputStream.read(b, off, len);
-		} catch (IOException e) {
-			safeQuit();
-			throw e;
-		}
-	}
+	public void dispose();
 
 }
