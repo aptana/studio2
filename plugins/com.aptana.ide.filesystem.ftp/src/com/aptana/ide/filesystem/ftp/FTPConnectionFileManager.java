@@ -62,6 +62,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.PerformanceStats;
 import org.eclipse.core.runtime.Status;
 
 import com.aptana.ide.core.IdeLog;
@@ -93,7 +94,6 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	private static final String TMP_TIMEZONE_CHECK = "_tmp_tz_check"; //$NON-NLS-1$
 	
 	private final static String WINDOWS_STR = "WINDOWS";
-	
 	protected FTPClient ftpClient;
 	private List<String> serverFeatures;
 	protected String transferType;
@@ -146,7 +146,34 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		ftpClient.setDeleteOnFailure(true);
 		ftpClient.setTransferBufferSize(TRANSFER_BUFFER_SIZE);	
 	}
-	
+
+	private static void connectFTPClient(FTPClient ftpClient) throws IOException, FTPException {
+		PerformanceStats stats = PerformanceStats.getStats("com.aptana.ide.filesystem.ftp/perf/connect", //$NON-NLS-1$
+				FTPConnectionFileManager.class.getName());
+		stats.startRun(ftpClient.getRemoteHost());
+		try {
+			ftpClient.connect();
+		} finally {
+			stats.endRun();
+		}
+	}
+
+	protected void initAndAuthFTPClient(FTPClientInterface clientInterface, IProgressMonitor monitor) throws IOException, FTPException {
+		if (clientInterface.connected()) {
+			return;
+		}
+		FTPClient newFtpClient = (FTPClient) clientInterface;
+		initFTPClient(newFtpClient, ftpClient.getConnectMode() == FTPConnectMode.PASV, ftpClient.getControlEncoding());
+		newFtpClient.setRemoteHost(host);
+		newFtpClient.setRemotePort(port);
+		Policy.checkCanceled(monitor);
+		connectFTPClient(newFtpClient);
+		monitor.worked(1);
+		Policy.checkCanceled(monitor);
+		newFtpClient.login(login, String.copyValueOf(password));
+		monitor.worked(1);
+	}
+
 	protected static void setMessageLogger(FTPClient ftpClient, final PrintWriter writer) {
 		FTPMessageListener listener = null;
 		if (writer != null && ftpClient.getMessageListener() == null) {
@@ -171,7 +198,6 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			};
 		}
 		ftpClient.setMessageListener(listener);
-
 	}
 
 	/* (non-Javadoc)
@@ -706,15 +732,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		monitor.beginTask(Messages.FTPConnectionFileManager_initiating_download, 4);
 		FTPClient downloadFtpClient = (FTPClient) pool.checkOut();
 		try {
-			initFTPClient(downloadFtpClient, ftpClient.getConnectMode() == FTPConnectMode.PASV, ftpClient.getControlEncoding());
-			downloadFtpClient.setRemoteHost(host);
-			downloadFtpClient.setRemotePort(port);
-			Policy.checkCanceled(monitor);
-			downloadFtpClient.connect();
-			monitor.worked(1);
-			Policy.checkCanceled(monitor);
-			downloadFtpClient.login(login, String.copyValueOf(password));
-			monitor.worked(1);
+			initAndAuthFTPClient(downloadFtpClient, monitor);
 			Policy.checkCanceled(monitor);
 			setMessageLogger(downloadFtpClient, messageLogWriter);
 			downloadFtpClient.setType(IFTPConstants.TRANSFER_TYPE_ASCII.equals(transferType)
@@ -736,19 +754,6 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		} catch (Exception e) {
 			setMessageLogger(downloadFtpClient, null);
 			pool.checkIn(downloadFtpClient);
-			if (downloadFtpClient.connected()) {
-				try {
-					if (e instanceof OperationCanceledException
-							|| e instanceof FTPException
-							|| e instanceof FileNotFoundException) {
-						downloadFtpClient.quit();
-					} else {
-						downloadFtpClient.quitImmediately();
-					}
-				} catch (IOException ignore) {
-				} catch (FTPException ignore) {
-				}
-			}
 			if (e instanceof OperationCanceledException) {
 				throw (OperationCanceledException) e;
 			} else if (e instanceof FileNotFoundException) {
@@ -768,15 +773,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		monitor.beginTask(Messages.FTPConnectionFileManager_initiating_file_upload, 4);
 		FTPClient uploadFtpClient = (FTPClient) pool.checkOut();
 		try {
-			initFTPClient(uploadFtpClient, ftpClient.getConnectMode() == FTPConnectMode.PASV, ftpClient.getControlEncoding());
-			uploadFtpClient.setRemoteHost(host);
-			uploadFtpClient.setRemotePort(port);
-			Policy.checkCanceled(monitor);
-			uploadFtpClient.connect();
-			monitor.worked(1);
-			Policy.checkCanceled(monitor);
-			uploadFtpClient.login(login, String.copyValueOf(password));
-			monitor.worked(1);
+			initAndAuthFTPClient(uploadFtpClient, monitor);
 			Policy.checkCanceled(monitor);
 			setMessageLogger(uploadFtpClient, messageLogWriter);
 			uploadFtpClient.setType(IFTPConstants.TRANSFER_TYPE_ASCII.equals(transferType)
@@ -795,23 +792,14 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		} catch (Exception e) {
 			setMessageLogger(uploadFtpClient, null);
 			pool.checkIn(uploadFtpClient);
-			if (uploadFtpClient.connected()) {
-				try {
-					if (e instanceof OperationCanceledException
-							|| e instanceof FTPException
-							|| e instanceof FileNotFoundException) {
-						uploadFtpClient.quit();
-					} else {
-						uploadFtpClient.quitImmediately();
-					}
-				} catch (IOException ignore) {
-				} catch (FTPException ignore) {
-				}
-			}
 			if (e instanceof OperationCanceledException) {
 				throw (OperationCanceledException) e;
 			} else if (e instanceof FileNotFoundException) {
 				throw (FileNotFoundException) e;
+			} else if (e instanceof FTPException) {
+				if (((FTPException)e).getReplyCode() == 553) {
+					throw (FileNotFoundException) new FileNotFoundException(path.toPortableString()).initCause(e);
+				}
 			}
 			throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_opening_file_failed, e));			
 		} finally {
