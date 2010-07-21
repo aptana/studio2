@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -38,7 +38,7 @@ package com.aptana.ide.filesystem.ftp;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.enterprisedt.net.ftp.FTPClient;
+import com.enterprisedt.net.ftp.FTPClientInterface;
 import com.enterprisedt.net.ftp.FileTransferInputStream;
 
 /**
@@ -47,14 +47,14 @@ import com.enterprisedt.net.ftp.FileTransferInputStream;
  */
 /* package */ class FTPFileDownloadInputStream extends InputStream {
 
-	private FTPClient ftpClient;
+	private FTPClientInterface ftpClient;
 	private FileTransferInputStream ftpInputStream;
 	private FTPClientPool pool;
-
+	
 	/**
 	 * 
 	 */
-	public FTPFileDownloadInputStream(FTPClientPool pool, FTPClient ftpClient, FileTransferInputStream ftpInputStream) {
+	public FTPFileDownloadInputStream(FTPClientPool pool, FTPClientInterface ftpClient, FileTransferInputStream ftpInputStream) {
 		this.pool = pool;
 		this.ftpClient = ftpClient;
 		this.ftpInputStream = ftpInputStream;

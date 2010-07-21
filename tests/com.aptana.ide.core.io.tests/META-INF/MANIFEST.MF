@@ -9,5 +9,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  com.aptana.ide.core.io,
  com.aptana.ide.filesystem.ftp;visibility:=reexport,
+ com.aptana.ide.libraries.subscription,
  org.junit4
 Export-Package: com.aptana.ide.core.io.tests

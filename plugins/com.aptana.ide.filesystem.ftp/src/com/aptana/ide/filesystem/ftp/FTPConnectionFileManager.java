@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -72,6 +72,12 @@ import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.preferences.PreferenceUtils;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
+import com.aptana.ide.filesystem.ftp.BaseFTPConnectionFileManager;
+import com.aptana.ide.filesystem.ftp.ExpiringMap;
+import com.aptana.ide.filesystem.ftp.FTPPlugin;
+import com.aptana.ide.filesystem.ftp.IFTPConnectionFileManager;
+import com.aptana.ide.filesystem.ftp.IFTPConstants;
+import com.aptana.ide.filesystem.ftp.Policy;
 import com.enterprisedt.net.ftp.FTPClient;
 import com.enterprisedt.net.ftp.FTPClientInterface;
 import com.enterprisedt.net.ftp.FTPConnectMode;
@@ -84,16 +90,18 @@ import com.enterprisedt.net.ftp.FTPMessageListener;
 import com.enterprisedt.net.ftp.FTPOutputStream;
 import com.enterprisedt.net.ftp.FTPReply;
 import com.enterprisedt.net.ftp.FTPTransferType;
+import com.enterprisedt.net.ftp.pro.ProFTPClient;
 
 /**
  * @author Max Stepanov
  *
  */
-/* package */ class FTPConnectionFileManager extends BaseFTPConnectionFileManager implements IFTPConnectionFileManager, IPoolConnectionManager {
+public class FTPConnectionFileManager extends BaseFTPConnectionFileManager implements IFTPConnectionFileManager, IPoolConnectionManager {
 	
 	private static final String TMP_TIMEZONE_CHECK = "_tmp_tz_check"; //$NON-NLS-1$
-	
+
 	private final static String WINDOWS_STR = "WINDOWS";
+
 	protected FTPClient ftpClient;
 	private List<String> serverFeatures;
 	protected String transferType;
@@ -119,7 +127,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		Assert.isTrue(ftpClient == null, Messages.FTPConnectionFileManager_already_initialized);
 		try {
 			this.pool = new FTPClientPool(this);
-			ftpClient = new FTPClient();
+			ftpClient = createFTPClient();
 			this.host = host;
 			this.port = port;
 			this.login = login;
@@ -134,7 +142,11 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			ftpClient = null;
 		}
 	}
-	
+
+	protected FTPClient createFTPClient() {
+		return new ProFTPClient();
+	}
+
 	protected static void initFTPClient(FTPClient ftpClient, boolean passive, String encoding) throws IOException, FTPException {
 		ftpClient.setTimeout(TIMEOUT);
 		ftpClient.setControlEncoding(encoding);
@@ -144,7 +156,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 		ftpClient.setRetryDelay(RETRY_DELAY);
 		ftpClient.setServerWakeupInterval(KEEPALIVE_INTERVAL);
 		ftpClient.setDeleteOnFailure(true);
-		ftpClient.setTransferBufferSize(TRANSFER_BUFFER_SIZE);	
+		ftpClient.setTransferBufferSize(TRANSFER_BUFFER_SIZE);
 	}
 
 	private static void connectFTPClient(FTPClient ftpClient) throws IOException, FTPException {
@@ -159,7 +171,8 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 	}
 
 	protected void initAndAuthFTPClient(FTPClientInterface clientInterface, IProgressMonitor monitor) throws IOException, FTPException {
-		if (clientInterface.connected()) {
+		if (clientInterface.connected())
+		{
 			return;
 		}
 		FTPClient newFtpClient = (FTPClient) clientInterface;
@@ -198,6 +211,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			};
 		}
 		ftpClient.setMessageListener(listener);
+
 	}
 
 	/* (non-Javadoc)
@@ -249,7 +263,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 					ftpClient.login(login, String.copyValueOf(password));
 				} catch (FTPException e) {
 					Policy.checkCanceled(monitor);
-					if ("331".equals(ftpClient.getLastValidReply().getReplyCode())) { //$NON-NLS-1$
+					if (ftpClient.getLastValidReply() == null || "331".equals(ftpClient.getLastValidReply().getReplyCode())) { //$NON-NLS-1$
 						if (context != null && context.getBoolean(ConnectionContext.NO_PASSWORD_PROMPT)) {
 							throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, StringUtils.format("Authentication failed: {0}", e.getLocalizedMessage()), e));
 						}
@@ -293,7 +307,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			monitor.done();
 		}
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	protected void getherServerInfo(ConnectionContext context, IProgressMonitor monitor) {
 		Policy.checkCanceled(monitor);
@@ -412,9 +426,10 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			}
 		}
 					
-		hasServerInfo = true;		
+		hasServerInfo = true;
+		
 	}
-
+	
 	protected void safeQuit() {
 		try {
 			if (ftpClient.connected()) {
@@ -723,7 +738,7 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 			monitor.done();
 		}
 	}
-
+		
 	/* (non-Javadoc)
 	 * @see com.aptana.ide.core.ftp.BaseFTPConnectionFileManager#readFile(org.eclipse.core.runtime.IPath, org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -1094,6 +1109,6 @@ import com.enterprisedt.net.ftp.FTPTransferType;
 
 	public FTPClientInterface newClient()
 	{
-		return new FTPClient();
+		return createFTPClient();
 	}
 }
