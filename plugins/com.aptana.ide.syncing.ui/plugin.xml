@@ -55,6 +55,13 @@
                </instanceof>
             </possibleDropTargets>
          </dropAssistant>
+      </navigatorContent>
+      <navigatorContent
+            activeByDefault="true"
+            appearsBefore="com.aptana.ide.ui.io.navigatorContent"
+            id="com.aptana.ide.syncing.ui.navigatorContent.sorter"
+            name="%navigatorContent.site.sorter.name"
+            sortOnly="true">
          <commonSorter
                class="com.aptana.ide.syncing.ui.navigator.SiteTreeNameSorter">
             <parentExpression>
@@ -64,6 +71,9 @@
                   </instanceof>
                   <instanceof
                         value="com.aptana.ide.ui.io.navigator.FileSystemObject">
+                  </instanceof>
+                  <instanceof
+                        value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnections">
                   </instanceof>
                   <instanceof
                         value="com.aptana.ide.syncing.ui.navigator.ProjectSiteConnection">
