@@ -36,6 +36,8 @@
 package com.aptana.ide.syncing.ui.internal;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
@@ -416,6 +418,12 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
             } else {
                 projectViewer.setLabelProvider(WorkbenchLabelProvider
                         .getDecoratingWorkbenchLabelProvider());
+                Arrays.sort(projects, new Comparator<IProject>() {
+
+                	public int compare(IProject o1, IProject o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+                });
                 projectViewer.setInput(projects);
                 projectViewer.setSelection(new StructuredSelection(projects[0]), true);
             }
@@ -476,6 +484,12 @@ public class SiteConnectionPropertiesWidget extends Composite implements ModifyL
                 remoteRadio.setEnabled(true);
                 remotesViewer.setLabelProvider(WorkbenchLabelProvider
                         .getDecoratingWorkbenchLabelProvider());
+                Arrays.sort(sites, new Comparator<IConnectionPoint>() {
+
+					public int compare(IConnectionPoint o1, IConnectionPoint o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+                });
                 remotesViewer.setInput(sites);
                 remotesViewer.setSelection(new StructuredSelection(sites[0]), true);
                 Control control = remotesViewer.getControl();
