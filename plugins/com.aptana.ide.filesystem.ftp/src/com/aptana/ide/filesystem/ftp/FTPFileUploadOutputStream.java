@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2005-2010 Aptana, Inc. This program is
+ * This file Copyright (c) 2005-2009 Aptana, Inc. This program is
  * dual-licensed under both the Aptana Public License and the GNU General
  * Public license. You may elect to use one or the other of these licenses.
  * 
@@ -40,6 +40,7 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import com.enterprisedt.net.ftp.FTPClient;
+import com.enterprisedt.net.ftp.FTPClientInterface;
 import com.enterprisedt.net.ftp.FTPException;
 import com.enterprisedt.net.ftp.FileTransferOutputStream;
 
@@ -49,16 +50,18 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
  */
 /* package */ class FTPFileUploadOutputStream extends OutputStream {
 
-	private FTPClient ftpClient;
+	private FTPClientInterface ftpClient;
 	private FileTransferOutputStream ftpOutputStream;
 	private String filename;
 	private Date modificationTime;
 	private long permissions;
+	private FTPClientPool pool;
 	
 	/**
 	 * 
 	 */
-	public FTPFileUploadOutputStream(FTPClient ftpClient, FileTransferOutputStream ftpOutputStream, String filename, Date modificationTime, long permissions) {
+	public FTPFileUploadOutputStream(FTPClientPool pool, FTPClientInterface ftpClient, FileTransferOutputStream ftpOutputStream, String filename, Date modificationTime, long permissions) {
+		this.pool = pool;
 		this.ftpClient = ftpClient;
 		this.ftpOutputStream = ftpOutputStream;
 		this.filename = filename;
@@ -67,20 +70,22 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 	}
 
 	private void safeQuit(boolean failed) {
-		ftpClient.setMessageListener(null);
 		try {
 			if (ftpClient.connected()) {
 				if (failed) {
 					ftpClient.delete(ftpOutputStream.getRemoteFile());
 				}
-				ftpClient.quit();
 			}
 		} catch (Exception e) {
+			// ignore
+		} finally  {
 			try {
-				ftpClient.quitImmediately();
-			} catch (Exception ignore) {
+				ftpOutputStream.close();
+			} catch (IOException e) {
+				// ignore
 			}
-		}		
+			pool.checkIn(ftpClient);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -112,7 +117,10 @@ import com.enterprisedt.net.ftp.FileTransferOutputStream;
 						ftpClient.delete(filename);
 					}
 					ftpClient.rename(ftpOutputStream.getRemoteFile(), filename);
-                    ftpClient.site("CHMOD " + Long.toOctalString(permissions) + " " + filename); //$NON-NLS-1$ //$NON-NLS-2$
+                    if (ftpClient instanceof FTPClient) {
+                        ((FTPClient) ftpClient).site("CHMOD " + Long.toOctalString(permissions) //$NON-NLS-1$
+                                + " " + filename); //$NON-NLS-1$
+                    }
 				}
 			} catch (FTPException e) {
 				safeQuit(true);

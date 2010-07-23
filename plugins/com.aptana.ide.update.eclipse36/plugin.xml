@@ -7,5 +7,11 @@
             class="com.aptana.ide.update.eclipse36.P2Eclipse36PluginManager">
       </manager>
    </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.aptana.ide.update.eclipse36.AddRepositoryStartup">
+      </startup>
+   </extension>
 
 </plugin>

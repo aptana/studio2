@@ -77,8 +77,6 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.internal.update.manager.AbstractPluginManager;
@@ -385,6 +383,11 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 	{
 		return (IProvisioningAgent) ServiceHelper.getService(Activator.getContext(), IProvisioningAgent.SERVICE_NAME);
 	}
+	
+	protected static IProfileRegistry getProfileRegistry()
+	{
+		return (IProfileRegistry) getAgent().getService(IProfileRegistry.SERVICE_NAME);
+	}
 
 	private static String getFeatureGroupName(IPlugin plugin) throws CoreException
 	{
@@ -450,22 +453,9 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 		return null;
 	}
 
-	protected static IProfileRegistry getProfileRegistry()
-	{
-		BundleContext context = Activator.getContext();
-		ServiceReference ref = context.getServiceReference(IProfileRegistry.class.getName());
-		if (ref == null)
-			return null;
-		return (IProfileRegistry) context.getService(ref);
-	}
-
 	public List<IPlugin> getInstalledPlugins()
 	{
-		BundleContext context = Activator.getContext();
-		ServiceReference ref = context.getServiceReference(IProfileRegistry.class.getName());
-		if (ref == null)
-			return Collections.emptyList();
-		IProfileRegistry profileRegistry = (IProfileRegistry) context.getService(ref);
+		IProfileRegistry profileRegistry = getProfileRegistry();
 		if (profileRegistry == null)
 			return Collections.emptyList();
 		IProfile profile = profileRegistry.getProfile(IProfileRegistry.SELF);
@@ -536,6 +526,10 @@ public class P2Eclipse36PluginManager extends AbstractPluginManager
 	public URI[] getAllMetadataRepositories()
 	{
 		IMetadataRepositoryManager manager = getMetadataRepositoryManager();
+		if (manager == null)
+		{
+			return new URI[0];
+		}
 		return manager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL);
 	}
 

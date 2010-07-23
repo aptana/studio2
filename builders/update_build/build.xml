@@ -111,6 +111,10 @@
 				<include name="org.eclipse.equinox.p2.*.repository.prefs" />
 			</fileset>
 		</delete>
+		<antcall target="run.director">
+			<param name="p2.installIU" value="com.aptana.ide.feature.libraries.subscription.feature.group" />
+			<param name="p2.repo" value="${libraries-com.p2.repo}" />
+		</antcall>
 		<copy todir="${baseLocation}/dropins">
 			<fileset dir="${3.4-update-plugin.dir}">
 				<include name="plugins/com.aptana.ide.update.*.jar" />
@@ -121,6 +125,20 @@
         <include name="plugins/com.aptana.ide.update.*.jar" />
       </fileset>
     </copy>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+			  target: run.director                      
+			 - - - - - - - - - - - - - - - - - -->
+	<target name="run.director" description="Runs the p2 director installs">
+		<java jar="${baseLocation}/plugins/${launcher.plugin}.jar" fork="true" failonerror="true" dir="${baseLocation}" timeout="900000">
+			<arg line="-application org.eclipse.equinox.p2.director" />
+			<arg line="-nosplash" />
+			<arg line="-consoleLog" />
+			<arg line="-metadataRepository ${p2.repo}" />
+			<arg line="-artifactRepository ${p2.repo}" />
+			<arg line="-installIU ${p2.installIU}" />
+		</java>
 	</target>
 
 	<!-- - - - - - - - - - - - - - - - - - 
