@@ -42,6 +42,7 @@ public class Messages extends NLS {
 
     public static String BaseSyncAction_MessageTitle;
     public static String BaseSyncAction_Warning_NoCommonParent;
+	public static String BasySyncAction_RetrievingItems;
 
     public static String DeleteSiteConnectionAction_JobName;
     public static String DeleteSiteConnectionAction_SubtaskName;
