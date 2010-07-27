@@ -76,7 +76,7 @@ public class DownloadAction extends BaseSyncAction {
                 	IConnectionPoint source = site.getSource();
                 	IConnectionPoint target = site.getDestination();
                 	// retrieves the root filestore of each end
-                	IFileStore sourceRoot = source.getRoot();;
+                	IFileStore sourceRoot = source.getRoot();
                     if (!target.isConnected()) {
                         target.connect(monitor);
                     }
