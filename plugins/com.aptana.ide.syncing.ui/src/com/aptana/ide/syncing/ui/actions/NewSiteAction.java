@@ -34,6 +34,8 @@
  */
 package com.aptana.ide.syncing.ui.actions;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -74,6 +76,20 @@ public class NewSiteAction implements IObjectActionDelegate {
     }
 
     public void selectionChanged(IAction action, ISelection selection) {
-        fSelection = selection;
+    	action.setEnabled(true);
+		fSelection = selection;
+
+    	if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
+			Object element = ((IStructuredSelection) selection).getFirstElement();
+			IResource resource = null;
+			if (element instanceof IResource) {
+				resource = (IResource) element;
+			} else if (element instanceof IAdaptable) {
+				resource = (IResource) ((IAdaptable) selection).getAdapter(IResource.class);
+			}
+			if (resource != null && !(resource instanceof IContainer)) {
+				action.setEnabled(false);
+			}
+		}
     }
 }
