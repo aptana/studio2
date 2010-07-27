@@ -19,6 +19,7 @@ import org.eclipse.osgi.util.NLS;
 	public static String BaseFTPConnectionFileManager_parent_doesnt_exist;
 	public static String BaseFTPConnectionFileManager_parent_is_not_directory;
 	public static String BaseFTPConnectionFileManager_putting_changes;
+	public static String BaseFTPConnectionFileManager_symlink_resolve_failed;
 	public static String FTPConnectionFileManager_already_initialized;
 	public static String FTPConnectionFileManager_authenticating;
 	public static String FTPConnectionFileManager_checking_connection;
