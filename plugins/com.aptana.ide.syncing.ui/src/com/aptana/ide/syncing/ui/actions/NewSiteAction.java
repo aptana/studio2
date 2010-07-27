@@ -85,7 +85,7 @@ public class NewSiteAction implements IObjectActionDelegate {
 			if (element instanceof IResource) {
 				resource = (IResource) element;
 			} else if (element instanceof IAdaptable) {
-				resource = (IResource) ((IAdaptable) selection).getAdapter(IResource.class);
+				resource = (IResource) ((IAdaptable) element).getAdapter(IResource.class);
 			}
 			if (resource != null && !(resource instanceof IContainer)) {
 				action.setEnabled(false);
