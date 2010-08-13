@@ -470,7 +470,6 @@ public class SmartSyncViewer
 							
 							FileCompareEditorInput input = new FileCompareEditorInput(new CompareConfiguration())
 							{
-
 								protected void prepareFiles()
 								{
 									File temp = null;
@@ -482,7 +481,6 @@ public class SmartSyncViewer
 									}
 									setRightResource(temp);
 								}
-
 							};
 							input.setLeftResource(local);
 							CompareUI.openCompareDialog(input);
