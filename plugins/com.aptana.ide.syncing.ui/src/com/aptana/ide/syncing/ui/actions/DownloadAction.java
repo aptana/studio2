@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.aptana.ide.core.StringUtils;
@@ -60,6 +61,8 @@ import com.aptana.ide.syncing.ui.preferences.IPreferenceConstants;
  */
 public class DownloadAction extends BaseSyncAction {
 
+	private IJobChangeListener jobListener;
+
     private static String MESSAGE_TITLE = StringUtils
             .ellipsify(Messages.DownloadAction_MessageTitle);
 
@@ -76,11 +79,11 @@ public class DownloadAction extends BaseSyncAction {
                 	IConnectionPoint source = site.getSource();
                 	IConnectionPoint target = site.getDestination();
                 	// retrieves the root filestore of each end
-                	IFileStore sourceRoot = source.getRoot();
+                	IFileStore sourceRoot = (fSourceRoot == null) ? source.getRoot() : fSourceRoot;
                     if (!target.isConnected()) {
                         target.connect(monitor);
                     }
-                    IFileStore targetRoot = target.getRoot();
+                    IFileStore targetRoot = (fDestinationRoot == null) ? target.getRoot() : fDestinationRoot;
                     syncer.setClientFileManager(source);
                     syncer.setServerFileManager(target);
                     syncer.setClientFileRoot(sourceRoot);
@@ -91,7 +94,7 @@ public class DownloadAction extends BaseSyncAction {
                     for (int i = 0; i < fileStores.length; ++i) {
                         fileStores[i] = SyncUtils.getFileStore(files[i]);
                     }
-					IFileStore[] targetFiles = SyncUtils.getDownloadFiles(source, target, fileStores, true, monitor);
+					IFileStore[] targetFiles = SyncUtils.getDownloadFiles(source, target, fileStores, fSelectedFromSource, true, monitor);
 
 					VirtualFileSyncPair[] items = syncer.createSyncItems(new IFileStore[0], targetFiles, monitor);
 
@@ -122,9 +125,16 @@ public class DownloadAction extends BaseSyncAction {
                 return Status.OK_STATUS;
             }
         };
+        if (jobListener != null) {
+			job.addJobChangeListener(jobListener);
+		}
         job.setUser(true);
         job.schedule();
     }
+
+	public void addJobListener(IJobChangeListener listener) {
+		jobListener = listener;
+	}
 
     protected String getMessageTitle() {
         return MESSAGE_TITLE;

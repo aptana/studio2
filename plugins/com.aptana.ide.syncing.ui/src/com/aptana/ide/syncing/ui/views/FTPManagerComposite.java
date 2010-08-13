@@ -40,9 +40,8 @@ import java.util.List;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -87,13 +86,14 @@ import com.aptana.ide.syncing.core.SyncingPlugin;
 import com.aptana.ide.syncing.core.events.ISiteConnectionListener;
 import com.aptana.ide.syncing.core.events.SiteConnectionEvent;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
+import com.aptana.ide.syncing.ui.actions.DownloadAction;
+import com.aptana.ide.syncing.ui.actions.UploadAction;
 import com.aptana.ide.syncing.ui.dialogs.SiteConnectionsEditorDialog;
 import com.aptana.ide.syncing.ui.editors.EditorUtils;
 import com.aptana.ide.syncing.ui.handlers.SyncEventHandlerAdapter;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.IOUIPlugin;
-import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -594,12 +594,22 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 
 	private void transferSourceToDestination()
 	{
-		transferItems(fSource.getSelectedElements(), fTarget.getCurrentInput(), new JobChangeAdapter()
+		UploadAction action = new UploadAction();
+		action.setActivePart(null, CoreUIUtils.getActivePart());
+		action.setSelectedSite(fSelectedSite);
+		action.setSelection(new StructuredSelection(fSource.getSelectedElements()));
+		action.setSourceRoot(SyncUtils.getFileStore(fSource.getCurrentInput()));
+		action.setDestinationRoot(SyncUtils.getFileStore(fTarget.getCurrentInput()));
+		action.addJobListener(new JobChangeAdapter()
 		{
 
 			@Override
 			public void done(IJobChangeEvent event)
 			{
+				if (event.getResult() == Status.CANCEL_STATUS)
+				{
+					return;
+				}
 				IOUIPlugin.refreshNavigatorView(fTarget.getCurrentInput());
 				CoreUIUtils.getDisplay().asyncExec(new Runnable()
 				{
@@ -611,16 +621,27 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 				});
 			}
 		});
+		action.run(null);
 	}
 
 	private void transferDestinationToSource()
 	{
-		transferItems(fTarget.getSelectedElements(), fSource.getCurrentInput(), new JobChangeAdapter()
+		DownloadAction action = new DownloadAction();
+		action.setActivePart(null, CoreUIUtils.getActivePart());
+		action.setSelectedSite(fSelectedSite);
+		action.setSelection(new StructuredSelection(fTarget.getSelectedElements()), false);
+		action.setSourceRoot(SyncUtils.getFileStore(fSource.getCurrentInput()));
+		action.setDestinationRoot(SyncUtils.getFileStore(fTarget.getCurrentInput()));
+		action.addJobListener(new JobChangeAdapter()
 		{
 
 			@Override
 			public void done(IJobChangeEvent event)
 			{
+				if (event.getResult() == Status.CANCEL_STATUS)
+				{
+					return;
+				}
 				IOUIPlugin.refreshNavigatorView(fSource.getCurrentInput());
 				CoreUIUtils.getDisplay().asyncExec(new Runnable()
 				{
@@ -632,16 +653,7 @@ public class FTPManagerComposite implements SelectionListener, ISiteConnectionLi
 				});
 			}
 		});
-	}
-
-	private void transferItems(IAdaptable[] sourceItems, IAdaptable targetRoot, IJobChangeListener listener)
-	{
-		IFileStore targetStore = SyncUtils.getFileStore(targetRoot);
-		if (targetStore != null)
-		{
-			CopyFilesOperation operation = new CopyFilesOperation(getControl().getShell());
-			operation.copyFiles(sourceItems, targetStore, listener);
-		}
+		action.run(null);
 	}
 
 	private void fireSiteConnectionChanged(ISiteConnection site)

@@ -42,6 +42,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.aptana.ide.core.StringUtils;
@@ -60,6 +61,8 @@ import com.aptana.ide.syncing.ui.preferences.IPreferenceConstants;
  */
 public class UploadAction extends BaseSyncAction {
 
+	private IJobChangeListener jobListener;
+
     private static String MESSAGE_TITLE = StringUtils.ellipsify(Messages.UploadAction_MessageTitle);
 
     protected void performAction(final IAdaptable[] files, final ISiteConnection site)
@@ -75,12 +78,12 @@ public class UploadAction extends BaseSyncAction {
                     IConnectionPoint source = site.getSource();
                     IConnectionPoint target = site.getDestination();
                     // retrieves the root filestore of each end
-                    IFileStore sourceRoot = source.getRoot();
+                    IFileStore sourceRoot = (fSourceRoot == null) ? source.getRoot() : fSourceRoot;
                     // makes sure the target end point is connected
                     if (!target.isConnected()) {
                     	target.connect(monitor);
                     }
-                    IFileStore targetRoot = target.getRoot();
+                    IFileStore targetRoot = (fDestinationRoot == null) ? target.getRoot() : fDestinationRoot;
                     syncer.setClientFileManager(source);
                     syncer.setServerFileManager(target);
                     syncer.setClientFileRoot(sourceRoot);
@@ -113,9 +116,16 @@ public class UploadAction extends BaseSyncAction {
 				return Status.OK_STATUS;
             }
         };
+        if (jobListener != null) {
+			job.addJobChangeListener(jobListener);
+		}
         job.setUser(true);
         job.schedule();
     }
+
+	public void addJobListener(IJobChangeListener listener) {
+		jobListener = listener;
+	}
 
     @Override
     protected String getMessageTitle() {

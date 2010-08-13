@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -68,6 +69,11 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
 
     private IWorkbenchPart fActivePart;
     private List<IAdaptable> fSelectedElements;
+    private ISiteConnection fSite;
+
+    protected IFileStore fSourceRoot;
+    protected IFileStore fDestinationRoot;
+    protected boolean fSelectedFromSource;
 
     public BaseSyncAction() {
         fSelectedElements = new ArrayList<IAdaptable>();
@@ -82,59 +88,70 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
             return;
         }
 
-        // gets the site connection user wants to use
-        ISiteConnection[] sites = getSiteConnections();
-        if (sites.length == 0) {
-            // the selected elements do not belong to a common source location
-            MessageDialog.openWarning(getShell(), getMessageTitle(),
-                    Messages.BaseSyncAction_Warning_NoCommonParent);
-            return;
-        }
+		if (fSite == null)
+		{
+			// gets the site connection user wants to use
+			ISiteConnection[] sites = getSiteConnections();
+			if (sites.length == 0)
+			{
+				// the selected elements do not belong to a common source location
+				MessageDialog
+						.openWarning(getShell(), getMessageTitle(), Messages.BaseSyncAction_Warning_NoCommonParent);
+				return;
+			}
 
-        ISiteConnection site = null;
-        if (sites.length == 1) {
-            site = sites[0];
-        } else {
-            // multiple connections on the selected source
-            Object firstElement = fSelectedElements.get(0);
-            if (firstElement instanceof IResource) {
-                IContainer container = null;
-                boolean remember = false;
-                if (firstElement instanceof IContainer) {
-                    remember = ResourceSynchronizationUtils
-                            .isRememberDecision((IContainer) firstElement);
-                    if (remember) {
-                        container = (IContainer) firstElement;
-                    }
-                }
-                if (!remember) {
-                    IProject project = ((IResource) firstElement).getProject();
-                    remember = ResourceSynchronizationUtils.isRememberDecision(project);
-                    if (remember) {
-                        container = project;
-                    }
-                }
+			if (sites.length == 1)
+			{
+				fSite = sites[0];
+			}
+			else
+			{
+				// multiple connections on the selected source
+				Object firstElement = fSelectedElements.get(0);
+				if (firstElement instanceof IResource)
+				{
+					IContainer container = null;
+					boolean remember = false;
+					if (firstElement instanceof IContainer)
+					{
+						remember = ResourceSynchronizationUtils.isRememberDecision((IContainer) firstElement);
+						if (remember)
+						{
+							container = (IContainer) firstElement;
+						}
+					}
+					if (!remember)
+					{
+						IProject project = ((IResource) firstElement).getProject();
+						remember = ResourceSynchronizationUtils.isRememberDecision(project);
+						if (remember)
+						{
+							container = project;
+						}
+					}
 
-                site = getLastSyncConnection(container);
-            }
+					fSite = getLastSyncConnection(container);
+				}
 
-            if (site == null) {
-                ChooseSiteConnectionDialog dialog = new ChooseSiteConnectionDialog(getShell(),
-                        sites);
-                dialog.setShowRememberMyDecision(true);
-                dialog.open();
+				if (fSite == null)
+				{
+					ChooseSiteConnectionDialog dialog = new ChooseSiteConnectionDialog(getShell(), sites);
+					dialog.setShowRememberMyDecision(true);
+					dialog.open();
 
-                site = dialog.getSelectedSite();
-                if (site != null) {
-                    setRememberMyDecision(site, dialog.isRememberMyDecision());
-                }
-            }
-        }
+					fSite = dialog.getSelectedSite();
+					if (fSite != null)
+					{
+						setRememberMyDecision(fSite, dialog.isRememberMyDecision());
+					}
+				}
+			}
+		}
 
-        if (site != null) {
+        if (fSite != null) {
             try {
                 performAction(fSelectedElements.toArray(new IAdaptable[fSelectedElements.size()]),
-                        site);
+                        fSite);
             } catch (CoreException e) {
                 // TODO: Opens an error dialog
             }
@@ -147,7 +164,40 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         action.setEnabled(fSelectedElements.size() > 0);
     }
 
-    public void setSelection(ISelection selection) {
+	public void setSelectedSite(ISiteConnection site)
+	{
+		fSite = site;
+	}
+
+	/**
+	 * Specifies a particular file store as the root for the source side.
+	 * 
+	 * @param sourceRoot
+	 *            a file store
+	 */
+	public void setSourceRoot(IFileStore sourceRoot)
+	{
+		fSourceRoot = sourceRoot;
+	}
+
+	/**
+	 * Specifies a particular file store as the root for the destination side.
+	 * 
+	 * @param destinationRoot
+	 *            a file store
+	 */
+	public void setDestinationRoot(IFileStore destinationRoot)
+	{
+		fDestinationRoot = destinationRoot;
+	}
+
+	public void setSelection(ISelection selection)
+	{
+		setSelection(selection, true);
+	}
+
+    public void setSelection(ISelection selection, boolean fromSource) {
+    	fSelectedFromSource = fromSource;
         fSelectedElements.clear();
 
         if (!(selection instanceof IStructuredSelection) || selection.isEmpty()) {
@@ -155,9 +205,14 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         }
 
         Object[] elements = ((IStructuredSelection) selection).toArray();
+        ISiteConnection[] sites;
         for (Object element : elements) {
             if (element instanceof IAdaptable) {
-            	ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource((IAdaptable) element);
+            	if (fSelectedFromSource) {
+            		sites = SiteConnectionUtils.findSitesForSource((IAdaptable) element);
+            	} else {
+            		sites = SiteConnectionUtils.findSitesWithDestination((IAdaptable) element);
+            	}
                 if (sites.length > 0) {
                     fSelectedElements.add((IAdaptable) element);
                 }
@@ -186,7 +241,11 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         Set<ISiteConnection> sitesSet;
         ISiteConnection[] sites;
         for (IAdaptable element : fSelectedElements) {
-            sites = SiteConnectionUtils.findSitesForSource(element);
+        	if (fSelectedFromSource) {
+        		sites = SiteConnectionUtils.findSitesForSource(element);
+        	} else {
+        		sites = SiteConnectionUtils.findSitesWithDestination(element);
+        	}
             sitesSet = new HashSet<ISiteConnection>();
             for (ISiteConnection site : sites) {
                 sitesSet.add(site);
@@ -209,7 +268,7 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         }
     }
 
-    private static ISiteConnection getLastSyncConnection(IContainer container) {
+    private ISiteConnection getLastSyncConnection(IContainer container) {
         if (container == null) {
             return null;
         }
@@ -219,7 +278,12 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
             return null;
         }
 
-        ISiteConnection[] sites = SiteConnectionUtils.findSitesForSource(container, true);
+        ISiteConnection[] sites;
+        if (fSelectedFromSource) {
+        	sites = SiteConnectionUtils.findSitesForSource(container, true);
+        } else {
+        	sites = SiteConnectionUtils.findSitesWithDestination(container, true);
+        }
         String target;
         for (ISiteConnection site : sites) {
             target = site.getDestination().getName();
