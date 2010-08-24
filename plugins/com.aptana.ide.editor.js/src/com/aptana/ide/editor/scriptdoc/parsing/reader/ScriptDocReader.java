@@ -894,7 +894,7 @@ public class ScriptDocReader extends ValidatingReader
 		try
 		{
 			// grab all the text so we can analyze it
-			source = StreamUtils.getText(stream);
+			source = StreamUtils.getText(stream, "UTF-8");
 		}
 		catch (IOException e)
 		{
