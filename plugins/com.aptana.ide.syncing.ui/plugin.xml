@@ -136,7 +136,7 @@
             viewerId="com.aptana.ide.ui.io.fileExplorerView">
          <includes>
             <contentExtension
-                  pattern="com.aptana.ide.syncing.ui.navigatorContent">
+                  pattern="com.aptana.ide.syncing.ui.navigatorContent*">
             </contentExtension>
          </includes>
       </viewerContentBinding>

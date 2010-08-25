@@ -288,6 +288,26 @@ public final class CoreUIUtils
 	}
 
 	/**
+	 * Returns the active part in the current workbench window.
+	 * 
+	 * @return the active part
+	 */
+	public static IWorkbenchPart getActivePart()
+	{
+		IWorkbenchWindow workbench = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (workbench == null)
+		{
+			return null;
+		}
+		IWorkbenchPage workbenchPage = workbench.getActivePage();
+		if (workbenchPage == null)
+		{
+			return null;
+		}
+		return workbenchPage.getActivePart();
+	}
+
+	/**
 	 * Puts the respective dialog in the center of the screen
 	 * 
 	 * @param parent

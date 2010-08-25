@@ -217,21 +217,30 @@ public class SyncUtils
 	}
 
 	public static IFileStore[] getDownloadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager,
-			IFileStore[] files, boolean ignoreError, IProgressMonitor monitor)
+			IFileStore[] files, boolean ignoreError, IProgressMonitor monitor) {
+		return getDownloadFiles(sourceManager, destManager, files, true, ignoreError, monitor);
+	}
+
+	public static IFileStore[] getDownloadFiles(IConnectionPoint sourceManager, IConnectionPoint destManager,
+			IFileStore[] files, boolean fromSource, boolean ignoreError, IProgressMonitor monitor)
 	{
 		Set<IFileStore> newFiles = new HashSet<IFileStore>();
-		IFileStore file;
 		IFileStore newFile;
-		for (int i = 0; i < files.length; i++)
+		for (IFileStore file : files)
 		{
-			file = files[i];
-
 			newFile = null;
 			try
 			{
 				if (file.fetchInfo().isDirectory())
 				{
-					newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+					if (fromSource)
+					{
+						newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+					}
+					else
+					{
+						newFile = file;
+					}
 					if (newFile.fetchInfo().exists())
 					{
 						IFileStore[] f = EFSUtils.getFiles(newFile, true, false, null);
@@ -244,7 +253,14 @@ public class SyncUtils
 				}
 				else
 				{
-					newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+					if (fromSource)
+					{
+						newFile = EFSUtils.createFile(sourceManager.getRoot(), file, destManager.getRoot());
+					}
+					else
+					{
+						newFile = file;
+					}
 					if (newFile.fetchInfo().exists())
 					{
 						if (!newFiles.contains(newFile))

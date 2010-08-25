@@ -37,10 +37,12 @@ package com.aptana.ide.editors;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
+import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.editors.text.templates.ContributionTemplateStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -54,8 +56,7 @@ import com.aptana.ide.editors.views.actions.ActionsManager;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class UnifiedEditorsPlugin extends AbstractUIPlugin
-{
+public class UnifiedEditorsPlugin extends AbstractUIPlugin {
 
 	private static final String TEMPLATES = "com.aptana.ide.editors.templates"; //$NON-NLS-1$
 
@@ -132,8 +133,7 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * 
 	 * @return returns default plugin
 	 */
-	public static UnifiedEditorsPlugin getDefault()
-	{
+	public static UnifiedEditorsPlugin getDefault() {
 		return plugin;
 	}
 
@@ -143,14 +143,11 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * @param path
 	 * @return Image
 	 */
-	public static Image getImage(String path)
-	{
-		if (images.get(path) == null)
-		{
+	public static Image getImage(String path) {
+		if (images.get(path) == null) {
 			ImageDescriptor id = getImageDescriptor(path);
 
-			if (id == null)
-			{
+			if (id == null) {
 				return null;
 			}
 
@@ -159,30 +156,28 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 			images.put(path, i);
 
 			return i;
-		}
-		else
-		{
+		} else {
 			return images.get(path);
 		}
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given plug-in relative path.
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path.
 	 * 
 	 * @param path
 	 *            the path
 	 * @return the image descriptor
 	 */
-	public static ImageDescriptor getImageDescriptor(String path)
-	{
-		return AbstractUIPlugin.imageDescriptorFromPlugin("com.aptana.ide.editors", path); //$NON-NLS-1$
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return AbstractUIPlugin.imageDescriptorFromPlugin(
+				"com.aptana.ide.editors", path); //$NON-NLS-1$
 	}
 
 	/**
 	 * The constructor.
 	 */
-	public UnifiedEditorsPlugin()
-	{
+	public UnifiedEditorsPlugin() {
 		plugin = this;
 	}
 
@@ -191,10 +186,8 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * 
 	 * @return ActionsManager
 	 */
-	public ActionsManager getActionsManager()
-	{
-		if (actionsManager == null)
-		{
+	public ActionsManager getActionsManager() {
+		if (actionsManager == null) {
 			actionsManager = new ActionsManager();
 		}
 
@@ -206,10 +199,8 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * 
 	 * @return ProfileManager
 	 */
-	public ProfileManager getProfileManager()
-	{
-		if (profileManager == null)
-		{
+	public ProfileManager getProfileManager() {
+		if (profileManager == null) {
 			profileManager = new ProfileManager(enableThreading);
 		}
 
@@ -219,8 +210,7 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	/**
 	 * @return Returns true if threading is enabled (true by default).
 	 */
-	public boolean isThreadingEnabled()
-	{
+	public boolean isThreadingEnabled() {
 		return enableThreading;
 	}
 
@@ -228,8 +218,7 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * @param enableThreading
 	 *            Turns threading on or off.
 	 */
-	public void setEnableThreading(boolean enableThreading)
-	{
+	public void setEnableThreading(boolean enableThreading) {
 		this.enableThreading = enableThreading;
 	}
 
@@ -239,8 +228,7 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * @param context
 	 * @throws Exception
 	 */
-	public void start(BundleContext context) throws Exception
-	{
+	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
@@ -250,29 +238,26 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * @param context
 	 * @throws Exception
 	 */
-	public void stop(BundleContext context) throws Exception
-	{
+	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 
 		plugin = null;
 	}
 
 	/**
-	 * @return the flag indicating if parsing should be done in two-phases or one. A fast scan is done on the UI and the
-	 *         full parse is done on a delay resulting in a faster perceived response time during editing.
+	 * @return the flag indicating if parsing should be done in two-phases or
+	 *         one. A fast scan is done on the UI and the full parse is done on
+	 *         a delay resulting in a faster perceived response time during
+	 *         editing.
 	 */
-	public boolean useFastScan()
-	{
+	public boolean useFastScan() {
 		boolean result = true;
 
-		try
-		{
+		try {
 			IPreferenceStore prefStore = this.getPreferenceStore();
 
 			result = prefStore.getBoolean(IPreferenceConstants.PARSER_OFF_UI);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// this seems to occur during unit tests only
 		}
 
@@ -283,24 +268,53 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin
 	 * @param contextTypeRegistry
 	 * @return
 	 */
-	public ContributionTemplateStore getTemplateStore(ContextTypeRegistry contextTypeRegistry)
-	{
+	public ContributionTemplateStore getTemplateStore(
+			ContextTypeRegistry contextTypeRegistry) {
 		fTemplateStoreMap = new HashMap<ContextTypeRegistry, ContributionTemplateStore>();
-		ContributionTemplateStore store = fTemplateStoreMap.get(contextTypeRegistry);
-		if (store == null)
-		{
-			store = new ContributionTemplateStore(contextTypeRegistry, UnifiedEditorsPlugin.getDefault()
-					.getPreferenceStore(), TEMPLATES);
-			try
-			{
+		ContributionTemplateStore store = fTemplateStoreMap
+				.get(contextTypeRegistry);
+		if (store == null) {
+			store = new ContributionTemplateStore(contextTypeRegistry,
+					UnifiedEditorsPlugin.getDefault().getPreferenceStore(),
+					getKey(contextTypeRegistry));
+			try {
 				store.load();
-			}
-			catch (IOException e)
-			{
-				IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e.getMessage(), e);
+			} catch (IOException e) {
+				IdeLog.logError(UnifiedEditorsPlugin.getDefault(), e
+						.getMessage(), e);
 			}
 			fTemplateStoreMap.put(contextTypeRegistry, store);
 		}
 		return store;
+	}
+
+	/**
+	 * getKey
+	 * 
+	 * @param contextTypeRegistry
+	 * @return
+	 */
+	protected String getKey(ContextTypeRegistry contextTypeRegistry) {
+		Iterator<?> i = contextTypeRegistry.contextTypes();
+		StringBuilder builder = new StringBuilder();
+		boolean first = true;
+
+		builder.append(TEMPLATES).append("{");
+
+		while (i.hasNext()) {
+			TemplateContextType contextType = (TemplateContextType) i.next();
+
+			if (first) {
+				first = false;
+			} else {
+				builder.append(",");
+			}
+
+			builder.append(contextType.getName());
+		}
+
+		builder.append("}");
+
+		return builder.toString();
 	}
 }

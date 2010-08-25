@@ -32,38 +32,21 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.ui.io.navigator.actions;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
-public class Messages extends NLS {
+import com.aptana.ide.ui.io.actions.DeleteConnectionAction;
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
+public class ConnectionDeleteAction extends BaseSelectionListenerAction {
 
-    public static String BaseSyncAction_MessageTitle;
-    public static String BaseSyncAction_Warning_NoCommonParent;
-	public static String BasySyncAction_RetrievingItems;
-
-    public static String DeleteSiteConnectionAction_JobName;
-    public static String DeleteSiteConnectionAction_SubtaskName;
-
-    public static String DownloadAction_MessageTitle;
-    public static String DownloadAction_PostMessage;
-
-    public static String NewSiteAction_LBL_New;
-
-    public static String SiteConnectionPropertiesAction_ERR_CreateDialogFailed;
-
-    public static String UploadAction_MessageTitle;
-    public static String UploadAction_PostMessage;
-
-    public static String SynchronizeFilesAction_MessageTitle;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    public ConnectionDeleteAction() {
+        super(Messages.FileSystemDeleteAction_Text);
     }
 
-    private Messages() {
+    public void run() {
+    	DeleteConnectionAction action = new DeleteConnectionAction();
+    	action.selectionChanged(this, getStructuredSelection());
+    	action.run(this);
     }
 }

@@ -32,38 +32,44 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.ui.io.navigator.actions;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.actions.ActionContext;
+import org.eclipse.ui.navigator.CommonActionProvider;
+import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 
-public class Messages extends NLS {
+public class ConnectionPointEditActionProvider extends CommonActionProvider {
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
+    private ConnectionPointEditActionGroup fEditActionGroup;
 
-    public static String BaseSyncAction_MessageTitle;
-    public static String BaseSyncAction_Warning_NoCommonParent;
-	public static String BasySyncAction_RetrievingItems;
-
-    public static String DeleteSiteConnectionAction_JobName;
-    public static String DeleteSiteConnectionAction_SubtaskName;
-
-    public static String DownloadAction_MessageTitle;
-    public static String DownloadAction_PostMessage;
-
-    public static String NewSiteAction_LBL_New;
-
-    public static String SiteConnectionPropertiesAction_ERR_CreateDialogFailed;
-
-    public static String UploadAction_MessageTitle;
-    public static String UploadAction_PostMessage;
-
-    public static String SynchronizeFilesAction_MessageTitle;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    public ConnectionPointEditActionProvider() {
     }
 
-    private Messages() {
+    public void init(ICommonActionExtensionSite aSite) {
+        super.init(aSite);
+
+        fEditActionGroup = new ConnectionPointEditActionGroup();
+    }
+
+    public void dispose() {
+        fEditActionGroup.dispose();
+    }
+
+    public void fillActionBars(IActionBars actionBars) {
+        fEditActionGroup.fillActionBars(actionBars);
+    }
+
+    public void fillContextMenu(IMenuManager menu) {
+        fEditActionGroup.fillContextMenu(menu);
+    }
+
+    public void setContext(ActionContext context) {
+        fEditActionGroup.setContext(context);
+    }
+
+    public void updateActionBars() {
+        fEditActionGroup.updateActionBars();
     }
 }

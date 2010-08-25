@@ -456,16 +456,18 @@ public class Synchronizer implements ILoggable
 			IFileInfo serverFileInfo = serverFile.fetchInfo(IExtendedFileStore.DETAILED, null);
 			String relativePath = getCanonicalPath(_serverFileRoot, serverFile);
 
-			logDebug(FileUtils.NEW_LINE + "Comparing '" + relativePath + "' with file from destination. ");
+			logDebug(FileUtils.NEW_LINE);
+			logDebug(MessageFormat.format(Messages.Synchronizer_Comparing_Files, new Object[] { relativePath }));
 
 			if (!fileList.containsKey(relativePath)) // Server only
 			{
 				if (serverFileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK))
 					continue;
+				
 				VirtualFileSyncPair item = new VirtualFileSyncPair(null, serverFile, relativePath,
 						SyncState.ServerItemOnly);
 				fileList.put(relativePath, item);
-				logDebug("Item not on destination.");
+				logDebug(Messages.Synchronizer_Item_Not_On_Destination);
 				continue;
 			}
 
@@ -476,29 +478,36 @@ public class Synchronizer implements ILoggable
 			// associate this server file with that sync item
 			item.setDestinationFile(serverFile);
 
-			if (item.getSourceFileInfo().isDirectory() != serverFileInfo.isDirectory())
+			IFileInfo clientFileInfo = item.getSourceFileInfo(monitor);
+			if(clientFileInfo == null && item.getSyncState() == SyncState.ServerItemOnly) {
+				// This is an item we've seen already. Continue on.
+				continue;
+			}
+			
+			if (clientFileInfo.isDirectory() != serverFileInfo.isDirectory())
 			{
 				// this only occurs if one file is a directory and the other
 				// is not a directory
 				item.setSyncState(SyncState.IncompatibleFileTypes);
-				logDebug("Incompatible types.");
+				logDebug(Messages.Synchronizer_Incompatible_Types);
 				continue;
 			}
 
-			if (serverFile.fetchInfo().isDirectory())
+			if (serverFileInfo.isDirectory())
 			{
 				fileList.remove(relativePath);
-				logDebug("Directory.");
+				logDebug(Messages.Synchronizer_Directory);
 				continue;
 			}
 
 			// calculate modification time difference, taking server
 			// offset into account
 			long serverFileTime = serverFileInfo.getLastModified();
-			long clientFileTime = item.getSourceFileInfo(null).getLastModified();
+			long clientFileTime = clientFileInfo.getLastModified();
 			long timeDiff = serverFileTime - clientFileTime;
 
-			logDebug("Source modified: " + clientFileTime + " Destination modified: " + serverFileTime + ". ");
+			logDebug(MessageFormat.format(Messages.Synchronizer_Times_Modified, new long[] { clientFileTime,
+					serverFileTime }));
 
 			// check modification date
 			if (-this._timeTolerance <= timeDiff && timeDiff <= this._timeTolerance)
@@ -510,7 +519,7 @@ public class Synchronizer implements ILoggable
 				else
 				{
 					item.setSyncState(SyncState.ItemsMatch);
-					logDebug("Items identical.");
+					logDebug(Messages.Synchronizer_Items_Identical);
 				}
 			}
 			else
@@ -518,12 +527,14 @@ public class Synchronizer implements ILoggable
 				if (timeDiff < 0)
 				{
 					item.setSyncState(SyncState.ClientItemIsNewer);
-					logDebug("Source Newer by " + Math.round(Math.abs(timeDiff / 1000)) + " seconds.");
+					logDebug(MessageFormat.format(Messages.Synchronizer_Source_Newer, new long[] { Math.round(Math
+							.abs(timeDiff / 1000)) }));
 				}
 				else
 				{
 					item.setSyncState(SyncState.ServerItemIsNewer);
-					logDebug("Destination Newer by " + Math.round(timeDiff / 1000) + " seconds.");
+					logDebug(MessageFormat.format(Messages.Synchronizer_Destination_Newer, new long[] { Math.round(Math
+							.abs(timeDiff / 1000)) }));
 				}
 			}
 		}

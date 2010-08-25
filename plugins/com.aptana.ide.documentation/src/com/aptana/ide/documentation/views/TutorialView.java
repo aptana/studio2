@@ -57,7 +57,7 @@ public class TutorialView extends ViewPart {
 
 	public void createPartControl(Composite parent) {
 		browser = new Browser(parent, SWT.NONE);
-		String url = Platform.getPreferencesService().getString(DocumentationPlugin.PLUGIN_ID, DocumentationPlugin.GETTING_STARTED_CONTENT_URL, null, null);
+		final String url = Platform.getPreferencesService().getString(DocumentationPlugin.PLUGIN_ID, DocumentationPlugin.GETTING_STARTED_CONTENT_URL, null, null);
 		if (url != null)
 			browser.setUrl(url);
 		browser.addLocationListener(new LocationListener() {
@@ -68,7 +68,7 @@ public class TutorialView extends ViewPart {
 			public void changing(LocationEvent event) {
 				String location = event.location;
 				// For absolute URLs with http or https protocols 
-				if (location.startsWith("http:") || location.startsWith("https:")) { //$NON-NLS-1$ //$NON-NLS-2$
+				if ((location.startsWith("http:") || location.startsWith("https:")) && !location.equals(url)) { //$NON-NLS-1$ //$NON-NLS-2$
 					// Launch external browser
 					CoreUIUtils.openBrowserURL(location);
 					event.doit = false;

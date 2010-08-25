@@ -32,38 +32,47 @@
  * 
  * Any modifications to this file must keep this entire header intact.
  */
-package com.aptana.ide.syncing.ui.actions;
+package com.aptana.ide.ui.io.navigator.actions;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ActionGroup;
+import org.eclipse.ui.navigator.ICommonMenuConstants;
 
-public class Messages extends NLS {
+public class ConnectionPointEditActionGroup extends ActionGroup {
 
-    private static final String BUNDLE_NAME = "com.aptana.ide.syncing.ui.actions.messages"; //$NON-NLS-1$
+    private ConnectionDeleteAction fDeleteAction;
 
-    public static String BaseSyncAction_MessageTitle;
-    public static String BaseSyncAction_Warning_NoCommonParent;
-	public static String BasySyncAction_RetrievingItems;
-
-    public static String DeleteSiteConnectionAction_JobName;
-    public static String DeleteSiteConnectionAction_SubtaskName;
-
-    public static String DownloadAction_MessageTitle;
-    public static String DownloadAction_PostMessage;
-
-    public static String NewSiteAction_LBL_New;
-
-    public static String SiteConnectionPropertiesAction_ERR_CreateDialogFailed;
-
-    public static String UploadAction_MessageTitle;
-    public static String UploadAction_PostMessage;
-
-    public static String SynchronizeFilesAction_MessageTitle;
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    public ConnectionPointEditActionGroup() {
+        makeActions();
     }
 
-    private Messages() {
+    @Override
+    public void fillContextMenu(IMenuManager menu) {
+    	menu.appendToGroup(ICommonMenuConstants.GROUP_EDIT, fDeleteAction);
+    }
+
+    @Override
+    public void updateActionBars() {
+        fDeleteAction.selectionChanged(getSelection());
+    }
+
+    protected void makeActions() {
+        ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
+
+        fDeleteAction = new ConnectionDeleteAction();
+        fDeleteAction.setDisabledImageDescriptor(images
+                .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+        fDeleteAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+        fDeleteAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_DELETE);
+        fDeleteAction.setAccelerator(SWT.DEL);
+    }
+
+    private IStructuredSelection getSelection() {
+        return (IStructuredSelection) getContext().getSelection();
     }
 }

@@ -25,14 +25,6 @@
                label="%connectionPropertiesAction.label"
                menubarPath="group.properties">
          </action>
-         <action
-               class="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
-               enablesFor="+"
-               icon="icons/full/etool16/delete.png"
-               id="com.aptana.ide.ui.io.actions.DeleteConnectionAction"
-               label="%deleteAction.label"
-               menubarPath="group.edit">
-         </action>
       </objectContribution>
       <objectContribution
             adaptable="false"
@@ -466,9 +458,6 @@
                <instanceof
                      value="com.aptana.ide.core.io.LocalRoot">
                </instanceof>
-               <instanceof
-                     value="com.aptana.ide.core.io.IConnectionPoint">
-               </instanceof>
             </or>
          </enablement>
       </actionProvider>
@@ -609,6 +598,15 @@
                      value="com.aptana.ide.core.io.projectShortcuts">
                </test>
             </and>
+         </enablement>
+      </actionProvider>
+      <actionProvider
+            class="com.aptana.ide.ui.io.navigator.actions.ConnectionPointEditActionProvider"
+            id="com.aptana.ide.ui.io.navigator.actions.ConnectionPointEditActions">
+         <enablement>
+            <instanceof
+                  value="com.aptana.ide.core.io.IConnectionPoint">
+            </instanceof>
          </enablement>
       </actionProvider>
       <commonFilter

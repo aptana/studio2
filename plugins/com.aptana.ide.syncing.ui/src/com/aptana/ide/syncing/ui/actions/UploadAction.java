@@ -42,78 +42,104 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.efs.EFSUtils;
+import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
 import com.aptana.ide.core.ui.DialogUtils;
 import com.aptana.ide.syncing.core.ISiteConnection;
+import com.aptana.ide.syncing.core.Synchronizer;
 import com.aptana.ide.syncing.ui.SyncingUIPlugin;
 import com.aptana.ide.syncing.ui.internal.SyncUtils;
 import com.aptana.ide.syncing.ui.preferences.IPreferenceConstants;
-import com.aptana.ide.ui.io.actions.CopyFilesOperation;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
  */
 public class UploadAction extends BaseSyncAction {
 
+	private IJobChangeListener jobListener;
+
     private static String MESSAGE_TITLE = StringUtils.ellipsify(Messages.UploadAction_MessageTitle);
 
     protected void performAction(final IAdaptable[] files, final ISiteConnection site)
             throws CoreException {
+    	final Synchronizer syncer = new Synchronizer();
         Job job = new Job(MESSAGE_TITLE) {
 
             @Override
             protected IStatus run(IProgressMonitor monitor) {
-                IConnectionPoint source = site.getSource();
-                IConnectionPoint target = site.getDestination();
-                // retrieves the root filestore of each end
-                IFileStore sourceRoot;
-                IFileStore targetRoot;
-                try {
-                    sourceRoot = source.getRoot();
+            	monitor.subTask(StringUtils.ellipsify(Messages.BasySyncAction_RetrievingItems));
+
+             	try {
+                    IConnectionPoint source = site.getSource();
+                    IConnectionPoint target = site.getDestination();
+                    // retrieves the root filestore of each end
+                    IFileStore sourceRoot = (fSourceRoot == null) ? source.getRoot() : fSourceRoot;
+                    // makes sure the target end point is connected
                     if (!target.isConnected()) {
-                        target.connect(monitor);
+                    	target.connect(monitor);
                     }
-                    targetRoot = target.getRoot();
-                } catch (CoreException e) {
-                    return new Status(Status.ERROR, SyncingUIPlugin.PLUGIN_ID, e
-                            .getLocalizedMessage(), e);
-                }
+                    IFileStore targetRoot = (fDestinationRoot == null) ? target.getRoot() : fDestinationRoot;
+                    syncer.setClientFileManager(source);
+                    syncer.setServerFileManager(target);
+                    syncer.setClientFileRoot(sourceRoot);
+                    syncer.setServerFileRoot(targetRoot);
 
-                // gets the filestores of the files to be copied
-                IFileStore[] fileStores = new IFileStore[files.length];
-                for (int i = 0; i < fileStores.length; ++i) {
-                    fileStores[i] = SyncUtils.getFileStore(files[i]);
-                }
+                    // gets the filestores of the files to be copied
+                    IFileStore[] fileStores = new IFileStore[files.length];
+                    for (int i = 0; i < fileStores.length; ++i) {
+                        fileStores[i] = SyncUtils.getFileStore(files[i]);
+                    }
+					IFileStore[] sourceFiles = EFSUtils.getAllFiles(fileStores, true, false, monitor);
 
-                CopyFilesOperation operation = new CopyFilesOperation(getShell());
-                IStatus status = operation.copyFiles(fileStores, sourceRoot, targetRoot, monitor);
+					final VirtualFileSyncPair[] items = syncer.createSyncItems(sourceFiles, new IFileStore[0], monitor);
 
-                if (status != Status.CANCEL_STATUS) {
-                    postAction(status);
-                }
-                return status;
+					syncer.setEventHandler(new SyncActionEventHandler(Messages.UploadAction_MessageTitle, items.length,
+							monitor, new SyncActionEventHandler.Client() {
+
+								public void syncCompleted() {
+									postAction(syncer);
+									syncer.setEventHandler(null);
+									syncer.disconnect();
+								}
+							}));
+					syncer.upload(items, monitor);
+				} catch (Exception e) {
+				     return new Status(Status.ERROR, SyncingUIPlugin.PLUGIN_ID, e
+                             .getLocalizedMessage(), e);
+				}
+
+				return Status.OK_STATUS;
             }
         };
+        if (jobListener != null) {
+			job.addJobChangeListener(jobListener);
+		}
         job.setUser(true);
         job.schedule();
     }
+
+	public void addJobListener(IJobChangeListener listener) {
+		jobListener = listener;
+	}
 
     @Override
     protected String getMessageTitle() {
         return MESSAGE_TITLE;
     }
 
-    private void postAction(final IStatus status) {
+    private void postAction(final Synchronizer syncer) {
         getShell().getDisplay().asyncExec(new Runnable() {
 
             public void run() {
-                DialogUtils.openIgnoreMessageDialogInformation(getShell(), MESSAGE_TITLE,
-                        MessageFormat.format(Messages.UploadAction_PostMessage, status.getCode()),
-                        SyncingUIPlugin.getDefault().getPreferenceStore(),
-                        IPreferenceConstants.IGNORE_DIALOG_FILE_UPLOAD);
+				DialogUtils.openIgnoreMessageDialogInformation(getShell(), MESSAGE_TITLE, MessageFormat.format(
+						Messages.UploadAction_PostMessage, syncer.getClientFileTransferedCount(),
+						syncer.getServerDirectoryCreatedCount()), SyncingUIPlugin.getDefault().getPreferenceStore(),
+						IPreferenceConstants.IGNORE_DIALOG_FILE_UPLOAD);
             }
         });
     }

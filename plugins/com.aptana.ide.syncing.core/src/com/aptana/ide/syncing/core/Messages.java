@@ -380,6 +380,46 @@ public final class Messages extends NLS {
 	public static String Synchronizer_Uploading;
 
 	/**
+	 * Synchronizer_Source_Newer
+	 */
+	public static String Synchronizer_Source_Newer;
+
+	/**
+	 * Synchronizer_Destination_Newer
+	 */
+	public static String Synchronizer_Destination_Newer;
+
+	/**
+	 * Synchronizer_Items_Identical
+	 */
+	public static String Synchronizer_Items_Identical;
+
+	/**
+	 * Synchronizer_Times_Modified
+	 */
+	public static String Synchronizer_Times_Modified;
+
+	/**
+	 * Synchronizer_Directory
+	 */
+	public static String Synchronizer_Directory;
+
+	/**
+	 * Synchronizer_Incompatible_Types
+	 */
+	public static String Synchronizer_Incompatible_Types;
+
+	/**
+	 * Synchronizer_Item_Not_On_Destination
+	 */
+	public static String Synchronizer_Item_Not_On_Destination;
+
+	/**
+	 * Synchronizer_Comparing_Files
+	 */
+	public static String Synchronizer_Comparing_Files;
+
+	/**
 	 * SyncInfoDialog_AddNew
 	 */
 	public static String SyncInfoDialog_AddNew;
