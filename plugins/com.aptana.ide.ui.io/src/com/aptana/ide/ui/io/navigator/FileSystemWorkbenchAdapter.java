@@ -53,7 +53,6 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
@@ -74,7 +73,6 @@ import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.CoreIOImages;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.ImageUtils;
-import com.aptana.ide.ui.io.navigator.internal.DecoratorUtils;
 
 /**
  * @author Max Stepanov
