@@ -42,6 +42,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 
+import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
+
 /**
  * @author Max Stepanov
  *
@@ -123,6 +125,16 @@ public class FileSystemObject implements IAdaptable {
 	 */
 	public boolean isSymlink() {
 		return fileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK);
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isPrivate() {
+		if (fileInfo != null && fileInfo instanceof IExtendedFileInfo) {
+			return ((IExtendedFileInfo)fileInfo).getPermissions() == 0;
+		}
+		return false;
 	}
 
 	/**

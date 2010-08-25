@@ -53,6 +53,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
@@ -66,11 +67,14 @@ import com.aptana.ide.core.io.IConnectionPointManager;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 import com.aptana.ide.core.io.LocalRoot;
 import com.aptana.ide.core.io.WorkspaceConnectionPoint;
+import com.aptana.ide.core.io.exception.PermissionDeniedException;
+import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
 import com.aptana.ide.ui.ImageAssociations;
 import com.aptana.ide.ui.UIUtils;
 import com.aptana.ide.ui.io.CoreIOImages;
 import com.aptana.ide.ui.io.IOUIPlugin;
 import com.aptana.ide.ui.io.ImageUtils;
+import com.aptana.ide.ui.io.navigator.internal.DecoratorUtils;
 
 /**
  * @author Max Stepanov
@@ -263,6 +267,12 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
                     return;
                 } catch (CoreException e1) {
                 }
+            } else if (object instanceof FileSystemObject && e.getCause() instanceof PermissionDeniedException) {
+				IFileInfo info = ((FileSystemObject)object).getFileInfo();
+				if(info instanceof IExtendedFileInfo) {
+					((IExtendedFileInfo)info).setPermissions(0);
+				}
+				return;
             }
 			IdeLog.logError(IOUIPlugin.getDefault(), "Fetch deferred children failed", e);
 			UIUtils.showErrorMessage("Fetch children failed", e);
@@ -294,7 +304,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 		for (IFileInfo fi : fileInfos) {
 			list.add(new FileSystemObject(parent.getChild(fi.getName()), fi));
 		}
-		return list.toArray(new FileSystemObject[list.size()]);
+		return list.toArray(new FileSystemObject[list.size()]);			
 	}
 
 	public static class Factory implements IAdapterFactory {

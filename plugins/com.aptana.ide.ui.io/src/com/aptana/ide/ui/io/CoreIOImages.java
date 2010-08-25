@@ -75,6 +75,11 @@ public final class CoreIOImages
 	public static final String IMG_OBJS_SYMLINK = "IMG_OBJS_SYMLINK"; //$NON-NLS-1$
 
 	/**
+	 * IMG_OBJS_PRIVATE
+	 */
+	public static final String IMG_OBJS_PRIVATE = "IMG_OBJS_PRIVATE"; //$NON-NLS-1$
+
+	/**
 	 * IMG_OBJS_DRIVE
 	 */
 	public static final String IMG_OBJS_DRIVE = "IMG_OBJS_DRIVE"; //$NON-NLS-1$
@@ -142,6 +147,7 @@ public final class CoreIOImages
 		declareRegistryImage(IMG_OBJS_PENDING, T_OBJ + "pending.png"); //$NON-NLS-1$
 		declareRegistryImage(IMG_OBJS_CONNECTION, T_OBJ + "connection.png"); //$NON-NLS-1$
 		declareRegistryImage(IMG_OBJS_SYMLINK, T_OBJ + "symlink.png"); //$NON-NLS-1$
+		declareRegistryImage(IMG_OBJS_PRIVATE, T_OBJ + "private.png"); //$NON-NLS-1$
 		declareRegistryImage(IMG_OBJS_DRIVE, T_OBJ + "drive.png"); //$NON-NLS-1$
 
 		//declareRegistryImage(IMG_OVR_METHOD_BREAKPOINT_EXIT_DISABLED, T_OVR + "conditional_ovr.png"); //$NON-NLS-1$
