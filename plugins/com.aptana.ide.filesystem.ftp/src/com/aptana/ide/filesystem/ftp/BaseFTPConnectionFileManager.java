@@ -170,9 +170,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 					}
 				} catch (FileNotFoundException e) {
 					return new IExtendedFileInfo[0];
-				} catch (PermissionDeniedException e) {
-					throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-							StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, path.toPortableString()), e));
 				} finally {
 					setLastOperationTime();
 				}
@@ -206,9 +203,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 			}
 		} catch (FileNotFoundException e) {
 			return new String[0];
-		} catch (PermissionDeniedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-					StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, path.toPortableString()), e));
 		} finally {
 			monitor.done();
 		}
@@ -238,10 +232,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
 					Messages.BaseFTPConnectionFileManager_no_such_file, new FileNotFoundException(path.toPortableString())));
-		} catch (PermissionDeniedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-					StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, path.toPortableString()), 
-					e));
 		} finally {
 			setLastOperationTime();
 			monitor.done();
@@ -273,9 +263,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
 					Messages.BaseFTPConnectionFileManager_parent_doesnt_exist, new FileNotFoundException(path.toPortableString())));
-		} catch (PermissionDeniedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-					StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, path.toPortableString()), e));
 		} finally {
 			setLastOperationTime();
 			monitor.done();
@@ -306,7 +293,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 					deleteFile(basePath.append(path), monitor);				
 				}
 			} catch (FileNotFoundException ignore) {
-			} catch (PermissionDeniedException ignore) {
 			} finally {
 				clearCache(path);
 			}
@@ -357,10 +343,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
 					Messages.BaseFTPConnectionFileManager_parent_doesnt_exist, e));
-		} catch (PermissionDeniedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-					StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, path.toPortableString()), 
-					e));
 		} finally {
 			setLastOperationTime();
 			monitor.done();
@@ -407,9 +389,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
 					Messages.BaseFTPConnectionFileManager_no_such_file, new FileNotFoundException(path.toPortableString())));
-		} catch (PermissionDeniedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-					StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, path.toPortableString()), e));
 		} finally {
 			clearCache(path);
 			setLastOperationTime();
@@ -455,10 +434,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
 					Messages.BaseFTPConnectionFileManager_no_such_file, new FileNotFoundException(sourcePath.toPortableString())));
-		} catch (PermissionDeniedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-					StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, sourcePath.toPortableString()), 
-					e));
 		} finally {
 			setLastOperationTime();
 			monitor.done();
@@ -478,19 +453,19 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 
 	// all methods here accept absolute path
 	protected abstract void changeCurrentDir(IPath path) throws FTPException, IOException;
-	protected abstract ExtendedFileInfo fetchFile(IPath path, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract ExtendedFileInfo[] fetchFiles(IPath path, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract String[] listDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract InputStream readFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract OutputStream writeFile(IPath path, long permissions, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract void deleteFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract void deleteDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract void createDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract void renameFile(IPath sourcePath, IPath destinationPath, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
+	protected abstract ExtendedFileInfo fetchFile(IPath path, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract ExtendedFileInfo[] fetchFiles(IPath path, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract String[] listDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract InputStream readFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract OutputStream writeFile(IPath path, long permissions, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract void deleteFile(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract void deleteDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract void createDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract void renameFile(IPath sourcePath, IPath destinationPath, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 
-	protected abstract void setModificationTime(IPath path, long modificationTime, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract void changeFilePermissions(IPath path, long permissions, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
-	protected abstract void changeFileGroup(IPath path, String group, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException;
+	protected abstract void setModificationTime(IPath path, long modificationTime, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract void changeFilePermissions(IPath path, long permissions, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
+	protected abstract void changeFileGroup(IPath path, String group, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 
 	private ExtendedFileInfo fetchAndCacheFileInfo(IPath path, IProgressMonitor monitor) throws CoreException {
 		return fetchAndCacheFileInfo(path, EFS.NONE, monitor);
@@ -504,9 +479,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 			fileInfo = new ExtendedFileInfo(path.segmentCount() > 0 ? path.lastSegment() : Path.ROOT.toPortableString());
 			fileInfo.setExists(false);
 			return fileInfo;
-		} catch (PermissionDeniedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-					StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, path.toPortableString()), e));
 		}
 		if (path.segmentCount() == 0) {
 			fileInfo.setName(Path.ROOT.toPortableString());
