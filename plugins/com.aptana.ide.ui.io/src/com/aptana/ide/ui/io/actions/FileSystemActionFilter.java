@@ -69,7 +69,7 @@ public class FileSystemActionFilter implements IActionFilter {
 			}
 			if ( "isPrivate".equals(name)) { //$NON-NLS-1$
 				return FileSystemUtils.isPrivate(target) == toBoolean(value);
-			}			
+			}
 		}
 		return false;
 	}

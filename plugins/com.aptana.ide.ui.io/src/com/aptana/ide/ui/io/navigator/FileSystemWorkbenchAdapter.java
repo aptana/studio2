@@ -302,7 +302,7 @@ public class FileSystemWorkbenchAdapter implements IWorkbenchAdapter, IDeferredW
 		for (IFileInfo fi : fileInfos) {
 			list.add(new FileSystemObject(parent.getChild(fi.getName()), fi));
 		}
-		return list.toArray(new FileSystemObject[list.size()]);			
+		return list.toArray(new FileSystemObject[list.size()]);
 	}
 
 	public static class Factory implements IAdapterFactory {

@@ -98,7 +98,7 @@ public final class FileSystemUtils {
 		}
 		return false;
 	}
-	
+
 	public static boolean isPrivate(Object object)
 	{
 		IFileInfo fileInfo = getFileInfo(object);

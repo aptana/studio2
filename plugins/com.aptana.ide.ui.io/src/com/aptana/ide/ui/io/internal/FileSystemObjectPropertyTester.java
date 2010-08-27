@@ -66,7 +66,7 @@ public class FileSystemObjectPropertyTester extends PropertyTester {
             	return fileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK) == value;
             } else if (PROPERTY_IS_PRIVATE.equals(property)) {
             	if(fileInfo instanceof IExtendedFileInfo) {
-        			return ((IExtendedFileInfo)fileInfo).getPermissions() == 0;            		
+        			return ((IExtendedFileInfo)fileInfo).getPermissions() == 0;
             	}
             	return false;
             } else if (PROPERTY_IS_LOCAL.equals(property)) {

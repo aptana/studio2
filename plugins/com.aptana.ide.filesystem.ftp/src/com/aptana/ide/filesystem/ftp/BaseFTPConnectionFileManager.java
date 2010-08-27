@@ -63,7 +63,6 @@ import com.aptana.ide.core.StringUtils;
 import com.aptana.ide.core.URLEncoder;
 import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.InfiniteProgressMonitor;
-import com.aptana.ide.core.io.exception.PermissionDeniedException;
 import com.aptana.ide.core.io.preferences.PreferenceUtils;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IConnectionFileManager;
@@ -452,7 +451,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 	protected abstract URI getRootCanonicalURI();
 
 	// all methods here accept absolute path
-	protected abstract void changeCurrentDir(IPath path) throws FTPException, IOException;
+	protected abstract void changeCurrentDir(IPath path) throws FTPException, IOException, CoreException;
 	protected abstract ExtendedFileInfo fetchFile(IPath path, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 	protected abstract ExtendedFileInfo[] fetchFiles(IPath path, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
 	protected abstract String[] listDirectory(IPath path, IProgressMonitor monitor) throws CoreException, FileNotFoundException;
@@ -510,9 +509,6 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 				} catch (Exception ignore) {
 					IdeLog.logImportant(FTPPlugin.getDefault(), com.aptana.ide.filesystem.ftp.Messages.BaseFTPConnectionFileManager_symlink_resolve_failed, e);
 				}
-			} catch (PermissionDeniedException e) {
-				throw new CoreException(new Status(IStatus.ERROR, FTPPlugin.PLUGIN_ID,
-						StringUtils.format(Messages.BaseFTPConnectionFileManager_permission_denied, fileInfo.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET)), e));
 			}
 		}
 		long permissions = fileInfo.getPermissions();
@@ -520,7 +516,7 @@ public abstract class BaseFTPConnectionFileManager implements IConnectionFileMan
 		fileInfo.setAttribute(EFS.ATTRIBUTE_EXECUTABLE, (permissions & IExtendedFileInfo.PERMISSION_OWNER_EXECUTE) != 0);
 	}
 	
-	private ExtendedFileInfo resolveSymlink(IPath dirPath, String linkTarget, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException, PermissionDeniedException {
+	private ExtendedFileInfo resolveSymlink(IPath dirPath, String linkTarget, int options, IProgressMonitor monitor) throws CoreException, FileNotFoundException {
 		Set<IPath> visited = new HashSet<IPath>();
 		visited.add(dirPath);
 		while (linkTarget != null && linkTarget.length() > 0) {
