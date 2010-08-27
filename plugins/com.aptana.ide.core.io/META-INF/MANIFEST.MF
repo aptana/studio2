@@ -19,6 +19,7 @@ Export-Package: com.aptana.ide.core.io,
  com.aptana.ide.core.io.auth,
  com.aptana.ide.core.io.efs,
  com.aptana.ide.core.io.events,
+ com.aptana.ide.core.io.exception,
  com.aptana.ide.core.io.preferences,
  com.aptana.ide.core.io.syncing,
  com.aptana.ide.core.io.vfs
