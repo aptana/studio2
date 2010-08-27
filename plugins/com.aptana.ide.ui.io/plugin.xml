@@ -8,7 +8,7 @@
             class="com.aptana.ide.ui.io.internal.FileSystemObjectPropertyTester"
             id="com.aptana.ide.ui.io.navigator.filePropertyTester"
             namespace="com.aptana.ide.ui.io.navigator.file"
-            properties="isDirectory, isLocal, isSymlink, isPrivate"
+            properties="isDirectory, isLocal, isSymlink"
             type="com.aptana.ide.ui.io.navigator.FileSystemObject">
       </propertyTester>
    </extension>

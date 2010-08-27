@@ -128,16 +128,6 @@ public class FileSystemObject implements IAdaptable {
 	}
 
 	/**
-	 * @return
-	 */
-	public boolean isPrivate() {
-		if (fileInfo != null && fileInfo instanceof IExtendedFileInfo) {
-			return ((IExtendedFileInfo)fileInfo).getPermissions() == 0;
-		}
-		return false;
-	}
-
-	/**
 	 * @return the store
 	 */
 	public IFileStore getFileStore() {
