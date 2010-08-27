@@ -41,7 +41,7 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
-import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
+import com.aptana.ide.ui.io.FileSystemUtils;
 
 /**
  * @author Michael Xia (mxia@aptana.com)
@@ -65,10 +65,7 @@ public class FileSystemObjectPropertyTester extends PropertyTester {
             } else if (PROPERTY_IS_SYMLINK.equals(property)) {
             	return fileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK) == value;
             } else if (PROPERTY_IS_PRIVATE.equals(property)) {
-            	if(fileInfo instanceof IExtendedFileInfo) {
-        			return ((IExtendedFileInfo)fileInfo).getPermissions() == 0;
-            	}
-            	return false;
+            	return FileSystemUtils.isPrivate(fileInfo) == value;
             } else if (PROPERTY_IS_LOCAL.equals(property)) {
                 try {
                     return (fileStore.toLocalFile(EFS.NONE, null) != null) == value;

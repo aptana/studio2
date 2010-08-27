@@ -42,8 +42,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 
-import com.aptana.ide.core.io.vfs.IExtendedFileInfo;
-
 /**
  * @author Max Stepanov
  *
