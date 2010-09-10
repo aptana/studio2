@@ -399,6 +399,7 @@ public class CSSCodeFormatter extends BaseFormatter
 					isInProperty = false;
 					break;
 
+				case CSSTokenTypes.AT_KEYWORD:
 				case CSSTokenTypes.SELECTOR:
 				{
 					// case of h1, h1 + h2 {

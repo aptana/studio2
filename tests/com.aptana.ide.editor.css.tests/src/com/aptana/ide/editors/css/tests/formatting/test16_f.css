@@ -1,0 +1,5 @@
+@font-face {
+    font-family: "Bodytext";
+    src: url("font/BodyText.eot");
+    src: local("BodyText"), url("font/BodyText.ttf") format("opentype");
+}

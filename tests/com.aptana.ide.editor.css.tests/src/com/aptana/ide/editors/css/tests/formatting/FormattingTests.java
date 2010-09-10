@@ -154,4 +154,8 @@ public class FormattingTests extends TestCase
 		formattingTest("test15.css", getContent("test15_f.css")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	public void testFormattingFontFace() throws Exception
+	{
+		formattingTest("test16.css", getContent("test16_f.css")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

@@ -666,13 +666,22 @@ public class CSSParser extends CSSParserBase
 		this.advance();
 
 		// zero or more "any" tokens
-		this.assertAndAdvance(CSSTokenTypes.STRING, "error.at-rule.name"); //$NON-NLS-1$
+		if (this.isType(CSSTokenTypes.STRING))
+		{
+			this.advance();
+		}
 
 		// block or semicolon
 		switch (this.currentLexeme.typeIndex)
 		{
 			case CSSTokenTypes.LCURLY:
-				result.appendChild(this.parseBlock());
+				this.advance();
+
+				CSSListNode declarations = parseRuleSetBody();
+				result.appendChild(declarations);
+				result.includeLexemeInRange(this.currentLexeme);
+
+				this.assertAndAdvance(CSSTokenTypes.RCURLY, "error.rule-set.close"); //$NON-NLS-1$
 				break;
 
 			case CSSTokenTypes.SEMICOLON:
