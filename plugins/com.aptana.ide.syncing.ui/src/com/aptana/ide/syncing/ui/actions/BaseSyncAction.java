@@ -161,6 +161,7 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
     public void selectionChanged(IAction action, ISelection selection) {
         action.setEnabled(false);
         setSelection(selection);
+        setSelectedSite(null);
         action.setEnabled(fSelectedElements.size() > 0);
     }
 
@@ -285,8 +286,13 @@ public abstract class BaseSyncAction implements IObjectActionDelegate {
         	sites = SiteConnectionUtils.findSitesWithDestination(container, true);
         }
         String target;
+        IConnectionPoint destination;
         for (ISiteConnection site : sites) {
-            target = site.getDestination().getName();
+        	destination = site.getDestination();
+        	if (destination == null) {
+        		continue;
+        	}
+            target = destination.getName();
             if (target.equals(lastConnection)) {
                 return site;
             }
