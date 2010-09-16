@@ -297,18 +297,12 @@ public class UnifiedEditorsPlugin extends AbstractUIPlugin {
 	protected String getKey(ContextTypeRegistry contextTypeRegistry) {
 		Iterator<?> i = contextTypeRegistry.contextTypes();
 		StringBuilder builder = new StringBuilder();
-		boolean first = true;
 
 		builder.append(TEMPLATES).append("{");
 
-		while (i.hasNext()) {
+		// NOTE: this code assumes the first context is the top-level context
+		if (i.hasNext()) {
 			TemplateContextType contextType = (TemplateContextType) i.next();
-
-			if (first) {
-				first = false;
-			} else {
-				builder.append(",");
-			}
 
 			builder.append(contextType.getName());
 		}
