@@ -1266,7 +1266,7 @@ public class SmartSyncDialog extends Window implements SelectionListener, Modify
 									data.exclude = false;
 									synced.setVisible(true);
 									cancel.setText(Messages.SmartSyncDialog_Close);
-									setEnabled(false);
+									setEnabled(true);
 									//end2Combo.setEnabled(true);
 									syncer.disconnect();
 								}
