@@ -13203,6 +13203,7 @@ li {
 			<hint>Example values: 14px, 2cm, 10%, baseline, etc.</hint>
 			<values>
 				<value name="*" description="Specify a value for vertical-align that is not on this list." />
+				<value name="bottom" description="Align the bottom of the aligned subtree with the bottom of the line box."/>
 				<value name="inherit" description="Inherit the value from the parent element." />
 				<value name="baseline" description="Align with the baseline of the containing element." />
 				<value name="sub" description="Align as subscript." />
