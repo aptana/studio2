@@ -8,7 +8,6 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-
 package com.aptana.internal.ui.text.spelling;
 
 import java.net.URL;

@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Aptana, Inc. - modifications
  *******************************************************************************/
 package com.aptana.internal.ui.text.spelling.engine;
 
