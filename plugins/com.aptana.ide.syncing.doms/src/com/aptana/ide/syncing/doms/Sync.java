@@ -36,6 +36,9 @@ package com.aptana.ide.syncing.doms;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -79,10 +82,18 @@ public final class Sync {
         }
         IEditorInput input = editor.getEditorInput();
 
-        if (input instanceof FileEditorInput) {
+		if (input instanceof FileEditorInput) {
             upload(((FileEditorInput) input).getFile());
         } else if (input instanceof IPathEditorInput) {
-            upload(((IPathEditorInput) input).getPath());
+        	IPath path = ((IPathEditorInput) input).getPath();
+    		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+    		IFile file = workspaceRoot.getFileForLocation(path);
+    		if(file != null) {
+    			upload(file);
+    		}
+    		else {
+                upload(path);
+    		}
         } else if (input instanceof IURIEditorInput) {
         	IURIEditorInput editorInput = (IURIEditorInput) input;
             try {
