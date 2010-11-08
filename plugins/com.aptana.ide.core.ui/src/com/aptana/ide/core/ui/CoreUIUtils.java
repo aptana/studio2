@@ -647,6 +647,11 @@ public final class CoreUIUtils
 		{
 			path = StringUtils.replace(path, FILE_SLASH, FILE_SLASH_SLASH_SLASH);
 		}
+		// Pare down too many preceding slashes to just file:///
+		while (path != null && path.indexOf(FILE_SLASH_SLASH_SLASH + "/") == 0)
+		{
+			path = StringUtils.replace(path, FILE_SLASH_SLASH_SLASH + "/", FILE_SLASH_SLASH_SLASH);
+		}
 
 		if (path != null && !isURI(path))
 		{
