@@ -3,105 +3,8 @@
 <plugin>
 	<extension-point id="messaging" name="Messaging" schema="schema/messaging.exsd"/>
  <extension-point id="requiredFeatures" name="com.aptana.ide.intro.requiredFeatures" schema="schema/requiredFeatures.exsd"/>
-	<extension
-         point="org.eclipse.ui.menus">
-      <group
-            id="com.aptana.ide.intro.StartPageAction">
-         <location>
-            <bar
-                  type="trim">
-            </bar>
-            <order
-                  position="after"
-                  relativeTo="status">
-            </order>
-         </location>
-      </group>
-      <widget
-            class="com.aptana.ide.intro.actions.StartPageTrimWidget"
-            id="com.aptana.ide.intro.StartPageAction">
-         <location>
-            <bar
-                  path="com.aptana.ide.intro.StartPageAction"
-                  type="trim">
-            </bar>
-         </location>
-      </widget>
-   </extension>
       <extension
          point="org.eclipse.ui.actionSets">
-	     <actionSet
-			id="com.aptana.ide.intro.menuActionSet"
-			label="%ActionSet.portal.label"
-			visible="false">
-         <!--
-             Due to the Eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=83006
-             the following menu declaration has to be repeated exactly in every action set that
-             wants to contribute acions and menus to it.
-         -->
-         <menu
-               id="aptanahelp"
-               label="%ActionSet.Menu.Aptana.label"
-               path="help/aptanaGroup">
-            <groupMarker
-                  name="top">
-            </groupMarker>
-            <separator
-                  name="separator1">
-            </separator>
-            <groupMarker
-                  name="jaxer">
-            </groupMarker>
-            <groupMarker
-                  name="messagecenter">
-            </groupMarker>
-            <separator
-                  name="separator2">
-            </separator>
-            <groupMarker
-                  name="update">
-            </groupMarker>
-            <separator
-                  name="separator3">
-            </separator>
-            <groupMarker
-                  name="troubleshooting">
-            </groupMarker>
-            <groupMarker
-                  name="help">
-            </groupMarker>
-         </menu>
-         <menu
-               id="aptanaidmenu"
-               label="%menu.label.AptanaID"
-               path="help/aptanahelp/top">
-            <groupMarker
-                  name="signin">
-            </groupMarker>
-            <separator
-                  name="separator1">
-            </separator>
-            <groupMarker
-                  name="help">
-            </groupMarker>
-         </menu>
-      <action
-            class="com.aptana.ide.intro.actions.WhatIsAnAptanaIDAction"
-            icon="icons/information.png"
-            id="com.aptana.ide.intro.WhatIsAnAptanaIDAction"
-            label="%action.label.AptanaID"
-            menubarPath="help/aptanahelp/aptanaidmenu/help"
-            style="push">
-      </action>
-	     <action
-             class="com.aptana.ide.intro.actions.SignInSignOutAction"
-             icon="icons/identity.png"
-             id="com.aptana.ide.intro.actions.SignInSignOutAction"
-             label="%action.label.SignIn"
-             menubarPath="help/aptanahelp/aptanaidmenu/signin"
-             style="push">
-         </action>
-	    </actionSet>
 	  <!-- The funcky a. prefix in the actionSet id controls the order of the button in the toolbar -->
       <actionSet
             id="a.com.aptana.ide.core.ui.actionSet.myaptana"
@@ -138,34 +41,12 @@
                id="myaptana"
                label="%menu.label.myaptana">
             <groupMarker
-                  name="signin">
-            </groupMarker>
-            <separator
-                  name="separator1">
-            </separator>
-            <groupMarker
                   name="portal">
             </groupMarker>
             <groupMarker
                   name="others">
             </groupMarker>
          </menu>
-         <action
-               class="com.aptana.ide.intro.actions.SignInSignOutAction"
-               icon="icons/identity.png"
-               id="com.aptana.ide.intro.actions.SignInSignOutAction"
-               label="%action.label.SignIn"
-               menubarPath="myaptana/signin"
-               style="push">
-         </action>
-         <action
-               class="com.aptana.ide.intro.actions.WhatIsAnAptanaIDAction"
-               icon="icons/information.png"
-               id="com.aptana.ide.intro.WhatIsAnAptanaIDAction"
-               label="%action.label.AptanaID"
-               menubarPath="myaptana/signin"
-               style="push">
-         </action>
          <action
                class="com.aptana.ide.intro.actions.AptanaURLAction"
                icon="icons/window1616.png"
@@ -201,42 +82,6 @@
           id="com.aptana.ide.intro.preferences.IntroPreferencePage"
           name="%startPage"/>
    </extension>
-     <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension targetID="com.aptana.ide.js.ui.WebPerspective">
-         <actionSet
-               id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-      </perspectiveExtension>
-      <perspectiveExtension targetID="org.radrails.rails.ui.PerspectiveRails">
-         <actionSet
-               id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-      </perspectiveExtension>
-      <perspectiveExtension targetID="org.rubypeople.rdt.ui.PerspectiveRuby">
-         <actionSet
-               id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="org.eclipse.jst.j2ee.J2EEPerspective">
-         <actionSet
-               id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <actionSet
-               id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="org.eclipse.wst.web.ui.webDevPerspective">
-         <actionSet
-               id="com.aptana.ide.intro.menuActionSet">
-         </actionSet>
-      </perspectiveExtension>
-     </extension>
       <extension point="com.aptana.ide.server.jetty.cometClient">
       	<client id="/portal/projects/new" class="com.aptana.ide.intro.actions.NewWizardClient" />
       	<client id="/portal/files/new" class="com.aptana.ide.intro.actions.NewFileWizardClient" />
