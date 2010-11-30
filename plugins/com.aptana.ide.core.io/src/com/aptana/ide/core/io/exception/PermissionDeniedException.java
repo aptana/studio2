@@ -36,7 +36,7 @@ package com.aptana.ide.core.io.exception;
 
 import java.io.IOException;
 
-public class PermissionDeniedException extends IOException
+public class PermissionDeniedException extends Exception
 {
 	/*
 	 * Fields
