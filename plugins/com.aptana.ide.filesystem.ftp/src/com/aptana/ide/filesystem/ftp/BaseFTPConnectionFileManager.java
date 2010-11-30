@@ -76,9 +76,9 @@ import com.enterprisedt.net.ftp.FTPException;
  */
 public abstract class BaseFTPConnectionFileManager implements IConnectionFileManager {
 
-	protected static final int TIMEOUT = 20000;
+	protected static final int TIMEOUT = 30000;
 	protected static final int RETRY = 3;
-	protected static final int RETRY_DELAY = 5000;
+	protected static final int RETRY_DELAY = 10000;
 	protected static final int KEEPALIVE_INTERVAL = 15000;
 	protected static final int TRANSFER_BUFFER_SIZE = 32768;
 	protected static final int CHECK_CONNECTION_TIMEOUT = 30000;
