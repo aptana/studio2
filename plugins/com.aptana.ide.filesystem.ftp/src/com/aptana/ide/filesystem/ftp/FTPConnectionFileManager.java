@@ -72,12 +72,6 @@ import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.preferences.PreferenceUtils;
 import com.aptana.ide.core.io.vfs.ExtendedFileInfo;
 import com.aptana.ide.core.io.vfs.IExtendedFileStore;
-import com.aptana.ide.filesystem.ftp.BaseFTPConnectionFileManager;
-import com.aptana.ide.filesystem.ftp.ExpiringMap;
-import com.aptana.ide.filesystem.ftp.FTPPlugin;
-import com.aptana.ide.filesystem.ftp.IFTPConnectionFileManager;
-import com.aptana.ide.filesystem.ftp.IFTPConstants;
-import com.aptana.ide.filesystem.ftp.Policy;
 import com.enterprisedt.net.ftp.FTPClient;
 import com.enterprisedt.net.ftp.FTPClientInterface;
 import com.enterprisedt.net.ftp.FTPConnectMode;
@@ -170,8 +164,8 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 		}
 	}
 
-	protected void initAndAuthFTPClient(FTPClientInterface clientInterface, IProgressMonitor monitor) throws IOException, FTPException {
-		if (clientInterface.connected())
+	protected void initAndAuthFTPClient(FTPClientInterface clientInterface, IProgressMonitor monitor, boolean forceConnect) throws IOException, FTPException {
+		if (!forceConnect && clientInterface.connected())
 		{
 			return;
 		}
@@ -638,7 +632,11 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 			if (connectionRetryCount < 1) {
 				connectionRetryCount++;
 				testOrConnect(monitor);
-				return fetchFile(path, options, monitor);
+				try {
+					return fetchFile(path, options, monitor);
+				} finally {
+					connectionRetryCount = 0;
+				}
 			} else {
 				connectionRetryCount = 0;
 				throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_fetch_failed, e));
@@ -701,7 +699,11 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 			if (connectionRetryCount < 1) {
 				connectionRetryCount++;
 				testOrConnect(monitor);
-				return fetchFiles(path, options, monitor);
+				try {
+					return fetchFiles(path, options, monitor);
+				} finally {
+					connectionRetryCount = 0;
+				}
 			} else {
 				connectionRetryCount = 0;
 				throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_fetching_directory_failed, e));
@@ -747,7 +749,7 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 		monitor.beginTask(Messages.FTPConnectionFileManager_initiating_download, 4);
 		FTPClient downloadFtpClient = (FTPClient) pool.checkOut();
 		try {
-			initAndAuthFTPClient(downloadFtpClient, monitor);
+			initAndAuthFTPClient(downloadFtpClient, monitor, false);
 			Policy.checkCanceled(monitor);
 			setMessageLogger(downloadFtpClient, messageLogWriter);
 			downloadFtpClient.setType(IFTPConstants.TRANSFER_TYPE_ASCII.equals(transferType)
@@ -769,12 +771,31 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 		} catch (Exception e) {
 			setMessageLogger(downloadFtpClient, null);
 			pool.checkIn(downloadFtpClient);
+
 			if (e instanceof OperationCanceledException) {
 				throw (OperationCanceledException) e;
 			} else if (e instanceof FileNotFoundException) {
 				throw (FileNotFoundException) e;
 			}
-			throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_opening_file_failed, e));			
+			// does one retry
+			if (connectionRetryCount < 1) {
+				connectionRetryCount++;
+				try {
+					initAndAuthFTPClient(downloadFtpClient, monitor, true);
+				} catch (IOException e1) {
+					// ignores
+				} catch (FTPException e1) {
+					// ignores
+				}
+				try {
+					return readFile(path, monitor);
+				} finally {
+					connectionRetryCount = 0;
+				}
+			} else {
+				connectionRetryCount = 0;
+				throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_opening_file_failed, e));
+			}
 		} finally {
 			monitor.done();
 		}
@@ -788,7 +809,7 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 		monitor.beginTask(Messages.FTPConnectionFileManager_initiating_file_upload, 4);
 		FTPClient uploadFtpClient = (FTPClient) pool.checkOut();
 		try {
-			initAndAuthFTPClient(uploadFtpClient, monitor);
+			initAndAuthFTPClient(uploadFtpClient, monitor, false);
 			Policy.checkCanceled(monitor);
 			setMessageLogger(uploadFtpClient, messageLogWriter);
 			uploadFtpClient.setType(IFTPConstants.TRANSFER_TYPE_ASCII.equals(transferType)
@@ -807,6 +828,7 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 		} catch (Exception e) {
 			setMessageLogger(uploadFtpClient, null);
 			pool.checkIn(uploadFtpClient);
+
 			if (e instanceof OperationCanceledException) {
 				throw (OperationCanceledException) e;
 			} else if (e instanceof FileNotFoundException) {
@@ -816,7 +838,24 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 					throw (FileNotFoundException) new FileNotFoundException(path.toPortableString()).initCause(e);
 				}
 			}
-			throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_opening_file_failed, e));			
+			if (connectionRetryCount < 1) {
+				connectionRetryCount++;
+				try {
+					initAndAuthFTPClient(uploadFtpClient, monitor, true);
+				} catch (IOException e1) {
+					// ignores
+				} catch (FTPException e1) {
+					// ignores
+				}
+				try {
+					return writeFile(path, permissions, monitor);
+				} finally {
+					connectionRetryCount = 0;
+				}
+			} else {
+				connectionRetryCount = 0;
+				throw new CoreException(new Status(Status.ERROR, FTPPlugin.PLUGIN_ID, Messages.FTPConnectionFileManager_opening_file_failed, e));
+			}
 		} finally {
 			monitor.done();
 		}
