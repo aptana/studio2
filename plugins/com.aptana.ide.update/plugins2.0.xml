@@ -224,23 +224,6 @@
 		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
-		<id>org.openrico.rico.2.0</id>
-		<name>OpenRico</name>
-		<category>Ajax</category> 
-		<description>Adds support for the OpenRico Ajax library</description>
-		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
-        <more>http://www.aptana.org/#rico</more>
-		<sortweight>2</sortweight>
-		<release>
-            <version>2.0.0</version>
-			<year>2008</year>
-			<month>5</month>
-			<day>23</day>
-		</release>
-		<icon>images/ajax/rico.png</icon>
-		<installer_id>installer.jslib</installer_id>
-	</plugin>
-  <plugin>
 		<id>org.scriptaculous.1.8</id>
 		<name>Scriptaculous</name>
 		<category>Ajax</category> 
@@ -374,6 +357,23 @@
 			<day>26</day>
 		</release>
 		<icon>images/ajax/ext.gif</icon>
+		<installer_id>installer.featured</installer_id>
+  </plugin>
+  <plugin>
+		<id>com.extjs.ext.2.2</id>
+		<name>Ext JS</name>
+		<category>Ajax</category>
+		<description>Adds support for the Ext JS library</description>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#ext</more>
+		<sortweight>1</sortweight>
+		<release>
+            <version>2.2.0</version>
+			<year>2008</year>
+			<month>8</month>
+			<day>26</day>
+		</release>
+		<icon>images/ajax/ext.gif</icon>
 		<installer_id>installer.jslib</installer_id>
   </plugin>
   <plugin>
@@ -409,6 +409,23 @@
 		</release>
 		<icon>images/ajax/mochikit.png</icon>
 		<installer_id>installer.jslib</installer_id>
+  </plugin>
+  <plugin>
+  	<id>com.quantum.feature</id>
+  	<name>Quantum Database Utility</name>
+  	<category>Featured</category>
+  	<description>Quantum is a database plugin</description>
+  	<url>http://quantum.sourceforge.net/update-site/</url>
+  	<more>http://quantum.sourceforge.net/index.html</more>
+  	<sortweight>3</sortweight>
+  	<release>
+  		<version>3.3.9</version>
+		<year>2009</year>
+		<month>11</month>
+  		<day>10</day>
+	</release>
+  	<icon>images/feature_quantum.png</icon>
+  	<installer_id>installer.featured</installer_id>
   </plugin>
   <plugin>
   	<id>com.quantum.feature</id>
