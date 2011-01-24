@@ -100,6 +100,7 @@ function createSocketForTransport(transport, listener)
 		astream: stream.QueryInterface(nsIAsyncInputStream),
 		eventTarget: null,
 		state: 0,
+		started: false,
 		data: "",
 
 		onStartRequest: function() {},
@@ -125,7 +126,7 @@ function createSocketForTransport(transport, listener)
 		},
 		
 		startInThread: function() {
-			if (socket.closed) {
+			if (this.started || socket.closed) {
 				return;
 			}
 			if (ff3) {
@@ -139,14 +140,16 @@ function createSocketForTransport(transport, listener)
 			}
 			
 			this.astream.asyncWait(this, 0, 0, this.eventTarget);
+			this.started = true;
 		},
 
 		stopInThread: function() {
-			if (socket.closed) {
+			if (!this.started || socket.closed) {
 				return;
 			}
 			/* hack to clear socket stream callback */
 			this.astream.asyncWait(null, 0, 0, null);
+			this.started = false;
 		},
 						
 		onInputStreamReady: function(astream) {

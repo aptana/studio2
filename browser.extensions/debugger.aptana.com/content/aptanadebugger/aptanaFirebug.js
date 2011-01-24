@@ -60,17 +60,34 @@ var currentContext = null;
 var DebuggerListener;
 var XHRSpyListener;
 var ConsoleListener;
-var fb14p = true;
-var fb143p = true;
+var fb14p;
+var fb143p;
+var fb15p;
+var fb16p;
+var fb163p;
 var firebug_unMinimize;
 
 const self = this;
+
+function deinit()
+{
+	Firebug.Console.removeListener(ConsoleListener);
+	Firebug.Spy.removeListener(XHRSpyListener);
+	Firebug.Debugger.removeListener(DebuggerListener);
+	if (fb16p) {
+		Firebug.PanelActivation.setPanelState(Firebug.ScriptPanel, false);
+		Firebug.PanelActivation.setPanelState(Firebug.ConsolePanel, false);
+		Firebug.PanelActivation.setPanelState(Firebug.getPanelType("net"), false);
+	}
+}
 
 this.setHook("init",function(debuggr)
 {
 	fb14p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.4") >= 0);
 	fb143p = (AptanaUtils.compareVersion(Firebug.version.substr(0,5), "1.4.3") >= 0);
 	fb15p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.5") >= 0);
+	fb16p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.6") >= 0);
+	fb163p = (AptanaUtils.compareVersion(Firebug.version.substr(0,5), "1.6.3") >= 0);
 	const AptanaDebuggerExtension = FBL.extend(Firebug.Extension,
 	{
 		// Firebug 1.4
@@ -210,7 +227,6 @@ this.setHook("init",function(debuggr)
 			if (show && Firebug.getSuspended()) {
 				Firebug.resume();
 			}
-
 			self.onShow(show);
 		}
 	});
@@ -260,6 +276,7 @@ this.setHook("init",function(debuggr)
 		{
 			if ( context == currentContext ) {
 				context.hideDebuggerUI = false;
+				FirebugServiceDebugger.resumeActivity(); // XXX: temporary till firebug 1.6.3
 			}	
 		}
 	});
@@ -305,12 +322,26 @@ this.setHook("init",function(debuggr)
 		var message = object;
 		if ( className == "error" )
 			type = "err";
+		if (fb16p) {
+			if ( typeof(object) != "string" && "trace" in object ) {
+				debuggr.log(type,"Stack trace:",convertStackTrace(object.trace.frames));
+				return;
+			}			
+		}
 		if ( typeof(object) != "string" && "frames" in object ) {
 			debuggr.log(type,"Stack trace:",convertStackTrace(object.frames));
 			return;
 		}
-		if ((object instanceof XMLHttpRequestSpy) || (object instanceof FBL.ErrorMessage)) {
-			return;
+		if (fb16p) {
+			if (object instanceof Firebug.Spy.XMLHttpRequestSpy)
+				return;
+			if (object instanceof FBL.ErrorMessage) {
+				message = object.message;
+			}
+		} else {
+			if ((object instanceof Firebug.Spy.XMLHttpRequestSpy) || (object instanceof FBL.ErrorMessage)) {
+				return;
+			}
 		}
 		try {
 			if ( typeof(object) != "string" && object[0] )
@@ -319,14 +350,7 @@ this.setHook("init",function(debuggr)
 		}
 		debuggr.log(type,message);
 	}
-	
-	function deinit()
-	{
-		Firebug.Console.removeListener(ConsoleListener);
-		Firebug.Spy.removeListener(XHRSpyListener);
-		Firebug.Debugger.removeListener(DebuggerListener);
-	}
-	
+		
 	function addTabCloseListener()
 	{
 		browser._destroyFunc = browser.destroy;
@@ -375,15 +399,15 @@ this.setHook("init",function(debuggr)
 				}
 				frames.push({
 					functionName: functionName,
-					fileName: frame.href,
-					lineNumber: frame.lineNo,
+					fileName: (fb16p) ? frame.script.fileName : frame.href,
+					lineNumber: (fb16p) ? frame.line : frame.lineNo,
 					functionArguments: functionArguments
 				});
 			}
 		}
 		return frames;
 	}
-		
+
 	const AptanaEditor = {
 		id: "#AptanaEditor",
 		label: "Aptana Studio <current>",
@@ -405,27 +429,41 @@ this.setHook("init",function(debuggr)
 	Firebug.Console.addListener(ConsoleListener);
 	Firebug.Spy.addListener(XHRSpyListener);
 	Firebug.registerEditor(AptanaEditor);
-
-	Firebug.Console.isHostEnabled = 
-	Firebug.Debugger.isHostEnabled = 
-	Firebug.NetMonitor.isHostEnabled = 
-	function(context) {
-		return (topWindow && context.window == topWindow);
-	};
 	
-	if (fb14p)
-	Firebug.Console.isAlwaysEnabled = 
-	Firebug.Debugger.isAlwaysEnabled = 
-	Firebug.NetMonitor.isAlwaysEnabled = 
-	function() {
-		return true;
-	};
+	if (!fb15p)
+		Firebug.Console.isHostEnabled = 
+		Firebug.Debugger.isHostEnabled = 
+		Firebug.NetMonitor.isHostEnabled = 
+		function(context) {
+			return (topWindow && context.window == topWindow);
+		};
+	
+	if (fb16p) {
+		Firebug.PanelActivation.setPanelState(Firebug.ScriptPanel, true);
+		Firebug.PanelActivation.setPanelState(Firebug.ConsolePanel, true);
+		Firebug.PanelActivation.setPanelState(Firebug.getPanelType("net"), true);
+	} else if (fb14p) {
+		Firebug.Console.isAlwaysEnabled = 
+		Firebug.Debugger.isAlwaysEnabled = 
+		Firebug.NetMonitor.isAlwaysEnabled = 
+		function() {
+			return true;
+		};
+	}
 	
 	if (fb15p) {
 		firebug_unMinimize = Firebug.unMinimize;
 		Firebug.unMinimize = function() {
 			if (!currentContext || !currentContext.hideDebuggerUI)
 				firebug_unMinimize.apply(Firebug);
+		}
+	}
+	
+	if (fb16p && !fb163p) {
+		firebug_debugger_resume = Firebug.Debugger.resume;
+		Firebug.Debugger.resume = function(context) {
+			FirebugServiceDebugger.suspendActivity(); // XXX: temporary till firebug 1.6.3
+			firebug_debugger_resume.apply(Firebug.Debugger, [context]);
 		}
 	}
 	
@@ -442,7 +480,11 @@ function removeTabCloseListener()
 
 this.setHook("shutdown",function()
 {
-	return (currentContext == null) || releaseContext;
+	if ((currentContext == null) || releaseContext) {
+		deinit();
+		return true;
+	}
+	return false;
 });
 
 this.setHook("enable",function()

@@ -37,6 +37,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+var FirebugServiceDebugger;
+
 (function() {
 
 // ************************************************************************************************
@@ -301,6 +303,7 @@ const debuggr =
 	
 };
 debuggr.wrappedJSObject = debuggr;
+FirebugServiceDebugger = debuggr;
 
 // ************************************************************************************************
 
@@ -315,13 +318,16 @@ this.initDebugger = function(port)
 	
 	jsd = Components.classes['@mozilla.org/js/jsd/debugger-service;1']
 						.getService(jsdIDebuggerService);
-	fbs = Components.classes['@joehewitt.com/firebug;1']
-								.getService(nsISupports).wrappedJSObject;							
+	if (FBL.fbs) {
+		fbs = FBL.fbs;
+	} else {
+	  fbs = Components.classes['@joehewitt.com/firebug;1']
+								.getService(nsISupports).wrappedJSObject;
+	}							
 	consoleService = Components.classes['@mozilla.org/consoleservice;1']
 								.getService(nsIConsoleService);
 	observerService = Components.classes["@mozilla.org/observer-service;1"]
 								.getService(nsIObserverService);
-
 	if (isClientDebugger) {
 		window.onclose = AptanaUtils.bindFunction(onTryCloseWindow,this,window.onclose);
 	}

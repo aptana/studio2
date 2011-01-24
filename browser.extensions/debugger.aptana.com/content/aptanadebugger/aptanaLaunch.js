@@ -142,7 +142,13 @@ this.startDebugger = function(port)
 			if ( aStateFlags & nsIWebProgressListener.STATE_STOP) {
 				window.getBrowser().removeProgressListener(this);
 				AptanaDebuggerChrome.enable(true);
-				window.setTimeout(function() { AptanaDebugger.initDebugger(port); }, 0);
+				window.setTimeout(function() {
+					try {
+						AptanaDebugger.initDebugger(port);
+					} catch(exc) {
+						dd(exc,'err');
+					}
+				}, 0);
 			}
 	};
 	try {
