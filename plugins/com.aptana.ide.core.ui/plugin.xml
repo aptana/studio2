@@ -194,7 +194,7 @@
                id="com.aptana.ide.core.ui.NaturePropertyTester"
                namespace="com.aptana.ide.core.ui"
                properties="nature"
-               type="org.eclipse.core.resources.IProject">
+               type="org.eclipse.core.runtime.IAdaptable">
          </propertyTester>
       </extension>
       <extension

@@ -6,6 +6,7 @@ package com.aptana.ide.core.internal.ui;
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 
 import com.aptana.ide.core.IdeLog;
 import com.aptana.ide.core.StringUtils;
@@ -28,10 +29,10 @@ public class NaturePropertyTester extends PropertyTester
 	 */
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
 	{
-		if (NATURE.equals(property) && receiver instanceof IProject)
+		if (NATURE.equals(property) && receiver instanceof IAdaptable)
 		{
-			IProject project = (IProject) receiver;
-			if (!project.isAccessible()) {
+			IProject project = (IProject) ((IAdaptable) receiver).getAdapter(IProject.class);
+			if (project == null || !project.isAccessible()) {
 				return false;
 			}
 			try

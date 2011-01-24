@@ -17,7 +17,7 @@
 	</installer>
 	<installer>
 		<id>installer.desktop</id>
-		<category>Desktop</category>
+		<category>Desktop Application Platforms</category>
 		<sortweight>3</sortweight>
 		<collapse>true</collapse>
 	</installer>
@@ -35,7 +35,7 @@
 	</installer>
 	<installer>
 		<id>installer.others</id>
-		<category>Others</category>
+		<category>Other</category>
 		<sortweight>6</sortweight>
 		<collapse>true</collapse>
 	</installer>
@@ -47,7 +47,7 @@
 	</installer>
 	<plugin>
 		<id>com.aptana.ide.feature.xul</id>
-		<name>Embedded FireFox Browser</name>
+		<name>Embedded Firefox Browser</name>
 		<category>Utilities</category> 
 		<description>Adds embedded Firefox support (XUL-based)</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/xul/</url>
@@ -67,10 +67,10 @@
         <more>http://www.eclipse.org/subversive/</more>
 		<sortweight>0</sortweight>
 		<release>
-		  <version>0.7.9.I20100512-1900</version>
+		  <version>0.7.9.I20101203-1700</version>
 		  <year>2010</year>
-		  <month>5</month>
-		  <day>12</day>
+		  <month>12</month>
+		  <day>3</day>
 		</release>
 		<installer_id>installer.others.source</installer_id>
 	</plugin>
@@ -83,10 +83,10 @@
         <more>http://subclipse.tigris.org/</more>
 		<sortweight>1</sortweight>
 		<release>
-		  <version>1.6.12</version>
+		  <version>1.6.16</version>
 		  <year>2010</year>
-		  <month>6</month>
-		  <day>22</day>
+		  <month>11</month>
+		  <day>29</day>
 		</release>
 		<installer_id>installer.others.source</installer_id>
 	</plugin>
@@ -95,14 +95,14 @@
 		<name>P4WSAD (Perforce)</name>
 		<category>Utilities</category> 
 		<description>Perforce configuration management integration</description>
-		<url>http://www.perforce.com/downloads/http/p4-wsad/install/3.5/</url>
-        <more>http://www.perforce.com/perforce/products/p4wsad.html</more>
+		<url>http://www.perforce.com/downloads/http/p4-eclipse/install/3.5</url>
+        <more>http://www.perforce.com/perforce/products/p4eclipse.html</more>
 		<sortweight>3</sortweight>
 		<release>
-		  <version>2009.3.248705</version>
-		  <year>2009</year>
-		  <month>3</month>
-		  <day>24</day>
+		  <version>2010.1.275861</version>
+		  <year>2010</year>
+		  <month>1</month>
+		  <day>27</day>
 		</release>
 		<installer_id>installer.others.source</installer_id>
 	</plugin>
@@ -132,31 +132,14 @@
         <more>http://www.pydev.org/</more>
         <sortweight>2</sortweight>
         <release>
-          <version>1.5.9</version>
-          <year>2010</year>
-          <month>6</month>
-          <day>30</day>
+          <version>1.6.4</version>
+          <year>2011</year>
+          <month>1</month>
+          <day>1</day>
         </release>
 		<icon>images/feature_pydev.png</icon>
 		<installer_id>installer.platforms</installer_id>
     </plugin>
-    <plugin>
-    	<id>com.aptana.ide.feature.framework.air.beta</id>
-    	<name>Adobe AIR 2.0 Beta</name>
-    	<category>Platforms</category>
-    	<description>Tools for creating desktop Ajax apps with Adobe AIR</description>
-    	<url>http://download.aptana.org/tools/studio/plugin/install/air/</url>
-    	<more>http://www.aptana.com/air</more>
-		<sortweight>1</sortweight>
-		<release>
-			<version>2.0.0</version>
-			<year>2009</year>
-			<month>11</month>
-			<day>17</day>
-		</release>
-		<icon>images/feature_air.png</icon>
-		<installer_id>installer.desktop</installer_id>
-	</plugin>
     <plugin>
         <id>com.aptana.ide.feature.framework.air</id>
         <name>Adobe AIR 1.5</name>
@@ -171,8 +154,8 @@
             <month>7</month>
             <day>8</day>
         </release>
-		<icon>images/feature_air.png</icon>
-		<installer_id>installer.desktop</installer_id>
+        <icon>images/feature_air.png</icon>
+        <installer_id>installer.desktop</installer_id>
     </plugin>   
     <plugin>
         <id>com.nokia.wrt.feature</id>
@@ -196,14 +179,14 @@
 		<name>CVS</name>
 		<category>Utilities</category> 
 		<description>CVS version control support</description>
-		<url>http://download.eclipse.org/releases/ganymede/</url>
-        <more>http://www.aptana.org/#cvs</more>
+		<url>http://download.eclipse.org/releases/galileo/</url>
+        <more>http://www.eclipse.org/eclipse/platform-cvs/</more>
 		<sortweight>4</sortweight>
 		<release>
-            <version>1.1.1.r34x_20080902-7C79E8N9nJD4oAW9V1938</version>
-			<year>2008</year>
-			<month>9</month>
-			<day>2</day>
+            <version>1.1.101.R35x_v20100125-7E79FGD9kKF67BPDZ7PKCE1911</version>
+			<year>2010</year>
+			<month>1</month>
+			<day>25</day>
 		</release>
 		<installer_id>installer.others.source</installer_id>
 	</plugin>
@@ -216,10 +199,10 @@
 		<more>http://www.eclipse.org/egit/</more>
 		<sortweight>2</sortweight>
 		<release>
-            <version>0.7.1</version>
+            <version>0.10.1</version>
 			<year>2010</year>
-			<month>3</month>
-			<day>22</day>
+			<month>12</month>
+			<day>14</day>
 		</release>
 		<installer_id>installer.others.source</installer_id>
     </plugin>
@@ -227,7 +210,7 @@
 		<id>org.aflax.1.0</id>
 		<name>Aflax</name>
 		<category>Ajax</category> 
-		<description>Adds support for the Aflax Ajax library</description>
+		<description>Adds support for the Aflax JavaScript library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#aflax</more>
 		<sortweight>3</sortweight>
@@ -241,27 +224,10 @@
 		<installer_id>installer.jslib</installer_id>
 	</plugin>
   <plugin>
-		<id>org.openrico.rico.2.0</id>
-		<name>OpenRico</name>
-		<category>Ajax</category> 
-		<description>Adds support for the OpenRico Ajax library</description>
-		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
-        <more>http://www.aptana.org/#rico</more>
-		<sortweight>2</sortweight>
-		<release>
-            <version>2.0.0</version>
-			<year>2008</year>
-			<month>5</month>
-			<day>23</day>
-		</release>
-		<icon>images/ajax/rico.png</icon>
-		<installer_id>installer.jslib</installer_id>
-	</plugin>
-  <plugin>
 		<id>org.scriptaculous.1.8</id>
 		<name>Scriptaculous</name>
 		<category>Ajax</category> 
-		<description>Adds support for the Scriptaculous Ajax library</description>
+		<description>Adds support for the Scriptaculous JavaScript library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#scriptaculous</more>
 		<sortweight>1</sortweight>
@@ -295,7 +261,7 @@
 		<id>com.yahoo.yui.3.0</id>
 		<name>Yahoo! User Interface (YUI)</name>
 		<category>Ajax</category>
-		<description>Adds support for the YUI Ajax library</description>
+		<description>Adds support for the YUI JavaScript library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#yui</more>
 		<sortweight>0</sortweight>
@@ -312,7 +278,7 @@
 		<id>org.prototypejs.prototype.1.6</id>
 		<name>Prototype</name>
 		<category>Ajax</category>
-		<description>Adds support for the Prototype Ajax library</description>
+		<description>Adds support for the Prototype JavaScript library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#prototype</more>
 		<sortweight>1</sortweight>
@@ -346,7 +312,7 @@
 		<id>net.mootools.1.2</id>
 		<name>Mootools</name>
 		<category>Ajax</category>
-		<description>Adds support for the Mootools Ajax library</description>
+		<description>Adds support for the Mootools JavaScript library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#mootools</more>
 		<sortweight>1</sortweight>
@@ -363,7 +329,7 @@
 		<id>com.jquery.1.4</id>
 		<name>jQuery Support</name>
 		<category>Ajax</category>
-		<description>Adds support for the jQuery Ajax library</description>
+		<description>Adds support for the jQuery JavaScript library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#jquery</more>
 		<sortweight>-1</sortweight>
@@ -380,7 +346,24 @@
 		<id>com.extjs.ext.2.2</id>
 		<name>Ext JS</name>
 		<category>Ajax</category>
-		<description>Adds support for the Ext JS Ajax library</description>
+		<description>Adds support for the Ext JS library</description>
+		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
+        <more>http://www.aptana.org/#ext</more>
+		<sortweight>1</sortweight>
+		<release>
+            <version>2.2.0</version>
+			<year>2008</year>
+			<month>8</month>
+			<day>26</day>
+		</release>
+		<icon>images/ajax/ext.gif</icon>
+		<installer_id>installer.featured</installer_id>
+  </plugin>
+  <plugin>
+		<id>com.extjs.ext.2.2</id>
+		<name>Ext JS</name>
+		<category>Ajax</category>
+		<description>Adds support for the Ext JS library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#ext</more>
 		<sortweight>1</sortweight>
@@ -397,7 +380,7 @@
 		<id>org.dojotoolkit.dojo.1.3</id>
 		<name>Dojo</name>
 		<category>Ajax</category>
-		<description>Adds support for the Dojo Ajax library</description>
+		<description>Adds support for the Dojo JavaScript toolkit</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#dojo</more>
 		<sortweight>0</sortweight>
@@ -414,7 +397,7 @@
 		<id>com.mochikit.1.4</id>
 		<name>MochiKit</name>
 		<category>Ajax</category>
-		<description>Adds support for the MochiKit Ajax library</description>
+		<description>Adds support for the MochiKit JavaScript library</description>
 		<url>http://download.aptana.org/tools/studio/plugin/install/frameworks/</url>
         <more>http://www.aptana.org/#mochikit</more>
 		<sortweight>2</sortweight>
@@ -426,6 +409,23 @@
 		</release>
 		<icon>images/ajax/mochikit.png</icon>
 		<installer_id>installer.jslib</installer_id>
+  </plugin>
+  <plugin>
+  	<id>com.quantum.feature</id>
+  	<name>Quantum Database Utility</name>
+  	<category>Featured</category>
+  	<description>Quantum is a database plugin</description>
+  	<url>http://quantum.sourceforge.net/update-site/</url>
+  	<more>http://quantum.sourceforge.net/index.html</more>
+  	<sortweight>3</sortweight>
+  	<release>
+  		<version>3.3.9</version>
+		<year>2009</year>
+		<month>11</month>
+  		<day>10</day>
+	</release>
+  	<icon>images/feature_quantum.png</icon>
+  	<installer_id>installer.featured</installer_id>
   </plugin>
   <plugin>
   	<id>com.quantum.feature</id>
@@ -463,17 +463,17 @@
   </plugin>
   <plugin>
   	<id>org.zend.php.debug_feature</id>
-  	<name>PHP Debugger Binaries (PDT)</name>
+  	<name>PHP Debugger Support for PDT</name>
   	<category>Featured</category>
   	<description>This project provides PDT debugging support for your PHP projects</description>
   	<url>http://downloads.zend.com/pdt/</url>
   	<more>http://www.eclipse.org/pdt/</more>
   	<sortweight>4</sortweight>
   	<release>
-  		<version>5.2</version>
-		<year>2008</year>
-		<month>12</month>
-  		<day>17</day>
+  		<version>5.3.18.v20100905</version>
+		<year>2010</year>
+		<month>9</month>
+  		<day>5</day>
 	</release>
   	<icon>images/feature_pdt.png</icon>
   	<installer_id>installer.platforms</installer_id>
