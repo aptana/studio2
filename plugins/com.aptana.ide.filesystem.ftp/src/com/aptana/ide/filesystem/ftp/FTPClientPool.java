@@ -35,27 +35,25 @@
 
 package com.aptana.ide.filesystem.ftp;
 
-import com.aptana.ide.core.ReapingObjectPool;
+import com.aptana.ide.core.KeepAliveObjectPool;
 import com.enterprisedt.net.ftp.FTPClient;
 import com.enterprisedt.net.ftp.FTPClientInterface;
 
-public class FTPClientPool extends ReapingObjectPool<FTPClientInterface> {
+public class FTPClientPool extends KeepAliveObjectPool<FTPClientInterface>
+{
 
 	private IPoolConnectionManager manager;
 
 	public FTPClientPool(IPoolConnectionManager manager)
 	{
-		super(2 * 60 * 1000); // 2 minutes
 		this.manager = manager;
 	}
 
-	@Override
 	public FTPClientInterface create()
 	{
 		return manager.newClient();
 	}
 
-	@Override
 	public void expire(FTPClientInterface ftpClient)
 	{
 		if (ftpClient == null)
@@ -78,7 +76,6 @@ public class FTPClientPool extends ReapingObjectPool<FTPClientInterface> {
 		}
 	}
 
-	@Override
 	public boolean validate(FTPClientInterface o)
 	{
 		if (!o.connected())
@@ -99,5 +96,4 @@ public class FTPClientPool extends ReapingObjectPool<FTPClientInterface> {
 		}
 		return true;
 	}
-
 }
