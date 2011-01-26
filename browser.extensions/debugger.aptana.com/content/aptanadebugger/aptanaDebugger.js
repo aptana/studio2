@@ -1584,9 +1584,6 @@ function resolveAnonymousFunctionsNamesForFile(href)
 		for (var i = 0; i < anonymousFunctions.length; ++i) {
 			var af = anonymousFunctions[i];
 			if ( af.fileName == href ) {
-				anonymousFunctions.splice(i, 1);
-				--i;
-				
 				if ( !source ) {
 					source = hook("getSourceLines", [href]);
 				}
@@ -1602,6 +1599,8 @@ function resolveAnonymousFunctionsNamesForFile(href)
 					var match = FUNCTION_NAME_GUESS_PATTERN.exec(text);
 					functionsNameMap["tag:"+af.tag] = match[1];
 					resolved.push(""+af.tag+"|"+encodeData(match[1]));
+					anonymousFunctions.splice(i, 1);
+					--i;
 				}
 			}
 		}
