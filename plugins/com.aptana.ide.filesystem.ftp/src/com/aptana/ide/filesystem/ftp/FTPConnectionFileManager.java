@@ -84,6 +84,7 @@ import com.enterprisedt.net.ftp.FTPMessageListener;
 import com.enterprisedt.net.ftp.FTPOutputStream;
 import com.enterprisedt.net.ftp.FTPReply;
 import com.enterprisedt.net.ftp.FTPTransferType;
+import com.enterprisedt.net.ftp.MalformedReplyException;
 import com.enterprisedt.net.ftp.pro.ProFTPClient;
 
 /**
@@ -1074,8 +1075,10 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 		if (statSupported != Boolean.FALSE) {
 			try {
 				ftpFiles = ftpSTAT(dirPath.addTrailingSeparator().toPortableString());
+			} catch (MalformedReplyException e) {
+				statSupported = Boolean.FALSE;
 			} catch (FTPException e) {
-				if (e.getReplyCode() == 501 || e.getReplyCode() == 502) {
+				if (e.getReplyCode() == 501 || e.getReplyCode() == 502 || e.getReplyCode() == 504) {
 					statSupported = null;
 				} else if (e.getReplyCode() != 500) {
 					throwFileNotFound(e, dirPath);
@@ -1097,7 +1100,7 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 		if (fileFactory.getSystem().toUpperCase().startsWith(WINDOWS_STR) && ftpFiles != null) {
 			for (FTPFile ftpFile : ftpFiles) {
 				if (ftpFile.getPermissions() == null) {
-					ftpFile.setPermissions("-rw-r-----");
+					ftpFile.setPermissions("-rw-r-----"); //$NON-NLS-1$
 				}
 			}
 		}
