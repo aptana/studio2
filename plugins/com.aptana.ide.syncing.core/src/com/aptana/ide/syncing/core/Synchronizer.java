@@ -1542,12 +1542,13 @@ public class Synchronizer implements ILoggable
 
 	private void logError(Exception e)
 	{
+		SyncingPlugin.logError(e.getLocalizedMessage(), e);
 		if (this.logger != null)
 		{
 			if (e.getCause() != null)
 			{
-				log(StringUtils.format(Messages.Synchronizer_Error, e.getLocalizedMessage() + " ("
-						+ e.getCause().getLocalizedMessage() + ")"));
+				log(StringUtils.format(Messages.Synchronizer_Error, e.getLocalizedMessage() + " (" //$NON-NLS-1$
+						+ e.getCause().getLocalizedMessage() + ")")); //$NON-NLS-1$
 			}
 			else
 			{
