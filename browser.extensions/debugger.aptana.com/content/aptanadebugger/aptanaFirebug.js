@@ -64,7 +64,6 @@ var fb14p;
 var fb143p;
 var fb15p;
 var fb16p;
-var fb163p;
 var firebug_unMinimize;
 
 const self = this;
@@ -87,7 +86,6 @@ this.setHook("init",function(debuggr)
 	fb143p = (AptanaUtils.compareVersion(Firebug.version.substr(0,5), "1.4.3") >= 0);
 	fb15p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.5") >= 0);
 	fb16p = (AptanaUtils.compareVersion(Firebug.version.substr(0,3), "1.6") >= 0);
-	fb163p = (AptanaUtils.compareVersion(Firebug.version.substr(0,5), "1.6.3") >= 0);
 	const AptanaDebuggerExtension = FBL.extend(Firebug.Extension,
 	{
 		// Firebug 1.4
@@ -276,7 +274,6 @@ this.setHook("init",function(debuggr)
 		{
 			if ( context == currentContext ) {
 				context.hideDebuggerUI = false;
-				FirebugServiceDebugger.resumeActivity(); // XXX: temporary till firebug 1.6.3
 			}	
 		}
 	});
@@ -457,16 +454,7 @@ this.setHook("init",function(debuggr)
 			if (!currentContext || !currentContext.hideDebuggerUI)
 				firebug_unMinimize.apply(Firebug);
 		}
-	}
-	
-	if (fb16p && !fb163p) {
-		firebug_debugger_resume = Firebug.Debugger.resume;
-		Firebug.Debugger.resume = function(context) {
-			FirebugServiceDebugger.suspendActivity(); // XXX: temporary till firebug 1.6.3
-			firebug_debugger_resume.apply(Firebug.Debugger, [context]);
-		}
-	}
-	
+	}	
 });
 
 function removeTabCloseListener()
