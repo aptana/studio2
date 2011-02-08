@@ -15,7 +15,7 @@
 							<em:minVersion>1.5</em:minVersion>
 							<em:maxVersion>3.6.*</em:maxVersion>
 							<em:updateLink>http://firefox.aptana.com/update/aptanadebugger.xpi</em:updateLink>
-							<em:updateHash>sha256:071d6635539f7e0da30d871e25a1654e6a1adddffbbc846eafc0712d6203c705</em:updateHash>
+							<em:updateHash>sha256:afb24e703726aecf0499b03cbfdf28691d4d229ef99d791ab45916c1be5f4d75</em:updateHash>
 						</RDF:Description>
 					</em:targetApplication>
 				</RDF:Description>
@@ -24,9 +24,9 @@
 	</em:updates>
 	
 	<em:signature>
-		MIGTMA0GCSqGSIb3DQEBDQUAA4GBAEwdzrRKPvjYVjTofUpuA5H2WDoPTAWbHJhqAlp
-		4F4LntbNWvXmqWl5wUEu6OmCITZhKG4Ctrrt6Sg3mCbmTl+jKy8MnHroiTjzvz4FJ1I
-		NxobvyP7JwLXJ+jDnwZ6vjpN0iCjZ9dFtyE1GqzlFUuWpDMy/j+spu+ug0WxUeyNh0
+		MIGTMA0GCSqGSIb3DQEBDQUAA4GBAFrVqkJvn3zlda8aEB/mYgf+gMwyDrpUd+XOaI9
+		h6/X0WMU7gCitizDUGDeZZjNrvAv1jzJ348HZSsDv2zpLeI/KJaQUSwuBN/rdvnF5Eg
+		l3NfDshw9nUe4Peb2svCvJDnb4mv6XrhfHe2N7mNLE6kB7UmRA2iQVsxeLQ+7QSnwF
 	</em:signature>
 
 </RDF:Description> 
