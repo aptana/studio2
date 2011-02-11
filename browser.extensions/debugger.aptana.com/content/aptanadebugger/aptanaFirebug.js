@@ -564,6 +564,7 @@ this.setHook("clearAllBreakpoints",function(hrefs)
 			sourceFile = new namespace.NoScriptSourceFile(currentContext, hrefs[i]);
 		}
 		sourceFiles.push(sourceFile);
+		Firebug.Debugger.fbs.clearAllBreakpoints([sourceFile]);
 	}
 	return Firebug.Debugger.fbs.clearAllBreakpoints(sourceFiles);
 });
