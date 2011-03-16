@@ -1,7 +1,7 @@
 
 <!ENTITY ad.about.title                     "About...">
-<!ENTITY ad.about.name                      "Aptana Debugger Service">
-<!ENTITY ad.about.description               "Aptana Debugger Service">
+<!ENTITY ad.about.name                      "Aptana Debugger">
+<!ENTITY ad.about.description               "Aptana Studio Debugger Service">
 <!ENTITY ad.about.version.label             "version">
 <!ENTITY ad.about.copyright                 "(c) Copyright Appcelerator, Inc. 2005-2011. All rights reserved.">
 <!ENTITY ad.about.homepage.label            "Find out more at">

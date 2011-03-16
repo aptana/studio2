@@ -38,7 +38,7 @@
     </em:requires>
 
     <em:name>Aptana Debugger</em:name>
-    <em:description>Aptana Debugger Service (Requires Firebug 1.2/1.3/1.4/1.5/1.6)</em:description>
+    <em:description>Aptana Studio Debugger Service (Requires Firebug 1.2/1.3/1.4/1.5/1.6)</em:description>
     <em:creator>(c) Copyright Appcelerator, Inc. 2005-2011. All rights reserved.</em:creator>
     <em:contributor>Max Stepanov (Appcelerator, Inc.)</em:contributor>
     <em:iconURL>chrome://aptanadebugger/skin/aptana3232.png</em:iconURL>
