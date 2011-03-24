@@ -44,7 +44,9 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.text.MessageFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -95,7 +97,12 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 	
 	private static final String TMP_TIMEZONE_CHECK = "_tmp_tz_check"; //$NON-NLS-1$
 
-	private final static String WINDOWS_STR = "WINDOWS";
+	private final static String WINDOWS_STR = "WINDOWS"; //$NON-NLS-1$
+
+	private final static SimpleDateFormat[] UTIME_FORMATS = new SimpleDateFormat[] {
+		new SimpleDateFormat("'UTIME' yyyyMMddHHmmss '{0}'"), //$NON-NLS-1$
+		new SimpleDateFormat("'UTIME {0}' yyyyMMddHHmmss yyyyMMddHHmmss yyyyMMddHHmmss 'UTC'"), //$NON-NLS-1$
+	};
 
 	protected FTPClient ftpClient;
 	private List<String> serverFeatures;
@@ -106,6 +113,7 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 	private Boolean statSupported = null;
 	private Boolean chmodSupported = null;
 	private Boolean chgrpSupported = null;
+	private int utimeFormat = -1;
 	private Map<IPath, FTPFile> ftpFileCache = new ExpiringMap<IPath, FTPFile>(CACHE_TTL);
 	private long serverTimeZoneShift = Integer.MIN_VALUE;
 	protected boolean hasServerInfo;
@@ -973,14 +981,32 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 	 */
 	@Override
 	protected void setModificationTime(IPath path, long modificationTime, IProgressMonitor monitor) throws CoreException, FileNotFoundException {
-		if (!serverSupportsFeature("MFMT")) { //$NON-NLS-1$
+		if (!serverSupportsFeature("MFMT") && !serverSupportsFeature("SITE UTIME")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		try {
 			IPath dirPath = path.removeLastSegments(1);
 			changeCurrentDir(dirPath);
 			Policy.checkCanceled(monitor);
-			ftpClient.setModTime(path.lastSegment(), new Date(modificationTime));
+			if (serverSupportsFeature("MFMT")) { //$NON-NLS-1$
+				ftpClient.setModTime(path.lastSegment(), new Date(modificationTime));
+			} else if (serverSupportsFeature("SITE UTIME")) { //$NON-NLS-1$
+				Calendar cal = Calendar.getInstance();
+				long localTimezoneShift = cal.get(Calendar.ZONE_OFFSET)+cal.get(Calendar.DST_OFFSET);
+				Date date = new Date(modificationTime-localTimezoneShift);
+				if (utimeFormat == -1) {
+					for (utimeFormat = 0; utimeFormat < UTIME_FORMATS.length; ++utimeFormat) {
+						String format = UTIME_FORMATS[utimeFormat].format(date);
+						FTPReply reply = ftpClient.sendCommand("SITE "+MessageFormat.format(format, path.lastSegment())); //$NON-NLS-1$
+						if (!"500".equals(reply.getReplyCode()) && !"501".equals(reply.getReplyCode())) { //$NON-NLS-1$ //$NON-NLS-2$
+							break;
+						}
+					}
+				} else if (utimeFormat >= 0 && utimeFormat < UTIME_FORMATS.length) {
+					String format = UTIME_FORMATS[utimeFormat].format(date);
+					ftpClient.site(MessageFormat.format(format, path.lastSegment()));
+				}
+			}
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (OperationCanceledException e) {
