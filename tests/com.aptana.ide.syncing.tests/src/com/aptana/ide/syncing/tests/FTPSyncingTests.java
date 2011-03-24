@@ -1,70 +1,56 @@
+/**
+ * Aptana Studio
+ * Copyright (c) 2005-2011 by Appcelerator, Inc. All Rights Reserved.
+ * Licensed under the terms of the GNU Public License (GPL) v3 (with exceptions).
+ * Please see the license.html included with this distribution for details.
+ * Any modifications to this file must keep this entire header intact.
+ */
 package com.aptana.ide.syncing.tests;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
-import com.aptana.ide.core.io.IConnectionPoint;
+import com.aptana.ide.core.io.ConnectionContext;
+import com.aptana.ide.core.io.CoreIOPlugin;
 import com.aptana.ide.core.io.LocalConnectionPoint;
 import com.aptana.ide.filesystem.ftp.FTPConnectionPoint;
 
 public class FTPSyncingTests extends SyncingTests
 {
-	protected IPath clientRootDirectory;
 
 	@Override
 	protected void setUp() throws Exception
 	{
-		clientManager = getClientConnectionPoint();
-		IFileStore cs = clientManager.getRoot().getFileStore(getClientDirectory());
-		if(!cs.fetchInfo().exists())
-			cs.mkdir(EFS.NONE, null);
-		clientManager.disconnect(null);
-		((LocalConnectionPoint)clientManager).setPath(clientRootDirectory.append(getClientDirectory()));
+		File baseTempFile = File.createTempFile("test", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
+		baseTempFile.deleteOnExit();
 		
-		serverManager = getServerConnectionPoint();
-		IFileStore ss = serverManager.getRoot().getFileStore(getServerDirectory());
-		if(!ss.fetchInfo().exists())
-			ss.mkdir(EFS.NONE, null);
-		serverManager.disconnect(null);
-		((FTPConnectionPoint)serverManager).setPath(getServerDirectory());
+		File baseDirectory = baseTempFile.getParentFile();
+		
+		LocalConnectionPoint lcp = new LocalConnectionPoint();
+		lcp.setPath(new Path(baseDirectory.getAbsolutePath()));
+		clientManager = lcp;
+
+		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
+		ftpcp.setHost(getConfig().getProperty("ftp.host", "10.0.1.30")); //$NON-NLS-1$ //$NON-NLS-2$
+		ftpcp.setLogin(getConfig().getProperty("ftp.username", "ftpuser")); //$NON-NLS-1$ //$NON-NLS-2$
+		ftpcp.setPassword(getConfig().getProperty("ftp.password",	//$NON-NLS-1$
+				String.valueOf(new char[] { 'l', 'e', 't', 'm', 'e', 'i', 'n'})).toCharArray());
+		ftpcp.setPath(new Path(getConfig().getProperty("ftp.path", "/home/ftpuser")));   //$NON-NLS-1$//$NON-NLS-2$
+		serverManager = ftpcp;
+
+		ConnectionContext context = new ConnectionContext();
+		context.put(ConnectionContext.COMMAND_LOG, System.out);
+		CoreIOPlugin.setConnectionContext(ftpcp, context);
 
 		super.setUp();
 	}
 
 	@Override
-	public IConnectionPoint getClientConnectionPoint() throws IOException
+	protected void tearDown() throws Exception
 	{
-		File baseTempFile = File.createTempFile("test", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
-		baseTempFile.deleteOnExit();
-
-		File baseDirectory = baseTempFile.getParentFile();
-
-		LocalConnectionPoint lcp = new LocalConnectionPoint();
-		clientRootDirectory = new Path(baseDirectory.getAbsolutePath());
-		lcp.setPath(clientRootDirectory);
-
-		return lcp;
+		// TODO Auto-generated method stub
+		super.tearDown();
 	}
-	
-	@Override
-	public IConnectionPoint getServerConnectionPoint() throws IOException
-	{
-		Properties props = new Properties();
-		FileInputStream inStream = new FileInputStream(System.getenv().get("junit.properties"));
-		props.load(inStream);
 
-		FTPConnectionPoint ftpcp = new FTPConnectionPoint();
-		ftpcp.setHost(props.getProperty("ftp.host")); //$NON-NLS-1$
-		ftpcp.setLogin(props.getProperty("ftp.username")); //$NON-NLS-1$
-		ftpcp.setPassword(props.getProperty("ftp.password").toCharArray());
-
-		return ftpcp;
-	}
 }

@@ -1,44 +1,21 @@
 /**
- * This file Copyright (c) 2005-2007 Aptana, Inc. This program is
- * dual-licensed under both the Aptana Public License and the GNU General
- * Public license. You may elect to use one or the other of these licenses.
- * 
- * This program is distributed in the hope that it will be useful, but
- * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
- * NONINFRINGEMENT. Redistribution, except as permitted by whichever of
- * the GPL or APL you select, is prohibited.
- *
- * 1. For the GPL license (GPL), you can redistribute and/or modify this
- * program under the terms of the GNU General Public License,
- * Version 3, as published by the Free Software Foundation.  You should
- * have received a copy of the GNU General Public License, Version 3 along
- * with this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- * 
- * Aptana provides a special exception to allow redistribution of this file
- * with certain other free and open source software ("FOSS") code and certain additional terms
- * pursuant to Section 7 of the GPL. You may view the exception and these
- * terms on the web at http://www.aptana.com/legal/gpl/.
- * 
- * 2. For the Aptana Public License (APL), this program and the
- * accompanying materials are made available under the terms of the APL
- * v1.0 which accompanies this distribution, and is available at
- * http://www.aptana.com/legal/apl/.
- * 
- * You may view the GPL, Aptana's exception and additional terms, and the
- * APL in the file titled license.html at the root of the corresponding
- * plugin containing this source file.
- * 
+ * Aptana Studio
+ * Copyright (c) 2005-2011 by Appcelerator, Inc. All Rights Reserved.
+ * Licensed under the terms of the GNU Public License (GPL) v3 (with exceptions).
+ * Please see the license.html included with this distribution for details.
  * Any modifications to this file must keep this entire header intact.
  */
 package com.aptana.ide.syncing.tests;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Properties;
+import java.util.Random;
 
 import junit.framework.TestCase;
 
@@ -46,7 +23,6 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 import com.aptana.ide.core.FileUtils;
@@ -57,25 +33,40 @@ import com.aptana.ide.core.io.IConnectionPoint;
 import com.aptana.ide.core.io.efs.EFSUtils;
 import com.aptana.ide.core.io.syncing.SyncState;
 import com.aptana.ide.core.io.syncing.VirtualFileSyncPair;
+import com.aptana.ide.core.io.vfs.IExtendedFileStore;
 import com.aptana.ide.syncing.core.Synchronizer;
-import com.aptana.ide.syncing.ui.internal.SyncUtils;
 
 /**
  * @author Kevin Lindsey
  */
+@SuppressWarnings("nls")
 public abstract class SyncingTests extends TestCase
 {
+	protected IFileStore clientDirectory;
+	protected IFileStore serverDirectory;
+
 	protected IConnectionPoint clientManager;
 	protected IConnectionPoint serverManager;
 
-	protected IPath clientTempDirectory;
-	protected IPath serverTempDirectory;
-
 	protected String fileName = "test.txt";
-	protected IPath filePath = new Path(fileName);
 	protected String folderName = "test";
-	protected IPath folderPath = new Path(folderName);
-	
+		
+	private static Properties cachedProperties;
+
+	protected static final Properties getConfig() {
+		if (cachedProperties == null) {
+			cachedProperties = new Properties();
+			String propertiesFile = System.getenv("junit.properties");
+			if (propertiesFile != null && new File(propertiesFile).length() > 0) {
+				try {
+					cachedProperties.load(new FileInputStream(propertiesFile));
+				} catch (IOException ignore) {
+				}
+			}
+		}
+		return cachedProperties;
+	}
+
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
@@ -85,60 +76,57 @@ public abstract class SyncingTests extends TestCase
 		context.put(ConnectionContext.COMMAND_LOG, System.out);
 		CoreIOPlugin.setConnectionContext(clientManager, context);
 
-		assertNotNull(clientManager.getRoot());
-		clientManager.getRoot().mkdir(EFS.NONE, null);
+		Random r = new Random();
+		int i = r.nextInt();
+		long millis = System.currentTimeMillis();
+		
+		clientDirectory = clientManager.getRoot().getFileStore(new Path("/client_" + millis + "_" + i));
+		assertNotNull(clientDirectory);
+		clientDirectory.mkdir(EFS.NONE, null);
 
-		assertNotNull(serverManager.getRoot());
-		serverManager.getRoot().mkdir(EFS.NONE, null);
+		serverDirectory = serverManager.getRoot().getFileStore(new Path("/server_" + millis + "_" + i));
+		assertNotNull(serverDirectory);
+		serverDirectory.mkdir(EFS.NONE, null);
 
 		super.setUp();
-	}
-	
-	protected IPath getClientDirectory() {
-		if(clientTempDirectory == null) {
-			clientTempDirectory = new Path("/client" + System.currentTimeMillis());
-		}
-		return clientTempDirectory;
+
 	}
 
-	protected IPath getServerDirectory() {
-		if(serverTempDirectory == null) {
-			serverTempDirectory = new Path("/server" + System.currentTimeMillis());
-		}
-		return serverTempDirectory;
-	}
-
-	public abstract IConnectionPoint getClientConnectionPoint() throws IOException;
-
-	public abstract IConnectionPoint getServerConnectionPoint() throws IOException;
-	
 	/**
 	 * @see junit.framework.TestCase#tearDown()
 	 */
 	protected void tearDown() throws Exception
 	{
-		IConnectionPoint client = getClientConnectionPoint();
-		IFileStore clientFile = client.getRoot().getFileStore(getClientDirectory());
-		if (clientFile.fetchInfo().exists())
+		try
 		{
-			clientFile.delete(EFS.NONE, null);
+			if (clientDirectory.fetchInfo().exists())
+			{
+				clientDirectory.delete(EFS.NONE, null);
+				assertFalse(clientDirectory.fetchInfo().exists());
+			}
+		}
+		finally
+		{
+			if (clientManager.isConnected())
+			{
+				clientManager.disconnect(null);
+			}
 		}
 
-		IConnectionPoint server = getServerConnectionPoint();
-		IFileStore serverFile = server.getRoot().getFileStore(getServerDirectory());
-		if (serverFile.fetchInfo().exists())
+		try
 		{
-			serverFile.delete(EFS.NONE, null);
+			if (serverDirectory.fetchInfo().exists())
+			{
+				serverDirectory.delete(EFS.NONE, null);
+				assertFalse(serverDirectory.fetchInfo().exists());
+			}
 		}
-
-		if (clientManager.isConnected())
+		finally
 		{
-			clientManager.disconnect(null);
-		}
-
-		if (serverManager.isConnected())
-		{
-			serverManager.disconnect(null);
+			if (serverManager.isConnected())
+			{
+				serverManager.disconnect(null);
+			}
 		}
 
 		super.tearDown();
@@ -210,9 +198,9 @@ public abstract class SyncingTests extends TestCase
 	 * @return File
 	 * @throws CoreException
 	 */
-	protected IFileStore createClientDirectory(IPath path, long modificationTime) throws CoreException
+	protected IFileStore createClientDirectory(String path, long modificationTime) throws CoreException
 	{
-		IFileStore fs = clientManager.getRoot().getFileStore(path);
+		IFileStore fs = clientDirectory.getFileStore(new Path(path));
 		fs.mkdir(0, null);
 
 		IFileInfo fi = fs.fetchInfo();
@@ -230,9 +218,9 @@ public abstract class SyncingTests extends TestCase
 	 * @return File
 	 * @throws CoreException
 	 */
-	protected IFileStore createServerDirectory(IPath path, long modificationTime) throws CoreException
+	protected IFileStore createServerDirectory(String path, long modificationTime) throws CoreException
 	{
-		IFileStore fs = serverManager.getRoot().getFileStore(path);
+		IFileStore fs = serverDirectory.getFileStore(new Path(path));
 		fs.mkdir(0, null);
 
 		IFileInfo fi = fs.fetchInfo();
@@ -252,7 +240,7 @@ public abstract class SyncingTests extends TestCase
 	protected File createDirectory(String path, long modificationTime)
 	{
 		File file = new File(path);
-		file.mkdir();
+		file.mkdirs();
 		file.setLastModified(modificationTime);
 
 		return file;
@@ -268,7 +256,7 @@ public abstract class SyncingTests extends TestCase
 	 * @return File
 	 * @throws CoreException
 	 */
-	protected IFileStore createClientFile(IPath path, long modificationTime) throws IOException, CoreException
+	protected IFileStore createClientFile(String path, long modificationTime) throws IOException, CoreException
 	{
 		return this.createClientFile(path, modificationTime, null);
 	}
@@ -283,10 +271,10 @@ public abstract class SyncingTests extends TestCase
 	 * @return File
 	 * @throws CoreException
 	 */
-	protected IFileStore createClientFile(IPath path, long modificationTime, String content) throws IOException,
+	protected IFileStore createClientFile(String path, long modificationTime, String content) throws IOException,
 			CoreException
 	{
-		return this.createFile(clientManager.getRoot().getFileStore(path), modificationTime, content);
+		return this.createFile(clientDirectory.getFileStore(new Path(path)), modificationTime, content);
 	}
 
 	/**
@@ -299,11 +287,10 @@ public abstract class SyncingTests extends TestCase
 	 * @return File
 	 * @throws CoreException
 	 */
-	protected IFileStore createServerFile(IPath path, long modificationTime) throws IOException, CoreException
+	protected IFileStore createServerFile(String path, long modificationTime) throws IOException, CoreException
 	{
 		return this.createServerFile(path, modificationTime, null);
 	}
-
 
 	/**
 	 * createServerFile
@@ -315,10 +302,10 @@ public abstract class SyncingTests extends TestCase
 	 * @return File
 	 * @throws CoreException
 	 */
-	protected IFileStore createServerFile(IPath path, long modificationTime, String content) throws IOException,
+	protected IFileStore createServerFile(String path, long modificationTime, String content) throws IOException,
 			CoreException
 	{
-		return this.createFile(serverManager.getRoot().getFileStore(path), modificationTime, content);
+		return this.createFile(serverDirectory.getFileStore(new Path(path)), modificationTime, content);
 	}
 
 	/**
@@ -355,12 +342,13 @@ public abstract class SyncingTests extends TestCase
 		
 		IFileInfo fi = fs.fetchInfo();
 
-		//System.out.print("Created: " + fs.fetchInfo(IExtendedFileStore.DETAILED, null).getLastModified() + ". ");
+		System.out.print("Created: " + fs.fetchInfo(IExtendedFileStore.DETAILED, null).getLastModified() + ". ");
+		System.out.print("Modifying: " + modificationTime + ". ");
 
 		fi.setLastModified(modificationTime);
 		fs.putInfo(fi, EFS.SET_LAST_MODIFIED, null);
 
-		//System.out.print("Modified: " + fs.fetchInfo(IExtendedFileStore.DETAILED, null).getLastModified() + "\n");
+		System.out.print("Modified: " + fs.fetchInfo(IExtendedFileStore.DETAILED, null).getLastModified() + "\n");
 
 		return fs;
 	}
@@ -390,7 +378,7 @@ public abstract class SyncingTests extends TestCase
 	protected VirtualFileSyncPair[] getSyncItems(boolean useCRC, int timeTolerance) throws IOException, CoreException
 	{
 
-		return this.getSyncItems(useCRC, timeTolerance, clientManager.getRoot(), serverManager.getRoot());
+		return this.getSyncItems(useCRC, timeTolerance, clientDirectory, serverDirectory);
 	}
 
 	/**
@@ -416,34 +404,34 @@ public abstract class SyncingTests extends TestCase
 				// TODO Auto-generated method stub
 				
 			}
-			
-			public void logWarning(String message)
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
+						
 			public void logInfo(String message, Throwable th)
 			{
 				System.out.print(message);
 			}
-			
-			public void logInfo(String message)
-			{
-				System.out.print(message);
-			}
-			
+						
 			public void logError(String message, Throwable th)
 			{
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			public void logError(String message)
 			{
 				// TODO Auto-generated method stub
 				
 			}
+
+			public void logInfo(String message)
+			{
+				System.out.print(message);
+			}
+
+			public void logWarning(String message)
+			{
+				// TODO Auto-generated method stub
+				
+			}		
 		});
 		
 		return syncManager.getSyncItems(clientManager, serverManager, clientRoot, serverRoot, null);
@@ -462,11 +450,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientFileOnly() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime); //$NON-NLS-1$
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ClientItemOnly, items[0].getSyncState());
 	}
 
@@ -479,11 +467,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientDirectoryOnly() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ClientItemOnly, items[0].getSyncState());
 	}
 
@@ -496,13 +484,14 @@ public abstract class SyncingTests extends TestCase
 	public void testClientFileIsNewer() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime);
-		this.createServerFile(filePath, currentTime - 10000);
+		String filename = fileName; //$NON-NLS-1$
+		this.createClientFile(filename, currentTime);
+		this.createServerFile(filename, currentTime - 1000);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
-		assertEquals(SyncState.ClientItemIsNewer, items[0].getSyncState());
+		assertSyncPairLength(1, items);
+		assertEquals(getModTimeDifference(items[0]), SyncState.ClientItemIsNewer, items[0].getSyncState());
 	}
 
 	/**
@@ -514,13 +503,14 @@ public abstract class SyncingTests extends TestCase
 	public void testClientDirectoryIsNewer() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime);
-		this.createServerDirectory(folderPath, currentTime - 1000);
+		String directoryName = folderName; //$NON-NLS-1$
+		this.createClientDirectory(directoryName, currentTime);
+		this.createServerDirectory(directoryName, currentTime - 1000);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
 		// we now delete remote directories
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ClientItemIsNewer, items[0].getSyncState());
 	}
 
@@ -533,14 +523,14 @@ public abstract class SyncingTests extends TestCase
 	public void testServerFileOnly() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createServerFile(filePath, currentTime); //$NON-NLS-1$
+		this.createServerFile(fileName, currentTime); //$NON-NLS-1$
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ServerItemOnly, items[0].getSyncState());
 	}
-
+	
 	/**
 	 * testServerDirectoryOnly
 	 * 
@@ -550,11 +540,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerDirectoryOnly() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ServerItemOnly, items[0].getSyncState());
 	}
 
@@ -567,12 +557,13 @@ public abstract class SyncingTests extends TestCase
 	public void testServerFileIsNewer() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime - 1000);
-		this.createServerFile(filePath, currentTime);
+		String filename = fileName; //$NON-NLS-1$
+		this.createClientFile(filename, currentTime - 1000);
+		this.createServerFile(filename, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ServerItemIsNewer, items[0].getSyncState());
 	}
 
@@ -585,13 +576,14 @@ public abstract class SyncingTests extends TestCase
 	public void testServerDirectoryIsNewer() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime - 1000);
-		this.createServerDirectory(folderPath, currentTime);
+		String directoryName = folderName; //$NON-NLS-1$
+		this.createClientDirectory(directoryName, currentTime - 1000);
+		this.createServerDirectory(directoryName, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
 		// we now delete directories from sync
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ServerItemIsNewer, items[0].getSyncState());
 	}
 
@@ -604,12 +596,13 @@ public abstract class SyncingTests extends TestCase
 	public void testFileTimesMatch() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime);
-		this.createServerFile(filePath, currentTime);
+		String filename = fileName; //$NON-NLS-1$
+		this.createClientFile(filename, currentTime);
+		this.createServerFile(filename, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -622,13 +615,14 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryTimesMatch() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime);
-		this.createServerDirectory(folderPath, currentTime);
+		String directoryName = folderName; //$NON-NLS-1$
+		this.createClientDirectory(directoryName, currentTime);
+		this.createServerDirectory(directoryName, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
 		// we now delete directories
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -641,12 +635,13 @@ public abstract class SyncingTests extends TestCase
 	public void testFileTimesWithinTolerance1() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime - 1000);
-		this.createServerFile(filePath, currentTime);
+		String filename = fileName; //$NON-NLS-1$
+		this.createClientFile(filename, currentTime - 1000);
+		this.createServerFile(filename, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 1000);
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -659,12 +654,13 @@ public abstract class SyncingTests extends TestCase
 	public void testFileTimesWithinTolerance2() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime);
-		this.createServerFile(filePath, currentTime - 1000);
+		String filename = fileName; //$NON-NLS-1$
+		this.createClientFile(filename, currentTime);
+		this.createServerFile(filename, currentTime - 1000);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 1000);
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -677,12 +673,13 @@ public abstract class SyncingTests extends TestCase
 	public void testFileTimesOutsideTolerance1() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime - 1000);
-		this.createServerFile(filePath, currentTime);
+		String filename = fileName; //$NON-NLS-1$
+		this.createClientFile(filename, currentTime - 1000);
+		this.createServerFile(filename, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 999);
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ServerItemIsNewer, items[0].getSyncState());
 	}
 
@@ -695,13 +692,14 @@ public abstract class SyncingTests extends TestCase
 	public void testFileTimesOutsideTolerance2() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime);
-		this.createServerFile(filePath, currentTime - 1000);
+		String filename = fileName; //$NON-NLS-1$
+		this.createClientFile(filename, currentTime);
+		this.createServerFile(filename, currentTime - 1000);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 999);
 
-		assertEquals(1, items.length);
-		assertEquals(SyncState.ClientItemIsNewer, items[0].getSyncState());
+		assertSyncPairLength(1, items);
+		assertEquals(getModTimeDifference(items[0]), SyncState.ClientItemIsNewer, items[0].getSyncState());
 	}
 
 	/**
@@ -713,13 +711,14 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryTimesWithinTolerance1() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime - 1000);
-		this.createServerDirectory(folderPath, currentTime);
+		String dirname = folderName; //$NON-NLS-1$
+		this.createClientDirectory(dirname, currentTime - 1000);
+		this.createServerDirectory(dirname, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 1000);
 
 		// we now delete directories
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -732,13 +731,14 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryTimesWithinTolerance2() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime);
-		this.createServerDirectory(folderPath, currentTime - 1000);
+		String dirname = folderName; //$NON-NLS-1$
+		this.createClientDirectory(dirname, currentTime);
+		this.createServerDirectory(dirname, currentTime - 1000);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 1000);
 
 		// we now delete directories
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -751,13 +751,14 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryTimesOutsideTolerance1() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime - 1000);
-		this.createServerDirectory(folderPath, currentTime);
+		String dirname = folderName; //$NON-NLS-1$
+		this.createClientDirectory(dirname, currentTime - 1000);
+		this.createServerDirectory(dirname, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 999);
 
 		// we now delete directories
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ServerItemIsNewer, items[0].getSyncState());
 	}
 
@@ -770,13 +771,14 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryTimesOutsideTolerance2() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime);
-		this.createServerDirectory(folderPath, currentTime - 1000);
+		String dirname = folderName; //$NON-NLS-1$
+		this.createClientDirectory(dirname, currentTime);
+		this.createServerDirectory(dirname, currentTime - 1000);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(false, 999);
 
 		// we now delete directories
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ClientItemIsNewer, items[0].getSyncState());
 	}
 
@@ -789,13 +791,14 @@ public abstract class SyncingTests extends TestCase
 	public void testFilesCRCsDiffer() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
+		String filename = fileName; //$NON-NLS-1$
 		String content = "abc123"; //$NON-NLS-1$
-		this.createClientFile(filePath, currentTime, content);
-		this.createServerFile(filePath, currentTime);
+		this.createClientFile(filename, currentTime, content);
+		this.createServerFile(filename, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(true, 0);
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.CRCMismatch, items[0].getSyncState());
 	}
 
@@ -808,13 +811,14 @@ public abstract class SyncingTests extends TestCase
 	public void testFilesCRCsMatch() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
+		String filename = fileName; //$NON-NLS-1$
 		String content = "abc123"; //$NON-NLS-1$
-		this.createClientFile(filePath, currentTime, content);
-		this.createServerFile(filePath, currentTime, content);
+		this.createClientFile(filename, currentTime, content);
+		this.createServerFile(filename, currentTime, content);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(true, 0);
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -827,13 +831,14 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryCRCsMatch() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime);
-		this.createServerDirectory(folderPath, currentTime);
+		String directoryName = folderName; //$NON-NLS-1$
+		this.createClientDirectory(directoryName, currentTime);
+		this.createServerDirectory(directoryName, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems(true, 0);
 
 		// we now delete directories
-		assertEquals(0, items.length);
+		assertSyncPairLength(0, items);
 		// assertEquals(SyncState.ItemsMatch, items[0].getSyncState());
 	}
 
@@ -846,12 +851,13 @@ public abstract class SyncingTests extends TestCase
 	public void testTypeMismatch1() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(folderPath, currentTime);
-		this.createServerDirectory(folderPath, currentTime);
+		String name = folderName; //$NON-NLS-1$
+		this.createClientFile(name, currentTime);
+		this.createServerDirectory(name, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.IncompatibleFileTypes, items[0].getSyncState());
 	}
 
@@ -864,12 +870,13 @@ public abstract class SyncingTests extends TestCase
 	public void testTypeMismatch2() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime);
-		this.createServerFile(folderPath, currentTime);
+		String name = folderName; //$NON-NLS-1$
+		this.createClientDirectory(name, currentTime);
+		this.createServerFile(name, currentTime);
 
 		VirtualFileSyncPair[] items = this.getSyncItems();
 
-		assertEquals(1, items.length);
+		assertSyncPairLength(1, items);
 		assertEquals(SyncState.IncompatibleFileTypes, items[0].getSyncState());
 	}
 
@@ -882,13 +889,13 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyFileUpload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
-		IFileStore clientFileOnServer = getFile(serverManager.getRoot(), clientManager.getRoot().getName());
+		IFileStore clientFileOnServer = getFile(serverDirectory, clientDirectory.getName());
 		assertFalse(
 				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " exists.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -920,15 +927,15 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyDirectoryUpload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore newClientDirectory = this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
+		IFileStore newClientDirectory = this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
 
 		
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
-		IFileStore clientFileOnServer = getDirectory(serverManager.getRoot(), newClientDirectory.getName());
+		IFileStore clientFileOnServer = getDirectory(serverDirectory, newClientDirectory.getName());
 		assertFalse(
 				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " exists.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -960,12 +967,12 @@ public abstract class SyncingTests extends TestCase
 	public void testClientNewerFileUpload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime); //$NON-NLS-1$
-		this.createServerFile(filePath, currentTime - 1000); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime); //$NON-NLS-1$
+		this.createServerFile(fileName, currentTime - 1000); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.upload(items, null);
@@ -992,12 +999,12 @@ public abstract class SyncingTests extends TestCase
 	public void testClientNewerDirectoryUpload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime - 1000); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime - 1000); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.upload(items, null);
@@ -1024,12 +1031,12 @@ public abstract class SyncingTests extends TestCase
 	public void testFileCRCsDifferUpload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.createServerFile(filePath, currentTime); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createServerFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.upload(items, null);
@@ -1056,12 +1063,12 @@ public abstract class SyncingTests extends TestCase
 	public void testFileCRCsMatchUpload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.createServerFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createClientFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createServerFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.upload(items, null);
@@ -1088,12 +1095,12 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryCRCsMatchUpload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.upload(items, null);
@@ -1120,11 +1127,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyFileUploadAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore serverFile = this.createServerFile(new Path("delete.txt"), currentTime); //$NON-NLS-1$
+		IFileStore serverFile = this.createServerFile("delete.txt", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.uploadAndDelete(items, null);
@@ -1155,11 +1162,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyDirectoryUploadAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore serverDir = this.createServerDirectory(new Path("delete"), currentTime); //$NON-NLS-1$
+		IFileStore serverDir = this.createServerDirectory("delete", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.uploadAndDelete(items, null);
@@ -1189,11 +1196,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyFileDownload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore serverFile = this.createServerFile(filePath, currentTime); //$NON-NLS-1$
+		IFileStore serverFile = this.createServerFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.download(items, null);
@@ -1210,7 +1217,7 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(1, syncManager.getServerFileTransferedCount());
 
-		IFileStore serverFileOnClient = getFile(clientManager.getRoot(), serverFile.getName());
+		IFileStore serverFileOnClient = getFile(clientDirectory, serverFile.getName());
 		assertTrue(
 				"Server file: " + EFSUtils.getAbsolutePath(serverFileOnClient) + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -1224,11 +1231,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyDirectoryDownload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore serverDir = this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
+		IFileStore serverDir = this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.download(items, null);
@@ -1245,7 +1252,7 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 
-		IFileStore serverFileOnClient = getDirectory(clientManager.getRoot(), serverDir.getName());
+		IFileStore serverFileOnClient = getDirectory(clientDirectory, serverDir.getName());
 		assertTrue(
 				"Server file: " + EFSUtils.getAbsolutePath(serverFileOnClient) + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -1260,12 +1267,12 @@ public abstract class SyncingTests extends TestCase
 	public void testServerNewerFileDownload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime - 1000); //$NON-NLS-1$
-		this.createServerFile(filePath, currentTime); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime - 1000); //$NON-NLS-1$
+		this.createServerFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.download(items, null);
@@ -1292,12 +1299,12 @@ public abstract class SyncingTests extends TestCase
 	public void testServerNewerDirectoryDownload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime - 1000); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime - 1000); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.download(items, null);
@@ -1324,12 +1331,12 @@ public abstract class SyncingTests extends TestCase
 	public void testFileCRCsDifferDownload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.createServerFile(filePath, currentTime); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createServerFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.download(items, null);
@@ -1356,12 +1363,12 @@ public abstract class SyncingTests extends TestCase
 	public void testFileCRCsMatchDownload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.createServerFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createClientFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createServerFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.download(items, null);
@@ -1388,12 +1395,12 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryCRCsMatchDownload() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.download(items, null);
@@ -1420,11 +1427,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyFileDownloadAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore clientFile = this.createClientFile(new Path("delete.txt"), currentTime); //$NON-NLS-1$
+		IFileStore clientFile = this.createClientFile("delete.txt", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.downloadAndDelete(items, null);
@@ -1454,11 +1461,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyDirectoryDownloadAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore clientFile = this.createClientDirectory(new Path("delete"), currentTime); //$NON-NLS-1$
+		IFileStore clientFile = this.createClientDirectory("delete", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.downloadAndDelete(items, null);
@@ -1488,11 +1495,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyFileFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore clientFile = this.createClientFile(filePath, currentTime); //$NON-NLS-1$
+		IFileStore clientFile = this.createClientFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1509,7 +1516,7 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 
-		IFileStore clientFileOnServer = getFile(serverManager.getRoot(), clientFile.getName());
+		IFileStore clientFileOnServer = getFile(serverDirectory, clientFile.getName());
 		assertTrue(
 				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " does not exist.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -1524,11 +1531,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyDirectoryFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore clientFile = this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
+		IFileStore clientFile = this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1545,7 +1552,7 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 
-		IFileStore clientFileOnServer = getDirectory(serverManager.getRoot(), clientFile.getName());
+		IFileStore clientFileOnServer = getDirectory(serverDirectory, clientFile.getName());
 		assertTrue(
 				"Server file: " + EFSUtils.getAbsolutePath(clientFileOnServer) + " does not exist.", clientFileOnServer.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -1559,11 +1566,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyFileFullSyncAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore clientFile = this.createClientFile(new Path("delete.txt"), currentTime); //$NON-NLS-1$
+		IFileStore clientFile = this.createClientFile("delete.txt", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSyncAndDelete(items, null);
@@ -1593,11 +1600,11 @@ public abstract class SyncingTests extends TestCase
 	public void testClientOnlyDirectoryFullSyncAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore clientFile = this.createClientDirectory(new Path("delete"), currentTime); //$NON-NLS-1$
+		IFileStore clientFile = this.createClientDirectory("delete", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSyncAndDelete(items, null);
@@ -1627,12 +1634,12 @@ public abstract class SyncingTests extends TestCase
 	public void testClientNewerFileFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime); //$NON-NLS-1$
-		this.createServerFile(filePath, currentTime - 1000); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime); //$NON-NLS-1$
+		this.createServerFile(fileName, currentTime - 1000); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1651,84 +1658,6 @@ public abstract class SyncingTests extends TestCase
 	}
 
 	/**
-	 * testClientNewerFileFullSync
-	 * 
-	 * @throws IOException
-	 * @throws ConnectionException
-	 */
-	public void testClientNewerFileFullSyncWithSubdirectories() throws IOException, CoreException
-	{
-		long currentTime = new Date().getTime();
-		IFileStore clientFolder = this.createClientDirectory(new Path("test/test2"), currentTime);
-		IFileStore clientFile = this.createClientFile(new Path("test/test2").append(filePath), currentTime); //$NON-NLS-1$
-		IFileStore clientFolder2 = this.createClientDirectory(new Path("test/test3"), currentTime);
-		IFileStore clientFile2 = this.createClientFile(new Path("test/test3").append(filePath), currentTime); //$NON-NLS-1$
-
-		IFileStore serverFolder = this.createServerDirectory(new Path("test/test2"), currentTime);
-		IFileStore serverFile = this.createServerFile(new Path("test/test2").append(filePath), currentTime - 1000); //$NON-NLS-1$
-
-		assertTrue(clientFolder.fetchInfo().exists());
-		assertTrue(clientFile.fetchInfo().exists());
-		assertTrue(clientFolder2.fetchInfo().exists());
-		assertTrue(clientFile2.fetchInfo().exists());
-		assertTrue(serverFolder.fetchInfo().exists());
-		assertTrue(serverFile.fetchInfo().exists());
-
-		IFileStore[] filesToSync = new IFileStore[] {clientFolder, clientFolder2};
-		// emulating SmartSyncDialog calls here
-		IFileStore[] clientFiles = EFSUtils.getAllFiles(filesToSync, true, false, null);
-		IFileStore[] serverFiles = SyncUtils.getDownloadFiles(clientManager,
-				serverManager, filesToSync, false, null);
-
-		Synchronizer syncManager = new Synchronizer(false, 10);
-		if (clientManager != null)
-		{
-			syncManager.setClientFileManager(clientManager);
-			syncManager.setClientFileRoot(clientManager.getRoot());
-		}
-		if (serverManager != null)
-		{
-			syncManager.setServerFileManager(serverManager);
-			syncManager.setServerFileRoot(serverManager.getRoot());
-		}
-
-		VirtualFileSyncPair[] items = syncManager.createSyncItems(clientFiles, serverFiles, null);
-
-		assertEquals(3, items.length);
-		VirtualFileSyncPair item = items[0];
-		assertEquals(clientFile, item.getSourceFile());
-		assertEquals(serverFile, item.getDestinationFile());
-		assertEquals(SyncState.ClientItemIsNewer, item.getSyncState());
-
-		item = items[1];
-		assertEquals(clientFolder2, item.getSourceFile());
-		assertNull(item.getDestinationFile());
-		assertEquals(SyncState.ClientItemOnly, item.getSyncState());
-
-		item = items[2];
-		assertEquals(clientFile2, item.getSourceFile());
-		assertNull(item.getDestinationFile());
-		assertEquals(SyncState.ClientItemOnly, item.getSyncState());
-
-		// sync
-		syncManager.fullSync(items, null);
-
-		// check client counts
-		assertEquals(0, syncManager.getClientDirectoryCreatedCount());
-		assertEquals(0, syncManager.getClientDirectoryDeletedCount());
-		assertEquals(0, syncManager.getClientFileDeletedCount());
-		// folder transfers don't count
-		assertEquals(2, syncManager.getClientFileTransferedCount());
-
-		// check server counts
-		assertEquals(1, syncManager.getServerDirectoryCreatedCount());
-		assertEquals(0, syncManager.getServerDirectoryDeletedCount());
-		assertEquals(0, syncManager.getServerFileDeletedCount());
-		assertEquals(0, syncManager.getServerFileTransferedCount());
-	}
-
-	
-	/**
 	 * testClientNewerDirectoryFullSync
 	 * 
 	 * @throws IOException
@@ -1737,12 +1666,12 @@ public abstract class SyncingTests extends TestCase
 	public void testClientNewerDirectoryFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime - 1000); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime - 1000); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1769,11 +1698,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyFileFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore serverFile = this.createServerFile(filePath, currentTime); //$NON-NLS-1$
+		IFileStore serverFile = this.createServerFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1790,7 +1719,7 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(1, syncManager.getServerFileTransferedCount());
 
-		IFileStore serverFileOnClient = getFile(clientManager.getRoot(), serverFile.getName());
+		IFileStore serverFileOnClient = getFile(clientDirectory, serverFile.getName());
 		assertTrue(
 				"Server file: " + EFSUtils.getAbsolutePath(serverFile) + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -1804,11 +1733,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyDirectoryFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore file = this.createServerDirectory(new Path(FileUtils.getRandomFileName(folderPath.toPortableString(), null)), currentTime); //$NON-NLS-1$
+		IFileStore file = this.createServerDirectory(FileUtils.getRandomFileName(folderName, null), currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1825,7 +1754,7 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(0, syncManager.getServerFileTransferedCount());
 
-		IFileStore directory = getDirectory(serverManager.getRoot(), file.getName());
+		IFileStore directory = getDirectory(serverDirectory, file.getName());
 		assertTrue(
 				"Server file: " + EFSUtils.getAbsolutePath(directory) + " does not exist.", directory.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -1839,11 +1768,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyFileFullSyncAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore serverFile = this.createServerFile(new Path("delete.txt"), currentTime); //$NON-NLS-1$
+		IFileStore serverFile = this.createServerFile("delete.txt", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSyncAndDelete(items, null);
@@ -1874,11 +1803,11 @@ public abstract class SyncingTests extends TestCase
 	public void testServerOnlyDirectoryFullSyncAndDelete() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore serverDir = this.createServerDirectory(new Path("delete"), currentTime); //$NON-NLS-1$
+		IFileStore serverDir = this.createServerDirectory("delete", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSyncAndDelete(items, null);
@@ -1908,12 +1837,12 @@ public abstract class SyncingTests extends TestCase
 	public void testServerNewerFileFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore clientFile = this.createClientFile(new Path(FileUtils.getRandomFileName(folderPath.toPortableString(), ".txt")), currentTime - 1000); //$NON-NLS-1$ //$NON-NLS-2$
-		IFileStore serverFile = this.createServerFile(new Path(clientFile.getName()), currentTime);
+		IFileStore clientFile = this.createClientFile(FileUtils.getRandomFileName(folderName, ".txt"), currentTime - 1000); //$NON-NLS-1$ //$NON-NLS-2$
+		IFileStore serverFile = this.createServerFile(clientFile.getName(), currentTime);
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1930,10 +1859,10 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(1, syncManager.getServerFileTransferedCount());
 
-		IFileStore clientFileOnServer = getFile(serverManager.getRoot(), clientFile.getName());
+		IFileStore clientFileOnServer = getFile(serverDirectory, clientFile.getName());
 		assertTrue(clientFileOnServer.fetchInfo().exists());
 
-		IFileStore serverFileOnClient = getFile(clientManager.getRoot(), serverFile.getName());
+		IFileStore serverFileOnClient = getFile(clientDirectory, serverFile.getName());
 		assertTrue(
 				"Server file: " + EFSUtils.getAbsolutePath(serverFile) + " does not exist.", serverFileOnClient.fetchInfo().exists()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -1947,12 +1876,12 @@ public abstract class SyncingTests extends TestCase
 	public void testServerNewerDirectoryFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime - 1000); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime - 1000); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(false, 10);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -1979,12 +1908,12 @@ public abstract class SyncingTests extends TestCase
 	public void testFileCRCsDifferFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.createServerFile(filePath, currentTime); //$NON-NLS-1$
+		this.createClientFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createServerFile(fileName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -2011,12 +1940,12 @@ public abstract class SyncingTests extends TestCase
 	public void testFileCRCsMatchFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.createServerFile(filePath, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createClientFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.createServerFile(fileName, currentTime, "abc123"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -2043,12 +1972,12 @@ public abstract class SyncingTests extends TestCase
 	public void testDirectoryCRCsMatchFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
+		this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
-		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientManager.getRoot(),
-				serverManager.getRoot(), null);
+		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, clientDirectory,
+				serverDirectory, null);
 
 		// sync
 		syncManager.fullSync(items, null);
@@ -2075,10 +2004,10 @@ public abstract class SyncingTests extends TestCase
 	public void testSubDirectoryFullSync() throws IOException, CoreException
 	{
 		long currentTime = new Date().getTime();
-		IFileStore sourceDir = this.createClientDirectory(folderPath, currentTime); //$NON-NLS-1$
-		this.createServerDirectory(folderPath, currentTime); //$NON-NLS-1$
-		IFileStore destDir = this.createServerDirectory(new Path("test/subtest"), currentTime); //$NON-NLS-1$
-		this.createServerFile(new Path("test/subtest/subtest.txt"), currentTime); //$NON-NLS-1$
+		IFileStore sourceDir = this.createClientDirectory(folderName, currentTime); //$NON-NLS-1$
+		this.createServerDirectory(folderName, currentTime); //$NON-NLS-1$
+		IFileStore destDir = this.createServerDirectory("test/subtest", currentTime); //$NON-NLS-1$
+		this.createServerFile("test/subtest/subtest.txt", currentTime); //$NON-NLS-1$
 
 		Synchronizer syncManager = new Synchronizer(true, 0);
 		VirtualFileSyncPair[] items = syncManager.getSyncItems(clientManager, serverManager, sourceDir, destDir, null);
@@ -2098,4 +2027,22 @@ public abstract class SyncingTests extends TestCase
 		assertEquals(0, syncManager.getServerFileDeletedCount());
 		assertEquals(1, syncManager.getServerFileTransferedCount());
 	}
+	
+	protected void assertSyncPairLength(int length, VirtualFileSyncPair[] items) {
+		if(items.length != length) {
+			String itemText = "";
+			for (int i = 0; i < items.length; i++)
+			{
+				itemText += items[i].toString() + "\n";
+			}
+			fail(MessageFormat.format("Expected length of {0}, was {1}.\nList is: {2}", length, items.length, itemText));
+		}
+	}
+
+	protected String getModTimeDifference(VirtualFileSyncPair item) {
+		IFileInfo source = item.getSourceFileInfo();
+		IFileInfo dest = item.getDestinationFileInfo();		
+			return MessageFormat.format("Source modtime: {0}, dest: {1}. Difference is: {2}", source.getLastModified(), dest.getLastModified(), source.getLastModified() - dest.getLastModified());
+	}
+
 }
