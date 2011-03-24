@@ -315,8 +315,8 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 	protected void getherServerInfo(ConnectionContext context, IProgressMonitor monitor) {
 		Policy.checkCanceled(monitor);
 		monitor.subTask(Messages.FTPConnectionFileManager_gethering_server_info);
+		serverFeatures = null;
 		try {
-			serverFeatures = null;
 			String[] features = ftpClient.features();
 			if (features != null && features.length > 0) {
 				serverFeatures = new ArrayList<String>();
@@ -330,7 +330,25 @@ public class FTPConnectionFileManager extends BaseFTPConnectionFileManager imple
 			}
 		} catch (Exception e) {
 		}
-		
+		try {
+	        String[] validCodes = {"214"}; //$NON-NLS-1$
+			FTPReply reply = ftpClient.sendCommand("SITE HELP"); //$NON-NLS-1$
+			ftpClient.validateReply(reply, validCodes);
+			if (serverFeatures == null) {
+				serverFeatures = new ArrayList<String>();
+			}
+			String[] data = reply.getReplyData();
+			for (int i = 0; i < data.length; ++i) {
+				String cmd = data[i].trim();
+				if (cmd.startsWith("214")) { //$NON-NLS-1$
+					continue;
+				}
+				serverFeatures.add(MessageFormat.format("SITE {0}", cmd)); //$NON-NLS-1$
+			}
+		} catch (Exception e) {
+			e.getCause();
+		}
+
 		Policy.checkCanceled(monitor);
 		FTPFile[] rootFiles = null;
 		try {
